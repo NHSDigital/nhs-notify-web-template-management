@@ -24,6 +24,15 @@ const config: Config = {
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
 
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: -10,
+    },
+  },
+
   // Use this configuration option to add custom reporters to Jest
   reporters: [
     'default',
