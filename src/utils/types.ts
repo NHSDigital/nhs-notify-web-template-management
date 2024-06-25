@@ -15,4 +15,4 @@ export type FormErrorState = {
     fieldErrors: Record<string, string[]>;
 };
 
-export type PageComponentProps = { state: FormState, action: (payload: FormData) => void};
+export type PageComponentProps = { state: FormState, action: string | ((payload: FormData) => void)};

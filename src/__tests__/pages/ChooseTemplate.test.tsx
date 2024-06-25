@@ -1,22 +1,18 @@
 'use client'
-import { useFormState } from 'react-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ChooseTemplatePage from '../../components/forms/ChooseTemplate/ChooseTemplate';
+import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { mockDeep } from 'jest-mock-extended';
-
-jest.mock("react-dom", () => ({
-    ...jest.requireActual("react-dom"),
-    useFormState: jest.fn(),
-}));
-
+import { FormState } from '@/src/utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-    (useFormState as jest.Mock).mockReturnValue([{
-        formErrors: [],
-        fieldErrors: {},
-    }, '/action', false]);
-    const container = render(<ChooseTemplatePage />);
+
+    const container = render(<ChooseTemplate 
+        state={mockDeep<FormState>({
+            validationError: null,
+        })}
+        action='/action'
+    />);
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
@@ -52,13 +48,17 @@ describe('Choose template page', () => {
   });
 
   it('renders error component', () => {
-    (useFormState as jest.Mock).mockReturnValue([{
-        formErrors: [],
-        fieldErrors: {
-            'choose-template': ['Component error message']
-        },
-    }, '/action', false]);
-    const container = render(<ChooseTemplatePage />);
+    const container = render(<ChooseTemplate 
+        state={mockDeep<FormState>({
+            validationError: {
+                formErrors: [],
+                fieldErrors: {
+                    'choose-template': ['Component error message']
+                },
+            }
+        })}
+        action='/action'
+    />);
     expect(container.asFragment()).toMatchSnapshot();
 
     expect(screen.getByTestId('error-summary')).toBeInTheDocument();

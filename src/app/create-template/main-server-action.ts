@@ -1,14 +1,37 @@
 'use server';
 import { z } from 'zod';
 import { FormState, FormId } from '../../utils/types';
-import { chooseTemplateContinueServerAction } from '../../components/forms/ChooseTemplate/continue-server-action';
-import { createNhsAppBackServerAction } from '../../components/forms/CreateNhsAppTemplate/back-server-action';
-import { createNhsAppContinueServerAction } from '../../components/forms/CreateNhsAppTemplate/continue-server-action';
+import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
 
 const serverActions: Partial<Record<FormId, (formState: FormState, formData: FormData) => FormState>> = {
-    'choose-template': chooseTemplateContinueServerAction,
-    'create-nhs-app-template-back': createNhsAppBackServerAction,
-    'create-nhs-app-template': createNhsAppContinueServerAction
+    'choose-template': (formState: FormState, formData: FormData) => zodValidationServerAction(
+        formState,
+        formData,
+        z.object({
+            'page': z.enum(
+                ['create-sms-template', 'create-email-template', 'create-nhs-app-template', 'create-letter-template'],
+                { message: 'Select a template type' },
+            )
+        }),
+    ),
+    'create-nhs-app-template-back': (formState: FormState, formData: FormData) => zodValidationServerAction(
+        formState,
+        formData,
+        z.object({
+            nhsAppTemplateName: z.string(),
+            nhsAppTemplateMessage: z.string(),
+        }),
+        'choose-template',
+    ),
+    'create-nhs-app-template': (formState: FormState, formData: FormData) => zodValidationServerAction(
+        formState,
+        formData,
+        z.object({
+            nhsAppTemplateName: z.string().min(1, { message: 'Enter a template name'}),
+            nhsAppTemplateMessage: z.string().min(1, { message: 'Enter a template message'}),
+        }),
+        'review-nhs-app-template',
+    )
 };
 
 const schema = z.object({

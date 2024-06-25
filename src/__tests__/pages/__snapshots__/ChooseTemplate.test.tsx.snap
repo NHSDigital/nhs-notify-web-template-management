@@ -1,0 +1,256 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Choose template page renders error component 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-error-summary"
+  >
+    <h2
+      class="nhsuk-error-summary__title"
+      data-testid="error-summary"
+    >
+      There is a problem
+    </h2>
+    <ul
+      class="nhsuk-list nhsuk-error-summary__list"
+    >
+      <li>
+        <a
+          href="#choose-template"
+        >
+          Component error message
+        </a>
+      </li>
+    </ul>
+  </div>
+  <form
+    action="/action"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="choose-template"
+    />
+    <h2
+      class="nhsuk-heading-l"
+    >
+      Choose a template type to create
+    </h2>
+    <div
+      class="nhsuk-form-group"
+    >
+      <div
+        class="nhsuk-radios"
+        id="page"
+      >
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-1--label"
+            class="nhsuk-radios__input"
+            data-testid="nhs-app-radio"
+            id="page-1"
+            name="page"
+            type="radio"
+            value="create-nhs-app-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-1"
+            id="page-1--label"
+          >
+            NHS App message
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-2--label"
+            class="nhsuk-radios__input"
+            data-testid="email-radio"
+            id="page-2"
+            name="page"
+            type="radio"
+            value="create-email-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-2"
+            id="page-2--label"
+          >
+            Email
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-3--label"
+            class="nhsuk-radios__input"
+            data-testid="sms-radio"
+            id="page-3"
+            name="page"
+            type="radio"
+            value="create-sms-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-3"
+            id="page-3--label"
+          >
+            Text message (SMS)
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-4--label"
+            class="nhsuk-radios__input"
+            data-testid="letter-radio"
+            id="page-4"
+            name="page"
+            type="radio"
+            value="create-letter-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-4"
+            id="page-4--label"
+          >
+            Letter
+          </label>
+        </div>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Choose template page selects one radio button at a time 1`] = `
+<DocumentFragment>
+  <form
+    action="/action"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="choose-template"
+    />
+    <h2
+      class="nhsuk-heading-l"
+    >
+      Choose a template type to create
+    </h2>
+    <div
+      class="nhsuk-form-group"
+    >
+      <div
+        class="nhsuk-radios"
+        id="page"
+      >
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-1--label"
+            class="nhsuk-radios__input"
+            data-testid="nhs-app-radio"
+            id="page-1"
+            name="page"
+            type="radio"
+            value="create-nhs-app-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-1"
+            id="page-1--label"
+          >
+            NHS App message
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-2--label"
+            class="nhsuk-radios__input"
+            data-testid="email-radio"
+            id="page-2"
+            name="page"
+            type="radio"
+            value="create-email-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-2"
+            id="page-2--label"
+          >
+            Email
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-3--label"
+            class="nhsuk-radios__input"
+            data-testid="sms-radio"
+            id="page-3"
+            name="page"
+            type="radio"
+            value="create-sms-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-3"
+            id="page-3--label"
+          >
+            Text message (SMS)
+          </label>
+        </div>
+        <div
+          class="nhsuk-radios__item"
+        >
+          <input
+            aria-labelledby="page-4--label"
+            class="nhsuk-radios__input"
+            data-testid="letter-radio"
+            id="page-4"
+            name="page"
+            type="radio"
+            value="create-letter-template"
+          />
+          <label
+            class="nhsuk-label nhsuk-radios__label"
+            for="page-4"
+            id="page-4--label"
+          >
+            Letter
+          </label>
+        </div>
+      </div>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;

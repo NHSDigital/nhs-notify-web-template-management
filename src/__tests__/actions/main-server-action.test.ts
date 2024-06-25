@@ -1,0 +1,1 @@
+import { mainServerAction } from '../../app/create-template/main-server-action';

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders back button 1`] = `
+<DocumentFragment>
+  <form
+    action="/action"
+  >
+    <input
+      name="form-id"
+      type="hidden"
+      value="form-id"
+    />
+    <input
+      id="input"
+      value="4"
+    />
+  </form>
+</DocumentFragment>
+`;

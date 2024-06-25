@@ -1,6 +1,4 @@
 import { PropsWithChildren } from 'react';
-import { Radios, Button, TextInput } from 'nhsuk-react-components';
-import { FormState } from '../../../utils/types';
 
 export type NHSNotifyFormWrapperProps = {
     formId: string;
@@ -13,7 +11,7 @@ export const NHSNotifyFormWrapper = ({
     formId,
 }: PropsWithChildren<NHSNotifyFormWrapperProps>) => (
     <form action={action}>
-        <input type='hidden' name='form-id' value={formId} />
+        <input type='hidden' name='form-id' value={formId} readOnly={true} />
         {children}
     </form>
 );
