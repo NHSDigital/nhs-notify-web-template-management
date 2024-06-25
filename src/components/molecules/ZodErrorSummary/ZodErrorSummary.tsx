@@ -10,7 +10,8 @@ export const ZodErrorSummary = ({
     errorHeading,
     state,
 }: ZodErrorSummaryProps) => {
-    const hasError = state.formErrors.length > 0 || Object.keys(state.fieldErrors).length > 0;
+    const { validationError } = state;
+    const hasError = validationError !== null;
 
     if (!hasError) {
         return <></>;
@@ -23,12 +24,12 @@ export const ZodErrorSummary = ({
             </ErrorSummary.Title>
             <ErrorSummary.List>
                 {
-                    Object.entries(state.fieldErrors).map(([id, errors]) => (
+                    Object.entries(validationError.fieldErrors).map(([id, errors]) => (
                         <ErrorSummary.Item href={`#${id}`} key={`field-error-summary-${id}`}>{errors.join(', ')}</ErrorSummary.Item>
                     ))
                 }
                 {
-                    Object.values(state.formErrors).map((error, id) => (
+                    Object.values(validationError.formErrors).map((error, id) => (
                         <ErrorSummary.Item key={`form-error-summary-${id}`}>{error}</ErrorSummary.Item>
                     ))
                 }

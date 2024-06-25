@@ -1,8 +1,8 @@
-export default function CreateNhsAppTemplate() {
+export const CreateSmsTemplate = () => {
   return (
     <>
         <h2 className='nhsuk-heading-l' data-testid='page-sub-heading'>
-            Placeholder NHS App page
+            Placeholder SMS page
         </h2>
     </>
   );

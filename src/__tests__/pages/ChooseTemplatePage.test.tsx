@@ -1,7 +1,7 @@
 'use client'
 import { useFormState } from 'react-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ChooseTemplatePage from '../../app/choose-template/page';
+import ChooseTemplatePage from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { mockDeep } from 'jest-mock-extended';
 
 jest.mock("react-dom", () => ({

@@ -1,6 +1,6 @@
 import { mockDeep } from 'jest-mock-extended';
 import { redirect } from 'next/navigation';
-import { chooseTemplateServerAction } from '../../app/choose-template/choose-template-server-action';
+import { chooseTemplateServerAction } from '../../components/forms/ChooseTemplate/continue-server-action';
 
 
 jest.mock('next/navigation');

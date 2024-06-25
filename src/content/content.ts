@@ -75,4 +75,23 @@ export const chooseTemplatePageContent = {
   buttonText: 'Continue',
 };
 
+export const createNhsAppTemplatePageContent = {
+  pageHeading: 'Create NHS app message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients',
+  templateNameDetailsSummary: 'Naming your templates',
+  templateNameDetailsOpeningParagraph: 'You should name your templates in a way that works best for your service or organisation.',
+  templateNameDetailsListHeader: 'Common template names include the:',
+  templateNameDetailsList: [
+    'message channel it uses',
+    'subject or reason for the message',
+    'intended audience for the template',
+    'version number of the template'
+  ],
+  templateNameDetailsExample: 'For example, \'Email - covid19 2023 - over 65s - version 3\'',
+  characterCountText: ' of 5000 characters',
+  buttonText: 'Continue',
+};
+
 export default content;
