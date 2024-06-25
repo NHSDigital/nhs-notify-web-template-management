@@ -8,7 +8,7 @@ const formSchema = z.object({
     nhsAppTemplateMessage: z.string().min(1, { message: 'Enter a template message'}),
 });
 
-export const createNhsAppBackServerAction = (formState: FormState, formData: FormData): FormState => 
+export const createNhsAppContinueServerAction = (formState: FormState, formData: FormData): FormState => 
     zodValidationServerAction(
         formState,
         formData,

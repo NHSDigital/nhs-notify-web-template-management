@@ -5,6 +5,7 @@ import { createNhsAppTemplatePageContent } from '../../../content/content';
 import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/ZodErrorSummary';
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     state,
@@ -28,16 +29,13 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
-        <div className="nhsuk-back-link nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4">
-            <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template-back'>
-                <input type='hidden' name='nhsAppTemplateName' value={templateName} />
-                <input type='hidden' name='nhsAppTemplateMessage' value={templateMessage} />
-                <button type='submit' className="nhsuk-back-link__link" >
-                    <ChevronLeftIcon />
-                    Go back
-                </button>
-            </NHSNotifyFormWrapper>
-        </div>
+        <NHSNotifyBackButton
+          formId='create-nhs-app-template-back'
+          action={action}
+        >
+          <input type='hidden' name='nhsAppTemplateName' value={templateName} />
+          <input type='hidden' name='nhsAppTemplateMessage' value={templateMessage} />
+        </NHSNotifyBackButton>
         <ZodErrorSummary
             errorHeading={errorHeading}
             state={state}

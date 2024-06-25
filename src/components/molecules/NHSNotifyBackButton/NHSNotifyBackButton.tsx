@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
-import { Radios, Button, TextInput } from 'nhsuk-react-components';
-import { FormState } from '../../../utils/types';
+import { ChevronLeftIcon } from 'nhsuk-react-components';
+import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyBackButtonProps = {
     formId: string;
@@ -12,8 +12,13 @@ export const NHSNotifyBackButton = ({
     action,
     formId,
 }: PropsWithChildren<NHSNotifyBackButtonProps>) => (
-    <form action={action}>
-        <input type='hidden' name='form-id' value={formId} />
-        {children}
-    </form>
+      <div className="nhsuk-back-link nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4">
+          <NHSNotifyFormWrapper action={action} formId={formId}>
+                {children}
+              <button type='submit' className="nhsuk-back-link__link" >
+                  <ChevronLeftIcon />
+                  Go back
+              </button>
+          </NHSNotifyFormWrapper>
+      </div>
 );
