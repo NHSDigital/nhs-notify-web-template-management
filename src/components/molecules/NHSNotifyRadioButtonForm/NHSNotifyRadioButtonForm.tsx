@@ -37,6 +37,7 @@ export const NHSNotifyRadioButtonForm = ({
         {options.map(({ id, text }) => (
           <Radios.Radio
             value={id}
+            id={`${radiosId}-${id}`}
             data-testid={`${id}-radio`}
             key={`${id}-radio`}
           >
@@ -45,7 +46,7 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
-    <Button type='submit' data-testid='submit-button'>
+    <Button type='submit' data-testid='submit-button' id={`${formId}-submit-button`} >
       {buttonText}
     </Button>
   </NHSNotifyFormWrapper>

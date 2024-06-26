@@ -69,7 +69,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {pageHeading}
           </h1>
-          <Label>{templateNameLabelText}</Label>
+          <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
           <HintText>{templateNameHintText}</HintText>
           <Details>
             <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
@@ -109,7 +109,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             {templateMessage.length}
             {characterCountText}
           </p>
-          <Button type='submit' data-testid='submit-button'>
+          <Button type='submit' id='create-nhs-app-template-submit-button'>
             {buttonText}
           </Button>
         </NHSNotifyFormWrapper>
