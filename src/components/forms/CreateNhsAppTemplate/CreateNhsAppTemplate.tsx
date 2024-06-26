@@ -8,12 +8,13 @@ import {
   Button,
   ChevronLeftIcon,
 } from 'nhsuk-react-components';
-import { FC, useState } from 'react';
+import { FC, FormEventHandler, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';
 import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/ZodErrorSummary';
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { FormEvent } from 'react';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   state,
@@ -36,6 +37,19 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   const [templateMessage, setTemplateMessage] = useState(
     state.nhsAppTemplateMessage
   );
+
+  const templateNameHandler: FormEventHandler<HTMLInputElement> = (event) => {
+    const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
+    setTemplateName(typedEventTarget.value);
+  };
+
+  const templateMessageHandler: FormEventHandler<HTMLTextAreaElement> = (
+    event
+  ) => {
+    const typedEventTarget = event.target as HTMLTextAreaElement; // it would be great if we could do this without forcing the types
+    setTemplateMessage(typedEventTarget.value);
+  };
+
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -72,7 +86,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           </Details>
           <TextInput
             id='nhsAppTemplateName'
-            onChange={(event) => setTemplateName(event.target.value)}
+            onChange={templateNameHandler}
             value={templateName}
             error={state.validationError?.fieldErrors.nhsAppTemplateName?.join(
               ', '
@@ -84,7 +98,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             id='nhsAppTemplateMessage'
             maxLength={5000}
             rows={10}
-            onChange={(event) => setTemplateMessage(event.target.value)}
+            onChange={templateMessageHandler}
             value={templateMessage}
             error={state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(
               ', '
