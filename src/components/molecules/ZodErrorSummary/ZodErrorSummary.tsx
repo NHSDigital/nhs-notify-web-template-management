@@ -2,20 +2,20 @@ import { ErrorSummary } from 'nhsuk-react-components';
 import { FormState } from '../../../utils/types';
 
 export type ZodErrorSummaryProps = {
-    errorHeading: string;
-    state: FormState;
+  errorHeading: string;
+  state: FormState;
 };
 
 export const ZodErrorSummary = ({
-    errorHeading,
-    state,
+  errorHeading,
+  state,
 }: ZodErrorSummaryProps) => {
     const { validationError } = state;
     const hasError = validationError !== null;
 
-    if (!hasError) {
-        return <></>;
-    }
+  if (!hasError) {
+    return <></>;
+  }
 
     return (
         <ErrorSummary>

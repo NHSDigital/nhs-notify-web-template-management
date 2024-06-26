@@ -23,7 +23,7 @@
   asdf plugin-add pre-commit
 ```
 
-- Now you can install the tools, and they will be runnable from within the `nhs-notify-web-template-manager` directory:
+- Now you can install the tools, and they will be runnable from within the `nhs-notify-web-template-management` directory:
 
 ```shell
   asdf install

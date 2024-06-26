@@ -1,5 +1,3 @@
-import { FC } from 'react';
-
 export type Page = 'choose-template' | 'create-nhs-app-template' | 'create-email-template' | 'create-letter-template' | 'create-sms-template' | 'review-nhs-app-template';
 export type FormId = Page | 'create-nhs-app-template-back';
 

@@ -11,9 +11,7 @@ describe('Footer component', () => {
     render(<NHSNotifyButton {...buttonProps} />);
 
     expect(screen.getByTestId('link-button')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toHaveTextContent(
-      buttonProps.children?.toString() ?? 'Button text'
-    );
+    expect(screen.getByTestId('link-button')).toHaveTextContent('Button text');
   });
 
   it('renders component correctly as a link button', () => {
@@ -21,9 +19,7 @@ describe('Footer component', () => {
     render(<NHSNotifyButton {...linkButtonProps} />);
 
     expect(screen.getByTestId('link-button')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toHaveTextContent(
-      buttonProps.children?.toString() ?? 'Button text'
-    );
+    expect(screen.getByTestId('link-button')).toHaveTextContent('Button text');
     expect(screen.getByTestId('link-button')).toHaveAttribute('href', '#');
   });
 });

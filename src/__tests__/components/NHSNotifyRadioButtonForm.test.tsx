@@ -4,7 +4,7 @@ import { NHSNotifyRadioButtonForm } from '../../components/molecules/NHSNotifyRa
 import { FormState } from '../../utils/types';
 
 test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
-    const container = render(
+  const container = render(
     <NHSNotifyRadioButtonForm
         formId='form-id'
         radiosId='radios-id'
@@ -21,7 +21,7 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
         buttonText='Continue'
     />);
 
-    expect(container.asFragment()).toMatchSnapshot();
+  expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
@@ -44,5 +44,5 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
             buttonText='Continue'
         />);
 
-    expect(container.asFragment()).toMatchSnapshot();
+  expect(container.asFragment()).toMatchSnapshot();
 });

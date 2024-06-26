@@ -4,13 +4,13 @@ import { mockDeep } from 'jest-mock-extended';
 import { FormState } from '@/src/utils/types';
 
 test('Renders ZodErrorSummary correctly without errors', () => {
-    const container = render(
+  const container = render(
     <ZodErrorSummary
         errorHeading='Error heading'
         state={mockDeep<FormState>({ validationError: null })}
     />);
 
-    expect(container.asFragment()).toMatchSnapshot();
+  expect(container.asFragment()).toMatchSnapshot();
 });
 
 test('Renders ZodErrorSummary correctly with errors', () => {
@@ -25,5 +25,5 @@ test('Renders ZodErrorSummary correctly with errors', () => {
             }})}
         />);
 
-    expect(container.asFragment()).toMatchSnapshot();
+  expect(container.asFragment()).toMatchSnapshot();
 });
