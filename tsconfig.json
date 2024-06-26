@@ -20,7 +20,11 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@amplify/*": ["./amplify/*"]
+      "@amplify/*": ["./amplify/*"],
+      "@/templates/*": ["./src/components/templates/*"],
+      "@/molecules/*": ["./src/components/molecules/*"],
+      "@/utils/*": ["./src/utils/*"],
+
     }
   },
   "include": [

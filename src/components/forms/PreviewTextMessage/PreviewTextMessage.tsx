@@ -1,0 +1,42 @@
+'use client';
+
+import { Radios } from 'nhsuk-react-components';
+import { Preview } from '@/molecules/Preview';
+import { PreviewMessage } from '@/templates/PreviewMessage';
+import { PreviewTextMessageProps } from './PreviewTextMessage.types';
+
+export function PreviewTextMessage({
+  templateName,
+  message,
+}: PreviewTextMessageProps) {
+  return (
+    <PreviewMessage
+      type='Text message'
+      templateName={templateName}
+      details={{
+        heading: 'Who your text message will be sent from',
+        text: [
+          'Set your text message sender name during onboarding.',
+          'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
+        ],
+      }}
+      PreviewComponent={
+        <Preview
+          preview={[
+            {
+              heading: 'Message',
+              value: message,
+            },
+          ]}
+        />
+      }
+      FormOptionsComponent={
+        <Radios id='what-would-you-like-to-do-next' name='choice'>
+          <Radios.Radio value='edit'>Edit</Radios.Radio>
+          <Radios.Radio value='send'>Send a text message</Radios.Radio>
+          <Radios.Radio value='submit'>Submit</Radios.Radio>
+        </Radios>
+      }
+    />
+  );
+}

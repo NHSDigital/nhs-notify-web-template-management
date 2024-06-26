@@ -1,0 +1,21 @@
+.preview {
+  background-color: #ffffff;
+  border: 1px solid #d8dde0;
+
+  :hover {
+    background-color: #ffffff;
+  }
+
+  & tr {
+    border-bottom: 1px solid #d8dde0;
+
+    & td {
+      padding: 1rem;
+    }
+  }
+}
+
+.preview__heading {
+  color: #4c6272;
+  font-weight: 600;
+}
