@@ -48,18 +48,18 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-1--label"
+                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
-                id="radios-id-1"
+                id="radios-id-option-1"
                 name="radios-id"
                 type="radio"
                 value="option-1"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="radios-id-1"
-                id="radios-id-1--label"
+                for="radios-id-option-1"
+                id="radios-id-option-1--label"
               >
                 option 1
               </label>
@@ -68,18 +68,18 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-2--label"
+                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
-                id="radios-id-2"
+                id="radios-id-option-2"
                 name="radios-id"
                 type="radio"
                 value="option-2"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="radios-id-2"
-                id="radios-id-2--label"
+                for="radios-id-option-2"
+                id="radios-id-option-2--label"
               >
                 option 2
               </label>
@@ -92,6 +92,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
       aria-disabled="false"
       class="nhsuk-button"
       data-testid="submit-button"
+      id="form-id-submit-button"
       type="submit"
     >
       Continue
@@ -137,18 +138,18 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-1--label"
+                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
-                id="radios-id-1"
+                id="radios-id-option-1"
                 name="radios-id"
                 type="radio"
                 value="option-1"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="radios-id-1"
-                id="radios-id-1--label"
+                for="radios-id-option-1"
+                id="radios-id-option-1--label"
               >
                 option 1
               </label>
@@ -157,18 +158,18 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-2--label"
+                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
-                id="radios-id-2"
+                id="radios-id-option-2"
                 name="radios-id"
                 type="radio"
                 value="option-2"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="radios-id-2"
-                id="radios-id-2--label"
+                for="radios-id-option-2"
+                id="radios-id-option-2--label"
               >
                 option 2
               </label>
@@ -181,6 +182,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
       aria-disabled="false"
       class="nhsuk-button"
       data-testid="submit-button"
+      id="form-id-submit-button"
       type="submit"
     >
       Continue

@@ -46,7 +46,11 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
-    <Button type='submit' data-testid='submit-button' id={`${formId}-submit-button`} >
+    <Button
+      type='submit'
+      data-testid='submit-button'
+      id={`${formId}-submit-button`}
+    >
       {buttonText}
     </Button>
   </NHSNotifyFormWrapper>

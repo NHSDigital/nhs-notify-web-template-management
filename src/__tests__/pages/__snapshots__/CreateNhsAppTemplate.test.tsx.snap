@@ -67,6 +67,7 @@ exports[`renders page 1`] = `
         </h1>
         <label
           class="nhsuk-label"
+          for="nhsAppTemplateName"
         >
           Template name
         </label>
@@ -151,7 +152,7 @@ exports[`renders page 1`] = `
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          id="create-nhs-app-template-submit-button"
           type="submit"
         >
           Continue
@@ -260,6 +261,7 @@ exports[`renders page one error 1`] = `
         </h1>
         <label
           class="nhsuk-label"
+          for="nhsAppTemplateName"
         >
           Template name
         </label>
@@ -355,7 +357,7 @@ exports[`renders page one error 1`] = `
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          id="create-nhs-app-template-submit-button"
           type="submit"
         >
           Continue
@@ -466,6 +468,7 @@ exports[`renders page with multiple errors 1`] = `
         </h1>
         <label
           class="nhsuk-label"
+          for="nhsAppTemplateName"
         >
           Template name
         </label>
@@ -572,7 +575,7 @@ exports[`renders page with multiple errors 1`] = `
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          id="create-nhs-app-template-submit-button"
           type="submit"
         >
           Continue
@@ -655,6 +658,7 @@ exports[`renders page with preloaded field values 1`] = `
         </h1>
         <label
           class="nhsuk-label"
+          for="nhsAppTemplateName"
         >
           Template name
         </label>
@@ -741,7 +745,7 @@ exports[`renders page with preloaded field values 1`] = `
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          id="create-nhs-app-template-submit-button"
           type="submit"
         >
           Continue
