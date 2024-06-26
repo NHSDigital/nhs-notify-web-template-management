@@ -5,6 +5,8 @@ set -euo pipefail
 app_id=$1
 branch_name=$2
 
+sleep 15
+
 job_id=$( aws amplify list-jobs --app-id $app_id --branch-name $branch_name | jq -r '.jobSummaries[0].jobId' )
 
 wait_seconds=0
