@@ -16,7 +16,10 @@ export function Preview({ preview }: PreviewProps): JSX.Element {
               <div className={styles.preview__heading}>{heading}</div>
             </Table.Cell>
             <Table.Cell key={`message-preview-content-${idx}`} role='cell'>
-              <div className={styles.preview__content}>{value}</div>
+              <div
+                className={styles.preview__content}
+                dangerouslySetInnerHTML={{ __html: value }}
+              />
             </Table.Cell>
           </Table.Row>
         ))}

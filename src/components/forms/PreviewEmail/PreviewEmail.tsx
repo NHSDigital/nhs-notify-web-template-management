@@ -4,12 +4,19 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
+import MarkdownIt from 'markdown-it';
+
+const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
 
 export function PreviewEmail({
   templateName,
   subject,
   message,
 }: PreviewEmailProps) {
+  const md = new MarkdownIt('zero').enable(EMAIL_MD_OPTS);
+
+  const html = md.render(message);
+
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -32,7 +39,7 @@ export function PreviewEmail({
                 },
                 {
                   heading: 'Message',
-                  value: message,
+                  value: html,
                 },
               ]}
             />

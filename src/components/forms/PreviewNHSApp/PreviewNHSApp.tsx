@@ -4,8 +4,15 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
+import MarkdownIt from 'markdown-it';
+
+const NHS_APP_MD_OPTS = ['heading', 'link', 'list', 'emphasis'];
 
 export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
+  const md = new MarkdownIt('zero').enable(NHS_APP_MD_OPTS);
+
+  const html = md.render(message);
+
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -24,7 +31,7 @@ export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
               preview={[
                 {
                   heading: 'Message',
-                  value: message,
+                  value: html,
                 },
               ]}
             />
