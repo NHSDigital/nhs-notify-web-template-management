@@ -5,70 +5,82 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
   <form
     action="/action"
   >
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Page heading
-    </h2>
     <div
       class="nhsuk-form-group nhsuk-form-group--error"
     >
-      <span
-        class="nhsuk-error-message"
-        id="radios-id-error-message"
+      <fieldset
+        class="nhsuk-fieldset"
       >
-        <span
-          class="nhsuk-u-visually-hidden"
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
         >
-          Error: 
-        </span>
-        Field error
-      </span>
-      <div
-        class="nhsuk-radios"
-        id="radios-id"
-      >
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="radios-id-1--label"
-            class="nhsuk-radios__input"
-            data-testid="option-1-radio"
-            id="radios-id-1"
-            name="radios-id"
-            type="radio"
-            value="option-1"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="radios-id-1"
-            id="radios-id-1--label"
+          <h1
+            class="nhsuk-fieldset__heading"
           >
-            option 1
-          </label>
-        </div>
+            Page heading
+          </h1>
+        </legend>
         <div
-          class="nhsuk-radios__item"
+          class="nhsuk-form-group nhsuk-form-group--error"
         >
-          <input
-            aria-labelledby="radios-id-2--label"
-            class="nhsuk-radios__input"
-            data-testid="option-2-radio"
-            id="radios-id-2"
-            name="radios-id"
-            type="radio"
-            value="option-2"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="radios-id-2"
-            id="radios-id-2--label"
+          <span
+            class="nhsuk-error-message"
+            id="radios-id-error-message"
           >
-            option 2
-          </label>
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Field error
+          </span>
+          <div
+            class="nhsuk-radios"
+            id="radios-id"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-1--label"
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="radios-id-1"
+                name="radios-id"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-1"
+                id="radios-id-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-2--label"
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="radios-id-2"
+                name="radios-id"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-2"
+                id="radios-id-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
+      </fieldset>
     </div>
     <button
       aria-disabled="false"
@@ -87,59 +99,71 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
   <form
     action="/action"
   >
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Page heading
-    </h2>
     <div
       class="nhsuk-form-group"
     >
-      <div
-        class="nhsuk-radios"
-        id="radios-id"
+      <fieldset
+        class="nhsuk-fieldset"
       >
-        <div
-          class="nhsuk-radios__item"
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
         >
-          <input
-            aria-labelledby="radios-id-1--label"
-            class="nhsuk-radios__input"
-            data-testid="option-1-radio"
-            id="radios-id-1"
-            name="radios-id"
-            type="radio"
-            value="option-1"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="radios-id-1"
-            id="radios-id-1--label"
+          <h1
+            class="nhsuk-fieldset__heading"
           >
-            option 1
-          </label>
-        </div>
+            Page heading
+          </h1>
+        </legend>
         <div
-          class="nhsuk-radios__item"
+          class="nhsuk-form-group"
         >
-          <input
-            aria-labelledby="radios-id-2--label"
-            class="nhsuk-radios__input"
-            data-testid="option-2-radio"
-            id="radios-id-2"
-            name="radios-id"
-            type="radio"
-            value="option-2"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="radios-id-2"
-            id="radios-id-2--label"
+          <div
+            class="nhsuk-radios"
+            id="radios-id"
           >
-            option 2
-          </label>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-1--label"
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="radios-id-1"
+                name="radios-id"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-1"
+                id="radios-id-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-2--label"
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="radios-id-2"
+                name="radios-id"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-2"
+                id="radios-id-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
+      </fieldset>
     </div>
     <button
       aria-disabled="false"
