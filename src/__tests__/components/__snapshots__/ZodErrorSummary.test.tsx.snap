@@ -32,34 +32,3 @@ exports[`Renders ZodErrorSummary correctly with errors 1`] = `
 `;
 
 exports[`Renders ZodErrorSummary correctly without errors 1`] = `<DocumentFragment />`;
-
-exports[`Renders v correctly with errors 1`] = `
-<DocumentFragment>
-  <div
-    class="nhsuk-error-summary"
-  >
-    <h2
-      class="nhsuk-error-summary__title"
-      data-testid="error-summary"
-    >
-      Error heading
-    </h2>
-    <ul
-      class="nhsuk-list nhsuk-error-summary__list"
-    >
-      <li>
-        <a
-          href="#radios-id"
-        >
-          Field error
-        </a>
-      </li>
-      <li>
-        <a>
-          Form error
-        </a>
-      </li>
-    </ul>
-  </div>
-</DocumentFragment>
-`;

@@ -67,10 +67,10 @@ export const chooseTemplatePageContent = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   options: [
-    { id: 'nhs-app', text: 'NHS App message' },
-    { id: 'email', text: 'Email' },
-    { id: 'sms', text: 'Text message (SMS)' },
-    { id: 'letter', text: 'Letter' },
+    { id: 'create-nhs-app-template', text: 'NHS App message' },
+    { id: 'create-email-template', text: 'Email' },
+    { id: 'create-sms-template', text: 'Text message (SMS)' },
+    { id: 'create-letter-template', text: 'Letter' },
   ],
   buttonText: 'Continue',
 };

@@ -1,4 +1,4 @@
-import { Radios, Button } from 'nhsuk-react-components';
+import { Radios, Fieldset, Button } from 'nhsuk-react-components';
 import { FormState } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
@@ -25,18 +25,20 @@ export const NHSNotifyRadioButtonForm = ({
     buttonText,
 }: NHSNotifyRadioButtonFormProps) => (
     <NHSNotifyFormWrapper action={action} formId={formId}>
-        <h2 className='nhsuk-heading-l'>
-            {pageHeading}
-        </h2>
-        <Radios id={radiosId} error={state.validationError?.fieldErrors[radiosId]?.join(', ')} errorProps={{ id: `${radiosId}-error-message`, }}>
-            {
-                options.map(({ id, text }) => (
-                    <Radios.Radio value={`create-${id}-template`} data-testid={`${id}-radio`} key={`${id}-radio`}>
-                        {text}
-                    </Radios.Radio>
-                ))
-            }
-        </Radios>
+        <Fieldset>
+            <Fieldset.Legend isPageHeading={true} size='l'>
+                {pageHeading}
+            </Fieldset.Legend>
+            <Radios id={radiosId} error={state.validationError?.fieldErrors[radiosId]?.join(', ')} errorProps={{ id: `${radiosId}-error-message`, }}>
+                {
+                    options.map(({ id, text }) => (
+                        <Radios.Radio value={id} data-testid={`${id}-radio`} key={`${id}-radio`}>
+                            {text}
+                        </Radios.Radio>
+                    ))
+                }
+            </Radios>
+        </Fieldset>
         <Button type='submit' data-testid='submit-button'>{buttonText}</Button>
     </NHSNotifyFormWrapper>
 );

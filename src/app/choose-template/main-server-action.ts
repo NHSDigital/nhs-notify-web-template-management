@@ -2,6 +2,7 @@
 import { z } from 'zod';
 import { FormState, FormId } from '../../utils/types';
 import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
+import { useRouter } from 'next/navigation';
 
 const serverActions: Partial<Record<FormId, (formState: FormState, formData: FormData) => FormState>> = {
     'choose-template': (formState: FormState, formData: FormData) => zodValidationServerAction(
@@ -18,8 +19,8 @@ const serverActions: Partial<Record<FormId, (formState: FormState, formData: For
         formState,
         formData,
         z.object({
-            nhsAppTemplateName: z.string(),
-            nhsAppTemplateMessage: z.string(),
+            nhsAppTemplateName: z.string({ message: 'Internal server error' }),
+            nhsAppTemplateMessage: z.string({ message: 'Internal server error' }),
         }),
         'choose-template',
     ),
@@ -35,14 +36,13 @@ const serverActions: Partial<Record<FormId, (formState: FormState, formData: For
 };
 
 const schema = z.object({
-    'form-id': z.enum(['choose-template', 'create-nhs-app-template-back',  'create-nhs-app-template'])
+    formId: z.enum(['choose-template', 'create-nhs-app-template-back',  'create-nhs-app-template', 'create-sms-template'], { message: 'Internal server error' })
 });
 
 export const mainServerAction = (formState: FormState, formData: FormData): FormState => {
-    console.log(Object.fromEntries([...formData.entries()]))
     const formId = formData.get('form-id');
 
-    const parsedFormId = schema.safeParse({ 'form-id': formId });
+    const parsedFormId = schema.safeParse({ formId });
 
     if (!parsedFormId.success) {
         return {
@@ -51,10 +51,16 @@ export const mainServerAction = (formState: FormState, formData: FormData): Form
         };
     }
     
-    const serverAction = serverActions[parsedFormId.data['form-id']];
+    const serverAction = serverActions[parsedFormId.data.formId];
 
     if (!serverAction) {
-        return formState;
+        return {
+            ...formState,
+            validationError: {
+                formErrors: ['Internal server error'],
+                fieldErrors: {},
+            },
+        };
     }
 
     return serverAction(formState, formData);

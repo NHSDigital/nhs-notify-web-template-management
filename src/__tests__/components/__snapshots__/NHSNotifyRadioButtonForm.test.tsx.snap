@@ -5,6 +5,12 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
   <form
     action="/action"
   >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="form-id"
+    />
     <h2
       class="nhsuk-heading-l"
     >
@@ -87,6 +93,12 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
   <form
     action="/action"
   >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="form-id"
+    />
     <h2
       class="nhsuk-heading-l"
     >

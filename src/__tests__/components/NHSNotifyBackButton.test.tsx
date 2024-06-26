@@ -6,7 +6,7 @@ test('Renders back button', () => {
         formId='form-id'
         action='/action'
     >
-        <input id='input' value='4' />
+        <input id='input' value='4' readOnly={true} />
     </NHSNotifyBackButton>);
 
     expect(container.asFragment()).toMatchSnapshot();

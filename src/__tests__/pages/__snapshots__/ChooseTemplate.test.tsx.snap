@@ -16,7 +16,7 @@ exports[`Choose template page renders error component 1`] = `
     >
       <li>
         <a
-          href="#choose-template"
+          href="#page"
         >
           Component error message
         </a>
@@ -38,8 +38,19 @@ exports[`Choose template page renders error component 1`] = `
       Choose a template type to create
     </h2>
     <div
-      class="nhsuk-form-group"
+      class="nhsuk-form-group nhsuk-form-group--error"
     >
+      <span
+        class="nhsuk-error-message"
+        id="page-error-message"
+      >
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          Error: 
+        </span>
+        Component error message
+      </span>
       <div
         class="nhsuk-radios"
         id="page"
@@ -50,7 +61,7 @@ exports[`Choose template page renders error component 1`] = `
           <input
             aria-labelledby="page-1--label"
             class="nhsuk-radios__input"
-            data-testid="nhs-app-radio"
+            data-testid="create-nhs-app-template-radio"
             id="page-1"
             name="page"
             type="radio"
@@ -70,7 +81,7 @@ exports[`Choose template page renders error component 1`] = `
           <input
             aria-labelledby="page-2--label"
             class="nhsuk-radios__input"
-            data-testid="email-radio"
+            data-testid="create-email-template-radio"
             id="page-2"
             name="page"
             type="radio"
@@ -90,7 +101,7 @@ exports[`Choose template page renders error component 1`] = `
           <input
             aria-labelledby="page-3--label"
             class="nhsuk-radios__input"
-            data-testid="sms-radio"
+            data-testid="create-sms-template-radio"
             id="page-3"
             name="page"
             type="radio"
@@ -110,7 +121,7 @@ exports[`Choose template page renders error component 1`] = `
           <input
             aria-labelledby="page-4--label"
             class="nhsuk-radios__input"
-            data-testid="letter-radio"
+            data-testid="create-letter-template-radio"
             id="page-4"
             name="page"
             type="radio"
@@ -167,7 +178,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           <input
             aria-labelledby="page-1--label"
             class="nhsuk-radios__input"
-            data-testid="nhs-app-radio"
+            data-testid="create-nhs-app-template-radio"
             id="page-1"
             name="page"
             type="radio"
@@ -187,7 +198,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           <input
             aria-labelledby="page-2--label"
             class="nhsuk-radios__input"
-            data-testid="email-radio"
+            data-testid="create-email-template-radio"
             id="page-2"
             name="page"
             type="radio"
@@ -207,7 +218,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           <input
             aria-labelledby="page-3--label"
             class="nhsuk-radios__input"
-            data-testid="sms-radio"
+            data-testid="create-sms-template-radio"
             id="page-3"
             name="page"
             type="radio"
@@ -227,7 +238,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           <input
             aria-labelledby="page-4--label"
             class="nhsuk-radios__input"
-            data-testid="letter-radio"
+            data-testid="create-letter-template-radio"
             id="page-4"
             name="page"
             type="radio"

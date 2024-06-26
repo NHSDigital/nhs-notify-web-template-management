@@ -61,8 +61,13 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
               <p>{templateNameDetailsExample}</p>
             </Details.Text>
           </Details>
-          <TextInput id='nhsAppTemplateName' onChange={(event) => setTemplateName(event.target.value)}
-            value={templateName}/>
+          <TextInput
+            id='nhsAppTemplateName'
+            onChange={(event) => setTemplateName(event.target.value)}
+            value={templateName}
+            error={state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ')}
+            errorProps={{ id: 'nhsAppTemplateName-error-message' }}
+          />
           <Textarea
             label='Message'
             id='nhsAppTemplateMessage'
@@ -70,6 +75,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             rows={10}
             onChange={(event) => setTemplateMessage(event.target.value)}
             value={templateMessage}
+            error={state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ')}
+            errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
           <p>{templateMessage.length}{characterCountText}</p>
           <Button type='submit' data-testid='submit-button'>{buttonText}</Button>

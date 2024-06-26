@@ -8,7 +8,8 @@ import { ReviewNhsAppTemplate } from '../../components/forms/ReviewNhsAppTemplat
 import { mainServerAction } from './main-server-action';
 import { FormState, Page, PageComponentProps } from '../../utils/types';
 import { useFormState } from 'react-dom';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { redirect, useRouter } from 'next/navigation';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
     'choose-template': ChooseTemplate,
@@ -26,17 +27,40 @@ const initialState: FormState = {
     nhsAppTemplateMessage: '',
 };
 
+const RouterComponent = ({ page }: { page: Page }) => {
+    const router = useRouter();
+    useEffect(() => {
+        router.push(`/${page}`);
+    }, [page]);
+    useEffect(() => {
+        const handlePopstate = () => {
+            window.location.replace("/choose-template");
+        };
+    
+        window.addEventListener('popstate', handlePopstate);
+    
+        return () => {
+          window.removeEventListener('popstate', handlePopstate);
+        };
+      }, []);
+    return <></>;
+}
+
 const CreateTemplate = () => {
     const [state, action] = useFormState(mainServerAction, initialState);
     const { page } = state;
 
+
     const PageComponent = pages[page];
 
     return (
-        <PageComponent
-            state={state}
-            action={action}
-        />
+        <>
+            <PageComponent
+                state={state}
+                action={action}
+            />
+            <RouterComponent page={page} />
+        </>
     );
   }
   

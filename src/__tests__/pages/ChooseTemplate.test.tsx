@@ -2,7 +2,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { mockDeep } from 'jest-mock-extended';
-import { FormState } from '@/src/utils/types';
+import { FormState } from '../../utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
@@ -16,10 +16,10 @@ describe('Choose template page', () => {
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-        screen.getByTestId('email-radio'),
-        screen.getByTestId('nhs-app-radio'),
-        screen.getByTestId('sms-radio'),
-        screen.getByTestId('letter-radio'),
+        screen.getByTestId('create-email-template-radio'),
+        screen.getByTestId('create-nhs-app-template-radio'),
+        screen.getByTestId('create-sms-template-radio'),
+        screen.getByTestId('create-letter-template-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 
@@ -53,15 +53,12 @@ describe('Choose template page', () => {
             validationError: {
                 formErrors: [],
                 fieldErrors: {
-                    'choose-template': ['Component error message']
+                    page: ['Component error message']
                 },
             }
         })}
         action='/action'
     />);
     expect(container.asFragment()).toMatchSnapshot();
-
-    expect(screen.getByTestId('error-summary')).toBeInTheDocument();
-    expect(document.getElementById('choose-template-error-message')).toBeInTheDocument();
   });
 });

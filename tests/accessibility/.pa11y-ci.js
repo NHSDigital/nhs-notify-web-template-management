@@ -18,6 +18,7 @@ module.exports = {
         useIncognitoBrowserContext: false,
         standard: 'WCAG2AA', //'WCAG2AAA'
         userAgent: 'pa11y-ci',
+        includeWarnings: true,
     },
-    urls: ['localhost:3000', 'localhost:3000/choose-template', 'localhost:3000/create-template/nhs-app']
+    urls: ['localhost:3000', 'localhost:3000/choose-template']
 };

@@ -7,11 +7,13 @@ exports[`Renders back button 1`] = `
   >
     <input
       name="form-id"
+      readonly=""
       type="hidden"
       value="form-id"
     />
     <input
       id="input"
+      readonly=""
       value="4"
     />
   </form>
