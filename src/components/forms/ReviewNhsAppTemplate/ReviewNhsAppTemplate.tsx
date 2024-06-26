@@ -6,4 +6,4 @@ export const ReviewNhsAppTemplate = () => {
       </h2>
     </>
   );
-}
+};

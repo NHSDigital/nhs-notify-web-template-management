@@ -1,5 +1,13 @@
-'use client' // we need this to be a client component because nhsuk-react-components uses client-only react features
-import { TextInput, HintText, Details, Label, Textarea, Button, ChevronLeftIcon, } from 'nhsuk-react-components';
+'use client'; // we need this to be a client component because nhsuk-react-components uses client-only react features
+import {
+  TextInput,
+  HintText,
+  Details,
+  Label,
+  Textarea,
+  Button,
+  ChevronLeftIcon,
+} from 'nhsuk-react-components';
 import { FC, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';
 import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/ZodErrorSummary';
@@ -8,8 +16,8 @@ import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNo
 import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
-    state,
-    action,
+  state,
+  action,
 }) => {
   const {
     pageHeading,
@@ -25,7 +33,9 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     templateNameDetailsExample,
   } = createNhsAppTemplatePageContent;
   const [templateName, setTemplateName] = useState(state.nhsAppTemplateName);
-  const [templateMessage, setTemplateMessage] = useState(state.nhsAppTemplateMessage);
+  const [templateMessage, setTemplateMessage] = useState(
+    state.nhsAppTemplateMessage
+  );
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -34,12 +44,13 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           action={action}
         >
           <input type='hidden' name='nhsAppTemplateName' value={templateName} />
-          <input type='hidden' name='nhsAppTemplateMessage' value={templateMessage} />
+          <input
+            type='hidden'
+            name='nhsAppTemplateMessage'
+            value={templateMessage}
+          />
         </NHSNotifyBackButton>
-        <ZodErrorSummary
-            errorHeading={errorHeading}
-            state={state}
-        />
+        <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template'>
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {pageHeading}
@@ -47,9 +58,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <Label>{templateNameLabelText}</Label>
           <HintText>{templateNameHintText}</HintText>
           <Details>
-            <Details.Summary>
-              {templateNameDetailsSummary}
-            </Details.Summary>
+            <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
             <Details.Text>
               <p>{templateNameDetailsOpeningParagraph}</p>
               <p>{templateNameDetailsListHeader}</p>
@@ -65,7 +74,9 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             id='nhsAppTemplateName'
             onChange={(event) => setTemplateName(event.target.value)}
             value={templateName}
-            error={state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ')}
+            error={state.validationError?.fieldErrors.nhsAppTemplateName?.join(
+              ', '
+            )}
             errorProps={{ id: 'nhsAppTemplateName-error-message' }}
           />
           <Textarea
@@ -75,11 +86,18 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             rows={10}
             onChange={(event) => setTemplateMessage(event.target.value)}
             value={templateMessage}
-            error={state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ')}
+            error={state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(
+              ', '
+            )}
             errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
-          <p>{templateMessage.length}{characterCountText}</p>
-          <Button type='submit' data-testid='submit-button'>{buttonText}</Button>
+          <p>
+            {templateMessage.length}
+            {characterCountText}
+          </p>
+          <Button type='submit' data-testid='submit-button'>
+            {buttonText}
+          </Button>
         </NHSNotifyFormWrapper>
       </div>
       <div className='nhsuk-grid-column-one-third'>
@@ -87,4 +105,4 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
       </div>
     </div>
   );
-}
+};

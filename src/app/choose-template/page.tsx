@@ -12,56 +12,52 @@ import { FC, useEffect } from 'react';
 import { redirect, useRouter } from 'next/navigation';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
-    'choose-template': ChooseTemplate,
-    'create-nhs-app-template': CreateNhsAppTemplate,
-    'create-email-template': CreateEmailTemplate,
-    'create-sms-template': CreateSmsTemplate,
-    'create-letter-template': CreateLetterTemplate,
-    'review-nhs-app-template': ReviewNhsAppTemplate,
+  'choose-template': ChooseTemplate,
+  'create-nhs-app-template': CreateNhsAppTemplate,
+  'create-email-template': CreateEmailTemplate,
+  'create-sms-template': CreateSmsTemplate,
+  'create-letter-template': CreateLetterTemplate,
+  'review-nhs-app-template': ReviewNhsAppTemplate,
 };
 
 const initialState: FormState = {
-    page: 'choose-template',
-    validationError: null,
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
+  page: 'choose-template',
+  validationError: null,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
 };
 
 const RouterComponent = ({ page }: { page: Page }) => {
-    const router = useRouter();
-    useEffect(() => {
-        router.push(`/${page}`);
-    }, [page]);
-    useEffect(() => {
-        const handlePopstate = () => {
-            window.location.replace("/choose-template");
-        };
-    
-        window.addEventListener('popstate', handlePopstate);
-    
-        return () => {
-          window.removeEventListener('popstate', handlePopstate);
-        };
-      }, []);
-    return <></>;
-}
+  const router = useRouter();
+  useEffect(() => {
+    router.push(`/${page}`);
+  }, [router, page]);
+  useEffect(() => {
+    const handlePopstate = () => {
+      window.location.replace('/choose-template');
+    };
+
+    window.addEventListener('popstate', handlePopstate);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+    };
+  }, []);
+  return <></>;
+};
 
 const CreateTemplate = () => {
-    const [state, action] = useFormState(mainServerAction, initialState);
-    const { page } = state;
+  const [state, action] = useFormState(mainServerAction, initialState);
+  const { page } = state;
 
+  const PageComponent = pages[page];
 
-    const PageComponent = pages[page];
+  return (
+    <>
+      <PageComponent state={state} action={action} />
+      <RouterComponent page={page} />
+    </>
+  );
+};
 
-    return (
-        <>
-            <PageComponent
-                state={state}
-                action={action}
-            />
-            <RouterComponent page={page} />
-        </>
-    );
-  }
-  
-export default CreateTemplate
+export default CreateTemplate;

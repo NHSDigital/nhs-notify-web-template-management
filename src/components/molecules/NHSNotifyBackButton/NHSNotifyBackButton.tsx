@@ -3,22 +3,22 @@ import { ChevronLeftIcon } from 'nhsuk-react-components';
 import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyBackButtonProps = {
-    formId: string;
-    action: string | ((payload: FormData) => void);
+  formId: string;
+  action: string | ((payload: FormData) => void);
 };
 
 export const NHSNotifyBackButton = ({
-    children,
-    action,
-    formId,
+  children,
+  action,
+  formId,
 }: PropsWithChildren<NHSNotifyBackButtonProps>) => (
-      <div className="nhsuk-back-link nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4">
-          <NHSNotifyFormWrapper action={action} formId={formId}>
-                {children}
-              <button type='submit' className="nhsuk-back-link__link" >
-                  <ChevronLeftIcon />
-                  Go back
-              </button>
-          </NHSNotifyFormWrapper>
-      </div>
+  <div className='nhsuk-back-link nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4'>
+    <NHSNotifyFormWrapper action={action} formId={formId}>
+      {children}
+      <button type='submit' className='nhsuk-back-link__link'>
+        <ChevronLeftIcon />
+        Go back
+      </button>
+    </NHSNotifyFormWrapper>
+  </div>
 );

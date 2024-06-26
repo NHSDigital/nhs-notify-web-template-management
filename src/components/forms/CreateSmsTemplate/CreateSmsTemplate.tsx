@@ -6,4 +6,4 @@ export const CreateSmsTemplate = () => {
       </h2>
     </>
   );
-}
+};

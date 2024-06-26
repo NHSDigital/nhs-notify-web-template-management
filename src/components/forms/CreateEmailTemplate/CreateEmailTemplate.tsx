@@ -6,4 +6,4 @@ export const CreateEmailTemplate = () => {
       </h2>
     </>
   );
-}
+};

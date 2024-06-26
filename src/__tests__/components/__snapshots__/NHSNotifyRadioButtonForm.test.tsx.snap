@@ -11,11 +11,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
       type="hidden"
       value="form-id"
     />
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Page heading
-    </h2>
     <div
       class="nhsuk-form-group nhsuk-form-group--error"
     >
@@ -116,11 +111,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
       type="hidden"
       value="form-id"
     />
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Page heading
-    </h2>
     <div
       class="nhsuk-form-group"
     >

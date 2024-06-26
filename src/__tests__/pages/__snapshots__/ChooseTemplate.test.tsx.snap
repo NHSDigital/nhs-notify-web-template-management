@@ -32,45 +32,17 @@ exports[`Choose template page renders error component 1`] = `
       type="hidden"
       value="choose-template"
     />
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Choose a template type to create
-    </h2>
     <div
       class="nhsuk-form-group nhsuk-form-group--error"
     >
-      <span
-        class="nhsuk-error-message"
-        id="page-error-message"
+      <fieldset
+        class="nhsuk-fieldset"
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
         >
-          Error: 
-        </span>
-        Component error message
-      </span>
-      <div
-        class="nhsuk-radios"
-        id="page"
-      >
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="page-1--label"
-            class="nhsuk-radios__input"
-            data-testid="create-nhs-app-template-radio"
-            id="page-1"
-            name="page"
-            type="radio"
-            value="create-nhs-app-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-1"
-            id="page-1--label"
+          <h1
+            class="nhsuk-fieldset__heading"
           >
             Choose a template type to create
           </h1>
@@ -78,56 +50,37 @@ exports[`Choose template page renders error component 1`] = `
         <div
           class="nhsuk-form-group nhsuk-form-group--error"
         >
-          <input
-            aria-labelledby="page-2--label"
-            class="nhsuk-radios__input"
-            data-testid="create-email-template-radio"
-            id="page-2"
-            name="page"
-            type="radio"
-            value="create-email-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-2"
-            id="page-2--label"
+          <span
+            class="nhsuk-error-message"
+            id="page-error-message"
           >
-            Email
-          </label>
-        </div>
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="page-3--label"
-            class="nhsuk-radios__input"
-            data-testid="create-sms-template-radio"
-            id="page-3"
-            name="page"
-            type="radio"
-            value="create-sms-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-3"
-            id="page-3--label"
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Component error message
+          </span>
+          <div
+            class="nhsuk-radios"
+            id="page"
           >
             <div
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-1--label"
+                aria-labelledby="page-1--label"
                 class="nhsuk-radios__input"
-                data-testid="nhs-app-radio"
-                id="choose-template-1"
-                name="choose-template"
+                data-testid="create-nhs-app-template-radio"
+                id="page-1"
+                name="page"
                 type="radio"
-                value="nhs-app"
+                value="create-nhs-app-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-1"
-                id="choose-template-1--label"
+                for="page-1"
+                id="page-1--label"
               >
                 NHS App message
               </label>
@@ -136,18 +89,18 @@ exports[`Choose template page renders error component 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-2--label"
+                aria-labelledby="page-2--label"
                 class="nhsuk-radios__input"
-                data-testid="email-radio"
-                id="choose-template-2"
-                name="choose-template"
+                data-testid="create-email-template-radio"
+                id="page-2"
+                name="page"
                 type="radio"
-                value="email"
+                value="create-email-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-2"
-                id="choose-template-2--label"
+                for="page-2"
+                id="page-2--label"
               >
                 Email
               </label>
@@ -156,18 +109,18 @@ exports[`Choose template page renders error component 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-3--label"
+                aria-labelledby="page-3--label"
                 class="nhsuk-radios__input"
-                data-testid="sms-radio"
-                id="choose-template-3"
-                name="choose-template"
+                data-testid="create-sms-template-radio"
+                id="page-3"
+                name="page"
                 type="radio"
-                value="sms"
+                value="create-sms-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-3"
-                id="choose-template-3--label"
+                for="page-3"
+                id="page-3--label"
               >
                 Text message (SMS)
               </label>
@@ -176,45 +129,25 @@ exports[`Choose template page renders error component 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-4--label"
+                aria-labelledby="page-4--label"
                 class="nhsuk-radios__input"
-                data-testid="letter-radio"
-                id="choose-template-4"
-                name="choose-template"
+                data-testid="create-letter-template-radio"
+                id="page-4"
+                name="page"
                 type="radio"
-                value="letter"
+                value="create-letter-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-4"
-                id="choose-template-4--label"
+                for="page-4"
+                id="page-4--label"
               >
                 Letter
               </label>
             </div>
           </div>
         </div>
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="page-4--label"
-            class="nhsuk-radios__input"
-            data-testid="create-letter-template-radio"
-            id="page-4"
-            name="page"
-            type="radio"
-            value="create-letter-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-4"
-            id="page-4--label"
-          >
-            Letter
-          </label>
-        </div>
-      </div>
+      </fieldset>
     </div>
     <button
       aria-disabled="false"
@@ -239,34 +172,17 @@ exports[`Choose template page selects one radio button at a time 1`] = `
       type="hidden"
       value="choose-template"
     />
-    <h2
-      class="nhsuk-heading-l"
-    >
-      Choose a template type to create
-    </h2>
     <div
       class="nhsuk-form-group"
     >
-      <div
-        class="nhsuk-radios"
-        id="page"
+      <fieldset
+        class="nhsuk-fieldset"
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
         >
-          <input
-            aria-labelledby="page-1--label"
-            class="nhsuk-radios__input"
-            data-testid="create-nhs-app-template-radio"
-            id="page-1"
-            name="page"
-            type="radio"
-            value="create-nhs-app-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-1"
-            id="page-1--label"
+          <h1
+            class="nhsuk-fieldset__heading"
           >
             Choose a template type to create
           </h1>
@@ -274,36 +190,26 @@ exports[`Choose template page selects one radio button at a time 1`] = `
         <div
           class="nhsuk-form-group"
         >
-          <input
-            aria-labelledby="page-2--label"
-            class="nhsuk-radios__input"
-            data-testid="create-email-template-radio"
-            id="page-2"
-            name="page"
-            type="radio"
-            value="create-email-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-2"
-            id="page-2--label"
+          <div
+            class="nhsuk-radios"
+            id="page"
           >
             <div
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-1--label"
+                aria-labelledby="page-1--label"
                 class="nhsuk-radios__input"
-                data-testid="nhs-app-radio"
-                id="choose-template-1"
-                name="choose-template"
+                data-testid="create-nhs-app-template-radio"
+                id="page-1"
+                name="page"
                 type="radio"
-                value="nhs-app"
+                value="create-nhs-app-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-1"
-                id="choose-template-1--label"
+                for="page-1"
+                id="page-1--label"
               >
                 NHS App message
               </label>
@@ -312,18 +218,18 @@ exports[`Choose template page selects one radio button at a time 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-2--label"
+                aria-labelledby="page-2--label"
                 class="nhsuk-radios__input"
-                data-testid="email-radio"
-                id="choose-template-2"
-                name="choose-template"
+                data-testid="create-email-template-radio"
+                id="page-2"
+                name="page"
                 type="radio"
-                value="email"
+                value="create-email-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-2"
-                id="choose-template-2--label"
+                for="page-2"
+                id="page-2--label"
               >
                 Email
               </label>
@@ -332,18 +238,18 @@ exports[`Choose template page selects one radio button at a time 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-3--label"
+                aria-labelledby="page-3--label"
                 class="nhsuk-radios__input"
-                data-testid="sms-radio"
-                id="choose-template-3"
-                name="choose-template"
+                data-testid="create-sms-template-radio"
+                id="page-3"
+                name="page"
                 type="radio"
-                value="sms"
+                value="create-sms-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-3"
-                id="choose-template-3--label"
+                for="page-3"
+                id="page-3--label"
               >
                 Text message (SMS)
               </label>
@@ -352,65 +258,25 @@ exports[`Choose template page selects one radio button at a time 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="choose-template-4--label"
+                aria-labelledby="page-4--label"
                 class="nhsuk-radios__input"
-                data-testid="letter-radio"
-                id="choose-template-4"
-                name="choose-template"
+                data-testid="create-letter-template-radio"
+                id="page-4"
+                name="page"
                 type="radio"
-                value="letter"
+                value="create-letter-template"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="choose-template-4"
-                id="choose-template-4--label"
+                for="page-4"
+                id="page-4--label"
               >
                 Letter
               </label>
             </div>
           </div>
         </div>
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="page-3--label"
-            class="nhsuk-radios__input"
-            data-testid="create-sms-template-radio"
-            id="page-3"
-            name="page"
-            type="radio"
-            value="create-sms-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-3"
-            id="page-3--label"
-          >
-            Text message (SMS)
-          </label>
-        </div>
-        <div
-          class="nhsuk-radios__item"
-        >
-          <input
-            aria-labelledby="page-4--label"
-            class="nhsuk-radios__input"
-            data-testid="create-letter-template-radio"
-            id="page-4"
-            name="page"
-            type="radio"
-            value="create-letter-template"
-          />
-          <label
-            class="nhsuk-label nhsuk-radios__label"
-            for="page-4"
-            id="page-4--label"
-          >
-            Letter
-          </label>
-        </div>
-      </div>
+      </fieldset>
     </div>
     <button
       aria-disabled="false"

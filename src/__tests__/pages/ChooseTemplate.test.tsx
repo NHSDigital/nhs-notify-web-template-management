@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { mockDeep } from 'jest-mock-extended';
@@ -6,20 +6,21 @@ import { FormState } from '../../utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-
-    const container = render(<ChooseTemplate 
+    const container = render(
+      <ChooseTemplate
         state={mockDeep<FormState>({
-            validationError: null,
+          validationError: null,
         })}
         action='/action'
-    />);
+      />
+    );
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-        screen.getByTestId('create-email-template-radio'),
-        screen.getByTestId('create-nhs-app-template-radio'),
-        screen.getByTestId('create-sms-template-radio'),
-        screen.getByTestId('create-letter-template-radio'),
+      screen.getByTestId('create-email-template-radio'),
+      screen.getByTestId('create-nhs-app-template-radio'),
+      screen.getByTestId('create-sms-template-radio'),
+      screen.getByTestId('create-letter-template-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 
@@ -45,17 +46,19 @@ describe('Choose template page', () => {
   });
 
   it('renders error component', () => {
-    const container = render(<ChooseTemplate 
+    const container = render(
+      <ChooseTemplate
         state={mockDeep<FormState>({
-            validationError: {
-                formErrors: [],
-                fieldErrors: {
-                    page: ['Component error message']
-                },
-            }
+          validationError: {
+            formErrors: [],
+            fieldErrors: {
+              page: ['Component error message'],
+            },
+          },
         })}
         action='/action'
-    />);
+      />
+    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });
