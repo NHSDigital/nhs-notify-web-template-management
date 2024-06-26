@@ -4,15 +4,13 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
-import MarkdownIt from 'markdown-it';
-
-const SMS_MD_OPTS: string[] = [];
+import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
 export function PreviewTextMessage({
   templateName,
   message,
 }: PreviewTextMessageProps) {
-  const md = new MarkdownIt('zero').enable(SMS_MD_OPTS);
+  const md = MarkdownItWrapper({ enableLineBreaks: false });
 
   const html = md.render(message);
 

@@ -21,6 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@amplify/*": ["./amplify/*"],
+      "@/atoms/*": ["./src/components/atoms/*"],
       "@/templates/*": ["./src/components/templates/*"],
       "@/molecules/*": ["./src/components/molecules/*"],
       "@/utils/*": ["./src/utils/*"],

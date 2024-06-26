@@ -35,7 +35,9 @@ Above me should be a horizontal rule
 
 and here is a [link](https://www.nhs.uk/example)
 
-and a full URL https://www.nhs.uk/example`);
+and a full URL https://www.nhs.uk/example
+
+This is a a line break  here is the new line!!`);
 
   const email = (
     <PreviewEmail
@@ -80,7 +82,6 @@ this is a line break  Hello I'm a new line!
     />
   );
 
-  // TODO: LINE BREAKS
   const nhsAppMD = String(`
 # This is the intro to the NHS APP
 

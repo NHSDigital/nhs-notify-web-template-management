@@ -5,6 +5,7 @@ import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
 import MarkdownIt from 'markdown-it';
+import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
 const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
 
@@ -13,7 +14,7 @@ export function PreviewEmail({
   subject,
   message,
 }: PreviewEmailProps) {
-  const md = new MarkdownIt('zero').enable(EMAIL_MD_OPTS);
+  const md = MarkdownItWrapper().enable(EMAIL_MD_OPTS);
 
   const html = md.render(message);
 

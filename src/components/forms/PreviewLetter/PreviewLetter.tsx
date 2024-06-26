@@ -4,9 +4,8 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewLetterProps } from './PreviewLetter.types';
-import MarkdownIt from 'markdown-it';
+import { MarkdownItWrapper } from '@/utils/markdownit';
 
-// TODO: page breaks and line breaks
 const LETTER_MD_OPTS = ['heading', 'list', 'hr', 'emphasis'];
 
 export function PreviewLetter({
@@ -14,7 +13,10 @@ export function PreviewLetter({
   heading,
   bodyText,
 }: PreviewLetterProps) {
-  const md = new MarkdownIt('zero').enable(LETTER_MD_OPTS);
+  const md = MarkdownItWrapper({
+    enablePageBreak: true,
+    enableLineBreaks: true,
+  }).enable(LETTER_MD_OPTS);
 
   const html = md.render(bodyText);
 

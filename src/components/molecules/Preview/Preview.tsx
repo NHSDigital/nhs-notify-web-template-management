@@ -3,6 +3,7 @@ import styles from './Preview.module.scss';
 import { Table } from 'nhsuk-react-components';
 import concatClassNames from '@/utils/concatClassNames';
 import { PreviewProps } from './Preview.types';
+import { PageBreak } from '../../atoms/PageBreak/PageBreak';
 
 export function Preview({ preview }: PreviewProps): JSX.Element {
   return (

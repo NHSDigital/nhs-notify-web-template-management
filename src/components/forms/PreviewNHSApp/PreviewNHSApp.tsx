@@ -4,12 +4,12 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
-import MarkdownIt from 'markdown-it';
+import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
 const NHS_APP_MD_OPTS = ['heading', 'link', 'list', 'emphasis'];
 
 export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
-  const md = new MarkdownIt('zero').enable(NHS_APP_MD_OPTS);
+  const md = MarkdownItWrapper().enable(NHS_APP_MD_OPTS);
 
   const html = md.render(message);
 
