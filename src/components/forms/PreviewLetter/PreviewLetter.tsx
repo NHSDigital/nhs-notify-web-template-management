@@ -6,17 +6,17 @@ import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewLetterProps } from './PreviewLetter.types';
 import { MarkdownItWrapper } from '@/utils/markdownit';
 
-const LETTER_MD_OPTS = ['heading', 'list', 'hr', 'emphasis'];
+export const LETTER_MD_OPTS = ['heading', 'list', 'hr', 'emphasis'];
 
 export function PreviewLetter({
   templateName,
   heading,
   bodyText,
 }: PreviewLetterProps) {
-  const md = MarkdownItWrapper({
-    enablePageBreak: true,
-    enableLineBreaks: true,
-  }).enable(LETTER_MD_OPTS);
+  const md = new MarkdownItWrapper()
+    .enableLineBreak()
+    .enablePageBreak()
+    .enable(LETTER_MD_OPTS);
 
   const html = md.render(bodyText);
 

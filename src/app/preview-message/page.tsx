@@ -10,6 +10,8 @@ export default function Page(context: unknown) {
 This is the SMS. it doesn't support any MD options. All links must be full links
 so trying to a MD link will not work.
 
+((firstname))
+
 Or a new paragraph. Let's try MD link [hello link](#)
 `);
   const sms = (
@@ -60,6 +62,8 @@ This is what I expect the body to look like
 1. This is an ordered list item
 2. This is an ordered list item
 
+{{ signature }}}
+
 ---
 
 **BOLD**
@@ -69,6 +73,8 @@ Above me should be a horizontal rule
 and a full URL https://www.nhs.uk/example
 
 ***
+
+[link](www.google.com)
 
 Above is a page break?
 
@@ -107,5 +113,5 @@ this is a line break  Hello I'm a new line!
     <PreviewNHSApp templateName='template-1-nhsApp' message={nhsAppMD} />
   );
 
-  return sms;
+  return letter;
 }

@@ -6,14 +6,14 @@ import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
 import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
-const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
+export const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
 
 export function PreviewEmail({
   templateName,
   subject,
   message,
 }: PreviewEmailProps) {
-  const md = MarkdownItWrapper().enable(EMAIL_MD_OPTS);
+  const md = new MarkdownItWrapper().enableLineBreak().enable(EMAIL_MD_OPTS);
 
   const html = md.render(message);
 

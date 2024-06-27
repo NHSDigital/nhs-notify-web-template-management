@@ -1,27 +1,29 @@
 import MarkdownIt from 'markdown-it';
-import { lineBreak } from './plugins/line-break';
-import { pageBreak } from './plugins/page-break';
+import { lineBreak, pageBreak } from './plugins';
 
-type MarkdownItWrapperProps = {
-  enableLineBreaks?: boolean;
-  enablePageBreak?: boolean;
-};
-
-export const MarkdownItWrapper = (
-  opts: MarkdownItWrapperProps = {
-    enableLineBreaks: true,
-    enablePageBreak: false,
-  }
-) => {
-  const markdownIt = new MarkdownIt('zero');
-
-  if (opts.enableLineBreaks) {
-    markdownIt.use(lineBreak);
+export class MarkdownItWrapper extends MarkdownIt {
+  constructor() {
+    super('zero');
   }
 
-  if (opts.enablePageBreak) {
-    markdownIt.use(pageBreak);
+  /**
+   * Enables the line break feature for the MarkdownItWrapper instance.
+   *
+   * @return {this} Returns the instance of the MarkdownItWrapper class for method chaining.
+   */
+  enableLineBreak() {
+    this.use(lineBreak);
+    return this;
   }
 
-  return markdownIt;
-};
+  /**
+   * Enables the page break feature and enables the 'hr' rule.
+   *
+   * @return {this} Returns the instance of the MarkdownItWrapper class for method chaining.
+   */
+  enablePageBreak() {
+    this.use(pageBreak);
+    this.enable('hr');
+    return this;
+  }
+}
