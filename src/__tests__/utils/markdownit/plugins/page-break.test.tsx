@@ -1,5 +1,5 @@
-import { PageBreak } from '@/atoms/PageBreak/PageBreak';
-import { MarkdownItWrapper } from '@/utils/markdownit';
+import { PageBreak } from '@atoms/PageBreak/PageBreak';
+import { MarkdownItWrapper } from '@utils/markdownit';
 import { render } from '@testing-library/react';
 
 describe('Page break plugin', () => {

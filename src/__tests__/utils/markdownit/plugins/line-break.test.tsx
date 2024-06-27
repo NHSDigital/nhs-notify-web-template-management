@@ -1,4 +1,4 @@
-import { MarkdownItWrapper } from '@/utils/markdownit';
+import { MarkdownItWrapper } from '@utils/markdownit';
 import { render } from '@testing-library/react';
 
 describe('Page break plugin', () => {

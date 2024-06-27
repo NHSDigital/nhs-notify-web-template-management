@@ -5,13 +5,17 @@
 
 import type { Config } from 'jest';
 import nextJest from 'next/jest.js';
+import { pathsToModuleNameMapper } from 'ts-jest';
+import { compilerOptions } from './tsconfig.json';
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-  dir: './',
+  dir: './src',
 });
 
 const config: Config = {
+  preset: 'ts-jest',
+
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
 
@@ -33,6 +37,11 @@ const config: Config = {
     },
   },
 
+  // TODO: renable this later
+  // collectCoverageFrom: ['src/**/*.ts*'],
+
+  // coveragePathIgnorePatterns: ['.types.ts', 'layout.tsx'],
+
   // Use this configuration option to add custom reporters to Jest
   reporters: [
     'default',
@@ -50,10 +59,9 @@ const config: Config = {
   testEnvironment: 'jsdom',
 
   // Set the absolute path for imports
-  moduleNameMapper: {
-    // ...
-    '^@/(.*)$': '<rootDir>/$1',
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+    prefix: '<rootDir>/',
+  }),
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

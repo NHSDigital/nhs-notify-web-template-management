@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import { renderToString } from 'react-dom/server';
-import { PageBreak } from '@/atoms/PageBreak/PageBreak';
+import { PageBreak } from '@atoms/PageBreak/PageBreak';
 
 export function pageBreak(md: MarkdownIt) {
   md.renderer.rules.hr = function (tokens, idx, options, env, self) {

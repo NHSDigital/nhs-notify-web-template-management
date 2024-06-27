@@ -1,10 +1,10 @@
 'use client';
 
 import { Radios } from 'nhsuk-react-components';
-import { Preview } from '@/molecules/Preview';
-import { PreviewMessage } from '@/templates/PreviewMessage';
+import { Preview } from '@molecules/Preview';
+import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
-import { MarkdownItWrapper } from '@/src/utils/markdownit';
+import { MarkdownItWrapper } from '@utils/markdownit';
 
 export const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
 

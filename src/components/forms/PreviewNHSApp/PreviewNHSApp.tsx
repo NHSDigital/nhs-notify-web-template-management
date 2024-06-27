@@ -1,10 +1,10 @@
 'use client';
 
 import { Radios } from 'nhsuk-react-components';
-import { Preview } from '@/molecules/Preview';
-import { PreviewMessage } from '@/templates/PreviewMessage';
+import { Preview } from '@molecules/Preview';
+import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
-import { MarkdownItWrapper } from '@/src/utils/markdownit';
+import { MarkdownItWrapper } from '@utils/markdownit';
 
 export const NHS_APP_MD_OPTS = ['heading', 'link', 'list', 'emphasis'];
 

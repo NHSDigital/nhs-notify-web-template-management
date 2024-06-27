@@ -1,10 +1,10 @@
 'use client';
 
 import { Radios } from 'nhsuk-react-components';
-import { Preview } from '@/molecules/Preview';
-import { PreviewMessage } from '@/templates/PreviewMessage';
+import { Preview } from '@molecules/Preview';
+import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewLetterProps } from './PreviewLetter.types';
-import { MarkdownItWrapper } from '@/utils/markdownit';
+import { MarkdownItWrapper } from '@utils/markdownit';
 
 export const LETTER_MD_OPTS = ['heading', 'list', 'hr', 'emphasis'];
 

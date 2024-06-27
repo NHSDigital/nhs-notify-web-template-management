@@ -20,12 +20,10 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@amplify/*": ["./amplify/*"],
-      "@/atoms/*": ["./src/components/atoms/*"],
-      "@/templates/*": ["./src/components/templates/*"],
-      "@/molecules/*": ["./src/components/molecules/*"],
-      "@/utils/*": ["./src/utils/*"],
-
+      "@atoms/*": ["./src/components/atoms/*"],
+      "@templates/*": ["./src/components/templates/*"],
+      "@molecules/*": ["./src/components/molecules/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": [
@@ -33,14 +31,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "scripts/is-deployed.js"
+    "jest.config.ts"
   ],
   "exclude": [
-    // This is to prevent cypress Chai.expect over writing Jest.expect typings.
-    // other exclusions that may help https://github.com/cypress-io/cypress/issues/22059#issuecomment-1428298264
-    "./cypress.config.ts",
-    "node_modules",
-    "cypress",
-    "**/*.cy.tsx"
+    "node_modules"
   ]
 }

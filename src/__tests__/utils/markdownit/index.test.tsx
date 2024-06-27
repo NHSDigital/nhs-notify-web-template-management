@@ -1,8 +1,7 @@
-import { MarkdownItWrapper } from '@/src/utils/markdownit';
-import { lineBreak } from '@/utils/markdownit/plugins/line-break';
-import { pageBreak } from '@/utils/markdownit/plugins/page-break';
+import { MarkdownItWrapper } from '@utils/markdownit';
+import { lineBreak, pageBreak } from '@utils/markdownit/plugins';
 
-jest.mock('../../../utils/markdownit/plugins');
+jest.mock('@utils/markdownit/plugins');
 
 const pageBreakMock = jest.mocked(pageBreak);
 const lineBreakMock = jest.mocked(lineBreak);
