@@ -21,5 +21,5 @@ module.exports = {
         standard: 'WCAG2AA', //'WCAG2AAA'
         userAgent: 'pa11y-ci',
     },
-    urls: ['localhost:3000', 'localhost:3000/choose-template', goToCreateNhsAppTemplatePage('localhost:3000/choose-template')]
+    urls: ['localhost:3000', 'localhost:3000/create-template', goToCreateNhsAppTemplatePage('localhost:3000/create-template')]
 };

@@ -27,25 +27,6 @@ const initialState: FormState = {
   nhsAppTemplateMessage: '',
 };
 
-const RouterComponent = ({ page }: { page: Page }) => {
-  const router = useRouter();
-  useEffect(() => {
-    router.push(`/${page}`);
-  }, [router, page]);
-  useEffect(() => {
-    const handlePopstate = () => {
-      window.location.replace('/choose-template');
-    };
-
-    window.addEventListener('popstate', handlePopstate);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopstate);
-    };
-  }, []);
-  return <></>;
-};
-
 const CreateTemplate = () => {
   const [state, action] = useFormState(mainServerAction, initialState);
   const { page } = state;
@@ -55,7 +36,6 @@ const CreateTemplate = () => {
   return (
     <>
       <PageComponent state={state} action={action} />
-      <RouterComponent page={page} />
     </>
   );
 };

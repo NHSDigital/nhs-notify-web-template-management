@@ -43,7 +43,8 @@ const serverActions: Partial<
           .min(1, { message: 'Enter a template name' }),
         nhsAppTemplateMessage: z
           .string()
-          .min(1, { message: 'Enter a template message' }),
+          .min(1, { message: 'Enter a template message' })
+          .max(5000, { message: 'Template message too long' }),
       }),
       'review-nhs-app-template'
     ),

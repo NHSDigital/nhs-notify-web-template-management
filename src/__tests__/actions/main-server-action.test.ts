@@ -1,5 +1,5 @@
 import { FormState } from '../../utils/types';
-import { mainServerAction } from '../../app/choose-template/main-server-action';
+import { mainServerAction } from '../../app/create-template/main-server-action';
 import { getMockFormData } from '../helpers';
 
 const formState: FormState = {
