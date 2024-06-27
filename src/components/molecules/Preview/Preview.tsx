@@ -11,12 +11,18 @@ export function Preview({ preview }: PreviewProps): JSX.Element {
     >
       <Table.Body>
         {preview.map(({ heading, value }, idx) => (
-          <Table.Row key={`message-preview-${idx}`} role='row'>
-            <Table.Cell key={`message-preview-heading-${idx}`} role='cell'>
-              <div className={styles.preview__heading}>{heading}</div>
-            </Table.Cell>
-            <Table.Cell key={`message-preview-content-${idx}`} role='cell'>
+          <Table.Row key={`preview-${idx}`} role='row'>
+            <Table.Cell key={`preview__heading-${idx}`} role='cell'>
               <div
+                data-testid={`preview__heading-${idx}`}
+                className={styles.preview__heading}
+              >
+                {heading}
+              </div>
+            </Table.Cell>
+            <Table.Cell key={`preview__content-${idx}`} role='cell'>
+              <div
+                data-testid={`preview__content-${idx}`}
                 className={styles.preview__content}
                 dangerouslySetInnerHTML={{ __html: value }}
               />

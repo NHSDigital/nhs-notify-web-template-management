@@ -37,10 +37,9 @@ const config: Config = {
     },
   },
 
-  // TODO: renable this later
-  // collectCoverageFrom: ['src/**/*.ts*'],
+  collectCoverageFrom: ['src/**/*.ts*'],
 
-  // coveragePathIgnorePatterns: ['.types.ts', 'layout.tsx'],
+  coveragePathIgnorePatterns: ['.types.ts', 'layout.tsx'],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

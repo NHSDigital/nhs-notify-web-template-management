@@ -1,7 +1,14 @@
 import { Radios } from 'nhsuk-react-components';
 import { Preview } from '../../molecules/Preview/Preview';
 
-type PreviewType = 'Email' | 'NHS app message' | 'Text message' | 'Letter';
+export const PREVIEW_TYPES = [
+  'Email',
+  'NHS app message',
+  'Text message',
+  'Letter',
+] as const;
+
+export type PreviewType = (typeof PREVIEW_TYPES)[number];
 
 export type PreviewMessageProps = {
   type: PreviewType;

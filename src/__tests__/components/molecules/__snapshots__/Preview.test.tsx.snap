@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preview component matches snapshot 1`] = `
+<DocumentFragment>
+  <table
+    class="nhsuk-table preview nhsuk-u-margin-bottom-4"
+  >
+    <tbody
+      class="nhsuk-table__body"
+    >
+      <tr
+        class="nhsuk-table__row"
+        role="row"
+      >
+        <td
+          class="nhsuk-table__cell"
+          role="cell"
+        >
+          <div
+            class="preview__heading"
+            data-testid="preview__heading-0"
+          >
+            Heading
+          </div>
+        </td>
+        <td
+          class="nhsuk-table__cell"
+          role="cell"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+          >
+            Test value-1
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</DocumentFragment>
+`;

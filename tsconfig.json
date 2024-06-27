@@ -23,6 +23,7 @@
       "@atoms/*": ["./src/components/atoms/*"],
       "@templates/*": ["./src/components/templates/*"],
       "@molecules/*": ["./src/components/molecules/*"],
+      "@forms/*": ["./src/components/forms/*"],
       "@utils/*": ["./src/utils/*"]
     }
   },
