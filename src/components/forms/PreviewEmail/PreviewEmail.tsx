@@ -4,7 +4,6 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
-import MarkdownIt from 'markdown-it';
 import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
 const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];

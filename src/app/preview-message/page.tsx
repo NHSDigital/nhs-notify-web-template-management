@@ -107,5 +107,5 @@ this is a line break  Hello I'm a new line!
     <PreviewNHSApp templateName='template-1-nhsApp' message={nhsAppMD} />
   );
 
-  return letter;
+  return sms;
 }

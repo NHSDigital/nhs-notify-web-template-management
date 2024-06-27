@@ -4,16 +4,11 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@/molecules/Preview';
 import { PreviewMessage } from '@/templates/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
-import { MarkdownItWrapper } from '@/src/utils/markdownit';
 
 export function PreviewTextMessage({
   templateName,
   message,
 }: PreviewTextMessageProps) {
-  const md = MarkdownItWrapper({ enableLineBreaks: false });
-
-  const html = md.render(message);
-
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
