@@ -185,9 +185,9 @@ const homePage = {
   text2: 'You can create templates for:',
   list: [
     { key: 'template-1', item: 'NHS App messages' },
-    { key: 'template-2', item: 'Emails' },
-    { key: 'template-3', item: 'Text messages (SMS)' },
-    { key: 'template-4', item: 'Letters' },
+    { key: 'template-2', item: 'emails' },
+    { key: 'template-3', item: 'text messages (SMS)' },
+    { key: 'template-4', item: 'letters' },
   ],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',

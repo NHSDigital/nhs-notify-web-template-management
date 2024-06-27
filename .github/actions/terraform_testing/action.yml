@@ -1,0 +1,61 @@
+name: Terraform Testing
+description: |
+  Executes a series of code quality, consistency and security tests against the
+  Terraform codebase in the repo
+
+inputs:
+  folder:
+    description: The project folder name
+    required: true
+  terraform_project:
+    description: The terraform project name to use for terraform planning
+    required: true
+  component:
+    description: The terraform component name to use for terraform planning
+    required: true
+  environment:
+    description: The terraform environment name to use for terraform planning
+    default: dev
+    required: true
+  group:
+    description: The terraform group name to use for terraform planning
+    default: target-env
+    required: true
+  region:
+    description: The terraform region code to use for terraform planning
+    default: eu-west-2
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Dynamically generate a corresponding tfvars file
+      shell: bash
+      run: |-
+        cd ./${{ inputs.folder }}/terraform && ./bin/generate_target_env_tfvars.sh "${{ inputs.folder }}"  "${{ inputs.environment }}"
+    - name: Ensure all Terraform files are named appropriately
+      shell: bash
+      run: |-
+        cd ./${{ inputs.folder }}/terraform && \
+        ./bin/test_filenames.sh
+    - name: Ensure all mandatory fields are present in the TFVARS file
+      shell: bash
+      run: |-
+        cd ./${{ inputs.folder }}/terraform && \
+        ./bin/test_mandatory_tfvars.sh "${{ inputs.component }}"
+    - name: Wait for the environment to be available
+      shell: bash
+      run: |-
+        cd ./${{ inputs.folder }}/terraform && \
+        ./bin/wait_for_lock.sh ${{ inputs.terraform_project }} ${{ inputs.component }} ${{ inputs.environment }}
+    - name: Run Terraform Compliance against the plan file
+      shell: bash
+      run: |-
+        cd ./${{ inputs.folder }}/terraform && \
+        ./bin/terratest.sh \
+          --region "${{ inputs.region }}" \
+          --project "${{ inputs.terraform_project }}" \
+          --component "${{ inputs.component }}" \
+          --environment "${{ inputs.environment }}" \
+          --group "${{ inputs.group }}" \
+          --action "plan"
