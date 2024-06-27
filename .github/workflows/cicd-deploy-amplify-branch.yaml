@@ -1,0 +1,150 @@
+name: "Deploy Amplify Branch"
+run-name: Deploy Amplify Branch ${{ inputs.deployEnvironment }} << ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployEnvironment:
+        description: Name of the environment to deploy
+        required: true
+        default: dev
+        type: string
+      terraformAction:
+        description: Terraform Action
+        required: true
+        default: apply
+        type: string
+      tag:
+        description: "This is the tag that is going to be deployed"
+        required: true
+        default: "latest"
+
+env:
+  PROJECT_NAME: notify-web-template-management
+  DEFAULT_ENVIRONMENT: dev
+  CI_PIPELINE_IID: ${{ github.run_number }}
+  CI_COMMIT_REF_NAME: ${{ github.ref_name }}
+  CI_COMMIT_BRANCH: ${{ github.ref_name }}
+  AWS_REGION: eu-west-2
+  DEPLOY_ENVIRONMENT: ${{ inputs.deployEnvironment }}
+  TERRAFORM_ACTION: ${{ inputs.terraformAction }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+concurrency:
+  group: notify-web-template-management-${{ github.workflow }}-${{ github.event.inputs.deployEnvironment }}
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    name: "Set CI/CD metadata"
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    outputs:
+      build_datetime: ${{ steps.variables.outputs.build_datetime }}
+      build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
+      build_epoch: ${{ steps.variables.outputs.build_epoch }}
+      nodejs_version: ${{ steps.variables.outputs.nodejs_version }}
+      python_version: ${{ steps.variables.outputs.python_version }}
+      terraform_version: ${{ steps.variables.outputs.terraform_version }}
+      version: ${{ steps.variables.outputs.version }}
+      tag: ${{ steps.variables.outputs.tag }}
+      aws_region: ${{ steps.variables.outputs.aws_region }}
+      terraform_action: ${{ steps.variables.outputs.terraform_action }}
+      ci_pipeline_iid: ${{ steps.variables.outputs.ci_pipeline_iid }}
+      deploy_environment: ${{ steps.variables.outputs.deploy_environment }}
+      branch_name: ${{ steps.variables.outputs.branch_name }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Set CI/CD variables"
+        id: variables
+        run: |
+          datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
+          echo "build_datetime=$datetime" >> $GITHUB_OUTPUT
+          echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+          echo "build_epoch=$(date --date=$datetime -u +'%s')" >> $GITHUB_OUTPUT
+          echo "nodejs_version=$(grep "^nodejs" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
+          echo "python_version=$(grep "^nodejs" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
+          echo "terraform_version=$(grep "^terraform" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
+          # TODO: Get the version, but it may not be the .version file as this should come from the CI/CD Pull Request Workflow
+          echo "version=$(head -n 1 .version 2> /dev/null || echo unknown)" >> $GITHUB_OUTPUT
+          echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          echo "project_dir=infrastructure" >> $GITHUB_OUTPUT
+          echo "default_environment=dev" >> $GITHUB_OUTPUT
+          echo "ci_pipeline_iid=${{ github.run_number }}" >> $GITHUB_OUTPUT
+          echo "ci_commit_ref_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "ci_commit_branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "aws_region=eu-west-2"  >> $GITHUB_OUTPUT
+          echo "terraform_action=${{ inputs.terraformAction }}" >> $GITHUB_OUTPUT
+          deploy_environment=${{ inputs.deployEnvironment }}
+          if [[ $deploy_environment == de-*  ]]; then
+            deploy_environment="dynamic"
+          fi
+          echo "deploy_environment=$deploy_environment" >> $GITHUB_OUTPUT
+          echo "branch_name=${{ github.head_ref || github.ref_name }}" >> $GITHUB_OUTPUT
+      - name: "List variables"
+        run: |
+          export BUILD_DATETIME="${{ steps.variables.outputs.build_datetime }}"
+          export BUILD_TIMESTAMP="${{ steps.variables.outputs.build_timestamp }}"
+          export BUILD_EPOCH="${{ steps.variables.outputs.build_epoch }}"
+          export NODEJS_VERSION="${{ steps.variables.outputs.nodejs_version }}"
+          export PYTHON_VERSION="${{ steps.variables.outputs.python_version }}"
+          export TERRAFORM_VERSION="${{ steps.variables.outputs.terraform_version }}"
+          export VERSION="${{ steps.variables.outputs.version }}"
+          export TAG="${{ steps.variables.outputs.tag }}"
+          export PROJECT_DIR="${{ steps.variables.outputs.project_dir }}"
+          export PROJECT_NAME="${{ steps.variables.outputs.project_name }}"
+          export DEFAULT_ENVIRONMENT="${{ steps.variables.outputs.default_environment }}"
+          export CI_PIPELINE_IID="${{ steps.variables.outputs.ci_pipeline_iid }}"
+          export CI_COMMIT_REF_NAME="${{ steps.variables.outputs.ci_commit_ref_name }}"
+          export CI_COMMIT_BRANCH="${{ steps.variables.outputs.ci_commit_branch }}"
+          export AWS_REGION="${{ steps.variables.outputs.aws_region }}"
+          export DEPLOY_ENVIRONMENT="${{ steps.variables.outputs.deploy_environment }}"
+          export TERRAFORM_ACTION="${{ steps.variables.outputs.terraform_action }}"
+          make list-variables
+          export TF_VAR_branch="${{ secrets.AMPLIFY_GITHUB_ACCESS_TOKEN }}"
+  deploy:
+    name: "Deploy to an environment"
+    environment: ${{ needs.metadata.outputs.deploy_environment }}
+    runs-on: ubuntu-latest
+    needs: [metadata]
+    timeout-minutes: 10
+    env:
+      TERRAFORM_ACTION: ${{ needs.metadata.outputs.terraform_action }}
+      CI_PIPELINE_IID: ${{ needs.metadata.outputs.ci_pipeline_iid }}
+      TF_VAR_branch_name: ${{ needs.metadata.outputs.branch_name }}
+      COMPONENT: "amplify-branch"
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE }}
+          role-session-name: deployInfra
+          aws-region: ${{ needs.metadata.outputs.aws_region }}
+      - name:  Terraform Plan
+        if: >-
+          always() &&
+          !cancelled()
+        run: |
+          cd terraform && ./deploy.sh plan
+      - name:  Terraform Apply
+        id: terraform_apply
+        if: >-
+          always() &&
+          !cancelled()
+        run: |
+          cd terraform && ./deploy.sh ${TERRAFORM_ACTION}
+          webhook_url=$( jq -r '.url.value' amplify-branch_output.json)
+          curl -X POST $webhook_url
+          echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
+      - name:  Amplify Poll
+        if: >-
+          always() &&
+          !cancelled()
+        run: |
+          ./scripts/poll_running_amplify_job.sh "${{ steps.terraform_apply.outputs.app_id }}" "${{ needs.metadata.outputs.branch_name }}"
