@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
-import { PreviewEmail, PreviewEmailActions } from '@forms/PreviewEmail';
+import { PreviewLetter, PreviewLetterActions } from '@forms/PreviewLetter';
 
-describe('Preview email form renders', () => {
+describe('Preview letter form renders', () => {
   it('matches snapshot', () => {
     const md = `
 line  break
@@ -13,27 +13,25 @@ new paragraph
 
 ## sub heading
 
+**bold**
+
 * bullet point 1
 * bullet point 2
 
 1. ordered list item 1
 2. ordered list item 2
 
----
+***
 
-Horizontal line
-
-https://www.nhs.uk/example
-
-[Read more](https://www.nhs.uk/example)
+Page Break
 `;
 
     const container = render(
-      <PreviewEmail
-        pageActions={new PreviewEmailActions()}
-        templateName='test-template-email'
-        subject='email subject'
-        message={md}
+      <PreviewLetter
+        pageActions={new PreviewLetterActions()}
+        templateName='test-template-letter'
+        heading='letter heading'
+        bodyText={md}
       />
     );
 
@@ -42,55 +40,55 @@ https://www.nhs.uk/example
 
   it('renders component correctly', () => {
     render(
-      <PreviewEmail
-        pageActions={new PreviewEmailActions()}
-        templateName='test-template-email'
-        subject='email subject'
-        message='email message body'
+      <PreviewLetter
+        pageActions={new PreviewLetterActions()}
+        templateName='test-template-letter'
+        heading='letter subject'
+        bodyText='letter message body'
       />
     );
 
     expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
-      'Subject'
+      'Heading'
     );
 
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
-      'email subject'
+      'letter subject'
     );
 
     expect(screen.getByTestId('preview__heading-1')).toHaveTextContent(
-      'Message'
+      'Body text'
     );
 
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
-      'email message body'
+      'letter message body'
     );
 
     expect(
-      screen.getByTestId('preview-email-form__radios-edit')
+      screen.getByTestId('preview-letter-form__radios-edit')
     ).toHaveAttribute('value', 'edit');
 
     expect(
-      screen.getByTestId('preview-email-form__radios-send')
-    ).toHaveAttribute('value', 'send');
+      screen.getByTestId('preview-letter-form__radios-preview')
+    ).toHaveAttribute('value', 'preview');
 
     expect(
-      screen.getByTestId('preview-email-form__radios-submit')
+      screen.getByTestId('preview-letter-form__radios-submit')
     ).toHaveAttribute('value', 'submit');
   });
 
   it('should should render message with markdown', () => {
-    const message = 'email message body';
-    const pageActionsMock = mock<PreviewEmailActions>();
+    const message = 'letter message body';
+    const pageActionsMock = mock<PreviewLetterActions>();
 
     pageActionsMock.renderMarkdown.mockReturnValue('Rendered via MD');
 
     render(
-      <PreviewEmail
+      <PreviewLetter
         pageActions={pageActionsMock}
-        templateName='test-template-email'
-        subject='email subject'
-        message={message}
+        templateName='test-template-letter'
+        heading='letter subject'
+        bodyText={message}
       />
     );
 

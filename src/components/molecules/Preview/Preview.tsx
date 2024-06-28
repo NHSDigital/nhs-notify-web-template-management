@@ -42,3 +42,18 @@ Preview.Email = ({ subject, value }: { subject: string; value: string }) => (
     ]}
   />
 );
+
+Preview.Letter = ({
+  heading,
+  bodyText,
+}: {
+  heading: string;
+  bodyText: string;
+}) => (
+  <Preview
+    preview={[
+      { heading: 'Heading', value: heading },
+      { heading: 'Body text', value: bodyText },
+    ]}
+  />
+);

@@ -1,7 +1,7 @@
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { Dependencies, IPreviewEmailActions } from './PreviewEmail.types';
+import { Dependencies, IPreviewLetterActions } from './PreviewLetter.types';
 
-export class PreviewEmailActions implements IPreviewEmailActions {
+export class PreviewLetterActions implements IPreviewLetterActions {
   private readonly _markdownClient: MarkdownItWrapper;
 
   constructor(
@@ -9,7 +9,8 @@ export class PreviewEmailActions implements IPreviewEmailActions {
   ) {
     this._markdownClient = _container.markdownClient
       .enableLineBreak()
-      .enable(['heading', 'link', 'list', 'hr']);
+      .enablePageBreak()
+      .enable(['heading', 'list', 'hr', 'emphasis']);
   }
 
   renderMarkdown(value: string) {

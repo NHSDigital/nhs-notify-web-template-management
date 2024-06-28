@@ -1,9 +1,14 @@
 'use client';
 
 import { PreviewTextMessage } from '../../components/forms/PreviewTextMessage/PreviewTextMessage';
-import { PreviewEmail } from '../../components/forms/PreviewEmail/PreviewEmail';
-import { PreviewEmailActions } from '../../components/forms/PreviewEmail/PreviewEmailActions';
-import { PreviewLetter } from '../../components/forms/PreviewLetter/PreviewLetter';
+import {
+  PreviewEmail,
+  PreviewEmailActions,
+} from '../../components/forms/PreviewEmail';
+import {
+  PreviewLetter,
+  PreviewLetterActions,
+} from '../../components/forms/PreviewLetter';
 import { PreviewNHSApp } from '../../components/forms/PreviewNHSApp/PreviewNHSApp';
 
 export default function Page(context: unknown) {
@@ -87,6 +92,7 @@ this is a line break  Hello I'm a new line!
       templateName='template-1-letter'
       heading='The main heading of the letter'
       bodyText={letterMD}
+      pageActions={new PreviewLetterActions()}
     />
   );
 
@@ -115,5 +121,5 @@ this is a line break  Hello I'm a new line!
     <PreviewNHSApp templateName='template-1-nhsApp' message={nhsAppMD} />
   );
 
-  return email;
+  return letter;
 }

@@ -6,7 +6,6 @@ export type Dependencies = {
 
 export interface IPreviewEmailActions {
   renderMarkdown(value: string): string;
-  formAction(value: string): void;
 }
 
 export type PreviewEmailProps = {
