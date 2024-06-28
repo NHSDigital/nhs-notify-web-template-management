@@ -8,7 +8,7 @@ $nhsuk-secondary-button-color: #4c6272;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 40px 0;
+  margin: 2.5rem 0;
 
   &__divider {
     flex-grow: 1;
@@ -16,15 +16,15 @@ $nhsuk-secondary-button-color: #4c6272;
   }
 
   &__text {
-    padding: 0 10px;
+    padding: 0 1em;
     color: $nhsuk-secondary-button-color;
   }
 
   &__divider:first-child {
-    margin-right: 10px;
+    margin-right: 1em;
   }
 
   &__divider:last-child {
-    margin-left: 10px;
+    margin-left: 1em;
   }
 }

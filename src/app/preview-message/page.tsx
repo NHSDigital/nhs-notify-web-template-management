@@ -1,6 +1,10 @@
 'use client';
 
-import { PreviewTextMessage } from '../../components/forms/PreviewTextMessage/PreviewTextMessage';
+import { useSearchParams } from 'next/navigation';
+import {
+  PreviewTextMessage,
+  PreviewTextMessageActions,
+} from '@forms/PreviewTextMessage';
 import {
   PreviewEmail,
   PreviewEmailActions,
@@ -9,117 +13,56 @@ import {
   PreviewLetter,
   PreviewLetterActions,
 } from '../../components/forms/PreviewLetter';
-import { PreviewNHSApp } from '../../components/forms/PreviewNHSApp/PreviewNHSApp';
+import { PreviewNHSApp, PreviewNHSAppActions } from '@forms/PreviewNHSApp';
+import { markdown } from '../../__tests__/components/forms/fixtures';
 
 export default function Page(context: unknown) {
-  const smsMD = String(`
-This is the SMS. it doesn't support any MD options. All links must be full links
-so trying to a MD link will not work.
+  const searchParams = useSearchParams();
 
-((firstname))
+  const params = searchParams.get('form');
 
-Or a new paragraph. Let's try MD link [hello link](#)
-`);
   const sms = (
-    <PreviewTextMessage templateName='template-1-sms' message={smsMD} />
+    <PreviewTextMessage
+      templateName='template-1-sms'
+      message={markdown}
+      pageActions={new PreviewTextMessageActions()}
+    />
   );
-
-  const emailMD = String(`
-# This is the intro to the email
-
-## A sub heading!
-
-This is what I expect the body to look like
-
-* I have a list of items 1
-* I have a list of items 2
-
-1. This is an ordered list item
-2. This is an ordered list item
-
----
-
-Above me should be a horizontal rule
-
-and here is a [link](https://www.nhs.uk/example)
-
-and a full URL https://www.nhs.uk/example
-
-This is a a line break  here is the new line!!`);
 
   const email = (
     <PreviewEmail
       pageActions={new PreviewEmailActions()}
       templateName='template-1-email'
-      message={emailMD}
+      message={markdown}
       subject='This is the subject'
     />
   );
 
-  const letterMD = String(`
-# This is the intro to the Letter
-
-## A sub heading!
-
-This is what I expect the body to look like
-
-* I have a list of items 1
-* I have a list of items 2
-
-1. This is an ordered list item
-2. This is an ordered list item
-
-{{ signature }}}
-
----
-
-**BOLD**
-
-Above me should be a horizontal rule
-
-and a full URL https://www.nhs.uk/example
-
-***
-
-[link](www.google.com)
-
-Above is a page break?
-
-this is a line break  Hello I'm a new line!
-`);
   const letter = (
     <PreviewLetter
       templateName='template-1-letter'
       heading='The main heading of the letter'
-      bodyText={letterMD}
+      bodyText={markdown}
       pageActions={new PreviewLetterActions()}
     />
   );
 
-  const nhsAppMD = String(`
-# This is the intro to the NHS APP
-
-## A sub heading!
-
-This is what I expect the body to look like
-
-* I have a list of items 1
-* I have a list of items 2
-
-1. This is an ordered list item
-2. This is an ordered list item
-
-**BOLD**
-
-and here is a [link](https://www.nhs.uk/example)
-
-and a full URL https://www.nhs.uk/example
-
-this is a line break  Hello I'm a new line!
-`);
   const nhsApp = (
-    <PreviewNHSApp templateName='template-1-nhsApp' message={nhsAppMD} />
+    <PreviewNHSApp
+      templateName='template-1-nhsApp'
+      message={markdown}
+      pageActions={new PreviewNHSAppActions()}
+    />
   );
 
-  return letter;
+  switch (params) {
+    case 'email':
+      return email;
+    case 'nhsapp':
+      return nhsApp;
+    case 'sms':
+      return sms;
+    default:
+      return letter;
+  }
 }
