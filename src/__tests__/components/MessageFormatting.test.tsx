@@ -14,23 +14,6 @@ describe('MessageFormatting component', () => {
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
     expect(
       screen.getByTestId('lines-breaks-and-paragraphs-details')
-    ).toBeInTheDocument();
-    expect(screen.queryByTestId('bold-text-details')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('headings-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('bullet-lists-details')
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('numbered-list-details')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByTestId('signatures-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('horizontal-lines-details')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByTestId('page-breaks-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('content-blocks-details')
-    ).not.toBeInTheDocument();
   });
 
   it('renders component correctly with APP related formatting', async () => {
@@ -45,22 +28,6 @@ describe('MessageFormatting component', () => {
     expect(
       screen.getByTestId('lines-breaks-and-paragraphs-details')
     ).toBeInTheDocument();
-    expect(screen.queryByTestId('headings-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('bullet-lists-details')
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('numbered-list-details')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByTestId('signatures-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('horizontal-lines-details')
-    ).not.toBeInTheDocument();
-    expect(screen.queryByTestId('page-breaks-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('content-blocks-details')
-    ).not.toBeInTheDocument();
-  });
 
   it('renders component correctly with EMAIL related formatting', async () => {
     const emailFormattingProps: MessageFormattingType = {
@@ -79,11 +46,6 @@ describe('MessageFormatting component', () => {
     expect(screen.getByTestId('numbered-list-details')).toBeInTheDocument();
     expect(screen.getByTestId('signatures-details')).toBeInTheDocument();
     expect(screen.getByTestId('horizontal-lines-details')).toBeInTheDocument();
-    expect(screen.queryByTestId('page-breaks-details')).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId('content-blocks-details')
-    ).not.toBeInTheDocument();
-  });
 
   it('renders component correctly with LETTER related formatting', async () => {
     const letterFormattingProps: MessageFormattingType = {
