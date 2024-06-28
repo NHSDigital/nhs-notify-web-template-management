@@ -24,7 +24,6 @@ describe('PreviewLetterActions', () => {
     expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
       'heading',
       'list',
-      'hr',
       'emphasis',
     ]);
   });

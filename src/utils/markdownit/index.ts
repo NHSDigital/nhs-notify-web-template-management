@@ -7,7 +7,7 @@ export class MarkdownItWrapper extends MarkdownIt {
   }
 
   /**
-   * Enables the line break feature for the MarkdownItWrapper instance.
+   * Enables the line break feature
    *
    * @return {this} Returns the instance of the MarkdownItWrapper class for method chaining.
    */
@@ -17,13 +17,12 @@ export class MarkdownItWrapper extends MarkdownIt {
   }
 
   /**
-   * Enables the page break feature and enables the 'hr' rule.
+   * Enables the page break feature
    *
    * @return {this} Returns the instance of the MarkdownItWrapper class for method chaining.
    */
   enablePageBreak() {
     this.use(pageBreak);
-    this.enable('hr');
     return this;
   }
 }

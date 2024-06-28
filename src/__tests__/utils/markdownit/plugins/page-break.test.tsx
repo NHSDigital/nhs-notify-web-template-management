@@ -10,29 +10,6 @@ describe('Page break plugin', () => {
 
     const expected = render(<PageBreak />).container.innerHTML;
 
-    expect(actual).toBe(expected);
-  });
-
-  it('should render --- as a <hr />', () => {
-    const md = new MarkdownItWrapper().enablePageBreak();
-
-    const actual = md.render('---');
-
-    const expected = render(
-      <>
-        <hr />
-        {'\n'}
-      </>
-    ).container.innerHTML;
-
-    expect(actual).toBe(expected);
-  });
-
-  it('should not overwrite *** directive when not enabled', () => {
-    const md = new MarkdownItWrapper().enable(['hr']);
-
-    const actual = md.render('***');
-
-    const expected = render(<hr />).container.innerHTML;
+    expect(actual).toBe(`<p>${expected}</p>\n`);
   });
 });

@@ -10,7 +10,7 @@ export class PreviewLetterActions implements IPreviewLetterActions {
     this._markdownClient = _container.markdownClient
       .enableLineBreak()
       .enablePageBreak()
-      .enable(['heading', 'list', 'hr', 'emphasis']);
+      .enable(['heading', 'list', 'emphasis']);
   }
 
   renderMarkdown(value: string) {
