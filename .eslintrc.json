@@ -1,7 +1,13 @@
 {
-  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended", "plugin:jsx-a11y/recommended"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
   "plugins": ["prettier", "jsx-a11y"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react/display-name": "off"
   }
 }
