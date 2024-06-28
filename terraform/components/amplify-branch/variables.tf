@@ -24,6 +24,12 @@ variable "environment" {
   description = "The name of the environment"
 }
 
+variable "amplify_app_environment" {
+  type        = string
+  description = "The name of the environment"
+  default     = "dev"
+}
+
 variable "component" {
   type        = string
   description = "The name of the component"

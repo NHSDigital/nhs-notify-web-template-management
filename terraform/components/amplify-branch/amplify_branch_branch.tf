@@ -10,18 +10,7 @@ resource "aws_amplify_branch" "branch" {
 }
 
 data "aws_ssm_parameter" "amplify_app_id" {
-  name = "/${var.project}/amplify-app/${var.environment}/amplify-app-id"
-}
-
-resource "aws_amplify_domain_association" "domain_association" {
-  app_id                = data.aws_ssm_parameter.amplify_app_id.value
-  domain_name           = "notify.nhs.co.uk"
-  wait_for_verification = false
-
-  sub_domain {
-    branch_name = aws_amplify_branch.branch.branch_name
-    prefix      = var.environment
-  }
+  name = "/${var.project}/amplify-app/${var.amplify_app_environment}/amplify-app-id"
 }
 
 resource "aws_amplify_webhook" "webhook" {
