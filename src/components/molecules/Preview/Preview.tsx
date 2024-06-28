@@ -33,3 +33,12 @@ export function Preview({ preview }: PreviewProps): JSX.Element {
     </Table>
   );
 }
+
+Preview.Email = ({ subject, value }: { subject: string; value: string }) => (
+  <Preview
+    preview={[
+      { heading: 'Subject', value: subject },
+      { heading: 'Message', value },
+    ]}
+  />
+);

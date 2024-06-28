@@ -4,18 +4,14 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
-import { MarkdownItWrapper } from '@utils/markdownit';
-
-export const EMAIL_MD_OPTS = ['heading', 'link', 'list', 'hr'];
 
 export function PreviewEmail({
   templateName,
   subject,
   message,
+  pageActions,
 }: PreviewEmailProps) {
-  const md = new MarkdownItWrapper().enableLineBreak().enable(EMAIL_MD_OPTS);
-
-  const html = md.render(message);
+  const html = pageActions.renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
@@ -30,25 +26,31 @@ export function PreviewEmail({
               'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
             ],
           }}
-          PreviewComponent={
-            <Preview
-              preview={[
-                {
-                  heading: 'Subject',
-                  value: subject,
-                },
-                {
-                  heading: 'Message',
-                  value: html,
-                },
-              ]}
-            />
-          }
+          PreviewComponent={<Preview.Email subject={subject} value={html} />}
           FormOptionsComponent={
-            <Radios id='what-would-you-like-to-do-next' name='choice'>
-              <Radios.Radio value='edit'>Edit</Radios.Radio>
-              <Radios.Radio value='send'>Send a test email</Radios.Radio>
-              <Radios.Radio value='submit'>Submit</Radios.Radio>
+            <Radios
+              data-testid='preview-email-form__radios'
+              id='what-would-you-like-to-do-next'
+              name='choice'
+            >
+              <Radios.Radio
+                data-testid='preview-email-form__radios-edit'
+                value='edit'
+              >
+                Edit
+              </Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-email-form__radios-send'
+                value='send'
+              >
+                Send a test email
+              </Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-email-form__radios-submit'
+                value='submit'
+              >
+                Submit
+              </Radios.Radio>
             </Radios>
           }
         />

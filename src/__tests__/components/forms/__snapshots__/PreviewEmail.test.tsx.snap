@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preview email form renders matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="preview-message__heading"
+      >
+        <span
+          class="nhsuk-caption-l"
+          data-testid="preview-message__heading-caption"
+        >
+          Email template
+        </span>
+        test-template-email
+      </h1>
+      <details
+        class="nhsuk-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="preview-message-details__heading"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Who your email will be sent from
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="preview-message-details__text"
+        >
+          <p>
+            Set your reply-to and from email addresses during onboarding.
+          </p>
+          <p>
+            If you need to set up a different reply-to or from address for other messages, contact our onboarding team.
+          </p>
+        </div>
+      </details>
+      <table
+        class="nhsuk-table preview nhsuk-u-margin-bottom-4"
+      >
+        <tbody
+          class="nhsuk-table__body"
+        >
+          <tr
+            class="nhsuk-table__row"
+            role="row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <div
+                class="preview__heading"
+                data-testid="preview__heading-0"
+              >
+                Subject
+              </div>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <div
+                class="preview__content"
+                data-testid="preview__content-0"
+              >
+                email subject
+              </div>
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+            role="row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <div
+                class="preview__heading"
+                data-testid="preview__heading-1"
+              >
+                Message
+              </div>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <div
+                class="preview__content"
+                data-testid="preview__content-1"
+              >
+                <p>
+                  line
+                  <br />
+                  break
+                </p>
+                
+
+                <p>
+                  new paragraph
+                </p>
+                
+
+                <h1>
+                  Heading
+                </h1>
+                
+
+                <h2>
+                  sub heading
+                </h2>
+                
+
+                <ul>
+                  
+
+                  <li>
+                    bullet point 1
+                  </li>
+                  
+
+                  <li>
+                    bullet point 2
+                  </li>
+                  
+
+                </ul>
+                
+
+                <ol>
+                  
+
+                  <li>
+                    ordered list item 1
+                  </li>
+                  
+
+                  <li>
+                    ordered list item 2
+                  </li>
+                  
+
+                </ol>
+                
+
+                <hr />
+                
+
+                <p>
+                  Horizontal line
+                </p>
+                
+
+                <p>
+                  https://www.nhs.uk/example
+                </p>
+                
+
+                <p>
+                  <a
+                    href="https://www.nhs.uk/example"
+                  >
+                    Read more
+                  </a>
+                </p>
+                
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form>
+        <div
+          class="nhsuk-form-group"
+        >
+          <fieldset
+            class="nhsuk-fieldset"
+          >
+            <legend
+              class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+              data-testid="preview-message-form__legend"
+            >
+              What would you like to do next with this template?
+            </legend>
+            <div
+              class="nhsuk-form-group"
+            >
+              <div
+                class="nhsuk-radios"
+                data-testid="preview-email-form__radios"
+                id="what-would-you-like-to-do-next"
+              >
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="what-would-you-like-to-do-next-1--label"
+                    class="nhsuk-radios__input"
+                    data-testid="preview-email-form__radios-edit"
+                    id="what-would-you-like-to-do-next-1"
+                    name="choice"
+                    type="radio"
+                    value="edit"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="what-would-you-like-to-do-next-1"
+                    id="what-would-you-like-to-do-next-1--label"
+                  >
+                    Edit
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="what-would-you-like-to-do-next-2--label"
+                    class="nhsuk-radios__input"
+                    data-testid="preview-email-form__radios-send"
+                    id="what-would-you-like-to-do-next-2"
+                    name="choice"
+                    type="radio"
+                    value="send"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="what-would-you-like-to-do-next-2"
+                    id="what-would-you-like-to-do-next-2--label"
+                  >
+                    Send a test email
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="what-would-you-like-to-do-next-3--label"
+                    class="nhsuk-radios__input"
+                    data-testid="preview-email-form__radios-submit"
+                    id="what-would-you-like-to-do-next-3"
+                    name="choice"
+                    type="radio"
+                    value="submit"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="what-would-you-like-to-do-next-3"
+                    id="what-would-you-like-to-do-next-3--label"
+                  >
+                    Submit
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="preview-message-form__button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

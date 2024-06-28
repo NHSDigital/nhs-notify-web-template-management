@@ -2,6 +2,7 @@
 
 import { PreviewTextMessage } from '../../components/forms/PreviewTextMessage/PreviewTextMessage';
 import { PreviewEmail } from '../../components/forms/PreviewEmail/PreviewEmail';
+import { PreviewEmailActions } from '../../components/forms/PreviewEmail/PreviewEmailActions';
 import { PreviewLetter } from '../../components/forms/PreviewLetter/PreviewLetter';
 import { PreviewNHSApp } from '../../components/forms/PreviewNHSApp/PreviewNHSApp';
 
@@ -43,6 +44,7 @@ This is a a line break  here is the new line!!`);
 
   const email = (
     <PreviewEmail
+      pageActions={new PreviewEmailActions()}
       templateName='template-1-email'
       message={emailMD}
       subject='This is the subject'
@@ -113,5 +115,5 @@ this is a line break  Hello I'm a new line!
     <PreviewNHSApp templateName='template-1-nhsApp' message={nhsAppMD} />
   );
 
-  return letter;
+  return email;
 }
