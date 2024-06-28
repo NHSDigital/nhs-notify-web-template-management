@@ -4,7 +4,7 @@ import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 
 describe('PreviewNHSAppActions', () => {
-  it('should enable letter markdown rules', () => {
+  it('should enable nhs app markdown rules', () => {
     const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
     markdownItWrapperMock.enableLineBreak.mockReturnValue(
@@ -24,7 +24,7 @@ describe('PreviewNHSAppActions', () => {
     ]);
   });
 
-  it('should only process letter markdown rules', () => {
+  it('should only process nhs app markdown rules', () => {
     const actions = new PreviewNHSAppActions();
 
     const html = actions.renderMarkdown(markdown);

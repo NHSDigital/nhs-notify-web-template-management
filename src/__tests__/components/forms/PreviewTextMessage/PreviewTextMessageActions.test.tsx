@@ -20,7 +20,7 @@ describe('PreviewTextMessageActions', () => {
     expect(markdownItWrapperMock.enable).not.toHaveBeenCalled();
   });
 
-  it('should only process letter markdown rules', () => {
+  it('should only process text message markdown rules', () => {
     const actions = new PreviewTextMessageActions();
 
     const html = actions.renderMarkdown(markdown);
