@@ -61,3 +61,7 @@ Preview.Letter = ({
 Preview.NHSApp = ({ message }: { message: string }) => (
   <Preview preview={[{ heading: 'Message', value: message }]} />
 );
+
+Preview.TextMessage = ({ message }: { message: string }) => (
+  <Preview preview={[{ heading: 'Message', value: message }]} />
+);

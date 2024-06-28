@@ -4,17 +4,13 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
-import { MarkdownItWrapper } from '@utils/markdownit';
-
-export const SMS_MD_OPTS: string[] = [];
 
 export function PreviewTextMessage({
   templateName,
   message,
+  pageActions,
 }: PreviewTextMessageProps) {
-  const md = new MarkdownItWrapper().enable(SMS_MD_OPTS);
-
-  const html = md.render(message);
+  const html = pageActions.renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
@@ -29,21 +25,27 @@ export function PreviewTextMessage({
               'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
             ],
           }}
-          PreviewComponent={
-            <Preview
-              preview={[
-                {
-                  heading: 'Message',
-                  value: html,
-                },
-              ]}
-            />
-          }
+          PreviewComponent={<Preview.TextMessage message={html} />}
           FormOptionsComponent={
             <Radios id='what-would-you-like-to-do-next' name='choice'>
-              <Radios.Radio value='edit'>Edit</Radios.Radio>
-              <Radios.Radio value='send'>Send a text message</Radios.Radio>
-              <Radios.Radio value='submit'>Submit</Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-sms-form__radios-edit'
+                value='edit'
+              >
+                Edit
+              </Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-sms-form__radios-send'
+                value='send'
+              >
+                Send a text message
+              </Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-sms-form__radios-submit'
+                value='submit'
+              >
+                Submit
+              </Radios.Radio>
             </Radios>
           }
         />
