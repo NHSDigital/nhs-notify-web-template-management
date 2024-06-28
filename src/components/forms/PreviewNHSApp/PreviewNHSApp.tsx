@@ -4,14 +4,13 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@templates/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
-import { MarkdownItWrapper } from '@utils/markdownit';
 
-export const NHS_APP_MD_OPTS = ['heading', 'link', 'list', 'emphasis'];
-
-export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
-  const md = new MarkdownItWrapper().enableLineBreak().enable(NHS_APP_MD_OPTS);
-
-  const html = md.render(message);
+export function PreviewNHSApp({
+  templateName,
+  message,
+  pageActions,
+}: PreviewNHSAppProps) {
+  const html = pageActions.renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
@@ -26,20 +25,21 @@ export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
               'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
             ],
           }}
-          PreviewComponent={
-            <Preview
-              preview={[
-                {
-                  heading: 'Message',
-                  value: html,
-                },
-              ]}
-            />
-          }
+          PreviewComponent={<Preview.NHSApp message={html} />}
           FormOptionsComponent={
             <Radios id='what-would-you-like-to-do-next' name='choice'>
-              <Radios.Radio value='edit'>Edit</Radios.Radio>
-              <Radios.Radio value='submit'>Submit</Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-nhs-app-form__radios-edit'
+                value='edit'
+              >
+                Edit
+              </Radios.Radio>
+              <Radios.Radio
+                data-testid='preview-nhs-app-form__radios-submit'
+                value='submit'
+              >
+                Submit
+              </Radios.Radio>
             </Radios>
           }
         />
