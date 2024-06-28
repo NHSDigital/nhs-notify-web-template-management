@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import '@/src/styles/app.scss';
 import { NHSNotifyHeader } from '../components/molecules/Header/Header';
 import { NHSNotifyContainer } from '../components/layouts/container/container';

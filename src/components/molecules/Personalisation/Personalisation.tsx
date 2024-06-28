@@ -1,4 +1,3 @@
-import concatClassNames from '@/src/utils/concatClassNames';
 import styles from './Personalisation.module.scss';
 import content from '@/src/content/content';
 import { Details } from 'nhsuk-react-components';
@@ -20,9 +19,7 @@ export function Personalisation() {
         </Details.Summary>
         <Details.Text data-testid='personalisation-text'>
           <p>{personalisationContent.details.text1}</p>
-          <code className={styles.codeBackground}>
-            {personalisationContent.details.codeBlockText}
-          </code>
+          <code>{personalisationContent.details.codeBlockText}</code>
           <p className='nhsuk-u-margin-top-4'>
             {personalisationContent.details.text2}
           </p>
