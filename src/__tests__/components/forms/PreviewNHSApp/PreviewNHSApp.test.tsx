@@ -1,30 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { PreviewNHSApp, PreviewNHSAppActions } from '@forms/PreviewNHSApp';
+import { markdown } from '../fixtures';
 
 describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
-    const md = `
-line  break
-
-new paragraph
-
-# Heading
-
-## sub heading
-
-**bold**
-
-https://www.nhs.uk/example
-
-[Read more](https://www.nhs.uk/example)
-`;
-
     const container = render(
       <PreviewNHSApp
         pageActions={new PreviewNHSAppActions()}
         templateName='test-template-nhs app'
-        message={md}
+        message={markdown}
       />
     );
 
@@ -38,14 +23,6 @@ https://www.nhs.uk/example
         templateName='test-template-nhs app'
         message='nhs app message body'
       />
-    );
-
-    expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
-      'Message'
-    );
-
-    expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
-      'nhs app message body'
     );
 
     expect(

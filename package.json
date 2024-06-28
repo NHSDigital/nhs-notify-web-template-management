@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "test:unit": "jest --collectCoverage=false",
+    "test:unit": "jest",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "pretest:e2e:local": "npm run app:start",
     "test:e2e:local": "npm run app:wait && npm run test:e2e",

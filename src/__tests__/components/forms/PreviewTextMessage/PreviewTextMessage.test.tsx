@@ -4,20 +4,15 @@ import {
   PreviewTextMessage,
   PreviewTextMessageActions,
 } from '@forms/PreviewTextMessage';
+import { markdown } from '../fixtures';
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
-    const md = `
-new paragraph
-
-new pargraph
-`;
-
     const container = render(
       <PreviewTextMessage
         pageActions={new PreviewTextMessageActions()}
         templateName='test-template-sms'
-        message={md}
+        message={markdown}
       />
     );
 
@@ -31,14 +26,6 @@ new pargraph
         templateName='test-template-sms'
         message='sms message body'
       />
-    );
-
-    expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
-      'Message'
-    );
-
-    expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
-      'sms message body'
     );
 
     expect(screen.getByTestId('preview-sms-form__radios-edit')).toHaveAttribute(

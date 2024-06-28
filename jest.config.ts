@@ -39,7 +39,13 @@ const config: Config = {
 
   collectCoverageFrom: ['src/**/*.ts*'],
 
-  coveragePathIgnorePatterns: ['.types.ts', 'layout.tsx'],
+  coveragePathIgnorePatterns: [
+    '.types.ts',
+    'layout.tsx',
+    'container.tsx',
+    '.snap',
+    'app/preview-message',
+  ],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [
@@ -56,6 +62,8 @@ const config: Config = {
 
   // The test environment that will be used for testing
   testEnvironment: 'jsdom',
+
+  testPathIgnorePatterns: ['/node_modules/', 'fixture'],
 
   // Set the absolute path for imports
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {

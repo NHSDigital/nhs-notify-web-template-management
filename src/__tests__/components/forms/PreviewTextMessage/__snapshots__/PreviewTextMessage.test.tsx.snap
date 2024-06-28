@@ -74,12 +74,68 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                 data-testid="preview__content-0"
               >
                 <p>
-                  new paragraph
+                  # Heading
                 </p>
                 
 
                 <p>
-                  new pargraph
+                  ## sub heading
+                </p>
+                
+
+                <p>
+                  **bold**
+                </p>
+                
+
+                <p>
+                  * bullet point 1
+* bullet point 2
+                </p>
+                
+
+                <p>
+                  1. ordered list item 1
+2. ordered list item 2
+                </p>
+                
+
+                <p>
+                  [Read more](https://www.nhs.uk/example)
+                </p>
+                
+
+                <p>
+                  https://www.nhs.uk/example
+                </p>
+                
+
+                <p>
+                  Before page break
+***
+After page break
+                </p>
+                
+
+                <p>
+                  Start of line break  end of line break
+                </p>
+                
+
+                <p>
+                  Before horizontal line
+---
+End of horizontal line
+                </p>
+                
+
+                <p>
+                  This is a paragraph
+                </p>
+                
+
+                <p>
+                  By doing a new line this starts a new paragraph
                 </p>
                 
 

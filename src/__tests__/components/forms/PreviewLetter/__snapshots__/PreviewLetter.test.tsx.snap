@@ -94,18 +94,6 @@ exports[`Preview letter form renders matches snapshot 1`] = `
             class="preview__content"
             data-testid="preview__content-1"
           >
-            <p>
-              line
-              <br />
-              break
-            </p>
-            
-
-            <p>
-              new paragraph
-            </p>
-            
-
             <h1>
               Heading
             </h1>
@@ -155,6 +143,21 @@ exports[`Preview letter form renders matches snapshot 1`] = `
             </ol>
             
 
+            <p>
+              [Read more](https://www.nhs.uk/example)
+            </p>
+            
+
+            <p>
+              https://www.nhs.uk/example
+            </p>
+            
+
+            <p>
+              Before page break
+            </p>
+            
+
             <div
               class="pagebreak"
               data-testid="page-break"
@@ -173,7 +176,37 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               />
             </div>
             <p>
-              Page Break
+              After page break
+            </p>
+            
+
+            <p>
+              Start of line break
+              <br />
+              end of line break
+            </p>
+            
+
+            <p>
+              Before horizontal line
+            </p>
+            
+
+            <hr />
+            
+
+            <p>
+              End of horizontal line
+            </p>
+            
+
+            <p>
+              This is a paragraph
+            </p>
+            
+
+            <p>
+              By doing a new line this starts a new paragraph
             </p>
             
 

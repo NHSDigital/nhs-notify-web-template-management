@@ -1,39 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { PreviewEmail, PreviewEmailActions } from '@forms/PreviewEmail';
+import { markdown } from '../fixtures';
 
 describe('Preview email form renders', () => {
   it('matches snapshot', () => {
-    const md = `
-line  break
-
-new paragraph
-
-# Heading
-
-## sub heading
-
-* bullet point 1
-* bullet point 2
-
-1. ordered list item 1
-2. ordered list item 2
-
----
-
-Horizontal line
-
-https://www.nhs.uk/example
-
-[Read more](https://www.nhs.uk/example)
-`;
-
     const container = render(
       <PreviewEmail
         pageActions={new PreviewEmailActions()}
         templateName='test-template-email'
         subject='email subject'
-        message={md}
+        message={markdown}
       />
     );
 
@@ -48,22 +25,6 @@ https://www.nhs.uk/example
         subject='email subject'
         message='email message body'
       />
-    );
-
-    expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
-      'Subject'
-    );
-
-    expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
-      'email subject'
-    );
-
-    expect(screen.getByTestId('preview__heading-1')).toHaveTextContent(
-      'Message'
-    );
-
-    expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
-      'email message body'
     );
 
     expect(

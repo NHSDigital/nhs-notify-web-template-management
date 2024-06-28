@@ -52,7 +52,7 @@ describe('PreviewMessage component', () => {
     ).toHaveTextContent('Continue');
   });
 
-  test.each(PREVIEW_TYPES)('renders type %s correctly', (type) => {
+  it.each(PREVIEW_TYPES)('renders type %s correctly', (type) => {
     render(
       <PreviewMessage
         type={type}

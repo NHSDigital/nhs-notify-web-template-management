@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Preview email form renders matches snapshot 1`] = `
+exports[`Preview nhs app form renders matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -15,9 +15,9 @@ exports[`Preview email form renders matches snapshot 1`] = `
           class="nhsuk-caption-l"
           data-testid="preview-message__heading-caption"
         >
-          Email template
+          NHS app message template
         </span>
-        test-template-email
+        test-template-nhs app
       </h1>
       <details
         class="nhsuk-details"
@@ -29,7 +29,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Who your email will be sent from
+            Who your text message will be sent from
           </span>
         </summary>
         <div
@@ -37,10 +37,10 @@ exports[`Preview email form renders matches snapshot 1`] = `
           data-testid="preview-message-details__text"
         >
           <p>
-            Set your reply-to and from email addresses during onboarding.
+            Set your NHS App message sender name during onboarding.
           </p>
           <p>
-            If you need to set up a different reply-to or from address for other messages, contact our onboarding team.
+            If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.
           </p>
         </div>
       </details>
@@ -62,7 +62,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
                 class="preview__heading"
                 data-testid="preview__heading-0"
               >
-                Subject
+                Message
               </div>
             </td>
             <td
@@ -73,45 +73,6 @@ exports[`Preview email form renders matches snapshot 1`] = `
                 class="preview__content"
                 data-testid="preview__content-0"
               >
-                email subject
-              </div>
-            </td>
-          </tr>
-          <tr
-            class="nhsuk-table__row"
-            role="row"
-          >
-            <td
-              class="nhsuk-table__cell"
-              role="cell"
-            >
-              <div
-                class="preview__heading"
-                data-testid="preview__heading-1"
-              >
-                Message
-              </div>
-            </td>
-            <td
-              class="nhsuk-table__cell"
-              role="cell"
-            >
-              <div
-                class="preview__content"
-                data-testid="preview__content-1"
-              >
-                <p>
-                  line
-                  <br />
-                  break
-                </p>
-                
-
-                <p>
-                  new paragraph
-                </p>
-                
-
                 <h1>
                   Heading
                 </h1>
@@ -120,6 +81,13 @@ exports[`Preview email form renders matches snapshot 1`] = `
                 <h2>
                   sub heading
                 </h2>
+                
+
+                <p>
+                  <strong>
+                    bold
+                  </strong>
+                </p>
                 
 
                 <ul>
@@ -154,11 +122,12 @@ exports[`Preview email form renders matches snapshot 1`] = `
                 </ol>
                 
 
-                <hr />
-                
-
                 <p>
-                  Horizontal line
+                  <a
+                    href="https://www.nhs.uk/example"
+                  >
+                    Read more
+                  </a>
                 </p>
                 
 
@@ -168,11 +137,33 @@ exports[`Preview email form renders matches snapshot 1`] = `
                 
 
                 <p>
-                  <a
-                    href="https://www.nhs.uk/example"
-                  >
-                    Read more
-                  </a>
+                  Before page break
+***
+After page break
+                </p>
+                
+
+                <p>
+                  Start of line break
+                  <br />
+                  end of line break
+                </p>
+                
+
+                <p>
+                  Before horizontal line
+---
+End of horizontal line
+                </p>
+                
+
+                <p>
+                  This is a paragraph
+                </p>
+                
+
+                <p>
+                  By doing a new line this starts a new paragraph
                 </p>
                 
 
@@ -199,7 +190,6 @@ exports[`Preview email form renders matches snapshot 1`] = `
             >
               <div
                 class="nhsuk-radios"
-                data-testid="preview-email-form__radios"
                 id="what-would-you-like-to-do-next"
               >
                 <div
@@ -208,7 +198,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   <input
                     aria-labelledby="what-would-you-like-to-do-next-1--label"
                     class="nhsuk-radios__input"
-                    data-testid="preview-email-form__radios-edit"
+                    data-testid="preview-nhs-app-form__radios-edit"
                     id="what-would-you-like-to-do-next-1"
                     name="choice"
                     type="radio"
@@ -228,36 +218,16 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   <input
                     aria-labelledby="what-would-you-like-to-do-next-2--label"
                     class="nhsuk-radios__input"
-                    data-testid="preview-email-form__radios-send"
+                    data-testid="preview-nhs-app-form__radios-submit"
                     id="what-would-you-like-to-do-next-2"
-                    name="choice"
-                    type="radio"
-                    value="send"
-                  />
-                  <label
-                    class="nhsuk-label nhsuk-radios__label"
-                    for="what-would-you-like-to-do-next-2"
-                    id="what-would-you-like-to-do-next-2--label"
-                  >
-                    Send a test email
-                  </label>
-                </div>
-                <div
-                  class="nhsuk-radios__item"
-                >
-                  <input
-                    aria-labelledby="what-would-you-like-to-do-next-3--label"
-                    class="nhsuk-radios__input"
-                    data-testid="preview-email-form__radios-submit"
-                    id="what-would-you-like-to-do-next-3"
                     name="choice"
                     type="radio"
                     value="submit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="what-would-you-like-to-do-next-3"
-                    id="what-would-you-like-to-do-next-3--label"
+                    for="what-would-you-like-to-do-next-2"
+                    id="what-would-you-like-to-do-next-2--label"
                   >
                     Submit
                   </label>
