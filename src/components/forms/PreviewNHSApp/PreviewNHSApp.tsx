@@ -2,7 +2,7 @@
 
 import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@templates/PreviewMessage';
+import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
 
 export function PreviewNHSApp({

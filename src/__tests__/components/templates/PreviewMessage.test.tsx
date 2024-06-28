@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewMessage, PREVIEW_TYPES } from '@templates/PreviewMessage';
+import { PreviewMessage, PREVIEW_TYPES } from '@organisms/PreviewMessage';
 
 describe('PreviewMessage component', () => {
   it('matches snapshot', () => {

@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { PreviewEmail, PreviewEmailActions } from '@forms/PreviewEmail';
-import { markdown } from '../fixtures';
 
 describe('Preview email form renders', () => {
   it('matches snapshot', () => {
@@ -10,7 +9,7 @@ describe('Preview email form renders', () => {
         pageActions={new PreviewEmailActions()}
         templateName='test-template-email'
         subject='email subject'
-        message={markdown}
+        message='message'
       />
     );
 

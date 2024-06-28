@@ -1,5 +1,5 @@
 import { Radios } from 'nhsuk-react-components';
-import { Preview } from '../../molecules/Preview/Preview';
+import { Preview } from '@molecules/Preview/Preview';
 
 export const PREVIEW_TYPES = [
   'Email',

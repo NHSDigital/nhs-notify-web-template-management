@@ -4,7 +4,6 @@ import {
   PreviewTextMessage,
   PreviewTextMessageActions,
 } from '@forms/PreviewTextMessage';
-import { markdown } from '../fixtures';
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
@@ -12,7 +11,7 @@ describe('Preview sms form renders', () => {
       <PreviewTextMessage
         pageActions={new PreviewTextMessageActions()}
         templateName='test-template-sms'
-        message={markdown}
+        message='message'
       />
     );
 

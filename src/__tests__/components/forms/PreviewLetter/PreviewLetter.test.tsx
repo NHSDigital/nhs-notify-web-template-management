@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { PreviewLetter, PreviewLetterActions } from '@forms/PreviewLetter';
-import { markdown } from '../fixtures';
 
 describe('Preview letter form renders', () => {
   it('matches snapshot', () => {
@@ -10,7 +9,7 @@ describe('Preview letter form renders', () => {
         pageActions={new PreviewLetterActions()}
         templateName='test-template-letter'
         heading='letter heading'
-        bodyText={markdown}
+        bodyText='body text'
       />
     );
 

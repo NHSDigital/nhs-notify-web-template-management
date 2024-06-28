@@ -2,7 +2,7 @@
 
 import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@templates/PreviewMessage';
+import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
 
 export function PreviewEmail({

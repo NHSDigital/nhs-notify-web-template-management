@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
 import { PreviewNHSApp, PreviewNHSAppActions } from '@forms/PreviewNHSApp';
-import { markdown } from '../fixtures';
 
 describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
@@ -9,7 +8,7 @@ describe('Preview nhs app form renders', () => {
       <PreviewNHSApp
         pageActions={new PreviewNHSAppActions()}
         templateName='test-template-nhs app'
-        message={markdown}
+        message='message'
       />
     );
 

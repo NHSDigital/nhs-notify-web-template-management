@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@atoms/*": ["./src/components/atoms/*"],
-      "@templates/*": ["./src/components/templates/*"],
+      "@organisms/*": ["./src/components/organisms/*"],
       "@molecules/*": ["./src/components/molecules/*"],
       "@forms/*": ["./src/components/forms/*"],
       "@utils/*": ["./src/utils/*"]
@@ -34,7 +34,5 @@
     ".next/types/**/*.ts",
     "jest.config.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
