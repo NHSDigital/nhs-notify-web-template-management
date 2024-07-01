@@ -6,10 +6,7 @@ import {
   PreviewTextMessageActions,
 } from '@forms/PreviewTextMessage';
 import { PreviewEmail } from '../../components/forms/PreviewEmail';
-import {
-  PreviewLetter,
-  PreviewLetterActions,
-} from '../../components/forms/PreviewLetter';
+import { PreviewLetter } from '../../components/forms/PreviewLetter';
 import { PreviewNHSApp } from '@forms/PreviewNHSApp';
 import { markdown } from '../../__tests__/components/forms/fixtures';
 
@@ -39,7 +36,6 @@ export default function Page(context: unknown) {
       templateName='template-1-letter'
       heading='The main heading of the letter'
       bodyText={markdown}
-      pageActions={new PreviewLetterActions()}
     />
   );
 

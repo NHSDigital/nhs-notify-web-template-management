@@ -1,5 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
-import { PreviewLetterActions } from '@forms/PreviewLetter';
+import { renderMarkdown } from '@forms/PreviewLetter';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 
@@ -15,9 +15,7 @@ describe('PreviewLetterActions', () => {
       markdownItWrapperMock
     );
 
-    new PreviewLetterActions({
-      markdownClient: markdownItWrapperMock,
-    });
+    renderMarkdown('message', markdownItWrapperMock);
 
     expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
     expect(markdownItWrapperMock.enablePageBreak).toHaveBeenCalled();
@@ -29,10 +27,6 @@ describe('PreviewLetterActions', () => {
   });
 
   it('should only process letter markdown rules', () => {
-    const actions = new PreviewLetterActions();
-
-    const html = actions.renderMarkdown(markdown);
-
-    expect(html).toMatchSnapshot();
+    expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
 });

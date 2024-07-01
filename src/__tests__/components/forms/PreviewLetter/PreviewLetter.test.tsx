@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { mock } from 'jest-mock-extended';
-import { PreviewLetter, PreviewLetterActions } from '@forms/PreviewLetter';
+import { PreviewLetter, renderMarkdown } from '@forms/PreviewLetter';
+
+jest.mock('@forms/PreviewLetter/server-actions');
 
 describe('Preview letter form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <PreviewLetter
-        pageActions={new PreviewLetterActions()}
         templateName='test-template-letter'
         heading='letter heading'
         bodyText='body text'
@@ -19,7 +19,6 @@ describe('Preview letter form renders', () => {
   it('renders component correctly', () => {
     render(
       <PreviewLetter
-        pageActions={new PreviewLetterActions()}
         templateName='test-template-letter'
         heading='letter subject'
         bodyText='letter message body'
@@ -40,21 +39,21 @@ describe('Preview letter form renders', () => {
   });
 
   it('should should render message with markdown', () => {
-    const message = 'letter message body';
-    const pageActionsMock = mock<PreviewLetterActions>();
+    const renderMock = jest.mocked(renderMarkdown);
 
-    pageActionsMock.renderMarkdown.mockReturnValue('Rendered via MD');
+    renderMock.mockReturnValue('Rendered via MD');
+
+    const message = 'email message body';
 
     render(
       <PreviewLetter
-        pageActions={pageActionsMock}
         templateName='test-template-letter'
         heading='letter subject'
         bodyText={message}
       />
     );
 
-    expect(pageActionsMock.renderMarkdown).toHaveBeenCalledWith(message);
+    expect(renderMock).toHaveBeenCalledWith(message);
 
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'

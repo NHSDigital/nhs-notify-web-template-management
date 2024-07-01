@@ -4,14 +4,14 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewLetterProps } from './PreviewLetter.types';
+import { renderMarkdown } from './server-actions';
 
 export function PreviewLetter({
   templateName,
   heading,
   bodyText,
-  pageActions,
 }: PreviewLetterProps) {
-  const html = pageActions.renderMarkdown(bodyText);
+  const html = renderMarkdown(bodyText);
 
   return (
     <PreviewMessage
