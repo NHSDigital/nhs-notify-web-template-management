@@ -23,6 +23,7 @@
     "app:stop": "pm2 kill"
   },
   "dependencies": {
+    "@testing-library/user-event": "^14.5.2",
     "next": "14.2.3",
     "nhsuk-frontend": "^8.1.1",
     "nhsuk-react-components": "^4.0.2",

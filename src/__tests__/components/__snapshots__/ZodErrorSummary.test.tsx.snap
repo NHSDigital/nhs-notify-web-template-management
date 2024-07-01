@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Renders ZodErrorSummary correctly without errors 1`] = `<DocumentFragment />`;
-
-exports[`Renders v correctly with errors 1`] = `
+exports[`Renders ZodErrorSummary correctly with errors 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-error-summary"
@@ -32,3 +30,5 @@ exports[`Renders v correctly with errors 1`] = `
   </div>
 </DocumentFragment>
 `;
+
+exports[`Renders ZodErrorSummary correctly without errors 1`] = `<DocumentFragment />`;

@@ -1,4 +1,4 @@
-export default function CreateEmailTemplate() {
+export const CreateEmailTemplate = () => {
   return (
     <>
       <h2 className='nhsuk-heading-l' data-testid='page-sub-heading'>
@@ -6,4 +6,4 @@ export default function CreateEmailTemplate() {
       </h2>
     </>
   );
-}
+};
