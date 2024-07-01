@@ -1,3 +1,5 @@
+import { PreviewType } from '../components/organisms/PreviewMessage';
+
 const headerComponent = {
   title: '',
   links: {
@@ -78,6 +80,74 @@ const homePage = {
   },
 };
 
+const previewEmailFormComponent = {
+  sectionHeader: 'Email template',
+  details: {
+    heading: 'Who your email will be sent from',
+    text: [
+      'Set your reply-to and from email addresses during onboarding.',
+      'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
+    ],
+  },
+  options: [
+    { id: 'edit', text: 'Edit' },
+    { id: 'send', text: 'Send a test email' },
+    { id: 'submit', text: 'Submit' },
+  ],
+};
+
+const previewLetterFormComponent = {
+  sectionHeader: 'Letter template',
+  details: {
+    heading: 'Who your letter will be sent from',
+    text: [
+      `The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.`,
+      'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
+    ],
+  },
+  options: [
+    { id: 'edit', text: 'Edit' },
+    { id: 'preview', text: 'Preview (PDF)' },
+    { id: 'submit', text: 'Submit' },
+  ],
+};
+
+const previewNHSAppFormComponent = {
+  sectionHeader: 'NHS App message template',
+  details: {
+    heading: 'Who your NHS App message will be sent from',
+    text: [
+      'Set your NHS App message sender name during onboarding.',
+      'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
+    ],
+  },
+  options: [
+    { id: 'edit', text: 'Edit' },
+    { id: 'submit', text: 'Submit' },
+  ],
+};
+
+const previewTextMessageFormComponent = {
+  sectionHeader: 'Text message template',
+  details: {
+    heading: 'Who your text message will be sent from',
+    text: [
+      'Set your text message sender name during onboarding.',
+      'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
+    ],
+  },
+  options: [
+    { id: 'edit', text: 'Edit' },
+    { id: 'send', text: 'Send a test text message' },
+    { id: 'submit', text: 'Submit' },
+  ],
+};
+
+const previewMessageComponent = {
+  legendText: 'What would you like to do next with this template?',
+  buttonText: 'Continue',
+};
+
 const content = {
   global: {
     mainLayout,
@@ -86,6 +156,11 @@ const content = {
     headerComponent,
     footerComponent,
     personalisationComponent,
+    previewEmailFormComponent,
+    previewLetterFormComponent,
+    previewNHSAppFormComponent,
+    previewTextMessageFormComponent,
+    previewMessageComponent,
   },
   pages: {
     homePage,

@@ -5,18 +5,23 @@ import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
 import { renderMarkdown } from './server-actions';
+import content from '@/src/content/content';
 
 export function PreviewTextMessage({
   templateName,
   message,
 }: PreviewTextMessageProps) {
+  const {
+    components: { previewTextMessageFormComponent },
+  } = content;
+
   const html = renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <PreviewMessage
-          type='Text message'
+          sectionHeading={previewTextMessageFormComponent.sectionHeader}
           templateName={templateName}
           details={{
             heading: 'Who your text message will be sent from',
@@ -28,24 +33,15 @@ export function PreviewTextMessage({
           PreviewComponent={<Preview.TextMessage message={html} />}
           FormOptionsComponent={
             <Radios id='what-would-you-like-to-do-next' name='choice'>
-              <Radios.Radio
-                data-testid='preview-sms-form__radios-edit'
-                value='edit'
-              >
-                Edit
-              </Radios.Radio>
-              <Radios.Radio
-                data-testid='preview-sms-form__radios-send'
-                value='send'
-              >
-                Send a text message
-              </Radios.Radio>
-              <Radios.Radio
-                data-testid='preview-sms-form__radios-submit'
-                value='submit'
-              >
-                Submit
-              </Radios.Radio>
+              {previewTextMessageFormComponent.options.map((item, index) => (
+                <Radios.Radio
+                  data-testid={`preview-sms-form__radios-${item.id}`}
+                  key={`preview-${item.id}-form__radios-edit-${item.id}-${index}`}
+                  value={item.id}
+                >
+                  {item.text}
+                </Radios.Radio>
+              ))}
             </Radios>
           }
         />

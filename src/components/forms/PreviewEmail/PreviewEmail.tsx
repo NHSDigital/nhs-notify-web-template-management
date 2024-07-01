@@ -5,27 +5,26 @@ import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
 import { renderMarkdown } from './server-actions';
+import content from '@/src/content/content';
 
 export function PreviewEmail({
   templateName,
   subject,
   message,
 }: PreviewEmailProps) {
+  const {
+    components: { previewEmailFormComponent },
+  } = content;
+
   const html = renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <PreviewMessage
-          type='Email'
+          sectionHeading={previewEmailFormComponent.sectionHeader}
           templateName={templateName}
-          details={{
-            heading: 'Who your email will be sent from',
-            text: [
-              'Set your reply-to and from email addresses during onboarding.',
-              'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
-            ],
-          }}
+          details={previewEmailFormComponent.details}
           PreviewComponent={<Preview.Email subject={subject} value={html} />}
           FormOptionsComponent={
             <Radios
@@ -33,24 +32,15 @@ export function PreviewEmail({
               id='what-would-you-like-to-do-next'
               name='choice'
             >
-              <Radios.Radio
-                data-testid='preview-email-form__radios-edit'
-                value='edit'
-              >
-                Edit
-              </Radios.Radio>
-              <Radios.Radio
-                data-testid='preview-email-form__radios-send'
-                value='send'
-              >
-                Send a test email
-              </Radios.Radio>
-              <Radios.Radio
-                data-testid='preview-email-form__radios-submit'
-                value='submit'
-              >
-                Submit
-              </Radios.Radio>
+              {previewEmailFormComponent.options.map((item, index) => (
+                <Radios.Radio
+                  data-testid={`preview-email-form__radios-${item.id}`}
+                  key={`preview-email-form__radios-${item.id}-${index}`}
+                  value={item.id}
+                >
+                  {item.text}
+                </Radios.Radio>
+              ))}
             </Radios>
           }
         />

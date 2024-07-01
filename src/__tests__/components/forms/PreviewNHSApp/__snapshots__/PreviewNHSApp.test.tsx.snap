@@ -15,7 +15,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
           class="nhsuk-caption-l"
           data-testid="preview-message__heading-caption"
         >
-          NHS app message template
+          NHS App message template
         </span>
         test-template-nhs app
       </h1>
@@ -29,7 +29,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Who your text message will be sent from
+            Who your NHS App message will be sent from
           </span>
         </summary>
         <div

@@ -5,38 +5,34 @@ import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
 import { renderMarkdown } from './server-actions';
+import content from '@/src/content/content';
 
 export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
   const html = renderMarkdown(message);
+
+  const {
+    components: { previewNHSAppFormComponent },
+  } = content;
 
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <PreviewMessage
-          type='NHS app message'
+          sectionHeading={previewNHSAppFormComponent.sectionHeader}
           templateName={templateName}
-          details={{
-            heading: 'Who your text message will be sent from',
-            text: [
-              'Set your NHS App message sender name during onboarding.',
-              'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
-            ],
-          }}
+          details={previewNHSAppFormComponent.details}
           PreviewComponent={<Preview.NHSApp message={html} />}
           FormOptionsComponent={
             <Radios id='what-would-you-like-to-do-next' name='choice'>
-              <Radios.Radio
-                data-testid='preview-nhs-app-form__radios-edit'
-                value='edit'
-              >
-                Edit
-              </Radios.Radio>
-              <Radios.Radio
-                data-testid='preview-nhs-app-form__radios-submit'
-                value='submit'
-              >
-                Submit
-              </Radios.Radio>
+              {previewNHSAppFormComponent.options.map((item, index) => (
+                <Radios.Radio
+                  data-testid={`preview-nhs-app-form__radios-${item.id}`}
+                  key={`preview-nhs-app-form__radios-edit-${item.id}-${index}`}
+                  value={item.id}
+                >
+                  {item.text}
+                </Radios.Radio>
+              ))}
             </Radios>
           }
         />

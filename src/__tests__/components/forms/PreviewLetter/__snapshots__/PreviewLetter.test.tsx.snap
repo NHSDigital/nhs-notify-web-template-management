@@ -23,7 +23,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       <span
         class="nhsuk-details__summary-text"
       >
-         Who your letter will be sent from
+        Who your letter will be sent from
       </span>
     </summary>
     <div

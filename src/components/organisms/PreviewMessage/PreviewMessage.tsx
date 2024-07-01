@@ -2,8 +2,12 @@
 
 import { Button, Details, Fieldset, Form } from 'nhsuk-react-components';
 import { PreviewMessageProps } from './PreviewMessage.types';
+import content from '@/src/content/content';
 
 export function PreviewMessage(props: PreviewMessageProps) {
+  const {
+    components: { previewMessageComponent },
+  } = content;
   return (
     <>
       <h1 data-testid='preview-message__heading'>
@@ -11,7 +15,7 @@ export function PreviewMessage(props: PreviewMessageProps) {
           data-testid='preview-message__heading-caption'
           className='nhsuk-caption-l'
         >
-          {props.type} template
+          {props.sectionHeading}
         </span>
         {props.templateName}
       </h1>
@@ -29,11 +33,13 @@ export function PreviewMessage(props: PreviewMessageProps) {
       <Form>
         <Fieldset>
           <Fieldset.Legend data-testid='preview-message-form__legend' size='m'>
-            What would you like to do next with this template?
+            {previewMessageComponent.legendText}
           </Fieldset.Legend>
           {props.FormOptionsComponent}
         </Fieldset>
-        <Button data-testid='preview-message-form__button'>Continue</Button>
+        <Button data-testid='preview-message-form__button'>
+          {previewMessageComponent.buttonText}
+        </Button>
       </Form>
     </>
   );

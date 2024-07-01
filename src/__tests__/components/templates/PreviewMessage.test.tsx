@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewMessage, PREVIEW_TYPES } from '@organisms/PreviewMessage';
+import { PreviewMessage } from '@organisms/PreviewMessage';
 
 describe('PreviewMessage component', () => {
   it('matches snapshot', () => {
     const container = render(
       <PreviewMessage
-        type='NHS app message'
+        sectionHeading='NHS app message template'
         templateName='Example NHS APP template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
         PreviewComponent={<>Preview</>}
@@ -19,7 +19,7 @@ describe('PreviewMessage component', () => {
   it('renders component correctly', () => {
     render(
       <PreviewMessage
-        type='Email'
+        sectionHeading='Email template'
         templateName='Example template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
         PreviewComponent={<>Preview</>}
@@ -50,21 +50,5 @@ describe('PreviewMessage component', () => {
     expect(
       screen.getByTestId('preview-message-form__button')
     ).toHaveTextContent('Continue');
-  });
-
-  it.each(PREVIEW_TYPES)('renders type %s correctly', (type) => {
-    render(
-      <PreviewMessage
-        type={type}
-        templateName='Example template'
-        details={{ heading: 'Details heading', text: ['Details text'] }}
-        PreviewComponent={<>Preview</>}
-        FormOptionsComponent={<>Form</>}
-      />
-    );
-
-    expect(
-      screen.getByTestId('preview-message__heading-caption')
-    ).toHaveTextContent(`${type} template`);
   });
 });

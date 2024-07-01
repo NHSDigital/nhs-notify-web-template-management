@@ -134,7 +134,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                     for="what-would-you-like-to-do-next-2"
                     id="what-would-you-like-to-do-next-2--label"
                   >
-                    Send a text message
+                    Send a test text message
                   </label>
                 </div>
                 <div
