@@ -1,10 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import {
-  PreviewTextMessage,
-  PreviewTextMessageActions,
-} from '@forms/PreviewTextMessage';
+import { PreviewTextMessage } from '@forms/PreviewTextMessage';
 import { PreviewEmail } from '../../components/forms/PreviewEmail';
 import { PreviewLetter } from '../../components/forms/PreviewLetter';
 import { PreviewNHSApp } from '@forms/PreviewNHSApp';
@@ -16,11 +13,7 @@ export default function Page(context: unknown) {
   const params = searchParams.get('form');
 
   const sms = (
-    <PreviewTextMessage
-      templateName='template-1-sms'
-      message={markdown}
-      pageActions={new PreviewTextMessageActions()}
-    />
+    <PreviewTextMessage templateName='template-1-sms' message={markdown} />
   );
 
   const email = (

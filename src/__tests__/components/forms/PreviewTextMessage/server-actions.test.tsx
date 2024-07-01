@@ -1,5 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
-import { PreviewTextMessageActions } from '@forms/PreviewTextMessage';
+import { renderMarkdown } from '@forms/PreviewTextMessage';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 
@@ -11,9 +11,7 @@ describe('PreviewTextMessageActions', () => {
       markdownItWrapperMock
     );
 
-    new PreviewTextMessageActions({
-      markdownClient: markdownItWrapperMock,
-    });
+    renderMarkdown('message', markdownItWrapperMock);
 
     expect(markdownItWrapperMock.enableLineBreak).not.toHaveBeenCalled();
 
@@ -21,10 +19,6 @@ describe('PreviewTextMessageActions', () => {
   });
 
   it('should only process text message markdown rules', () => {
-    const actions = new PreviewTextMessageActions();
-
-    const html = actions.renderMarkdown(markdown);
-
-    expect(html).toMatchSnapshot();
+    expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
 });

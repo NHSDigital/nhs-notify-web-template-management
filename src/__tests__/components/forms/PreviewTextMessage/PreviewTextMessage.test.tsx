@@ -1,18 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { mock } from 'jest-mock-extended';
-import {
-  PreviewTextMessage,
-  PreviewTextMessageActions,
-} from '@forms/PreviewTextMessage';
+import { PreviewTextMessage, renderMarkdown } from '@forms/PreviewTextMessage';
+
+jest.mock('@forms/PreviewTextMessage/server-actions');
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewTextMessage
-        pageActions={new PreviewTextMessageActions()}
-        templateName='test-template-sms'
-        message='message'
-      />
+      <PreviewTextMessage templateName='test-template-sms' message='message' />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -21,7 +16,6 @@ describe('Preview sms form renders', () => {
   it('renders component correctly', () => {
     render(
       <PreviewTextMessage
-        pageActions={new PreviewTextMessageActions()}
         templateName='test-template-sms'
         message='sms message body'
       />
@@ -43,20 +37,16 @@ describe('Preview sms form renders', () => {
   });
 
   it('should should render message with markdown', () => {
+    const renderMock = jest.mocked(renderMarkdown);
+
+    renderMock.mockReturnValue('Rendered via MD');
+
     const message = 'sms message body';
-    const pageActionsMock = mock<PreviewTextMessageActions>();
-
-    pageActionsMock.renderMarkdown.mockReturnValue('Rendered via MD');
-
     render(
-      <PreviewTextMessage
-        pageActions={pageActionsMock}
-        templateName='test-template-sms'
-        message={message}
-      />
+      <PreviewTextMessage templateName='test-template-sms' message={message} />
     );
 
-    expect(pageActionsMock.renderMarkdown).toHaveBeenCalledWith(message);
+    expect(renderMock).toHaveBeenCalledWith(message);
 
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'

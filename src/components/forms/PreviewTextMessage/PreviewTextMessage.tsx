@@ -4,13 +4,13 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
+import { renderMarkdown } from './server-actions';
 
 export function PreviewTextMessage({
   templateName,
   message,
-  pageActions,
 }: PreviewTextMessageProps) {
-  const html = pageActions.renderMarkdown(message);
+  const html = renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>
