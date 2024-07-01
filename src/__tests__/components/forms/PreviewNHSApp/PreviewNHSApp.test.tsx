@@ -1,15 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { mock } from 'jest-mock-extended';
-import { PreviewNHSApp, PreviewNHSAppActions } from '@forms/PreviewNHSApp';
+import { PreviewNHSApp, renderMarkdown } from '@forms/PreviewNHSApp';
+
+jest.mock('@forms/PreviewNHSApp/server-actions');
 
 describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewNHSApp
-        pageActions={new PreviewNHSAppActions()}
-        templateName='test-template-nhs app'
-        message='message'
-      />
+      <PreviewNHSApp templateName='test-template-nhs app' message='message' />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -18,7 +15,6 @@ describe('Preview nhs app form renders', () => {
   it('renders component correctly', () => {
     render(
       <PreviewNHSApp
-        pageActions={new PreviewNHSAppActions()}
         templateName='test-template-nhs app'
         message='nhs app message body'
       />
@@ -34,20 +30,17 @@ describe('Preview nhs app form renders', () => {
   });
 
   it('should should render message with markdown', () => {
-    const message = 'nhs app message body';
-    const pageActionsMock = mock<PreviewNHSAppActions>();
+    const renderMock = jest.mocked(renderMarkdown);
 
-    pageActionsMock.renderMarkdown.mockReturnValue('Rendered via MD');
+    renderMock.mockReturnValue('Rendered via MD');
+
+    const message = 'nhs app message body';
 
     render(
-      <PreviewNHSApp
-        pageActions={pageActionsMock}
-        templateName='test-template-nhs app'
-        message={message}
-      />
+      <PreviewNHSApp templateName='test-template-nhs app' message={message} />
     );
 
-    expect(pageActionsMock.renderMarkdown).toHaveBeenCalledWith(message);
+    expect(renderMock).toHaveBeenCalledWith(message);
 
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'

@@ -72,13 +72,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
               <div
                 class="preview__content"
                 data-testid="preview__content-0"
-              >
-                <p>
-                  message
-                </p>
-                
-
-              </div>
+              />
             </td>
           </tr>
         </tbody>

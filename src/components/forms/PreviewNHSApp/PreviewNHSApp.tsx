@@ -4,13 +4,10 @@ import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
+import { renderMarkdown } from './server-actions';
 
-export function PreviewNHSApp({
-  templateName,
-  message,
-  pageActions,
-}: PreviewNHSAppProps) {
-  const html = pageActions.renderMarkdown(message);
+export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
+  const html = renderMarkdown(message);
 
   return (
     <div className='nhsuk-grid-row'>

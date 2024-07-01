@@ -13,7 +13,7 @@ import {
   PreviewLetter,
   PreviewLetterActions,
 } from '../../components/forms/PreviewLetter';
-import { PreviewNHSApp, PreviewNHSAppActions } from '@forms/PreviewNHSApp';
+import { PreviewNHSApp } from '@forms/PreviewNHSApp';
 import { markdown } from '../../__tests__/components/forms/fixtures';
 
 export default function Page(context: unknown) {
@@ -48,11 +48,7 @@ export default function Page(context: unknown) {
   );
 
   const nhsApp = (
-    <PreviewNHSApp
-      templateName='template-1-nhsApp'
-      message={markdown}
-      pageActions={new PreviewNHSAppActions()}
-    />
+    <PreviewNHSApp templateName='template-1-nhsApp' message={markdown} />
   );
 
   switch (params) {
