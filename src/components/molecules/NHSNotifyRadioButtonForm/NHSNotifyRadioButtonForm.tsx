@@ -3,7 +3,7 @@ import { FormState } from '../../../utils/types';
 
 export type NHSNotifyRadioButtonFormProps = {
   radiosId: string;
-  action: string | ((payload: FormData) => void);
+  action: string | ((_payload: FormData) => void);
   state: FormState;
   pageHeading: string;
   options: {
