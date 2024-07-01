@@ -5,9 +5,20 @@
     "plugin:prettier/recommended",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["prettier", "jsx-a11y"],
+  "plugins": ["prettier", "jsx-a11y", "unused-imports"],
   "rules": {
     "prettier/prettier": "error",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
   }
 }

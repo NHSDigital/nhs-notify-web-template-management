@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { mock } from 'jest-mock-extended';
 import { PreviewTextMessage, renderMarkdown } from '@forms/PreviewTextMessage';
 
 jest.mock('@forms/PreviewTextMessage/server-actions');

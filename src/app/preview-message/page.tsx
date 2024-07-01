@@ -7,7 +7,7 @@ import { PreviewLetter } from '../../components/forms/PreviewLetter';
 import { PreviewNHSApp } from '@forms/PreviewNHSApp';
 import { markdown } from '../../__tests__/components/forms/fixtures';
 
-export default function Page(context: unknown) {
+export default function Page() {
   const searchParams = useSearchParams();
 
   const params = searchParams.get('form');

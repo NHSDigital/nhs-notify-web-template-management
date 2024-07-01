@@ -1,5 +1,3 @@
-import { PreviewType } from '../components/organisms/PreviewMessage';
-
 const headerComponent = {
   title: '',
   links: {

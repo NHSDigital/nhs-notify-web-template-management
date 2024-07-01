@@ -2,7 +2,6 @@
 import { useFormState } from 'react-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ChooseTemplatePage from '../../app/choose-template/page';
-import { mockDeep } from 'jest-mock-extended';
 
 jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),

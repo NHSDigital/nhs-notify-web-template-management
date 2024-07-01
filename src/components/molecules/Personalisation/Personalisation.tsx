@@ -1,4 +1,3 @@
-import concatClassNames from '@/src/utils/concatClassNames';
 import styles from './Personalisation.module.scss';
 import content from '@/src/content/content';
 import { Details } from 'nhsuk-react-components';

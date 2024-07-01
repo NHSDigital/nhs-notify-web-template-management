@@ -5,7 +5,6 @@ import { ActionLinkType } from './action-link.types';
 export function NHSNotifyActionLink({
   text,
   target,
-  className,
   dataTestId,
 }: ActionLinkType) {
   return (

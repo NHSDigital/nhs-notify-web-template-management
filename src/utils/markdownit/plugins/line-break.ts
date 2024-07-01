@@ -1,5 +1,4 @@
 import MarkdownIt from 'markdown-it';
-import { renderToString } from 'react-dom/server';
 
 export function lineBreak(md: MarkdownIt) {
   const defaultRender = md.renderer.rules.text!;
