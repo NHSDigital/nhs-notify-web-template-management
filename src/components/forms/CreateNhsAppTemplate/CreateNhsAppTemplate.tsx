@@ -1,4 +1,5 @@
 'use client'; // we need this to be a client component because nhsuk-react-components uses client-only react features
+import { CSSProperties, useEffect } from 'react';
 import {
   TextInput,
   HintText,
@@ -6,7 +7,6 @@ import {
   Label,
   Textarea,
   Button,
-  ChevronLeftIcon,
 } from 'nhsuk-react-components';
 import { FC, FormEventHandler, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';
@@ -14,7 +14,6 @@ import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/Z
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
-import { FormEvent } from 'react';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   state,
@@ -37,6 +36,11 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   const [templateMessage, setTemplateMessage] = useState(
     state.nhsAppTemplateMessage
   );
+  const [jsEnabledStyle, setJsEnabledStyle] = useState<CSSProperties | undefined>({ display: 'none' });
+
+  useEffect(() => {
+    setJsEnabledStyle(undefined);
+  }, []);
 
   const templateNameHandler: FormEventHandler<HTMLInputElement> = (event) => {
     const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
@@ -105,7 +109,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             )}
             errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
-          <p>
+          <p style={jsEnabledStyle}>
             {templateMessage.length}
             {characterCountText}
           </p>
