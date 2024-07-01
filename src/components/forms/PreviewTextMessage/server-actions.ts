@@ -1,5 +1,3 @@
-'use server';
-
 import { MarkdownItWrapper } from '@utils/markdownit';
 
 export function renderMarkdown(
