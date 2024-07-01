@@ -99,13 +99,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
               <div
                 class="preview__content"
                 data-testid="preview__content-1"
-              >
-                <p>
-                  message
-                </p>
-                
-
-              </div>
+              />
             </td>
           </tr>
         </tbody>

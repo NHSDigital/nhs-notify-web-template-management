@@ -1,9 +1,9 @@
 import { mockDeep } from 'jest-mock-extended';
-import { PreviewEmailActions } from '@forms/PreviewEmail';
+import { renderMarkdown } from '@forms/PreviewEmail';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 
-describe('PreviewEmailActions', () => {
+describe('Preview email server actions', () => {
   it('should enable email markdown rules', () => {
     const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
@@ -11,9 +11,7 @@ describe('PreviewEmailActions', () => {
       markdownItWrapperMock
     );
 
-    new PreviewEmailActions({
-      markdownClient: markdownItWrapperMock,
-    });
+    renderMarkdown('message', markdownItWrapperMock);
 
     expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
     expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
@@ -25,10 +23,6 @@ describe('PreviewEmailActions', () => {
   });
 
   it('should only process email markdown rules', () => {
-    const actions = new PreviewEmailActions();
-
-    const html = actions.renderMarkdown(markdown);
-
-    expect(html).toMatchSnapshot();
+    expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
 });

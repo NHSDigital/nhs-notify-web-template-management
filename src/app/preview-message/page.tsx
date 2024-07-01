@@ -5,10 +5,7 @@ import {
   PreviewTextMessage,
   PreviewTextMessageActions,
 } from '@forms/PreviewTextMessage';
-import {
-  PreviewEmail,
-  PreviewEmailActions,
-} from '../../components/forms/PreviewEmail';
+import { PreviewEmail } from '../../components/forms/PreviewEmail';
 import {
   PreviewLetter,
   PreviewLetterActions,
@@ -31,7 +28,6 @@ export default function Page(context: unknown) {
 
   const email = (
     <PreviewEmail
-      pageActions={new PreviewEmailActions()}
       templateName='template-1-email'
       message={markdown}
       subject='This is the subject'

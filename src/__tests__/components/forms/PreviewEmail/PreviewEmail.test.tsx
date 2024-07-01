@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { mock } from 'jest-mock-extended';
-import { PreviewEmail, PreviewEmailActions } from '@forms/PreviewEmail';
+import { PreviewEmail, renderMarkdown } from '@forms/PreviewEmail';
+
+jest.mock('@forms/PreviewEmail/server-actions');
 
 describe('Preview email form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <PreviewEmail
-        pageActions={new PreviewEmailActions()}
         templateName='test-template-email'
         subject='email subject'
         message='message'
@@ -19,7 +19,6 @@ describe('Preview email form renders', () => {
   it('renders component correctly', () => {
     render(
       <PreviewEmail
-        pageActions={new PreviewEmailActions()}
         templateName='test-template-email'
         subject='email subject'
         message='email message body'
@@ -40,21 +39,21 @@ describe('Preview email form renders', () => {
   });
 
   it('should should render message with markdown', () => {
-    const message = 'email message body';
-    const pageActionsMock = mock<PreviewEmailActions>();
+    const renderMock = jest.mocked(renderMarkdown);
 
-    pageActionsMock.renderMarkdown.mockReturnValue('Rendered via MD');
+    renderMock.mockReturnValue('Rendered via MD');
+
+    const message = 'email message body';
 
     render(
       <PreviewEmail
-        pageActions={pageActionsMock}
         templateName='test-template-email'
         subject='email subject'
         message={message}
       />
     );
 
-    expect(pageActionsMock.renderMarkdown).toHaveBeenCalledWith(message);
+    expect(renderMock).toHaveBeenCalledWith(message);
 
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'
