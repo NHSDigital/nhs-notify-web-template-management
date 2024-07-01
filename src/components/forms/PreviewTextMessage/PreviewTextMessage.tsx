@@ -23,13 +23,7 @@ export function PreviewTextMessage({
         <PreviewMessage
           sectionHeading={previewTextMessageFormComponent.sectionHeader}
           templateName={templateName}
-          details={{
-            heading: 'Who your text message will be sent from',
-            text: [
-              'Set your text message sender name during onboarding.',
-              'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
-            ],
-          }}
+          details={previewTextMessageFormComponent.details}
           PreviewComponent={<Preview.TextMessage message={html} />}
           FormOptionsComponent={
             <Radios id='what-would-you-like-to-do-next' name='choice'>
