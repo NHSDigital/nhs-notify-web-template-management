@@ -36,7 +36,9 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   const [templateMessage, setTemplateMessage] = useState(
     state.nhsAppTemplateMessage
   );
-  const [jsEnabledStyle, setJsEnabledStyle] = useState<CSSProperties | undefined>({ display: 'none' });
+  const [jsEnabledStyle, setJsEnabledStyle] = useState<
+    CSSProperties | undefined
+  >({ display: 'none' });
 
   useEffect(() => {
     setJsEnabledStyle(undefined);

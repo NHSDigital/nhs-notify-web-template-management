@@ -146,7 +146,9 @@ exports[`renders page 1`] = `
             rows="10"
           />
         </div>
-        <p>
+        <p
+          style=""
+        >
           0 of 5000 characters
         </p>
         <button
@@ -351,7 +353,9 @@ exports[`renders page one error 1`] = `
             rows="10"
           />
         </div>
-        <p>
+        <p
+          style=""
+        >
           0 of 5000 characters
         </p>
         <button
@@ -569,7 +573,9 @@ exports[`renders page with multiple errors 1`] = `
             rows="10"
           />
         </div>
-        <p>
+        <p
+          style=""
+        >
           0 of 5000 characters
         </p>
         <button
@@ -739,7 +745,9 @@ exports[`renders page with preloaded field values 1`] = `
             template-message
           </textarea>
         </div>
-        <p>
+        <p
+          style=""
+        >
           16 of 5000 characters
         </p>
         <button
