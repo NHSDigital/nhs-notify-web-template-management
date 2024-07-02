@@ -7,6 +7,7 @@ import {
   Label,
   Textarea,
   Button,
+  Fieldset,
 } from 'nhsuk-react-components';
 import { FC, FormEventHandler, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';
@@ -56,6 +57,10 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     setTemplateMessage(typedEventTarget.value);
   };
 
+  const templateNameError = state.validationError?.fieldErrors.nhsAppTemplateName?.join(
+    ', '
+  );
+
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -75,30 +80,30 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {pageHeading}
           </h1>
-          <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
-          <HintText>{templateNameHintText}</HintText>
-          <Details>
-            <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
-            <Details.Text>
-              <p>{templateNameDetailsOpeningParagraph}</p>
-              <p>{templateNameDetailsListHeader}</p>
-              <ul>
-                {templateNameDetailsList.map((listItem, index) => (
-                  <li key={`list-item-${index}`}>{listItem}</li>
-                ))}
-              </ul>
-              <p>{templateNameDetailsExample}</p>
-            </Details.Text>
-          </Details>
-          <TextInput
-            id='nhsAppTemplateName'
-            onChange={templateNameHandler}
-            value={templateName}
-            error={state.validationError?.fieldErrors.nhsAppTemplateName?.join(
-              ', '
-            )}
-            errorProps={{ id: 'nhsAppTemplateName-error-message' }}
-          />
+          <div className={templateNameError && 'nhsuk-form-group--error'}>
+            <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
+            <HintText>{templateNameHintText}</HintText>
+            <Details>
+              <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
+              <Details.Text>
+                <p>{templateNameDetailsOpeningParagraph}</p>
+                <p>{templateNameDetailsListHeader}</p>
+                <ul>
+                  {templateNameDetailsList.map((listItem, index) => (
+                    <li key={`list-item-${index}`}>{listItem}</li>
+                  ))}
+                </ul>
+                <p>{templateNameDetailsExample}</p>
+              </Details.Text>
+            </Details>
+            <TextInput
+              id='nhsAppTemplateName'
+              onChange={templateNameHandler}
+              value={templateName}
+              error={templateNameError}
+              errorProps={{ id: 'nhsAppTemplateName-error-message' }}
+            />
+          </div>
           <Textarea
             label='Message'
             id='nhsAppTemplateMessage'

@@ -12,7 +12,7 @@ export const NHSNotifyBackButton = ({
   action,
   formId,
 }: PropsWithChildren<NHSNotifyBackButtonProps>) => (
-  <div className='nhsuk-back-link nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4'>
+  <div className='nhsuk-back-link nhsuk-u-margin-bottom-4'>
     <NHSNotifyFormWrapper action={action} formId={formId}>
       {children}
       <button type='submit' className='nhsuk-back-link__link'>
