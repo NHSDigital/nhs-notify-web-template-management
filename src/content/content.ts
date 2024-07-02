@@ -48,7 +48,7 @@ const personalisationComponent = {
 
 const messageFormattingComponent = {
   header: 'Message formatting',
-  LetterHeader: 'Body text formatting',
+  letterHeader: 'Body text formatting',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:

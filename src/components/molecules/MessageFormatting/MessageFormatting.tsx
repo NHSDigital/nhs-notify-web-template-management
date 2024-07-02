@@ -15,7 +15,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
         data-testid='personalisation-header'
       >
         {template === TemplateFormatText.LETTER
-          ? messageFormattingContent.LetterHeader
+          ? messageFormattingContent.letterHeader
           : messageFormattingContent.header}
       </h2>
 
