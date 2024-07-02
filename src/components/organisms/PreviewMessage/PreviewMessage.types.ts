@@ -1,5 +1,5 @@
-import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview/Preview';
+import { NHSNotifyRadioButtonFormProps } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 
 export type PreviewMessageProps = {
   sectionHeading: string;
@@ -8,6 +8,8 @@ export type PreviewMessageProps = {
     heading: string;
     text: string[];
   };
+  form: {
+    errorHeading: string;
+  } & NHSNotifyRadioButtonFormProps;
   PreviewComponent: React.ReactElement<typeof Preview>;
-  FormOptionsComponent: React.ReactElement<typeof Radios>;
 };

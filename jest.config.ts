@@ -45,6 +45,10 @@ const config: Config = {
     'container.tsx',
     '.snap',
     'app/preview-message',
+    'app/create-template/email',
+    'app/create-template/letter',
+    'app/create-template/sms',
+    'app/create-template/nhs-app',
   ],
 
   // Use this configuration option to add custom reporters to Jest

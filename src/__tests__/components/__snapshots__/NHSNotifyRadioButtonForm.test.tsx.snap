@@ -13,6 +13,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          data-testid="radios-id-form__legend"
         >
           <h1
             class="nhsuk-fieldset__heading"
@@ -107,6 +108,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          data-testid="radios-id-form__legend"
         >
           <h1
             class="nhsuk-fieldset__heading"

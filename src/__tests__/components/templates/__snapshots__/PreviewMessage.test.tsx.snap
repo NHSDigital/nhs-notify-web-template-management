@@ -36,22 +36,80 @@ exports[`PreviewMessage component matches snapshot 1`] = `
     </div>
   </details>
   Preview
-  <form>
-    <fieldset
-      class="nhsuk-fieldset"
+  <form
+    action=""
+  >
+    <div
+      class="nhsuk-form-group"
     >
-      <legend
-        class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-        data-testid="preview-message-form__legend"
+      <fieldset
+        class="nhsuk-fieldset"
       >
-        What would you like to do next with this template?
-      </legend>
-      Form
-    </fieldset>
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          data-testid="preview-example-form__legend"
+        >
+          <h1
+            class="nhsuk-fieldset__heading"
+          >
+            Example heading
+          </h1>
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="preview-example-1--label"
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-1"
+                id="preview-example-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="preview-example-2--label"
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-2"
+                id="preview-example-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
     <button
       aria-disabled="false"
       class="nhsuk-button"
-      data-testid="preview-message-form__button"
+      data-testid="submit-button"
       type="submit"
     >
       Continue

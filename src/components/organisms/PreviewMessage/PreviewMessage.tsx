@@ -1,15 +1,15 @@
 'use client';
 
-import { Button, Details, Fieldset, Form } from 'nhsuk-react-components';
+import { Details } from 'nhsuk-react-components';
 import { PreviewMessageProps } from './PreviewMessage.types';
-import content from '@/src/content/content';
+import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 
 export function PreviewMessage(props: PreviewMessageProps) {
-  const {
-    components: { previewMessageComponent },
-  } = content;
+  const { form } = props;
   return (
     <>
+      <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
       <h1 data-testid='preview-message__heading'>
         <span
           data-testid='preview-message__heading-caption'
@@ -30,17 +30,15 @@ export function PreviewMessage(props: PreviewMessageProps) {
         </Details.Text>
       </Details>
       {props.PreviewComponent}
-      <Form>
-        <Fieldset>
-          <Fieldset.Legend data-testid='preview-message-form__legend' size='m'>
-            {previewMessageComponent.legendText}
-          </Fieldset.Legend>
-          {props.FormOptionsComponent}
-        </Fieldset>
-        <Button data-testid='preview-message-form__button'>
-          {previewMessageComponent.buttonText}
-        </Button>
-      </Form>
+      <NHSNotifyRadioButtonForm
+        radiosId={form.radiosId}
+        action={form.action}
+        state={form.state}
+        pageHeading={form.pageHeading}
+        options={form.options}
+        buttonText={form.buttonText}
+        legend={form.legend}
+      />
     </>
   );
 }

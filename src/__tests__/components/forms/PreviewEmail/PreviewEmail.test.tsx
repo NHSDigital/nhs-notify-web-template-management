@@ -25,17 +25,20 @@ describe('Preview email form renders', () => {
       />
     );
 
-    expect(
-      screen.getByTestId('preview-email-form__radios-edit')
-    ).toHaveAttribute('value', 'edit');
+    expect(screen.getByTestId('email-edit-radio')).toHaveAttribute(
+      'value',
+      'email-edit'
+    );
 
-    expect(
-      screen.getByTestId('preview-email-form__radios-send')
-    ).toHaveAttribute('value', 'send');
+    expect(screen.getByTestId('email-send-radio')).toHaveAttribute(
+      'value',
+      'email-send'
+    );
 
-    expect(
-      screen.getByTestId('preview-email-form__radios-submit')
-    ).toHaveAttribute('value', 'submit');
+    expect(screen.getByTestId('email-submit-radio')).toHaveAttribute(
+      'value',
+      'email-submit'
+    );
   });
 
   it('should should render message with markdown', () => {

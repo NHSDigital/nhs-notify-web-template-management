@@ -98,7 +98,9 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       </tr>
     </tbody>
   </table>
-  <form>
+  <form
+    action=""
+  >
     <div
       class="nhsuk-form-group"
     >
@@ -107,7 +109,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-          data-testid="preview-message-form__legend"
+          data-testid="preview-letter-form__legend"
         >
           What would you like to do next with this template?
         </legend>
@@ -116,24 +118,24 @@ exports[`Preview letter form renders matches snapshot 1`] = `
         >
           <div
             class="nhsuk-radios"
-            id="what-would-you-like-to-do-next"
+            id="preview-letter"
           >
             <div
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="what-would-you-like-to-do-next-1--label"
+                aria-labelledby="preview-letter-1--label"
                 class="nhsuk-radios__input"
-                data-testid="preview-letter-form__radios-edit"
-                id="what-would-you-like-to-do-next-1"
-                name="choice"
+                data-testid="letter-edit-radio"
+                id="preview-letter-1"
+                name="preview-letter"
                 type="radio"
-                value="edit"
+                value="letter-edit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="what-would-you-like-to-do-next-1"
-                id="what-would-you-like-to-do-next-1--label"
+                for="preview-letter-1"
+                id="preview-letter-1--label"
               >
                 Edit
               </label>
@@ -142,18 +144,18 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="what-would-you-like-to-do-next-2--label"
+                aria-labelledby="preview-letter-2--label"
                 class="nhsuk-radios__input"
-                data-testid="preview-letter-form__radios-preview"
-                id="what-would-you-like-to-do-next-2"
-                name="choice"
+                data-testid="letter-preview-radio"
+                id="preview-letter-2"
+                name="preview-letter"
                 type="radio"
-                value="preview"
+                value="letter-preview"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="what-would-you-like-to-do-next-2"
-                id="what-would-you-like-to-do-next-2--label"
+                for="preview-letter-2"
+                id="preview-letter-2--label"
               >
                 Preview (PDF)
               </label>
@@ -162,18 +164,18 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="what-would-you-like-to-do-next-3--label"
+                aria-labelledby="preview-letter-3--label"
                 class="nhsuk-radios__input"
-                data-testid="preview-letter-form__radios-submit"
-                id="what-would-you-like-to-do-next-3"
-                name="choice"
+                data-testid="letter-submit-radio"
+                id="preview-letter-3"
+                name="preview-letter"
                 type="radio"
-                value="submit"
+                value="letter-submit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="what-would-you-like-to-do-next-3"
-                id="what-would-you-like-to-do-next-3--label"
+                for="preview-letter-3"
+                id="preview-letter-3--label"
               >
                 Submit
               </label>
@@ -185,7 +187,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
     <button
       aria-disabled="false"
       class="nhsuk-button"
-      data-testid="preview-message-form__button"
+      data-testid="submit-button"
       type="submit"
     >
       Continue

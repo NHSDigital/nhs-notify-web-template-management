@@ -8,8 +8,19 @@ describe('PreviewMessage component', () => {
         sectionHeading='NHS app message template'
         templateName='Example NHS APP template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
+        form={{
+          radiosId: 'preview-example',
+          errorHeading: '',
+          action: '',
+          state: { formErrors: [], fieldErrors: {} },
+          pageHeading: 'Example heading',
+          options: [
+            { id: 'option-1', text: 'option 1' },
+            { id: 'option-2', text: 'option 2' },
+          ],
+          buttonText: 'Continue',
+        }}
         PreviewComponent={<>Preview</>}
-        FormOptionsComponent={<>Form</>}
       />
     );
 
@@ -22,8 +33,19 @@ describe('PreviewMessage component', () => {
         sectionHeading='Email template'
         templateName='Example template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
+        form={{
+          radiosId: 'preview-example',
+          errorHeading: '',
+          action: '',
+          state: { formErrors: [], fieldErrors: {} },
+          pageHeading: 'Example heading',
+          options: [
+            { id: 'option-1', text: 'option 1' },
+            { id: 'option-2', text: 'option 2' },
+          ],
+          buttonText: 'Continue',
+        }}
         PreviewComponent={<>Preview</>}
-        FormOptionsComponent={<>Form</>}
       />
     );
 
@@ -44,11 +66,9 @@ describe('PreviewMessage component', () => {
     ).toHaveTextContent('Details text');
 
     expect(
-      screen.getByTestId('preview-message-form__legend')
-    ).toHaveTextContent('What would you like to do next with this template?');
+      screen.getByTestId('preview-example-form__legend')
+    ).toHaveTextContent('Example heading');
 
-    expect(
-      screen.getByTestId('preview-message-form__button')
-    ).toHaveTextContent('Continue');
+    expect(screen.getByTestId('submit-button')).toHaveTextContent('Continue');
   });
 });

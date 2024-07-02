@@ -1,7 +1,8 @@
 import { mockDeep } from 'jest-mock-extended';
-import { renderMarkdown } from '@forms/PreviewLetter';
+import { handleForm, renderMarkdown } from '@forms/PreviewLetter';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
+import { FormState } from '@utils/types';
 
 describe('PreviewLetterActions', () => {
   it('should enable letter markdown rules', () => {
@@ -28,5 +29,18 @@ describe('PreviewLetterActions', () => {
 
   it('should only process letter markdown rules', () => {
     expect(renderMarkdown(markdown)).toMatchSnapshot();
+  });
+
+  it('should handle form', () => {
+    const state: FormState = {
+      formErrors: [],
+      fieldErrors: {},
+    };
+
+    const form = mockDeep<FormData>();
+
+    const response = handleForm(state, form);
+
+    expect(response).toEqual(state);
   });
 });

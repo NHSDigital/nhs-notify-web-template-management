@@ -77,7 +77,9 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
           </tr>
         </tbody>
       </table>
-      <form>
+      <form
+        action=""
+      >
         <div
           class="nhsuk-form-group"
         >
@@ -86,7 +88,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
           >
             <legend
               class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-              data-testid="preview-message-form__legend"
+              data-testid="preview-nhs-app-form__legend"
             >
               What would you like to do next with this template?
             </legend>
@@ -95,24 +97,24 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
             >
               <div
                 class="nhsuk-radios"
-                id="what-would-you-like-to-do-next"
+                id="preview-nhs-app"
               >
                 <div
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="what-would-you-like-to-do-next-1--label"
+                    aria-labelledby="preview-nhs-app-1--label"
                     class="nhsuk-radios__input"
-                    data-testid="preview-nhs-app-form__radios-edit"
-                    id="what-would-you-like-to-do-next-1"
-                    name="choice"
+                    data-testid="nhsapp-edit-radio"
+                    id="preview-nhs-app-1"
+                    name="preview-nhs-app"
                     type="radio"
-                    value="edit"
+                    value="nhsapp-edit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="what-would-you-like-to-do-next-1"
-                    id="what-would-you-like-to-do-next-1--label"
+                    for="preview-nhs-app-1"
+                    id="preview-nhs-app-1--label"
                   >
                     Edit
                   </label>
@@ -121,18 +123,18 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="what-would-you-like-to-do-next-2--label"
+                    aria-labelledby="preview-nhs-app-2--label"
                     class="nhsuk-radios__input"
-                    data-testid="preview-nhs-app-form__radios-submit"
-                    id="what-would-you-like-to-do-next-2"
-                    name="choice"
+                    data-testid="nhsapp-submit-radio"
+                    id="preview-nhs-app-2"
+                    name="preview-nhs-app"
                     type="radio"
-                    value="submit"
+                    value="nhsapp-submit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="what-would-you-like-to-do-next-2"
-                    id="what-would-you-like-to-do-next-2--label"
+                    for="preview-nhs-app-2"
+                    id="preview-nhs-app-2--label"
                   >
                     Submit
                   </label>
@@ -144,7 +146,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="preview-message-form__button"
+          data-testid="submit-button"
           type="submit"
         >
           Continue

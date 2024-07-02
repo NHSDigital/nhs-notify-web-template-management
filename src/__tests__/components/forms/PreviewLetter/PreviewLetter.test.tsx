@@ -25,17 +25,20 @@ describe('Preview letter form renders', () => {
       />
     );
 
-    expect(
-      screen.getByTestId('preview-letter-form__radios-edit')
-    ).toHaveAttribute('value', 'edit');
+    expect(screen.getByTestId('letter-edit-radio')).toHaveAttribute(
+      'value',
+      'letter-edit'
+    );
 
-    expect(
-      screen.getByTestId('preview-letter-form__radios-preview')
-    ).toHaveAttribute('value', 'preview');
+    expect(screen.getByTestId('letter-preview-radio')).toHaveAttribute(
+      'value',
+      'letter-preview'
+    );
 
-    expect(
-      screen.getByTestId('preview-letter-form__radios-submit')
-    ).toHaveAttribute('value', 'submit');
+    expect(screen.getByTestId('letter-submit-radio')).toHaveAttribute(
+      'value',
+      'letter-submit'
+    );
   });
 
   it('should should render message with markdown', () => {

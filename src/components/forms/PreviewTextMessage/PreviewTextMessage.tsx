@@ -1,6 +1,5 @@
 'use client';
 
-import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewTextMessageProps } from './PreviewTextMessage.types';
@@ -24,20 +23,20 @@ export function PreviewTextMessage({
           sectionHeading={previewTextMessageFormComponent.sectionHeader}
           templateName={templateName}
           details={previewTextMessageFormComponent.details}
+          form={{
+            radiosId: 'preview-sms',
+            errorHeading: '',
+            pageHeading: previewTextMessageFormComponent.form.heading,
+            action: '',
+            state: { formErrors: [], fieldErrors: {} },
+            options: previewTextMessageFormComponent.form.options,
+            legend: {
+              isPgeHeading: false,
+              size: 'm',
+            },
+            buttonText: 'Continue',
+          }}
           PreviewComponent={<Preview.TextMessage message={html} />}
-          FormOptionsComponent={
-            <Radios id='what-would-you-like-to-do-next' name='choice'>
-              {previewTextMessageFormComponent.options.map((item, index) => (
-                <Radios.Radio
-                  data-testid={`preview-sms-form__radios-${item.id}`}
-                  key={`preview-${item.id}-form__radios-edit-${item.id}-${index}`}
-                  value={item.id}
-                >
-                  {item.text}
-                </Radios.Radio>
-              ))}
-            </Radios>
-          }
         />
       </div>
     </div>

@@ -20,19 +20,20 @@ describe('Preview sms form renders', () => {
       />
     );
 
-    expect(screen.getByTestId('preview-sms-form__radios-edit')).toHaveAttribute(
+    expect(screen.getByTestId('sms-edit-radio')).toHaveAttribute(
       'value',
-      'edit'
+      'sms-edit'
     );
 
-    expect(screen.getByTestId('preview-sms-form__radios-send')).toHaveAttribute(
+    expect(screen.getByTestId('sms-send-radio')).toHaveAttribute(
       'value',
-      'send'
+      'sms-send'
     );
 
-    expect(
-      screen.getByTestId('preview-sms-form__radios-submit')
-    ).toHaveAttribute('value', 'submit');
+    expect(screen.getByTestId('sms-submit-radio')).toHaveAttribute(
+      'value',
+      'sms-submit'
+    );
   });
 
   it('should should render message with markdown', () => {

@@ -20,13 +20,15 @@ describe('Preview nhs app form renders', () => {
       />
     );
 
-    expect(
-      screen.getByTestId('preview-nhs-app-form__radios-edit')
-    ).toHaveAttribute('value', 'edit');
+    expect(screen.getByTestId('nhsapp-edit-radio')).toHaveAttribute(
+      'value',
+      'nhsapp-edit'
+    );
 
-    expect(
-      screen.getByTestId('preview-nhs-app-form__radios-submit')
-    ).toHaveAttribute('value', 'submit');
+    expect(screen.getByTestId('nhsapp-submit-radio')).toHaveAttribute(
+      'value',
+      'nhsapp-submit'
+    );
   });
 
   it('should should render message with markdown', () => {

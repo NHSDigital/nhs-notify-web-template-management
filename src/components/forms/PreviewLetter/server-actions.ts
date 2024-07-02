@@ -1,3 +1,4 @@
+import { FormState } from '@/src/utils/types';
 import { MarkdownItWrapper } from '@utils/markdownit';
 
 export function renderMarkdown(
@@ -10,4 +11,8 @@ export function renderMarkdown(
     .enable(['heading', 'list', 'emphasis']);
 
   return markdown.render(value);
+}
+
+export function handleForm(state: FormState, _form: FormData) {
+  return { ...state };
 }

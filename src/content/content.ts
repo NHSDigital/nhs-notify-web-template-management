@@ -87,11 +87,14 @@ const previewEmailFormComponent = {
       'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
     ],
   },
-  options: [
-    { id: 'edit', text: 'Edit' },
-    { id: 'send', text: 'Send a test email' },
-    { id: 'submit', text: 'Submit' },
-  ],
+  form: {
+    heading: 'What would you like to do next with this template?',
+    options: [
+      { id: 'email-edit', text: 'Edit' },
+      { id: 'email-send', text: 'Send a test email' },
+      { id: 'email-submit', text: 'Submit' },
+    ],
+  },
 };
 
 const previewLetterFormComponent = {
@@ -103,11 +106,14 @@ const previewLetterFormComponent = {
       'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
     ],
   },
-  options: [
-    { id: 'edit', text: 'Edit' },
-    { id: 'preview', text: 'Preview (PDF)' },
-    { id: 'submit', text: 'Submit' },
-  ],
+  form: {
+    heading: 'What would you like to do next with this template?',
+    options: [
+      { id: 'letter-edit', text: 'Edit' },
+      { id: 'letter-preview', text: 'Preview (PDF)' },
+      { id: 'letter-submit', text: 'Submit' },
+    ],
+  },
 };
 
 const previewNHSAppFormComponent = {
@@ -119,10 +125,13 @@ const previewNHSAppFormComponent = {
       'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
     ],
   },
-  options: [
-    { id: 'edit', text: 'Edit' },
-    { id: 'submit', text: 'Submit' },
-  ],
+  form: {
+    heading: 'What would you like to do next with this template?',
+    options: [
+      { id: 'nhsapp-edit', text: 'Edit' },
+      { id: 'nhsapp-submit', text: 'Submit' },
+    ],
+  },
 };
 
 const previewTextMessageFormComponent = {
@@ -134,11 +143,14 @@ const previewTextMessageFormComponent = {
       'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
     ],
   },
-  options: [
-    { id: 'edit', text: 'Edit' },
-    { id: 'send', text: 'Send a test text message' },
-    { id: 'submit', text: 'Submit' },
-  ],
+  form: {
+    heading: 'What would you like to do next with this template?',
+    options: [
+      { id: 'sms-edit', text: 'Edit' },
+      { id: 'sms-send', text: 'Send a test text message' },
+      { id: 'sms-submit', text: 'Submit' },
+    ],
+  },
 };
 
 const previewMessageComponent = {

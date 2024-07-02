@@ -11,6 +11,10 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
   }[];
   buttonText: string;
+  legend?: {
+    isPgeHeading: boolean;
+    size: 'l' | 'm' | 's';
+  };
 };
 
 export const NHSNotifyRadioButtonForm = ({
@@ -20,10 +24,15 @@ export const NHSNotifyRadioButtonForm = ({
   pageHeading,
   options,
   buttonText,
+  legend = { isPgeHeading: true, size: 'l' },
 }: NHSNotifyRadioButtonFormProps) => (
   <form action={action}>
     <Fieldset>
-      <Fieldset.Legend isPageHeading={true} size='l'>
+      <Fieldset.Legend
+        data-testid={`${radiosId}-form__legend`}
+        isPageHeading={legend.isPgeHeading}
+        size={legend.size}
+      >
         {pageHeading}
       </Fieldset.Legend>
       <Radios

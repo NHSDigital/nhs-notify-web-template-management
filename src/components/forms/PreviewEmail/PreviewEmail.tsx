@@ -1,6 +1,5 @@
 'use client';
 
-import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewEmailProps } from './PreviewEmail.types';
@@ -25,24 +24,20 @@ export function PreviewEmail({
           sectionHeading={previewEmailFormComponent.sectionHeader}
           templateName={templateName}
           details={previewEmailFormComponent.details}
+          form={{
+            radiosId: 'preview-email',
+            errorHeading: '',
+            action: '',
+            state: { formErrors: [], fieldErrors: {} },
+            pageHeading: previewEmailFormComponent.form.heading,
+            options: previewEmailFormComponent.form.options,
+            legend: {
+              isPgeHeading: false,
+              size: 'm',
+            },
+            buttonText: 'Continue',
+          }}
           PreviewComponent={<Preview.Email subject={subject} value={html} />}
-          FormOptionsComponent={
-            <Radios
-              data-testid='preview-email-form__radios'
-              id='what-would-you-like-to-do-next'
-              name='choice'
-            >
-              {previewEmailFormComponent.options.map((item, index) => (
-                <Radios.Radio
-                  data-testid={`preview-email-form__radios-${item.id}`}
-                  key={`preview-email-form__radios-${item.id}-${index}`}
-                  value={item.id}
-                >
-                  {item.text}
-                </Radios.Radio>
-              ))}
-            </Radios>
-          }
         />
       </div>
     </div>

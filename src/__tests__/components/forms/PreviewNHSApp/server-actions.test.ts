@@ -1,7 +1,8 @@
 import { mockDeep } from 'jest-mock-extended';
-import { renderMarkdown } from '@forms/PreviewNHSApp';
+import { handleForm, renderMarkdown } from '@forms/PreviewNHSApp';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
+import { FormState } from '@utils/types';
 
 describe('PreviewNHSAppActions', () => {
   it('should enable nhs app markdown rules', () => {
@@ -24,5 +25,18 @@ describe('PreviewNHSAppActions', () => {
 
   it('should only process nhs app markdown rules', () => {
     expect(renderMarkdown(markdown)).toMatchSnapshot();
+  });
+
+  it('should handle form', () => {
+    const state: FormState = {
+      formErrors: [],
+      fieldErrors: {},
+    };
+
+    const form = mockDeep<FormData>();
+
+    const response = handleForm(state, form);
+
+    expect(response).toEqual(state);
   });
 });

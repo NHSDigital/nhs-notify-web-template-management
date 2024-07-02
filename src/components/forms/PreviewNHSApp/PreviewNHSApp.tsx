@@ -1,6 +1,5 @@
 'use client';
 
-import { Radios } from 'nhsuk-react-components';
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
 import { PreviewNHSAppProps } from './PreviewNHSApp.types';
@@ -21,20 +20,20 @@ export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
           sectionHeading={previewNHSAppFormComponent.sectionHeader}
           templateName={templateName}
           details={previewNHSAppFormComponent.details}
+          form={{
+            radiosId: 'preview-nhs-app',
+            errorHeading: '',
+            action: '',
+            state: { formErrors: [], fieldErrors: {} },
+            pageHeading: previewNHSAppFormComponent.form.heading,
+            options: previewNHSAppFormComponent.form.options,
+            legend: {
+              isPgeHeading: false,
+              size: 'm',
+            },
+            buttonText: 'Continue',
+          }}
           PreviewComponent={<Preview.NHSApp message={html} />}
-          FormOptionsComponent={
-            <Radios id='what-would-you-like-to-do-next' name='choice'>
-              {previewNHSAppFormComponent.options.map((item, index) => (
-                <Radios.Radio
-                  data-testid={`preview-nhs-app-form__radios-${item.id}`}
-                  key={`preview-nhs-app-form__radios-edit-${item.id}-${index}`}
-                  value={item.id}
-                >
-                  {item.text}
-                </Radios.Radio>
-              ))}
-            </Radios>
-          }
         />
       </div>
     </div>
