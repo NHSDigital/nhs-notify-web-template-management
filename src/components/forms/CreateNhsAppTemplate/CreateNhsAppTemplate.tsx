@@ -57,9 +57,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     setTemplateMessage(typedEventTarget.value);
   };
 
-  const templateNameError = state.validationError?.fieldErrors.nhsAppTemplateName?.join(
-    ', '
-  );
+  const templateNameError =
+    state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
 
   return (
     <div className='nhsuk-grid-row'>
