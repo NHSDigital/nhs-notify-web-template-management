@@ -33,11 +33,7 @@ const CreateTemplate = () => {
 
   const PageComponent = pages[page];
 
-  return (
-    <>
-      <PageComponent state={state} action={action} />
-    </>
-  );
+  return <PageComponent state={state} action={action} />;
 };
 
 export default CreateTemplate;
