@@ -21,7 +21,7 @@ const footerComponent = {
 const personalisationComponent = {
   header: 'Personalisation',
   details: {
-    title: 'Personalisation details',
+    title: 'Personalisation fields',
     text1:
       'Use double brackets to add a personalisation field to your content. For example:',
     codeBlockText: 'Hello ((firstName)), your NHS number is ((nhsNumber))',
@@ -201,7 +201,7 @@ const homePage = {
     'You can access this tool by signing in with your NHSmail account or Care Identity.',
   linkButton: {
     text: 'Start now',
-    url: '/choose-template',
+    url: '/create-template',
   },
 };
 
@@ -224,11 +224,32 @@ export const chooseTemplatePageContent = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   options: [
-    { id: 'nhs-app', text: 'NHS App message' },
-    { id: 'email', text: 'Email' },
-    { id: 'sms', text: 'Text message (SMS)' },
-    { id: 'letter', text: 'Letter' },
+    { id: 'create-nhs-app-template', text: 'NHS App message' },
+    { id: 'create-email-template', text: 'Email' },
+    { id: 'create-sms-template', text: 'Text message (SMS)' },
+    { id: 'create-letter-template', text: 'Letter' },
   ],
+  buttonText: 'Continue',
+};
+
+export const createNhsAppTemplatePageContent = {
+  pageHeading: 'Create NHS App message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
+  templateNameDetailsSummary: 'Naming your templates',
+  templateNameDetailsOpeningParagraph:
+    'You should name your templates in a way that works best for your service or organisation.',
+  templateNameDetailsListHeader: 'Common template names include the:',
+  templateNameDetailsList: [
+    'message channel it uses',
+    'subject or reason for the message',
+    'intended audience for the template',
+    'version number of the template',
+  ],
+  templateNameDetailsExample:
+    "For example, 'Email - covid19 2023 - over 65s - version 3'",
+  characterCountText: ' of 5000 characters',
   buttonText: 'Continue',
 };
 
