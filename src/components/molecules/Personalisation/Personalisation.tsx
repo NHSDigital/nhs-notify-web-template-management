@@ -7,10 +7,7 @@ const personalisationContent = content.components.personalisationComponent;
 export function Personalisation() {
   return (
     <>
-      <h2
-        className='nhsuk-heading-m nhsuk-u-margin-top-4'
-        data-testid='personalisation-header'
-      >
+      <h2 className='nhsuk-heading-m' data-testid='personalisation-header'>
         {personalisationContent.header}
       </h2>
       <Details data-testid='personalisation-details'>

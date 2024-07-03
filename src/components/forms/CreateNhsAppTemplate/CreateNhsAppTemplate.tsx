@@ -15,6 +15,8 @@ import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/Z
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { Personalisation } from '../../molecules/Personalisation/Personalisation';
+import { MessageFormatting } from '../../molecules/MessageFormatting/MessageFormatting';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   state,
@@ -62,18 +64,18 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
 
   return (
     <div className='nhsuk-grid-row'>
+      <NHSNotifyBackButton
+        formId='create-nhs-app-template-back'
+        action={action}
+      >
+        <input type='hidden' name='nhsAppTemplateName' value={templateName} />
+        <input
+          type='hidden'
+          name='nhsAppTemplateMessage'
+          value={templateMessage}
+        />
+      </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
-        <NHSNotifyBackButton
-          formId='create-nhs-app-template-back'
-          action={action}
-        >
-          <input type='hidden' name='nhsAppTemplateName' value={templateName} />
-          <input
-            type='hidden'
-            name='nhsAppTemplateMessage'
-            value={templateMessage}
-          />
-        </NHSNotifyBackButton>
         <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template'>
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
@@ -125,7 +127,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
         </NHSNotifyFormWrapper>
       </div>
       <div className='nhsuk-grid-column-one-third'>
-        Placeholder for personalisation and message formatting guidance
+        <Personalisation />
+        <MessageFormatting template='APP' />
       </div>
     </div>
   );
