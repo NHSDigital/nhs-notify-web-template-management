@@ -63,7 +63,7 @@ exports[`renders page 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create NHS app message template
+          Create NHS App message template
         </h1>
         <div>
           <label
@@ -75,7 +75,7 @@ exports[`renders page 1`] = `
           <div
             class="nhsuk-hint"
           >
-            This will not be visible to recipients
+            This will not be visible to recipients.
           </div>
           <details
             class="nhsuk-details"
@@ -183,7 +183,7 @@ exports[`renders page 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Personalisation details
+            Personalisation fields
           </span>
         </summary>
         <div
@@ -474,7 +474,7 @@ exports[`renders page one error 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create NHS app message template
+          Create NHS App message template
         </h1>
         <div
           class="nhsuk-form-group--error"
@@ -488,7 +488,7 @@ exports[`renders page one error 1`] = `
           <div
             class="nhsuk-hint"
           >
-            This will not be visible to recipients
+            This will not be visible to recipients.
           </div>
           <details
             class="nhsuk-details"
@@ -607,7 +607,7 @@ exports[`renders page one error 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Personalisation details
+            Personalisation fields
           </span>
         </summary>
         <div
@@ -900,7 +900,7 @@ exports[`renders page with multiple errors 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create NHS app message template
+          Create NHS App message template
         </h1>
         <div
           class="nhsuk-form-group--error"
@@ -914,7 +914,7 @@ exports[`renders page with multiple errors 1`] = `
           <div
             class="nhsuk-hint"
           >
-            This will not be visible to recipients
+            This will not be visible to recipients.
           </div>
           <details
             class="nhsuk-details"
@@ -1044,7 +1044,7 @@ exports[`renders page with multiple errors 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Personalisation details
+            Personalisation fields
           </span>
         </summary>
         <div
@@ -1309,7 +1309,7 @@ exports[`renders page with preloaded field values 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create NHS app message template
+          Create NHS App message template
         </h1>
         <div>
           <label
@@ -1321,7 +1321,7 @@ exports[`renders page with preloaded field values 1`] = `
           <div
             class="nhsuk-hint"
           >
-            This will not be visible to recipients
+            This will not be visible to recipients.
           </div>
           <details
             class="nhsuk-details"
@@ -1431,7 +1431,7 @@ exports[`renders page with preloaded field values 1`] = `
           <span
             class="nhsuk-details__summary-text"
           >
-            Personalisation details
+            Personalisation fields
           </span>
         </summary>
         <div

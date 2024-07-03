@@ -21,7 +21,7 @@ const footerComponent = {
 const personalisationComponent = {
   header: 'Personalisation',
   details: {
-    title: 'Personalisation details',
+    title: 'Personalisation fields',
     text1:
       'Use double brackets to add a personalisation field to your content. For example:',
     codeBlockText: 'Hello ((firstName)), your NHS number is ((nhsNumber))',
@@ -233,10 +233,10 @@ export const chooseTemplatePageContent = {
 };
 
 export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS app message template',
+  pageHeading: 'Create NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
-  templateNameHintText: 'This will not be visible to recipients',
+  templateNameHintText: 'This will not be visible to recipients.',
   templateNameDetailsSummary: 'Naming your templates',
   templateNameDetailsOpeningParagraph:
     'You should name your templates in a way that works best for your service or organisation.',
