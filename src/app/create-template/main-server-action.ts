@@ -64,6 +64,7 @@ const schema = z.object({
       'create-sms-template',
       'review-nhs-app-template',
       'review-nhs-app-template-back',
+      'submit-template',
     ],
     { message: 'Internal server error' }
   ),

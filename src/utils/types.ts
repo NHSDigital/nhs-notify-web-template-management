@@ -4,7 +4,9 @@ export type Page =
   | 'create-email-template'
   | 'create-letter-template'
   | 'create-sms-template'
-  | 'review-nhs-app-template';
+  | 'review-nhs-app-template'
+  | 'submit-template';
+
 export type FormId =
   | Page
   | 'create-nhs-app-template-back'

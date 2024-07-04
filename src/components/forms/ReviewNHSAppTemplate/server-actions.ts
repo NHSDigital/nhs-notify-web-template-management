@@ -35,7 +35,7 @@ export function handleForm(state: FormState, data: FormData) {
   }
 
   if (action === 'nhsapp-submit') {
-    validation.page = 'review-nhs-app-template';
+    validation.page = 'submit-template';
   }
 
   return validation;

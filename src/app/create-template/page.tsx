@@ -5,6 +5,7 @@ import { CreateSmsTemplate } from '../../components/forms/CreateSmsTemplate/Crea
 import { CreateEmailTemplate } from '../../components/forms/CreateEmailTemplate/CreateEmailTemplate';
 import { CreateLetterTemplate } from '../../components/forms/CreateLetterTemplate/CreateLetterTemplate';
 import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { mainServerAction } from './main-server-action';
 import { FormState, Page, PageComponentProps } from '../../utils/types';
 import { useFormState } from 'react-dom';
@@ -17,6 +18,7 @@ const pages: Record<Page, FC<PageComponentProps>> = {
   'create-sms-template': CreateSmsTemplate,
   'create-letter-template': CreateLetterTemplate,
   'review-nhs-app-template': ReviewNHSAppTemplate,
+  'submit-template': SubmitTemplate,
 };
 
 const initialState: FormState = {
