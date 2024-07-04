@@ -6,7 +6,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-4 nhsuk-u-padding-left-3"
+      class="nhsuk-back-link nhsuk-u-margin-bottom-7 nhsuk-u-padding-left-3"
     >
       <form
         action="/action"
@@ -234,7 +234,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-4 nhsuk-u-padding-left-3"
+      class="nhsuk-back-link nhsuk-u-margin-bottom-7 nhsuk-u-padding-left-3"
     >
       <form
         action="/action"
