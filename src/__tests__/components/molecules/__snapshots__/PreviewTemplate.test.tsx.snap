@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Preview component matches snapshot 1`] = `
+exports[`PreviewTemplate component matches snapshot 1`] = `
 <DocumentFragment>
   <table
     class="nhsuk-table preview nhsuk-u-margin-bottom-4"

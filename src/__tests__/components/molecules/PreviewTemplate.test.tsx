@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
 
-describe('Preview component', () => {
+describe('PreviewTemplate component', () => {
   it('matches snapshot', () => {
     const container = render(
       <PreviewTemplate
