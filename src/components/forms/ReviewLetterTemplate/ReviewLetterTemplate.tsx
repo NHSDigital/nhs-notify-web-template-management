@@ -2,15 +2,15 @@
 
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
-import { PreviewLetterProps } from './PreviewLetter.types';
+import { ReviewLetterTemplateProps } from './ReviewLetterTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
 
-export function PreviewLetter({
+export function ReviewLetterTemplate({
   templateName,
   heading,
   bodyText,
-}: PreviewLetterProps) {
+}: ReviewLetterTemplateProps) {
   const {
     components: { previewLetterFormComponent },
   } = content;

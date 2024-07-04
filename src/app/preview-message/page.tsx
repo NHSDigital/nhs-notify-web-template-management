@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { ReviewSMSTemplate } from '@/src/components/forms/ReviewSMSTemplate';
 import { ReviewEmailTemplate } from '../../components/forms/ReviewEmailTemplate';
-import { PreviewLetter } from '../../components/forms/PreviewLetter';
+import { ReviewLetterTemplate } from '../../components/forms/ReviewLetterTemplate';
 import { ReviewNHSAppTemplate } from '@/src/components/forms/ReviewNHSAppTemplate';
 import { markdown } from '../../__tests__/components/forms/fixtures';
 
@@ -25,7 +25,7 @@ export default function Page() {
   );
 
   const letter = (
-    <PreviewLetter
+    <ReviewLetterTemplate
       templateName='template-1-letter'
       heading='The main heading of the letter'
       bodyText={markdown}

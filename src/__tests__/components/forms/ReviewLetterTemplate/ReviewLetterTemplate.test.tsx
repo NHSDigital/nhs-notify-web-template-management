@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewLetter, renderMarkdown } from '@forms/PreviewLetter';
+import {
+  ReviewLetterTemplate,
+  renderMarkdown,
+} from '@forms/ReviewLetterTemplate';
 
-jest.mock('@forms/PreviewLetter/server-actions');
+jest.mock('@forms/ReviewLetterTemplate/server-actions');
 
 describe('Preview letter form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewLetter
+      <ReviewLetterTemplate
         templateName='test-template-letter'
         heading='letter heading'
         bodyText='body text'
@@ -18,7 +21,7 @@ describe('Preview letter form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewLetter
+      <ReviewLetterTemplate
         templateName='test-template-letter'
         heading='letter subject'
         bodyText='letter message body'
@@ -49,7 +52,7 @@ describe('Preview letter form renders', () => {
     const message = 'email message body';
 
     render(
-      <PreviewLetter
+      <ReviewLetterTemplate
         templateName='test-template-letter'
         heading='letter subject'
         bodyText={message}

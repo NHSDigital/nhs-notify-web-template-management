@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { ReviewSMSTemplate, renderMarkdown } from '@forms/ReviewSMSTemplate';
 
-jest.mock('@forms/PreviewTextMessage/server-actions');
+jest.mock('@forms/ReviewSMSTemplate/server-actions');
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
