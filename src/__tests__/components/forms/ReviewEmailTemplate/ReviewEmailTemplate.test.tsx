@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewEmail, renderMarkdown } from '@forms/PreviewEmail';
+import {
+  ReviewEmailTemplate,
+  renderMarkdown,
+} from '@forms/ReviewEmailTemplate';
 
-jest.mock('@forms/PreviewEmail/server-actions');
+jest.mock('@forms/ReviewEmailTemplate/server-actions');
 
 describe('Preview email form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewEmail
+      <ReviewEmailTemplate
         templateName='test-template-email'
         subject='email subject'
         message='message'
@@ -18,7 +21,7 @@ describe('Preview email form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewEmail
+      <ReviewEmailTemplate
         templateName='test-template-email'
         subject='email subject'
         message='email message body'
@@ -49,7 +52,7 @@ describe('Preview email form renders', () => {
     const message = 'email message body';
 
     render(
-      <PreviewEmail
+      <ReviewEmailTemplate
         templateName='test-template-email'
         subject='email subject'
         message={message}

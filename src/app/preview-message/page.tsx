@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { PreviewTextMessage } from '@forms/PreviewTextMessage';
-import { PreviewEmail } from '../../components/forms/PreviewEmail';
+import { ReviewEmailTemplate } from '../../components/forms/ReviewEmailTemplate';
 import { PreviewLetter } from '../../components/forms/PreviewLetter';
 import { PreviewNHSApp } from '@forms/PreviewNHSApp';
 import { markdown } from '../../__tests__/components/forms/fixtures';
@@ -17,7 +17,7 @@ export default function Page() {
   );
 
   const email = (
-    <PreviewEmail
+    <ReviewEmailTemplate
       templateName='template-1-email'
       message={markdown}
       subject='This is the subject'
