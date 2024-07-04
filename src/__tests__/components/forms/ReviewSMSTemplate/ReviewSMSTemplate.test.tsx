@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewTextMessage, renderMarkdown } from '@forms/PreviewTextMessage';
+import { ReviewSMSTemplate, renderMarkdown } from '@forms/ReviewSMSTemplate';
 
 jest.mock('@forms/PreviewTextMessage/server-actions');
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewTextMessage templateName='test-template-sms' message='message' />
+      <ReviewSMSTemplate templateName='test-template-sms' message='message' />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -14,7 +14,7 @@ describe('Preview sms form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewTextMessage
+      <ReviewSMSTemplate
         templateName='test-template-sms'
         message='sms message body'
       />
@@ -43,7 +43,7 @@ describe('Preview sms form renders', () => {
 
     const message = 'sms message body';
     render(
-      <PreviewTextMessage templateName='test-template-sms' message={message} />
+      <ReviewSMSTemplate templateName='test-template-sms' message={message} />
     );
 
     expect(renderMock).toHaveBeenCalledWith(message);

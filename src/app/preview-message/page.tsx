@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { PreviewTextMessage } from '@forms/PreviewTextMessage';
+import { ReviewSMSTemplate } from '@/src/components/forms/ReviewSMSTemplate';
 import { ReviewEmailTemplate } from '../../components/forms/ReviewEmailTemplate';
 import { PreviewLetter } from '../../components/forms/PreviewLetter';
 import { ReviewNHSAppTemplate } from '@/src/components/forms/ReviewNHSAppTemplate';
@@ -13,7 +13,7 @@ export default function Page() {
   const params = searchParams.get('form');
 
   const sms = (
-    <PreviewTextMessage templateName='template-1-sms' message={markdown} />
+    <ReviewSMSTemplate templateName='template-1-sms' message={markdown} />
   );
 
   const email = (

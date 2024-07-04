@@ -132,7 +132,7 @@ describe('Preview component', () => {
   });
 
   it('renders Preview.TextMessage component correctly', () => {
-    render(<Preview.TextMessage message='Example message sms' />);
+    render(<Preview.SMS message='Example message sms' />);
 
     expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
       'Message'

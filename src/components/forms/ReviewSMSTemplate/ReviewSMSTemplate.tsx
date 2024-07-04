@@ -2,14 +2,14 @@
 
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
-import { PreviewTextMessageProps } from './PreviewTextMessage.types';
+import { ReviewSMSTemplateProps } from './ReviewSMSTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
 
-export function PreviewTextMessage({
+export function ReviewSMSTemplate({
   templateName,
   message,
-}: PreviewTextMessageProps) {
+}: ReviewSMSTemplateProps) {
   const {
     components: { previewTextMessageFormComponent },
   } = content;
@@ -36,7 +36,7 @@ export function PreviewTextMessage({
             },
             buttonText: 'Continue',
           }}
-          PreviewComponent={<Preview.TextMessage message={html} />}
+          PreviewComponent={<Preview.SMS message={html} />}
         />
       </div>
     </div>
