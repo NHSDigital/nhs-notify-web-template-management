@@ -5,7 +5,7 @@ import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapp
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;
   radiosId: string;
-  action: string | ((_payload: FormData) => void);
+  action: string | ((payload: FormData) => void);
   state: FormState;
   pageHeading: string;
   options: {

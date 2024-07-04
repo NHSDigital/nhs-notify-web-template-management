@@ -71,14 +71,10 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
         class="nhsuk-fieldset"
       >
         <legend
-          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
           data-testid="preview-example-form__legend"
         >
-          <h1
-            class="nhsuk-fieldset__heading"
-          >
-            Example heading
-          </h1>
+          Example heading
         </legend>
         <div
           class="nhsuk-form-group"
@@ -196,14 +192,10 @@ exports[`ReviewTemplate component matches snapshot 1`] = `
         class="nhsuk-fieldset"
       >
         <legend
-          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
           data-testid="preview-example-form__legend"
         >
-          <h1
-            class="nhsuk-fieldset__heading"
-          >
-            Example heading
-          </h1>
+          Example heading
         </legend>
         <div
           class="nhsuk-form-group"

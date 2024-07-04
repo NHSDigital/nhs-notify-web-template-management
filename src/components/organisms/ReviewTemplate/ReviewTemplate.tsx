@@ -38,7 +38,10 @@ export function ReviewTemplate(props: ReviewTemplateProps) {
         pageHeading={form.pageHeading}
         options={form.options}
         buttonText={form.buttonText}
-        legend={form.legend}
+        legend={{
+          isPgeHeading: false,
+          size: 'm',
+        }}
       />
     </>
   );

@@ -1,10 +1,15 @@
 'use client';
 
-import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
-import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
-import { ReviewEmailTemplateProps } from './ReviewEmailTemplate.types';
+import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
+
+export type ReviewEmailTemplateProps = {
+  templateName: string;
+  subject: string;
+  message: string;
+};
 
 export function ReviewEmailTemplate({
   templateName,
@@ -12,7 +17,9 @@ export function ReviewEmailTemplate({
   message,
 }: ReviewEmailTemplateProps) {
   const {
-    components: { previewEmailFormComponent },
+    components: {
+      reviewEmailTemplateContent: { sectionHeading, details, form },
+    },
   } = content;
 
   const html = renderMarkdown(message);
@@ -21,13 +28,11 @@ export function ReviewEmailTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
-          sectionHeading={previewEmailFormComponent.sectionHeader}
           templateName={templateName}
-          details={previewEmailFormComponent.details}
+          sectionHeading={sectionHeading}
+          details={details}
           form={{
-            formId: 'review-email-template',
-            radiosId: 'reviewEmailTemplateAction',
-            errorHeading: '',
+            ...form,
             action: '',
             state: {
               page: 'choose-template',
@@ -35,13 +40,8 @@ export function ReviewEmailTemplate({
               nhsAppTemplateMessage: '',
               validationError: null,
             },
-            pageHeading: previewEmailFormComponent.form.heading,
-            options: previewEmailFormComponent.form.options,
-            legend: {
-              isPgeHeading: false,
-              size: 'm',
-            },
-            buttonText: 'Continue',
+            formId: 'review-email-template',
+            radiosId: 'reviewEmailTemplateAction',
           }}
           PreviewComponent={
             <PreviewTemplate.Email subject={subject} value={html} />

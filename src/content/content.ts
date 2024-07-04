@@ -205,8 +205,8 @@ const homePage = {
   },
 };
 
-const previewEmailFormComponent = {
-  sectionHeader: 'Email template',
+const reviewEmailTemplateContent = {
+  sectionHeading: 'Email template',
   details: {
     heading: 'Who your email will be sent from',
     text: [
@@ -216,17 +216,18 @@ const previewEmailFormComponent = {
   },
   form: {
     errorHeading: 'There is a problem',
-    heading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'email-edit', text: 'Edit' },
       { id: 'email-send', text: 'Send a test email' },
       { id: 'email-submit', text: 'Submit' },
     ],
+    buttonText: 'Continue',
   },
 };
 
-const previewLetterFormComponent = {
-  sectionHeader: 'Letter template',
+const reviewLetterTemplateContent = {
+  sectionHeading: 'Letter template',
   details: {
     heading: 'Who your letter will be sent from',
     text: [
@@ -236,16 +237,17 @@ const previewLetterFormComponent = {
   },
   form: {
     errorHeading: 'There is a problem',
-    heading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'letter-edit', text: 'Edit' },
       { id: 'letter-preview', text: 'Preview (PDF)' },
       { id: 'letter-submit', text: 'Submit' },
     ],
+    buttonText: 'Continue',
   },
 };
 
-const previewNHSAppFormComponent = {
+const reviewNHSAppTemplateContent = {
   sectionHeading: 'NHS App message template',
   details: {
     heading: 'Who your NHS App message will be sent from',
@@ -265,8 +267,8 @@ const previewNHSAppFormComponent = {
   },
 };
 
-const previewTextMessageFormComponent = {
-  sectionHeader: 'Text message template',
+const reviewSMSTemplateContent = {
+  sectionHeading: 'Text message template',
   details: {
     heading: 'Who your text message will be sent from',
     text: [
@@ -276,18 +278,14 @@ const previewTextMessageFormComponent = {
   },
   form: {
     errorHeading: 'There is a problem',
-    heading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'sms-edit', text: 'Edit' },
       { id: 'sms-send', text: 'Send a test text message' },
       { id: 'sms-submit', text: 'Submit' },
     ],
+    buttonText: 'Continue',
   },
-};
-
-const previewMessageComponent = {
-  legendText: 'What would you like to do next with this template?',
-  buttonText: 'Continue',
 };
 
 const content = {
@@ -298,11 +296,10 @@ const content = {
     headerComponent,
     footerComponent,
     personalisationComponent,
-    previewEmailFormComponent,
-    previewLetterFormComponent,
-    previewNHSAppFormComponent,
-    previewTextMessageFormComponent,
-    previewMessageComponent,
+    reviewEmailTemplateContent,
+    reviewLetterTemplateContent,
+    reviewNHSAppTemplateContent,
+    reviewSMSTemplateContent,
     messageFormattingComponent,
   },
   pages: {

@@ -1,17 +1,23 @@
 'use client';
 
-import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
-import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
-import { ReviewSMSTemplateProps } from './ReviewSMSTemplate.types';
+import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
+
+export type ReviewSMSTemplateProps = {
+  templateName: string;
+  message: string;
+};
 
 export function ReviewSMSTemplate({
   templateName,
   message,
 }: ReviewSMSTemplateProps) {
   const {
-    components: { previewTextMessageFormComponent },
+    components: {
+      reviewSMSTemplateContent: { sectionHeading, details, form },
+    },
   } = content;
 
   const html = renderMarkdown(message);
@@ -20,14 +26,11 @@ export function ReviewSMSTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
-          sectionHeading={previewTextMessageFormComponent.sectionHeader}
           templateName={templateName}
-          details={previewTextMessageFormComponent.details}
+          sectionHeading={sectionHeading}
+          details={details}
           form={{
-            formId: 'review-email-template',
-            radiosId: 'reviewEmailTemplateAction',
-            errorHeading: '',
-            pageHeading: previewTextMessageFormComponent.form.heading,
+            ...form,
             action: '',
             state: {
               page: 'choose-template',
@@ -35,12 +38,8 @@ export function ReviewSMSTemplate({
               nhsAppTemplateMessage: '',
               validationError: null,
             },
-            options: previewTextMessageFormComponent.form.options,
-            legend: {
-              isPgeHeading: false,
-              size: 'm',
-            },
-            buttonText: 'Continue',
+            formId: 'review-email-template',
+            radiosId: 'reviewEmailTemplateAction',
           }}
           PreviewComponent={<PreviewTemplate.SMS message={html} />}
         />

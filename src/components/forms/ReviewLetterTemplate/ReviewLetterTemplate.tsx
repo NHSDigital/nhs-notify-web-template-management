@@ -1,10 +1,15 @@
 'use client';
 
-import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
-import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
-import { ReviewLetterTemplateProps } from './ReviewLetterTemplate.types';
+import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
+
+export type ReviewLetterTemplateProps = {
+  templateName: string;
+  heading: string;
+  bodyText: string;
+};
 
 export function ReviewLetterTemplate({
   templateName,
@@ -12,20 +17,20 @@ export function ReviewLetterTemplate({
   bodyText,
 }: ReviewLetterTemplateProps) {
   const {
-    components: { previewLetterFormComponent },
+    components: {
+      reviewLetterTemplateContent: { sectionHeading, details, form },
+    },
   } = content;
 
   const html = renderMarkdown(bodyText);
 
   return (
     <ReviewTemplate
-      sectionHeading={previewLetterFormComponent.sectionHeader}
       templateName={templateName}
-      details={previewLetterFormComponent.details}
+      sectionHeading={sectionHeading}
+      details={details}
       form={{
-        formId: 'review-letter-template',
-        radiosId: 'reviewLetterTemplateAction',
-        errorHeading: '',
+        ...form,
         action: '',
         state: {
           page: 'choose-template',
@@ -33,13 +38,8 @@ export function ReviewLetterTemplate({
           nhsAppTemplateMessage: '',
           validationError: null,
         },
-        pageHeading: previewLetterFormComponent.form.heading,
-        options: previewLetterFormComponent.form.options,
-        legend: {
-          isPgeHeading: false,
-          size: 'm',
-        },
-        buttonText: 'Continue',
+        formId: 'review-letter-template',
+        radiosId: 'reviewLetterTemplateAction',
       }}
       PreviewComponent={
         <PreviewTemplate.Letter heading={heading} bodyText={html} />
