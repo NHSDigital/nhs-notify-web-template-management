@@ -1,12 +1,18 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewNHSApp, renderMarkdown } from '@forms/PreviewNHSApp';
+import {
+  ReviewNHSAppTemplate,
+  renderMarkdown,
+} from '@forms/ReviewNHSAppTemplate';
 
-jest.mock('@forms/PreviewNHSApp/server-actions');
+jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 
 describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewNHSApp templateName='test-template-nhs app' message='message' />
+      <ReviewNHSAppTemplate
+        templateName='test-template-nhs app'
+        message='message'
+      />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -14,7 +20,7 @@ describe('Preview nhs app form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewNHSApp
+      <ReviewNHSAppTemplate
         templateName='test-template-nhs app'
         message='nhs app message body'
       />
@@ -39,7 +45,10 @@ describe('Preview nhs app form renders', () => {
     const message = 'nhs app message body';
 
     render(
-      <PreviewNHSApp templateName='test-template-nhs app' message={message} />
+      <ReviewNHSAppTemplate
+        templateName='test-template-nhs app'
+        message={message}
+      />
     );
 
     expect(renderMock).toHaveBeenCalledWith(message);

@@ -1,5 +1,8 @@
 import { mockDeep } from 'jest-mock-extended';
-import { handleForm, renderMarkdown } from '@forms/PreviewNHSApp';
+import {
+  handleForm,
+  renderMarkdown,
+} from '@/src/components/forms/ReviewNHSAppTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 import { FormState } from '@utils/types';

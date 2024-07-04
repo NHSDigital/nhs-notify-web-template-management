@@ -2,11 +2,14 @@
 
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
-import { PreviewNHSAppProps } from './PreviewNHSApp.types';
+import { ReviewNHSAppTemplateProps } from './ReviewNHSAppTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
 
-export function PreviewNHSApp({ templateName, message }: PreviewNHSAppProps) {
+export function ReviewNHSAppTemplate({
+  templateName,
+  message,
+}: ReviewNHSAppTemplateProps) {
   const html = renderMarkdown(message);
 
   const {

@@ -2,7 +2,7 @@
 
 import { Preview } from '@molecules/Preview';
 import { PreviewMessage } from '@organisms/PreviewMessage';
-import { PreviewEmailProps } from './ReviewEmailTemplate.types';
+import { ReviewEmailTemplateProps } from './ReviewEmailTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
 
@@ -10,7 +10,7 @@ export function ReviewEmailTemplate({
   templateName,
   subject,
   message,
-}: PreviewEmailProps) {
+}: ReviewEmailTemplateProps) {
   const {
     components: { previewEmailFormComponent },
   } = content;

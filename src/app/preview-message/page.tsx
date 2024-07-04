@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { PreviewTextMessage } from '@forms/PreviewTextMessage';
 import { ReviewEmailTemplate } from '../../components/forms/ReviewEmailTemplate';
 import { PreviewLetter } from '../../components/forms/PreviewLetter';
-import { PreviewNHSApp } from '@forms/PreviewNHSApp';
+import { ReviewNHSAppTemplate } from '@/src/components/forms/ReviewNHSAppTemplate';
 import { markdown } from '../../__tests__/components/forms/fixtures';
 
 export default function Page() {
@@ -33,7 +33,7 @@ export default function Page() {
   );
 
   const nhsApp = (
-    <PreviewNHSApp templateName='template-1-nhsApp' message={markdown} />
+    <ReviewNHSAppTemplate templateName='template-1-nhsApp' message={markdown} />
   );
 
   switch (params) {
