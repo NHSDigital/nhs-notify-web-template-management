@@ -9,6 +9,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
       class="nhsuk-grid-column-two-thirds"
     >
       <h1
+        class="review__heading"
         data-testid="preview-message__heading"
       >
         <span

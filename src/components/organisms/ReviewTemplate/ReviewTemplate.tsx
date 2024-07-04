@@ -1,5 +1,7 @@
 'use client';
 
+import styles from './ReviewTemplate.module.scss';
+
 import { Details } from 'nhsuk-react-components';
 import { ReviewTemplateProps } from './ReviewTemplate.types';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -10,7 +12,10 @@ export function ReviewTemplate(props: ReviewTemplateProps) {
   return (
     <>
       <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
-      <h1 data-testid='preview-message__heading'>
+      <h1
+        data-testid='preview-message__heading'
+        className={styles.review__heading}
+      >
         <span
           data-testid='preview-message__heading-caption'
           className='nhsuk-caption-l'

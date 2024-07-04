@@ -62,6 +62,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
         </ul>
       </div>
       <h1
+        class="review__heading"
         data-testid="preview-message__heading"
       >
         <span
@@ -269,6 +270,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
       class="nhsuk-grid-column-two-thirds"
     >
       <h1
+        class="review__heading"
         data-testid="preview-message__heading"
       >
         <span

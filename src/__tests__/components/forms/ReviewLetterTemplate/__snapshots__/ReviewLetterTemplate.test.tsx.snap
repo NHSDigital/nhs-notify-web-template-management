@@ -3,6 +3,7 @@
 exports[`Preview letter form renders matches snapshot 1`] = `
 <DocumentFragment>
   <h1
+    class="review__heading"
     data-testid="preview-message__heading"
   >
     <span
