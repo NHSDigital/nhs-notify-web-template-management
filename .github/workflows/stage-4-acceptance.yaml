@@ -33,22 +33,6 @@ on:
         type: string
 
 jobs:
-  environment-set-up:
-    name: "Environment set up"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-      - name: "Create infractructure"
-        run: |
-          echo "Creating infractructure..."
-      - name: "Update database"
-        run: |
-          echo "Updating database..."
-      - name: "Deploy application"
-        run: |
-          echo "Deploying application..."
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
@@ -85,6 +69,9 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
+      - name: "Repo setup"
+        run: |
+          npm install
       - name: "Run accessibility test"
         run: |
           make test-accessibility
