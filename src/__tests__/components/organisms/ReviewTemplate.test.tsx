@@ -1,7 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
+import { FormState } from '@utils/types';
+import { mockDeep } from 'jest-mock-extended';
+
+const mockState = mockDeep<FormState>({
+  validationError: null,
+});
 
 describe('ReviewTemplate component', () => {
+  beforeEach(jest.resetAllMocks);
+
   it('matches snapshot', () => {
     const container = render(
       <ReviewTemplate
@@ -9,10 +17,46 @@ describe('ReviewTemplate component', () => {
         templateName='Example NHS APP template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
         form={{
+          formId: 'preview-form',
           radiosId: 'preview-example',
           errorHeading: '',
           action: '',
-          state: { formErrors: [], fieldErrors: {} },
+          state: mockState,
+          pageHeading: 'Example heading',
+          options: [
+            { id: 'option-1', text: 'option 1' },
+            { id: 'option-2', text: 'option 2' },
+          ],
+          buttonText: 'Continue',
+        }}
+        PreviewComponent={<>Preview</>}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches error snapshot', () => {
+    const state: FormState = {
+      ...mockState,
+      validationError: {
+        formErrors: [],
+        fieldErrors: {
+          exampleError: ['Example error'],
+        },
+      },
+    };
+    const container = render(
+      <ReviewTemplate
+        sectionHeading='NHS app message template'
+        templateName='Example NHS APP template'
+        details={{ heading: 'Details heading', text: ['Details text'] }}
+        form={{
+          formId: 'preview-form',
+          radiosId: 'preview-example',
+          errorHeading: '',
+          action: '',
+          state,
           pageHeading: 'Example heading',
           options: [
             { id: 'option-1', text: 'option 1' },
@@ -34,10 +78,11 @@ describe('ReviewTemplate component', () => {
         templateName='Example template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
         form={{
+          formId: 'preview-form',
           radiosId: 'preview-example',
           errorHeading: '',
           action: '',
-          state: { formErrors: [], fieldErrors: {} },
+          state: mockState,
           pageHeading: 'Example heading',
           options: [
             { id: 'option-1', text: 'option 1' },

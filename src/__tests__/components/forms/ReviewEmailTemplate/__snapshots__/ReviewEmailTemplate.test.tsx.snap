@@ -111,7 +111,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value=""
+          value="review-email-template"
         />
         <div
           class="nhsuk-form-group"
@@ -121,7 +121,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
           >
             <legend
               class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-              data-testid="preview-email-form__legend"
+              data-testid="reviewEmailTemplateAction-form__legend"
             >
               What would you like to do next with this template?
             </legend>
@@ -130,24 +130,24 @@ exports[`Preview email form renders matches snapshot 1`] = `
             >
               <div
                 class="nhsuk-radios"
-                id="preview-email"
+                id="reviewEmailTemplateAction"
               >
                 <div
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-email-email-edit--label"
+                    aria-labelledby="reviewEmailTemplateAction-email-edit--label"
                     class="nhsuk-radios__input"
                     data-testid="email-edit-radio"
-                    id="preview-email-email-edit"
-                    name="preview-email"
+                    id="reviewEmailTemplateAction-email-edit"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="email-edit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-email-email-edit"
-                    id="preview-email-email-edit--label"
+                    for="reviewEmailTemplateAction-email-edit"
+                    id="reviewEmailTemplateAction-email-edit--label"
                   >
                     Edit
                   </label>
@@ -156,18 +156,18 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-email-email-send--label"
+                    aria-labelledby="reviewEmailTemplateAction-email-send--label"
                     class="nhsuk-radios__input"
                     data-testid="email-send-radio"
-                    id="preview-email-email-send"
-                    name="preview-email"
+                    id="reviewEmailTemplateAction-email-send"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="email-send"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-email-email-send"
-                    id="preview-email-email-send--label"
+                    for="reviewEmailTemplateAction-email-send"
+                    id="reviewEmailTemplateAction-email-send--label"
                   >
                     Send a test email
                   </label>
@@ -176,18 +176,18 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-email-email-submit--label"
+                    aria-labelledby="reviewEmailTemplateAction-email-submit--label"
                     class="nhsuk-radios__input"
                     data-testid="email-submit-radio"
-                    id="preview-email-email-submit"
-                    name="preview-email"
+                    id="reviewEmailTemplateAction-email-submit"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="email-submit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-email-email-submit"
-                    id="preview-email-email-submit--label"
+                    for="reviewEmailTemplateAction-email-submit"
+                    id="reviewEmailTemplateAction-email-submit--label"
                   >
                     Submit
                   </label>
@@ -200,7 +200,7 @@ exports[`Preview email form renders matches snapshot 1`] = `
           aria-disabled="false"
           class="nhsuk-button"
           data-testid="submit-button"
-          id="undefined-submit-button"
+          id="review-email-template-submit-button"
           type="submit"
         >
           Continue

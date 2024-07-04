@@ -3,6 +3,8 @@ import {
   ReviewNHSAppTemplate,
   renderMarkdown,
 } from '@forms/ReviewNHSAppTemplate';
+import { mockDeep } from 'jest-mock-extended';
+import { FormState } from '@utils/types';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 
@@ -10,8 +12,32 @@ describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <ReviewNHSAppTemplate
-        templateName='test-template-nhs app'
-        message='message'
+        state={mockDeep<FormState>({
+          validationError: null,
+          nhsAppTemplateName: 'test-template-nhs app',
+          nhsAppTemplateMessage: 'message',
+        })}
+        action='/action'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches error snapshot', () => {
+    const container = render(
+      <ReviewNHSAppTemplate
+        state={mockDeep<FormState>({
+          validationError: {
+            formErrors: [],
+            fieldErrors: {
+              reviewNHSAppTemplateAction: ['Select an option'],
+            },
+          },
+          nhsAppTemplateName: 'test-template-nhs app',
+          nhsAppTemplateMessage: 'message',
+        })}
+        action='/action'
       />
     );
 
@@ -21,8 +47,12 @@ describe('Preview nhs app form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewNHSAppTemplate
-        templateName='test-template-nhs app'
-        message='nhs app message body'
+        state={mockDeep<FormState>({
+          validationError: null,
+          nhsAppTemplateName: 'test-template-nhs app',
+          nhsAppTemplateMessage: 'message',
+        })}
+        action='/action'
       />
     );
 
@@ -46,8 +76,12 @@ describe('Preview nhs app form renders', () => {
 
     render(
       <ReviewNHSAppTemplate
-        templateName='test-template-nhs app'
-        message={message}
+        state={mockDeep<FormState>({
+          validationError: null,
+          nhsAppTemplateName: 'test-template-nhs app',
+          nhsAppTemplateMessage: message,
+        })}
+        action='/action'
       />
     );
 

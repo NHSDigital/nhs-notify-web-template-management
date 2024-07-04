@@ -1,6 +1,12 @@
 import { FormState } from '../../utils/types';
 import { mainServerAction } from '../../app/create-template/main-server-action';
 import { getMockFormData } from '../helpers';
+import {
+  handleForm as nhsAppHandleForm,
+  handleFormBack as nhsAppHandleFormBack,
+} from '@forms/ReviewNHSAppTemplate/server-actions';
+
+jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 
 const formState: FormState = {
   page: 'choose-template',
@@ -142,4 +148,17 @@ test.each<TestConfig>([
   const result = mainServerAction(formState, getMockFormData(formData));
 
   expect(result).toEqual(expectedFormState);
+});
+
+it.each([
+  { id: 'review-nhs-app-template', handler: nhsAppHandleForm },
+  { id: 'review-nhs-app-template-back', handler: nhsAppHandleFormBack },
+])('should call %s form handler', ({ id, handler }) => {
+  const formData = {
+    'form-id': id,
+  };
+
+  mainServerAction(formState, getMockFormData(formData));
+
+  expect(handler).toHaveBeenCalled();
 });

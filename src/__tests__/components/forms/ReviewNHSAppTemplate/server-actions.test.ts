@@ -1,13 +1,15 @@
 import { mockDeep } from 'jest-mock-extended';
 import {
   handleForm,
+  handleFormBack,
   renderMarkdown,
-} from '@/src/components/forms/ReviewNHSAppTemplate';
+} from '@forms/ReviewNHSAppTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
-import { FormState } from '@utils/types';
+import { getMockFormData } from '@/src/__tests__/helpers';
+import { FormState } from '@/src/utils/types';
 
-describe('PreviewNHSAppActions', () => {
+describe('Markdown rendering', () => {
   it('should enable nhs app markdown rules', () => {
     const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
@@ -29,17 +31,97 @@ describe('PreviewNHSAppActions', () => {
   it('should only process nhs app markdown rules', () => {
     expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
+});
 
-  it('should handle form', () => {
-    const state: FormState = {
-      formErrors: [],
-      fieldErrors: {},
+describe('Form handling', () => {
+  it('should return validation errors when no choice is selected', () => {
+    const formData = getMockFormData({});
+
+    const currentState: FormState = {
+      page: 'review-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: null,
     };
 
-    const form = mockDeep<FormData>();
+    const newState = handleForm(currentState, formData);
 
-    const response = handleForm(state, form);
+    expect(newState).toEqual({
+      page: 'review-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: {
+        fieldErrors: {
+          reviewNHSAppTemplateAction: ['Select an option'],
+        },
+        formErrors: [],
+      },
+    });
+  });
 
-    expect(response).toEqual(state);
+  it('should return submit page when submit action is chosen', () => {
+    const formData = getMockFormData({
+      reviewNHSAppTemplateAction: 'nhsapp-submit',
+    });
+
+    const currentState: FormState = {
+      page: 'review-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: null,
+    };
+
+    const newState = handleForm(currentState, formData);
+
+    expect(newState).toEqual({
+      page: 'submit-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      reviewNHSAppTemplateAction: 'nhsapp-submit',
+      validationError: null,
+    });
+  });
+
+  it('should return previous edit page when edit action is chosen', () => {
+    const formData = getMockFormData({
+      reviewNHSAppTemplateAction: 'nhsapp-edit',
+    });
+
+    const currentState: FormState = {
+      page: 'review-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: null,
+    };
+
+    const newState = handleForm(currentState, formData);
+
+    expect(newState).toEqual({
+      page: 'create-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      reviewNHSAppTemplateAction: 'nhsapp-edit',
+      validationError: null,
+    });
+  });
+
+  it('should return to previous page when page handling back', () => {
+    const formData = getMockFormData({});
+
+    const currentState: FormState = {
+      page: 'review-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: null,
+    };
+
+    const newState = handleFormBack(currentState, formData);
+
+    expect(newState).toEqual({
+      page: 'create-nhs-app-template',
+      nhsAppTemplateName: 'Example name',
+      nhsAppTemplateMessage: 'Example message',
+      validationError: null,
+    });
   });
 });

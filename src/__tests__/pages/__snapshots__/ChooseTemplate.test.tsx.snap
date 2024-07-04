@@ -40,7 +40,7 @@ exports[`Choose template page renders error component 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
-          data-testid="choose-template-form__legend"
+          data-testid="page-form__legend"
         >
           <h1
             class="nhsuk-fieldset__heading"
@@ -182,7 +182,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
-          data-testid="choose-template-form__legend"
+          data-testid="page-form__legend"
         >
           <h1
             class="nhsuk-fieldset__heading"

@@ -80,6 +80,12 @@ exports[`Preview sms form renders matches snapshot 1`] = `
       <form
         action=""
       >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="review-email-template"
+        />
         <div
           class="nhsuk-form-group"
         >
@@ -88,7 +94,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
           >
             <legend
               class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-              data-testid="preview-sms-form__legend"
+              data-testid="reviewEmailTemplateAction-form__legend"
             >
               What would you like to do next with this template?
             </legend>
@@ -97,24 +103,24 @@ exports[`Preview sms form renders matches snapshot 1`] = `
             >
               <div
                 class="nhsuk-radios"
-                id="preview-sms"
+                id="reviewEmailTemplateAction"
               >
                 <div
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-sms-1--label"
+                    aria-labelledby="reviewEmailTemplateAction-sms-edit--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-edit-radio"
-                    id="preview-sms-1"
-                    name="preview-sms"
+                    id="reviewEmailTemplateAction-sms-edit"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="sms-edit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-sms-1"
-                    id="preview-sms-1--label"
+                    for="reviewEmailTemplateAction-sms-edit"
+                    id="reviewEmailTemplateAction-sms-edit--label"
                   >
                     Edit
                   </label>
@@ -123,18 +129,18 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-sms-2--label"
+                    aria-labelledby="reviewEmailTemplateAction-sms-send--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-send-radio"
-                    id="preview-sms-2"
-                    name="preview-sms"
+                    id="reviewEmailTemplateAction-sms-send"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="sms-send"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-sms-2"
-                    id="preview-sms-2--label"
+                    for="reviewEmailTemplateAction-sms-send"
+                    id="reviewEmailTemplateAction-sms-send--label"
                   >
                     Send a test text message
                   </label>
@@ -143,18 +149,18 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="preview-sms-3--label"
+                    aria-labelledby="reviewEmailTemplateAction-sms-submit--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-submit-radio"
-                    id="preview-sms-3"
-                    name="preview-sms"
+                    id="reviewEmailTemplateAction-sms-submit"
+                    name="reviewEmailTemplateAction"
                     type="radio"
                     value="sms-submit"
                   />
                   <label
                     class="nhsuk-label nhsuk-radios__label"
-                    for="preview-sms-3"
-                    id="preview-sms-3--label"
+                    for="reviewEmailTemplateAction-sms-submit"
+                    id="reviewEmailTemplateAction-sms-submit--label"
                   >
                     Submit
                   </label>
@@ -167,6 +173,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
           aria-disabled="false"
           class="nhsuk-button"
           data-testid="submit-button"
+          id="review-email-template-submit-button"
           type="submit"
         >
           Continue

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewNHSAppActions should only process nhs app markdown rules 1`] = `
+exports[`Markdown rendering should only process nhs app markdown rules 1`] = `
 "<h1>Heading</h1>
 <h2>sub heading</h2>
 <p><strong>bold</strong></p>

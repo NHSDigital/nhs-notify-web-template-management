@@ -105,7 +105,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       name="form-id"
       readonly=""
       type="hidden"
-      value=""
+      value="review-letter-template"
     />
     <div
       class="nhsuk-form-group"
@@ -115,7 +115,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       >
         <legend
           class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-          data-testid="preview-letter-form__legend"
+          data-testid="reviewLetterTemplateAction-form__legend"
         >
           What would you like to do next with this template?
         </legend>
@@ -124,24 +124,24 @@ exports[`Preview letter form renders matches snapshot 1`] = `
         >
           <div
             class="nhsuk-radios"
-            id="preview-letter"
+            id="reviewLetterTemplateAction"
           >
             <div
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-letter-letter-edit--label"
+                aria-labelledby="reviewLetterTemplateAction-letter-edit--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-edit-radio"
-                id="preview-letter-letter-edit"
-                name="preview-letter"
+                id="reviewLetterTemplateAction-letter-edit"
+                name="reviewLetterTemplateAction"
                 type="radio"
                 value="letter-edit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-letter-letter-edit"
-                id="preview-letter-letter-edit--label"
+                for="reviewLetterTemplateAction-letter-edit"
+                id="reviewLetterTemplateAction-letter-edit--label"
               >
                 Edit
               </label>
@@ -150,18 +150,18 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-letter-letter-preview--label"
+                aria-labelledby="reviewLetterTemplateAction-letter-preview--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-preview-radio"
-                id="preview-letter-letter-preview"
-                name="preview-letter"
+                id="reviewLetterTemplateAction-letter-preview"
+                name="reviewLetterTemplateAction"
                 type="radio"
                 value="letter-preview"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-letter-letter-preview"
-                id="preview-letter-letter-preview--label"
+                for="reviewLetterTemplateAction-letter-preview"
+                id="reviewLetterTemplateAction-letter-preview--label"
               >
                 Preview (PDF)
               </label>
@@ -170,18 +170,18 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-letter-letter-submit--label"
+                aria-labelledby="reviewLetterTemplateAction-letter-submit--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-submit-radio"
-                id="preview-letter-letter-submit"
-                name="preview-letter"
+                id="reviewLetterTemplateAction-letter-submit"
+                name="reviewLetterTemplateAction"
                 type="radio"
                 value="letter-submit"
               />
               <label
                 class="nhsuk-label nhsuk-radios__label"
-                for="preview-letter-letter-submit"
-                id="preview-letter-letter-submit--label"
+                for="reviewLetterTemplateAction-letter-submit"
+                id="reviewLetterTemplateAction-letter-submit--label"
               >
                 Submit
               </label>
@@ -194,7 +194,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
       aria-disabled="false"
       class="nhsuk-button"
       data-testid="submit-button"
-      id="undefined-submit-button"
+      id="review-letter-template-submit-button"
       type="submit"
     >
       Continue
