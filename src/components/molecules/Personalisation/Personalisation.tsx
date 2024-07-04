@@ -7,10 +7,7 @@ const personalisationContent = content.components.personalisationComponent;
 export function Personalisation() {
   return (
     <>
-      <h2
-        className='nhsuk-heading-m nhsuk-u-margin-top-4'
-        data-testid='personalisation-header'
-      >
+      <h2 className='nhsuk-heading-m' data-testid='personalisation-header'>
         {personalisationContent.header}
       </h2>
       <Details data-testid='personalisation-details'>
@@ -19,9 +16,7 @@ export function Personalisation() {
         </Details.Summary>
         <Details.Text data-testid='personalisation-text'>
           <p>{personalisationContent.details.text1}</p>
-          <code className={styles.codeBackground}>
-            {personalisationContent.details.codeBlockText}
-          </code>
+          <code>{personalisationContent.details.codeBlockText}</code>
           <p className='nhsuk-u-margin-top-4'>
             {personalisationContent.details.text2}
           </p>

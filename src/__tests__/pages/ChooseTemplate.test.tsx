@@ -1,31 +1,31 @@
 'use client';
-import { useFormState } from 'react-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ChooseTemplatePage from '../../app/choose-template/page';
 
 jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),
   useFormState: jest.fn(),
 }));
+import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
+import { mockDeep } from 'jest-mock-extended';
+import { FormState } from '../../utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-    (useFormState as jest.Mock).mockReturnValue([
-      {
-        formErrors: [],
-        fieldErrors: {},
-      },
-      '/action',
-      false,
-    ]);
-    const container = render(<ChooseTemplatePage />);
+    const container = render(
+      <ChooseTemplate
+        state={mockDeep<FormState>({
+          validationError: null,
+        })}
+        action='/action'
+      />
+    );
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-      screen.getByTestId('email-radio'),
-      screen.getByTestId('nhs-app-radio'),
-      screen.getByTestId('sms-radio'),
-      screen.getByTestId('letter-radio'),
+      screen.getByTestId('create-email-template-radio'),
+      screen.getByTestId('create-nhs-app-template-radio'),
+      screen.getByTestId('create-sms-template-radio'),
+      screen.getByTestId('create-letter-template-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 
@@ -51,22 +51,19 @@ describe('Choose template page', () => {
   });
 
   it('renders error component', () => {
-    (useFormState as jest.Mock).mockReturnValue([
-      {
-        formErrors: [],
-        fieldErrors: {
-          'choose-template': ['Component error message'],
-        },
-      },
-      '/action',
-      false,
-    ]);
-    const container = render(<ChooseTemplatePage />);
+    const container = render(
+      <ChooseTemplate
+        state={mockDeep<FormState>({
+          validationError: {
+            formErrors: [],
+            fieldErrors: {
+              page: ['Component error message'],
+            },
+          },
+        })}
+        action='/action'
+      />
+    );
     expect(container.asFragment()).toMatchSnapshot();
-
-    expect(screen.getByTestId('error-summary')).toBeInTheDocument();
-    expect(
-      document.getElementById('choose-template-error-message')
-    ).toBeInTheDocument();
   });
 });

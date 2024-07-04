@@ -1,7 +1,9 @@
-import { Radios, Button, Fieldset } from 'nhsuk-react-components';
+import { Radios, Fieldset, Button } from 'nhsuk-react-components';
 import { FormState } from '../../../utils/types';
+import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyRadioButtonFormProps = {
+  formId: string;
   radiosId: string;
   action: string | ((_payload: FormData) => void);
   state: FormState;
@@ -18,6 +20,7 @@ export type NHSNotifyRadioButtonFormProps = {
 };
 
 export const NHSNotifyRadioButtonForm = ({
+  formId,
   radiosId,
   action,
   state,
@@ -26,7 +29,7 @@ export const NHSNotifyRadioButtonForm = ({
   buttonText,
   legend = { isPgeHeading: true, size: 'l' },
 }: NHSNotifyRadioButtonFormProps) => (
-  <form action={action}>
+  <NHSNotifyFormWrapper action={action} formId={formId}>
     <Fieldset>
       <Fieldset.Legend
         data-testid={`${radiosId}-form__legend`}
@@ -37,12 +40,13 @@ export const NHSNotifyRadioButtonForm = ({
       </Fieldset.Legend>
       <Radios
         id={radiosId}
-        error={state.fieldErrors[radiosId]?.join(', ')}
+        error={state.validationError?.fieldErrors[radiosId]?.join(', ')}
         errorProps={{ id: `${radiosId}-error-message` }}
       >
         {options.map(({ id, text }) => (
           <Radios.Radio
             value={id}
+            id={`${radiosId}-${id}`}
             data-testid={`${id}-radio`}
             key={`${id}-radio`}
           >
@@ -51,8 +55,12 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
-    <Button type='submit' data-testid='submit-button'>
+    <Button
+      type='submit'
+      data-testid='submit-button'
+      id={`${formId}-submit-button`}
+    >
       {buttonText}
     </Button>
-  </form>
+  </NHSNotifyFormWrapper>
 );
