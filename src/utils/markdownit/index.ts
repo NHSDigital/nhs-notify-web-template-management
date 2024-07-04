@@ -1,5 +1,6 @@
 import MarkdownIt from 'markdown-it';
-import { lineBreak, pageBreak } from './plugins';
+import { lineBreak } from './plugins/line-break';
+import { pageBreak } from './plugins/page-break';
 
 export class MarkdownItWrapper extends MarkdownIt {
   constructor() {

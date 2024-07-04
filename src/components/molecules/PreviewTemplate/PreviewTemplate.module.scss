@@ -26,4 +26,8 @@ $nhsuk-secondary-button-color: #4c6272;
     color: $nhsuk-secondary-button-color;
     font-weight: 600;
   }
+
+  &__content {
+    word-wrap: break-word;
+  }
 }
