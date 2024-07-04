@@ -24,11 +24,17 @@ export function ReviewSMSTemplate({
           templateName={templateName}
           details={previewTextMessageFormComponent.details}
           form={{
-            radiosId: 'preview-sms',
+            formId: 'review-email-template',
+            radiosId: 'reviewEmailTemplateAction',
             errorHeading: '',
             pageHeading: previewTextMessageFormComponent.form.heading,
             action: '',
-            state: { formErrors: [], fieldErrors: {} },
+            state: {
+              page: 'choose-template',
+              nhsAppTemplateName: '',
+              nhsAppTemplateMessage: '',
+              validationError: null,
+            },
             options: previewTextMessageFormComponent.form.options,
             legend: {
               isPgeHeading: false,

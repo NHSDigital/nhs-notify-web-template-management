@@ -25,10 +25,16 @@ export function ReviewEmailTemplate({
           templateName={templateName}
           details={previewEmailFormComponent.details}
           form={{
-            radiosId: 'preview-email',
+            formId: 'review-email-template',
+            radiosId: 'reviewEmailTemplateAction',
             errorHeading: '',
             action: '',
-            state: { formErrors: [], fieldErrors: {} },
+            state: {
+              page: 'choose-template',
+              nhsAppTemplateName: '',
+              nhsAppTemplateMessage: '',
+              validationError: null,
+            },
             pageHeading: previewEmailFormComponent.form.heading,
             options: previewEmailFormComponent.form.options,
             legend: {

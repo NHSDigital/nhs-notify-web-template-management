@@ -23,10 +23,16 @@ export function ReviewLetterTemplate({
       templateName={templateName}
       details={previewLetterFormComponent.details}
       form={{
-        radiosId: 'preview-letter',
+        formId: 'review-letter-template',
+        radiosId: 'reviewLetterTemplateAction',
         errorHeading: '',
         action: '',
-        state: { formErrors: [], fieldErrors: {} },
+        state: {
+          page: 'choose-template',
+          nhsAppTemplateName: '',
+          nhsAppTemplateMessage: '',
+          validationError: null,
+        },
         pageHeading: previewLetterFormComponent.form.heading,
         options: previewLetterFormComponent.form.options,
         legend: {
