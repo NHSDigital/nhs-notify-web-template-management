@@ -1,4 +1,4 @@
-import styles from './Preview.module.scss';
+import styles from './PreviewTemplate.module.scss';
 
 import { Table } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concatClassNames';

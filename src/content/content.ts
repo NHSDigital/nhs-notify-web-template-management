@@ -215,6 +215,7 @@ const previewEmailFormComponent = {
     ],
   },
   form: {
+    errorHeading: 'There is a problem',
     heading: 'What would you like to do next with this template?',
     options: [
       { id: 'email-edit', text: 'Edit' },
@@ -234,6 +235,7 @@ const previewLetterFormComponent = {
     ],
   },
   form: {
+    errorHeading: 'There is a problem',
     heading: 'What would you like to do next with this template?',
     options: [
       { id: 'letter-edit', text: 'Edit' },
@@ -244,7 +246,7 @@ const previewLetterFormComponent = {
 };
 
 const previewNHSAppFormComponent = {
-  sectionHeader: 'NHS App message template',
+  sectionHeading: 'NHS App message template',
   details: {
     heading: 'Who your NHS App message will be sent from',
     text: [
@@ -253,11 +255,13 @@ const previewNHSAppFormComponent = {
     ],
   },
   form: {
-    heading: 'What would you like to do next with this template?',
+    errorHeading: 'There is a problem',
+    pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'nhsapp-edit', text: 'Edit' },
       { id: 'nhsapp-submit', text: 'Submit' },
     ],
+    buttonText: 'Continue',
   },
 };
 
@@ -271,6 +275,7 @@ const previewTextMessageFormComponent = {
     ],
   },
   form: {
+    errorHeading: 'There is a problem',
     heading: 'What would you like to do next with this template?',
     options: [
       { id: 'sms-edit', text: 'Edit' },

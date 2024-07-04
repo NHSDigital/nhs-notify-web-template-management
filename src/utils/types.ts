@@ -5,13 +5,17 @@ export type Page =
   | 'create-letter-template'
   | 'create-sms-template'
   | 'review-nhs-app-template';
-export type FormId = Page | 'create-nhs-app-template-back';
+export type FormId =
+  | Page
+  | 'create-nhs-app-template-back'
+  | 'review-nhs-app-template-back';
 
 export type FormState = {
   page: Page;
   validationError: FormErrorState | null;
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
+  reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
 };
 
 export type FormErrorState = {

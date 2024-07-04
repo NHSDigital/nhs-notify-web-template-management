@@ -31,6 +31,7 @@ export function ReviewTemplate(props: ReviewTemplateProps) {
       </Details>
       {props.PreviewComponent}
       <NHSNotifyRadioButtonForm
+        formId={form.formId}
         radiosId={form.radiosId}
         action={form.action}
         state={form.state}

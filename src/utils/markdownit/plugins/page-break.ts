@@ -1,3 +1,5 @@
+'use client';
+
 import MarkdownIt from 'markdown-it';
 import { renderToString } from 'react-dom/server';
 import { PageBreak } from '@atoms/PageBreak/PageBreak';

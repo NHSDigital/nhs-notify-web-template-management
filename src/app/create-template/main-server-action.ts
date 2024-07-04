@@ -2,6 +2,10 @@
 import { z } from 'zod';
 import { FormState, FormId } from '../../utils/types';
 import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
+import {
+  handleForm as handleNHSAppForm,
+  handleFormBack as handleNHSFormBack,
+} from '@forms/ReviewNHSAppTemplate';
 
 const serverActions: Partial<
   Record<FormId, (formState: FormState, formData: FormData) => FormState>
@@ -47,6 +51,8 @@ const serverActions: Partial<
       }),
       'review-nhs-app-template'
     ),
+  'review-nhs-app-template': handleNHSAppForm,
+  'review-nhs-app-template-back': handleNHSFormBack,
 };
 
 const schema = z.object({
@@ -56,6 +62,8 @@ const schema = z.object({
       'create-nhs-app-template-back',
       'create-nhs-app-template',
       'create-sms-template',
+      'review-nhs-app-template',
+      'review-nhs-app-template-back',
     ],
     { message: 'Internal server error' }
   ),
