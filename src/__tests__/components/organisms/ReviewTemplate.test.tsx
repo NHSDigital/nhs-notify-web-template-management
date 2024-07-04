@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewMessage } from '@organisms/PreviewMessage';
+import { ReviewTemplate } from '@organisms/ReviewTemplate';
 
-describe('PreviewMessage component', () => {
+describe('ReviewTemplate component', () => {
   it('matches snapshot', () => {
     const container = render(
-      <PreviewMessage
+      <ReviewTemplate
         sectionHeading='NHS app message template'
         templateName='Example NHS APP template'
         details={{ heading: 'Details heading', text: ['Details text'] }}
@@ -29,7 +29,7 @@ describe('PreviewMessage component', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewMessage
+      <ReviewTemplate
         sectionHeading='Email template'
         templateName='Example template'
         details={{ heading: 'Details heading', text: ['Details text'] }}

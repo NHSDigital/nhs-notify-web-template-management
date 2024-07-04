@@ -1,7 +1,7 @@
-import { Preview } from '@molecules/Preview/Preview';
+import { PreviewTemplate } from '@molecules/PreviewTemplate/PreviewTemplate';
 import { NHSNotifyRadioButtonFormProps } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 
-export type PreviewMessageProps = {
+export type ReviewTemplateProps = {
   sectionHeading: string;
   templateName: string;
   details: {
@@ -11,5 +11,5 @@ export type PreviewMessageProps = {
   form: {
     errorHeading: string;
   } & NHSNotifyRadioButtonFormProps;
-  PreviewComponent: React.ReactElement<typeof Preview>;
+  PreviewComponent: React.ReactElement<typeof PreviewTemplate>;
 };

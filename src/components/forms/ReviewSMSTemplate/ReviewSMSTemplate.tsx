@@ -1,7 +1,7 @@
 'use client';
 
-import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@organisms/PreviewMessage';
+import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
+import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
 import { ReviewSMSTemplateProps } from './ReviewSMSTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
@@ -19,7 +19,7 @@ export function ReviewSMSTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
-        <PreviewMessage
+        <ReviewTemplate
           sectionHeading={previewTextMessageFormComponent.sectionHeader}
           templateName={templateName}
           details={previewTextMessageFormComponent.details}
@@ -36,7 +36,7 @@ export function ReviewSMSTemplate({
             },
             buttonText: 'Continue',
           }}
-          PreviewComponent={<Preview.SMS message={html} />}
+          PreviewComponent={<PreviewTemplate.SMS message={html} />}
         />
       </div>
     </div>

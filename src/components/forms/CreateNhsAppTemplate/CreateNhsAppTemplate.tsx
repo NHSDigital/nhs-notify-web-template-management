@@ -7,7 +7,6 @@ import {
   Label,
   Textarea,
   Button,
-  Fieldset,
 } from 'nhsuk-react-components';
 import { FC, FormEventHandler, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';

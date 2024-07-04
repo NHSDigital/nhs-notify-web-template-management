@@ -2,9 +2,11 @@ import styles from './Preview.module.scss';
 
 import { Table } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concatClassNames';
-import { PreviewProps } from './Preview.types';
+import { PreviewTemplateProps } from './PreviewTemplate.types';
 
-export function Preview({ preview }: PreviewProps): JSX.Element {
+export function PreviewTemplate({
+  preview,
+}: PreviewTemplateProps): JSX.Element {
   return (
     <Table
       className={concatClassNames(styles.preview, 'nhsuk-u-margin-bottom-4')}
@@ -34,8 +36,14 @@ export function Preview({ preview }: PreviewProps): JSX.Element {
   );
 }
 
-Preview.Email = ({ subject, value }: { subject: string; value: string }) => (
-  <Preview
+PreviewTemplate.Email = ({
+  subject,
+  value,
+}: {
+  subject: string;
+  value: string;
+}) => (
+  <PreviewTemplate
     preview={[
       { heading: 'Subject', value: subject },
       { heading: 'Message', value },
@@ -43,14 +51,14 @@ Preview.Email = ({ subject, value }: { subject: string; value: string }) => (
   />
 );
 
-Preview.Letter = ({
+PreviewTemplate.Letter = ({
   heading,
   bodyText,
 }: {
   heading: string;
   bodyText: string;
 }) => (
-  <Preview
+  <PreviewTemplate
     preview={[
       { heading: 'Heading', value: heading },
       { heading: 'Body text', value: bodyText },
@@ -58,10 +66,10 @@ Preview.Letter = ({
   />
 );
 
-Preview.NHSApp = ({ message }: { message: string }) => (
-  <Preview preview={[{ heading: 'Message', value: message }]} />
+PreviewTemplate.NHSApp = ({ message }: { message: string }) => (
+  <PreviewTemplate preview={[{ heading: 'Message', value: message }]} />
 );
 
-Preview.SMS = ({ message }: { message: string }) => (
-  <Preview preview={[{ heading: 'Message', value: message }]} />
+PreviewTemplate.SMS = ({ message }: { message: string }) => (
+  <PreviewTemplate preview={[{ heading: 'Message', value: message }]} />
 );

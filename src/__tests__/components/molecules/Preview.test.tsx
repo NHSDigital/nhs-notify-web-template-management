@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Preview } from '@molecules/Preview';
+import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
 
 describe('Preview component', () => {
   it('matches snapshot', () => {
     const container = render(
-      <Preview
+      <PreviewTemplate
         preview={[
           {
             heading: 'Heading',
@@ -19,7 +19,7 @@ describe('Preview component', () => {
 
   it('renders component correctly', () => {
     render(
-      <Preview
+      <PreviewTemplate
         preview={[
           {
             heading: 'Subject',
@@ -71,7 +71,7 @@ describe('Preview component', () => {
 
   it('renders Preview.Email component correctly', () => {
     render(
-      <Preview.Email
+      <PreviewTemplate.Email
         subject='Example subject line'
         value='example message body'
       />
@@ -96,7 +96,7 @@ describe('Preview component', () => {
 
   it('renders Preview.Letter component correctly', () => {
     render(
-      <Preview.Letter
+      <PreviewTemplate.Letter
         heading='Example heading line'
         bodyText='example message body'
       />
@@ -120,7 +120,7 @@ describe('Preview component', () => {
   });
 
   it('renders Preview.NHSApp component correctly', () => {
-    render(<Preview.NHSApp message='Example message' />);
+    render(<PreviewTemplate.NHSApp message='Example message' />);
 
     expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
       'Message'
@@ -132,7 +132,7 @@ describe('Preview component', () => {
   });
 
   it('renders Preview.TextMessage component correctly', () => {
-    render(<Preview.SMS message='Example message sms' />);
+    render(<PreviewTemplate.SMS message='Example message sms' />);
 
     expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
       'Message'

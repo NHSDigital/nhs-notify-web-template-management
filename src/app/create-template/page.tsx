@@ -8,8 +8,7 @@ import { ReviewNhsAppTemplate } from '../../components/forms/ReviewNhsAppTemplat
 import { mainServerAction } from './main-server-action';
 import { FormState, Page, PageComponentProps } from '../../utils/types';
 import { useFormState } from 'react-dom';
-import { FC, useEffect } from 'react';
-import { redirect, useRouter } from 'next/navigation';
+import { FC } from 'react';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
   'choose-template': ChooseTemplate,

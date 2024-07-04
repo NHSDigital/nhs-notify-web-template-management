@@ -1,7 +1,7 @@
 'use client';
 
-import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@organisms/PreviewMessage';
+import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
+import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
 import { ReviewEmailTemplateProps } from './ReviewEmailTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
@@ -20,7 +20,7 @@ export function ReviewEmailTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
-        <PreviewMessage
+        <ReviewTemplate
           sectionHeading={previewEmailFormComponent.sectionHeader}
           templateName={templateName}
           details={previewEmailFormComponent.details}
@@ -37,7 +37,9 @@ export function ReviewEmailTemplate({
             },
             buttonText: 'Continue',
           }}
-          PreviewComponent={<Preview.Email subject={subject} value={html} />}
+          PreviewComponent={
+            <PreviewTemplate.Email subject={subject} value={html} />
+          }
         />
       </div>
     </div>

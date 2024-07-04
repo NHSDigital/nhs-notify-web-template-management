@@ -1,11 +1,11 @@
 'use client';
 
 import { Details } from 'nhsuk-react-components';
-import { PreviewMessageProps } from './PreviewMessage.types';
+import { ReviewTemplateProps } from './ReviewTemplate.types';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 
-export function PreviewMessage(props: PreviewMessageProps) {
+export function ReviewTemplate(props: ReviewTemplateProps) {
   const { form } = props;
   return (
     <>

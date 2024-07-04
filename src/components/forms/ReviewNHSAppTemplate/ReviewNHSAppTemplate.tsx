@@ -1,7 +1,7 @@
 'use client';
 
-import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@organisms/PreviewMessage';
+import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
+import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
 import { ReviewNHSAppTemplateProps } from './ReviewNHSAppTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
@@ -19,7 +19,7 @@ export function ReviewNHSAppTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
-        <PreviewMessage
+        <ReviewTemplate
           sectionHeading={previewNHSAppFormComponent.sectionHeader}
           templateName={templateName}
           details={previewNHSAppFormComponent.details}
@@ -36,7 +36,7 @@ export function ReviewNHSAppTemplate({
             },
             buttonText: 'Continue',
           }}
-          PreviewComponent={<Preview.NHSApp message={html} />}
+          PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
         />
       </div>
     </div>

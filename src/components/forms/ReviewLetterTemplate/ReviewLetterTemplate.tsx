@@ -1,7 +1,7 @@
 'use client';
 
-import { Preview } from '@molecules/Preview';
-import { PreviewMessage } from '@organisms/PreviewMessage';
+import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
+import { ReviewTemplate } from '@/src/components/organisms/ReviewTemplate';
 import { ReviewLetterTemplateProps } from './ReviewLetterTemplate.types';
 import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
@@ -18,7 +18,7 @@ export function ReviewLetterTemplate({
   const html = renderMarkdown(bodyText);
 
   return (
-    <PreviewMessage
+    <ReviewTemplate
       sectionHeading={previewLetterFormComponent.sectionHeader}
       templateName={templateName}
       details={previewLetterFormComponent.details}
@@ -35,7 +35,9 @@ export function ReviewLetterTemplate({
         },
         buttonText: 'Continue',
       }}
-      PreviewComponent={<Preview.Letter heading={heading} bodyText={html} />}
+      PreviewComponent={
+        <PreviewTemplate.Letter heading={heading} bodyText={html} />
+      }
     />
   );
 }
