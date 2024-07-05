@@ -1,5 +1,5 @@
 const headerComponent = {
-  title: '',
+  serviceName: 'Notify',
   links: {
     logIn: 'Log in',
     logOut: 'Log out',
