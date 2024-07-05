@@ -10,6 +10,8 @@
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
+    "plugin:security/recommended-legacy",
+    "plugin:sonarjs/recommended-legacy",
     "plugin:unicorn/recommended"
   ],
   "plugins": [
@@ -21,24 +23,26 @@
     "prettier",
     "react",
     "react-hooks",
+    "security",
+    "sonarjs",
     "unicorn"
   ],
   "rules": {
+    "no-restricted-syntax": "off",
+    "consistent-return": "off",
     "prettier/prettier": "error",
     "unicorn/prevent-abbreviations": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": "off",
-    "import/prefer-default-export": "off",
-    "import/extensions": "off",
-    "react/jsx-props-no-spreading": "off",
-    "no-restricted-syntax": "off",
-    "react/function-component-definition": "off",
-    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }],
     "unicorn/no-null": "off",
     "unicorn/filename-case": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }],
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": "error",
-    "consistent-return": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -46,6 +50,8 @@
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "security/detect-object-injection": "off",
+    "sonarjs/no-duplicate-string": "off"
   }
 }
