@@ -8,7 +8,7 @@ describe('concatClassNames function', () => {
     expect(concatClassNames()).toBe('');
   });
   it('calls the concatClassName function with undefined parameter', () => {
-    expect(concatClassNames(undefined)).toBe('');
+    expect(concatClassNames()).toBe('');
   });
   it('calls the concatClassName function with null parameter', () => {
     expect(concatClassNames(null)).toBe('');

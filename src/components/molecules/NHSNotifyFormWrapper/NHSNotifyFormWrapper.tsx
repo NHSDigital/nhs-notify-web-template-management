@@ -11,7 +11,7 @@ export const NHSNotifyFormWrapper = ({
   formId,
 }: PropsWithChildren<NHSNotifyFormWrapperProps>) => (
   <form action={action}>
-    <input type='hidden' name='form-id' value={formId} readOnly={true} />
+    <input type='hidden' name='form-id' value={formId} readOnly />
     {children}
   </form>
 );

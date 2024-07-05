@@ -5,6 +5,6 @@ export default function concatClassNames(...classNames: ClassName[]): string {
     .filter(Boolean)
     .map((className) => className)
     .join(' ')
-    .replace(/\s{2,}/g, ' ')
+    .replaceAll(/\s{2,}/g, ' ')
     .trim();
 }

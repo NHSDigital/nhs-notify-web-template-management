@@ -1,9 +1,9 @@
-import styles from './MessageFormatting.module.scss';
 import { Details } from 'nhsuk-react-components';
-import { MessageFormattingType } from './message-formatting.types';
 import { TemplateFormatText } from '@/src/types/template-format.types';
 
 import content from '@/src/content/content';
+import { MessageFormattingType } from './message-formatting.types';
+import styles from './MessageFormatting.module.scss';
 
 const messageFormattingContent = content.components.messageFormattingComponent;
 
@@ -65,7 +65,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
           </code>
         </Details.Text>
       </Details>
-      {template !== TemplateFormatText.SMS ? (
+      {template === TemplateFormatText.SMS ? null : (
         <Details data-testid='bold-text-details'>
           <Details.Summary data-testid='bold-text-summary'>
             {messageFormattingContent.boldText.title}
@@ -75,7 +75,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             <code>{messageFormattingContent.boldText.codeBlockText}</code>
           </Details.Text>
         </Details>
-      ) : null}
+      )}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='headings-details'>

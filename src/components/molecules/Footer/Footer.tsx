@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/*
+ * TODO: REMOVE ESLINT DISABLE WHEN WE HAVE FOOTER LINK
+ */
 import Link from 'next/link';
 import content from '@/src/content/content';
 

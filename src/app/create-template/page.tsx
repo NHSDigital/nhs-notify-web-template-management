@@ -1,4 +1,7 @@
 'use client';
+
+import { useFormState } from 'react-dom';
+import { FC } from 'react';
 import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { CreateNhsAppTemplate } from '../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 import { CreateSmsTemplate } from '../../components/forms/CreateSmsTemplate/CreateSmsTemplate';
@@ -7,9 +10,6 @@ import { CreateLetterTemplate } from '../../components/forms/CreateLetterTemplat
 import { ReviewNhsAppTemplate } from '../../components/forms/ReviewNhsAppTemplate/ReviewNhsAppTemplate';
 import { mainServerAction } from './main-server-action';
 import { FormState, Page, PageComponentProps } from '../../utils/types';
-import { useFormState } from 'react-dom';
-import { FC, useEffect } from 'react';
-import { redirect, useRouter } from 'next/navigation';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
   'choose-template': ChooseTemplate,

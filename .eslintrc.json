@@ -1,7 +1,51 @@
 {
-  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended", "plugin:jsx-a11y/recommended"],
-  "plugins": ["prettier", "jsx-a11y"],
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "next",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:unicorn/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "html",
+    "import",
+    "jest",
+    "jsx-a11y",
+    "prettier",
+    "react",
+    "react-hooks",
+    "unicorn"
+  ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "unicorn/prevent-abbreviations": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-restricted-syntax": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }],
+    "unicorn/no-null": "off",
+    "unicorn/filename-case": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "error",
+    "consistent-return": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
   }
 }

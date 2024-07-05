@@ -1,4 +1,5 @@
 'use client';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
@@ -20,15 +21,15 @@ test('renders page', async () => {
   );
   expect(container.asFragment()).toMatchSnapshot();
 
-  const templateNameBox = document.getElementById('nhsAppTemplateName');
+  const templateNameBox = document.querySelector('#nhsAppTemplateName');
   if (!templateNameBox) {
-    fail('Template name box not found');
+    throw new Error('Template name box not found');
   }
   await user.type(templateNameBox, 'template-name');
 
-  const templateMessageBox = document.getElementById('nhsAppTemplateMessage');
+  const templateMessageBox = document.querySelector('#nhsAppTemplateMessage');
   if (!templateMessageBox) {
-    fail('Template message box not found');
+    throw new Error('Template name box not found');
   }
   await user.type(templateMessageBox, 'template-message');
 });
