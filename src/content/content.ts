@@ -245,15 +245,15 @@ export const createNhsAppTemplatePageContent = {
     { id: `template-name-details-item-1`, text: 'message channel it uses' },
     {
       id: `template-name-details-item-2`,
-      item: 'subject or reason for the message',
+      text: 'subject or reason for the message',
     },
     {
       id: `template-name-details-item-3`,
-      item: 'intended audience for the template',
+      text: 'intended audience for the template',
     },
     {
       id: `template-name-details-item-4`,
-      item: 'version number of the template',
+      text: 'version number of the template',
     },
   ],
   templateNameDetailsExample:
