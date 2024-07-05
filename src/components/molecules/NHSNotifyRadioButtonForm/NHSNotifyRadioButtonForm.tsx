@@ -13,6 +13,7 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
   }[];
   buttonText: string;
+  hint?: string;
 };
 
 export const NHSNotifyRadioButtonForm = ({
@@ -23,6 +24,7 @@ export const NHSNotifyRadioButtonForm = ({
   pageHeading,
   options,
   buttonText,
+  hint,
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper action={action} formId={formId}>
     <Fieldset>
@@ -31,6 +33,7 @@ export const NHSNotifyRadioButtonForm = ({
       </Fieldset.Legend>
       <Radios
         id={radiosId}
+        hint={hint}
         error={state.validationError?.fieldErrors[radiosId]?.join(', ')}
         errorProps={{ id: `${radiosId}-error-message` }}
       >

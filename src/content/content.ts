@@ -230,6 +230,7 @@ export const chooseTemplatePageContent = {
     { id: 'create-letter-template', text: 'Letter' },
   ],
   buttonText: 'Continue',
+  hint: 'Select one option',
 };
 
 export const createNhsAppTemplatePageContent = {

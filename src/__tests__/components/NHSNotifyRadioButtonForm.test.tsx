@@ -21,6 +21,7 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
         { id: 'option-2', text: 'option 2' },
       ]}
       buttonText='Continue'
+      hint='Example hint'
     />
   );
 

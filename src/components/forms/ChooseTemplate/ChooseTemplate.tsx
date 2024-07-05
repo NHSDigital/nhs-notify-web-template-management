@@ -6,7 +6,7 @@ import { ZodErrorSummary } from '../../molecules/ZodErrorSummary/ZodErrorSummary
 import { chooseTemplatePageContent } from '../../../content/content';
 
 export const ChooseTemplate: FC<PageComponentProps> = ({ state, action }) => {
-  const { pageHeading, errorHeading, options, buttonText } =
+  const { pageHeading, errorHeading, options, buttonText, hint } =
     chooseTemplatePageContent;
   return (
     <>
@@ -19,6 +19,7 @@ export const ChooseTemplate: FC<PageComponentProps> = ({ state, action }) => {
         pageHeading={pageHeading}
         options={options}
         buttonText={buttonText}
+        hint={hint}
       />
     </>
   );
