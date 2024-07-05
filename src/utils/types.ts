@@ -14,7 +14,7 @@ export type FormErrorState = {
 
 export type FormState = {
   page: Page;
-  validationError: FormErrorState | null;
+  validationError?: FormErrorState;
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
 };

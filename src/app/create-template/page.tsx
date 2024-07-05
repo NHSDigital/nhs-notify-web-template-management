@@ -22,7 +22,7 @@ const pages: Record<Page, FC<PageComponentProps>> = {
 
 const initialState: FormState = {
   page: 'choose-template',
-  validationError: null,
+  validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };

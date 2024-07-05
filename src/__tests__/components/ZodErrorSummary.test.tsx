@@ -7,7 +7,7 @@ test('Renders ZodErrorSummary correctly without errors', () => {
   const container = render(
     <ZodErrorSummary
       errorHeading='Error heading'
-      state={mockDeep<FormState>({ validationError: null })}
+      state={mockDeep<FormState>({ validationError: undefined })}
     />
   );
 

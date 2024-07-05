@@ -11,9 +11,8 @@ export const ZodErrorSummary = ({
   state,
 }: ZodErrorSummaryProps) => {
   const { validationError } = state;
-  const hasError = validationError !== null;
 
-  if (!hasError) {
+  if (!validationError) {
     return;
   }
 

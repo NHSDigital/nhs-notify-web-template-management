@@ -12,7 +12,7 @@ test('renders page', async () => {
   const container = render(
     <CreateNhsAppTemplate
       state={mockDeep<FormState>({
-        validationError: null,
+        validationError: undefined,
         nhsAppTemplateName: '',
         nhsAppTemplateMessage: '',
       })}
@@ -38,7 +38,7 @@ test('renders page with preloaded field values', () => {
   const container = render(
     <CreateNhsAppTemplate
       state={mockDeep<FormState>({
-        validationError: null,
+        validationError: undefined,
         nhsAppTemplateName: 'template-name',
         nhsAppTemplateMessage: 'template-message',
       })}

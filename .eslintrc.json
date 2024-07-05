@@ -32,7 +32,6 @@
     "consistent-return": "off",
     "prettier/prettier": "error",
     "unicorn/prevent-abbreviations": "off",
-    "unicorn/no-null": "off",
     "unicorn/filename-case": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",

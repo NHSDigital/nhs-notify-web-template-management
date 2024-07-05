@@ -10,7 +10,7 @@ describe('Choose template page', () => {
     const container = render(
       <ChooseTemplate
         state={mockDeep<FormState>({
-          validationError: null,
+          validationError: undefined,
         })}
         action='/action'
       />

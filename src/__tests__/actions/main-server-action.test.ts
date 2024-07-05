@@ -4,7 +4,7 @@ import { getMockFormData } from '../helpers';
 
 const formState: FormState = {
   page: 'choose-template',
-  validationError: null,
+  validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
@@ -68,7 +68,7 @@ test.each<TestConfig>([
     },
     {
       page: 'create-sms-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -100,7 +100,7 @@ test.each<TestConfig>([
     },
     {
       page: 'choose-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },
@@ -133,7 +133,7 @@ test.each<TestConfig>([
     },
     {
       page: 'review-nhs-app-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },

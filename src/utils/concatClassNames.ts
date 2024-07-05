@@ -1,4 +1,4 @@
-type ClassName = string | undefined | false | null;
+type ClassName = string | undefined | false;
 
 export default function concatClassNames(...classNames: ClassName[]): string {
   return classNames

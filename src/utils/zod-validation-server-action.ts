@@ -25,7 +25,7 @@ export const zodValidationServerAction = <
 
   return {
     ...formState,
-    validationError: null,
+    validationError: undefined,
     ...(page && { page }),
     ...parsedForm.data,
   };
