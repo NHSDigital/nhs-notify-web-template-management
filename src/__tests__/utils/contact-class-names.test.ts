@@ -1,4 +1,4 @@
-import concatClassNames from '@/src/utils/concatClassNames';
+import concatClassNames from '@/src/utils/concat-class-names';
 
 describe('concatClassNames function', () => {
   it('calls the concatClassName function with string classes parameters separated by comma', () => {

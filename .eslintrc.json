@@ -32,7 +32,14 @@
     "consistent-return": "off",
     "prettier/prettier": "error",
     "unicorn/prevent-abbreviations": "off",
-    "unicorn/filename-case": "off",
+    "unicorn/filename-case": [
+      "error", {
+        "case": "kebabCase",
+        "ignore": [
+          ".tsx"
+        ]
+      }
+    ],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
