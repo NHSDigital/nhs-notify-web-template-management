@@ -131,6 +131,13 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
           class="nhsuk-form-group"
         >
           <div
+            class="nhsuk-hint"
+            id="radios-id--hint"
+          >
+            Example hint
+          </div>
+          <div
+            aria-describedby="radios-id--hint"
             class="nhsuk-radios"
             id="radios-id"
           >

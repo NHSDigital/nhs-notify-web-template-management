@@ -50,6 +50,12 @@ exports[`Choose template page renders error component 1`] = `
         <div
           class="nhsuk-form-group nhsuk-form-group--error"
         >
+          <div
+            class="nhsuk-hint"
+            id="page--hint"
+          >
+            Select one option
+          </div>
           <span
             class="nhsuk-error-message"
             id="page-error-message"
@@ -62,6 +68,7 @@ exports[`Choose template page renders error component 1`] = `
             Component error message
           </span>
           <div
+            aria-describedby="page--hint"
             class="nhsuk-radios"
             id="page"
           >
@@ -192,6 +199,13 @@ exports[`Choose template page selects one radio button at a time 1`] = `
           class="nhsuk-form-group"
         >
           <div
+            class="nhsuk-hint"
+            id="page--hint"
+          >
+            Select one option
+          </div>
+          <div
+            aria-describedby="page--hint"
             class="nhsuk-radios"
             id="page"
           >
