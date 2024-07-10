@@ -15,8 +15,6 @@ if $is_local; then
     npm run app:wait
 fi
 
-echo $BASE_URL
-
 npm run test:accessibility
 
 if $is_local; then

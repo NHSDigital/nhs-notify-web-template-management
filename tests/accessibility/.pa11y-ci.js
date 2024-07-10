@@ -1,9 +1,29 @@
 
-const baseUrl = process.env.BASE_URL ?? 'localhost:3000';
 const { goToCreateNhsAppTemplatePage } = require('./actions/create-nhs-app-template.action');
+
+const getHeaders = () => {
+  const headers = new Map();
+
+  if (process.env.BASIC_AUTH) {
+    headers.set('Authorization', `Basic ${process.env.BASIC_AUTH}`);
+  }
+
+  return Object.fromEntries(headers.entries());
+}
+
+const getUrls = () => {
+  const baseUrl = process.env.BASE_URL ?? 'http://localhost:3000';
+
+  return [
+    baseUrl,
+    `${baseUrl}/create-template`,
+    goToCreateNhsAppTemplatePage(`${baseUrl}/create-template`)
+  ];
+}
 
 module.exports = {
   defaults: {
+    headers: getHeaders(),
     reporters: [
       'cli', // <-- this is the default reporter
       [
@@ -25,5 +45,5 @@ module.exports = {
     userAgent: 'pa11y-ci',
     concurrency: 5,
   },
-  urls: ['localhost:3000', 'localhost:3000/create-template', goToCreateNhsAppTemplatePage('localhost:3000/create-template')]
+  urls: getUrls()
 };

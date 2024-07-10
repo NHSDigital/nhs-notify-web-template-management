@@ -12,3 +12,8 @@ output "app_url" {
   value     = "https://${aws_amplify_branch.branch.display_name}.${data.aws_ssm_parameter.amplify_app_id.value}.amplifyapp.com"
   sensitive = true
 }
+
+output "app_basic_auth" {
+  value     = base64encode("${data.aws_ssm_parameter.amplify_repository_username.value}:${data.aws_ssm_parameter.amplify_repository_password.value}")
+  sensitive = true
+}
