@@ -110,6 +110,8 @@ jobs:
           make list-variables
   deploy:
     name: "Deploy to an environment"
+    outputs:
+      app_url: ${{ steps.terraform_apply.outputs.app_url }}
     environment: ${{ needs.metadata.outputs.amplify_app_environment }}
     runs-on: ubuntu-latest
     needs: [metadata]
@@ -147,7 +149,6 @@ jobs:
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
           echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-          echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)"
       - name:  Amplify Poll
         if: >-
           always() &&
