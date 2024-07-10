@@ -5,8 +5,13 @@ const getHeaders = () => {
   const headers = new Map();
 
   if (process.env.BASIC_AUTH) {
+    console.log({
+      header: process.env.BASIC_AUTH.slice(0,5)
+    });
     headers.set('Authorization', `Basic ${process.env.BASIC_AUTH}`);
   }
+
+  console.log('no basic auth');
 
   return Object.fromEntries(headers.entries());
 }
