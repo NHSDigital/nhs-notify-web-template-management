@@ -13,6 +13,14 @@ data "aws_ssm_parameter" "amplify_app_id" {
   name = "/${var.project}/amplify-app/${var.amplify_app_environment}/amplify-app-id"
 }
 
+data "aws_ssm_parameter" "amplify_app_username" {
+  name = "/${var.project}/${var.component}/${var.environment}/amplify-repository-username"
+}
+
+data "aws_ssm_parameter" "amplify_app_password" {
+  name = "/${var.project}/${var.component}/${var.environment}/amplify-repository-password"
+}
+
 resource "aws_amplify_webhook" "webhook" {
   app_id      = data.aws_ssm_parameter.amplify_app_id.value
   branch_name = aws_amplify_branch.branch.branch_name
