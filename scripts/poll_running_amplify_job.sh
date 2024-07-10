@@ -5,7 +5,7 @@ set -euo pipefail
 app_id=$1
 branch_name=$2
 
-wait_interval=2
+wait_interval=30
 max_wait_seconds=600
 
 # wait for Amplify job to be available

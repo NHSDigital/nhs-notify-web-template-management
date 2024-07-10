@@ -147,6 +147,7 @@ jobs:
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
           echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
+          echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)"
       - name:  Amplify Poll
         if: >-
           always() &&
