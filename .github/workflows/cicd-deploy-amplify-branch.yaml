@@ -150,9 +150,8 @@ jobs:
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
           echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
       - name:  Amplify Poll
-        if: >-
-          always() &&
-          !cancelled()
+        if: ${{ steps.terraform_apply.outcome == 'success' && !cancelled() }}
+
         run: |
           ./scripts/poll_running_amplify_job.sh "${{ steps.terraform_apply.outputs.app_id }}" "${{ needs.metadata.outputs.branch_name }}"
   accessibility_test:
