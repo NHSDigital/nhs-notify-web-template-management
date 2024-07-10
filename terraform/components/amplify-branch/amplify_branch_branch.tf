@@ -14,11 +14,11 @@ data "aws_ssm_parameter" "amplify_app_id" {
 }
 
 data "aws_ssm_parameter" "amplify_app_username" {
-  name = "/${var.project}/${var.component}/${var.environment}/amplify-repository-username"
+  name = "/${var.project}/amplify-app/${var.environment}/amplify-repository-username"
 }
 
 data "aws_ssm_parameter" "amplify_app_password" {
-  name = "/${var.project}/${var.component}/${var.environment}/amplify-repository-password"
+  name = "/${var.project}/amplify-app/${var.environment}/amplify-repository-password"
 }
 
 resource "aws_amplify_webhook" "webhook" {
