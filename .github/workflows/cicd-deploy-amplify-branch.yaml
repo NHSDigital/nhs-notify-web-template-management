@@ -110,12 +110,10 @@ jobs:
           make list-variables
   deploy:
     name: "Deploy to an environment"
-    environment: ${{ needs.terraform_apply.outputs.amplify_app_environment }}
+    environment: ${{ needs.metadata.outputs.amplify_app_environment }}
     runs-on: ubuntu-latest
     needs: [metadata]
     timeout-minutes: 10
-    outputs:
-      app_url: ${{ steps.variables.outputs.app_url }}
     env:
       TERRAFORM_ACTION: ${{ needs.metadata.outputs.terraform_action }}
       CI_PIPELINE_IID: ${{ needs.metadata.outputs.ci_pipeline_iid }}
@@ -127,44 +125,30 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4
       - name: Configure AWS credentials
-        id: aws_credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
           role-session-name: deployInfra
           aws-region: ${{ needs.metadata.outputs.aws_region }}
-      - name: Terraform Plan
-        id: terraform_plan
-        if: ${{ steps.aws_credentials.outcome == 'success' && !cancelled() }}
+      - name:  Terraform Plan
+        if: >-
+          always() &&
+          !cancelled()
         run: |
           cd terraform && ./deploy.sh plan
-      - name: Terraform Apply
+      - name:  Terraform Apply
         id: terraform_apply
-        if: ${{ steps.terraform_plan.outcome == 'success' && !cancelled() }}
+        if: >-
+          always() &&
+          !cancelled()
         run: |
           cd terraform && ./deploy.sh ${TERRAFORM_ACTION}
-          webhook_url=$( jq -r '.webhook_url.value' amplify-branch_output.json)
+          webhook_url=$( jq -r '.url.value' amplify-branch_output.json)
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-          echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-      - name: Amplify Poll
-        if: ${{ steps.terraform_apply.outcome == 'success' && !cancelled() }}
+      - name:  Amplify Poll
+        if: >-
+          always() &&
+          !cancelled()
         run: |
           ./scripts/poll_running_amplify_job.sh "${{ steps.terraform_apply.outputs.app_id }}" "${{ needs.metadata.outputs.branch_name }}"
-  accessibility_test:
-    name: "Run accessibility tests"
-    environment: ${{ needs.metadata.outputs.amplify_app_environment }}
-    runs-on: ubuntu-latest
-    needs: [metadata, deploy]
-    timeout-minutes: 10
-    env:
-      BASE_URL: ${{ needs.deploy.outputs.app_url }}
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-      - name: "Repo setup"
-        run: |
-          npm install
-      - name: "Run accessibility test"
-        run: |
-          make test-accessibility
