@@ -14,8 +14,6 @@ module.exports = {
         }
       ],
     ],
-    timeout: 20000,
-    wait: 2000,
     chromeLaunchConfig: {
       args: ['--no-sandbox']
     },
@@ -25,7 +23,7 @@ module.exports = {
     useIncognitoBrowserContext: false,
     standard: 'WCAG2AA', //'WCAG2AAA'
     userAgent: 'pa11y-ci',
-    concurrency: 8,
+    concurrency: 5,
   },
   urls: ['localhost:3000', 'localhost:3000/create-template', goToCreateNhsAppTemplatePage('localhost:3000/create-template')]
 };
