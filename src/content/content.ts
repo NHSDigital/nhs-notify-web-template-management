@@ -243,10 +243,19 @@ export const createNhsAppTemplatePageContent = {
     'You should name your templates in a way that works best for your service or organisation.',
   templateNameDetailsListHeader: 'Common template names include the:',
   templateNameDetailsList: [
-    'message channel it uses',
-    'subject or reason for the message',
-    'intended audience for the template',
-    'version number of the template',
+    { id: `template-name-details-item-1`, text: 'message channel it uses' },
+    {
+      id: `template-name-details-item-2`,
+      text: 'subject or reason for the message',
+    },
+    {
+      id: `template-name-details-item-3`,
+      text: 'intended audience for the template',
+    },
+    {
+      id: `template-name-details-item-4`,
+      text: 'version number of the template',
+    },
   ],
   templateNameDetailsExample:
     "For example, 'Email - covid19 2023 - over 65s - version 3'",

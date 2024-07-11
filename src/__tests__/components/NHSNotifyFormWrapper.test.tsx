@@ -4,7 +4,7 @@ import { NHSNotifyFormWrapper } from '../../components/molecules/NHSNotifyFormWr
 test('Renders back button', () => {
   const container = render(
     <NHSNotifyFormWrapper formId='form-id' action='/action'>
-      <input id='input' value='4' readOnly={true} />
+      <input id='input' value='4' readOnly />
     </NHSNotifyFormWrapper>
   );
 

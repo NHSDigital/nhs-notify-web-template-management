@@ -12,7 +12,7 @@ export const zodValidationServerAction = <
   schema: ZodObject<T, U, V, W>,
   page?: Page
 ) => {
-  const form = Object.fromEntries([...formData.entries()]);
+  const form = Object.fromEntries(formData.entries());
 
   const parsedForm = schema.safeParse(form);
 
@@ -25,7 +25,7 @@ export const zodValidationServerAction = <
 
   return {
     ...formState,
-    validationError: null,
+    validationError: undefined,
     ...(page && { page }),
     ...parsedForm.data,
   };

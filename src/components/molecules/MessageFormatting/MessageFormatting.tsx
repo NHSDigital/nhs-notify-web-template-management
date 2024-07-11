@@ -1,9 +1,9 @@
-import styles from './MessageFormatting.module.scss';
 import { Details } from 'nhsuk-react-components';
-import { MessageFormattingType } from './message-formatting.types';
 import { TemplateFormatText } from '@/src/types/template-format.types';
 
 import content from '@/src/content/content';
+import { MessageFormattingType } from './message-formatting.types';
+import styles from './MessageFormatting.module.scss';
 
 const messageFormattingContent = content.components.messageFormattingComponent;
 
@@ -65,7 +65,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
           </code>
         </Details.Text>
       </Details>
-      {template !== TemplateFormatText.SMS ? (
+      {template === TemplateFormatText.SMS ? undefined : (
         <Details data-testid='bold-text-details'>
           <Details.Summary data-testid='bold-text-summary'>
             {messageFormattingContent.boldText.title}
@@ -75,7 +75,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             <code>{messageFormattingContent.boldText.codeBlockText}</code>
           </Details.Text>
         </Details>
-      ) : null}
+      )}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='headings-details'>
@@ -89,7 +89,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             <code>{messageFormattingContent.headings.codeBlock.text2}</code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='bullet-lists-details'>
@@ -109,7 +109,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             </code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='numbered-list-details'>
@@ -129,7 +129,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             </code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='signatures-details'>
@@ -141,7 +141,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             <code>{messageFormattingContent.signatures.codeBlockText}</code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.EMAIL ||
       template === TemplateFormatText.LETTER ? (
         <Details data-testid='horizontal-lines-details'>
@@ -159,7 +159,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             </code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.LETTER ? (
         <Details data-testid='page-breaks-details'>
           <Details.Summary data-testid='page-breaks-summary'>
@@ -178,7 +178,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             </code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
       {template === TemplateFormatText.LETTER ? (
         <Details data-testid='content-blocks-details'>
           <Details.Summary data-testid='content-blocks-summary'>
@@ -199,7 +199,7 @@ export function MessageFormatting({ template }: MessageFormattingType) {
             </code>
           </Details.Text>
         </Details>
-      ) : null}
+      ) : undefined}
     </>
   );
 }

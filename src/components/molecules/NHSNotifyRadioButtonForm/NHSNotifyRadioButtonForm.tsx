@@ -28,7 +28,7 @@ export const NHSNotifyRadioButtonForm = ({
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper action={action} formId={formId}>
     <Fieldset>
-      <Fieldset.Legend isPageHeading={true} size='l'>
+      <Fieldset.Legend isPageHeading size='l'>
         {pageHeading}
       </Fieldset.Legend>
       <Radios
