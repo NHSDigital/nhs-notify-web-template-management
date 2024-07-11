@@ -165,7 +165,6 @@ jobs:
     timeout-minutes: 10
     env:
       BASE_URL: ${{ needs.deploy.outputs.app_url }}
-      BASIC_AUTH: ${{ needs.deploy.outputs.app_basic_auth }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -174,6 +173,7 @@ jobs:
           npm ci
       - name: "Run accessibility test"
         run: |
+          export BASIC_AUTH=${{needs.deploy.outputs.app_basic_auth}}
           make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
