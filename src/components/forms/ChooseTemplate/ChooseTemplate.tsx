@@ -1,4 +1,7 @@
-'use client'; // we need this to be a client component because nhsuk-react-components uses client-only react features
+'use client';
+
+// we need this to be a client component because nhsuk-react-components uses client-only react features
+
 import { FC } from 'react';
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyRadioButtonForm } from '../../molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';

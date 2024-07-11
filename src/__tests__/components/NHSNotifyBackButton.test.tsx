@@ -4,7 +4,7 @@ import { NHSNotifyBackButton } from '../../components/molecules/NHSNotifyBackBut
 test('Renders back button', () => {
   const container = render(
     <NHSNotifyBackButton formId='form-id' action='/action'>
-      <input id='input' value='4' readOnly={true} />
+      <input id='input' value='4' readOnly />
     </NHSNotifyBackButton>
   );
 

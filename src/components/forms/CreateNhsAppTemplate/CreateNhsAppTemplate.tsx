@@ -1,5 +1,14 @@
-'use client'; // we need this to be a client component because nhsuk-react-components uses client-only react features
-import { CSSProperties, useEffect } from 'react';
+'use client';
+
+// we need this to be a client component because nhsuk-react-components uses client-only react features
+
+import {
+  CSSProperties,
+  useEffect,
+  FC,
+  FormEventHandler,
+  useState,
+} from 'react';
 import {
   TextInput,
   HintText,
@@ -7,11 +16,9 @@ import {
   Label,
   Textarea,
   Button,
-  Fieldset,
 } from 'nhsuk-react-components';
-import { FC, FormEventHandler, useState } from 'react';
 import { createNhsAppTemplatePageContent } from '../../../content/content';
-import { ZodErrorSummary } from '../../../components/molecules/ZodErrorSummary/ZodErrorSummary';
+import { ZodErrorSummary } from '../../molecules/ZodErrorSummary/ZodErrorSummary';
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
@@ -90,8 +97,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
                 <p>{templateNameDetailsOpeningParagraph}</p>
                 <p>{templateNameDetailsListHeader}</p>
                 <ul>
-                  {templateNameDetailsList.map((listItem, index) => (
-                    <li key={`list-item-${index}`}>{listItem}</li>
+                  {templateNameDetailsList.map((listItem) => (
+                    <li key={`list-item-${listItem.id}`}>{listItem.text}</li>
                   ))}
                 </ul>
                 <p>{templateNameDetailsExample}</p>
