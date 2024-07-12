@@ -167,7 +167,6 @@ jobs:
     timeout-minutes: 10
     env:
       BASE_URL: ${{ needs.deploy.outputs.app_url }}
-
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -176,8 +175,8 @@ jobs:
           npm ci
       - name: "Run accessibility test"
         run: |
-          BASIC_AUTH_USERNAME=$(echo "::add-mask::${{needs.deploy.outputs.app_basic_auth_username}}")
-          BASIC_AUTH_PASSWORD=$(echo "::add-mask::${{needs.deploy.outputs.app_basic_auth_password}}")
+          echo "BASIC_AUTH_USERNAME=::add-mask::${{needs.deploy.outputs.app_basic_auth_username}}" >> $GITHUB_ENV
+          echo "BASIC_AUTH_PASSWORD=::add-mask::${{needs.deploy.outputs.app_basic_auth_password}}" >> $GITHUB_ENV
           make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
