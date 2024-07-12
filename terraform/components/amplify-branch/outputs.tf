@@ -13,7 +13,12 @@ output "app_url" {
   sensitive = true
 }
 
-output "app_basic_auth" {
-  value     = base64encode("${data.aws_ssm_parameter.amplify_app_username.value}:${data.aws_ssm_parameter.amplify_app_password.value}")
+output "app_basic_auth_username" {
+  value     = data.aws_ssm_parameter.amplify_app_username.value
+  sensitive = true
+}
+
+output "app_basic_auth_password" {
+  value     = data.aws_ssm_parameter.amplify_app_password.value
   sensitive = true
 }

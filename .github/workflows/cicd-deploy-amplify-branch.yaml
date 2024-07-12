@@ -112,7 +112,8 @@ jobs:
     name: "Deploy to an environment"
     outputs:
       app_url: ${{ steps.terraform_apply.outputs.app_url }}
-      app_basic_auth: ${{ steps.terraform_apply.outputs.app_basic_auth }}
+      app_basic_auth_username: ${{ steps.terraform_apply.outputs.app_basic_auth_username }}
+      app_basic_auth_password: ${{ steps.terraform_apply.outputs.app_basic_auth_password }}
     environment: ${{ needs.metadata.outputs.amplify_app_environment }}
     runs-on: ubuntu-latest
     needs: [metadata]
@@ -150,7 +151,8 @@ jobs:
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
           echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-          echo "app_basic_auth=$( jq -r '.app_basic_auth.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
+          echo "app_basic_auth_username=$( jq -r '.app_basic_auth_username.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
+          echo "app_basic_auth_password=$( jq -r '.app_basic_auth_password.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
       - name:  Amplify Poll
         if: >-
           always() &&
@@ -165,6 +167,7 @@ jobs:
     timeout-minutes: 10
     env:
       BASE_URL: ${{ needs.deploy.outputs.app_url }}
+
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -173,8 +176,8 @@ jobs:
           npm ci
       - name: "Run accessibility test"
         run: |
-          export BASIC_AUTH="::add-mask::${{needs.deploy.outputs.app_basic_auth}}"
-          echo "::add-mask::$BASIC_AUTH"
+          BASIC_AUTH_USERNAME=$(echo "::add-mask::${{needs.deploy.outputs.app_basic_auth_username}}")
+          BASIC_AUTH_PASSWORD=$(echo "::add-mask::${{needs.deploy.outputs.app_basic_auth_password}}")
           make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
