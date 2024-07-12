@@ -13,7 +13,7 @@ describe('Preview nhs app form renders', () => {
     const container = render(
       <ReviewNHSAppTemplate
         state={mockDeep<FormState>({
-          validationError: null,
+          validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: 'message',
         })}
@@ -48,7 +48,7 @@ describe('Preview nhs app form renders', () => {
     render(
       <ReviewNHSAppTemplate
         state={mockDeep<FormState>({
-          validationError: null,
+          validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: 'message',
         })}
@@ -77,7 +77,7 @@ describe('Preview nhs app form renders', () => {
     render(
       <ReviewNHSAppTemplate
         state={mockDeep<FormState>({
-          validationError: null,
+          validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: message,
         })}

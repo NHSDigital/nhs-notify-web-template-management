@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import '@/src/styles/app.scss';
+import content from '@/src/content/content';
 import { NHSNotifyHeader } from '../components/molecules/Header/Header';
 import { NHSNotifyContainer } from '../components/layouts/container/container';
 import { NHSNotifyFooter } from '../components/molecules/Footer/Footer';
-import content from '@/src/content/content';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,
@@ -61,7 +61,7 @@ export default function RootLayout({
           content='/lib/assets/favicons/largetile-310x310.png'
         />
       </head>
-      <body suppressHydrationWarning={true}>
+      <body suppressHydrationWarning>
         <script
           type='text/javascript'
           src='/lib/nhs-frontend-js-check.js'

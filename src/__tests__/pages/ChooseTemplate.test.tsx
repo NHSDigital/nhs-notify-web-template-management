@@ -1,12 +1,8 @@
 'use client';
-import { render, screen, fireEvent } from '@testing-library/react';
 
-jest.mock('react-dom', () => ({
-  ...jest.requireActual('react-dom'),
-  useFormState: jest.fn(),
-}));
-import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
+import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { FormState } from '../../utils/types';
 
 describe('Choose template page', () => {
@@ -14,7 +10,7 @@ describe('Choose template page', () => {
     const container = render(
       <ChooseTemplate
         state={mockDeep<FormState>({
-          validationError: null,
+          validationError: undefined,
         })}
         action='/action'
       />
@@ -35,18 +31,18 @@ describe('Choose template page', () => {
     }
     expect(submitButton).toBeInTheDocument();
 
-    for (const [index, radioButton] of radioButtons.entries()) {
+    for (const [_, radioButton] of radioButtons.entries()) {
       // select an option
       fireEvent(radioButton, new MouseEvent('click'));
 
-      // make sure the selected option is checked and the other options are not
-      for (const [index2, radioButton2] of radioButtons.entries()) {
-        if (index === index2) {
-          expect(radioButton2).toBeChecked();
-        } else {
-          expect(radioButton2).not.toBeChecked();
-        }
-      }
+      expect(radioButton).toBeChecked();
+
+      const notCheckedRadioButtons = radioButtons.filter(
+        (r) => r !== radioButton
+      );
+
+      for (const button of notCheckedRadioButtons)
+        expect(button).not.toBeChecked();
     }
   });
 

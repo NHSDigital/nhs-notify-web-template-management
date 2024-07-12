@@ -1,2 +1,2 @@
 export * from './ReviewTemplate';
-export * from './ReviewTemplate.types';
+export * from './review-template.types';

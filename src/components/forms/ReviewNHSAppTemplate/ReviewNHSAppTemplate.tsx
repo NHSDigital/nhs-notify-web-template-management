@@ -4,8 +4,8 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { PageComponentProps } from '@utils/types';
-import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
+import { renderMarkdown } from './server-actions';
 
 export function ReviewNHSAppTemplate({ state, action }: PageComponentProps) {
   const { nhsAppTemplateName, nhsAppTemplateMessage } = state;
@@ -23,7 +23,7 @@ export function ReviewNHSAppTemplate({ state, action }: PageComponentProps) {
       <NHSNotifyBackButton
         formId='review-nhs-app-template-back'
         action={action}
-      ></NHSNotifyBackButton>
+      />
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
           templateName={nhsAppTemplateName}

@@ -4,7 +4,7 @@ import { FormState } from '@utils/types';
 import { mockDeep } from 'jest-mock-extended';
 
 const mockState = mockDeep<FormState>({
-  validationError: null,
+  validationError: undefined,
 });
 
 describe('ReviewTemplate component', () => {
@@ -15,7 +15,10 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='NHS app message template'
         templateName='Example NHS APP template'
-        details={{ heading: 'Details heading', text: ['Details text'] }}
+        details={{
+          heading: 'Details heading',
+          text: [{ id: 'example-1', text: 'Details text' }],
+        }}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
@@ -50,7 +53,10 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='NHS app message template'
         templateName='Example NHS APP template'
-        details={{ heading: 'Details heading', text: ['Details text'] }}
+        details={{
+          heading: 'Details heading',
+          text: [{ id: 'example-1', text: 'Details text' }],
+        }}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
@@ -76,7 +82,10 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='Email template'
         templateName='Example template'
-        details={{ heading: 'Details heading', text: ['Details text'] }}
+        details={{
+          heading: 'Details heading',
+          text: [{ id: 'example-1', text: 'Details text' }],
+        }}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',

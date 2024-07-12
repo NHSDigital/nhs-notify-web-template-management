@@ -1,16 +1,16 @@
-import { FormState } from '../../utils/types';
-import { mainServerAction } from '../../app/create-template/main-server-action';
-import { getMockFormData } from '../helpers';
 import {
   handleForm as nhsAppHandleForm,
   handleFormBack as nhsAppHandleFormBack,
 } from '@forms/ReviewNHSAppTemplate/server-actions';
+import { FormState } from '../../utils/types';
+import { mainServerAction } from '../../app/create-template/main-server-action';
+import { getMockFormData } from '../helpers';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 
 const formState: FormState = {
   page: 'choose-template',
-  validationError: null,
+  validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
@@ -74,7 +74,7 @@ test.each<TestConfig>([
     },
     {
       page: 'create-sms-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -106,7 +106,7 @@ test.each<TestConfig>([
     },
     {
       page: 'choose-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },
@@ -139,7 +139,7 @@ test.each<TestConfig>([
     },
     {
       page: 'review-nhs-app-template',
-      validationError: null,
+      validationError: undefined,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },

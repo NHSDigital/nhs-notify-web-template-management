@@ -1,4 +1,7 @@
-'use client'; // we need this to be a client component because nhsuk-react-components uses client-only react features
+'use client';
+
+// we need this to be a client component because nhsuk-react-components uses client-only react features
+
 import { FC } from 'react';
 import { PageComponentProps } from '../../../utils/types';
 import { NHSNotifyRadioButtonForm } from '../../molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
@@ -6,7 +9,7 @@ import { ZodErrorSummary } from '../../molecules/ZodErrorSummary/ZodErrorSummary
 import { chooseTemplatePageContent } from '../../../content/content';
 
 export const ChooseTemplate: FC<PageComponentProps> = ({ state, action }) => {
-  const { pageHeading, errorHeading, options, buttonText } =
+  const { pageHeading, errorHeading, options, buttonText, hint } =
     chooseTemplatePageContent;
   return (
     <>
@@ -19,6 +22,7 @@ export const ChooseTemplate: FC<PageComponentProps> = ({ state, action }) => {
         pageHeading={pageHeading}
         options={options}
         buttonText={buttonText}
+        hint={hint}
       />
     </>
   );

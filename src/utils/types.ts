@@ -12,17 +12,17 @@ export type FormId =
   | 'create-nhs-app-template-back'
   | 'review-nhs-app-template-back';
 
-export type FormState = {
-  page: Page;
-  validationError: FormErrorState | null;
-  nhsAppTemplateName: string;
-  nhsAppTemplateMessage: string;
-  reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
-};
-
 export type FormErrorState = {
   formErrors: string[];
   fieldErrors: Record<string, string[]>;
+};
+
+export type FormState = {
+  page: Page;
+  validationError?: FormErrorState;
+  nhsAppTemplateName: string;
+  nhsAppTemplateMessage: string;
+  reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
 };
 
 export type PageComponentProps = {

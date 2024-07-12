@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
-import { ZodErrorSummary } from '../../components/molecules/ZodErrorSummary/ZodErrorSummary';
 import { mockDeep } from 'jest-mock-extended';
 import { FormState } from '@/src/utils/types';
+import { ZodErrorSummary } from '../../components/molecules/ZodErrorSummary/ZodErrorSummary';
 
 test('Renders ZodErrorSummary correctly without errors', () => {
   const container = render(
     <ZodErrorSummary
       errorHeading='Error heading'
-      state={mockDeep<FormState>({ validationError: null })}
+      state={mockDeep<FormState>({ validationError: undefined })}
     />
   );
 

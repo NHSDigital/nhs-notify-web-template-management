@@ -1,14 +1,12 @@
 'use client';
 
-import styles from './ReviewTemplate.module.scss';
-
 import { Details } from 'nhsuk-react-components';
-import { ReviewTemplateProps } from './ReviewTemplate.types';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { ReviewTemplateProps } from './review-template.types';
+import styles from './ReviewTemplate.module.scss';
 
-export function ReviewTemplate(props: ReviewTemplateProps) {
-  const { form } = props;
+export function ReviewTemplate({ form, ...props }: ReviewTemplateProps) {
   return (
     <>
       <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
@@ -29,8 +27,8 @@ export function ReviewTemplate(props: ReviewTemplateProps) {
           {props.details.heading}
         </Details.Summary>
         <Details.Text data-testid='preview-message-details__text'>
-          {props.details.text.map((val, idx) => (
-            <p key={`details-text-${idx}`}>{val}</p>
+          {props.details.text.map((val) => (
+            <p key={val.id}>{val.text}</p>
           ))}
         </Details.Text>
       </Details>

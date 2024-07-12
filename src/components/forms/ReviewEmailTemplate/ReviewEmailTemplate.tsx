@@ -2,8 +2,8 @@
 
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
-import { renderMarkdown } from './server-actions';
 import content from '@/src/content/content';
+import { renderMarkdown } from './server-actions';
 
 export type ReviewEmailTemplateProps = {
   templateName: string;
@@ -38,7 +38,7 @@ export function ReviewEmailTemplate({
               page: 'choose-template',
               nhsAppTemplateName: '',
               nhsAppTemplateMessage: '',
-              validationError: null,
+              validationError: undefined,
             },
             formId: 'review-email-template',
             radiosId: 'reviewEmailTemplateAction',

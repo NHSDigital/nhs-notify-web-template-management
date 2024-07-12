@@ -6,7 +6,7 @@ export type ReviewTemplateProps = {
   templateName: string;
   details: {
     heading: string;
-    text: string[];
+    text: { id: string; text: string }[];
   };
   form: {
     errorHeading: string;

@@ -9,11 +9,11 @@ export function pageBreak(md: MarkdownIt) {
 
   md.renderer.rules.text = (tokens, idx, options, env, self) => {
     const token = tokens[idx];
-    const content = token.content;
+    const { content } = token;
 
     // Replace *** with a Page break
     const pageBreakHtml = renderToString(PageBreak());
-    const newContent = content.replace(/\*\*\*/g, pageBreakHtml);
+    const newContent = content.replaceAll('***', pageBreakHtml);
 
     return defaultRender(tokens, idx, options, env, self).replace(
       content,

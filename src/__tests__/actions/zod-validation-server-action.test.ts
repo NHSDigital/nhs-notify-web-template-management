@@ -5,7 +5,7 @@ import { getMockFormData } from '../helpers';
 
 const formState: FormState = {
   page: 'choose-template',
-  validationError: null,
+  validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
@@ -43,7 +43,7 @@ test('returns as expected on valid formData', () => {
 
   expect(result).toEqual({
     page: 'choose-template',
-    validationError: null,
+    validationError: undefined,
     nhsAppTemplateName: 'p',
     nhsAppTemplateMessage: '',
   });
@@ -59,7 +59,7 @@ test('returns as expected on valid formData when page is specified', () => {
 
   expect(result).toEqual({
     page: 'review-nhs-app-template',
-    validationError: null,
+    validationError: undefined,
     nhsAppTemplateName: 'p',
     nhsAppTemplateMessage: '',
   });

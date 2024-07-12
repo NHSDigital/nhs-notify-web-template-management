@@ -15,12 +15,13 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
           formErrors: [],
         },
       })}
-      pageHeading={'Page heading'}
+      pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
         { id: 'option-2', text: 'option 2' },
       ]}
       buttonText='Continue'
+      hint='Example hint'
     />
   );
 
@@ -41,7 +42,7 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
           formErrors: ['Form error'],
         },
       })}
-      pageHeading={'Page heading'}
+      pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
         { id: 'option-2', text: 'option 2' },

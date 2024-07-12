@@ -1,5 +1,5 @@
 const headerComponent = {
-  title: '',
+  serviceName: 'Notify',
   links: {
     logIn: 'Log in',
     logOut: 'Log out',
@@ -210,8 +210,14 @@ const reviewEmailTemplateContent = {
   details: {
     heading: 'Who your email will be sent from',
     text: [
-      'Set your reply-to and from email addresses during onboarding.',
-      'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
+      {
+        id: 'email-text-1',
+        text: 'Set your reply-to and from email addresses during onboarding.',
+      },
+      {
+        id: 'email-text-2',
+        text: 'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
+      },
     ],
   },
   form: {
@@ -231,8 +237,14 @@ const reviewLetterTemplateContent = {
   details: {
     heading: 'Who your letter will be sent from',
     text: [
-      `The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.`,
-      'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
+      {
+        id: 'letter-text-1',
+        text: `The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.`,
+      },
+      {
+        id: 'letter-text-2',
+        text: 'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
+      },
     ],
   },
   form: {
@@ -252,8 +264,14 @@ const reviewNHSAppTemplateContent = {
   details: {
     heading: 'Who your NHS App message will be sent from',
     text: [
-      'Set your NHS App message sender name during onboarding.',
-      'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
+      {
+        id: 'nhsapp-text-1',
+        text: 'Set your NHS App message sender name during onboarding.',
+      },
+      {
+        id: 'nhsapp-text-2',
+        text: 'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
+      },
     ],
   },
   form: {
@@ -272,8 +290,14 @@ const reviewSMSTemplateContent = {
   details: {
     heading: 'Who your text message will be sent from',
     text: [
-      'Set your text message sender name during onboarding.',
-      'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
+      {
+        id: 'sms-text-1',
+        text: 'Set your text message sender name during onboarding.',
+      },
+      {
+        id: 'sms-text-2',
+        text: 'If you need to set up a different text message sender name for other messages, contact our onboarding team.',
+      },
     ],
   },
   form: {
@@ -317,6 +341,7 @@ export const chooseTemplatePageContent = {
     { id: 'create-letter-template', text: 'Letter' },
   ],
   buttonText: 'Continue',
+  hint: 'Select one option',
 };
 
 export const createNhsAppTemplatePageContent = {
@@ -329,10 +354,19 @@ export const createNhsAppTemplatePageContent = {
     'You should name your templates in a way that works best for your service or organisation.',
   templateNameDetailsListHeader: 'Common template names include the:',
   templateNameDetailsList: [
-    'message channel it uses',
-    'subject or reason for the message',
-    'intended audience for the template',
-    'version number of the template',
+    { id: `template-name-details-item-1`, text: 'message channel it uses' },
+    {
+      id: `template-name-details-item-2`,
+      text: 'subject or reason for the message',
+    },
+    {
+      id: `template-name-details-item-3`,
+      text: 'intended audience for the template',
+    },
+    {
+      id: `template-name-details-item-4`,
+      text: 'version number of the template',
+    },
   ],
   templateNameDetailsExample:
     "For example, 'Email - covid19 2023 - over 65s - version 3'",

@@ -1,15 +1,16 @@
 'use client';
+
+import { useFormState } from 'react-dom';
+import { FC } from 'react';
+import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
 import { CreateNhsAppTemplate } from '../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 import { CreateSmsTemplate } from '../../components/forms/CreateSmsTemplate/CreateSmsTemplate';
 import { CreateEmailTemplate } from '../../components/forms/CreateEmailTemplate/CreateEmailTemplate';
 import { CreateLetterTemplate } from '../../components/forms/CreateLetterTemplate/CreateLetterTemplate';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { mainServerAction } from './main-server-action';
 import { FormState, Page, PageComponentProps } from '../../utils/types';
-import { useFormState } from 'react-dom';
-import { FC } from 'react';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
   'choose-template': ChooseTemplate,
@@ -23,7 +24,7 @@ const pages: Record<Page, FC<PageComponentProps>> = {
 
 const initialState: FormState = {
   page: 'choose-template',
-  validationError: null,
+  validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };

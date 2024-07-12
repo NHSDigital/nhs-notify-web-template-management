@@ -5,6 +5,7 @@
     "MD033": false
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
-  }
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.codeActionsOnSave.mode": "problems"
 }

@@ -1,2 +1,2 @@
 export * from './PreviewTemplate';
-export * from './PreviewTemplate.types';
+export * from './preview-template.types';

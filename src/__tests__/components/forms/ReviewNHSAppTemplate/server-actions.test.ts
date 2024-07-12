@@ -5,9 +5,9 @@ import {
   renderMarkdown,
 } from '@forms/ReviewNHSAppTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { markdown } from '../fixtures';
 import { getMockFormData } from '@/src/__tests__/helpers';
 import { FormState } from '@/src/utils/types';
+import { markdown } from '../fixtures';
 
 describe('Markdown rendering', () => {
   it('should enable nhs app markdown rules', () => {
@@ -41,7 +41,7 @@ describe('Form handling', () => {
       page: 'review-nhs-app-template',
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
-      validationError: null,
+      validationError: undefined,
     };
 
     const newState = handleForm(currentState, formData);
@@ -68,7 +68,7 @@ describe('Form handling', () => {
       page: 'review-nhs-app-template',
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
-      validationError: null,
+      validationError: undefined,
     };
 
     const newState = handleForm(currentState, formData);
@@ -78,7 +78,7 @@ describe('Form handling', () => {
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
       reviewNHSAppTemplateAction: 'nhsapp-submit',
-      validationError: null,
+      validationError: undefined,
     });
   });
 
@@ -91,7 +91,7 @@ describe('Form handling', () => {
       page: 'review-nhs-app-template',
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
-      validationError: null,
+      validationError: undefined,
     };
 
     const newState = handleForm(currentState, formData);
@@ -101,7 +101,7 @@ describe('Form handling', () => {
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
       reviewNHSAppTemplateAction: 'nhsapp-edit',
-      validationError: null,
+      validationError: undefined,
     });
   });
 
@@ -112,7 +112,7 @@ describe('Form handling', () => {
       page: 'review-nhs-app-template',
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
-      validationError: null,
+      validationError: undefined,
     };
 
     const newState = handleFormBack(currentState, formData);
@@ -121,7 +121,7 @@ describe('Form handling', () => {
       page: 'create-nhs-app-template',
       nhsAppTemplateName: 'Example name',
       nhsAppTemplateMessage: 'Example message',
-      validationError: null,
+      validationError: undefined,
     });
   });
 });
