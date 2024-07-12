@@ -3,7 +3,7 @@
 exports[`Renders back button 1`] = `
 <DocumentFragment>
   <div
-    class="nhsuk-back-link nhsuk-u-margin-bottom-4 nhsuk-u-padding-left-3"
+    class="nhsuk-back-link nhsuk-u-margin-bottom-7 nhsuk-u-padding-left-3"
   >
     <form
       action="/action"

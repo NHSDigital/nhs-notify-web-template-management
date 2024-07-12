@@ -4,8 +4,13 @@ export type Page =
   | 'create-email-template'
   | 'create-letter-template'
   | 'create-sms-template'
-  | 'review-nhs-app-template';
-export type FormId = Page | 'create-nhs-app-template-back';
+  | 'review-nhs-app-template'
+  | 'submit-template';
+
+export type FormId =
+  | Page
+  | 'create-nhs-app-template-back'
+  | 'review-nhs-app-template-back';
 
 export type FormErrorState = {
   formErrors: string[];
@@ -17,6 +22,7 @@ export type FormState = {
   validationError?: FormErrorState;
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
+  reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
 };
 
 export type PageComponentProps = {

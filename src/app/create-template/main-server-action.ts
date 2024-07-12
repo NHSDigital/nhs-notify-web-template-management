@@ -1,6 +1,10 @@
 'use server';
 
 import { z } from 'zod';
+import {
+  handleForm as handleNHSAppForm,
+  handleFormBack as handleNHSFormBack,
+} from '@forms/ReviewNHSAppTemplate';
 import { FormState, FormId } from '../../utils/types';
 import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
 
@@ -48,6 +52,8 @@ const serverActions: Partial<
       }),
       'review-nhs-app-template'
     ),
+  'review-nhs-app-template': handleNHSAppForm,
+  'review-nhs-app-template-back': handleNHSFormBack,
 };
 
 const schema = z.object({
@@ -57,6 +63,9 @@ const schema = z.object({
       'create-nhs-app-template-back',
       'create-nhs-app-template',
       'create-sms-template',
+      'review-nhs-app-template',
+      'review-nhs-app-template-back',
+      'submit-template',
     ],
     { message: 'Internal server error' }
   ),

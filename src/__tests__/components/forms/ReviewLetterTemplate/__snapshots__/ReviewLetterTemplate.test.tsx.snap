@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preview letter form renders matches snapshot 1`] = `
+<DocumentFragment>
+  <h1
+    class="review__heading"
+    data-testid="preview-message__heading"
+  >
+    <span
+      class="nhsuk-caption-l"
+      data-testid="preview-message__heading-caption"
+    >
+      Letter template
+    </span>
+    test-template-letter
+  </h1>
+  <details
+    class="nhsuk-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="preview-message-details__heading"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Who your letter will be sent from
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="preview-message-details__text"
+    >
+      <p>
+        The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.
+      </p>
+      <p>
+        If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.
+      </p>
+    </div>
+  </details>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <div
+      class="preview"
+    >
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+            data-testid="preview__heading-0"
+          >
+            Heading
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <div
+            class="preview__col_content"
+            data-testid="preview__content-0"
+          >
+            letter heading
+          </div>
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+            data-testid="preview__heading-1"
+          >
+            Body text
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <div
+            class="preview__col_content"
+            data-testid="preview__content-1"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="review-letter-template"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="reviewLetterTemplateAction-form__legend"
+        >
+          What would you like to do next with this template?
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="reviewLetterTemplateAction"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="reviewLetterTemplateAction-letter-edit--label"
+                class="nhsuk-radios__input"
+                data-testid="letter-edit-radio"
+                id="reviewLetterTemplateAction-letter-edit"
+                name="reviewLetterTemplateAction"
+                type="radio"
+                value="letter-edit"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="reviewLetterTemplateAction-letter-edit"
+                id="reviewLetterTemplateAction-letter-edit--label"
+              >
+                Edit
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="reviewLetterTemplateAction-letter-preview--label"
+                class="nhsuk-radios__input"
+                data-testid="letter-preview-radio"
+                id="reviewLetterTemplateAction-letter-preview"
+                name="reviewLetterTemplateAction"
+                type="radio"
+                value="letter-preview"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="reviewLetterTemplateAction-letter-preview"
+                id="reviewLetterTemplateAction-letter-preview--label"
+              >
+                Preview (PDF)
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="reviewLetterTemplateAction-letter-submit--label"
+                class="nhsuk-radios__input"
+                data-testid="letter-submit-radio"
+                id="reviewLetterTemplateAction-letter-submit"
+                name="reviewLetterTemplateAction"
+                type="radio"
+                value="letter-submit"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="reviewLetterTemplateAction-letter-submit"
+                id="reviewLetterTemplateAction-letter-submit--label"
+              >
+                Submit
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="review-letter-template-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;

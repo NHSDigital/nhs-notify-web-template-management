@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown rendering should only process nhs app markdown rules 1`] = `
+"<h1>Heading</h1>
+<h2>sub heading</h2>
+<p><strong>bold</strong></p>
+<ul>
+<li>bullet point 1</li>
+<li>bullet point 2</li>
+</ul>
+<ol>
+<li>ordered list item 1</li>
+<li>ordered list item 2</li>
+</ol>
+<p><a href="https://www.nhs.uk/example">Read more</a></p>
+<p>https://www.nhs.uk/example</p>
+<p>Before page break
+***
+After page break</p>
+<p>Start of line break<br>end of line break</p>
+<p>Before horizontal line
+---
+End of horizontal line</p>
+<p>This is a paragraph</p>
+<p>By doing a new line this starts a new paragraph</p>
+"
+`;
