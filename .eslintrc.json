@@ -63,5 +63,10 @@
     "react/no-danger": "off",
     "no-param-reassign": "off",
     "react/require-default-props": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {} // this loads <rootdir>/tsconfig.json to eslint
+    }
   }
 }
