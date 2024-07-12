@@ -151,8 +151,10 @@ jobs:
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
           echo "app_url=$( jq -r '.app_url.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-          echo "app_basic_auth_username=$( jq -r '.app_basic_auth_username.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
-          echo "app_basic_auth_password=$( jq -r '.app_basic_auth_password.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
+          echo "app_basic_auth_username=$( jq -r '.app_basic_auth_username.value' amplify-branch_output.json)"
+          echo "::add-mask::$app_basic_auth_username" >> $GITHUB_OUTPUT
+          echo "app_basic_auth_password=$( jq -r '.app_basic_auth_password.value' amplify-branch_output.json)"
+          echo "::add-mask::$app_basic_auth_password" >> $GITHUB_OUTPUT
       - name:  Amplify Poll
         if: >-
           always() &&
@@ -167,6 +169,8 @@ jobs:
     timeout-minutes: 10
     env:
       BASE_URL: ${{ needs.deploy.outputs.app_url }}
+      BASIC_AUTH_USERNAME: ${{ needs.deploy.outputs.app_basic_auth_username }}
+      BASIC_AUTH_PASSWORD: ${{ needs.deploy.outputs.app_basic_auth_password }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -175,8 +179,8 @@ jobs:
           npm ci
       - name: "Run accessibility test"
         run: |
-          echo "BASIC_AUTH_USERNAME=::add-mask::${{needs.deploy.outputs.app_basic_auth_username}}" >> $GITHUB_ENV
-          echo "BASIC_AUTH_PASSWORD=::add-mask::${{needs.deploy.outputs.app_basic_auth_password}}" >> $GITHUB_ENV
+          echo "BASIC_AUTH_USERNAME1=::add-mask::${{needs.deploy.outputs.app_basic_auth_username}}" >> $GITHUB_ENV
+          echo "BASIC_AUTH_PASSWORD1=::add-mask::${{needs.deploy.outputs.app_basic_auth_password}}" >> $GITHUB_ENV
           make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
