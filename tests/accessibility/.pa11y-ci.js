@@ -6,21 +6,25 @@ const {
   createNHSAppTemplateErrorPage,
   reviewNHSAppTemplatePage,
   reviewNHSAppTemplateErrorPage,
- } = require('./actions');
+} = require('./actions');
 
 async function pa11yConfig() {
-  const baseUrl = process.env.BASE_URL ?? 'localhost:3000';
+  const baseUrl = process.env.BASE_URL ?? 'http://localhost:3000';
   const browser = await setupBrowser();
-  const page = await setupPage(browser);
+  const page = await setupPage(
+    browser,
+    process.env.BASIC_AUTH_USERNAME,
+    process.env.BASIC_AUTH_PASSWORD
+  );
 
   const urls = [
-    await performCheck(page, { url: baseUrl, name: 'landing-page' }),
-    await performCheck(page, chooseATemplatePage(baseUrl)),
-    await performCheck(page, chooseATemplatePageError(baseUrl)),
-    await performCheck(page, createNHSAppTemplatePage(baseUrl)),
-    await performCheck(page, createNHSAppTemplateErrorPage(baseUrl)),
-    // await performCheck(browser, reviewNHSAppTemplatePage(baseUrl)),
-    // await performCheck(browser, reviewNHSAppTemplateErrorPage(baseUrl)),
+    performCheck(page, { url: baseUrl, name: 'landing-page' }),
+    performCheck(page, chooseATemplatePage(baseUrl)),
+    performCheck(page, chooseATemplatePageError(baseUrl)),
+    performCheck(page, createNHSAppTemplatePage(baseUrl)),
+    performCheck(page, createNHSAppTemplateErrorPage(baseUrl)),
+    performCheck(page, reviewNHSAppTemplatePage(baseUrl)),
+    performCheck(page, reviewNHSAppTemplateErrorPage(baseUrl)),
   ];
 
   return {
@@ -41,7 +45,7 @@ async function pa11yConfig() {
       ],
       standard: 'WCAG2AA',
       agent: 'pa11y',
-      concurrency: 5
+      concurrency: Object.freeze(1) // do not update this. Higher concurrency breaks the overridden puppeteer
     }
   };
 }
