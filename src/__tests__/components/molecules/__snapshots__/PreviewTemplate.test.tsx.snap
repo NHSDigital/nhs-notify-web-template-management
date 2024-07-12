@@ -2,40 +2,37 @@
 
 exports[`PreviewTemplate component matches snapshot 1`] = `
 <DocumentFragment>
-  <table
-    class="nhsuk-table preview nhsuk-u-margin-bottom-4"
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <tbody
-      class="nhsuk-table__body"
+    <div
+      class="preview"
     >
-      <tr
-        class="nhsuk-table__row"
-        role="row"
+      <div
+        class="nhsuk-grid-row preview__row"
       >
-        <td
-          class="nhsuk-table__cell"
-          role="cell"
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
         >
           <div
-            class="preview__heading"
+            class="preview__col_heading"
             data-testid="preview__heading-0"
           >
             Heading
           </div>
-        </td>
-        <td
-          class="nhsuk-table__cell"
-          role="cell"
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
         >
           <div
-            class="preview__content"
+            class="preview__col_content"
             data-testid="preview__content-0"
           >
             Test value-1
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </DocumentFragment>
 `;

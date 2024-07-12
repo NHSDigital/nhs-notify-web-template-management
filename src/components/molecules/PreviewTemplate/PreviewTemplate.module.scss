@@ -10,24 +10,22 @@ $nhsuk-secondary-button-color: #4c6272;
   background-color: $white;
   border: 1px solid $nhsuk-border-color;
 
-  :hover {
-    background-color: $white;
-  }
-
-  tr {
+  &__row {
+    margin: 0;
+    padding: 1rem;
     border-bottom: 1px solid $nhsuk-border-color;
+  }
 
-    td {
-      padding: 1rem;
+  &__col {
+    padding: 0;
+
+    &_heading {
+      color: $nhsuk-secondary-button-color;
+      font-weight: 600;
     }
-  }
 
-  &__heading {
-    color: $nhsuk-secondary-button-color;
-    font-weight: 600;
-  }
-
-  &__content {
-    word-wrap: anywhere;
+    &_content {
+      word-wrap: anywhere;
+    }
   }
 }
