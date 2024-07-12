@@ -71,7 +71,7 @@ PreviewTemplate.NHSApp = ({ message }: { message: string }) => (
   />
 );
 
-PreviewTemplate.SMS = ({ message }: { message: string }) => (
+PreviewTemplate.Sms = ({ message }: { message: string }) => (
   <PreviewTemplate
     preview={[{ heading: 'Message', id: 'message', value: message }]}
   />

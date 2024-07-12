@@ -34,15 +34,15 @@ describe('Markdown rendering', () => {
 });
 
 describe('Form handling', () => {
+  const currentState: FormState = {
+    page: 'review-nhs-app-template',
+    nhsAppTemplateName: 'Example name',
+    nhsAppTemplateMessage: 'Example message',
+    validationError: undefined,
+  };
+
   it('should return validation errors when no choice is selected', () => {
     const formData = getMockFormData({});
-
-    const currentState: FormState = {
-      page: 'review-nhs-app-template',
-      nhsAppTemplateName: 'Example name',
-      nhsAppTemplateMessage: 'Example message',
-      validationError: undefined,
-    };
 
     const newState = handleForm(currentState, formData);
 
@@ -64,13 +64,6 @@ describe('Form handling', () => {
       reviewNHSAppTemplateAction: 'nhsapp-submit',
     });
 
-    const currentState: FormState = {
-      page: 'review-nhs-app-template',
-      nhsAppTemplateName: 'Example name',
-      nhsAppTemplateMessage: 'Example message',
-      validationError: undefined,
-    };
-
     const newState = handleForm(currentState, formData);
 
     expect(newState).toEqual({
@@ -87,13 +80,6 @@ describe('Form handling', () => {
       reviewNHSAppTemplateAction: 'nhsapp-edit',
     });
 
-    const currentState: FormState = {
-      page: 'review-nhs-app-template',
-      nhsAppTemplateName: 'Example name',
-      nhsAppTemplateMessage: 'Example message',
-      validationError: undefined,
-    };
-
     const newState = handleForm(currentState, formData);
 
     expect(newState).toEqual({
@@ -107,13 +93,6 @@ describe('Form handling', () => {
 
   it('should return to previous page when page handling back', () => {
     const formData = getMockFormData({});
-
-    const currentState: FormState = {
-      page: 'review-nhs-app-template',
-      nhsAppTemplateName: 'Example name',
-      nhsAppTemplateMessage: 'Example message',
-      validationError: undefined,
-    };
 
     const newState = handleFormBack(currentState, formData);
 

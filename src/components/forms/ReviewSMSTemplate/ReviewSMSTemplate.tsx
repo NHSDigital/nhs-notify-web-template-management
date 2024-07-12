@@ -41,7 +41,7 @@ export function ReviewSMSTemplate({
             formId: 'review-email-template',
             radiosId: 'reviewEmailTemplateAction',
           }}
-          PreviewComponent={<PreviewTemplate.SMS message={html} />}
+          PreviewComponent={<PreviewTemplate.Sms message={html} />}
         />
       </div>
     </div>
