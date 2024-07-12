@@ -28,6 +28,7 @@
     "unicorn"
   ],
   "rules": {
+    "react/display-name": "off",
     "no-restricted-syntax": "off",
     "consistent-return": "off",
     "prettier/prettier": "error",
@@ -59,6 +60,13 @@
     ],
     "security/detect-object-injection": "off",
     "sonarjs/no-duplicate-string": "off",
+    "react/no-danger": "off",
+    "no-param-reassign": "off",
     "react/require-default-props": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {} // this loads <rootdir>/tsconfig.json to eslint
+    }
   }
 }

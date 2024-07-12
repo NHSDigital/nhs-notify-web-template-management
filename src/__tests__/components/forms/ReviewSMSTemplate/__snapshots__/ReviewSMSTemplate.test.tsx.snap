@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preview sms form renders matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        class="review__heading"
+        data-testid="preview-message__heading"
+      >
+        <span
+          class="nhsuk-caption-l"
+          data-testid="preview-message__heading-caption"
+        >
+          Text message template
+        </span>
+        test-template-sms
+      </h1>
+      <details
+        class="nhsuk-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="preview-message-details__heading"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Who your text message will be sent from
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="preview-message-details__text"
+        >
+          <p>
+            Set your text message sender name during onboarding.
+          </p>
+          <p>
+            If you need to set up a different text message sender name for other messages, contact our onboarding team.
+          </p>
+        </div>
+      </details>
+      <div
+        class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+      >
+        <div
+          class="preview"
+        >
+          <div
+            class="nhsuk-grid-row preview__row"
+          >
+            <div
+              class="nhsuk-grid-column-one-third preview__col"
+            >
+              <div
+                class="preview__col_heading"
+                data-testid="preview__heading-0"
+              >
+                Message
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-column-two-thirds col"
+            >
+              <div
+                class="preview__col_content"
+                data-testid="preview__content-0"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <form
+        action=""
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="review-email-template"
+        />
+        <div
+          class="nhsuk-form-group"
+        >
+          <fieldset
+            class="nhsuk-fieldset"
+          >
+            <legend
+              class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+              data-testid="reviewEmailTemplateAction-form__legend"
+            >
+              What would you like to do next with this template?
+            </legend>
+            <div
+              class="nhsuk-form-group"
+            >
+              <div
+                class="nhsuk-radios"
+                id="reviewEmailTemplateAction"
+              >
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="reviewEmailTemplateAction-sms-edit--label"
+                    class="nhsuk-radios__input"
+                    data-testid="sms-edit-radio"
+                    id="reviewEmailTemplateAction-sms-edit"
+                    name="reviewEmailTemplateAction"
+                    type="radio"
+                    value="sms-edit"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="reviewEmailTemplateAction-sms-edit"
+                    id="reviewEmailTemplateAction-sms-edit--label"
+                  >
+                    Edit
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="reviewEmailTemplateAction-sms-send--label"
+                    class="nhsuk-radios__input"
+                    data-testid="sms-send-radio"
+                    id="reviewEmailTemplateAction-sms-send"
+                    name="reviewEmailTemplateAction"
+                    type="radio"
+                    value="sms-send"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="reviewEmailTemplateAction-sms-send"
+                    id="reviewEmailTemplateAction-sms-send--label"
+                  >
+                    Send a test text message
+                  </label>
+                </div>
+                <div
+                  class="nhsuk-radios__item"
+                >
+                  <input
+                    aria-labelledby="reviewEmailTemplateAction-sms-submit--label"
+                    class="nhsuk-radios__input"
+                    data-testid="sms-submit-radio"
+                    id="reviewEmailTemplateAction-sms-submit"
+                    name="reviewEmailTemplateAction"
+                    type="radio"
+                    value="sms-submit"
+                  />
+                  <label
+                    class="nhsuk-label nhsuk-radios__label"
+                    for="reviewEmailTemplateAction-sms-submit"
+                    id="reviewEmailTemplateAction-sms-submit--label"
+                  >
+                    Submit
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          id="review-email-template-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;
