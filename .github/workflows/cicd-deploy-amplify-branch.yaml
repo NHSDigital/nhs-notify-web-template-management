@@ -167,8 +167,6 @@ jobs:
     timeout-minutes: 10
     env:
       BASE_URL: ${{ needs.deploy.outputs.app_url }}
-      BASIC_AUTH_USERNAME: ${{ needs.deploy.outputs.app_basic_auth_username }}
-      BASIC_AUTH_PASSWORD: ${{ needs.deploy.outputs.app_basic_auth_password }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
