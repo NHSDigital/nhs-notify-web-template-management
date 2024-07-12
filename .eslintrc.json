@@ -58,6 +58,7 @@
       }
     ],
     "security/detect-object-injection": "off",
-    "sonarjs/no-duplicate-string": "off"
+    "sonarjs/no-duplicate-string": "off",
+    "react/require-default-props": "off"
   }
 }
