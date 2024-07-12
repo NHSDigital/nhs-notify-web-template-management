@@ -1,49 +1,50 @@
+const { performCheck, setupBrowser, setupPage } = require('./helpers');
+const {
+  chooseATemplatePage,
+  chooseATemplatePageError,
+  createNHSAppTemplatePage,
+  createNHSAppTemplateErrorPage,
+  reviewNHSAppTemplatePage,
+  reviewNHSAppTemplateErrorPage,
+ } = require('./actions');
 
-const { goToCreateNhsAppTemplatePage } = require('./actions/create-nhs-app-template.action');
+async function pa11yConfig() {
+  const baseUrl = process.env.BASE_URL ?? 'localhost:3000';
+  const browser = await setupBrowser();
+  const page = await setupPage(browser);
 
-const getHeaders = () => {
-  const headers = new Map();
-
-  if (process.env.BASIC_AUTH) {
-    headers.set('Authorization', `Basic ${process.env.BASIC_AUTH}`);
-  }
-
-  return Object.fromEntries(headers.entries());
-}
-
-const getUrls = () => {
-  const baseUrl = process.env.BASE_URL ?? 'http://localhost:3000';
-
-  return [
-    baseUrl,
-    `${baseUrl}/create-template`,
-    goToCreateNhsAppTemplatePage(`${baseUrl}/create-template`)
+  const urls = [
+    await performCheck(page, { url: baseUrl, name: 'landing-page' }),
+    await performCheck(page, chooseATemplatePage(baseUrl)),
+    await performCheck(page, chooseATemplatePageError(baseUrl)),
+    await performCheck(page, createNHSAppTemplatePage(baseUrl)),
+    await performCheck(page, createNHSAppTemplateErrorPage(baseUrl)),
+    // await performCheck(browser, reviewNHSAppTemplatePage(baseUrl)),
+    // await performCheck(browser, reviewNHSAppTemplateErrorPage(baseUrl)),
   ];
+
+  return {
+    urls,
+    defaults: {
+      reporters: [
+        'cli',
+        [
+          'pa11y-ci-reporter-html',
+          {
+            destination: './.reports/accessibility',
+            includeZeroIssues: true
+          }
+        ],
+      ],
+      rules: [
+        'Principle1.Guideline1_3.1_3_1_AAA',
+      ],
+      standard: 'WCAG2AA',
+      agent: 'pa11y',
+      concurrency: 5
+    }
+  };
 }
 
-module.exports = {
-  defaults: {
-    headers: getHeaders(),
-    reporters: [
-      'cli', // <-- this is the default reporter
-      [
-        'pa11y-ci-reporter-html',
-        {
-          destination: './.reports/accessibility',
-          includeZeroIssues: true
-        }
-      ],
-    ],
-    chromeLaunchConfig: {
-      args: ['--no-sandbox']
-    },
-    rules: [
-      'Principle1.Guideline1_3.1_3_1_AAA',
-    ],
-    useIncognitoBrowserContext: false,
-    standard: 'WCAG2AA', //'WCAG2AAA'
-    userAgent: 'pa11y-ci',
-    concurrency: 5,
-  },
-  urls: getUrls()
-};
+module.exports = pa11yConfig();
+
