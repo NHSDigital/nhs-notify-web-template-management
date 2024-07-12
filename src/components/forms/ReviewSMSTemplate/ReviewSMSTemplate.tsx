@@ -13,7 +13,7 @@ export type ReviewSMSTemplateProps = {
 export function ReviewSMSTemplate({
   templateName,
   message,
-}: ReviewSMSTemplateProps) {
+}: Readonly<ReviewSMSTemplateProps>) {
   const {
     components: {
       reviewSMSTemplateContent: { sectionHeading, details, form },

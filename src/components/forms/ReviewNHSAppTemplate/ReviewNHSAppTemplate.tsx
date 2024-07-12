@@ -7,7 +7,10 @@ import { PageComponentProps } from '@utils/types';
 import content from '@/src/content/content';
 import { renderMarkdown } from './server-actions';
 
-export function ReviewNHSAppTemplate({ state, action }: PageComponentProps) {
+export function ReviewNHSAppTemplate({
+  state,
+  action,
+}: Readonly<PageComponentProps>) {
   const { nhsAppTemplateName, nhsAppTemplateMessage } = state;
 
   const html = renderMarkdown(nhsAppTemplateMessage);

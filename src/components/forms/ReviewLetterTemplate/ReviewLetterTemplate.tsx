@@ -15,7 +15,7 @@ export function ReviewLetterTemplate({
   templateName,
   heading,
   bodyText,
-}: ReviewLetterTemplateProps) {
+}: Readonly<ReviewLetterTemplateProps>) {
   const {
     components: {
       reviewLetterTemplateContent: { sectionHeading, details, form },

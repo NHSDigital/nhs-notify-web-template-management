@@ -6,7 +6,10 @@ import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NH
 import { ReviewTemplateProps } from './review-template.types';
 import styles from './ReviewTemplate.module.scss';
 
-export function ReviewTemplate({ form, ...props }: ReviewTemplateProps) {
+export function ReviewTemplate({
+  form,
+  ...props
+}: Readonly<ReviewTemplateProps>) {
   return (
     <>
       <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />

@@ -5,7 +5,7 @@ import { PreviewTemplateProps } from './preview-template.types';
 
 export function PreviewTemplate({
   preview,
-}: PreviewTemplateProps): JSX.Element {
+}: Readonly<PreviewTemplateProps>): JSX.Element {
   return (
     <Container
       className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}

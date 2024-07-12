@@ -15,7 +15,7 @@ export function ReviewEmailTemplate({
   templateName,
   subject,
   message,
-}: ReviewEmailTemplateProps) {
+}: Readonly<ReviewEmailTemplateProps>) {
   const {
     components: {
       reviewEmailTemplateContent: { sectionHeading, details, form },
