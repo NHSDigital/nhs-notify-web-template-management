@@ -42,7 +42,7 @@ function pa11yConfig() {
       },
       standard: 'WCAG2AA',
       agent: 'pa11y',
-      concurrency: 5
+      concurrency: 1
     }
   };
 }
