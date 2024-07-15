@@ -35,7 +35,12 @@ const CreateTemplate = () => {
 
   const PageComponent = pages[page];
 
-  return <PageComponent state={state} action={action} />;
+  return (
+    <>
+      <p>{state.sessionId ?? 'no session id'}</p>
+      <PageComponent state={state} action={action} />
+    </>
+  );
 };
 
 export default CreateTemplate;

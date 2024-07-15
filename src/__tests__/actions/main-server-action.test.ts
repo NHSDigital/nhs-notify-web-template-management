@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import {
   handleForm as nhsAppHandleForm,
   handleFormBack as nhsAppHandleFormBack,
@@ -7,6 +11,7 @@ import { mainServerAction } from '../../app/create-template/main-server-action';
 import { getMockFormData } from '../helpers';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
+jest.mock('../../utils/form-actions');
 
 const formState: FormState = {
   page: 'choose-template',
@@ -144,8 +149,8 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: 'template-message',
     },
   ],
-])('%s', (_, formData, expectedFormState) => {
-  const result = mainServerAction(formState, getMockFormData(formData));
+])('%s', async (_, formData, expectedFormState) => {
+  const result = await mainServerAction(formState, getMockFormData(formData));
 
   expect(result).toEqual(expectedFormState);
 });
@@ -153,12 +158,12 @@ test.each<TestConfig>([
 it.each([
   { id: 'review-nhs-app-template', handler: nhsAppHandleForm },
   { id: 'review-nhs-app-template-back', handler: nhsAppHandleFormBack },
-])('should call %s form handler', ({ id, handler }) => {
+])('should call %s form handler', async ({ id, handler }) => {
   const formData = {
     'form-id': id,
   };
 
-  mainServerAction(formState, getMockFormData(formData));
+  await mainServerAction(formState, getMockFormData(formData));
 
   expect(handler).toHaveBeenCalled();
 });
