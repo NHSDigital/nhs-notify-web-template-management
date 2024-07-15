@@ -62,8 +62,7 @@
     "sonarjs/no-duplicate-string": "off",
     "react/no-danger": "off",
     "no-param-reassign": "off",
-    "react/require-default-props": "off",
-    "eslint-plugin-unicorn/prefer-module": "off"
+    "react/require-default-props": "off"
   },
   "settings": {
     "import/resolver": {
