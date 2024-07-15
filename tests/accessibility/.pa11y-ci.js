@@ -1,26 +1,51 @@
+const { performCheck } = require('./helpers');
+const {
+  chooseATemplatePage,
+  chooseATemplatePageError,
+  createNHSAppTemplatePage,
+  createNHSAppTemplateErrorPage,
+  reviewNHSAppTemplatePage,
+  reviewNHSAppTemplateErrorPage,
+} = require('./actions');
 
-const baseUrl = process.env.BASE_URL ?? 'localhost:3000';
+function pa11yConfig() {
+  const baseUrl = 'http://localhost:3000';
 
-module.exports = {
+  const urls = [
+    performCheck({ url: baseUrl, name: 'landing-page' }),
+    performCheck(chooseATemplatePage(baseUrl)),
+    performCheck(chooseATemplatePageError(baseUrl)),
+    performCheck(createNHSAppTemplatePage(baseUrl)),
+    performCheck(createNHSAppTemplateErrorPage(baseUrl)),
+    performCheck(reviewNHSAppTemplatePage(baseUrl)),
+    performCheck(reviewNHSAppTemplateErrorPage(baseUrl)),
+  ];
+
+  return {
+    urls,
     defaults: {
-        reporters: [
-            'cli', // <-- this is the default reporter
-            [
-                'pa11y-ci-reporter-html',
-                {
-                    destination: './.reports/accessibility',
-                    includeZeroIssues: true
-                }
-            ],
+      reporters: [
+        'cli',
+        [
+          'pa11y-ci-reporter-html',
+          {
+            destination: './.reports/accessibility',
+            includeZeroIssues: true
+          }
         ],
-            timeout: 20000,
-            wait: 2000,
-            chromeLaunchConfig: {
-            args: ['--no-sandbox']
-        },
-        useIncognitoBrowserContext: false,
-        standard: 'WCAG2AA', //'WCAG2AAA'
-        userAgent: 'pa11y-ci',
-    },
-    urls: [baseUrl, `${baseUrl}/choose-template`]
-};
+      ],
+      rules: [
+        'Principle1.Guideline1_3.1_3_1_AAA',
+      ],
+      chromeLaunchOptions: {
+        args: ['--no-sandbox']
+      },
+      standard: 'WCAG2AA',
+      agent: 'pa11y',
+      concurrency: 5
+    }
+  };
+}
+
+module.exports = pa11yConfig();
+

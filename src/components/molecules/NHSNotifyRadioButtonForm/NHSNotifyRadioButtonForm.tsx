@@ -1,7 +1,9 @@
-import { Radios, Button, Fieldset } from 'nhsuk-react-components';
+import { Radios, Fieldset, Button } from 'nhsuk-react-components';
 import { FormState } from '../../../utils/types';
+import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyRadioButtonFormProps = {
+  formId: string;
   radiosId: string;
   action: string | ((payload: FormData) => void);
   state: FormState;
@@ -11,29 +13,43 @@ export type NHSNotifyRadioButtonFormProps = {
     text: string;
   }[];
   buttonText: string;
+  hint?: string;
+  legend?: {
+    isPgeHeading: boolean;
+    size: 'l' | 'm' | 's';
+  };
 };
 
 export const NHSNotifyRadioButtonForm = ({
+  formId,
   radiosId,
   action,
   state,
   pageHeading,
   options,
   buttonText,
+  legend = { isPgeHeading: true, size: 'l' },
+  hint = '',
 }: NHSNotifyRadioButtonFormProps) => (
-  <form action={action}>
+  <NHSNotifyFormWrapper action={action} formId={formId}>
     <Fieldset>
-      <Fieldset.Legend isPageHeading={true} size='l'>
+      <Fieldset.Legend
+        data-testid={`${radiosId}-form__legend`}
+        isPageHeading={legend.isPgeHeading}
+        size={legend.size}
+      >
         {pageHeading}
       </Fieldset.Legend>
       <Radios
         id={radiosId}
-        error={state.fieldErrors[radiosId]?.join(', ')}
+        hint={hint}
+        error={state.validationError?.fieldErrors[radiosId]?.join(', ')}
         errorProps={{ id: `${radiosId}-error-message` }}
       >
         {options.map(({ id, text }) => (
           <Radios.Radio
             value={id}
+            id={`${radiosId}-${id}`}
             data-testid={`${id}-radio`}
             key={`${id}-radio`}
           >
@@ -42,8 +58,12 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
-    <Button type='submit' data-testid='submit-button'>
+    <Button
+      type='submit'
+      data-testid='submit-button'
+      id={`${formId}-submit-button`}
+    >
       {buttonText}
     </Button>
-  </form>
+  </NHSNotifyFormWrapper>
 );
