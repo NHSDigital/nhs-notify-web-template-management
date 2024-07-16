@@ -6,6 +6,7 @@ resource "aws_amplify_app" "app" {
   platform               = "WEB_COMPUTE"
   basic_auth_credentials = base64encode("${aws_ssm_parameter.amplify_repository_username.value}:${aws_ssm_parameter.amplify_repository_password.value}")
   description            = "Template management amplify app for ${var.environment}"
+  iam_service_role_arn   = aws_iam_role.amplify.arn
 
   enable_auto_branch_creation = false
 
