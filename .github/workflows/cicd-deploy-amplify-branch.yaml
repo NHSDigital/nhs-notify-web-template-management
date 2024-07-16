@@ -9,6 +9,11 @@ on:
         required: true
         default: dev
         type: string
+      backendBranch:
+        description: Name of the branch to use for Amplify backend
+        required: true
+        default: feature/CCM-5615_amplify-backend
+        type: string
       terraformAction:
         description: Terraform Action
         required: true
@@ -120,6 +125,7 @@ jobs:
       DEPLOY_ENVIRONMENT: ${{ needs.metadata.outputs.deploy_environment }}
       TF_VAR_branch_name: ${{ needs.metadata.outputs.branch_name }}
       TF_VAR_amplify_app_environment: ${{ inputs.amplifyAppEnvironment }}
+      TF_VAR_backend_branch: ${{ inputs.backendBranch }}
       COMPONENT: "amplify-branch"
     steps:
       - name: "Checkout code"
