@@ -82,7 +82,9 @@ export const mainServerAction = async (
 
   // this has no functional purpose, it is here temporarily to
   // prove the connection to the Amplify backend
-  await createSession();
+  if (!process.env.CI) {
+    await createSession();
+  }
 
   if (!parsedFormId.success) {
     return {
