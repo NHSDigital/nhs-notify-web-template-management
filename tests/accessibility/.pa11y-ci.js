@@ -1,9 +1,28 @@
-const { goToCreateNhsAppTemplatePage } = require('./actions/create-nhs-app-template.action');
+const { performCheck } = require('./helpers');
+const {
+  chooseATemplatePage,
+  chooseATemplatePageError,
+  createNHSAppTemplatePage,
+  createNHSAppTemplateErrorPage,
+  reviewNHSAppTemplatePage,
+  reviewNHSAppTemplateErrorPage,
+} = require('./actions');
+
+const baseUrl = 'http://localhost:3000';
 
 module.exports = {
+  urls: [
+    performCheck({ url: baseUrl, name: 'landing-page' }),
+    performCheck(chooseATemplatePage(baseUrl)),
+    performCheck(chooseATemplatePageError(baseUrl)),
+    performCheck(createNHSAppTemplatePage(baseUrl)),
+    performCheck(createNHSAppTemplateErrorPage(baseUrl)),
+    performCheck(reviewNHSAppTemplatePage(baseUrl)),
+    performCheck(reviewNHSAppTemplateErrorPage(baseUrl)),
+  ],
   defaults: {
     reporters: [
-      'cli', // <-- this is the default reporter
+      'cli',
       [
         'pa11y-ci-reporter-html',
         {
@@ -12,12 +31,14 @@ module.exports = {
         }
       ],
     ],
+    rules: [
+      'Principle1.Guideline1_3.1_3_1_AAA',
+    ],
     chromeLaunchConfig: {
       args: ['--no-sandbox']
     },
-    useIncognitoBrowserContext: false,
-    standard: 'WCAG2AA', //'WCAG2AAA'
-    userAgent: 'pa11y-ci',
-  },
-  urls: ['localhost:3000', 'localhost:3000/create-template', goToCreateNhsAppTemplatePage('localhost:3000/create-template')]
+    standard: 'WCAG2AA',
+    agent: 'pa11y',
+  }
 };
+
