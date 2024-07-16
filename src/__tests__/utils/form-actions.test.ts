@@ -27,8 +27,8 @@ const mockAmplifyBackendClient = mockDeep<
 });
 
 test('createSession', async () => {
-    // This line is temporary and should be removed once the CI pipelines are working with an Amplify sandbox
-    process.env.CI = undefined;
+  // This line is temporary and should be removed once the CI pipelines are working with an Amplify sandbox
+  process.env.CI = undefined;
 
   // @ts-expect-error this line gives 'type instantiation is excessively long' but the types are from the AWS SDK so we can't change them
   jest
