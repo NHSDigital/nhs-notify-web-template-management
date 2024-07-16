@@ -5,6 +5,7 @@ const schema = a.schema({
     .model({
       sessionId: a.string(),
     })
+    .authorization((allow) => [allow.guest()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

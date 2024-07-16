@@ -4,7 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { getAmplifyBackendClient } from '@/src/utils/amplify-utils';
 
 export async function createSession() {
-  if (process.env.CI) {
+
+  if (process.env.CI === 'true') {
     return;
   }
 
