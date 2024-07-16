@@ -7,6 +7,10 @@ resource "aws_amplify_branch" "branch" {
   description = "Amplify branch for ${var.branch_name}"
 
   enable_auto_build = false
+
+  environment_variables = {
+    BACKEND_BRANCH = var.backend_branch
+  }
 }
 
 data "aws_ssm_parameter" "amplify_app_id" {

@@ -30,6 +30,12 @@ variable "amplify_app_environment" {
   default     = "dev"
 }
 
+variable "backend_branch" {
+  type        = string
+  description = "The name of the branch to use for the Amplify backend"
+  default     = "main"
+}
+
 variable "component" {
   type        = string
   description = "The name of the component"
