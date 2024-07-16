@@ -36,3 +36,12 @@ test('createSession', async () => {
 
   expect(response).toEqual(mockResponse);
 });
+
+// This test is temporary and should be removed once the CI pipelines are working with an Amplify sandbox
+test('createSession - CI', async () => {
+  process.env.CI = 'true';
+
+  const response = await createSession();
+
+  expect(response).toEqual(undefined);
+});
