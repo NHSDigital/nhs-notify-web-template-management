@@ -8,10 +8,11 @@ const {
   reviewNHSAppTemplateErrorPage,
 } = require('./actions');
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:3000/templates';
 
 module.exports = {
   urls: [
+    performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
     performCheck({ url: baseUrl, name: 'landing-page' }),
     performCheck(chooseATemplatePage(baseUrl)),
     performCheck(chooseATemplatePageError(baseUrl)),
