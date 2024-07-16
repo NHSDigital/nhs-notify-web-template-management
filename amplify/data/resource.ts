@@ -1,7 +1,7 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 const schema = a.schema({
-  BackendSessionPOC: a
+  SessionStorage: a
     .model({
       sessionId: a.string(),
     })
