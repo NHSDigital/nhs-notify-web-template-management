@@ -23,7 +23,6 @@ export type FormState = {
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
   reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
-  sessionId?: string;
 };
 
 export type PageComponentProps = {

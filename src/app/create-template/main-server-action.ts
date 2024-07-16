@@ -80,7 +80,9 @@ export const mainServerAction = async (
 
   const parsedFormId = schema.safeParse({ formId });
 
-  const sessionData = await createSession();
+  // this has no functional purpose, it is here temporarily to
+  // prove the connection to the Amplify backend
+  await createSession();
 
   if (!parsedFormId.success) {
     return {
@@ -98,13 +100,6 @@ export const mainServerAction = async (
         formErrors: ['Internal server error'],
         fieldErrors: {},
       },
-    };
-  }
-
-  if (sessionData?.sessionId) {
-    return {
-      ...serverAction(formState, formData),
-      sessionId: sessionData?.sessionId ?? 'invalid session id',
     };
   }
 

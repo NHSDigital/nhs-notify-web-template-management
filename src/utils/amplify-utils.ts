@@ -3,7 +3,8 @@ import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/da
 import { Schema } from '../../amplify/data/resource';
 import config from '../../amplify_outputs.json';
 
-export const cookieBasedClient = generateServerClientUsingCookies<Schema>({
-  config,
-  cookies,
-});
+export const getAmplifyBackendClient = () =>
+  generateServerClientUsingCookies<Schema>({
+    config,
+    cookies,
+  });

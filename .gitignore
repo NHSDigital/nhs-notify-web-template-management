@@ -60,4 +60,4 @@ terraform/*_output.txt
 terraform/*_output.json
 group_target-env.tfvars
 
-.amplify
+.amplify/
