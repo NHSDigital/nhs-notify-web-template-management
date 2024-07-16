@@ -3,8 +3,8 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
-import { FormState } from '../../utils/types';
-import { CreateNhsAppTemplate } from '../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
+import { FormState } from '../../../../utils/types';
+import { CreateNhsAppTemplate } from '../../../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 
 test('renders page', async () => {
   const user = userEvent.setup();
