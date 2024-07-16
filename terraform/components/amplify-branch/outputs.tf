@@ -3,7 +3,7 @@ output "app_id" {
   sensitive = true
 }
 
-output "url" {
+output "webhook_url" {
   value     = aws_amplify_webhook.webhook.url
   sensitive = true
 }

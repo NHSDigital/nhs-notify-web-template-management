@@ -143,7 +143,7 @@ jobs:
           !cancelled()
         run: |
           cd terraform && ./deploy.sh ${TERRAFORM_ACTION}
-          webhook_url=$( jq -r '.url.value' amplify-branch_output.json)
+          webhook_url=$( jq -r '.webhook_url.value' amplify-branch_output.json)
           curl -X POST $webhook_url
           echo "app_id=$( jq -r '.app_id.value' amplify-branch_output.json)" >> $GITHUB_OUTPUT
       - name:  Amplify Poll

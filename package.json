@@ -10,12 +10,6 @@
     "lint:fix": "next lint --fix",
     "test:unit": "jest",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
-    "pretest:e2e:local": "npm run app:start",
-    "test:e2e:local": "npm run app:wait && npm run test:e2e",
-    "posttest:e2e:local": "npm run app:stop",
-    "pretest:accessibility:local": "npm run app:start",
-    "test:accessibility:local": "npm run app:wait && npm run test:accessibility",
-    "post:accessibility:local": "npm run app:stop",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000",
     "app:stop": "pm2 kill"
