@@ -11,7 +11,7 @@
     "test:unit": "jest",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
-    "app:wait": "wait-on -l http://localhost:3000",
+    "app:wait": "wait-on -l http://localhost:3000/templates",
     "app:stop": "pm2 kill"
   },
   "dependencies": {
