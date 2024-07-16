@@ -1,6 +1,6 @@
 resource "aws_iam_role" "amplify" {
-    name = "${local.csi}-amplify"
-    assume_role_policy = data.aws_iam_policy_document.amplify_assume_role.json
+  name               = "${local.csi}-amplify"
+  assume_role_policy = data.aws_iam_policy_document.amplify_assume_role.json
 }
 
 data "aws_iam_policy_document" "amplify_assume_role" {
@@ -19,9 +19,7 @@ data "aws_iam_policy_document" "amplify_assume_role" {
     }
   }
 }
-
-resource "aws_iam_policy_attachment" "amplify_standard_policy" {
-    name = "${local.csi}-amplify-policy-attachment"
-    roles = [aws_iam_role.amplify.arn]
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmplifyBackendDeployFullAccess"
+resource "aws_iam_role_policy_attachment" "amplify_standard_policy" {
+  role       = aws_iam_role.amplify.arn
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmplifyBackendDeployFullAccess"
 }
