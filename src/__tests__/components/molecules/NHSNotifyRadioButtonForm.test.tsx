@@ -1,7 +1,7 @@
 import { mockDeep } from 'jest-mock-extended';
 import { render } from '@testing-library/react';
-import { NHSNotifyRadioButtonForm } from '../../components/molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { FormState } from '../../utils/types';
+import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { FormState } from '@utils/types';
 
 test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
   const container = render(

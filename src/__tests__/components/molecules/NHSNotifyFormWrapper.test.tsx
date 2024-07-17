@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { NHSNotifyFormWrapper } from '../../components/molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 test('Renders back button', () => {
   const container = render(
