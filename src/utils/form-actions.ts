@@ -16,3 +16,11 @@ export async function createSession() {
 
   return data;
 }
+
+export async function getState(sessionId: string) {
+  const response = await getAmplifyBackendClient().models.SessionStorage.get({
+    id: sessionId,
+  });
+
+  return response.data;
+}
