@@ -32,9 +32,6 @@ on:
         required: true
         type: string
 
-env:
-  TERM: xterm-256color
-
 jobs:
   scan-secrets:
     name: "Scan secrets"
