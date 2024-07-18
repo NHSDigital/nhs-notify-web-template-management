@@ -51,6 +51,7 @@ jobs:
         with:
           name: unit-tests
           path: ".reports/unit"
+        if: always()
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
