@@ -11,5 +11,5 @@ const goToCreateNhsAppTemplatePage = (host) => ({
 });
 
 module.exports = {
-    goToCreateNhsAppTemplatePage,
+  goToCreateNhsAppTemplatePage,
 };
