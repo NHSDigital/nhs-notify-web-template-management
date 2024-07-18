@@ -14,7 +14,7 @@
     "app:wait": "wait-on -l http://localhost:3000/templates",
     "app:stop": "pm2 kill",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
-    "destroy-sandbox": "npx ampx sandbox destroy --y"
+    "destroy-sandbox": "npx ampx sandbox delete --y"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.6",
