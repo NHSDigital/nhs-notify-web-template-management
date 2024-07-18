@@ -52,7 +52,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
           role-session-name: deployInfra
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-west-2
       - name: "Create sandbox"
         run: |
           ./scripts/create_sandbox.sh
@@ -106,7 +106,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
           role-session-name: deployInfra
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-west-2
       - name: "Run accessibility test"
         run: make test-accessibility
       - name: Archive accessibility results
