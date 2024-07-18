@@ -40,6 +40,7 @@
 ```shell
   npx ampx sandbox
 ```
+
 - Then in a separate terminal, run the app locally:
 
 ```shell
