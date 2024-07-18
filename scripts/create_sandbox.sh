@@ -22,7 +22,6 @@ while [ $wait_seconds -le $max_wait_seconds ]; do
         exit 0
     fi
 
-    cat ~/.pm2/logs/npx-out.log
     echo "Amplify outputs file not found after ${wait_seconds} seconds. Waiting ${wait_interval} seconds and polling again"
 
     sleep $wait_interval
