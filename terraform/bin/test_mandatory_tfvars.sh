@@ -76,6 +76,3 @@ for tfvars_file in ./etc/env_eu-west-2_*; do
     fi
   done
 done
-
-
-

@@ -12,7 +12,9 @@
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates",
-    "app:stop": "pm2 kill"
+    "app:stop": "pm2 kill",
+    "create-sandbox": "pm2 start npx -- ampx sandbox",
+    "destroy-sandbox": "npx ampx sandbox -- destroy --y"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.6",
