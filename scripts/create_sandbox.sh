@@ -8,7 +8,7 @@ set -euo pipefail
 
 echo "Creating sandbox"
 
-npm run create-sandbox -- --profile comms-dev-2-admin
+npm run create-sandbox
 
 # wait for Amplify outputs file to be available
 wait_seconds=0

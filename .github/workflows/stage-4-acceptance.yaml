@@ -40,6 +40,9 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
+      - name: "Repo setup"
+        run: |
+          npm ci
       - name: "Create sandbox"
         run: |
           ./scripts/create_sandbox.sh
