@@ -44,7 +44,7 @@ describe('CreateTemplate component', () => {
       page: 'submit-template' satisfies Page,
       heading: 'Placeholder Submit template',
     },
-  ])('Should render %s form', ({ page, heading }) => {
+  ])('Should render %s', ({ page, heading }) => {
     const initialState: FormState = {
       page: page as Page,
       validationError: undefined,
@@ -52,7 +52,7 @@ describe('CreateTemplate component', () => {
       nhsAppTemplateMessage: '',
     };
 
-    useFormStateMock.mockReturnValue([initialState, jest.fn(), false]);
+    useFormStateMock.mockReturnValue([initialState, '', false]);
 
     render(<CreateTemplate />);
 
