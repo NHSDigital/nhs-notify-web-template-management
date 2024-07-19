@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --dir ./src ./tests",
+    "lint": "next lint --dir .",
     "lint:fix": "next lint --fix",
     "test:unit": "jest",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",

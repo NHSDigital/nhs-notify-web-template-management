@@ -25,10 +25,6 @@ describe('CreateTemplate component', () => {
       heading: 'Placeholder email page',
     },
     {
-      page: 'create-email-template' satisfies Page,
-      heading: 'Placeholder email page',
-    },
-    {
       page: 'create-sms-template' satisfies Page,
       heading: 'Placeholder SMS page',
     },
