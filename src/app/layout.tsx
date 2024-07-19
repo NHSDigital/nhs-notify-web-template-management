@@ -4,6 +4,7 @@ import content from '@content/content';
 import { NHSNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
+import { NHSNotifySkipLink } from '../components/atoms/NHSNotifySkipLink';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,
@@ -18,7 +19,6 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <script src='/templates/lib/nhsuk-8.1.1.min.js' defer />
         <title>{content.global.mainLayout.title}</title>
         <link
           rel='shortcut icon'
@@ -60,13 +60,19 @@ export default function RootLayout({
           name='msapplication-square310x310logo'
           content='/templates/lib/assets/favicons/largetile-310x310.png'
         />
-      </head>
-      <body suppressHydrationWarning>
+        <script
+          type='text/javascript'
+          src='/templates/lib/nhsuk-8.1.1.min.js'
+          defer
+        />
         <script
           type='text/javascript'
           src='/templates/lib/nhs-frontend-js-check.js'
           defer
         />
+      </head>
+      <body suppressHydrationWarning>
+        <NHSNotifySkipLink />
         <NHSNotifyHeader />
         <NHSNotifyContainer>{children}</NHSNotifyContainer>
         <NHSNotifyFooter />
