@@ -38,7 +38,7 @@
 - To run the project locally, you will first need to run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
 
 ```shell
-  npx ampx sandbox
+  npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
 ```
 
 - Then in a separate terminal, run the app locally:
