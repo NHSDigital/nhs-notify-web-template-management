@@ -13,7 +13,7 @@ npm run create-sandbox
 # wait for Amplify outputs file to be available
 wait_seconds=0
 max_wait_seconds=600
-wait_interval=10
+wait_interval=1
 while [ $wait_seconds -le $max_wait_seconds ]; do
     amplify_outputs_version=$( jq -r ".version" amplify_outputs.json )
 

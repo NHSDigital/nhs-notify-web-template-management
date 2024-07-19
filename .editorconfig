@@ -14,6 +14,9 @@ indent_size = unset
 [*.snap]
 trim_trailing_whitespace = false
 
+[{*.min.js,*.min.css}]
+insert_final_newline = false
+
 [*.py]
 indent_size = 4
 
