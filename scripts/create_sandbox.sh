@@ -12,7 +12,7 @@ if [[ ! -f amplify_outputs.json ]]; then
     echo "{}" >> amplify_outputs.json
 fi
 
-#npm run create-sandbox
+npm run create-sandbox
 
 # wait for Amplify outputs file to be available
 wait_seconds=0
