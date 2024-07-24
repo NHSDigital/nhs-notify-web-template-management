@@ -1,4 +1,9 @@
 {
+  "settings": {
+    "import/resolver": {
+      "typescript": {} // this loads <rootdir>/tsconfig.json to eslint
+    }
+  },
   "extends": [
     "airbnb",
     "eslint:recommended",
@@ -34,7 +39,8 @@
     "prettier/prettier": "error",
     "unicorn/prevent-abbreviations": "off",
     "unicorn/filename-case": [
-      "error", {
+      "error",
+      {
         "case": "kebabCase",
         "ignore": [
           ".tsx"
@@ -64,9 +70,14 @@
     "no-param-reassign": "off",
     "react/require-default-props": "off"
   },
-  "settings": {
-    "import/resolver": {
-      "typescript": {} // this loads <rootdir>/tsconfig.json to eslint
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "unicorn/prefer-module": "off",
+        "global-require": "off"
+      }
     }
-  }
+  ]
 }

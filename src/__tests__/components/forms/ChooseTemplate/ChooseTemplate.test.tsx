@@ -2,8 +2,8 @@
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
-import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
-import { FormState } from '../../utils/types';
+import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
+import { FormState } from '@utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
