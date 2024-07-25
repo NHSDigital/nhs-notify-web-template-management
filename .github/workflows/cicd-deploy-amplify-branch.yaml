@@ -12,7 +12,7 @@ on:
       backendBranch:
         description: Name of the branch to use for Amplify backend
         required: true
-        default: feature/CCM-5615_amplify-backend
+        default: main
         type: string
       terraformAction:
         description: Terraform Action
