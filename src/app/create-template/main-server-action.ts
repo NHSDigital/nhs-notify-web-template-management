@@ -5,9 +5,10 @@ import {
   handleForm as handleNHSAppForm,
   handleFormBack as handleNHSFormBack,
 } from '@forms/ReviewNHSAppTemplate';
-import { FormState, FormId } from '../../utils/types';
-import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
-import { createSession } from '../../utils/form-actions';
+import { removeUndefinedFromObject } from '@/src/utils/remove-undefined';
+import { FormState, FormId, Session } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
+import { saveSession } from '@utils/form-actions';
 
 const serverActions: Partial<
   Record<FormId, (formState: FormState, formData: FormData) => FormState>
@@ -80,10 +81,6 @@ export const mainServerAction = async (
 
   const parsedFormId = schema.safeParse({ formId });
 
-  // this has no functional purpose, it is here temporarily to
-  // prove the connection to the Amplify backend
-  await createSession();
-
   if (!parsedFormId.success) {
     return {
       ...formState,
@@ -103,5 +100,18 @@ export const mainServerAction = async (
     };
   }
 
-  return serverAction(formState, formData);
+  const serverActionResult = serverAction(formState, formData);
+
+  if (serverActionResult.validationError) {
+    return serverActionResult;
+  }
+
+  const session: Session = removeUndefinedFromObject({
+    nhsAppTemplateName: serverActionResult.nhsAppTemplateName,
+    nhsAppTemplateMessage: serverActionResult.nhsAppTemplateMessage,
+  });
+
+  await saveSession(serverActionResult.sessionId, session);
+
+  return serverActionResult;
 };

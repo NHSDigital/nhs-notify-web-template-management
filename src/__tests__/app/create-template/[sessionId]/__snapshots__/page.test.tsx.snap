@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateTemplate 1`] = `
+<DocumentFragment>
+  <p>
+    mock component
+  </p>
+</DocumentFragment>
+`;

@@ -17,7 +17,13 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
+export type Session = {
+  nhsAppTemplateName: string;
+  nhsAppTemplateMessage: string;
+};
+
 export type FormState = {
+  sessionId: string;
   page: Page;
   validationError?: FormErrorState;
   nhsAppTemplateName: string;

@@ -3,7 +3,8 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 const schema = a.schema({
   SessionStorage: a
     .model({
-      sessionId: a.string(),
+      nhsAppTemplateName: a.string().required(),
+      nhsAppTemplateMessage: a.string().required(),
     })
     .authorization((allow) => [allow.guest()]),
 });

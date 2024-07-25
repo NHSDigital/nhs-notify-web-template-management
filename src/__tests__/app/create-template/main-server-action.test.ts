@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { mockDeep } from 'jest-mock-extended';
 import {
   handleForm as nhsAppHandleForm,
   handleFormBack as nhsAppHandleFormBack,
@@ -14,6 +15,7 @@ jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 jest.mock('../../../utils/form-actions');
 
 const formState: FormState = {
+  sessionId: 'session-id',
   page: 'choose-template',
   validationError: undefined,
   nhsAppTemplateName: '',
@@ -27,6 +29,7 @@ test.each<TestConfig>([
     'returns validation error on missing form id',
     {},
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -44,6 +47,7 @@ test.each<TestConfig>([
       'form-id': 'create-sms-template',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: ['Internal server error'],
@@ -60,6 +64,7 @@ test.each<TestConfig>([
       page: 'wrong-page',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -78,6 +83,7 @@ test.each<TestConfig>([
       page: 'create-sms-template',
     },
     {
+      sessionId: 'session-id',
       page: 'create-sms-template',
       validationError: undefined,
       nhsAppTemplateName: '',
@@ -91,6 +97,7 @@ test.each<TestConfig>([
       nhsAppTemplateName: 'template-name',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -110,6 +117,7 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: 'template-message',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: undefined,
       nhsAppTemplateName: 'template-name',
@@ -124,6 +132,7 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: '',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -143,6 +152,7 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: 'template-message',
     },
     {
+      sessionId: 'session-id',
       page: 'review-nhs-app-template',
       validationError: undefined,
       nhsAppTemplateName: 'template-name',
@@ -162,6 +172,12 @@ it.each([
   const formData = {
     'form-id': id,
   };
+
+  jest.mocked(handler).mockReturnValue(
+    mockDeep<ReturnType<typeof handler>>({
+      validationError: undefined,
+    })
+  );
 
   await mainServerAction(formState, getMockFormData(formData));
 
