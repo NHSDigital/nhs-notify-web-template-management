@@ -7,14 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --dir .",
-    "lint:fix": "next lint --fix",
+    "lint:fix": "next lint  --dir . --fix",
     "test:unit": "jest",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates",
-    "app:stop": "pm2 kill"
+    "app:stop": "pm2 kill",
+    "create-sandbox": "pm2 start npx -- ampx sandbox",
+    "destroy-sandbox": "npx ampx sandbox delete --y"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.2.6",
+    "@aws-amplify/backend": "^1.0.4",
     "markdown-it": "^13.0.1",
     "next": "14.2.3",
     "nhsuk-frontend": "^8.1.1",
@@ -24,6 +28,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@aws-amplify/backend-cli": "^1.1.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",

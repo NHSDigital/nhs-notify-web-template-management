@@ -7,6 +7,7 @@ import {
 } from '@forms/ReviewNHSAppTemplate';
 import { FormState, FormId } from '../../utils/types';
 import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
+import { createSession } from '../../utils/form-actions';
 
 const serverActions: Partial<
   Record<FormId, (formState: FormState, formData: FormData) => FormState>
@@ -71,13 +72,17 @@ const schema = z.object({
   ),
 });
 
-export const mainServerAction = (
+export const mainServerAction = async (
   formState: FormState,
   formData: FormData
-): FormState => {
+): Promise<FormState> => {
   const formId = formData.get('form-id');
 
   const parsedFormId = schema.safeParse({ formId });
+
+  // this has no functional purpose, it is here temporarily to
+  // prove the connection to the Amplify backend
+  await createSession();
 
   if (!parsedFormId.success) {
     return {

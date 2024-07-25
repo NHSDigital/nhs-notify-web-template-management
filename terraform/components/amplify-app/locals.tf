@@ -45,4 +45,3 @@ locals {
 
   this_account = local.base_parameter_bundle.account_ids[local.base_parameter_bundle.account_name]
 }
-
