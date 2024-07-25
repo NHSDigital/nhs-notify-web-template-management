@@ -4,13 +4,8 @@ import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/da
 import { Schema } from '../../amplify/data/resource';
 
 export const config = () => {
-  console.log(process.cwd());
-  try {
-    const output = fs.readFileSync('amplify_outputs.json', 'utf8');
-    return JSON.parse(output);
-  } catch {
-    return {};
-  }
+  const output = fs.readFileSync('amplify_outputs.json', 'utf8');
+  return JSON.parse(output);
 };
 
 export const getAmplifyBackendClient = () =>

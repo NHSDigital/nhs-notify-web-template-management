@@ -11,7 +11,7 @@ import { mainServerAction } from '../../../app/create-template/main-server-actio
 import { getMockFormData } from '../../helpers';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
-jest.mock('../../utils/form-actions');
+jest.mock('../../../utils/form-actions');
 
 const formState: FormState = {
   page: 'choose-template',

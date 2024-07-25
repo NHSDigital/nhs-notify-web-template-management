@@ -8,6 +8,10 @@ jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),
 }));
 
+jest.mock('@/src/app/create-template/main-server-action', () => ({
+  mainServerAction: () => {},
+}));
+
 const useFormStateMock = useFormState as jest.Mock;
 
 describe('CreateTemplate component', () => {
