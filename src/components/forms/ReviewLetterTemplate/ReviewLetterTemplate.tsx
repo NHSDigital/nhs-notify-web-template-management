@@ -33,6 +33,7 @@ export function ReviewLetterTemplate({
         ...form,
         action: '',
         state: {
+          sessionId: 'session-id',
           page: 'choose-template',
           nhsAppTemplateName: '',
           nhsAppTemplateMessage: '',

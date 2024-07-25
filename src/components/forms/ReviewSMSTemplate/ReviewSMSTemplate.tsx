@@ -33,6 +33,7 @@ export function ReviewSMSTemplate({
             ...form,
             action: '',
             state: {
+              sessionId: 'session-id',
               page: 'choose-template',
               nhsAppTemplateName: '',
               nhsAppTemplateMessage: '',

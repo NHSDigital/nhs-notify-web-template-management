@@ -35,6 +35,7 @@ export function ReviewEmailTemplate({
             ...form,
             action: '',
             state: {
+              sessionId: 'session-id',
               page: 'choose-template',
               nhsAppTemplateName: '',
               nhsAppTemplateMessage: '',
