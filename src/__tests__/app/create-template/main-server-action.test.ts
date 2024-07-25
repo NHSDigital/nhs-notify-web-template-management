@@ -6,9 +6,9 @@ import {
   handleForm as nhsAppHandleForm,
   handleFormBack as nhsAppHandleFormBack,
 } from '@forms/ReviewNHSAppTemplate/server-actions';
-import { FormState } from '../../utils/types';
-import { mainServerAction } from '../../app/create-template/main-server-action';
-import { getMockFormData } from '../helpers';
+import { FormState } from '../../../utils/types';
+import { mainServerAction } from '../../../app/create-template/main-server-action';
+import { getMockFormData } from '../../helpers';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 jest.mock('../../utils/form-actions');

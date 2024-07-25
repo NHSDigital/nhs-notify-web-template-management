@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { NHSNotifyBackButton } from '../../components/molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 
 test('Renders back button', () => {
   const container = render(

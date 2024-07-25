@@ -55,8 +55,11 @@ jobs:
         run: |
           make test-unit
       - name: "Save the result of fast test suite"
-        run: |
-          echo "Nothing to save"
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-tests
+          path: ".reports/unit"
+        if: always()
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
