@@ -1,6 +1,6 @@
 'use server';
 
-import { createSession } from '@/src/utils/form-actions';
+import { createSession } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 
 const CreateTemplate = async () => {

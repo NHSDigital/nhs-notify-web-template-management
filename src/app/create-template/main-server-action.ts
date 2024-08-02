@@ -78,7 +78,6 @@ export const mainServerAction = async (
   formData: FormData
 ): Promise<FormState> => {
   const formId = formData.get('form-id');
-
   const parsedFormId = schema.safeParse({ formId });
 
   if (!parsedFormId.success) {
@@ -89,7 +88,6 @@ export const mainServerAction = async (
   }
 
   const serverAction = serverActions[parsedFormId.data.formId];
-
   if (!serverAction) {
     return {
       ...formState,
@@ -101,7 +99,6 @@ export const mainServerAction = async (
   }
 
   const serverActionResult = serverAction(formState, formData);
-
   if (serverActionResult.validationError) {
     return serverActionResult;
   }

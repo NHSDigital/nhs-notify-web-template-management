@@ -11,8 +11,14 @@ import { FormState } from '../../../utils/types';
 import { mainServerAction } from '../../../app/create-template/main-server-action';
 import { getMockFormData } from '../../helpers';
 
+const mockFormActions = {
+  saveSession: () => {},
+};
+
 jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
-jest.mock('../../../utils/form-actions');
+jest.mock('@utils/form-actions', () => ({
+  saveSession: () => mockFormActions.saveSession(),
+}));
 
 const formState: FormState = {
   sessionId: 'session-id',
@@ -23,6 +29,10 @@ const formState: FormState = {
 };
 
 type TestConfig = [string, Record<string, string>, FormState];
+
+beforeEach(() => {
+  mockFormActions.saveSession = jest.fn();
+});
 
 test.each<TestConfig>([
   [
@@ -182,4 +192,5 @@ it.each([
   await mainServerAction(formState, getMockFormData(formData));
 
   expect(handler).toHaveBeenCalled();
+  expect(mockFormActions.saveSession).toHaveBeenCalled();
 });
