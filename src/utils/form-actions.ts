@@ -3,7 +3,7 @@
 import { getAmplifyBackendClient } from '@/src/utils/amplify-utils';
 import { Session } from './types';
 
-export async function createSession(session: Session) {
+export async function createSession(session: Omit<Session, 'id'>) {
   const { data } =
     await getAmplifyBackendClient().models.SessionStorage.create(session);
 

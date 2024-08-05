@@ -1,13 +1,17 @@
 'use server';
 
+import { Session } from '@/src/utils/types';
 import { createSession } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 
+const initialSessionState: Omit<Session, 'id'> = {
+  templateType: '',
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
+
 const CreateTemplate = async () => {
-  const sessionData = await createSession({
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
-  });
+  const sessionData = await createSession(initialSessionState);
 
   if (!sessionData?.id) {
     throw new Error('Error creating session');
