@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import '@/src/styles/app.scss';
-import content from '@/src/content/content';
-import { NHSNotifyHeader } from '../components/molecules/Header/Header';
-import { NHSNotifyContainer } from '../components/layouts/container/container';
-import { NHSNotifyFooter } from '../components/molecules/Footer/Footer';
+import '@styles/app.scss';
+import content from '@content/content';
+import { NHSNotifyHeader } from '@molecules/Header/Header';
+import { NHSNotifyContainer } from '@layouts/container/container';
+import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,

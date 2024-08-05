@@ -1,7 +1,7 @@
 import { Details } from 'nhsuk-react-components';
-import { TemplateFormatText } from '@/src/types/template-format.types';
+import { TemplateFormatText } from '@utils/types';
 
-import content from '@/src/content/content';
+import content from '@content/content';
 import { MessageFormattingType } from './message-formatting.types';
 import styles from './MessageFormatting.module.scss';
 

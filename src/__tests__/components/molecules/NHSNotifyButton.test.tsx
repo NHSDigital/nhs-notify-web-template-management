@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { NHSNotifyButton } from '@/src/components/atoms/NHSNotifyButton/NHSNotifyButton';
-import { ButtonType } from '@/src/components/atoms/NHSNotifyButton/button.types';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { ButtonType } from '@atoms/NHSNotifyButton/button.types';
 
 const buttonProps: ButtonType = {
   children: 'Button text',

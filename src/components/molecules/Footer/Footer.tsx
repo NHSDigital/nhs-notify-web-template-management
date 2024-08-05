@@ -3,7 +3,7 @@
  * TODO: REMOVE ESLINT DISABLE WHEN WE HAVE FOOTER LINK
  */
 import Link from 'next/link';
-import content from '@/src/content/content';
+import content from '@content/content';
 
 const footerContent = content.components.footerComponent;
 

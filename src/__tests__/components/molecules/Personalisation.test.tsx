@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Personalisation } from '@/src/components/molecules/Personalisation/Personalisation';
+import { Personalisation } from '@molecules/Personalisation/Personalisation';
 
 describe('Personalisation component', () => {
   it('renders component correctly', async () => {

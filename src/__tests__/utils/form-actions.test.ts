@@ -4,7 +4,7 @@
 
 import { mockDeep } from 'jest-mock-extended';
 import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
-import { getAmplifyBackendClient } from '@/src/utils/amplify-utils';
+import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { createSession } from '../../utils/form-actions';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');

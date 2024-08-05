@@ -2,7 +2,7 @@
 
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
-import content from '@/src/content/content';
+import content from '@content/content';
 import { renderMarkdown } from './server-actions';
 
 export type ReviewSMSTemplateProps = {

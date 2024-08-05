@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { NHSNotifyActionLink } from '@/src/components/molecules/NHSNotifyActionLink/NHSNotifyActionLink';
-import { ActionLinkType } from '@/src/components/molecules/NHSNotifyActionLink/action-link.types';
+import { NHSNotifyActionLink } from '@molecules/NHSNotifyActionLink/NHSNotifyActionLink';
+import { ActionLinkType } from '@molecules/NHSNotifyActionLink/action-link.types';
 
 const componentProps: ActionLinkType = {
   text: 'Some text',

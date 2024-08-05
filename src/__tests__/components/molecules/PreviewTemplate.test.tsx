@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PreviewTemplate } from '@/src/components/molecules/PreviewTemplate';
+import { PreviewTemplate } from '@molecules/PreviewTemplate';
 
 describe('PreviewTemplate component', () => {
   it('matches snapshot', () => {
