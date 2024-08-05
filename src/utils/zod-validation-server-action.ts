@@ -5,12 +5,13 @@ export const zodValidationServerAction = <
   T extends ZodRawShape,
   U extends UnknownKeysParam,
   V extends ZodTypeAny,
-  W extends Partial<FormState>,
+  X extends FormState,
+  W extends Partial<X>,
 >(
-  formState: FormState,
+  formState: X,
   formData: FormData,
   schema: ZodObject<T, U, V, W>,
-  page?: Page
+  page: Page
 ) => {
   const form = Object.fromEntries(formData.entries());
 

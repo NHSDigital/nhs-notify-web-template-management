@@ -10,7 +10,11 @@ import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 import { CreateLetterTemplate } from '@forms/CreateLetterTemplate/CreateLetterTemplate';
 import { mainServerAction } from '@/src/app/create-template/main-server-action';
-import { FormState, Page, PageComponentProps } from '../../../utils/types';
+import {
+  Page,
+  PageComponentProps,
+  TemplateFormState,
+} from '../../../utils/types';
 
 const pages: Record<Page, FC<PageComponentProps>> = {
   'choose-template': ChooseTemplate,
@@ -22,7 +26,7 @@ const pages: Record<Page, FC<PageComponentProps>> = {
   'submit-template': SubmitTemplate,
 };
 type CreateTemplatePageProps = {
-  initialState: FormState;
+  initialState: TemplateFormState;
 };
 
 export const CreateTemplateSinglePage = ({

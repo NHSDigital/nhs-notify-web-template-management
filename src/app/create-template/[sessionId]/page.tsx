@@ -2,7 +2,7 @@
 
 import { getSession } from '@/src/utils/form-actions';
 import { CreateTemplateSinglePage } from '@/src/components/molecules/CreateTemplateSinglePage/CreateTemplateSinglePage';
-import { FormState } from '../../../utils/types';
+import { TemplateFormState } from '../../../utils/types';
 
 type CreateTemplateProps = {
   params: {
@@ -15,8 +15,8 @@ const CreateTemplate = async ({
 }: CreateTemplateProps) => {
   const session = await getSession(sessionId);
 
-  const formState: FormState = {
-    sessionId,
+  const formState: TemplateFormState = {
+    sessionId: session.id,
     ...session,
     page: 'choose-template',
   };

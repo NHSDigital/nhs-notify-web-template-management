@@ -6,30 +6,22 @@ import {
   handleFormBack as handleNHSFormBack,
 } from '@forms/ReviewNHSAppTemplate';
 import { removeUndefinedFromObject } from '@/src/utils/remove-undefined';
-import { FormState, FormId, Session } from '@utils/types';
+import { FormId, Session, TemplateFormState } from '@utils/types';
 import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { saveSession } from '@utils/form-actions';
+import { chooseTemplateAction } from './choose-template-action';
 
 const serverActions: Partial<
-  Record<FormId, (formState: FormState, formData: FormData) => FormState>
+  Record<
+    FormId,
+    (formState: TemplateFormState, formData: FormData) => TemplateFormState
+  >
 > = {
-  'choose-template': (formState: FormState, formData: FormData) =>
-    zodValidationServerAction(
-      formState,
-      formData,
-      z.object({
-        page: z.enum(
-          [
-            'create-sms-template',
-            'create-email-template',
-            'create-nhs-app-template',
-            'create-letter-template',
-          ],
-          { message: 'Select a template type' }
-        ),
-      })
-    ),
-  'create-nhs-app-template-back': (formState: FormState, formData: FormData) =>
+  'choose-template': chooseTemplateAction,
+  'create-nhs-app-template-back': (
+    formState: TemplateFormState,
+    formData: FormData
+  ) =>
     zodValidationServerAction(
       formState,
       formData,
@@ -39,7 +31,10 @@ const serverActions: Partial<
       }),
       'choose-template'
     ),
-  'create-nhs-app-template': (formState: FormState, formData: FormData) =>
+  'create-nhs-app-template': (
+    formState: TemplateFormState,
+    formData: FormData
+  ) =>
     zodValidationServerAction(
       formState,
       formData,
@@ -74,9 +69,9 @@ const schema = z.object({
 });
 
 export const mainServerAction = async (
-  formState: FormState,
+  formState: TemplateFormState,
   formData: FormData
-): Promise<FormState> => {
+): Promise<TemplateFormState> => {
   const formId = formData.get('form-id');
   const parsedFormId = schema.safeParse({ formId });
 
@@ -104,11 +99,13 @@ export const mainServerAction = async (
   }
 
   const session: Session = removeUndefinedFromObject({
+    id: serverActionResult.sessionId,
+    templateType: serverActionResult.templateType,
     nhsAppTemplateName: serverActionResult.nhsAppTemplateName,
     nhsAppTemplateMessage: serverActionResult.nhsAppTemplateMessage,
   });
 
-  await saveSession(serverActionResult.sessionId, session);
+  await saveSession(session);
 
   return serverActionResult;
 };

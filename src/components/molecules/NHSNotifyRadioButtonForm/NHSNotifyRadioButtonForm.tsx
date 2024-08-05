@@ -11,6 +11,7 @@ export type NHSNotifyRadioButtonFormProps = {
   options: {
     id: string;
     text: string;
+    checked: boolean;
   }[];
   buttonText: string;
   hint?: string;
@@ -46,12 +47,13 @@ export const NHSNotifyRadioButtonForm = ({
         error={state.validationError?.fieldErrors[radiosId]?.join(', ')}
         errorProps={{ id: `${radiosId}-error-message` }}
       >
-        {options.map(({ id, text }) => (
+        {options.map(({ id, text, checked }) => (
           <Radios.Radio
             value={id}
             id={`${radiosId}-${id}`}
             data-testid={`${id}-radio`}
             key={`${id}-radio`}
+            defaultChecked={checked}
           >
             {text}
           </Radios.Radio>

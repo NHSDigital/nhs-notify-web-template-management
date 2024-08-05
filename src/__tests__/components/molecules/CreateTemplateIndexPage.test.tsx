@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { CreateTemplateSinglePage } from '@molecules/CreateTemplateSinglePage/CreateTemplateSinglePage';
 import { useFormState } from 'react-dom';
-import { FormState, Page } from '@/src/utils/types';
+import { Page, TemplateFormState, TemplateType } from '@/src/utils/types';
 
 jest.mock('react-dom', () => ({
   useFormState: jest.fn(),
@@ -45,10 +45,11 @@ describe('CreateTemplateSinglePage component', () => {
       heading: 'Placeholder Submit template',
     },
   ])('Should render %s', ({ page, heading }) => {
-    const initialState: FormState = {
+    const initialState: TemplateFormState = {
       sessionId: 'session-id',
       page: page as Page,
       validationError: undefined,
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     };
