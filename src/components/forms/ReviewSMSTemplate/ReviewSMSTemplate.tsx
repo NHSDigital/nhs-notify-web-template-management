@@ -3,7 +3,6 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@/src/content/content';
-import { TemplateType } from '@/src/utils/types';
 import { renderMarkdown } from './server-actions';
 
 export type ReviewSMSTemplateProps = {
@@ -34,11 +33,6 @@ export function ReviewSMSTemplate({
             ...form,
             action: '',
             state: {
-              sessionId: 'session-id',
-              templateType: TemplateType.SMS,
-              page: 'choose-template',
-              nhsAppTemplateName: '',
-              nhsAppTemplateMessage: '',
               validationError: undefined,
             },
             formId: 'review-email-template',

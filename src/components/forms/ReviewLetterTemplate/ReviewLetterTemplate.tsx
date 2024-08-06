@@ -3,7 +3,6 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@/src/content/content';
-import { TemplateType } from '@/src/utils/types';
 import { renderMarkdown } from './server-actions';
 
 export type ReviewLetterTemplateProps = {
@@ -34,11 +33,6 @@ export function ReviewLetterTemplate({
         ...form,
         action: '',
         state: {
-          sessionId: 'session-id',
-          templateType: TemplateType.LETTER,
-          page: 'choose-template',
-          nhsAppTemplateName: '',
-          nhsAppTemplateMessage: '',
           validationError: undefined,
         },
         formId: 'review-letter-template',
