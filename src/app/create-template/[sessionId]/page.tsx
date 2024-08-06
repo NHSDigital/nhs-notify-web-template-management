@@ -18,7 +18,8 @@ const CreateTemplate = async ({
   const formState: TemplateFormState = {
     sessionId: session.id,
     ...session,
-    templateType: session.templateType === 'UNKNOWN' ? '' : session.templateType,
+    templateType:
+      session.templateType === 'UNKNOWN' ? '' : session.templateType,
     page: 'choose-template',
   };
 

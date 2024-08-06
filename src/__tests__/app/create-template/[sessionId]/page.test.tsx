@@ -12,7 +12,7 @@ const mockSession = {
 
 jest.mock('@utils/form-actions', () => ({
   getSession: () => ({
-    ...mockSession
+    ...mockSession,
   }),
 }));
 
@@ -37,7 +37,7 @@ test('CreateTemplate with no selection', async () => {
 
 test('CreateTemplate with existing selection', async () => {
   mockSession.templateType = TemplateType.NHS_APP;
-  
+
   const component = await CreateTemplate({
     params: { sessionId: 'session-id' },
   });
