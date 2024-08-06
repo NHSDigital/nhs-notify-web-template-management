@@ -4,7 +4,7 @@ const schema = a.schema({
   SessionStorage: a
     .model({
       id: a.string().required(),
-      templateType: a.enum(['NHS_APP', 'SMS', 'EMAIL', 'LETTER', '']),
+      templateType: a.enum(['NHS_APP', 'SMS', 'EMAIL', 'LETTER', 'UNKNOWN']),
       nhsAppTemplateName: a.string().required(),
       nhsAppTemplateMessage: a.string().required(),
     })

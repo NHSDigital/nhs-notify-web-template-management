@@ -5,7 +5,7 @@ import { createSession } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 
 const initialSessionState: Omit<Session, 'id'> = {
-  templateType: '',
+  templateType: 'UNKNOWN',
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };

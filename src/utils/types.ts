@@ -26,7 +26,7 @@ export enum TemplateType {
 
 export type Session = {
   id: string;
-  templateType: TemplateType | '';
+  templateType: TemplateType | 'UNKNOWN';
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
 };

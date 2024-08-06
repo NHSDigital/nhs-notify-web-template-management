@@ -11,7 +11,7 @@ export type NHSNotifyRadioButtonFormProps = {
   options: {
     id: string;
     text: string;
-    checked: boolean;
+    checked?: boolean;
   }[];
   buttonText: string;
   hint?: string;
