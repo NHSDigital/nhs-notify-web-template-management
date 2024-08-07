@@ -17,7 +17,7 @@ const CreateTemplate = async () => {
     throw new Error('Error creating session');
   }
 
-  redirect(`/create-template/${sessionData.id}`);
+  redirect(`/choose-a-template-type/${sessionData.id}`);
 };
 
 export default CreateTemplate;

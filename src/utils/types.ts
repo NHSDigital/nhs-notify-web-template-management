@@ -1,16 +1,12 @@
-export type Page =
-  | 'choose-template'
+export type FormId =
+  | 'choose-a-template-type'
   | 'create-nhs-app-template'
   | 'create-email-template'
   | 'create-letter-template'
   | 'create-sms-template'
-  | 'review-nhs-app-template'
-  | 'submit-template';
-
-export type FormId =
-  | Page
-  | 'create-nhs-app-template-back'
-  | 'review-nhs-app-template-back';
+  | 'preview-nhs-app-template'
+  | 'submit-template'
+  | 'create-nhs-app-template-back';
 
 export type FormErrorState = {
   formErrors: string[];
@@ -35,18 +31,16 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type TemplateFormState = FormState & {
-  sessionId: string;
-  page: Page;
-  templateType: TemplateType | '';
-  nhsAppTemplateName: string;
-  nhsAppTemplateMessage: string;
-  reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
+export type TemplateFormState = FormState & Session;
+
+export type PageProps = {
+  params: {
+    sessionId: string;
+  };
 };
 
 export type PageComponentProps = {
-  state: TemplateFormState;
-  action: string | ((payload: FormData) => void);
+  initialState: TemplateFormState;
 };
 
 export enum TemplateFormatText {

@@ -1,23 +1,39 @@
+'use client';
+
 import { render, screen } from '@testing-library/react';
 import {
   ReviewNHSAppTemplate,
   renderMarkdown,
 } from '@forms/ReviewNHSAppTemplate';
 import { mockDeep } from 'jest-mock-extended';
-import { FormState } from '@utils/types';
+import { TemplateFormState } from '@utils/types';
 
-jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
+jest.mock('@forms/ReviewNHSAppTemplate/server-action');
+
+jest.mock('react-dom', () => {
+  const originalModule = jest.requireActual('react-dom');
+
+  return {
+    ...originalModule,
+    useFormState: (
+      _: (
+        formState: TemplateFormState,
+        formData: FormData
+      ) => Promise<TemplateFormState>,
+      initialState: TemplateFormState
+    ) => [initialState, '/action'],
+  };
+});
 
 describe('Preview nhs app form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <ReviewNHSAppTemplate
-        state={mockDeep<FormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: 'message',
         })}
-        action='/action'
       />
     );
 
@@ -27,7 +43,7 @@ describe('Preview nhs app form renders', () => {
   it('matches error snapshot', () => {
     const container = render(
       <ReviewNHSAppTemplate
-        state={mockDeep<FormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: {
             formErrors: [],
             fieldErrors: {
@@ -37,7 +53,6 @@ describe('Preview nhs app form renders', () => {
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: 'message',
         })}
-        action='/action'
       />
     );
 
@@ -47,12 +62,11 @@ describe('Preview nhs app form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewNHSAppTemplate
-        state={mockDeep<FormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: 'message',
         })}
-        action='/action'
       />
     );
 
@@ -76,12 +90,11 @@ describe('Preview nhs app form renders', () => {
 
     render(
       <ReviewNHSAppTemplate
-        state={mockDeep<FormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
           nhsAppTemplateName: 'test-template-nhs app',
           nhsAppTemplateMessage: message,
         })}
-        action='/action'
       />
     );
 

@@ -30,7 +30,7 @@ exports[`Choose template page renders error component 1`] = `
       name="form-id"
       readonly=""
       type="hidden"
-      value="choose-template"
+      value="choose-a-template-type"
     />
     <div
       class="nhsuk-form-group"
@@ -150,7 +150,7 @@ exports[`Choose template page renders error component 1`] = `
       aria-disabled="false"
       class="nhsuk-button"
       data-testid="submit-button"
-      id="choose-template-submit-button"
+      id="choose-a-template-type-submit-button"
       type="submit"
     >
       Continue
@@ -168,7 +168,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
       name="form-id"
       readonly=""
       type="hidden"
-      value="choose-template"
+      value="choose-a-template-type"
     />
     <div
       class="nhsuk-form-group"
@@ -288,7 +288,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
       aria-disabled="false"
       class="nhsuk-button"
       data-testid="submit-button"
-      id="choose-template-submit-button"
+      id="choose-a-template-type-submit-button"
       type="submit"
     >
       Continue

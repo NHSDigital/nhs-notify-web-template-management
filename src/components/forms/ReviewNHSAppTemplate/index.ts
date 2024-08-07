@@ -1,2 +1,2 @@
 export * from './ReviewNHSAppTemplate';
-export * from './server-actions';
+export * from './server-action';

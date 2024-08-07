@@ -11,11 +11,8 @@ export async function createSession(session: Omit<Session, 'id'>) {
 }
 
 export async function saveSession(session: Session) {
-  const { data } = await getAmplifyBackendClient().models.SessionStorage.update(
-    {
-      ...session,
-    }
-  );
+  const { data } =
+    await getAmplifyBackendClient().models.SessionStorage.update(session);
 
   return data;
 }

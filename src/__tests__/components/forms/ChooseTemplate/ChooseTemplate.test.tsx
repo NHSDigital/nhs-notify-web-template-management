@@ -5,14 +5,32 @@ import { mockDeep } from 'jest-mock-extended';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
 import { TemplateFormState } from '@utils/types';
 
+jest.mock('@/src/utils/amplify-utils', () => ({
+  getAmplifyBackendClient: () => {},
+}));
+
+jest.mock('react-dom', () => {
+  const originalModule = jest.requireActual('react-dom');
+
+  return {
+    ...originalModule,
+    useFormState: (
+      _: (
+        formState: TemplateFormState,
+        formData: FormData
+      ) => Promise<TemplateFormState>,
+      initialState: TemplateFormState
+    ) => [initialState, '/action'],
+  };
+});
+
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
     const container = render(
       <ChooseTemplate
-        state={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
         })}
-        action='/action'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -49,7 +67,7 @@ describe('Choose template page', () => {
   it('renders error component', () => {
     const container = render(
       <ChooseTemplate
-        state={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState>({
           validationError: {
             formErrors: [],
             fieldErrors: {
@@ -57,7 +75,6 @@ describe('Choose template page', () => {
             },
           },
         })}
-        action='/action'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
