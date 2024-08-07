@@ -1,5 +1,5 @@
 import { zodValidationServerAction } from '@utils/zod-validation-server-action';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import { TemplateFormState, TemplateType } from '@utils/types';
 import { z } from 'zod';
 import { saveSession } from '@utils/form-actions';
@@ -35,7 +35,7 @@ export async function chooseTemplateAction(
     await saveSession(response);
 
     const page = templateTypeToPageMap[response.templateType];
-    redirect(`/${page}/${formState.id}`);
+    redirect(`/${page}/${formState.id}`, RedirectType.push);
   }
 
   return response;
