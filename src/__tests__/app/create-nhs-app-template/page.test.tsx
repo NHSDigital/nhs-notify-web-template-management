@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import CreateNhsAppTemplatePage from '@/src/app/create-nhs-app-template/[sessionId]/page';
+import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[sessionId]/page';
 import { TemplateFormState } from '@utils/types';
 
 jest.mock('@utils/form-actions', () => ({

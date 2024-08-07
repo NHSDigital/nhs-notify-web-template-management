@@ -5,7 +5,7 @@ import { mockDeep } from 'jest-mock-extended';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
 import { TemplateFormState } from '@utils/types';
 
-jest.mock('@/src/utils/amplify-utils', () => ({
+jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => {},
 }));
 

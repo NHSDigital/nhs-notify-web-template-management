@@ -1,5 +1,5 @@
 import { ErrorSummary } from 'nhsuk-react-components';
-import { FormState } from '../../../utils/types';
+import { FormState } from '@utils/types';
 
 export type ZodErrorSummaryProps = {
   errorHeading: string;

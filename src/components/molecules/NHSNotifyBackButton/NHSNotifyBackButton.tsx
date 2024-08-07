@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { ChevronLeftIcon } from 'nhsuk-react-components';
-import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyBackButtonProps = {
   formId: string;

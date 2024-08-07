@@ -5,10 +5,10 @@
 import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
-import { PageComponentProps } from '../../../utils/types';
-import { NHSNotifyRadioButtonForm } from '../../molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { ZodErrorSummary } from '../../molecules/ZodErrorSummary/ZodErrorSummary';
-import { chooseTemplatePageContent } from '../../../content/content';
+import { PageComponentProps } from '@utils/types';
+import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
+import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { chooseTemplatePageContent } from '@content/content';
 
 export const ChooseTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(chooseTemplateAction, initialState);

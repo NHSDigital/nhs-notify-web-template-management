@@ -1,4 +1,4 @@
-import CreateLetterTemplatePage from '@/src/app/create-letter-template/[sessionId]/page';
+import CreateLetterTemplatePage from '@app/create-letter-template/[sessionId]/page';
 import { render } from '@testing-library/react';
 
 test('CreateLetterTemplatePage', async () => {

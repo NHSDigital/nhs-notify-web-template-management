@@ -3,11 +3,7 @@
  */
 
 import { TemplateType } from '@utils/types';
-import {
-  createSession,
-  saveSession,
-  getSession,
-} from '../../utils/form-actions';
+import { createSession, saveSession, getSession } from '@utils/form-actions';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 

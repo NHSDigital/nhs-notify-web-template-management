@@ -1,6 +1,6 @@
 import { Radios, Fieldset, Button } from 'nhsuk-react-components';
-import { FormState } from '../../../utils/types';
-import { NHSNotifyFormWrapper } from '../NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { FormState } from '@utils/types';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;

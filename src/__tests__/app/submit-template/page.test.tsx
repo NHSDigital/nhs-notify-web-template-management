@@ -1,4 +1,4 @@
-import SubmitTemplatePage from '@/src/app/submit-template/[sessionId]/page';
+import SubmitTemplatePage from '@app/submit-template/[sessionId]/page';
 import { render } from '@testing-library/react';
 
 test('SubmitTemplatePage', async () => {

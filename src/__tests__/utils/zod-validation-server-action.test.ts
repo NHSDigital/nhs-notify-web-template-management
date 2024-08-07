@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { TemplateFormState, TemplateType } from '../../utils/types';
-import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
-import { getMockFormData } from '../helpers';
+import { TemplateFormState, TemplateType } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
+import { getMockFormData } from '@testhelpers';
 
 const formState: TemplateFormState = {
   validationError: undefined,

@@ -14,14 +14,10 @@ const mockSession = {
   updatedAt: 'updated-at',
 };
 
-jest.mock('@forms/ReviewNHSAppTemplate/server-action');
 jest.mock('@utils/form-actions', () => ({
   createSession: () => mockSession,
 }));
 jest.mock('next/navigation');
-jest.mock('@app/create-template/main-server-action', () => ({
-  mainServerAction: () => {},
-}));
 
 test('CreateTemplate', async () => {
   mockSession.id = 'session-id';

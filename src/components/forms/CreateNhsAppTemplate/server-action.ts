@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
-import { TemplateFormState } from '@/src/utils/types';
-import { zodValidationServerAction } from '@/src/utils/zod-validation-server-action';
+import { TemplateFormState } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
-import { saveSession } from '@/src/utils/form-actions';
+import { saveSession } from '@utils/form-actions';
 
 const schema = z.object({
   formId: z.enum(['create-nhs-app-template-back', 'create-nhs-app-template'], {

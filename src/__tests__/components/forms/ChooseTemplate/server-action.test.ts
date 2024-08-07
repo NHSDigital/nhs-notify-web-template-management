@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
-import { getMockFormData } from '@/src/__tests__/helpers';
-import { TemplateType } from '@/src/utils/types';
+import { getMockFormData } from '@testhelpers';
+import { TemplateType } from '@utils/types';
 
 jest.mock('next/navigation');
 
-jest.mock('@/src/utils/amplify-utils', () => ({
+jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
     models: {
       SessionStorage: {

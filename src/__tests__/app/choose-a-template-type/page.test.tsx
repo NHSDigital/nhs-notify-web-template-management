@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@/src/app/choose-a-template-type/[sessionId]/page';
+import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page';
 import { TemplateFormState } from '@utils/types';
 
 jest.mock('@utils/form-actions', () => ({

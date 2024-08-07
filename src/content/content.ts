@@ -1,4 +1,4 @@
-import { TemplateType } from '../utils/types';
+import { TemplateType } from '@utils/types';
 
 const headerComponent = {
   serviceName: 'Notify',

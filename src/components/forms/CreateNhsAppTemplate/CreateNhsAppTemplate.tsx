@@ -18,14 +18,14 @@ import {
   Textarea,
   Button,
 } from 'nhsuk-react-components';
-import { createNhsAppTemplateAction } from '@/src/components/forms/CreateNhsAppTemplate/server-action';
+import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps } from '../../../utils/types';
-import { createNhsAppTemplatePageContent } from '../../../content/content';
+import { PageComponentProps } from '@utils/types';
+import { createNhsAppTemplatePageContent } from '@content/content';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   initialState,
