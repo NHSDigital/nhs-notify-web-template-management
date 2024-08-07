@@ -1,7 +1,8 @@
 'use server';
 
-import { getAmplifyBackendClient } from '@/src/utils/amplify-utils';
 import { Session } from './types';
+import { getAmplifyBackendClient } from '@utils/amplify-utils';
+
 
 export async function createSession(session: Omit<Session, 'id'>) {
   const { data } =

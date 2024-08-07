@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import concatClassNames from '@/src/utils/concat-class-names';
-import content from '@/src/content/content';
+import concatClassNames from '@utils/concat-class-names';
+import content from '@content/content';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
 

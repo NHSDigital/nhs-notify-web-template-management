@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import HomePage from '@/src/app/page';
-import content from '@/src/content/content';
+import HomePage from '@app/page';
+import content from '@content/content';
 
 const homePageContent = content.pages.homePage;
 

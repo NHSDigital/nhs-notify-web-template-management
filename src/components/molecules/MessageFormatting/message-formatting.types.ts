@@ -1,4 +1,4 @@
-import { TemplateFormatText } from '@/src/types/template-format.types';
+import { TemplateFormatText } from '@utils/types';
 
 export type MessageFormattingType = {
   template: keyof typeof TemplateFormatText;

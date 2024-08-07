@@ -19,11 +19,16 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
       "@atoms/*": ["./src/components/atoms/*"],
+      "@app/*": ["./src/app/*"],
+      "@content/*": ["./src/content/*"],
       "@organisms/*": ["./src/components/organisms/*"],
       "@molecules/*": ["./src/components/molecules/*"],
+      "@layouts/*": ["./src/components/layouts/*"],
       "@forms/*": ["./src/components/forms/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@types/*": ["./src/types/*"],
+      "@testhelpers": ["./src/__tests__/helpers"],
       "@utils/*": ["./src/utils/*"]
     }
   },

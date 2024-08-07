@@ -4,7 +4,7 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { PageComponentProps } from '@utils/types';
-import content from '@/src/content/content';
+import content from '@content/content';
 import { renderMarkdown } from './server-actions';
 
 export function ReviewNHSAppTemplate({

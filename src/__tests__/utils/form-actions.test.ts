@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { TemplateType } from '@utils/types';
 import {
   createSession,
   saveSession,
@@ -41,6 +42,7 @@ beforeEach(() => {
 
 test('createSession', async () => {
   const response = await createSession({
+    templateType: 'UNKNOWN',
     nhsAppTemplateName: '',
     nhsAppTemplateMessage: '',
   });
@@ -49,7 +51,9 @@ test('createSession', async () => {
 });
 
 test('saveSession', async () => {
-  const response = await saveSession('session-id', {
+  const response = await saveSession({
+    id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+    templateType: TemplateType.NHS_APP,
     nhsAppTemplateName: 'template-name',
     nhsAppTemplateMessage: 'template-message',
   });

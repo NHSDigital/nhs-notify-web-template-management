@@ -1,4 +1,4 @@
-import content from '@/src/content/content';
+import content from '@content/content';
 import { Details } from 'nhsuk-react-components';
 
 const personalisationContent = content.components.personalisationComponent;

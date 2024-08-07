@@ -3,8 +3,8 @@
  */
 
 import { mockDeep } from 'jest-mock-extended';
-import CreateTemplate from '@/src/app/create-template/page';
 import { redirect } from 'next/navigation';
+import CreateTemplate from '@app/create-template/page';
 
 const mockSession = {
   id: undefined as unknown,
@@ -19,6 +19,9 @@ jest.mock('@utils/form-actions', () => ({
   createSession: () => mockSession,
 }));
 jest.mock('next/navigation');
+jest.mock('@app/create-template/main-server-action', () => ({
+  mainServerAction: () => {},
+}));
 
 test('CreateTemplate', async () => {
   mockSession.id = 'session-id';
