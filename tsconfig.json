@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@/amplify_outputs.json": ["./amplify_outputs.json"],
       "@atoms/*": ["./src/components/atoms/*"],
       "@app/*": ["./src/app/*"],
       "@content/*": ["./src/content/*"],
