@@ -29,3 +29,10 @@ export type PageComponentProps = {
   state: FormState;
   action: string | ((payload: FormData) => void);
 };
+
+export enum TemplateFormatText {
+  APP = 'APP',
+  EMAIL = 'EMAIL',
+  LETTER = 'LETTER',
+  SMS = 'SMS',
+}

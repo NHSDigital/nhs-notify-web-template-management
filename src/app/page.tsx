@@ -1,7 +1,7 @@
 'use client';
 
-import { NHSNotifyButton } from '@/src/components/atoms/NHSNotifyButton/NHSNotifyButton';
-import content from '@/src/content/content';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import content from '@content/content';
 
 const homePageContent = content.pages.homePage;
 

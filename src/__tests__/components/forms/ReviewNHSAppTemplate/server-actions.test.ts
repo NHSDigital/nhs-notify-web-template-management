@@ -5,8 +5,8 @@ import {
   renderMarkdown,
 } from '@forms/ReviewNHSAppTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { getMockFormData } from '@/src/__tests__/helpers';
-import { FormState } from '@/src/utils/types';
+import { getMockFormData } from '@testhelpers';
+import { FormState } from '@utils/types';
 import { markdown } from '../fixtures';
 
 describe('Markdown rendering', () => {

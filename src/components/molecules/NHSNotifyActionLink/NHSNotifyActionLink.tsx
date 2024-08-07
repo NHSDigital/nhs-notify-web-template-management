@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import concatClassNames from '@/src/utils/concat-class-names';
+import concatClassNames from '@utils/concat-class-names';
 import { ActionLinkType } from './action-link.types';
 
 export function NHSNotifyActionLink({

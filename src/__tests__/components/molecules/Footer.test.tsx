@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { NHSNotifyFooter } from '@/src/components/molecules/Footer/Footer';
+import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 
 describe('Footer component', () => {
   it('renders component correctly', () => {

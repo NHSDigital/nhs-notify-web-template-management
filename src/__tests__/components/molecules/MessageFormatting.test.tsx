@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { MessageFormatting } from '@/src/components/molecules/MessageFormatting/MessageFormatting';
-import { MessageFormattingType } from '@/src/components/molecules/MessageFormatting/message-formatting.types';
-import { TemplateFormatText } from '@/src/types/template-format.types';
+import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
+import { MessageFormattingType } from '@molecules/MessageFormatting/message-formatting.types';
+import { TemplateFormatText } from '@utils/types';
 
 const componentProps: MessageFormattingType = {
   template: TemplateFormatText.SMS,

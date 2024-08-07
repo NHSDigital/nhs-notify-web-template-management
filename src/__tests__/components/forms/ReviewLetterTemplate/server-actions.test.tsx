@@ -1,5 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
-import { renderMarkdown } from '@/src/components/forms/ReviewLetterTemplate';
+import { renderMarkdown } from '@forms/ReviewLetterTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { markdown } from '../fixtures';
 

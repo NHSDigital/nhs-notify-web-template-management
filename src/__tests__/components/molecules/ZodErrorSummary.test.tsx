@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
-import { FormState } from '@/src/utils/types';
+import { FormState } from '@utils/types';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 
 test('Renders ZodErrorSummary correctly without errors', () => {
