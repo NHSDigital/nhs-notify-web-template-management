@@ -1,6 +1,6 @@
 'use server';
 
-import { Session } from '@/src/utils/types';
+import { Session } from '@utils/types';
 import { createSession } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 

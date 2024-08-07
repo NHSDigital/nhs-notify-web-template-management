@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { getAmplifyBackendClient } from '@/src/utils/amplify-utils';
+import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import amplifyApi from '@aws-amplify/adapter-nextjs/api';
 import nextHeaders from 'next/headers';
 

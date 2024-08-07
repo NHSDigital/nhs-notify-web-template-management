@@ -1,5 +1,5 @@
-import { Page, TemplateFormState, TemplateType } from '@/src/utils/types';
-import { zodValidationServerAction } from '@/src/utils/zod-validation-server-action';
+import { Page, TemplateFormState, TemplateType } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
 
 const templateTypeToPageMap: Record<TemplateType, Page> = {

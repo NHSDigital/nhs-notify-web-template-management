@@ -1,7 +1,7 @@
 'use server';
 
-import CreateTemplate from '@/src/app/create-template/[sessionId]/page';
-import { TemplateType } from '@/src/utils/types';
+import CreateTemplate from '@app/create-template/[sessionId]/page';
+import { TemplateType } from '@utils/types';
 import { render } from '@testing-library/react';
 
 const mockSession = {

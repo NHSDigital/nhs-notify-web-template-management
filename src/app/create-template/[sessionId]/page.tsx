@@ -1,7 +1,7 @@
 'use server';
 
-import { getSession } from '@/src/utils/form-actions';
-import { CreateTemplateSinglePage } from '@/src/components/molecules/CreateTemplateSinglePage/CreateTemplateSinglePage';
+import { getSession } from '@utils/form-actions';
+import { CreateTemplateSinglePage } from '@molecules/CreateTemplateSinglePage/CreateTemplateSinglePage';
 import { TemplateFormState } from '../../../utils/types';
 
 type CreateTemplateProps = {

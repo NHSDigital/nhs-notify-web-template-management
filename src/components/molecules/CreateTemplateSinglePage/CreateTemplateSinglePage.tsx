@@ -9,7 +9,7 @@ import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTe
 import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 import { CreateLetterTemplate } from '@forms/CreateLetterTemplate/CreateLetterTemplate';
-import { mainServerAction } from '@/src/app/create-template/main-server-action';
+import { mainServerAction } from '@app/create-template/main-server-action';
 import {
   Page,
   PageComponentProps,

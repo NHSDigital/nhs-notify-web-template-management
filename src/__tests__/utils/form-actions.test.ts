@@ -32,7 +32,7 @@ const mockSchema = {
   models: undefined as unknown,
 };
 
-jest.mock('@/src/utils/amplify-utils', () => ({
+jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => mockSchema,
 }));
 

@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { CreateTemplateSinglePage } from '@molecules/CreateTemplateSinglePage/CreateTemplateSinglePage';
 import { useFormState } from 'react-dom';
-import { Page, TemplateFormState, TemplateType } from '@/src/utils/types';
+import { Page, TemplateFormState, TemplateType } from '@utils/types';
 
 jest.mock('react-dom', () => ({
   useFormState: jest.fn(),
   ...jest.requireActual('react-dom'),
 }));
 
-jest.mock('@/src/app/create-template/main-server-action', () => ({
+jest.mock('@app/create-template/main-server-action', () => ({
   mainServerAction: () => {},
 }));
 

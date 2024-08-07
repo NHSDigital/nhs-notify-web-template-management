@@ -5,7 +5,7 @@ import {
   handleForm as handleNHSAppForm,
   handleFormBack as handleNHSFormBack,
 } from '@forms/ReviewNHSAppTemplate';
-import { removeUndefinedFromObject } from '@/src/utils/remove-undefined';
+import { removeUndefinedFromObject } from '@utils/remove-undefined';
 import { FormId, Session, TemplateFormState } from '@utils/types';
 import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { saveSession } from '@utils/form-actions';
