@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { redirect, RedirectType } from 'next/navigation';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { TemplateFormState } from '@utils/types';
 
@@ -40,5 +39,9 @@ export function reviewNhsAppTemplateAction(
 
   const page =
     radioSelectionToPageMap[validationResponse.data.reviewNHSAppTemplateAction];
-  redirect(`/${page}/${formState.id}`, RedirectType.push);
+
+  return {
+    ...formState,
+    redirect: `/${page}/${formState.id}`,
+  };
 }

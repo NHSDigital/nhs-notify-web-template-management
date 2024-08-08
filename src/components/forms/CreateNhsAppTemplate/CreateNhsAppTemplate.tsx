@@ -26,6 +26,7 @@ import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { PageComponentProps } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
+import { useRouter } from 'next/navigation';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   initialState,
@@ -47,6 +48,11 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     createNhsAppTemplateAction,
     initialState
   );
+  const router = useRouter();
+
+  if (state.redirect) {
+    router.push(state.redirect);
+  }
 
   const [templateName, setTemplateName] = useState(state.nhsAppTemplateName);
   const [templateMessage, setTemplateMessage] = useState(

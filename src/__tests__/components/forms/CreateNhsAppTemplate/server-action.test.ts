@@ -1,9 +1,6 @@
-import { redirect } from 'next/navigation';
 import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { TemplateType } from '@utils/types';
-
-jest.mock('next/navigation');
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
@@ -15,28 +12,23 @@ jest.mock('@utils/amplify-utils', () => ({
   }),
 }));
 
-test('invalid form id', async () => {
-  const mockRedirect = jest.mocked(redirect);
+const initialState = {
+  id: 'session-id',
+  templateType: TemplateType.NHS_APP,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
 
+test('invalid form id', async () => {
   const response = await createNhsAppTemplateAction(
-    {
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+    initialState,
     getMockFormData({
       'form-id': 'lemons',
     })
   );
 
-  expect(mockRedirect).not.toHaveBeenCalled();
-
   expect(response).toEqual({
-    id: 'session-id',
-    templateType: TemplateType.NHS_APP,
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
+    ...initialState,
     validationError: {
       formErrors: [],
       fieldErrors: {
@@ -47,15 +39,8 @@ test('invalid form id', async () => {
 });
 
 test('submit form - no validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
-
-  await createNhsAppTemplateAction(
-    {
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+  const response = await createNhsAppTemplateAction(
+    initialState,
     getMockFormData({
       'form-id': 'create-nhs-app-template',
       nhsAppTemplateName: 'template-name',
@@ -63,22 +48,17 @@ test('submit form - no validation error', async () => {
     })
   );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
-    '/preview-nhs-app-template/session-id',
-    'push'
-  );
+  expect(response).toEqual({
+    ...initialState,
+    nhsAppTemplateName: 'template-name',
+    nhsAppTemplateMessage: 'template-message',
+    redirect: '/preview-nhs-app-template/session-id',
+  });
 });
 
 test('submit form - validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
-
   const response = await createNhsAppTemplateAction(
-    {
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+    initialState,
     getMockFormData({
       'form-id': 'create-nhs-app-template',
       nhsAppTemplateName: 'template-name',
@@ -87,13 +67,8 @@ test('submit form - validation error', async () => {
     })
   );
 
-  expect(mockRedirect).not.toHaveBeenCalled();
-
   expect(response).toEqual({
-    id: 'session-id',
-    templateType: TemplateType.NHS_APP,
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
+    ...initialState,
     validationError: {
       formErrors: [],
       fieldErrors: {
@@ -104,15 +79,8 @@ test('submit form - validation error', async () => {
 });
 
 test('back - no validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
-
-  await createNhsAppTemplateAction(
-    {
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+  const response = await createNhsAppTemplateAction(
+    initialState,
     getMockFormData({
       'form-id': 'create-nhs-app-template-back',
       nhsAppTemplateName: 'template-name',
@@ -120,22 +88,17 @@ test('back - no validation error', async () => {
     })
   );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
-    '/choose-a-template-type/session-id',
-    'push'
-  );
+  expect(response).toEqual({
+    ...initialState,
+    nhsAppTemplateName: 'template-name',
+    nhsAppTemplateMessage: 'template-message',
+    redirect: '/choose-a-template-type/session-id',
+  });
 });
 
 test('back - validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
-
   const response = await createNhsAppTemplateAction(
-    {
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+    initialState,
     getMockFormData({
       'form-id': 'create-nhs-app-template-back',
       nhsAppTemplateName: 'template-name',
@@ -143,13 +106,8 @@ test('back - validation error', async () => {
     })
   );
 
-  expect(mockRedirect).not.toHaveBeenCalled();
-
   expect(response).toEqual({
-    id: 'session-id',
-    templateType: TemplateType.NHS_APP,
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
+    ...initialState,
     validationError: {
       formErrors: [],
       fieldErrors: {

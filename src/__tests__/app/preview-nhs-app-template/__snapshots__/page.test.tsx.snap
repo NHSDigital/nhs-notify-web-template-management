@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChooseTemplatePage 1`] = `
+exports[`PreviewNhsAppTemplatePage 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"

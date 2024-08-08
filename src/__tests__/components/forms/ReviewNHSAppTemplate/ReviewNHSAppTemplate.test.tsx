@@ -10,6 +10,12 @@ import { TemplateFormState } from '@utils/types';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-action');
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 jest.mock('react-dom', () => {
   const originalModule = jest.requireActual('react-dom');
 

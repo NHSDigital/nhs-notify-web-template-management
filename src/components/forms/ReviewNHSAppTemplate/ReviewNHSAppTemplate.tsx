@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { PageComponentProps } from '@utils/types';
@@ -15,6 +16,12 @@ export function ReviewNHSAppTemplate({
     reviewNhsAppTemplateAction,
     initialState
   );
+  const router = useRouter();
+
+  if (state.redirect) {
+    router.push(state.redirect);
+  }
+
   const { nhsAppTemplateName, nhsAppTemplateMessage } = state;
 
   const html = renderMarkdown(nhsAppTemplateMessage);

@@ -1,9 +1,6 @@
-import { redirect } from 'next/navigation';
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
-import { TemplateType } from '@utils/types';
-
-jest.mock('next/navigation');
+import { TemplateFormState, TemplateType } from '@utils/types';
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
@@ -15,29 +12,24 @@ jest.mock('@utils/amplify-utils', () => ({
   }),
 }));
 
-test('submit form - validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
+const initialState: TemplateFormState = {
+  id: 'session-id',
+  templateType: 'UNKNOWN',
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
 
+test('submit form - validation error', async () => {
   const response = await chooseTemplateAction(
-    {
-      id: 'session-id',
-      templateType: 'UNKNOWN',
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+    initialState,
     getMockFormData({
       'form-id': 'create-nhs-app-template',
       templateType: 'lemons',
     })
   );
 
-  expect(mockRedirect).not.toHaveBeenCalled();
-
   expect(response).toEqual({
-    id: 'session-id',
-    templateType: 'UNKNOWN',
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
+    ...initialState,
     validationError: {
       formErrors: [],
       fieldErrors: {
@@ -48,22 +40,16 @@ test('submit form - validation error', async () => {
 });
 
 test('submit form - no validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
-
-  await chooseTemplateAction(
-    {
-      id: 'session-id',
-      templateType: 'UNKNOWN',
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    },
+  const response = await chooseTemplateAction(
+    initialState,
     getMockFormData({
       templateType: TemplateType.NHS_APP,
     })
   );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
-    '/create-nhs-app-template/session-id',
-    'push'
-  );
+  expect(response).toEqual({
+    ...initialState,
+    templateType: TemplateType.NHS_APP,
+    redirect: '/create-nhs-app-template/session-id',
+  });
 });

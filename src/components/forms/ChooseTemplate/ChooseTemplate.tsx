@@ -9,9 +9,15 @@ import { PageComponentProps } from '@utils/types';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { chooseTemplatePageContent } from '@content/content';
+import { useRouter } from 'next/navigation';
 
 export const ChooseTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(chooseTemplateAction, initialState);
+  const router = useRouter();
+
+  if (state.redirect) {
+    router.push(state.redirect);
+  }
 
   const { pageHeading, errorHeading, options, buttonText, hint } =
     chooseTemplatePageContent;

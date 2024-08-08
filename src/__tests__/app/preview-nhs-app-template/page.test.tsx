@@ -2,6 +2,8 @@ import { render } from '@testing-library/react';
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page';
 import { TemplateFormState, TemplateType } from '@utils/types';
 
+jest.mock('next/navigation');
+
 jest.mock('@utils/form-actions', () => ({
   getSession: () => ({
     id: 'session-id',
@@ -26,7 +28,7 @@ jest.mock('react-dom', () => {
   };
 });
 
-test('ChooseTemplatePage', async () => {
+test('PreviewNhsAppTemplatePage', async () => {
   const page = await PreviewNhsAppTemplatePage({
     params: {
       sessionId: 'session-id',

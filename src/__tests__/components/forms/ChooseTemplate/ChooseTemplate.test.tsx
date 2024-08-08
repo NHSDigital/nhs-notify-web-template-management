@@ -5,6 +5,12 @@ import { mockDeep } from 'jest-mock-extended';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
 import { TemplateFormState } from '@utils/types';
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => {},
 }));

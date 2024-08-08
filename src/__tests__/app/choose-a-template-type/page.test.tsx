@@ -11,6 +11,8 @@ jest.mock('@utils/form-actions', () => ({
   }),
 }));
 
+jest.mock('next/navigation');
+
 jest.mock('react-dom', () => {
   const originalModule = jest.requireActual('react-dom');
 

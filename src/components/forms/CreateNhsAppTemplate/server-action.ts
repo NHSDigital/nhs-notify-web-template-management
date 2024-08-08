@@ -1,4 +1,3 @@
-import { redirect, RedirectType } from 'next/navigation';
 import { TemplateFormState } from '@utils/types';
 import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
@@ -73,7 +72,10 @@ export async function createNhsAppTemplateAction(
     await saveSession(response);
 
     const page = formIdToPageMap[parsedFormId.data.formId];
-    redirect(`/${page}/${formState.id}`, RedirectType.push);
+    return {
+      ...response,
+      redirect: `/${page}/${formState.id}`,
+    };
   }
 
   return response;

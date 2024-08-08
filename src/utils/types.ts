@@ -29,6 +29,7 @@ export type Session = {
 
 export type FormState = {
   validationError?: FormErrorState;
+  redirect?: string;
 };
 
 export type TemplateFormState = FormState & Session;
