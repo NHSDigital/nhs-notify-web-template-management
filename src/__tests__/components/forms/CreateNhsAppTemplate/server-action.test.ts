@@ -64,7 +64,8 @@ test('submit form - no validation error', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/preview-nhs-app-template/session-id'
+    '/preview-nhs-app-template/session-id',
+    'push'
   );
 });
 
@@ -120,7 +121,8 @@ test('back - no validation error', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/choose-a-template-type/session-id'
+    '/choose-a-template-type/session-id',
+    'push'
   );
 });
 

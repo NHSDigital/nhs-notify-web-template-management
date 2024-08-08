@@ -78,7 +78,10 @@ describe('reviewNhsAppTemplateAction', () => {
 
     reviewNhsAppTemplateAction(currentState, formData);
 
-    expect(mockRedirect).toHaveBeenCalledWith('/submit-template/session-id');
+    expect(mockRedirect).toHaveBeenCalledWith(
+      '/submit-template/session-id',
+      'push'
+    );
   });
 
   it('should return previous edit page when edit action is chosen', () => {
@@ -91,7 +94,8 @@ describe('reviewNhsAppTemplateAction', () => {
     reviewNhsAppTemplateAction(currentState, formData);
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/create-nhs-app-template/session-id'
+      '/create-nhs-app-template/session-id',
+      'push'
     );
   });
 });

@@ -63,6 +63,7 @@ test('submit form - no validation error', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/create-nhs-app-template/session-id'
+    '/create-nhs-app-template/session-id',
+    'push'
   );
 });

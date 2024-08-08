@@ -28,7 +28,8 @@ test('CreateTemplate', async () => {
   await CreateTemplate();
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/choose-a-template-type/session-id'
+    '/choose-a-template-type/session-id',
+    'replace'
   );
 });
 
