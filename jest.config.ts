@@ -13,6 +13,13 @@ const createJestConfig = nextJest({
   dir: './src',
 });
 
+const moduleNameMapperDefaults = pathsToModuleNameMapper(
+  compilerOptions.paths,
+  {
+    prefix: '<rootDir>/',
+  }
+);
+
 const config: Config = {
   preset: 'ts-jest',
 
@@ -65,9 +72,10 @@ const config: Config = {
   testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts'],
 
   // Set the absolute path for imports
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
-    prefix: '<rootDir>/',
-  }),
+  moduleNameMapper: {
+    '@/amplify_outputs.json': '<rootDir>/jestamplify_outputs.json',
+    ...moduleNameMapperDefaults,
+  },
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

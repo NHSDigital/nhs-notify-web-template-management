@@ -1,61 +1,41 @@
-import { render, screen } from '@testing-library/react';
+/**
+ * @jest-environment node
+ */
+
+import { mockDeep } from 'jest-mock-extended';
+import { redirect } from 'next/navigation';
 import CreateTemplate from '@app/create-template/page';
-import { useFormState } from 'react-dom';
-import { FormState, Page } from '@utils/types';
 
-jest.mock('react-dom', () => ({
-  useFormState: jest.fn(),
-  ...jest.requireActual('react-dom'),
+const mockSession = {
+  id: undefined as unknown,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+  createdAt: 'created-at',
+  updatedAt: 'updated-at',
+};
+
+jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
+jest.mock('@utils/form-actions', () => ({
+  createSession: () => mockSession,
 }));
-
+jest.mock('next/navigation');
 jest.mock('@app/create-template/main-server-action', () => ({
   mainServerAction: () => {},
 }));
 
-const useFormStateMock = useFormState as jest.Mock;
+test('CreateTemplate', async () => {
+  mockSession.id = 'session-id';
 
-describe('CreateTemplate component', () => {
-  test.each([
-    {
-      page: 'choose-template' satisfies Page,
-      heading: 'Choose a template type to create',
-    },
-    {
-      page: 'create-nhs-app-template' satisfies Page,
-      heading: 'Create NHS App message template',
-    },
-    {
-      page: 'create-email-template' satisfies Page,
-      heading: 'Placeholder email page',
-    },
-    {
-      page: 'create-sms-template' satisfies Page,
-      heading: 'Placeholder SMS page',
-    },
-    {
-      page: 'create-letter-template' satisfies Page,
-      heading: 'Placeholder letter page',
-    },
-    {
-      page: 'review-nhs-app-template' satisfies Page,
-      heading: 'NHS App message template',
-    },
-    {
-      page: 'submit-template' satisfies Page,
-      heading: 'Placeholder Submit template',
-    },
-  ])('Should render %s', ({ page, heading }) => {
-    const initialState: FormState = {
-      page: page as Page,
-      validationError: undefined,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
-    };
+  const mockRedirect = jest.fn(mockDeep<typeof redirect>());
+  jest.mocked(redirect).mockImplementation(mockRedirect);
 
-    useFormStateMock.mockReturnValue([initialState, '', false]);
+  await CreateTemplate();
 
-    render(<CreateTemplate />);
+  expect(mockRedirect).toHaveBeenCalledWith('/create-template/session-id');
+});
 
-    expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument();
-  });
+test('CreateTemplate - error', async () => {
+  mockSession.id = undefined;
+
+  await expect(CreateTemplate()).rejects.toThrow('Error creating session');
 });

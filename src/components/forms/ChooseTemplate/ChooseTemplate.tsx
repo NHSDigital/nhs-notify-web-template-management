@@ -11,16 +11,21 @@ import { chooseTemplatePageContent } from '../../../content/content';
 export const ChooseTemplate: FC<PageComponentProps> = ({ state, action }) => {
   const { pageHeading, errorHeading, options, buttonText, hint } =
     chooseTemplatePageContent;
+
+  const optionState = options.map((option) => ({
+    ...option,
+    checked: state.templateType === option.id,
+  }));
   return (
     <>
       <ZodErrorSummary errorHeading={errorHeading} state={state} />
       <NHSNotifyRadioButtonForm
         formId='choose-template'
-        radiosId='page'
+        radiosId='templateType'
         action={action}
         state={state}
         pageHeading={pageHeading}
-        options={options}
+        options={optionState}
         buttonText={buttonText}
         hint={hint}
       />

@@ -3,7 +3,10 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 const schema = a.schema({
   SessionStorage: a
     .model({
-      sessionId: a.string(),
+      id: a.string().required(),
+      templateType: a.enum(['NHS_APP', 'SMS', 'EMAIL', 'LETTER', 'UNKNOWN']),
+      nhsAppTemplateName: a.string().required(),
+      nhsAppTemplateMessage: a.string().required(),
     })
     .authorization((allow) => [allow.guest()]),
 });

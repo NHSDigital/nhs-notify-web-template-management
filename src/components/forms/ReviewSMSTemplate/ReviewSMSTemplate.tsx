@@ -33,9 +33,6 @@ export function ReviewSMSTemplate({
             ...form,
             action: '',
             state: {
-              page: 'choose-template',
-              nhsAppTemplateName: '',
-              nhsAppTemplateMessage: '',
               validationError: undefined,
             },
             formId: 'review-email-template',

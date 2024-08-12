@@ -1,3 +1,5 @@
+import { TemplateType } from '../utils/types';
+
 const headerComponent = {
   serviceName: 'Notify',
   links: {
@@ -335,10 +337,10 @@ export const chooseTemplatePageContent = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   options: [
-    { id: 'create-nhs-app-template', text: 'NHS App message' },
-    { id: 'create-email-template', text: 'Email' },
-    { id: 'create-sms-template', text: 'Text message (SMS)' },
-    { id: 'create-letter-template', text: 'Letter' },
+    { id: TemplateType.NHS_APP, text: 'NHS App message' },
+    { id: TemplateType.EMAIL, text: 'Email' },
+    { id: TemplateType.SMS, text: 'Text message (SMS)' },
+    { id: TemplateType.LETTER, text: 'Letter' },
   ],
   buttonText: 'Continue',
   hint: 'Select one option',

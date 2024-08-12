@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { zodValidationServerAction } from '@utils/zod-validation-server-action';
-import { FormState } from '@utils/types';
+import { TemplateFormState } from '@utils/types';
 
 export function renderMarkdown(
   value: string,
@@ -12,7 +12,7 @@ export function renderMarkdown(
   return markdown.render(value);
 }
 
-export function handleForm(state: FormState, data: FormData) {
+export function handleForm(state: TemplateFormState, data: FormData) {
   const validation = zodValidationServerAction(
     state,
     data,
@@ -41,7 +41,7 @@ export function handleForm(state: FormState, data: FormData) {
   return validation;
 }
 
-export function handleFormBack(state: FormState, data: FormData) {
+export function handleFormBack(state: TemplateFormState, data: FormData) {
   return zodValidationServerAction(
     state,
     data,

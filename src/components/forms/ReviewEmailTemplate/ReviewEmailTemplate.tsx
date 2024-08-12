@@ -35,9 +35,6 @@ export function ReviewEmailTemplate({
             ...form,
             action: '',
             state: {
-              page: 'choose-template',
-              nhsAppTemplateName: '',
-              nhsAppTemplateMessage: '',
               validationError: undefined,
             },
             formId: 'review-email-template',
