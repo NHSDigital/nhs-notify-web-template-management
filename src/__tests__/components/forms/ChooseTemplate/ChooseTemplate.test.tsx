@@ -3,13 +3,13 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
-import { FormState } from '@utils/types';
+import { TemplateFormState } from '@utils/types';
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
     const container = render(
       <ChooseTemplate
-        state={mockDeep<FormState>({
+        state={mockDeep<TemplateFormState>({
           validationError: undefined,
         })}
         action='/action'
@@ -18,10 +18,10 @@ describe('Choose template page', () => {
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
-      screen.getByTestId('create-email-template-radio'),
-      screen.getByTestId('create-nhs-app-template-radio'),
-      screen.getByTestId('create-sms-template-radio'),
-      screen.getByTestId('create-letter-template-radio'),
+      screen.getByTestId('EMAIL-radio'),
+      screen.getByTestId('NHS_APP-radio'),
+      screen.getByTestId('SMS-radio'),
+      screen.getByTestId('LETTER-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 
@@ -49,7 +49,7 @@ describe('Choose template page', () => {
   it('renders error component', () => {
     const container = render(
       <ChooseTemplate
-        state={mockDeep<FormState>({
+        state={mockDeep<TemplateFormState>({
           validationError: {
             formErrors: [],
             fieldErrors: {

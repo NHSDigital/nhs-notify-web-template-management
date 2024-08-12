@@ -1,19 +1,14 @@
+/* eslint-disable import/no-unresolved */
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { cookies } from 'next/headers';
-import fs from 'node:fs';
 import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
 import { Schema } from '../../amplify/data/resource';
 
-export const config = () => {
-  try {
-    const output = fs.readFileSync('amplify_outputs.json', 'utf8');
-    return JSON.parse(output);
-  } catch {
-    return {};
-  }
-};
+const config = require('@/amplify_outputs.json');
 
 export const getAmplifyBackendClient = () =>
   generateServerClientUsingCookies<Schema>({
-    config: config(),
+    config,
     cookies,
   });

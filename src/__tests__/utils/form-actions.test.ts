@@ -2,10 +2,12 @@
  * @jest-environment node
  */
 
-import { mockDeep } from 'jest-mock-extended';
-import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
-import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { createSession } from '../../utils/form-actions';
+import { TemplateType } from '@utils/types';
+import {
+  createSession,
+  saveSession,
+  getSession,
+} from '../../utils/form-actions';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 
@@ -14,25 +16,65 @@ const mockResponse = {
   sessionId: 'session-id',
   createdAt: 'created-at',
   updatedAt: 'updated-at',
+  nhsAppTemplateName: 'template-name',
+  nhsAppTemplateMessage: 'template-message',
 };
 
-const mockAmplifyBackendClient = mockDeep<
-  ReturnType<typeof getAmplifyBackendClient>
->({
-  models: {
-    SessionStorage: {
-      create: async () => ({ data: mockResponse }),
-    },
+const mockModels = {
+  SessionStorage: {
+    create: async () => ({ data: mockResponse }),
+    update: async () => ({ data: mockResponse }),
+    get: async () => ({ data: mockResponse }),
   },
+};
+
+const mockSchema = {
+  models: undefined as unknown,
+};
+
+jest.mock('@utils/amplify-utils', () => ({
+  getAmplifyBackendClient: () => mockSchema,
+}));
+
+beforeEach(() => {
+  mockSchema.models = mockModels;
 });
 
 test('createSession', async () => {
-  // @ts-expect-error this line gives 'type instantiation is excessively long' but the types are from the AWS SDK so we can't change them
-  jest
-    .mocked(generateServerClientUsingCookies)
-    .mockReturnValue(mockAmplifyBackendClient);
-
-  const response = await createSession();
+  const response = await createSession({
+    templateType: 'UNKNOWN',
+    nhsAppTemplateName: '',
+    nhsAppTemplateMessage: '',
+  });
 
   expect(response).toEqual(mockResponse);
+});
+
+test('saveSession', async () => {
+  const response = await saveSession({
+    id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+    templateType: TemplateType.NHS_APP,
+    nhsAppTemplateName: 'template-name',
+    nhsAppTemplateMessage: 'template-message',
+  });
+
+  expect(response).toEqual(mockResponse);
+});
+
+test('getSession', async () => {
+  const response = await getSession('session-id');
+
+  expect(response).toEqual(mockResponse);
+});
+
+test('getSession - throws error if session is not found', async () => {
+  mockSchema.models = {
+    SessionStorage: {
+      get: async () => ({ data: null }), // eslint-disable-line unicorn/no-null
+    },
+  };
+
+  await expect(getSession('session-id')).rejects.toThrow(
+    'Could not retrieve session'
+  );
 });

@@ -1,41 +1,23 @@
-'use client';
+'use server';
 
-import { useFormState } from 'react-dom';
-import { FC } from 'react';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
-import { ChooseTemplate } from '../../components/forms/ChooseTemplate/ChooseTemplate';
-import { CreateNhsAppTemplate } from '../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
-import { CreateSmsTemplate } from '../../components/forms/CreateSmsTemplate/CreateSmsTemplate';
-import { CreateEmailTemplate } from '../../components/forms/CreateEmailTemplate/CreateEmailTemplate';
-import { CreateLetterTemplate } from '../../components/forms/CreateLetterTemplate/CreateLetterTemplate';
-import { mainServerAction } from './main-server-action';
-import { FormState, Page, PageComponentProps } from '../../utils/types';
+import { Session } from '@utils/types';
+import { createSession } from '@utils/form-actions';
+import { redirect } from 'next/navigation';
 
-const pages: Record<Page, FC<PageComponentProps>> = {
-  'choose-template': ChooseTemplate,
-  'create-nhs-app-template': CreateNhsAppTemplate,
-  'create-email-template': CreateEmailTemplate,
-  'create-sms-template': CreateSmsTemplate,
-  'create-letter-template': CreateLetterTemplate,
-  'review-nhs-app-template': ReviewNHSAppTemplate,
-  'submit-template': SubmitTemplate,
-};
-
-const initialState: FormState = {
-  page: 'choose-template',
-  validationError: undefined,
+const initialSessionState: Omit<Session, 'id'> = {
+  templateType: 'UNKNOWN',
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
 
-const CreateTemplate = () => {
-  const [state, action] = useFormState(mainServerAction, initialState);
-  const { page } = state;
+const CreateTemplate = async () => {
+  const sessionData = await createSession(initialSessionState);
 
-  const PageComponent = pages[page];
+  if (!sessionData?.id) {
+    throw new Error('Error creating session');
+  }
 
-  return <PageComponent state={state} action={action} />;
+  redirect(`/create-template/${sessionData.id}`);
 };
 
 export default CreateTemplate;

@@ -5,30 +5,23 @@ import {
   handleForm as handleNHSAppForm,
   handleFormBack as handleNHSFormBack,
 } from '@forms/ReviewNHSAppTemplate';
-import { FormState, FormId } from '../../utils/types';
-import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
-import { createSession } from '../../utils/form-actions';
+import { removeUndefinedFromObject } from '@utils/remove-undefined';
+import { FormId, Session, TemplateFormState } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
+import { saveSession } from '@utils/form-actions';
+import { chooseTemplateAction } from './choose-template-action';
 
 const serverActions: Partial<
-  Record<FormId, (formState: FormState, formData: FormData) => FormState>
+  Record<
+    FormId,
+    (formState: TemplateFormState, formData: FormData) => TemplateFormState
+  >
 > = {
-  'choose-template': (formState: FormState, formData: FormData) =>
-    zodValidationServerAction(
-      formState,
-      formData,
-      z.object({
-        page: z.enum(
-          [
-            'create-sms-template',
-            'create-email-template',
-            'create-nhs-app-template',
-            'create-letter-template',
-          ],
-          { message: 'Select a template type' }
-        ),
-      })
-    ),
-  'create-nhs-app-template-back': (formState: FormState, formData: FormData) =>
+  'choose-template': chooseTemplateAction,
+  'create-nhs-app-template-back': (
+    formState: TemplateFormState,
+    formData: FormData
+  ) =>
     zodValidationServerAction(
       formState,
       formData,
@@ -38,7 +31,10 @@ const serverActions: Partial<
       }),
       'choose-template'
     ),
-  'create-nhs-app-template': (formState: FormState, formData: FormData) =>
+  'create-nhs-app-template': (
+    formState: TemplateFormState,
+    formData: FormData
+  ) =>
     zodValidationServerAction(
       formState,
       formData,
@@ -73,16 +69,11 @@ const schema = z.object({
 });
 
 export const mainServerAction = async (
-  formState: FormState,
+  formState: TemplateFormState,
   formData: FormData
-): Promise<FormState> => {
+): Promise<TemplateFormState> => {
   const formId = formData.get('form-id');
-
   const parsedFormId = schema.safeParse({ formId });
-
-  // this has no functional purpose, it is here temporarily to
-  // prove the connection to the Amplify backend
-  await createSession();
 
   if (!parsedFormId.success) {
     return {
@@ -92,7 +83,6 @@ export const mainServerAction = async (
   }
 
   const serverAction = serverActions[parsedFormId.data.formId];
-
   if (!serverAction) {
     return {
       ...formState,
@@ -103,5 +93,19 @@ export const mainServerAction = async (
     };
   }
 
-  return serverAction(formState, formData);
+  const serverActionResult = serverAction(formState, formData);
+  if (serverActionResult.validationError) {
+    return serverActionResult;
+  }
+
+  const session: Session = removeUndefinedFromObject({
+    id: serverActionResult.sessionId,
+    templateType: serverActionResult.templateType,
+    nhsAppTemplateName: serverActionResult.nhsAppTemplateName,
+    nhsAppTemplateMessage: serverActionResult.nhsAppTemplateMessage,
+  });
+
+  await saveSession(session);
+
+  return serverActionResult;
 };

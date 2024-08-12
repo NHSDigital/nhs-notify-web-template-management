@@ -17,16 +17,35 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
+export enum TemplateType {
+  NHS_APP = 'NHS_APP',
+  SMS = 'SMS',
+  EMAIL = 'EMAIL',
+  LETTER = 'LETTER',
+}
+
+export type Session = {
+  id: string;
+  templateType: TemplateType | 'UNKNOWN';
+  nhsAppTemplateName: string;
+  nhsAppTemplateMessage: string;
+};
+
 export type FormState = {
-  page: Page;
   validationError?: FormErrorState;
+};
+
+export type TemplateFormState = FormState & {
+  sessionId: string;
+  page: Page;
+  templateType: TemplateType | '';
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
   reviewNHSAppTemplateAction?: 'nhsapp-edit' | 'nhsapp-submit';
 };
 
 export type PageComponentProps = {
-  state: FormState;
+  state: TemplateFormState;
   action: string | ((payload: FormData) => void);
 };
 

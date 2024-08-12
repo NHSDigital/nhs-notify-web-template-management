@@ -3,7 +3,7 @@ const goToCreateNhsAppTemplatePage = (host) => ({
   url: host,
   actions: [
     'wait for element #page-create-nhs-app-template to be visible',
-    'click element #page-create-nhs-app-template',
+    'click element #templateType-NHS_APP',
     'wait for element #choose-template-submit-button to be visible',
     'click element #choose-template-submit-button',
     'wait for element #create-nhs-app-template-submit-button to be visible',

@@ -2,31 +2,45 @@
  * @jest-environment node
  */
 
+import { mockDeep } from 'jest-mock-extended';
 import {
   handleForm as nhsAppHandleForm,
   handleFormBack as nhsAppHandleFormBack,
 } from '@forms/ReviewNHSAppTemplate/server-actions';
-import { FormState } from '../../../utils/types';
+import { TemplateFormState, TemplateType } from '../../../utils/types';
 import { mainServerAction } from '../../../app/create-template/main-server-action';
 import { getMockFormData } from '../../helpers';
 
-jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
-jest.mock('../../../utils/form-actions');
+const mockFormActions = {
+  saveSession: () => {},
+};
 
-const formState: FormState = {
+jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
+jest.mock('@utils/form-actions', () => ({
+  saveSession: () => mockFormActions.saveSession(),
+}));
+
+const formState: TemplateFormState = {
+  sessionId: 'session-id',
   page: 'choose-template',
   validationError: undefined,
+  templateType: TemplateType.NHS_APP,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
 
-type TestConfig = [string, Record<string, string>, FormState];
+type TestConfig = [string, Record<string, string>, TemplateFormState];
+
+beforeEach(() => {
+  mockFormActions.saveSession = jest.fn();
+});
 
 test.each<TestConfig>([
   [
     'returns validation error on missing form id',
     {},
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -34,6 +48,7 @@ test.each<TestConfig>([
           formId: ['Internal server error'],
         },
       },
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -44,11 +59,13 @@ test.each<TestConfig>([
       'form-id': 'create-sms-template',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: ['Internal server error'],
         fieldErrors: {},
       },
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -57,16 +74,18 @@ test.each<TestConfig>([
     'returns error on invalid choose-template form',
     {
       'form-id': 'choose-template',
-      page: 'wrong-page',
+      templateType: 'wrong-page',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
         fieldErrors: {
-          page: ['Select a template type'],
+          templateType: ['Select a template type'],
         },
       },
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -75,11 +94,13 @@ test.each<TestConfig>([
     'returns success on valid choose-template form',
     {
       'form-id': 'choose-template',
-      page: 'create-sms-template',
+      templateType: 'SMS',
     },
     {
+      sessionId: 'session-id',
       page: 'create-sms-template',
       validationError: undefined,
+      templateType: TemplateType.SMS,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -91,6 +112,7 @@ test.each<TestConfig>([
       nhsAppTemplateName: 'template-name',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -98,6 +120,7 @@ test.each<TestConfig>([
           nhsAppTemplateMessage: ['Internal server error'],
         },
       },
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -110,8 +133,10 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: 'template-message',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: undefined,
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },
@@ -124,6 +149,7 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: '',
     },
     {
+      sessionId: 'session-id',
       page: 'choose-template',
       validationError: {
         formErrors: [],
@@ -131,6 +157,7 @@ test.each<TestConfig>([
           nhsAppTemplateMessage: ['Enter a template message'],
         },
       },
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     },
@@ -143,8 +170,10 @@ test.each<TestConfig>([
       nhsAppTemplateMessage: 'template-message',
     },
     {
+      sessionId: 'session-id',
       page: 'review-nhs-app-template',
       validationError: undefined,
+      templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
     },
@@ -163,7 +192,14 @@ it.each([
     'form-id': id,
   };
 
+  jest.mocked(handler).mockReturnValue(
+    mockDeep<ReturnType<typeof handler>>({
+      validationError: undefined,
+    })
+  );
+
   await mainServerAction(formState, getMockFormData(formData));
 
   expect(handler).toHaveBeenCalled();
+  expect(mockFormActions.saveSession).toHaveBeenCalled();
 });

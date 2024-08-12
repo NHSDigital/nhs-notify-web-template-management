@@ -1,8 +1,8 @@
 const url = (baseUrl) => `${baseUrl}/create-template`;
 
 const pageActions = [
-  'wait for element #page-create-nhs-app-template to be visible',
-  'click element #page-create-nhs-app-template',
+  'wait for element #templateType-NHS_APP to be visible',
+  'click element #templateType-NHS_APP',
   'click element #choose-template-submit-button',
   'wait for element #create-nhs-app-template-submit-button to be visible',
 ];

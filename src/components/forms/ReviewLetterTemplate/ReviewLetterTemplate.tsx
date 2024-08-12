@@ -33,9 +33,6 @@ export function ReviewLetterTemplate({
         ...form,
         action: '',
         state: {
-          page: 'choose-template',
-          nhsAppTemplateName: '',
-          nhsAppTemplateMessage: '',
           validationError: undefined,
         },
         formId: 'review-letter-template',
