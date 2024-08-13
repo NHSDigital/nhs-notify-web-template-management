@@ -3,7 +3,7 @@ export type FormId =
   | 'create-nhs-app-template'
   | 'create-email-template'
   | 'create-letter-template'
-  | 'create-sms-template'
+  | 'create-text-message-template'
   | 'preview-nhs-app-template'
   | 'submit-template'
   | 'create-nhs-app-template-back';
