@@ -1,17 +1,16 @@
 import { ZodRawShape, UnknownKeysParam, ZodTypeAny, ZodObject } from 'zod';
-import { FormState, Page } from './types';
+import { FormState } from './types';
 
 export const zodValidationServerAction = <
   T extends ZodRawShape,
   U extends UnknownKeysParam,
   V extends ZodTypeAny,
+  W extends object,
   X extends FormState,
-  W extends Partial<X>,
 >(
   formState: X,
   formData: FormData,
-  schema: ZodObject<T, U, V, W>,
-  page: Page
+  schema: ZodObject<T, U, V, W>
 ) => {
   const form = Object.fromEntries(formData.entries());
 
@@ -27,7 +26,6 @@ export const zodValidationServerAction = <
   return {
     ...formState,
     validationError: undefined,
-    ...(page && { page }),
     ...parsedForm.data,
   };
 };

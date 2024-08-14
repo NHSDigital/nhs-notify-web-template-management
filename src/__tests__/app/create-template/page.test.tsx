@@ -14,14 +14,10 @@ const mockSession = {
   updatedAt: 'updated-at',
 };
 
-jest.mock('@forms/ReviewNHSAppTemplate/server-actions');
 jest.mock('@utils/form-actions', () => ({
   createSession: () => mockSession,
 }));
 jest.mock('next/navigation');
-jest.mock('@app/create-template/main-server-action', () => ({
-  mainServerAction: () => {},
-}));
 
 test('CreateTemplate', async () => {
   mockSession.id = 'session-id';
@@ -31,7 +27,10 @@ test('CreateTemplate', async () => {
 
   await CreateTemplate();
 
-  expect(mockRedirect).toHaveBeenCalledWith('/create-template/session-id');
+  expect(mockRedirect).toHaveBeenCalledWith(
+    '/choose-a-template-type/session-id',
+    'replace'
+  );
 });
 
 test('CreateTemplate - error', async () => {

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateSmsTemplatePage 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-l"
+    data-testid="page-sub-heading"
+  >
+    Placeholder SMS page
+  </h2>
+</DocumentFragment>
+`;

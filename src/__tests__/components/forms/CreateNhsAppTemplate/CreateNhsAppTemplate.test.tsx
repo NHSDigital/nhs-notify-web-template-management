@@ -1,22 +1,44 @@
-'use client';
-
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
-import { FormState } from '../../../../utils/types';
-import { CreateNhsAppTemplate } from '../../../../components/forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
+import { TemplateFormState } from '@utils/types';
+import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
+jest.mock('@utils/amplify-utils', () => ({
+  getAmplifyBackendClient: () => {},
+}));
+
+jest.mock('react-dom', () => {
+  const originalModule = jest.requireActual('react-dom');
+
+  return {
+    ...originalModule,
+    useFormState: (
+      _: (
+        formState: TemplateFormState,
+        formData: FormData
+      ) => Promise<TemplateFormState>,
+      initialState: TemplateFormState
+    ) => [initialState, '/action'],
+  };
+});
 
 test('renders page', async () => {
   const user = userEvent.setup();
 
   const container = render(
     <CreateNhsAppTemplate
-      state={mockDeep<FormState>({
+      initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
         nhsAppTemplateName: '',
         nhsAppTemplateMessage: '',
       })}
-      action='/action'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -37,12 +59,11 @@ test('renders page', async () => {
 test('renders page with preloaded field values', () => {
   const container = render(
     <CreateNhsAppTemplate
-      state={mockDeep<FormState>({
+      initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
         nhsAppTemplateName: 'template-name',
         nhsAppTemplateMessage: 'template-message',
       })}
-      action='/action'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -51,7 +72,7 @@ test('renders page with preloaded field values', () => {
 test('renders page one error', () => {
   const container = render(
     <CreateNhsAppTemplate
-      state={mockDeep<FormState>({
+      initialState={mockDeep<TemplateFormState>({
         validationError: {
           formErrors: [],
           fieldErrors: {
@@ -61,7 +82,6 @@ test('renders page one error', () => {
         nhsAppTemplateName: '',
         nhsAppTemplateMessage: '',
       })}
-      action='/action'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -70,7 +90,7 @@ test('renders page one error', () => {
 test('renders page with multiple errors', () => {
   const container = render(
     <CreateNhsAppTemplate
-      state={mockDeep<FormState>({
+      initialState={mockDeep<TemplateFormState>({
         validationError: {
           formErrors: [],
           fieldErrors: {
@@ -81,7 +101,6 @@ test('renders page with multiple errors', () => {
         nhsAppTemplateName: '',
         nhsAppTemplateMessage: '',
       })}
-      action='/action'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();

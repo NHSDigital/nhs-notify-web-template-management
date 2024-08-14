@@ -2,7 +2,7 @@
 
 import { Session } from '@utils/types';
 import { createSession } from '@utils/form-actions';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 
 const initialSessionState: Omit<Session, 'id'> = {
   templateType: 'UNKNOWN',
@@ -17,7 +17,7 @@ const CreateTemplate = async () => {
     throw new Error('Error creating session');
   }
 
-  redirect(`/create-template/${sessionData.id}`);
+  redirect(`/choose-a-template-type/${sessionData.id}`, RedirectType.replace);
 };
 
 export default CreateTemplate;

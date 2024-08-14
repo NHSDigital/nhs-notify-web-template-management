@@ -1,16 +1,27 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
-import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { PageComponentProps } from '@utils/types';
 import content from '@content/content';
-import { renderMarkdown } from './server-actions';
+import { useFormState } from 'react-dom';
+import { BackLink } from 'nhsuk-react-components';
+import { reviewNhsAppTemplateAction, renderMarkdown } from './server-action';
 
 export function ReviewNHSAppTemplate({
-  state,
-  action,
+  initialState,
 }: Readonly<PageComponentProps>) {
+  const [state, action] = useFormState(
+    reviewNhsAppTemplateAction,
+    initialState
+  );
+  const router = useRouter();
+
+  if (state.redirect) {
+    router.push(state.redirect);
+  }
+
   const { nhsAppTemplateName, nhsAppTemplateMessage } = state;
 
   const html = renderMarkdown(nhsAppTemplateMessage);
@@ -23,10 +34,12 @@ export function ReviewNHSAppTemplate({
 
   return (
     <div className='nhsuk-grid-row'>
-      <NHSNotifyBackButton
-        formId='review-nhs-app-template-back'
-        action={action}
-      />
+      <BackLink
+        href={`/templates/create-nhs-app-template/${initialState.id}`}
+        className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
+      >
+        Go back
+      </BackLink>
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
           templateName={nhsAppTemplateName}
@@ -36,7 +49,7 @@ export function ReviewNHSAppTemplate({
             ...form,
             state,
             action,
-            formId: 'review-nhs-app-template',
+            formId: 'preview-nhs-app-template',
             radiosId: 'reviewNHSAppTemplateAction',
           }}
           PreviewComponent={<PreviewTemplate.NHSApp message={html} />}

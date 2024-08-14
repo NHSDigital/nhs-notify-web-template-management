@@ -9,6 +9,7 @@ import {
   FormEventHandler,
   useState,
 } from 'react';
+import { useFormState } from 'react-dom';
 import {
   TextInput,
   HintText,
@@ -17,17 +18,18 @@ import {
   Textarea,
   Button,
 } from 'nhsuk-react-components';
-import { createNhsAppTemplatePageContent } from '../../../content/content';
-import { ZodErrorSummary } from '../../molecules/ZodErrorSummary/ZodErrorSummary';
-import { PageComponentProps } from '../../../utils/types';
-import { NHSNotifyFormWrapper } from '../../molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { NHSNotifyBackButton } from '../../molecules/NHSNotifyBackButton/NHSNotifyBackButton';
-import { Personalisation } from '../../molecules/Personalisation/Personalisation';
-import { MessageFormatting } from '../../molecules/MessageFormatting/MessageFormatting';
+import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-action';
+import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { Personalisation } from '@molecules/Personalisation/Personalisation';
+import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
+import { PageComponentProps } from '@utils/types';
+import { createNhsAppTemplatePageContent } from '@content/content';
+import { useRouter } from 'next/navigation';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
-  state,
-  action,
+  initialState,
 }) => {
   const {
     pageHeading,
@@ -42,6 +44,16 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     templateNameDetailsList,
     templateNameDetailsExample,
   } = createNhsAppTemplatePageContent;
+  const [state, action] = useFormState(
+    createNhsAppTemplateAction,
+    initialState
+  );
+  const router = useRouter();
+
+  if (state.redirect) {
+    router.push(state.redirect);
+  }
+
   const [templateName, setTemplateName] = useState(state.nhsAppTemplateName);
   const [templateMessage, setTemplateMessage] = useState(
     state.nhsAppTemplateMessage

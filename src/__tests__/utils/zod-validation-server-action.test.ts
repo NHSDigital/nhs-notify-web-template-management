@@ -1,13 +1,14 @@
 import { z } from 'zod';
-import { FormState } from '../../utils/types';
-import { zodValidationServerAction } from '../../utils/zod-validation-server-action';
-import { getMockFormData } from '../helpers';
+import { TemplateFormState, TemplateType } from '@utils/types';
+import { zodValidationServerAction } from '@utils/zod-validation-server-action';
+import { getMockFormData } from '@testhelpers';
 
-const formState: FormState = {
-  page: 'choose-template',
+const formState: TemplateFormState = {
   validationError: undefined,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
+  templateType: TemplateType.NHS_APP,
+  id: 'session-id',
 };
 
 const formSchema = z.object({
@@ -22,7 +23,8 @@ test('returns as expected on invalid formData', () => {
   );
 
   expect(result).toEqual({
-    page: 'choose-template',
+    id: 'session-id',
+    templateType: 'NHS_APP',
     validationError: {
       formErrors: [],
       fieldErrors: {
@@ -42,7 +44,8 @@ test('returns as expected on valid formData', () => {
   );
 
   expect(result).toEqual({
-    page: 'choose-template',
+    id: 'session-id',
+    templateType: 'NHS_APP',
     validationError: undefined,
     nhsAppTemplateName: 'p',
     nhsAppTemplateMessage: '',
@@ -53,12 +56,12 @@ test('returns as expected on valid formData when page is specified', () => {
   const result = zodValidationServerAction(
     formState,
     getMockFormData({ nhsAppTemplateName: 'p' }),
-    formSchema,
-    'review-nhs-app-template'
+    formSchema
   );
 
   expect(result).toEqual({
-    page: 'review-nhs-app-template',
+    id: 'session-id',
+    templateType: 'NHS_APP',
     validationError: undefined,
     nhsAppTemplateName: 'p',
     nhsAppTemplateMessage: '',
