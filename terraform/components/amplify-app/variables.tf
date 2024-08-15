@@ -39,3 +39,8 @@ variable "access_token" {
   type    = string
   default = null
 }
+
+variable "deploy_ses_email_identity" {
+  type    = bool
+  default = true
+}
