@@ -34,6 +34,7 @@ test('puts focus on h1', async () => {
   }
 
   await user.click(otherElement);
+
   expect(headingElement).not.toHaveFocus();
 });
 
