@@ -4,7 +4,7 @@ import content from '@content/content';
 import { NHSNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
-import { NHSNotifySkipLink } from '../components/atoms/NHSNotifySkipLink';
+import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,

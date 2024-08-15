@@ -32,5 +32,5 @@ export function NHSNotifySkipLink() {
     }
   }, []);
 
-  return <SkipLink onClick={onClick} />;
+  return <SkipLink id='skip-link' onClick={onClick} />;
 }
