@@ -23,11 +23,11 @@ exports[`InvalidSessionPage 1`] = `
     <p>
       If the web address is correct or you selected a link or button, contact us to let us know there is a problem with this page:
     </p>
-    <h3
+    <h2
       class="nhsuk-heading-m"
     >
       By email
-    </h3>
+    </h2>
     <p>
       <a
         href="mailto:ssd.nationalservicedesk@nhs.net"

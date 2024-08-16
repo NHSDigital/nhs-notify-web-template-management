@@ -20,9 +20,9 @@ export default function InvalidSessionPage() {
       </p>
       <p>{invalidSessionPageContent.p2}</p>
 
-      <h3 className='nhsuk-heading-m'>
+      <h2 className='nhsuk-heading-m'>
         {invalidSessionPageContent.contact1.header}
-      </h3>
+      </h2>
       <p>
         <Link href={invalidSessionPageContent.contact1.href}>
           {invalidSessionPageContent.contact1.contactDetail}
