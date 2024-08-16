@@ -315,12 +315,17 @@ const reviewSMSTemplateContent = {
 };
 
 const invalidSessionPageContent = {
-  pageHeading: 'Something has gone wrong',
-  description:
-    'The template form you are trying to access is not valid or has expired, please start again.',
+  pageHeading: 'Sorry, we could not find that page',
+  p1: 'You may have typed or pasted a web address incorrectly. ',
   backLink: {
-    text: 'Return to start',
-    path: '/templates/create-and-submit-templates',
+    text: 'Go to the start page.',
+    path: '/create-and-submit-templates',
+  },
+  p2: 'If the web address is correct or you selected a link or button, contact us to let us know there is a problem with this page:',
+  contact1: {
+    header: 'By email',
+    href: 'mailto:ssd.nationalservicedesk@nhs.net',
+    contactDetail: 'ssd.nationalservicedesk@nhs.net',
   },
 };
 

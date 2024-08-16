@@ -10,33 +10,31 @@ exports[`InvalidSessionPage 1`] = `
       class="nhsuk-heading-xl"
       data-testid="page-heading"
     >
-      Something has gone wrong
+      Sorry, we could not find that page
     </h1>
     <p>
-      The template form you are trying to access is not valid or has expired, please start again.
-    </p>
-    <div
-      class="nhsuk-back-link"
-    >
+      You may have typed or pasted a web address incorrectly. 
       <a
-        class="nhsuk-back-link__link nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3"
-        href="/templates/create-and-submit-templates"
+        href="/create-and-submit-templates"
       >
-        <svg
-          aria-hidden="true"
-          class="nhsuk-icon nhsuk-icon__chevron-left"
-          height="24"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
-          />
-        </svg>
-        Return to start
+        Go to the start page.
       </a>
-    </div>
+    </p>
+    <p>
+      If the web address is correct or you selected a link or button, contact us to let us know there is a problem with this page:
+    </p>
+    <h3
+      class="nhsuk-heading-m"
+    >
+      By email
+    </h3>
+    <p>
+      <a
+        href="mailto:ssd.nationalservicedesk@nhs.net"
+      >
+        ssd.nationalservicedesk@nhs.net
+      </a>
+    </p>
   </div>
 </DocumentFragment>
 `;

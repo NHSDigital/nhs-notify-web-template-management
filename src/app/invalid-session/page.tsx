@@ -1,7 +1,7 @@
 'use client';
 
 import content from '@content/content';
-import { BackLink } from 'nhsuk-react-components';
+import Link from 'next/link';
 
 const { invalidSessionPageContent } = content.pages;
 
@@ -12,14 +12,22 @@ export default function InvalidSessionPage() {
         {invalidSessionPageContent.pageHeading}
       </h1>
 
-      <p>{invalidSessionPageContent.description}</p>
+      <p>
+        {invalidSessionPageContent.p1}
+        <Link href={invalidSessionPageContent.backLink.path}>
+          {invalidSessionPageContent.backLink.text}
+        </Link>
+      </p>
+      <p>{invalidSessionPageContent.p2}</p>
 
-      <BackLink
-        href={invalidSessionPageContent.backLink.path}
-        className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
-      >
-        {invalidSessionPageContent.backLink.text}
-      </BackLink>
+      <h3 className='nhsuk-heading-m'>
+        {invalidSessionPageContent.contact1.header}
+      </h3>
+      <p>
+        <Link href={invalidSessionPageContent.contact1.href}>
+          {invalidSessionPageContent.contact1.contactDetail}
+        </Link>
+      </p>
     </div>
   );
 }
