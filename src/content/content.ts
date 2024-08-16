@@ -314,6 +314,16 @@ const reviewSMSTemplateContent = {
   },
 };
 
+const invalidSessionPageContent = {
+  pageHeading: 'Something has gone wrong',
+  description:
+    'The template form you are trying to access is not valid or has expired, please start again.',
+  backLink: {
+    text: 'Return to start',
+    path: '/templates/create-and-submit-templates',
+  },
+};
+
 const content = {
   global: {
     mainLayout,
@@ -330,6 +340,7 @@ const content = {
   },
   pages: {
     homePage,
+    invalidSessionPageContent,
   },
 };
 

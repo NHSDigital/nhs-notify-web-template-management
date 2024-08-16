@@ -2,6 +2,7 @@
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { Session } from './types';
+import { logger } from './logger';
 
 export async function createSession(session: Omit<Session, 'id'>) {
   const { data } =
@@ -15,13 +16,16 @@ export async function saveSession(session: Session) {
   return data;
 }
 
-export async function getSession(sessionId: string): Promise<Session> {
+export async function getSession(
+  sessionId: string
+): Promise<Session | undefined> {
   const { data } = await getAmplifyBackendClient().models.SessionStorage.get({
     id: sessionId,
   });
 
   if (!data) {
-    throw new Error('Could not retrieve session');
+    logger.warn(`Failed to retrieve session for ID ${sessionId}`);
+    return undefined;
   }
   return data as Session;
 }

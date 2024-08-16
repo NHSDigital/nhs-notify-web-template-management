@@ -1,17 +1,29 @@
 import { render } from '@testing-library/react';
 import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page';
 import { TemplateFormState } from '@utils/types';
+import nav from 'next/navigation';
+
+const mockSessionSupplier = {
+  mockSession: {} as unknown,
+};
 
 jest.mock('@utils/form-actions', () => ({
-  getSession: () => ({
-    id: 'session-id',
-    templateType: 'UNKNOWN',
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
-  }),
+  getSession: () =>
+    new Promise((resolve, _) => {
+      resolve(mockSessionSupplier.mockSession);
+    }),
 }));
+jest.mock('next/navigation', () => ({
+  redirect: () => {
+    throw new Error('Simulated redirect');
+  },
+  useRouter: () => {},
 
-jest.mock('next/navigation');
+  RedirectType: {
+    push: 'push',
+    replace: 'replace',
+  },
+}));
 
 jest.mock('react-dom', () => {
   const originalModule = jest.requireActual('react-dom');
@@ -28,7 +40,14 @@ jest.mock('react-dom', () => {
   };
 });
 
-test('ChooseTemplatePage', async () => {
+test('ChooseATemplateTypePage', async () => {
+  mockSessionSupplier.mockSession = {
+    id: 'session-id',
+    templateType: 'UNKNOWN',
+    nhsAppTemplateName: '',
+    nhsAppTemplateMessage: '',
+  };
+
   const page = await ChooseATemplateTypePage({
     params: {
       sessionId: 'session-id',
@@ -38,4 +57,24 @@ test('ChooseTemplatePage', async () => {
   const container = render(page);
 
   expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('ChooseATemplateTypePage - should handle invalid session', async () => {
+  mockSessionSupplier.mockSession = undefined;
+  const redirectSpy = jest.spyOn(nav, 'redirect');
+
+  let caughtError: Error | undefined;
+  try {
+    await ChooseATemplateTypePage({
+      params: {
+        sessionId: 'session-id',
+      },
+    });
+  } catch (error) {
+    caughtError = error as Error;
+  }
+
+  expect(caughtError).toBeTruthy();
+  expect(caughtError!.message).toBe('Simulated redirect');
+  expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
 });
