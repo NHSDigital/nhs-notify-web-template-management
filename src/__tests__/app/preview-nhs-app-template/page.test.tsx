@@ -63,18 +63,13 @@ test('PreviewNhsAppTemplatePage - should handle invalid session', async () => {
   mockSessionSupplier.mockSession = undefined;
   const redirectSpy = jest.spyOn(nav, 'redirect');
 
-  let caughtError: Error | undefined;
-  try {
-    await PreviewNhsAppTemplatePage({
+  await expect(
+    PreviewNhsAppTemplatePage({
       params: {
         sessionId: 'session-id',
       },
-    });
-  } catch (error) {
-    caughtError = error as Error;
-  }
+    })
+  ).rejects.toThrow('Simulated redirect');
 
-  expect(caughtError).toBeTruthy();
-  expect(caughtError!.message).toBe('Simulated redirect');
   expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
 });

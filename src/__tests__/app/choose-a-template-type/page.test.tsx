@@ -63,18 +63,26 @@ test('ChooseATemplateTypePage - should handle invalid session', async () => {
   mockSessionSupplier.mockSession = undefined;
   const redirectSpy = jest.spyOn(nav, 'redirect');
 
-  let caughtError: Error | undefined;
-  try {
-    await ChooseATemplateTypePage({
+  // let caughtError: Error | undefined;
+  // try {
+  //   await ChooseATemplateTypePage({
+  //     params: {
+  //       sessionId: 'session-id',
+  //     },
+  //   });
+  // } catch (error) {
+  //   caughtError = error as Error;
+  // }
+
+  await expect(
+    ChooseATemplateTypePage({
       params: {
         sessionId: 'session-id',
       },
-    });
-  } catch (error) {
-    caughtError = error as Error;
-  }
+    })
+  ).rejects.toThrow('Simulated redirect');
 
-  expect(caughtError).toBeTruthy();
-  expect(caughtError!.message).toBe('Simulated redirect');
+  // expect(caughtError).toBeTruthy();
+  // expect(caughtError!.message).toBe('Simulated redirect');
   expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
 });
