@@ -140,7 +140,6 @@ exports[`CreateNhsAppTemplatePage 1`] = `
             Message
           </label>
           <textarea
-            aria-labelledby="nhsAppTemplateMessage--label"
             class="nhsuk-textarea"
             id="nhsAppTemplateMessage"
             maxlength="5000"
