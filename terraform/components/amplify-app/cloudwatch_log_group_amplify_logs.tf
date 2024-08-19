@@ -22,6 +22,6 @@ data "aws_iam_policy_document" "amplify_cloudwatch_access" {
       "logs:DescribeLogStreams",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.amplify_logs.arn}/*"]
+    resources = [aws_cloudwatch_log_group.amplify_logs.arn, "${aws_cloudwatch_log_group.amplify_logs.arn}*"]
   }
 }
