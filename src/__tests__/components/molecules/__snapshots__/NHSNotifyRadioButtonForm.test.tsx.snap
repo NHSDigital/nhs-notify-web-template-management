@@ -42,6 +42,7 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
             Field error
           </span>
           <div
+            aria-describedby="radios-id--error-message"
             class="nhsuk-radios"
             id="radios-id"
           >

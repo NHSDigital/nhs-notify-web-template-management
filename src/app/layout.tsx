@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
+        <script src='/templates/lib/nhsuk-8.3.0.min.js' defer />
         <title>{content.global.mainLayout.title}</title>
         <link
           rel='shortcut icon'
@@ -59,11 +60,6 @@ export default function RootLayout({
         <meta
           name='msapplication-square310x310logo'
           content='/templates/lib/assets/favicons/largetile-310x310.png'
-        />
-        <script
-          type='text/javascript'
-          src='/templates/lib/nhsuk-8.1.1.min.js'
-          defer
         />
         <script
           type='text/javascript'
