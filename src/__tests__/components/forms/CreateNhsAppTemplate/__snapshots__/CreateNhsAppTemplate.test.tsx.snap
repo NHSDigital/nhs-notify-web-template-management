@@ -140,7 +140,6 @@ exports[`renders page 1`] = `
             Message
           </label>
           <textarea
-            aria-labelledby="nhsAppTemplateMessage--label"
             class="nhsuk-textarea"
             id="nhsAppTemplateMessage"
             maxlength="5000"
@@ -436,11 +435,15 @@ exports[`renders page one error 1`] = `
       class="nhsuk-grid-column-two-thirds"
     >
       <div
+        aria-labelledby="error-summary-title"
         class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
       >
         <h2
           class="nhsuk-error-summary__title"
           data-testid="error-summary"
+          id="error-summary-title"
         >
           There is a problem
         </h2>
@@ -545,6 +548,7 @@ exports[`renders page one error 1`] = `
               Template name error
             </span>
             <input
+              aria-describedby="nhsAppTemplateName--error-message"
               class="nhsuk-input nhsuk-input--error"
               id="nhsAppTemplateName"
               name="nhsAppTemplateName"
@@ -564,7 +568,6 @@ exports[`renders page one error 1`] = `
             Message
           </label>
           <textarea
-            aria-labelledby="nhsAppTemplateMessage--label"
             class="nhsuk-textarea"
             id="nhsAppTemplateMessage"
             maxlength="5000"
@@ -860,11 +863,15 @@ exports[`renders page with multiple errors 1`] = `
       class="nhsuk-grid-column-two-thirds"
     >
       <div
+        aria-labelledby="error-summary-title"
         class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
       >
         <h2
           class="nhsuk-error-summary__title"
           data-testid="error-summary"
+          id="error-summary-title"
         >
           There is a problem
         </h2>
@@ -971,6 +978,7 @@ exports[`renders page with multiple errors 1`] = `
               Template name error
             </span>
             <input
+              aria-describedby="nhsAppTemplateName--error-message"
               class="nhsuk-input nhsuk-input--error"
               id="nhsAppTemplateName"
               name="nhsAppTemplateName"
@@ -1001,7 +1009,7 @@ exports[`renders page with multiple errors 1`] = `
             Template message error
           </span>
           <textarea
-            aria-labelledby="nhsAppTemplateMessage--label"
+            aria-describedby="nhsAppTemplateMessage--error-message"
             class="nhsuk-textarea nhsuk-textarea--error"
             id="nhsAppTemplateMessage"
             maxlength="5000"
@@ -1386,7 +1394,6 @@ exports[`renders page with preloaded field values 1`] = `
             Message
           </label>
           <textarea
-            aria-labelledby="nhsAppTemplateMessage--label"
             class="nhsuk-textarea"
             id="nhsAppTemplateMessage"
             maxlength="5000"
