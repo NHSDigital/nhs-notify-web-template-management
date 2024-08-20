@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does nothing when there is no h1 or #maincontent 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-skip-link"
+    href="#maincontent"
+    id="skip-link"
+    tabindex="0"
+  >
+    Skip to main content
+  </a>
+  <p
+    id="not-maincontent"
+  >
+    heading
+  </p>
+</DocumentFragment>
+`;
+
+exports[`puts focus on h1 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-skip-link"
+    href="#maincontent"
+    id="skip-link"
+    tabindex="0"
+  >
+    Skip to main content
+  </a>
+  <h1
+    id="heading"
+  >
+    heading
+  </h1>
+  <p
+    id="not-maincontent"
+  >
+    other
+  </p>
+</DocumentFragment>
+`;
+
+exports[`puts focus on main content when there is no h1 1`] = `
+<DocumentFragment>
+  <a
+    class="nhsuk-skip-link"
+    href="#maincontent"
+    id="skip-link"
+    tabindex="0"
+  >
+    Skip to main content
+  </a>
+  <p
+    id="maincontent"
+  >
+    heading
+  </p>
+</DocumentFragment>
+`;
