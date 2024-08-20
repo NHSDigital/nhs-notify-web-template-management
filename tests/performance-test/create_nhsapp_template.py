@@ -14,7 +14,6 @@ class SubmitNHSAppTemplate(FastHttpUser):
     def get_credential(self):
         userName = self.environment.parsed_options.user_name
         password = self.environment.parsed_options.password
-            
         return (userName,password)
 
     def get_headers(self):
@@ -28,7 +27,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
             'Content-type': 'text/plain;charset=UTF-8'
         }
 
-    @task 
+    @task
     def landing(self):
         headers = self.get_headers()
         credentials = self.get_credential()
@@ -42,12 +41,12 @@ class SubmitNHSAppTemplate(FastHttpUser):
                     self.tasks = [self.__class__.start_now]
                 else:
                     resp.failure("response does not contain header text")
-                    self.tasks = [self.__class__.landing] 
+                    self.tasks = [self.__class__.landing]
             else:
                 print("Error in login")
                 print(resp.content)
-                self.tasks = [self.__class__.landing] 
-        
+                self.tasks = [self.__class__.landing]
+
         self.tm.end_transaction("A_NHSAPP_01_LandingPage")
 
     def start_now(self):
@@ -67,7 +66,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
             else:
                 print("Error on start now - create template")
                 print(resp.content)
-                self.tasks = [self.__class__.landing] 
+                self.tasks = [self.__class__.landing]
 
         with self.client.get(f"/templates/choose-a-template-type/{self.session_storage}", name='A_02_ChooseTemplateType', headers=headers, auth=(credentials), catch_response=True) as resp2:
             if resp2.status_code == 200:
@@ -75,11 +74,11 @@ class SubmitNHSAppTemplate(FastHttpUser):
                     resp2.success()
                 else:
                     resp2.failure("Assert failure, response does not contain header text")
-                    self.tasks = [self.__class__.landing] 
+                    self.tasks = [self.__class__.landing]
             else:
                 print("Error on start now - choose template")
                 print(resp.content)
-                self.tasks = [self.__class__.landing] 
+                self.tasks = [self.__class__.landing]
 
         with self.client.get("/templates/create-and-submit-templates?_rsc=aijwb", name='A_02_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp3:
             if resp3.status_code == 200:
@@ -88,7 +87,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                     self.tasks = [self.__class__.choose_template]
                 else:
                     resp3.failure("Assert failure, response does not contain header text")
-                    self.tasks = [self.__class__.landing]  
+                    self.tasks = [self.__class__.landing]
             else:
                 print("Error on start now2")
                 print(resp3.content)
@@ -134,7 +133,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp2.content)
                 self.tasks = [self.__class__.landing]
 
-        self.tm.end_transaction("A_NHSAPP_03_ChooseTemplate")                
+        self.tm.end_transaction("A_NHSAPP_03_ChooseTemplate")
 
     def create_template(self):
         headers = self.get_headers()
@@ -176,7 +175,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp2.content)
                 self.tasks = [self.__class__.landing]
 
-        self.tm.end_transaction("A_NHSAPP_04_CreateNHSAppTemplate") 
+        self.tm.end_transaction("A_NHSAPP_04_CreateNHSAppTemplate")
 
     def submit_template(self):
         headers = self.get_headers()
@@ -198,6 +197,5 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 logging.error(resp.content)
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
-        
+
         self.tm.end_transaction("A_NHSAPP_05_SubmitTemplate")
-        
