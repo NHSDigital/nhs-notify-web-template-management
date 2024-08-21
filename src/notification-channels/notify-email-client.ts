@@ -1,8 +1,6 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
-const client = new SESClient({
-  region: 'eu-west-2',
-});
+const client = new SESClient({ region: 'eu-west-2' });
 
 export const SendEmail = async () => {
   const input = {
@@ -34,8 +32,8 @@ export const SendEmail = async () => {
     SourceArn: '',
   };
   const command = new SendEmailCommand(input);
-  console.log('I got here');
-  return client.send(command);
+  const response = await client.send(command);
+  console.log(response);
 };
 
 /** response ==
