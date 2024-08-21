@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "amplify_ses" {
       "ses:SendEmail",
     ]
     resources = [
-      aws_ses_email_identity.test_mailbox.arn,
+      aws_ses_email_identity.test_mailbox[0].arn,
     ]
   }
 }
