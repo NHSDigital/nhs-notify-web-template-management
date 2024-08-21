@@ -1,16 +1,28 @@
 import { render } from '@testing-library/react';
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page';
 import { TemplateFormState, TemplateType } from '@utils/types';
+import nav from 'next/navigation';
 
-jest.mock('next/navigation');
+const mockSessionSupplier = {
+  mockSession: {} as unknown,
+};
 
 jest.mock('@utils/form-actions', () => ({
-  getSession: () => ({
-    id: 'session-id',
-    templateType: TemplateType.NHS_APP,
-    nhsAppTemplateName: 'template-name',
-    nhsAppTemplateMessage: 'template-message',
-  }),
+  getSession: () =>
+    new Promise((resolve, _) => {
+      resolve(mockSessionSupplier.mockSession);
+    }),
+}));
+jest.mock('next/navigation', () => ({
+  redirect: () => {
+    throw new Error('Simulated redirect');
+  },
+  useRouter: () => {},
+
+  RedirectType: {
+    push: 'push',
+    replace: 'replace',
+  },
 }));
 
 jest.mock('react-dom', () => {
@@ -29,6 +41,13 @@ jest.mock('react-dom', () => {
 });
 
 test('PreviewNhsAppTemplatePage', async () => {
+  mockSessionSupplier.mockSession = {
+    id: 'session-id',
+    templateType: TemplateType.NHS_APP,
+    nhsAppTemplateName: 'template-name',
+    nhsAppTemplateMessage: 'template-message',
+  };
+
   const page = await PreviewNhsAppTemplatePage({
     params: {
       sessionId: 'session-id',
@@ -38,4 +57,19 @@ test('PreviewNhsAppTemplatePage', async () => {
   const container = render(page);
 
   expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('PreviewNhsAppTemplatePage - should handle invalid session', async () => {
+  mockSessionSupplier.mockSession = undefined;
+  const redirectSpy = jest.spyOn(nav, 'redirect');
+
+  await expect(
+    PreviewNhsAppTemplatePage({
+      params: {
+        sessionId: 'session-id',
+      },
+    })
+  ).rejects.toThrow('Simulated redirect');
+
+  expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
 });

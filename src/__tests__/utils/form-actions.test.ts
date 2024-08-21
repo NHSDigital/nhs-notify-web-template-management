@@ -63,14 +63,14 @@ test('getSession', async () => {
   expect(response).toEqual(mockResponse);
 });
 
-test('getSession - throws error if session is not found', async () => {
+test('getSession - returns undefined if session is not found', async () => {
   mockSchema.models = {
     SessionStorage: {
       get: async () => ({ data: null }), // eslint-disable-line unicorn/no-null
     },
   };
 
-  await expect(getSession('session-id')).rejects.toThrow(
-    'Could not retrieve session'
-  );
+  const response = await getSession('session-id');
+
+  expect(response).toBeUndefined();
 });
