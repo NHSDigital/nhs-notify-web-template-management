@@ -34,10 +34,12 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           {pageHeading} {`'${templateName}'`}
         </h1>
         <WarningCallout>
-          <WarningCallout.Label>{warningCalloutLabel}</WarningCallout.Label>
+          <WarningCallout.Label headingLevel='h2'>
+            {warningCalloutLabel}
+          </WarningCallout.Label>
           <p>{warningCalloutText}</p>
         </WarningCallout>
-        <h3>{submitChecklistHeading}</h3>
+        <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
         <p>{submitChecklistIntroduction}</p>
         <ul>
           {submitChecklistItems.map((item) => (
@@ -47,7 +49,10 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
         {submitChecklistParagraphs.map((item) => (
           <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
         ))}
-        <Button href={`/templates/nhs-app-template-submitted/${sessionId}`}>
+        <Button
+          id='submit-template-button'
+          href={`/templates/nhs-app-template-submitted/${sessionId}`}
+        >
           {buttonText}
         </Button>
       </div>

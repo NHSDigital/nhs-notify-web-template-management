@@ -36,7 +36,7 @@ exports[`SubmitTemplatePage 1`] = `
       <div
         class="nhsuk-warning-callout"
       >
-        <h3
+        <h2
           class="nhsuk-warning-callout__label"
         >
           <span
@@ -49,14 +49,16 @@ exports[`SubmitTemplatePage 1`] = `
             </span>
             Important
           </span>
-        </h3>
+        </h2>
         <p>
           When you submit this template it cannot be changed. It can only be replaced by a new template.
         </p>
       </div>
-      <h3>
+      <h2
+        class="nhsuk-heading-m"
+      >
         Before you submit
-      </h3>
+      </h2>
       <p>
         You should check that your template:
       </p>
@@ -82,6 +84,7 @@ exports[`SubmitTemplatePage 1`] = `
         class="nhsuk-button"
         draggable="false"
         href="/templates/nhs-app-template-submitted/session-id"
+        id="submit-template-button"
         role="button"
       >
         Submit template

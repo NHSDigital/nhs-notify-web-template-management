@@ -13,9 +13,7 @@ jest.mock('@utils/form-actions', () => ({
         nhsAppTemplateMessage: 'template-message',
       };
     }
-
-    return undefined;
-  }
+  },
 }));
 
 jest.mock('next/navigation', () => ({
