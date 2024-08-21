@@ -21,6 +21,20 @@ data "aws_iam_policy_document" "amplify_assume_role" {
     }
   }
 }
+
+data "aws_iam_policy_document" "amplify_ses" {
+  count = var.deploy_ses_email_identity ? 1 : 0
+
+  statement {
+    effect  = "Allow"
+    actions = [
+      "ses:SendEmail",
+    ]
+    resources = [
+      aws_ses_email_identity.test_mailbox[0].arn,
+    ]
+  }
+}
 resource "aws_iam_role_policy_attachment" "amplify_standard_policy" {
   role       = aws_iam_role.amplify.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmplifyBackendDeployFullAccess"
@@ -38,18 +52,4 @@ resource "aws_iam_policy" "amplify_ses" {
 
   name   = "${local.csi}-amplify-ses"
   policy = data.aws_iam_policy_document.amplify_ses[0].json
-}
-
-data "aws_iam_policy_document" "amplify_ses" {
-  count = var.deploy_ses_email_identity ? 1 : 0
-
-  statement {
-    effect  = "Allow"
-    actions = [
-      "ses:SendEmail",
-    ]
-    resources = [
-      aws_ses_email_identity.test_mailbox[0].arn,
-    ]
-  }
 }
