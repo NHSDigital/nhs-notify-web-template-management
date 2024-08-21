@@ -14,7 +14,7 @@ export function renderMarkdown(
 const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
   {
     'nhsapp-edit': 'create-nhs-app-template',
-    'nhsapp-submit': 'submit-template',
+    'nhsapp-submit': 'submit-nhs-app-template',
   };
 
 const schema = z.object({

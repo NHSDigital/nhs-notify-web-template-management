@@ -71,7 +71,7 @@ describe('reviewNhsAppTemplateAction', () => {
 
     expect(response).toEqual({
       ...currentState,
-      redirect: '/submit-template/session-id',
+      redirect: '/submit-nhs-app-template/session-id',
     });
   });
 
