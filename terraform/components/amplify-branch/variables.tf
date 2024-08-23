@@ -42,6 +42,12 @@ variable "component" {
   default     = "amplify-branch"
 }
 
+variable "group" {
+  type        = string
+  description = "The group variables are being inherited from (often synonmous with account short-name)"
+  default = "nhs-notify-web-dev"
+}
+
 variable "branch_name" {
   type    = string
   default = "main"
