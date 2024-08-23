@@ -1,6 +1,6 @@
 module "amp_branch" {
   source                      = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/amp_branch?ref=v1.0.0"
-  name                        = replace(replace(var.branch_name, "/", "-"), "_", "-")
+  name                        = var.branch_name
   aws_account_id              = var.account_ids["notify-web-template-management"]
   component                   = var.component
   environment                 = var.environment
