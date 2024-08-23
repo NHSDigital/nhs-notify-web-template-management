@@ -25,3 +25,8 @@ resource "aws_iam_role_policy_attachment" "amplify_standard_policy" {
   role       = aws_iam_role.amplify.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmplifyBackendDeployFullAccess"
 }
+
+resource "aws_iam_role_policy_attachment" "amplify_cloudwatch_policy" {
+  role       = aws_iam_role.amplify.name
+  policy_arn = aws_iam_policy.amplify_cloudwatch_access.arn
+}
