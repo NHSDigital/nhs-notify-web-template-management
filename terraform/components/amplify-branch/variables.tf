@@ -45,7 +45,7 @@ variable "component" {
 variable "group" {
   type        = string
   description = "The group variables are being inherited from (often synonmous with account short-name)"
-  default = "nhs-notify-web-dev"
+  default     = "nhs-notify-web-dev"
 }
 
 variable "branch_name" {
