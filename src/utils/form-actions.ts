@@ -19,7 +19,7 @@ export async function saveSession(session: Session) {
     await getAmplifyBackendClient().models.SessionStorage.update(session);
   if (errors) {
     logger.error('Failed to save session', errors);
-    throw new Error('Failed to template data');
+    throw new Error('Failed to save template data');
   }
   return data;
 }
