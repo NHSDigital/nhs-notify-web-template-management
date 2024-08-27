@@ -11,4 +11,5 @@ export const getAmplifyBackendClient = () =>
   generateServerClientUsingCookies<Schema>({
     config,
     cookies,
+    authMode: 'iam',
   });
