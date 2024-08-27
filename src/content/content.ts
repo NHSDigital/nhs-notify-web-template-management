@@ -329,6 +329,26 @@ const invalidSessionPageContent = {
   },
 };
 
+export const submitNhsAppTemplateContent = {
+  backLinkText: 'Go back',
+  pageHeading: 'Submit',
+  warningCalloutLabel: 'Important',
+  warningCalloutText:
+    'When you submit this template it cannot be changed. It can only be replaced by a new template.',
+  submitChecklistHeading: 'Before you submit',
+  submitChecklistIntroduction: 'You should check that your template:',
+  submitChecklistItems: [
+    'is signed off by the relevant stakeholders in your team',
+    'does not have any spelling errors',
+    'is formatted correctly',
+  ],
+  submitChecklistParagraphs: [
+    'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
+    'If you want to change a submitted template, you must create and submit a new template to replace it.',
+  ],
+  buttonText: 'Submit template',
+};
+
 const content = {
   global: {
     mainLayout,

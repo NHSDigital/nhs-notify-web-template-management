@@ -44,6 +44,11 @@ export type PageComponentProps = {
   initialState: TemplateFormState;
 };
 
+export type SubmitTemplatePageComponentProps = {
+  templateName: string;
+  sessionId: string;
+};
+
 export enum TemplateFormatText {
   APP = 'APP',
   EMAIL = 'EMAIL',
