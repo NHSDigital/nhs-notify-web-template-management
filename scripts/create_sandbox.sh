@@ -21,7 +21,7 @@ wait_interval=1
 expected_version=1.1
 while [ $wait_seconds -le $max_wait_seconds ]; do
     amplify_outputs_version=$( jq -r ".version" amplify_outputs.json )
-    echo $amplify_outputs_version
+
     if [[ $amplify_outputs_version == $expected_version  ]]; then
         echo "Amplify outputs file created"
         exit 0
