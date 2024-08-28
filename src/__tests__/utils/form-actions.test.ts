@@ -30,7 +30,7 @@ const mockModels = {
 };
 
 const mockSchema = {
-  models: undefined as unknown,
+  models: mockModels,
 };
 
 jest.mock('@utils/amplify-utils', () => ({
@@ -40,7 +40,6 @@ jest.mock('@utils/amplify-utils', () => ({
 beforeEach(() => {
   mockResponse.errors = undefined;
   mockResponse.data = mockResponseData;
-  mockSchema.models = mockModels;
 });
 
 test('createSession', async () => {
