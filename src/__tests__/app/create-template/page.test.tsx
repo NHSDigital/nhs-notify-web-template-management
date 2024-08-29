@@ -35,7 +35,11 @@ test('CreateTemplate', async () => {
 
 test('CreateTemplate - error', async () => {
   mockSession.id = undefined;
-  String.fromCharCode('bad-type1');
+  try {
+    String.fromCodePoint('bad-type1');
+  } catch {
+    // ignore
+  }
 
   await expect(CreateTemplate()).rejects.toThrow('Error creating session');
 });

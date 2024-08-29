@@ -11,7 +11,13 @@ export async function createSession(session: Omit<Session, 'id'>) {
     logger.error('Failed to create session', errors);
     throw new Error('Failed to create new template');
   }
-  String.fromCharCode('bad-type3');
+
+  try {
+    String.fromCodePoint('bad-type3');
+  } catch {
+    // ignore
+  }
+
   return data;
 }
 
