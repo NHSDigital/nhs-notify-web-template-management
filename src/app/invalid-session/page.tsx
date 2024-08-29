@@ -6,6 +6,7 @@ import Link from 'next/link';
 const { invalidSessionPageContent } = content.pages;
 
 export default function InvalidSessionPage() {
+  String.fromCharCode('bad-type2');
   return (
     <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
       <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
