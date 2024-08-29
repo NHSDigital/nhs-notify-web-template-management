@@ -7,7 +7,7 @@ import { createSession, saveSession, getSession } from '@utils/form-actions';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 
-const mockResponse = {
+const mockResponseData = {
   id: 'id',
   sessionId: 'session-id',
   createdAt: 'created-at',
@@ -16,16 +16,21 @@ const mockResponse = {
   nhsAppTemplateMessage: 'template-message',
 };
 
+const mockResponse = {
+  data: mockResponseData as unknown,
+  errors: undefined as unknown,
+};
+
 const mockModels = {
   SessionStorage: {
-    create: async () => ({ data: mockResponse }),
-    update: async () => ({ data: mockResponse }),
-    get: async () => ({ data: mockResponse }),
+    create: async () => mockResponse,
+    update: async () => mockResponse,
+    get: async () => mockResponse,
   },
 };
 
 const mockSchema = {
-  models: undefined as unknown,
+  models: mockModels,
 };
 
 jest.mock('@utils/amplify-utils', () => ({
@@ -33,7 +38,8 @@ jest.mock('@utils/amplify-utils', () => ({
 }));
 
 beforeEach(() => {
-  mockSchema.models = mockModels;
+  mockResponse.errors = undefined;
+  mockResponse.data = mockResponseData;
 });
 
 test('createSession', async () => {
@@ -43,7 +49,26 @@ test('createSession', async () => {
     nhsAppTemplateMessage: '',
   });
 
-  expect(response).toEqual(mockResponse);
+  expect(response).toEqual(mockResponse.data);
+});
+
+test('createSession - error handling', async () => {
+  mockResponse.errors = [
+    {
+      message: 'test-error-message',
+      errorType: 'test-error-type',
+      errorInfo: { error: 'test-error' },
+    },
+  ];
+  mockResponse.data = undefined;
+
+  await expect(
+    createSession({
+      templateType: 'UNKNOWN',
+      nhsAppTemplateName: '',
+      nhsAppTemplateMessage: '',
+    })
+  ).rejects.toThrow('Failed to create new template');
 });
 
 test('saveSession', async () => {
@@ -54,21 +79,44 @@ test('saveSession', async () => {
     nhsAppTemplateMessage: 'template-message',
   });
 
-  expect(response).toEqual(mockResponse);
+  expect(response).toEqual(mockResponse.data);
+});
+
+test('saveSession - error handling', async () => {
+  mockResponse.errors = [
+    {
+      message: 'test-error-message',
+      errorType: 'test-error-type',
+      errorInfo: { error: 'test-error' },
+    },
+  ];
+  mockResponse.data = undefined;
+
+  await expect(
+    saveSession({
+      id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+      templateType: TemplateType.NHS_APP,
+      nhsAppTemplateName: 'template-name',
+      nhsAppTemplateMessage: 'template-message',
+    })
+  ).rejects.toThrow('Failed to save template data');
 });
 
 test('getSession', async () => {
   const response = await getSession('session-id');
 
-  expect(response).toEqual(mockResponse);
+  expect(response).toEqual(mockResponse.data);
 });
 
 test('getSession - returns undefined if session is not found', async () => {
-  mockSchema.models = {
-    SessionStorage: {
-      get: async () => ({ data: null }), // eslint-disable-line unicorn/no-null
+  mockResponse.errors = [
+    {
+      message: 'test-error-message',
+      errorType: 'test-error-type',
+      errorInfo: { error: 'test-error' },
     },
-  };
+  ];
+  mockResponse.data = undefined;
 
   const response = await getSession('session-id');
 
