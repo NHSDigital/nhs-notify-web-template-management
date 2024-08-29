@@ -73,9 +73,19 @@ jobs:
       - name: "Run linting"
         run: |
           make test-lint
-      - name: "Save the linting result"
+  test-typecheck:
+    name: "Typecheck"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Repo setup"
         run: |
-          echo "Nothing to save"
+          npm install
+      - name: "Run linting"
+        run: |
+          make test-typecheck
   terraform-compliance:
     name: "Terraform Compliance"
     runs-on: ubuntu-latest

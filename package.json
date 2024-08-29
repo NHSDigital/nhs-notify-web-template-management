@@ -14,7 +14,8 @@
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
     "app:stop": "pm2 kill",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
-    "destroy-sandbox": "npx ampx sandbox delete --y"
+    "destroy-sandbox": "npx ampx sandbox delete --y",
+    "typecheck": "tsc --project ./tsconfig.json"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.12",
