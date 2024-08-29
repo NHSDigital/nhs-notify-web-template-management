@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { TemplateFormState } from '@utils/types';
+import { SendEmail } from '@utils/form-actions';
 
 export function renderMarkdown(
   value: string,
@@ -23,10 +24,10 @@ const schema = z.object({
   }),
 });
 
-export function reviewNhsAppTemplateAction(
+export async function reviewNhsAppTemplateAction(
   formState: TemplateFormState,
   formData: FormData
-): TemplateFormState {
+): Promise<TemplateFormState> {
   const form = Object.fromEntries(formData.entries());
   const validationResponse = schema.safeParse(form);
 
@@ -36,6 +37,8 @@ export function reviewNhsAppTemplateAction(
       validationError: validationResponse.error.flatten(),
     };
   }
+
+  await SendEmail();
 
   const page =
     radioSelectionToPageMap[validationResponse.data.reviewNHSAppTemplateAction];

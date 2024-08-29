@@ -23,5 +23,13 @@ export async function getSession(sessionId: string): Promise<Session> {
   if (!data) {
     throw new Error('Could not retrieve session');
   }
+
   return data as Session;
+}
+
+export async function SendEmail() {
+  console.log('I am');
+  // console.log(
+  //   await getAmplifyBackendClient().queries.SendEmail({ message: 'Welcome' })
+  // );
 }

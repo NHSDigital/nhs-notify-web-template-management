@@ -1,7 +1,6 @@
 import { Radios, Fieldset, Button } from 'nhsuk-react-components';
 import { FormState } from '@utils/types';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { SendEmail } from '../../../notification-channels/notify-email-client';
 
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;
@@ -65,7 +64,6 @@ export const NHSNotifyRadioButtonForm = ({
       type='submit'
       data-testid='submit-button'
       id={`${formId}-submit-button`}
-      onClick={SendEmail}
     >
       {buttonText}
     </Button>
