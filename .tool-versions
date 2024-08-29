@@ -5,6 +5,7 @@ pre-commit 3.6.0
 nodejs 20.13.1
 gitleaks 8.15.3
 direnv 2.32.1
+terraform 1.9.2
 
 # ==============================================================================
 # The section below is reserved for Docker image versions.
