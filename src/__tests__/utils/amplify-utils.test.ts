@@ -38,5 +38,6 @@ test('getAmplifyBackendClient', () => {
   expect(generateServerClientUsingCookiesSpy).toHaveBeenCalledWith({
     config: { name: 'mockConfig' },
     cookies: cookiesSpy,
+    authMode: 'iam',
   });
 });
