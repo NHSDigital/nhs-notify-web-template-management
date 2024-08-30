@@ -1,15 +1,11 @@
 resource "aws_route53_record" "ses_dkim_validation" {
-  for_each = toset(aws_ses_domain_dkim.main.dkim_tokens)
+  count   = 3
 
   zone_id = local.acct.dns_zone["id"]
-  name    = "${each.value}._domainkey.${aws_ses_domain_dkim.main.domain}"
+  name    = "${aws_ses_domain_dkim.main.dkim_tokens[count.index]}._domainkey"
   type    = "CNAME"
   ttl     = "300"
   records = [
-    "${each.value}.dkim.amazonses.com"
-  ]
-
-  depends_on = [
-    aws_ses_domain_dkim.main
+    "${aws_ses_domain_dkim.main.dkim_tokens[count.index]}.dkim.amazonses.com"
   ]
 }
