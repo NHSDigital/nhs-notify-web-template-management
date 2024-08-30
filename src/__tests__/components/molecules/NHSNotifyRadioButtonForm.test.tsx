@@ -86,7 +86,7 @@ test('Renders NHSNotifyRadioButtonForm - renders without validation error field'
       formId='form-id'
       radiosId='radios-id'
       action='/action'
-      state={mockDeep<FormState>({ })}
+      state={mockDeep<FormState>({})}
       pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
