@@ -32,41 +32,41 @@ on:
         required: true
         type: string
 
-env:
-  AWS_REGION: eu-west-2
-
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
-
 jobs:
   environment-set-up:
     name: "Environment set up"
     runs-on: ubuntu-latest
-    environment: dev
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - name: "Repo setup"
+      - name: "Create infractructure"
         run: |
-          npm ci
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
-          aws-region: ${{ env.AWS_REGION }}
-      - name: "Create sandbox"
+          echo "Creating infractructure..."
+      - name: "Update database"
         run: |
-          ./scripts/create_sandbox.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: amplify_outputs.json
-          path: amplify_outputs.json
+          echo "Updating database..."
+      - name: "Deploy application"
+        run: |
+          echo "Deploying application..."
+  test-contract:
+    name: "Contract test"
+    runs-on: ubuntu-latest
+    needs: environment-set-up
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Run contract test"
+        run: |
+          make test-contract
+      - name: "Save result"
+        run: |
+          echo "Nothing to save"
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
+    needs: environment-set-up
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
@@ -80,6 +80,7 @@ jobs:
   test-ui:
     name: "UI test"
     runs-on: ubuntu-latest
+    needs: environment-set-up
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
@@ -90,54 +91,88 @@ jobs:
       - name: "Save result"
         run: |
           echo "Nothing to save"
-  test-accessibility:
-    name: "Accessibility test"
+  test-ui-performance:
+    name: "UI performance test"
     runs-on: ubuntu-latest
     needs: environment-set-up
-    environment: dev
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: amplify_outputs.json
+      - name: "Run UI performance test"
+        run: |
+          make test-ui-performance
+      - name: "Save result"
+        run: |
+          echo "Nothing to save"
+  test-integration:
+    name: "Integration test"
+    runs-on: ubuntu-latest
+    needs: environment-set-up
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Run integration test"
+        run: |
+          make test-integration
+      - name: "Save result"
+        run: |
+          echo "Nothing to save"
+  test-accessibility:
+    name: "Accessibility test"
+    runs-on: ubuntu-latest
+    needs: environment-set-up
+    timeout-minutes: 10
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
       - name: "Repo setup"
         run: |
           npm ci
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
-          aws-region: eu-west-2
       - name: "Run accessibility test"
-        run: make test-accessibility
+        run: |
+          make test-accessibility
+      - name: "Save result"
+        run: |
+          echo "Nothing to save"
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
         with:
           name: accessibility
           path: ".reports/accessibility"
-  environment-tear-down:
-    name: "Environment tear down"
+  test-load:
+    name: "Load test"
     runs-on: ubuntu-latest
-    needs: test-accessibility
-    environment: dev
+    needs: environment-set-up
+    timeout-minutes: 10
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: amplify_outputs.json
-      - name: "Repo setup"
+      - name: "Run load tests"
         run: |
-          npm ci
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
-          aws-region: eu-west-2
-      - name: "Destroy sandbox"
+          make test-load
+      - name: "Save result"
         run: |
-          npm run destroy-sandbox
+          echo "Nothing to save"
+  environment-tear-down:
+    name: "Environment tear down"
+    runs-on: ubuntu-latest
+    needs:
+      [
+        test-accessibility,
+        test-contract,
+        test-integration,
+        test-load,
+        test-security,
+        test-ui-performance,
+        test-ui,
+      ]
+    if: always()
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Tear down environment"
+        run: |
+          echo "Tearing down environment..."
