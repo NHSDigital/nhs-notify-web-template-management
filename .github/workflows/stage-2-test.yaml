@@ -32,6 +32,14 @@ on:
         required: true
         type: string
 
+env:
+  AWS_REGION: eu-west-2
+  TERM: xterm-256color
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
 jobs:
   test-unit:
     name: "Unit tests"
@@ -47,8 +55,11 @@ jobs:
         run: |
           make test-unit
       - name: "Save the result of fast test suite"
-        run: |
-          echo "Nothing to save"
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-tests
+          path: ".reports/unit"
+        if: always()
   test-lint:
     name: "Linting"
     runs-on: ubuntu-latest
@@ -73,12 +84,12 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-      - name: "Repo setup"
-        run: |
-          npm install
       - name: "Run test coverage check"
         run: |
           make test-coverage
+      - name: "Save the coverage check result"
+        run: |
+          echo "Nothing to save"
   perform-static-analysis:
     name: "Perform static analysis"
     needs: [test-unit]
