@@ -18,7 +18,7 @@
     "typecheck": "tsc --project ./tsconfig.json"
   },
   "dependencies": {
-    "@aws-amplify/adapter-nextjs": "^1.2.14",
+    "@aws-amplify/adapter-nextjs": "^1.2.15",
     "@aws-amplify/backend": "^1.2.0",
     "markdown-it": "^13.0.1",
     "next": "14.2.6",
