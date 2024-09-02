@@ -1,6 +1,6 @@
 resource "aws_amplify_app" "main" {
   name         = local.csi
-  repository   = "https://github.com/NHSDigital/nhs-notify-iam-webauth"
+  repository   = "https://github.com/NHSDigital/nhs-notify-web-template-management"
   access_token = data.aws_ssm_parameter.github_pat_ssm_param_name.value
 
   iam_service_role_arn = aws_iam_role.amplify.arn
