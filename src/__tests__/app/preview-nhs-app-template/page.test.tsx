@@ -13,6 +13,7 @@ jest.mock('@utils/form-actions', () => ({
       resolve(mockSessionSupplier.mockSession);
     }),
 }));
+
 jest.mock('next/navigation', () => ({
   redirect: () => {
     throw new Error('Simulated redirect');

@@ -1,6 +1,9 @@
 {
   "type": "module",
   "dependencies": {
-    "@aws-amplify/backend": "^1.2.0"
+    "@aws-amplify/backend": "^1.2.0",
+    "@aws-sdk/client-ses": "^3.637.0",
+    "aws-cdk-lib": "^2.154.1",
+    "mimetext": "^3.0.24"
   }
 }
