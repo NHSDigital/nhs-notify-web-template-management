@@ -70,7 +70,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4",
-    "wait-on": "^7.2.0"
+    "wait-on": "^8.0.0"
   },
   "overrides": {
     "pa11y-ci": {
