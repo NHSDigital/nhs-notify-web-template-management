@@ -1,5 +1,187 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other fields 1`] = `
+<DocumentFragment>
+  <form
+    action="/action"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="form-id"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          data-testid="radios-id-form__legend"
+        >
+          <h1
+            class="nhsuk-fieldset__heading"
+          >
+            Page heading
+          </h1>
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="radios-id"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-option-1--label"
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="radios-id-option-1"
+                name="radios-id"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-option-1"
+                id="radios-id-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-option-2--label"
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="radios-id-option-2"
+                name="radios-id"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-option-2"
+                id="radios-id-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="form-id-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`Renders NHSNotifyRadioButtonForm - renders without validation error field 1`] = `
+<DocumentFragment>
+  <form
+    action="/action"
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="form-id"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l"
+          data-testid="radios-id-form__legend"
+        >
+          <h1
+            class="nhsuk-fieldset__heading"
+          >
+            Page heading
+          </h1>
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="radios-id"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-option-1--label"
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="radios-id-option-1"
+                name="radios-id"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-option-1"
+                id="radios-id-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                aria-labelledby="radios-id-option-2--label"
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="radios-id-option-2"
+                name="radios-id"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="radios-id-option-2"
+                id="radios-id-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="form-id-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
 exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
 <DocumentFragment>
   <form

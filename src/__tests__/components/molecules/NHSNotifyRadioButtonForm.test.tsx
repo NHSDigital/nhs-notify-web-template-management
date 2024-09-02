@@ -53,3 +53,48 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
 
   expect(container.asFragment()).toMatchSnapshot();
 });
+
+test('Renders NHSNotifyRadioButtonForm - handles validation errors for other fields', () => {
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={mockDeep<FormState>({
+        validationError: {
+          fieldErrors: {
+            'radios-id-2': ['Field error'],
+          },
+          formErrors: ['Form error'],
+        },
+      })}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        { id: 'option-2', text: 'option 2' },
+      ]}
+      buttonText='Continue'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm - renders without validation error field', () => {
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={mockDeep<FormState>({})}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        { id: 'option-2', text: 'option 2' },
+      ]}
+      buttonText='Continue'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
