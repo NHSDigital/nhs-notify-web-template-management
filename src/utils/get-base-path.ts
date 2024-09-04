@@ -1,1 +1,2 @@
-export const getBasePath = () => process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
+export const getBasePath = () =>
+  process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
