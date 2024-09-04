@@ -42,9 +42,7 @@
       "error",
       {
         "case": "kebabCase",
-        "ignore": [
-          ".tsx"
-        ]
+        "ignore": [".tsx"]
       }
     ],
     "react/react-in-jsx-scope": "off",
@@ -68,7 +66,10 @@
     "sonarjs/no-duplicate-string": "off",
     "react/no-danger": "off",
     "no-param-reassign": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
+    "sonarjs/no-small-switch": "off"
   },
   "overrides": [
     {

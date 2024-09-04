@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/amplify_outputs.json": ["./amplify_outputs.json"],
+      "amplify/*": ["./amplify/*"],
       "@atoms/*": ["./src/components/atoms/*"],
       "@app/*": ["./src/app/*"],
       "@content/*": ["./src/content/*"],
