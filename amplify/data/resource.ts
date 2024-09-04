@@ -8,7 +8,7 @@ const SessionStorageModel = {
   templateType: a.enum([...templateTypes, 'UNKNOWN']),
   nhsAppTemplateName: a.string().required(),
   nhsAppTemplateMessage: a.string().required(),
-  ttl: a.integer().required(),
+  ttl: a.integer(),
 };
 
 const TemplateStorageModel = {
