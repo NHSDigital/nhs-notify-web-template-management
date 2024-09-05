@@ -34,7 +34,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.start_transaction("A_NHSAPP_01_LandingPage")
 
-        with self.client.get("/templates/create-and-submit-templates", name='A_01_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.get("/create-and-submit-templates", name='A_01_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
                 if 'Create and submit a template to NHS Notify' in resp.text:
                     resp.success()
@@ -55,7 +55,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.start_transaction("A_NHSAPP_02_StartNow")
 
-        with self.client.get("/templates/create-template", name='A_02_CreateTemplate', allow_redirects=False, headers=headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.get("/create-template", name='A_02_CreateTemplate', allow_redirects=False, headers=headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 307:
                 resp.success()
                 try:
@@ -68,7 +68,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
 
-        with self.client.get(f"/templates/choose-a-template-type/{self.session_storage}", name='A_02_ChooseTemplateType', headers=headers, auth=(credentials), catch_response=True) as resp2:
+        with self.client.get(f"/choose-a-template-type/{self.session_storage}", name='A_02_ChooseTemplateType', headers=headers, auth=(credentials), catch_response=True) as resp2:
             if resp2.status_code == 200:
                 if 'Choose a template type to create' in resp2.text:
                     resp2.success()
@@ -80,7 +80,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
 
-        with self.client.get("/templates/create-and-submit-templates?_rsc=aijwb", name='A_02_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp3:
+        with self.client.get("/create-and-submit-templates?_rsc=aijwb", name='A_02_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp3:
             if resp3.status_code == 200:
                 if 'create-and-submit-templates' in resp3.text:
                     resp3.success()
@@ -106,7 +106,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.start_transaction("A_NHSAPP_03_ChooseTemplate")
 
-        with self.client.post(f"/templates/choose-a-template-type/{self.session_storage}", name='A_03_ChooseTemplateType', data=body, headers=choose_template_headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.post(f"/choose-a-template-type/{self.session_storage}", name='A_03_ChooseTemplateType', data=body, headers=choose_template_headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
                 if 'choose-a-template-type' in resp.text:
                     resp.success()
@@ -119,7 +119,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
 
-        with self.client.get(f"/templates/create-nhs-app-template/{self.session_storage}?_rsc=1pr28", name='A_03_NHSappTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
+        with self.client.get(f"/create-nhs-app-template/{self.session_storage}?_rsc=1pr28", name='A_03_NHSappTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
             if resp2.status_code == 200:
                 if 'create-nhs-app-template' in resp2.text:
                     resp2.success()
@@ -146,7 +146,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.start_transaction("A_NHSAPP_04_CreateNHSAppTemplate")
 
-        with self.client.post(f"/templates/create-nhs-app-template/{self.session_storage}", name='A_04_CreateNHSAppTemplate', data=body, headers=create_template_headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.post(f"/create-nhs-app-template/{self.session_storage}", name='A_04_CreateNHSAppTemplate', data=body, headers=create_template_headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
                 if 'create-nhs-app-template' in resp.text:
                     resp.success()
@@ -160,7 +160,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
 
-        with self.client.get(f"/templates/preview-nhs-app-template/{self.session_storage}?_rsc=1s4ge", name='A_04_PreviewNHSAppTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
+        with self.client.get(f"/preview-nhs-app-template/{self.session_storage}?_rsc=1s4ge", name='A_04_PreviewNHSAppTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
             if resp2.status_code == 200:
                 if 'preview-nhs-app-template' in resp2.text:
                     resp2.success()
@@ -183,7 +183,7 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.start_transaction("A_NHSAPP_05_SubmitTemplate")
 
-        with self.client.get(f"/templates/submit-template/{self.session_storage}", name='A_05_SubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.get(f"/submit-template/{self.session_storage}", name='A_05_SubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
                 if 'Placeholder Submit template' in resp.text:
                     resp.success()

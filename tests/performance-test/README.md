@@ -4,11 +4,12 @@ Run via locust
 
 You may compose a locust command with poetry directly:
 
-`poetry run locust -H 'https://main.d1ie8muegpw33w.amplifyapp.com'`
+`poetry run locust -H <BASEURL>`
 
-However this is already available in the :
+However this is already available in the "run.sh" file. You can use below command to trigger a performance test:
 
-`./run.sh`
+`./run.sh <BASEURL>`
+e.g.  `./run.sh 'https://main.d1ie8muegpw33w.amplifyapp.com/templates'`
 
 This script will start a performance test in conosle.
 
