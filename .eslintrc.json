@@ -77,6 +77,12 @@
         "unicorn/prefer-module": "off",
         "global-require": "off"
       }
+    },
+    {
+      "files": ["*.test.ts"],
+      "rules": {
+        "unicorn/no-useless-undefined": "off"
+      }
     }
   ]
 }
