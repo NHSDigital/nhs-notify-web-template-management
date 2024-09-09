@@ -3,15 +3,15 @@ import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { logger } from '../../../src/utils/logger';
 import type { Schema } from '../../data/resource';
 
-const client = new SESClient({ region: 'eu-west-2' });
-
 const config = () => ({
-  senderEmail: `template-created@${process.env.NOTIFY_DOMAIN_NAME}`,
+  senderEmail: `no-reply@${process.env.NOTIFY_DOMAIN_NAME}`,
 });
 
 export const handler: Schema['sendEmail']['functionHandler'] = async (
   event
 ) => {
+  const client = new SESClient({ region: 'eu-west-2' });
+
   const { senderEmail } = config();
   const { recipientEmail, templateId, templateName, templateMessage } =
     event.arguments;

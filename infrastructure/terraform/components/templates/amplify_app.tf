@@ -30,5 +30,6 @@ resource "aws_amplify_app" "main" {
     NOTIFY_GROUP        = var.group
     NOTIFY_ENVIRONMENT  = var.environment
     NOTIFY_DOMAIN_NAME  = local.root_domain_name
+    AWS_ACCOUNT_ID      = var.aws_account_id
   }
 }
