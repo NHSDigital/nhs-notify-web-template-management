@@ -49,8 +49,10 @@ test('sends email', async () => {
 
   const rawMimeMessage = sesCallInput.RawMessage?.Data?.toString();
 
-  const messageId = rawMimeMessage?.match(/Message-ID: <([a-zA-z0-9]+)@undefined>/)?.[1];
-  const messageBoundary = rawMimeMessage?.match(/boundary=([a-zA-z0-9]+)/)?.[1];
+  const messageId = rawMimeMessage?.match(
+    /Message-ID: <([\dA-z]+)@undefined>/
+  )?.[1];
+  const messageBoundary = rawMimeMessage?.match(/boundary=([\dA-z]+)/)?.[1];
 
   const expectedMessage = `Date: Sat, 01 Jan 2022 10:00:00 +0000
 From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@undefined>
@@ -78,13 +80,14 @@ dGVtcGxhdGUtbWVzc2FnZQ==
 });
 
 test('sends email with error', async () => {
-    const mockSESClient = mockDeep<SESClient>({
-      send: jest.fn().mockReturnValue({}),
-    });
+  const mockSESClient = mockDeep<SESClient>({
+    send: jest.fn().mockReturnValue({}),
+  });
 
-    jest.mocked(SESClient).mockImplementation(() => mockSESClient);
+  jest.mocked(SESClient).mockImplementation(() => mockSESClient);
 
-    expect(handler(
+  await expect(
+    handler(
       mockDeep<HandlerEventType>({
         arguments: {
           recipientEmail: 'recipient-email',
@@ -95,5 +98,6 @@ test('sends email with error', async () => {
       }),
       mockDeep<HandlerContextType>(),
       mockDeep<HandlerCallbackType>()
-    )).rejects.toThrow('Error sending email');
+    )
+  ).rejects.toThrow('Error sending email');
 });
