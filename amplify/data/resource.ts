@@ -17,7 +17,6 @@ const TemplateStorageModel = {
   fields: a.customType({
     body: a.string().required(),
   }),
-  peter: a.string(),
 };
 
 const schema = a.schema({
