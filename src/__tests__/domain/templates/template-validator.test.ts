@@ -8,7 +8,7 @@ describe('validateTemplate', () => {
 
   it('should throw error when validation fails', () => {
     const templateDTO: Template = {
-      fields: { body: undefined as unknown as string },
+      fields: { content: undefined as unknown as string },
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
@@ -21,7 +21,7 @@ describe('validateTemplate', () => {
 
   it('should throw error trying to validate against the wrong schema', () => {
     const templateDTO: Template = {
-      fields: { body: 'body' },
+      fields: { content: 'body' },
       name: 'name',
       type: TemplateType.EMAIL,
       version: 1,
@@ -37,7 +37,7 @@ describe('validateTemplate', () => {
       .mockReturnValueOnce({} as z.SafeParseReturnType<unknown, never>);
 
     const templateDTO: Template = {
-      fields: { body: 'body' },
+      fields: { content: 'body' },
       name: 'name',
       type: TemplateType.EMAIL,
       version: 1,
@@ -52,7 +52,7 @@ describe('validateTemplate', () => {
 
   it('should return data when validation passes', () => {
     const templateDTO: Template = {
-      fields: { body: 'body' },
+      fields: { content: 'body' },
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,

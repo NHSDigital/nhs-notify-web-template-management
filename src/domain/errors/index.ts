@@ -1,2 +1,2 @@
 export * from './db-operation.error';
-export * from './validation.error';
+export * from './invalid-data.error';

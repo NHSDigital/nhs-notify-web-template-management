@@ -5,7 +5,7 @@ const nhsTemplateFactory = (session: Session): NHSAppTemplate => ({
   name: session.nhsAppTemplateName,
   type: 'NHS_APP',
   version: 1,
-  fields: { body: session.nhsAppTemplateMessage },
+  fields: { content: session.nhsAppTemplateMessage },
 });
 
 const factoryMap: Record<TemplateType, (session: Session) => Template> = {

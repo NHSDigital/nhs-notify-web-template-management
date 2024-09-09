@@ -1,9 +1,9 @@
 import { CodedError } from './coded.error';
 
-export class ValidationError extends CodedError {
+export class InvalidDataError extends CodedError {
   constructor({ message, cause }: { message: string; cause?: unknown }) {
-    super(message, 'VALIDATION_FAILED');
+    super(message, 'INVALID_DATA');
     this.cause = cause;
-    this.name = 'ValidationError';
+    this.name = 'InvalidDataError';
   }
 }

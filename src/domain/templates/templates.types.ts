@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const baseFields = z.object({
-  body: z.string(),
+  content: z.string(),
 });
 
 export const $Template = z.object({

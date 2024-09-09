@@ -15,7 +15,7 @@ describe('templateFromSessionMapper', () => {
       name: 'name',
       type: 'NHS_APP',
       version: 1,
-      fields: { body: 'message' },
+      fields: { content: 'message' },
     });
   });
 

@@ -139,7 +139,7 @@ test('getSession - returns undefined if session is not found', async () => {
 
 test('saveTemplate - throws error when failing to save', async () => {
   const template: Template = {
-    fields: { body: 'body' },
+    fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
@@ -154,7 +154,7 @@ test('saveTemplate - throws error when failing to save', async () => {
 
 test('saveTemplate - no errors but no data', async () => {
   const template: Template = {
-    fields: { body: 'body' },
+    fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
@@ -170,7 +170,7 @@ test('saveTemplate - no errors but no data', async () => {
 
 test('saveTemplate - should return saved data', async () => {
   const template: Template = {
-    fields: { body: 'body' },
+    fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,

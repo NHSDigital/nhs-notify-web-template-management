@@ -11,7 +11,7 @@ export async function submitTemplate(formData: FormData) {
   const session = await getSession(sessionId);
 
   if (!session) {
-    return redirect('/invalid-session', RedirectType.replace);
+    return redirect('/invalid-session', RedirectType.push);
   }
 
   try {
@@ -37,7 +37,7 @@ export async function submitTemplate(formData: FormData) {
 
     return redirect(
       `/nhs-app-template-submitted/${templateEntity.id}`,
-      RedirectType.replace
+      RedirectType.push
     );
   } catch (error) {
     logger.error('Failed to submit template', {
@@ -45,7 +45,6 @@ export async function submitTemplate(formData: FormData) {
       sessionId,
     });
 
-    // TODO: We need an internal server error page
     throw error;
   }
 }

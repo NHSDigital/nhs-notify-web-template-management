@@ -29,7 +29,7 @@ describe('submitTemplate', () => {
 
     await submitTemplate(formData);
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'push');
   });
 
   it('should throw an error when session template type is UNKNOWN', async () => {
@@ -84,7 +84,7 @@ describe('submitTemplate', () => {
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
-      fields: { body: 'body' },
+      fields: { content: 'body' },
     });
 
     validateTemplateMock.mockImplementationOnce(() => {
@@ -117,7 +117,7 @@ describe('submitTemplate', () => {
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
-      fields: { body: 'body' },
+      fields: { content: 'body' },
     };
 
     getSessionMock.mockResolvedValueOnce(session);
@@ -161,7 +161,7 @@ describe('submitTemplate', () => {
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
-      fields: { body: 'body' },
+      fields: { content: 'body' },
     };
 
     const templateEntity = {
@@ -169,7 +169,7 @@ describe('submitTemplate', () => {
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
-      fields: { body: 'body' },
+      fields: { content: 'body' },
       createdAt: 'yesterday',
       updatedAt: 'today',
     };
@@ -202,7 +202,7 @@ describe('submitTemplate', () => {
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/nhs-app-template-submitted/templateId-1',
-      'replace'
+      'push'
     );
   });
 });

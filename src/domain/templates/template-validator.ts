@@ -1,5 +1,5 @@
 import { TemplateType } from '@utils/types';
-import { ValidationError } from '@domain/errors';
+import { InvalidDataError } from '@domain/errors';
 import { z } from 'zod';
 import { $NHSAppTemplateSchema, Template } from './templates.types';
 
@@ -19,14 +19,14 @@ export function validateTemplate<TDestination extends Template>(
   const { data, error } = templateSchema.safeParse(source);
 
   if (error) {
-    throw new ValidationError({
+    throw new InvalidDataError({
       message: `${type} template is invalid`,
       cause: error.flatten(),
     });
   }
 
   if (!data) {
-    throw new ValidationError({
+    throw new InvalidDataError({
       message: `Mapped source fields onto ${type} template but ${type} template returned falsy with no errors`,
       cause: {
         message: `Source fields attempting to be mapped onto ${type} template`,
