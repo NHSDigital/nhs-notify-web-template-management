@@ -1,10 +1,10 @@
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { TemplateStorage } from 'amplify/data/models/template-storage.model';
+import { NHSAppTemplate, Template } from '@domain/templates';
+import { DbOperationError } from '@domain/errors';
 import { Session } from './types';
 import { logger } from './logger';
-import { Template, TemplateFields } from '../domain/templates/template';
 
 export async function createSession(session: Omit<Session, 'id'>) {
   const { data, errors } =
@@ -44,15 +44,32 @@ export async function getSession(
   return data as Session;
 }
 
-export async function saveTemplate<TFields extends TemplateFields>(
-  template: Template<TFields>
-) {
+export async function saveTemplate(template: Omit<Template, 'id'>) {
   const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.create(template);
+    await getAmplifyBackendClient().models.TemplateStorage.create({
+      ...template,
+    });
 
-  return {
-    // TODO: I'd much rather being able todo this using satisfies rather than as...
-    data: data as TemplateStorage<TFields>,
-    errors,
-  };
+  if (errors) {
+    throw new DbOperationError({
+      message: `Failed saving ${template.type} template`,
+      operation: 'create',
+      cause: errors,
+    });
+  }
+
+  if (!data) {
+    throw new DbOperationError({
+      message: `${template.type} template entity in unknown state. No errors reported but entity returned as falsy`,
+      operation: 'create',
+      cause: [
+        {
+          message: 'Fields attempting to be saved',
+          data: template, // TODO: is this okay to be logged out? There shouldn't be any PID in the template?
+        },
+      ],
+    });
+  }
+
+  return data;
 }

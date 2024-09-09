@@ -3,7 +3,13 @@
  */
 
 import { TemplateType } from '@utils/types';
-import { createSession, saveSession, getSession } from '@utils/form-actions';
+import {
+  createSession,
+  saveSession,
+  getSession,
+  saveTemplate,
+} from '@utils/form-actions';
+import { Template } from '@domain/templates';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 
@@ -21,11 +27,19 @@ const mockResponse = {
   errors: undefined as unknown,
 };
 
+const mockTemplateResponse = {
+  data: {} as unknown,
+  errors: undefined as unknown,
+};
+
 const mockModels = {
   SessionStorage: {
     create: async () => mockResponse,
     update: async () => mockResponse,
     get: async () => mockResponse,
+  },
+  TemplateStorage: {
+    create: async () => mockTemplateResponse,
   },
 };
 
@@ -121,4 +135,55 @@ test('getSession - returns undefined if session is not found', async () => {
   const response = await getSession('session-id');
 
   expect(response).toBeUndefined();
+});
+
+test('saveTemplate - throws error when failing to save', async () => {
+  const template: Template = {
+    fields: { body: 'body' },
+    name: 'name',
+    type: TemplateType.NHS_APP,
+    version: 1,
+  };
+
+  mockTemplateResponse.errors = ['something went wrong'];
+
+  await expect(saveTemplate(template)).rejects.toThrow(
+    'Failed saving NHS_APP template'
+  );
+});
+
+test('saveTemplate - no errors but no data', async () => {
+  const template: Template = {
+    fields: { body: 'body' },
+    name: 'name',
+    type: TemplateType.NHS_APP,
+    version: 1,
+  };
+
+  mockTemplateResponse.data = undefined as unknown as Template;
+
+  await expect(saveTemplate(template)).rejects.toThrow(
+    'NHS_APP template entity in unknown state. No errors reported but entity returned as falsy'
+  );
+});
+
+test('saveTemplate - should return saved data', async () => {
+  const template: Template = {
+    fields: { body: 'body' },
+    name: 'name',
+    type: TemplateType.NHS_APP,
+    version: 1,
+  };
+
+  const expected = {
+    ...template,
+    id: 'randomUUID',
+    createdAt: 'yesterday',
+    updatedAt: 'today',
+  };
+
+  mockTemplateResponse.data = expected;
+
+  const entity = await saveTemplate(template);
+  expect(entity).toEqual(expected);
 });

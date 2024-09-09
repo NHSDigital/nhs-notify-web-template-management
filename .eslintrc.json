@@ -68,8 +68,7 @@
     "no-param-reassign": "off",
     "react/require-default-props": "off",
     "no-useless-constructor": "off",
-    "no-empty-function": "off",
-    "sonarjs/no-small-switch": "off"
+    "@typescript-eslint/switch-exhaustiveness-check": "error"
   },
   "overrides": [
     {

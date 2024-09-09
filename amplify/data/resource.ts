@@ -1,11 +1,23 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
-import { TemplateStorageModel } from './models/template-storage.model';
+
+const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
 
 const SessionStorageModel = {
   id: a.string().required(),
-  templateType: a.enum(['NHS_APP', 'SMS', 'EMAIL', 'LETTER', 'UNKNOWN']),
+  templateType: a.enum([...templateTypes, 'UNKNOWN']),
   nhsAppTemplateName: a.string().required(),
   nhsAppTemplateMessage: a.string().required(),
+};
+
+const TemplateStorageModel = {
+  id: a.string().required(),
+  name: a.string().required(),
+  type: a.enum(templateTypes),
+  version: a.integer().required(),
+  fields: a.customType({
+    body: a.string().required(),
+  }),
+  peter: a.string(),
 };
 
 const schema = a.schema({

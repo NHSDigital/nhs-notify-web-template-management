@@ -2,9 +2,8 @@
 
 import { getSession, saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { DbOperationException } from '../../../domain/errors/db-operation.exception';
-import { ValidationException } from '../../../domain/errors/validation.exception';
-import { templateFactory } from '../../../infra/template-factory';
+import { templateFromSessionMapper, validateTemplate } from '@domain/templates';
+import { logger } from '@utils/logger';
 
 export async function submitTemplate(formData: FormData) {
   const sessionId = String(formData.get('sessionId'));
@@ -15,37 +14,38 @@ export async function submitTemplate(formData: FormData) {
     redirect('/invalid-session', RedirectType.replace);
   }
 
-  // TODO: I'm not a huge fan of this TBH
-  const template = templateFactory(session);
+  try {
+    if (session.templateType === 'UNKNOWN') {
+      throw new Error('Unknown template type');
+    }
 
-  const result = template.validate();
+    const templateDTO = templateFromSessionMapper(
+      session.templateType,
+      session
+    );
 
-  if (!result.valid) {
-    console.log(result);
-    // TODO: I think these exceptions are badly constructed
-    throw new ValidationException({
-      message: `${template.type} template is invalid`,
+    const validatedTemplate = validateTemplate(
+      session.templateType,
+      templateDTO
+    );
+
+    const templateEntity = await saveTemplate(validatedTemplate);
+
+    // TODO: send email
+
+    // TODO: delete session
+
+    return redirect(
+      `/nhs-app-template-submitted/${templateEntity.id}`,
+      RedirectType.replace
+    );
+  } catch (error) {
+    logger.error('Failed to submit template', {
+      error,
       sessionId,
-      cause: result.errors,
     });
+
+    // TODO: We need an internal server error page
+    throw error;
   }
-
-  const { data, errors } = await saveTemplate(template);
-
-  // TODO: Why do I need to check both sides...
-  if (errors || !data) {
-    // TODO: I think these exceptions are badly constructed
-    throw new DbOperationException({
-      message: `Failed to saving ${template.type} template`,
-      sessionId,
-      cause: errors,
-    });
-  }
-
-  // TODO: send email
-
-  return redirect(
-    `/nhs-app-template-submitted/${data.id}`,
-    RedirectType.replace
-  );
 }

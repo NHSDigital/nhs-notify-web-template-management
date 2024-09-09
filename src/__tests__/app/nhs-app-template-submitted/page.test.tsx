@@ -1,4 +1,4 @@
-import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[sessionId]/page';
+import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
 import { render } from '@testing-library/react';
 
 test('NhsAppTemplateSubmittedPage', async () => {
