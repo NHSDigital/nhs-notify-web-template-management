@@ -86,6 +86,12 @@ exports[`SubmitTemplatePage 1`] = `
           type="hidden"
           value="submit-template-form"
         />
+        <input
+          name="sessionId"
+          readonly=""
+          type="hidden"
+          value="session-id"
+        />
         <button
           aria-disabled="false"
           class="nhsuk-button"

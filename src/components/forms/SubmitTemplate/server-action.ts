@@ -11,7 +11,7 @@ export async function submitTemplate(formData: FormData) {
   const session = await getSession(sessionId);
 
   if (!session) {
-    redirect('/invalid-session', RedirectType.replace);
+    return redirect('/invalid-session', RedirectType.replace);
   }
 
   try {

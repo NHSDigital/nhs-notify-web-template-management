@@ -1,7 +1,7 @@
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { NHSAppTemplate, Template } from '@domain/templates';
+import { Template } from '@domain/templates';
 import { DbOperationError } from '@domain/errors';
 import { Session } from './types';
 import { logger } from './logger';
@@ -65,7 +65,7 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
       cause: [
         {
           message: 'Fields attempting to be saved',
-          data: template, // TODO: is this okay to be logged out? There shouldn't be any PID in the template?
+          data: template,
         },
       ],
     });

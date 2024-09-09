@@ -67,8 +67,7 @@
     "react/no-danger": "off",
     "no-param-reassign": "off",
     "react/require-default-props": "off",
-    "no-useless-constructor": "off",
-    "@typescript-eslint/switch-exhaustiveness-check": "error"
+    "no-useless-constructor": "off"
   },
   "overrides": [
     {

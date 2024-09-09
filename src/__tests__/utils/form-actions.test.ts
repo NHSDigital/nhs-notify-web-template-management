@@ -160,6 +160,7 @@ test('saveTemplate - no errors but no data', async () => {
     version: 1,
   };
 
+  mockTemplateResponse.errors = undefined;
   mockTemplateResponse.data = undefined as unknown as Template;
 
   await expect(saveTemplate(template)).rejects.toThrow(
