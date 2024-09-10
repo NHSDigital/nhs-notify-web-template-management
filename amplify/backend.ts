@@ -16,7 +16,7 @@ const attachPolicy = new PolicyStatement({
   sid: 'AmplifySendEmail',
   effect: Effect.ALLOW,
   actions: ['ses:SendRawEmail'],
-  resources: [`arn:aws:ses:eu-west-2:${process.env.AWS_ACCOUNT_ID}:identity/*`],
+  resources: [`arn:aws:ses:eu-west-2:${process.env.ACCOUNT_ID}:identity/*`],
 });
 
 sendEmailLambda.addToRolePolicy(attachPolicy);
