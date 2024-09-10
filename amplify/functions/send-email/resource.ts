@@ -5,5 +5,6 @@ export const sendEmail = defineFunction({
   entry: './handler.ts',
   environment: {
     NOTIFY_DOMAIN_NAME: process.env.NOTIFY_DOMAIN_NAME ?? 'no-domain',
+    ACCOUNT_ID: process.env.ACCOUNT_ID ?? 'no-account-id',
   },
 });
