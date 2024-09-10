@@ -19,17 +19,20 @@ describe('validateTemplate', () => {
     );
   });
 
-  it('should throw error trying to validate against the wrong schema', () => {
-    const templateDTO: Template = {
-      fields: { content: 'body' },
-      name: 'name',
-      type: TemplateType.EMAIL,
-      version: 1,
-    };
-    expect(() => validateTemplate(templateDTO)).toThrow(
-      'Failed to validate template'
-    );
-  });
+  test.each([TemplateType.EMAIL, TemplateType.SMS, TemplateType.LETTER])(
+    'should throw error trying to validate against %s schema ',
+    (type) => {
+      const templateDTO: Template = {
+        fields: { content: 'body' },
+        name: 'name',
+        type,
+        version: 1,
+      };
+      expect(() => validateTemplate(templateDTO)).toThrow(
+        'Failed to validate template'
+      );
+    }
+  );
 
   it('should return data when validation passes', () => {
     const templateDTO: Template = {
