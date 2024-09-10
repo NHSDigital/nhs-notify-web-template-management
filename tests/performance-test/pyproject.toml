@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "performance-test"
+version = "0.1.0"
+description = "locust performance test for WebUI"
+authors = ["NHS"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+locust = "^2.20.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
