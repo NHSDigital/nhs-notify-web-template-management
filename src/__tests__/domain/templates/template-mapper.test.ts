@@ -1,7 +1,7 @@
-import { templateFromSessionMapper } from '@domain/templates';
+import { createTemplateFromSession } from '@domain/templates';
 import { Session, TemplateType } from '@utils/types';
 
-describe('templateFromSessionMapper', () => {
+describe('createTemplateFromSession', () => {
   it('should map session to template', () => {
     const session: Session = {
       nhsAppTemplateMessage: 'message',
@@ -10,7 +10,7 @@ describe('templateFromSessionMapper', () => {
       templateType: TemplateType.NHS_APP,
     };
 
-    const template = templateFromSessionMapper(TemplateType.NHS_APP, session);
+    const template = createTemplateFromSession(session);
     expect(template).toEqual({
       name: 'name',
       type: 'NHS_APP',
@@ -19,16 +19,26 @@ describe('templateFromSessionMapper', () => {
     });
   });
 
+  it('should throw error when templateType is unknown', () => {
+    const session: Session = {
+      nhsAppTemplateMessage: 'message',
+      nhsAppTemplateName: 'name',
+      id: '',
+      templateType: 'UNKNOWN' as TemplateType,
+    };
+    expect(() => createTemplateFromSession(session)).toThrow();
+  });
+
   test.each([TemplateType.EMAIL, TemplateType.SMS, TemplateType.LETTER])(
-    'should throw not error',
+    'should throw error when templateType is is %s',
     (type) => {
       const session: Session = {
         nhsAppTemplateMessage: 'message',
         nhsAppTemplateName: 'name',
         id: '',
-        templateType: TemplateType.NHS_APP,
+        templateType: type,
       };
-      expect(() => templateFromSessionMapper(type, session)).toThrow();
+      expect(() => createTemplateFromSession(session)).toThrow();
     }
   );
 });

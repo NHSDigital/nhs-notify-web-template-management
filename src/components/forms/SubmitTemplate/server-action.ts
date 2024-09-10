@@ -1,8 +1,8 @@
 'use server';
 
-import { getSession, saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { templateFromSessionMapper, validateTemplate } from '@domain/templates';
+import { getSession, saveTemplate } from '@utils/form-actions';
+import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
 
 export async function submitTemplate(formData: FormData) {
@@ -15,19 +15,9 @@ export async function submitTemplate(formData: FormData) {
   }
 
   try {
-    if (session.templateType === 'UNKNOWN') {
-      throw new Error('Unknown template type');
-    }
+    const templateDTO = createTemplateFromSession(session);
 
-    const templateDTO = templateFromSessionMapper(
-      session.templateType,
-      session
-    );
-
-    const validatedTemplate = validateTemplate(
-      session.templateType,
-      templateDTO
-    );
+    const validatedTemplate = validateTemplate(templateDTO);
 
     const templateEntity = await saveTemplate(validatedTemplate);
 

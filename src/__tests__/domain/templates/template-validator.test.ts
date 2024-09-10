@@ -1,6 +1,6 @@
 import { Template, validateTemplate } from '@domain/templates';
 import { TemplateType } from '@utils/types';
-import { $NHSAppTemplateSchema } from '@domain/templates/templates.types';
+import { $TemplateSchema } from '@domain/templates/templates.types';
 import { z } from 'zod';
 
 describe('validateTemplate', () => {
@@ -14,8 +14,8 @@ describe('validateTemplate', () => {
       version: 1,
     };
 
-    expect(() => validateTemplate(TemplateType.NHS_APP, templateDTO)).toThrow(
-      'NHS_APP template is invalid'
+    expect(() => validateTemplate(templateDTO)).toThrow(
+      'Failed to validate template'
     );
   });
 
@@ -26,28 +26,9 @@ describe('validateTemplate', () => {
       type: TemplateType.EMAIL,
       version: 1,
     };
-    expect(() => validateTemplate(TemplateType.NHS_APP, templateDTO)).toThrow(
-      'NHS_APP template is invalid'
+    expect(() => validateTemplate(templateDTO)).toThrow(
+      'Failed to validate template'
     );
-  });
-
-  it('should throw error when validation passes but no data is returned', () => {
-    const spy = jest
-      .spyOn($NHSAppTemplateSchema, 'safeParse')
-      .mockReturnValueOnce({} as z.SafeParseReturnType<unknown, never>);
-
-    const templateDTO: Template = {
-      fields: { content: 'body' },
-      name: 'name',
-      type: TemplateType.EMAIL,
-      version: 1,
-    };
-
-    expect(() => validateTemplate(TemplateType.NHS_APP, templateDTO)).toThrow(
-      'Mapped source fields onto NHS_APP template but NHS_APP template returned falsy with no errors'
-    );
-
-    spy.mockRestore();
   });
 
   it('should return data when validation passes', () => {
@@ -58,10 +39,7 @@ describe('validateTemplate', () => {
       version: 1,
     };
 
-    const validatedTemplate = validateTemplate(
-      TemplateType.NHS_APP,
-      templateDTO
-    );
+    const validatedTemplate = validateTemplate(templateDTO);
 
     expect(validatedTemplate).toEqual(templateDTO);
   });

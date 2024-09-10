@@ -3,7 +3,7 @@ import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getSession, saveTemplate } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
-import { templateFromSessionMapper, validateTemplate } from '@domain/templates';
+import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -16,7 +16,7 @@ jest.mock('@utils/amplify-utils', () => ({
 const redirectMock = jest.mocked(redirect);
 const getSessionMock = jest.mocked(getSession);
 const saveTemplateMock = jest.mocked(saveTemplate);
-const templateFromSessionMapperMock = jest.mocked(templateFromSessionMapper);
+const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
 
 describe('submitTemplate', () => {
@@ -32,23 +32,6 @@ describe('submitTemplate', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'push');
   });
 
-  it('should throw an error when session template type is UNKNOWN', async () => {
-    getSessionMock.mockResolvedValueOnce({
-      templateType: 'UNKNOWN',
-      nhsAppTemplateMessage: '',
-      nhsAppTemplateName: '',
-      id: '1',
-    });
-
-    const formData = getMockFormData({
-      sessionId: '1',
-    });
-
-    await expect(submitTemplate(formData)).rejects.toThrow(
-      'Unknown template type'
-    );
-  });
-
   it('should handle error when mapping from session to template', async () => {
     getSessionMock.mockResolvedValueOnce({
       templateType: TemplateType.NHS_APP,
@@ -57,7 +40,7 @@ describe('submitTemplate', () => {
       id: '1',
     });
 
-    templateFromSessionMapperMock.mockImplementationOnce(() => {
+    createTemplateFromSessionMock.mockImplementationOnce(() => {
       throw new Error('unable to map session to template');
     });
 
@@ -80,7 +63,7 @@ describe('submitTemplate', () => {
 
     getSessionMock.mockResolvedValueOnce(session);
 
-    templateFromSessionMapperMock.mockReturnValueOnce({
+    createTemplateFromSessionMock.mockReturnValueOnce({
       name: 'name',
       type: TemplateType.NHS_APP,
       version: 1,
@@ -99,10 +82,7 @@ describe('submitTemplate', () => {
       'unable to to validate template'
     );
 
-    expect(templateFromSessionMapperMock).toHaveBeenCalledWith(
-      TemplateType.NHS_APP,
-      session
-    );
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
   });
 
   it('should handle error when saving template', async () => {
@@ -122,7 +102,7 @@ describe('submitTemplate', () => {
 
     getSessionMock.mockResolvedValueOnce(session);
 
-    templateFromSessionMapperMock.mockReturnValueOnce(template);
+    createTemplateFromSessionMock.mockReturnValueOnce(template);
 
     validateTemplateMock.mockReturnValueOnce(template);
 
@@ -138,15 +118,9 @@ describe('submitTemplate', () => {
       'failed saving to database'
     );
 
-    expect(templateFromSessionMapperMock).toHaveBeenCalledWith(
-      TemplateType.NHS_APP,
-      session
-    );
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
 
-    expect(validateTemplateMock).toHaveBeenCalledWith(
-      TemplateType.NHS_APP,
-      template
-    );
+    expect(validateTemplateMock).toHaveBeenCalledWith(template);
   });
 
   it('should redirect when successfully saved template', async () => {
@@ -176,7 +150,7 @@ describe('submitTemplate', () => {
 
     getSessionMock.mockResolvedValueOnce(session);
 
-    templateFromSessionMapperMock.mockReturnValueOnce(template);
+    createTemplateFromSessionMock.mockReturnValueOnce(template);
 
     validateTemplateMock.mockReturnValueOnce(template);
 
@@ -188,15 +162,9 @@ describe('submitTemplate', () => {
 
     await submitTemplate(formData);
 
-    expect(templateFromSessionMapperMock).toHaveBeenCalledWith(
-      TemplateType.NHS_APP,
-      session
-    );
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
 
-    expect(validateTemplateMock).toHaveBeenCalledWith(
-      TemplateType.NHS_APP,
-      template
-    );
+    expect(validateTemplateMock).toHaveBeenCalledWith(template);
 
     expect(saveTemplateMock).toHaveBeenCalledWith(template);
 
