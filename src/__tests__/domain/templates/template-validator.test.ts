@@ -1,7 +1,5 @@
 import { Template, validateTemplate } from '@domain/templates';
 import { TemplateType } from '@utils/types';
-import { $TemplateSchema } from '@domain/templates/templates.types';
-import { z } from 'zod';
 
 describe('validateTemplate', () => {
   beforeEach(jest.resetAllMocks);
@@ -20,7 +18,7 @@ describe('validateTemplate', () => {
   });
 
   test.each([TemplateType.EMAIL, TemplateType.SMS, TemplateType.LETTER])(
-    'should throw error trying to validate against %s schema ',
+    'should throw error trying to validate against %s schema',
     (type) => {
       const templateDTO: Template = {
         fields: { content: 'body' },
