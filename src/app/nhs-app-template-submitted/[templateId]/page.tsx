@@ -1,13 +1,8 @@
 'use server';
 
-const NhsAppTemplateSubmittedPage = async ({
-  params,
-}: {
-  params: { templateId: string };
-}) => (
+const NhsAppTemplateSubmittedPage = async () => (
   <h2 className='nhsuk-heading-l' data-testid='page-sub-heading'>
     Placeholder page
-    <p>{params.templateId}</p>
   </h2>
 );
 

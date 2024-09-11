@@ -7,9 +7,6 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
     data-testid="page-sub-heading"
   >
     Placeholder page
-    <p>
-      1
-    </p>
   </h2>
 </DocumentFragment>
 `;
