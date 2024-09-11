@@ -114,7 +114,10 @@ describe('submitTemplate', () => {
 
     createTemplateFromSessionMock.mockReturnValueOnce(template);
 
-    validateTemplateMock.mockReturnValueOnce(template);
+    validateTemplateMock.mockReturnValueOnce({
+      ...template,
+      type: 'NHS_APP',
+    });
 
     saveTemplateMock.mockImplementationOnce(() => {
       throw new Error('failed saving to database');
@@ -162,7 +165,10 @@ describe('submitTemplate', () => {
 
     createTemplateFromSessionMock.mockReturnValueOnce(template);
 
-    validateTemplateMock.mockReturnValueOnce(template);
+    validateTemplateMock.mockReturnValueOnce({
+      ...template,
+      type: 'NHS_APP',
+    });
 
     saveTemplateMock.mockResolvedValueOnce(templateEntity);
 
