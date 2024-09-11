@@ -21,6 +21,7 @@ export default defineConfig({
       testMatch: '*.component.ts',
       dependencies: ['setup - session storage'],
       use: {
+        screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
