@@ -1,9 +1,7 @@
 import { UnexpectedValidationError } from '@domain/errors';
 import { $TemplateSchema, Template } from './templates.types';
 
-export function validateTemplate<TDestination extends Template>(
-  source: unknown
-) {
+export function validateTemplate(source: unknown) {
   const { data, error, success } = $TemplateSchema.safeParse(source);
 
   if (!success) {
@@ -16,5 +14,5 @@ export function validateTemplate<TDestination extends Template>(
     });
   }
 
-  return data as TDestination;
+  return data satisfies Template;
 }
