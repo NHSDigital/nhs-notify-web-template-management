@@ -5,8 +5,8 @@ const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
 const SessionStorageModel = {
   id: a.string().required(),
   templateType: a.enum([...templateTypes, 'UNKNOWN']),
-  nhsAppTemplateName: a.string().required(),
-  nhsAppTemplateMessage: a.string().required(),
+  nhsAppTemplateName: a.string(),
+  nhsAppTemplateMessage: a.string(),
 };
 
 const TemplateStorageModel = {

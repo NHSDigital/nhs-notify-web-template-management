@@ -13,3 +13,10 @@ export const getAmplifyBackendClient = () =>
     cookies,
     authMode: 'iam',
   });
+
+type AmplifyClient = ReturnType<typeof getAmplifyBackendClient>;
+
+export type SessionClient = AmplifyClient['models']['SessionStorage'];
+
+export const getSessionClient = (): SessionClient =>
+  getAmplifyBackendClient().models.SessionStorage;
