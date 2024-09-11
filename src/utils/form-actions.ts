@@ -3,6 +3,7 @@
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { Template } from '@domain/templates';
 import { DbOperationError } from '@domain/errors';
+import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
 
@@ -45,10 +46,13 @@ export async function getSession(
 }
 
 export async function saveTemplate(template: Omit<Template, 'id'>) {
-  const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.create({
-      ...template,
-    });
+  const backendClient = getAmplifyBackendClient();
+  const templateRepository = backendClient.models.TemplateStorage;
+
+  const { data, errors } = await templateRepository.create({
+    ...template,
+    id: `${template.type}-${randomUUID()}`.toLowerCase(),
+  });
 
   if (errors) {
     throw new DbOperationError({

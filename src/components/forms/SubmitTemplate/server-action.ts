@@ -4,14 +4,23 @@ import { redirect, RedirectType } from 'next/navigation';
 import { getSession, saveTemplate } from '@utils/form-actions';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
+import { z } from 'zod';
+
+const $SessionIdSchema = z.string();
 
 export async function submitTemplate(formData: FormData) {
-  const sessionId = String(formData.get('sessionId'));
+  const { success, data: sessionId } = $SessionIdSchema.safeParse(
+    formData.get('sessionId')
+  );
+
+  if (!success) {
+    return redirect('/invalid-session', RedirectType.replace);
+  }
 
   const session = await getSession(sessionId);
 
   if (!session) {
-    return redirect('/invalid-session', RedirectType.push);
+    return redirect('/invalid-session', RedirectType.replace);
   }
 
   try {
@@ -20,10 +29,6 @@ export async function submitTemplate(formData: FormData) {
     const validatedTemplate = validateTemplate(templateDTO);
 
     const templateEntity = await saveTemplate(validatedTemplate);
-
-    // TODO: send email
-
-    // TODO: delete session
 
     return redirect(
       `/nhs-app-template-submitted/${templateEntity.id}`,

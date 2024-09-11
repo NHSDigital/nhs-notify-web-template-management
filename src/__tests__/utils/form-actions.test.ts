@@ -10,8 +10,12 @@ import {
   saveTemplate,
 } from '@utils/form-actions';
 import { Template } from '@domain/templates';
+import { randomUUID } from 'node:crypto';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
+jest.mock('node:crypto');
+
+const randomUUIDMock = jest.mocked(randomUUID);
 
 const mockResponseData = {
   id: 'id',
@@ -52,6 +56,7 @@ jest.mock('@utils/amplify-utils', () => ({
 }));
 
 beforeEach(() => {
+  jest.resetAllMocks();
   mockResponse.errors = undefined;
   mockResponse.data = mockResponseData;
 });
@@ -169,16 +174,20 @@ test('saveTemplate - no errors but no data', async () => {
 });
 
 test('saveTemplate - should return saved data', async () => {
+  const createSpy = jest.spyOn(mockModels.TemplateStorage, 'create');
+
+  randomUUIDMock.mockReturnValueOnce('abc-123-def-456-ghi');
+
   const template: Template = {
     fields: { content: 'body' },
     name: 'name',
-    type: TemplateType.NHS_APP,
+    type: 'NHS_APP',
     version: 1,
   };
 
   const expected = {
     ...template,
-    id: 'randomUUID',
+    id: 'nhs_app-abc-123-def-456-ghi',
     createdAt: 'yesterday',
     updatedAt: 'today',
   };
@@ -186,5 +195,13 @@ test('saveTemplate - should return saved data', async () => {
   mockTemplateResponse.data = expected;
 
   const entity = await saveTemplate(template);
+
   expect(entity).toEqual(expected);
+
+  expect(createSpy).toHaveBeenCalledWith({
+    ...template,
+    id: 'nhs_app-abc-123-def-456-ghi',
+  });
+
+  createSpy.mockRestore();
 });

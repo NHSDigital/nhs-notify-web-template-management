@@ -20,16 +20,26 @@ const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
 
 describe('submitTemplate', () => {
-  beforeEach(jest.clearAllMocks);
+  beforeEach(jest.resetAllMocks);
 
-  it('should redirect when no session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(undefined);
-
+  it('should redirect when sessionId from form is invalid', async () => {
     const formData = getMockFormData({});
 
     await submitTemplate(formData);
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'push');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+
+    expect(getSessionMock).not.toHaveBeenCalled();
+  });
+
+  it('should redirect when session is not found in the DB', async () => {
+    getSessionMock.mockResolvedValueOnce(undefined);
+
+    const formData = getMockFormData({ sessionId: '1' });
+
+    await submitTemplate(formData);
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
 
   it('should handle error when mapping from session to template', async () => {
