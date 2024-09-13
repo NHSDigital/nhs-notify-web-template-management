@@ -1,9 +1,6 @@
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { Template } from '@domain/templates';
-import { DbOperationError } from '@domain/errors';
-import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
 
@@ -42,38 +39,26 @@ export async function getSession(
     logger.warn(`Failed to retrieve session for ID ${sessionId}`);
     return undefined;
   }
+
   return data as Session;
 }
 
-export async function saveTemplate(template: Omit<Template, 'id'>) {
-  const backendClient = getAmplifyBackendClient();
-  const templateRepository = backendClient.models.TemplateStorage;
-
-  const { data, errors } = await templateRepository.create({
-    ...template,
-    id: `${template.type}-${randomUUID()}`.toLowerCase(),
+export async function sendEmail(
+  templateId: string,
+  templateName: string,
+  templateMessage: string
+) {
+  const res = await getAmplifyBackendClient().queries.sendEmail({
+    recipientEmail: 'england.test.cm@nhs.net',
+    templateId,
+    templateName,
+    templateMessage,
   });
 
-  if (errors) {
-    throw new DbOperationError({
-      message: `Failed saving ${template.type} template`,
-      operation: 'create',
-      cause: errors,
+  if (res.errors) {
+    logger.error({
+      description: 'Error sending email',
+      res,
     });
   }
-
-  if (!data) {
-    throw new DbOperationError({
-      message: `${template.type} template entity in unknown state. No errors reported but entity returned as falsy`,
-      operation: 'create',
-      cause: [
-        {
-          message: 'Fields attempting to be saved',
-          data: template,
-        },
-      ],
-    });
-  }
-
-  return data;
 }

@@ -79,28 +79,16 @@ exports[`SubmitTemplate component should render 1`] = `
       <p>
         If you want to change a submitted template, you must create and submit a new template to replace it.
       </p>
-      <form>
-        <input
-          name="form-id"
-          readonly=""
-          type="hidden"
-          value="submit-template-form"
-        />
-        <input
-          name="sessionId"
-          readonly=""
-          type="hidden"
-          value="session-id"
-        />
-        <button
-          aria-disabled="false"
-          class="nhsuk-button"
-          id="submit-template-button"
-          type="submit"
-        >
-          Submit template
-        </button>
-      </form>
+      <a
+        aria-disabled="false"
+        class="nhsuk-button"
+        draggable="false"
+        href="/templates/nhs-app-template-submitted/session-id"
+        id="submit-template-button"
+        role="button"
+      >
+        Submit template
+      </a>
     </div>
   </div>
 </DocumentFragment>

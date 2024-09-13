@@ -4,8 +4,7 @@ import { FC } from 'react';
 import { WarningCallout, Button, BackLink } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from '@utils/types';
 import { submitNhsAppTemplateContent } from '@content/content';
-import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { submitTemplate } from './server-action';
+import { getBasePath } from '@utils/get-base-path';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
@@ -26,7 +25,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`/templates/preview-nhs-app-template/${sessionId}`}
+        href={`${getBasePath()}/preview-nhs-app-template/${sessionId}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         {backLinkText}
@@ -51,13 +50,12 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
         {submitChecklistParagraphs.map((item) => (
           <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
         ))}
-        <NHSNotifyFormWrapper
-          formId='submit-template-form'
-          action={submitTemplate}
+        <Button
+          id='submit-template-button'
+          href={`${getBasePath()}/nhs-app-template-submitted/${sessionId}`}
         >
-          <input type='hidden' name='sessionId' value={sessionId} readOnly />
-          <Button id='submit-template-button'>{buttonText}</Button>
-        </NHSNotifyFormWrapper>
+          {buttonText}
+        </Button>
       </div>
     </div>
   );

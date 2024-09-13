@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { sendEmail } from '../functions/send-email/resource';
 
 const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
 
@@ -25,6 +26,17 @@ const schema = a.schema({
     .authorization((allow) => [allow.guest()]),
   TemplateStorage: a
     .model(TemplateStorageModel)
+    .authorization((allow) => [allow.guest()]),
+  sendEmail: a
+    .query()
+    .arguments({
+      recipientEmail: a.string().required(),
+      templateId: a.string().required(),
+      templateName: a.string().required(),
+      templateMessage: a.string().required(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(sendEmail))
     .authorization((allow) => [allow.guest()]),
 });
 
