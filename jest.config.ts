@@ -44,13 +44,15 @@ const config: Config = {
     },
   },
 
-  collectCoverageFrom: ['src/**/*.ts*'],
+  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*'],
 
   coveragePathIgnorePatterns: [
     '.types.ts',
     'layout.tsx',
     'container.tsx',
     '.snap',
+    'resource.ts',
+    'backend.ts',
   ],
 
   // Use this configuration option to add custom reporters to Jest

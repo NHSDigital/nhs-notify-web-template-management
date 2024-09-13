@@ -20,7 +20,9 @@
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.14",
     "@aws-amplify/backend": "^1.2.0",
+    "@aws-sdk/client-ses": "^3.637.0",
     "markdown-it": "^13.0.1",
+    "mimetext": "^3.0.24",
     "next": "14.2.6",
     "nhsuk-frontend": "^8.3.0",
     "nhsuk-react-components": "^4.1.1",

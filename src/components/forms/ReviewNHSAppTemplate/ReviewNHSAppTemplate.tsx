@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { PageComponentProps } from '@utils/types';
+import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import { useFormState } from 'react-dom';
 import { BackLink } from 'nhsuk-react-components';
@@ -35,7 +36,7 @@ export function ReviewNHSAppTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`/templates/create-nhs-app-template/${initialState.id}`}
+        href={`${getBasePath()}/create-nhs-app-template/${initialState.id}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         Go back
