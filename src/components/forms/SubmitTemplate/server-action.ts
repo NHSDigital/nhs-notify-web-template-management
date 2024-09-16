@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getSession, saveTemplate } from '@utils/form-actions';
+import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
@@ -29,6 +29,12 @@ export async function submitTemplate(formData: FormData) {
     const validatedTemplate = validateTemplate(templateDTO);
 
     const templateEntity = await saveTemplate(validatedTemplate);
+
+    await sendEmail(
+      templateEntity.id,
+      templateEntity.name,
+      templateEntity.fields!.content
+    );
 
     return redirect(
       `/nhs-app-template-submitted/${templateEntity.id}`,

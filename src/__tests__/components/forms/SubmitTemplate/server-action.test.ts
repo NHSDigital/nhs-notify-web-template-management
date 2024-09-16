@@ -1,7 +1,7 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getSession, saveTemplate } from '@utils/form-actions';
+import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 
@@ -18,6 +18,7 @@ const getSessionMock = jest.mocked(getSession);
 const saveTemplateMock = jest.mocked(saveTemplate);
 const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
+const sendEmailMock = jest.mocked(sendEmail);
 
 describe('submitTemplate', () => {
   beforeEach(jest.resetAllMocks);
@@ -136,7 +137,55 @@ describe('submitTemplate', () => {
     expect(validateTemplateMock).toHaveBeenCalledWith(template);
   });
 
-  it('should redirect when successfully saved template', async () => {
+  it('should handle error when failing to send email', async () => {
+    const session = {
+      templateType: TemplateType.NHS_APP,
+      nhsAppTemplateMessage: 'body',
+      nhsAppTemplateName: 'name',
+      id: '1',
+    };
+
+    const template = {
+      name: 'name',
+      type: TemplateType.NHS_APP,
+      version: 1,
+      fields: { content: 'body' },
+    };
+
+    getSessionMock.mockResolvedValueOnce(session);
+
+    createTemplateFromSessionMock.mockReturnValueOnce(template);
+
+    validateTemplateMock.mockReturnValueOnce({
+      ...template,
+      type: 'NHS_APP',
+    });
+
+    saveTemplateMock.mockResolvedValueOnce({
+      ...template,
+      id: '1',
+      createdAt: 'today',
+      updatedAt: 'tomorrow',
+    });
+
+    sendEmailMock.mockImplementationOnce(() => {
+      throw new Error('failed to send email');
+    });
+
+    const formData = getMockFormData({
+      sessionId: '1',
+    });
+
+    await expect(submitTemplate(formData)).rejects.toThrow(
+      'failed to send email'
+    );
+
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
+
+    expect(validateTemplateMock).toHaveBeenCalledWith(template);
+  });
+
+  it('should redirect when successfully saved template and sent email', async () => {
     const session = {
       templateType: TemplateType.NHS_APP,
       nhsAppTemplateMessage: 'body',
@@ -183,6 +232,12 @@ describe('submitTemplate', () => {
     expect(validateTemplateMock).toHaveBeenCalledWith(template);
 
     expect(saveTemplateMock).toHaveBeenCalledWith(template);
+
+    expect(sendEmailMock).toHaveBeenCalledWith(
+      templateEntity.id,
+      templateEntity.name,
+      templateEntity.fields.content
+    );
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/nhs-app-template-submitted/templateId-1',
