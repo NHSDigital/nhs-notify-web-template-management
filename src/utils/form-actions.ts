@@ -1,8 +1,8 @@
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { Template } from '@domain/templates';
 import { DbOperationError } from '@domain/errors';
+import { Template } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
