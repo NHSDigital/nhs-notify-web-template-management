@@ -78,6 +78,26 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
   return data;
 }
 
+export async function getTemplate(
+  templateId: string
+): Promise<Template | undefined> {
+  const { data, errors } =
+    await getAmplifyBackendClient().models.TemplateStorage.get({
+      id: templateId,
+    });
+
+  if (errors) {
+    logger.error('Failed to get template', errors);
+  }
+
+  if (!data) {
+    logger.warn(`Failed to retrieve template for ID ${templateId}`);
+    return undefined;
+  }
+
+  return data as Template;
+}
+
 export async function sendEmail(
   templateId: string,
   templateName: string,

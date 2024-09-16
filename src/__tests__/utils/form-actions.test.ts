@@ -8,6 +8,7 @@ import {
   getSession,
   saveTemplate,
   sendEmail,
+  getTemplate,
 } from '@utils/form-actions';
 import { Template } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
@@ -33,8 +34,17 @@ const mockResponse = {
   errors: undefined as unknown,
 };
 
+const mockTemplateResponseData = {
+  id: 'template-id',
+  name: 'template-name',
+  version: 1,
+  fields: {
+    content: 'template-content',
+  },
+};
+
 const mockTemplateResponse = {
-  data: {} as unknown,
+  data: mockTemplateResponseData as unknown,
   errors: undefined as unknown,
 };
 
@@ -46,6 +56,7 @@ const mockModels = {
   },
   TemplateStorage: {
     create: async () => mockTemplateResponse,
+    get: async () => mockTemplateResponse,
   },
 };
 
@@ -137,7 +148,7 @@ test('saveSession - error handling', async () => {
 test('getSession', async () => {
   const response = await getSession('session-id');
 
-  expect(response).toEqual(mockResponse.data);
+  expect(response).toEqual(mockResponseData);
 });
 
 test('getSession - returns undefined if session is not found', async () => {
@@ -151,6 +162,27 @@ test('getSession - returns undefined if session is not found', async () => {
   mockResponse.data = undefined;
 
   const response = await getSession('session-id');
+
+  expect(response).toBeUndefined();
+});
+
+test('getTemplate', async () => {
+  const response = await getTemplate('template-id');
+
+  expect(response).toEqual(mockTemplateResponseData);
+});
+
+test('getTemplate - returns undefined if session is not found', async () => {
+  mockTemplateResponse.errors = [
+    {
+      message: 'test-error-message',
+      errorType: 'test-error-type',
+      errorInfo: { error: 'test-error' },
+    },
+  ];
+  mockTemplateResponse.data = undefined;
+
+  const response = await getTemplate('template-id');
 
   expect(response).toBeUndefined();
 });

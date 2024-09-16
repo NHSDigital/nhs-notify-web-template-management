@@ -40,6 +40,12 @@ export type PageProps = {
   };
 };
 
+export type TemplateSubmittedPageProps = {
+  params: {
+    templateId: string;
+  };
+};
+
 export type PageComponentProps = {
   initialState: TemplateFormState;
 };
@@ -47,6 +53,7 @@ export type PageComponentProps = {
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
   sessionId: string;
+  action: string | ((formData: FormData) => Promise<never>);
 };
 
 export enum TemplateFormatText {
