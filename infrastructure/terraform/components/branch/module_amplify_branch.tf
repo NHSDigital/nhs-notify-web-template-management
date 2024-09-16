@@ -14,6 +14,7 @@ module "amplify_branch" {
 
   amplify_app_id    = local.app.amplify["id"]
   branch            = var.branch_name
+
   enable_auto_build = true
 
   environment_variables = {

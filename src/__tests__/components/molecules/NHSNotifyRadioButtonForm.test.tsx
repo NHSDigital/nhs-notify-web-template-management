@@ -1,7 +1,5 @@
-import { mockDeep } from 'jest-mock-extended';
 import { render } from '@testing-library/react';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { FormState } from '@utils/types';
 
 test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
   const container = render(
@@ -9,12 +7,12 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
       formId='form-id'
       radiosId='radios-id'
       action='/action'
-      state={mockDeep<FormState>({
+      state={{
         validationError: {
           fieldErrors: {},
           formErrors: [],
         },
-      })}
+      }}
       pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
@@ -34,14 +32,14 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
       formId='form-id'
       radiosId='radios-id'
       action='/action'
-      state={mockDeep<FormState>({
+      state={{
         validationError: {
           fieldErrors: {
             'radios-id': ['Field error'],
           },
           formErrors: ['Form error'],
         },
-      })}
+      }}
       pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
@@ -60,14 +58,14 @@ test('Renders NHSNotifyRadioButtonForm - handles validation errors for other fie
       formId='form-id'
       radiosId='radios-id'
       action='/action'
-      state={mockDeep<FormState>({
+      state={{
         validationError: {
           fieldErrors: {
             'radios-id-2': ['Field error'],
           },
           formErrors: ['Form error'],
         },
-      })}
+      }}
       pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
@@ -86,7 +84,7 @@ test('Renders NHSNotifyRadioButtonForm - renders without validation error field'
       formId='form-id'
       radiosId='radios-id'
       action='/action'
-      state={mockDeep<FormState>({})}
+      state={{}}
       pageHeading='Page heading'
       options={[
         { id: 'option-1', text: 'option 1' },
