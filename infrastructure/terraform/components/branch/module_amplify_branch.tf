@@ -12,7 +12,7 @@ module "amplify_branch" {
   region         = var.region
   group          = var.group
 
-  amplify_app_id    = local.templates.amplify["id"]
+  amplify_app_id    = local.app.amplify["id"]
   branch            = var.branch_name
 
   enable_auto_build = true
