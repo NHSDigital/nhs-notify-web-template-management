@@ -53,7 +53,6 @@ export type PageComponentProps = {
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
   sessionId: string;
-  action: string | ((formData: FormData) => Promise<never>);
 };
 
 export enum TemplateFormatText {
