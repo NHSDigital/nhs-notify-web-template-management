@@ -1,19 +1,21 @@
 /**
  * @jest-environment node
  */
-
 import { TemplateType } from '@utils/types';
 import {
   createSession,
   saveSession,
   getSession,
   saveTemplate,
+  sendEmail,
 } from '@utils/form-actions';
 import { Template } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
+import { logger } from '@utils/logger';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 jest.mock('node:crypto');
+jest.mock('@utils/logger');
 
 const randomUUIDMock = jest.mocked(randomUUID);
 
@@ -49,6 +51,17 @@ const mockModels = {
 
 const mockSchema = {
   models: mockModels,
+  queries: {
+    sendEmail: ({ templateId }: { templateId: string }) => {
+      if (templateId === 'template-id-error') {
+        return {
+          errors: ['email error'],
+        };
+      }
+
+      return {};
+    },
+  },
 };
 
 jest.mock('@utils/amplify-utils', () => ({
@@ -204,4 +217,23 @@ test('saveTemplate - should return saved data', async () => {
   });
 
   createSpy.mockRestore();
+});
+
+test('sendEmail - no errors', async () => {
+  const mockLogger = jest.mocked(logger);
+  await sendEmail('template-id', 'template-name', 'template-message');
+
+  expect(mockLogger.error).not.toHaveBeenCalled();
+});
+
+test('sendEmail - errors', async () => {
+  const mockLogger = jest.mocked(logger);
+  await sendEmail('template-id-error', 'template-name', 'template-message');
+
+  expect(mockLogger.error).toHaveBeenCalledWith({
+    description: 'Error sending email',
+    res: {
+      errors: ['email error'],
+    },
+  });
 });

@@ -140,4 +140,4 @@ jobs:
           aws-region: eu-west-2
       - name: "Destroy sandbox"
         run: |
-          npm run destroy-sandbox
+          npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"

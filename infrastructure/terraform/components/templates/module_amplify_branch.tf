@@ -11,7 +11,7 @@ module "amplify_branch" {
   group             = var.group
   description       = "Amplify branch for main"
   amplify_app_id    = aws_amplify_app.main.id
-  branch            = "main"
+  branch            = var.branch_name
   stage             = "PRODUCTION"
   enable_auto_build = true
 

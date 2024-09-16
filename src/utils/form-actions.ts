@@ -42,6 +42,7 @@ export async function getSession(
     logger.warn(`Failed to retrieve session for ID ${sessionId}`);
     return undefined;
   }
+
   return data as Session;
 }
 
@@ -74,6 +75,25 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
       ],
     });
   }
-
   return data;
+}
+
+export async function sendEmail(
+  templateId: string,
+  templateName: string,
+  templateMessage: string
+) {
+  const res = await getAmplifyBackendClient().queries.sendEmail({
+    recipientEmail: 'england.test.cm@nhs.net',
+    templateId,
+    templateName,
+    templateMessage,
+  });
+
+  if (res.errors) {
+    logger.error({
+      description: 'Error sending email',
+      res,
+    });
+  }
 }
