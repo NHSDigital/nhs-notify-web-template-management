@@ -1,8 +1,5 @@
-'use'
-
 import type { Metadata } from 'next';
 import '@styles/app.scss';
-import { Authenticator } from '@aws-amplify/ui-react';
 import content from '@content/content';
 import { NHSNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
@@ -72,12 +69,10 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <Authenticator.Provider>
-          <NHSNotifySkipLink />
-          <NHSNotifyHeader />
-          <NHSNotifyContainer>{children}</NHSNotifyContainer>
-          <NHSNotifyFooter />
-        </Authenticator.Provider>
+        <NHSNotifySkipLink />
+        <NHSNotifyHeader />
+        <NHSNotifyContainer>{children}</NHSNotifyContainer>
+        <NHSNotifyFooter />
       </body>
     </html>
   );

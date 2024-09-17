@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { Authenticator } from '@aws-amplify/ui-react';
 import concatClassNames from '@utils/concat-class-names';
 import content from '@content/content';
 import LoginStatus from '@molecules/LoginStatus/LoginStatus';
@@ -52,7 +55,9 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
           id='content-header'
         >
           {/* I am currently testing the link wrapper, this will change later when we implement auth as the link will change based on auth state */}
-          <LoginStatus />
+          <Authenticator.Provider>
+            <LoginStatus />
+          </Authenticator.Provider>
         </div>
       </div>
     </header>
