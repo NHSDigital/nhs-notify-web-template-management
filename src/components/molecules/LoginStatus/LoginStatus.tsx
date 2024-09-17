@@ -29,13 +29,13 @@ export default function LoginStatus() {
     }
     case 'unauthenticated': {
       return (
-        <Header.NavItem href={`https://chel5-auth-poc-rebased.d11o7gqmt8o0cx.amplifyapp.com/auth?redirect=${encodeURIComponent(location.href)}`}>
+        <Header.NavItem
+          href={`https://chel5-auth-poc-rebased.d11o7gqmt8o0cx.amplifyapp.com/auth?redirect=${encodeURIComponent(location.href)}`} // eslint-disable-line no-restricted-globals
+        >
           Sign in
         </Header.NavItem>
       );
     }
-    default: {
-      return null;
-    }
+    default:
   }
 }
