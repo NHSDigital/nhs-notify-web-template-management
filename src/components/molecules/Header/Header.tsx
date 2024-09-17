@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import concatClassNames from '@utils/concat-class-names';
 import content from '@content/content';
+import LoginStatus from '@molecules/LoginStatus/LoginStatus';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
-import LoginStatus from '@molecules/LoginStatus/LoginStatus';
 
-export function NHSNotifyHeader({ className, dataTestId, loginRedirectURL }: HeaderType) {
+export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
   return (
     <header
       className='nhsuk-header'
