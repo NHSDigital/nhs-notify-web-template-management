@@ -7,7 +7,6 @@ import { fetchAuthSession, signOut } from 'aws-amplify/auth';
 import { JwtPayload } from 'aws-jwt-verify/jwt-model';
 
 export default function LoginStatus() {
-
   const { authStatus } = useAuthenticator();
   const [idToken, setIdToken] = useState<JwtPayload | undefined>();
   useEffect(() => {
