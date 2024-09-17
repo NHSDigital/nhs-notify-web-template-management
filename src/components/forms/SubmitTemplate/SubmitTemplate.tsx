@@ -4,7 +4,9 @@ import { FC } from 'react';
 import { WarningCallout, Button, BackLink } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from '@utils/types';
 import { submitNhsAppTemplateContent } from '@content/content';
+import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
+import { submitTemplate } from './server-action';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
@@ -50,12 +52,13 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
         {submitChecklistParagraphs.map((item) => (
           <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
         ))}
-        <Button
-          id='submit-template-button'
-          href={`${getBasePath()}/nhs-app-template-submitted/${sessionId}`}
+        <NHSNotifyFormWrapper
+          formId='submit-template-form'
+          action={submitTemplate}
         >
-          {buttonText}
-        </Button>
+          <input type='hidden' name='sessionId' value={sessionId} readOnly />
+          <Button id='submit-template-button'>{buttonText}</Button>
+        </NHSNotifyFormWrapper>
       </div>
     </div>
   );
