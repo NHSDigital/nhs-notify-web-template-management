@@ -6,7 +6,7 @@ describe('Header component', () => {
   it('renders component correctly', () => {
     render(
       <Authenticator.Provider>
-        <NHSNotifyHeader loginRedirectURL='url' />
+        <NHSNotifyHeader />
       </Authenticator.Provider>
     );
 
