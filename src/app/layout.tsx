@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { useEffect, useState } from 'react';
 import '@styles/app.scss';
 import content from '@content/content';
 import { NHSNotifyHeader } from '@molecules/Header/Header';
@@ -17,6 +18,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [loginRedirectURL, setLoginRedirectURL] = useState('');
+
+  useEffect(() => {
+    setLoginRedirectURL(`https://chel5-auth-poc-rebased.d11o7gqmt8o0cx.amplifyapp.com/auth?redirect=${encodeURIComponent(document.location.href)}`);
+  }, []);
+
   return (
     <html lang='en'>
       <head>
@@ -70,7 +77,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <NHSNotifySkipLink />
-        <NHSNotifyHeader />
+        <NHSNotifyHeader loginRedirectURL={loginRedirectURL} />
         <NHSNotifyContainer>{children}</NHSNotifyContainer>
         <NHSNotifyFooter />
       </body>
