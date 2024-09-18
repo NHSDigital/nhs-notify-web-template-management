@@ -2,13 +2,16 @@
 
 import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
 import { PageProps } from '@utils/types';
-import { getSession } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import { SessionService } from '@domain/session';
 
 const PreviewNhsAppTemplatePage = async ({
   params: { sessionId },
 }: PageProps) => {
-  const session = await getSession(sessionId);
+  const service = SessionService.init();
+
+  const session = await service.findSession(sessionId);
+
   if (!session) {
     redirect('/invalid-session', RedirectType.replace);
   }

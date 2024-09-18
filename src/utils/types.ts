@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export type FormId =
   | 'choose-a-template-type'
   | 'create-nhs-app-template'
@@ -55,3 +57,6 @@ export enum TemplateFormatText {
   LETTER = 'LETTER',
   SMS = 'SMS',
 }
+
+export type AsyncReturnType<T extends (...args: any) => Promise<unknown>> =
+  T extends (...args: any) => Promise<infer R> ? R : unknown;

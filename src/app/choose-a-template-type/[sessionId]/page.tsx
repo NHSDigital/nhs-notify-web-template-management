@@ -1,14 +1,17 @@
 'use server';
 
+import { SessionService } from '@domain/session/session-service';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
-import { getSession } from '@utils/form-actions';
 import { PageProps } from '@utils/types';
 import { redirect, RedirectType } from 'next/navigation';
 
 const ChooseATemplateTypePage = async ({
   params: { sessionId },
 }: PageProps) => {
-  const session = await getSession(sessionId);
+  const service = SessionService.init();
+
+  const session = await service.findSession(sessionId);
+
   if (!session) {
     redirect('/invalid-session', RedirectType.replace);
   }

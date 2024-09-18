@@ -1,8 +1,16 @@
+/* eslint-disable no-underscore-dangle */
 import { DbOperationError } from '@domain/errors';
 import { Session } from '@domain/session/session';
-import { getSessionClient, SessionClient } from '@utils/amplify-utils';
+import { SessionClient } from '@utils/amplify-utils';
+import { AsyncReturnType } from '@utils/types';
 
-export class SessionRepository {
+export interface ISessionRepository {
+  create(): Promise<Session>;
+  get(sessionId: string): Promise<Session>;
+  update(session: SessionData): Promise<Session>;
+}
+
+export class AmplifySessionRepository implements ISessionRepository {
   constructor(private readonly _client: SessionClient) {}
 
   async create() {
@@ -25,34 +33,43 @@ export class SessionRepository {
       id: sessionId,
     });
 
+    const data = this._processAmplifyResponse('get', response);
+
     return Session.create({
-      id: response.id,
-      templateType: response.templateType!,
-      nhsAppTemplateName: String(response.nhsAppTemplateName),
-      nhsAppTemplateMessage: String(response.nhsAppTemplateMessage),
+      id: data.id,
+      templateType: data.templateType!,
+      nhsAppTemplateName: String(data.nhsAppTemplateName),
+      nhsAppTemplateMessage: String(data.nhsAppTemplateMessage),
     });
   }
 
   async update(session: Session) {
-    const { data, errors } = await this._client.update({
-      id: session.id,
-      templateType: session.templateType,
-      nhsAppTemplateName: session.nhsAppTemplateName,
-      nhsAppTemplateMessage: session.nhsAppTemplateMessage,
+    const response = await this._client.update({
+      ...session.toPrimitive(),
+    });
+
+    const data = this._processAmplifyResponse('update', response);
+
+    return Session.create({
+      id: data.id,
+      templateType: data.templateType!,
+      nhsAppTemplateName: String(data.nhsAppTemplateName),
+      nhsAppTemplateMessage: String(data.nhsAppTemplateMessage),
+      smsTemplateName: String(data.smsTemplateName),
+      smsTemplateMessage: String(data.smsTemplateMessage),
     });
   }
 
+  // TODO: fix this.
+  // eslint-disable-next-line class-methods-use-this
   private _processAmplifyResponse(
-    operation: 'create' | 'update',
-    {
-      data,
-      error,
-    }: { data?: ReturnType<SessionClient['create']>; error?: unknown }
+    operation: 'create' | 'update' | 'get',
+    { data, errors }: AsyncReturnType<SessionClient['create']>
   ) {
-    if (error) {
+    if (errors) {
       throw new DbOperationError({
         message: 'Session operation failed',
-        cause: error,
+        cause: errors,
         operation,
       });
     }
@@ -67,5 +84,3 @@ export class SessionRepository {
     return data!;
   }
 }
-
-const repo = new SessionRepository(getSessionClient());
