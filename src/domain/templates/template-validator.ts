@@ -1,8 +1,8 @@
 import { UnexpectedValidationError } from '@domain/errors';
-import { $TemplateSchema, Template } from './templates.types';
+import { $TemplateInput, TemplateInput } from './templates.types';
 
 export function validateTemplate(source: unknown) {
-  const { data, error, success } = $TemplateSchema.safeParse(source);
+  const { data, error, success } = $TemplateInput.safeParse(source);
 
   if (!success) {
     throw new UnexpectedValidationError({
@@ -14,5 +14,5 @@ export function validateTemplate(source: unknown) {
     });
   }
 
-  return data satisfies Template;
+  return data satisfies TemplateInput;
 }

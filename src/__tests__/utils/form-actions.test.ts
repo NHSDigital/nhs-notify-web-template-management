@@ -10,7 +10,7 @@ import {
   sendEmail,
   getTemplate,
 } from '@utils/form-actions';
-import { Template } from '@domain/templates';
+import { Template, TemplateInput } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { logger } from '@utils/logger';
 
@@ -188,7 +188,7 @@ test('getTemplate - returns undefined if session is not found', async () => {
 });
 
 test('saveTemplate - throws error when failing to save', async () => {
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
@@ -203,7 +203,7 @@ test('saveTemplate - throws error when failing to save', async () => {
 });
 
 test('saveTemplate - no errors but no data', async () => {
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
@@ -223,7 +223,7 @@ test('saveTemplate - should return saved data', async () => {
 
   randomUUIDMock.mockReturnValueOnce('abc-123-def-456-ghi');
 
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: 'NHS_APP',

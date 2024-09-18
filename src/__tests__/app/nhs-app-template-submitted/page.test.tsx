@@ -1,16 +1,17 @@
 import nav from 'next/navigation';
 import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
 import { render } from '@testing-library/react';
+import { getTemplate } from '@utils/form-actions';
 
 jest.mock('@utils/form-actions', () => ({
-  getTemplate: (templateId: string) => {
+  getTemplate: jest.fn().mockImplementation((templateId: string) => {
     if (templateId === 'template-id') {
       return {
         id: 'template-id',
         name: 'template-name',
       };
     }
-  },
+  }),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -34,10 +35,11 @@ test('NhsAppTemplateSubmittedPage', async () => {
 
   const container = render(page);
 
+  expect(jest.mocked(getTemplate)).toHaveBeenCalledWith('template-id');
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('NhsAppTemplateSubmittedPage - should handle invalid session', async () => {
+test('NhsAppTemplateSubmittedPage - should handle invalid template', async () => {
   const redirectSpy = jest.spyOn(nav, 'redirect');
 
   await expect(
@@ -48,5 +50,6 @@ test('NhsAppTemplateSubmittedPage - should handle invalid session', async () => 
     })
   ).rejects.toThrow('Simulated redirect');
 
+  expect(jest.mocked(getTemplate)).toHaveBeenCalledWith('invalid-template');
   expect(redirectSpy).toHaveBeenCalledWith('/invalid-template', 'replace');
 });

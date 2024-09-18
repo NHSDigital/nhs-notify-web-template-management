@@ -13,9 +13,9 @@ const PreviewNhsAppTemplatePage = async ({
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  const { name } = template;
+  const { name, id } = template;
 
-  return <TemplateSubmitted templateId={templateId} templateName={name} />;
+  return <TemplateSubmitted templateId={id} templateName={name} />;
 };
 
 export default PreviewNhsAppTemplatePage;
