@@ -95,9 +95,7 @@ export async function getTemplate(
     return undefined;
   }
 
-  const parsedData = $Template.parse(data);
-
-  return parsedData;
+  return $Template.parse(data);
 }
 
 export async function sendEmail(
