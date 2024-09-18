@@ -2,7 +2,7 @@
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
-import { Template } from '@domain/templates';
+import { Template, $Template } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
@@ -95,7 +95,9 @@ export async function getTemplate(
     return undefined;
   }
 
-  return data as Template;
+  const parsedData = $Template.parse(data);
+
+  return parsedData;
 }
 
 export async function sendEmail(

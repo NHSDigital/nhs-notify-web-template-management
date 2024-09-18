@@ -37,6 +37,7 @@ const mockResponse = {
 const mockTemplateResponseData = {
   id: 'template-id',
   name: 'template-name',
+  type: 'NHS_APP',
   version: 1,
   fields: {
     content: 'template-content',

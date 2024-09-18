@@ -38,6 +38,3 @@ export const $Template = $TemplateInput.and(z.object({ id: z.string() }));
 
 export type TemplateInput = z.infer<typeof $TemplateInput>;
 export type Template = z.infer<typeof $Template>;
-
-export type NHSAppTemplateInpu = Template &
-  z.infer<typeof $NHSAppTemplateInput>;
