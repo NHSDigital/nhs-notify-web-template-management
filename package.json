@@ -23,7 +23,7 @@
     "@aws-sdk/client-ses": "^3.637.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
-    "next": "14.2.6",
+    "next": "14.2.13",
     "nhsuk-frontend": "^8.3.0",
     "nhsuk-react-components": "^4.1.1",
     "react": "^18",
