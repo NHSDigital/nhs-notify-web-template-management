@@ -40,9 +40,12 @@ test.describe('Start Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
     );
+    expect(await startPage.pageHeader.textContent()).toBe(
+      'Create and submit a template to NHS Notify'
+    );
   });
 
-  test.skip(
+  test(
     'should navigate to login page when "log in" link clicked',
     { tag: '@Update/CCM-4889' },
     async ({ page, baseURL }) => {
@@ -51,9 +54,9 @@ test.describe('Start Page', () => {
       await startPage.navigateToStartPage();
       await startPage.clickLoginLink();
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/create-and-submit-templates`
-      );
+      await expect(page).toHaveURL(`${baseURL}/templates`);
+
+      expect(await page.locator('h1').textContent()).toBe('404');
     }
   );
 
@@ -78,4 +81,32 @@ test.describe('Start Page', () => {
       `${baseURL}/templates/choose-a-template-type/`
     );
   });
+});
+
+test.only('Footer links exist and are visible', async ({ page }) => {
+  const startPage = new TemplateMgmtStartPage(page);
+  await startPage.navigateToStartPage();
+
+  const footerLinks = [
+    {
+      name: 'Accessibility statement',
+      selector: 'a[data-testid="accessibility-statement-link"]',
+    },
+    { name: 'Contact Us', selector: 'a[data-testid="contact-us-link"]' },
+    { name: 'Cookies', selector: 'a[data-testid="cookies-link"]' },
+    {
+      name: 'Privacy Policy',
+      selector: 'a[data-testid="privacy-policy-link"]',
+    },
+    {
+      name: 'Terms and Conditions',
+      selector: 'a[data-testid="terms-and-conditions-link"]',
+    },
+  ];
+
+  for (const link of footerLinks) {
+    const element = page.locator(link.selector);
+    // eslint-disable-next-line no-await-in-loop
+    await expect(element, `${link.name} should be visible`).toBeVisible();
+  }
 });
