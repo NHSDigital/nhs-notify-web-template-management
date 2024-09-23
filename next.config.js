@@ -2,7 +2,7 @@
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain =
   process.env.NOTIFY_DOMAIN_NAME ??
-  'main.templates.nonprod.nhsnotify.national.nhs.uk';
+  'localhost:3000';
 
 const nextConfig = {
   basePath,
