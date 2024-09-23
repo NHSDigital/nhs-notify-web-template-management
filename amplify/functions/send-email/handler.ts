@@ -2,6 +2,7 @@ import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { logger } from '../../../src/utils/logger';
 import type { Schema } from '../../data/resource';
+import { emailTemplate } from './email-template';
 
 const config = () => ({
   senderEmail: `no-reply@${process.env.NOTIFY_DOMAIN_NAME}`,
@@ -25,8 +26,8 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
   msg.setTo([{ addr: recipientEmail }]);
   msg.setSubject(`Template created - ${templateName}`);
   msg.addMessage({
-    contentType: 'text/plain',
-    data: `Template has been successfully created. The template name is ${templateName} and the template ID is ${templateId}. The template content is attached.`,
+    contentType: 'text/html',
+    data: emailTemplate(templateId, templateName) // `Template has been successfully created. The template name is ${templateName} and the template ID is ${templateId}. The template content is attached.`,
   });
   msg.addAttachment({
     filename: 'template-content.md',
