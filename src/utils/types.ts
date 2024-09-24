@@ -40,6 +40,12 @@ export type PageProps = {
   };
 };
 
+export type TemplateSubmittedPageProps = {
+  params: {
+    templateId: string;
+  };
+};
+
 export type PageComponentProps = {
   initialState: TemplateFormState;
 };

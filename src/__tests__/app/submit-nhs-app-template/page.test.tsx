@@ -40,7 +40,7 @@ test('SubmitTemplatePage', async () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('CreateNhsAppTemplatePage - should handle invalid session', async () => {
+test('SubmitTemplatePage - should handle invalid session', async () => {
   const redirectSpy = jest.spyOn(nav, 'redirect');
 
   await expect(

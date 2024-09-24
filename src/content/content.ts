@@ -315,7 +315,7 @@ const reviewSMSTemplateContent = {
   },
 };
 
-const invalidSessionPageContent = {
+const error404PageContent = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
   backLink: {
@@ -366,7 +366,7 @@ const content = {
   },
   pages: {
     homePage,
-    invalidSessionPageContent,
+    error404PageContent,
   },
 };
 
@@ -411,6 +411,22 @@ export const createNhsAppTemplatePageContent = {
     "For example, 'Email - covid19 2023 - over 65s - version 3'",
   characterCountText: ' of 5000 characters',
   buttonText: 'Continue',
+};
+
+export const templateSubmittedPageContent = {
+  pageHeading: 'Template submitted',
+  templateNameHeading: 'Template name',
+  templateIdHeading: 'Template ID',
+  newTemplateText: 'Create another template',
+  doNextHeading: 'What you need to do next',
+  doNextText:
+    "You'll receive a confirmation email, which contains the template name and ID.",
+  notLiveHeading: "If you're currently onboarding",
+  notLiveText:
+    "Tell your onboarding manager once you've submitted all your templates.",
+  liveHeading: "If you've already onboarded",
+  liveLinkText: 'Raise a request with the service desk',
+  liveText: "once you've submitted all your templates.",
 };
 
 export default content;

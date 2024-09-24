@@ -2,7 +2,7 @@
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
-import { Template } from '@domain/templates';
+import { Template, $Template } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
@@ -76,6 +76,26 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
     });
   }
   return data;
+}
+
+export async function getTemplate(
+  templateId: string
+): Promise<Template | undefined> {
+  const { data, errors } =
+    await getAmplifyBackendClient().models.TemplateStorage.get({
+      id: templateId,
+    });
+
+  if (errors) {
+    logger.error('Failed to get template', errors);
+  }
+
+  if (!data) {
+    logger.warn(`Failed to retrieve template for ID ${templateId}`);
+    return undefined;
+  }
+
+  return $Template.parse(data);
 }
 
 export async function sendEmail(

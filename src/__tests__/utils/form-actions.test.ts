@@ -8,8 +8,9 @@ import {
   getSession,
   saveTemplate,
   sendEmail,
+  getTemplate,
 } from '@utils/form-actions';
-import { Template } from '@domain/templates';
+import { Template, TemplateInput } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { logger } from '@utils/logger';
 
@@ -33,8 +34,18 @@ const mockResponse = {
   errors: undefined as unknown,
 };
 
+const mockTemplateResponseData = {
+  id: 'template-id',
+  name: 'template-name',
+  type: 'NHS_APP',
+  version: 1,
+  fields: {
+    content: 'template-content',
+  },
+};
+
 const mockTemplateResponse = {
-  data: {} as unknown,
+  data: mockTemplateResponseData as unknown,
   errors: undefined as unknown,
 };
 
@@ -46,6 +57,7 @@ const mockModels = {
   },
   TemplateStorage: {
     create: async () => mockTemplateResponse,
+    get: async () => mockTemplateResponse,
   },
 };
 
@@ -137,7 +149,7 @@ test('saveSession - error handling', async () => {
 test('getSession', async () => {
   const response = await getSession('session-id');
 
-  expect(response).toEqual(mockResponse.data);
+  expect(response).toEqual(mockResponseData);
 });
 
 test('getSession - returns undefined if session is not found', async () => {
@@ -155,8 +167,29 @@ test('getSession - returns undefined if session is not found', async () => {
   expect(response).toBeUndefined();
 });
 
+test('getTemplate', async () => {
+  const response = await getTemplate('template-id');
+
+  expect(response).toEqual(mockTemplateResponseData);
+});
+
+test('getTemplate - returns undefined if session is not found', async () => {
+  mockTemplateResponse.errors = [
+    {
+      message: 'test-error-message',
+      errorType: 'test-error-type',
+      errorInfo: { error: 'test-error' },
+    },
+  ];
+  mockTemplateResponse.data = undefined;
+
+  const response = await getTemplate('template-id');
+
+  expect(response).toBeUndefined();
+});
+
 test('saveTemplate - throws error when failing to save', async () => {
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
@@ -171,7 +204,7 @@ test('saveTemplate - throws error when failing to save', async () => {
 });
 
 test('saveTemplate - no errors but no data', async () => {
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
@@ -191,7 +224,7 @@ test('saveTemplate - should return saved data', async () => {
 
   randomUUIDMock.mockReturnValueOnce('abc-123-def-456-ghi');
 
-  const template: Template = {
+  const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
     type: 'NHS_APP',
