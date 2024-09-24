@@ -1,11 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { FormState } from '@utils/types';
-import { mockDeep } from 'jest-mock-extended';
-
-const mockState = mockDeep<FormState>({
-  validationError: undefined,
-});
 
 describe('ReviewTemplate component', () => {
   beforeEach(jest.resetAllMocks);
@@ -24,7 +19,7 @@ describe('ReviewTemplate component', () => {
           radiosId: 'preview-example',
           errorHeading: '',
           action: '',
-          state: mockState,
+          state: {},
           pageHeading: 'Example heading',
           options: [
             { id: 'option-1', text: 'option 1' },
@@ -41,7 +36,6 @@ describe('ReviewTemplate component', () => {
 
   it('matches error snapshot', () => {
     const state: FormState = {
-      ...mockState,
       validationError: {
         formErrors: [],
         fieldErrors: {
@@ -91,7 +85,7 @@ describe('ReviewTemplate component', () => {
           radiosId: 'preview-example',
           errorHeading: '',
           action: '',
-          state: mockState,
+          state: {},
           pageHeading: 'Example heading',
           options: [
             { id: 'option-1', text: 'option 1' },

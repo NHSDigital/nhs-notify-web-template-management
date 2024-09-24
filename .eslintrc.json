@@ -42,9 +42,7 @@
       "error",
       {
         "case": "kebabCase",
-        "ignore": [
-          ".tsx"
-        ]
+        "ignore": [".tsx"]
       }
     ],
     "react/react-in-jsx-scope": "off",
@@ -68,7 +66,9 @@
     "sonarjs/no-duplicate-string": "off",
     "react/no-danger": "off",
     "no-param-reassign": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-useless-constructor": "off",
+    "sonarjs/no-small-switch": "off"
   },
   "overrides": [
     {
@@ -77,6 +77,12 @@
         "@typescript-eslint/no-var-requires": "off",
         "unicorn/prefer-module": "off",
         "global-require": "off"
+      }
+    },
+    {
+      "files": ["*.test.ts"],
+      "rules": {
+        "unicorn/no-useless-undefined": "off"
       }
     }
   ]

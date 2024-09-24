@@ -63,7 +63,7 @@ jobs:
             --arg releaseVersion "main" \
             --arg targetEnvironment "main" \
             --arg targetAccountGroup "nhs-notify-template-management-dev" \
-            --arg targetComponent "templates" \
+            --arg targetComponent "app" \
             --arg terraformAction "apply" \
             '{ "ref": "main",
               "inputs": {
