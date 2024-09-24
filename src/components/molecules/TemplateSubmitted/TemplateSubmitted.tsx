@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { templateSubmittedPageContent } from '@content/content';
-import { getBasePath } from '@utils/get-base-path';
 
 type TemplateSubmittedProps = {
   templateId: string;
@@ -41,7 +40,7 @@ export const TemplateSubmitted = ({
           {templateIdHeading}
         </h2>
         <p>{templateId}</p>
-        <Link href={`${getBasePath()}/create-template`}>{newTemplateText}</Link>
+        <Link href='/create-template'>{newTemplateText}</Link>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
         <p>{doNextText}</p>
         <h3>{notLiveHeading}</h3>

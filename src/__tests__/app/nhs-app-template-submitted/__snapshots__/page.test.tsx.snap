@@ -34,7 +34,7 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
         template-id
       </p>
       <a
-        href="/templates/create-template"
+        href="/create-template"
       >
         Create another template
       </a>
