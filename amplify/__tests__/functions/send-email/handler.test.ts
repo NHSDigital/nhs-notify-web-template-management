@@ -1,8 +1,7 @@
 import { mockDeep } from 'jest-mock-extended';
 import { SendRawEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
-import { handler } from '../../../functions/send-email/handler';
+import { handler, emailTemplate } from '../../../functions/send-email';
 import type { Schema } from '../../../data/resource';
-import { emailTemplate } from '../../../functions/send-email/email-template';
 
 jest.mock('@aws-sdk/client-ses', () => ({
   ...jest.requireActual('@aws-sdk/client-ses'),
