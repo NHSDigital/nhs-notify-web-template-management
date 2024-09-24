@@ -27,7 +27,7 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
   msg.setSubject(`Template created - ${templateName}`);
   msg.addMessage({
     contentType: 'text/html',
-    data: emailTemplate(templateId, templateName) // `Template has been successfully created. The template name is ${templateName} and the template ID is ${templateId}. The template content is attached.`,
+    data: emailTemplate(templateId, templateName),
   });
   msg.addAttachment({
     filename: 'template-content.md',
