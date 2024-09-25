@@ -107,7 +107,6 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-sms-edit--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-edit-radio"
                     id="reviewEmailTemplateAction-sms-edit"
@@ -127,7 +126,6 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-sms-send--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-send-radio"
                     id="reviewEmailTemplateAction-sms-send"
@@ -147,7 +145,6 @@ exports[`Preview sms form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-sms-submit--label"
                     class="nhsuk-radios__input"
                     data-testid="sms-submit-radio"
                     id="reviewEmailTemplateAction-sms-submit"

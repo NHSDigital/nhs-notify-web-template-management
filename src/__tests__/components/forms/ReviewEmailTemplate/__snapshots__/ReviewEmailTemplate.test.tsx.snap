@@ -131,7 +131,6 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-email-edit--label"
                     class="nhsuk-radios__input"
                     data-testid="email-edit-radio"
                     id="reviewEmailTemplateAction-email-edit"
@@ -151,7 +150,6 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-email-send--label"
                     class="nhsuk-radios__input"
                     data-testid="email-send-radio"
                     id="reviewEmailTemplateAction-email-send"
@@ -171,7 +169,6 @@ exports[`Preview email form renders matches snapshot 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewEmailTemplateAction-email-submit--label"
                     class="nhsuk-radios__input"
                     data-testid="email-submit-radio"
                     id="reviewEmailTemplateAction-email-submit"

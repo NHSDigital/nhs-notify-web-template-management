@@ -125,7 +125,6 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="reviewLetterTemplateAction-letter-edit--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-edit-radio"
                 id="reviewLetterTemplateAction-letter-edit"
@@ -145,7 +144,6 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="reviewLetterTemplateAction-letter-preview--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-preview-radio"
                 id="reviewLetterTemplateAction-letter-preview"
@@ -165,7 +163,6 @@ exports[`Preview letter form renders matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="reviewLetterTemplateAction-letter-submit--label"
                 class="nhsuk-radios__input"
                 data-testid="letter-submit-radio"
                 id="reviewLetterTemplateAction-letter-submit"

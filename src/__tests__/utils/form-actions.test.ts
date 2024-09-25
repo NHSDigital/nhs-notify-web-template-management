@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { TemplateType } from '@utils/types';
+import { TemplateType, Session } from '@utils/types';
 import {
   createSession,
   saveSession,
@@ -13,6 +13,8 @@ import {
 import { Template, TemplateInput } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
 import { logger } from '@utils/logger';
+import { getAmplifyBackendClient } from '@utils/amplify-utils';
+import { mockDeep } from 'jest-mock-extended';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 jest.mock('node:crypto');
@@ -29,11 +31,6 @@ const mockResponseData = {
   nhsAppTemplateMessage: 'template-message',
 };
 
-const mockResponse = {
-  data: mockResponseData as unknown,
-  errors: undefined as unknown,
-};
-
 const mockTemplateResponseData = {
   id: 'template-id',
   name: 'template-name',
@@ -43,68 +40,69 @@ const mockTemplateResponseData = {
     content: 'template-content',
   },
 };
-
-const mockTemplateResponse = {
-  data: mockTemplateResponseData as unknown,
-  errors: undefined as unknown,
-};
-
-const mockModels = {
-  SessionStorage: {
-    create: async () => mockResponse,
-    update: async () => mockResponse,
-    get: async () => mockResponse,
-  },
-  TemplateStorage: {
-    create: async () => mockTemplateResponse,
-    get: async () => mockTemplateResponse,
-  },
-};
-
-const mockSchema = {
-  models: mockModels,
-  queries: {
-    sendEmail: ({ templateId }: { templateId: string }) => {
-      if (templateId === 'template-id-error') {
-        return {
-          errors: ['email error'],
-        };
-      }
-
-      return {};
-    },
-  },
-};
-
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => mockSchema,
-}));
+jest.mock('@utils/amplify-utils');
 
 beforeEach(() => {
   jest.resetAllMocks();
-  mockResponse.errors = undefined;
-  mockResponse.data = mockResponseData;
+
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date('2022-01-01 10:00'));
 });
 
+type MockSchema = ReturnType<typeof getAmplifyBackendClient>;
+
+type MockSchemaInput = Parameters<typeof mockDeep<MockSchema>>[0];
+
+const setup = (schema: MockSchemaInput) => {
+  const mockSchema = mockDeep<MockSchema>(schema);
+
+  jest.mocked(getAmplifyBackendClient).mockReturnValue(mockSchema);
+};
+
 test('createSession', async () => {
-  const response = await createSession({
+  const mockCreateSession = jest
+    .fn()
+    .mockReturnValue({ data: mockResponseData });
+  setup({
+    models: {
+      SessionStorage: {
+        create: mockCreateSession,
+      },
+    },
+  });
+
+  const createSessionInput: Omit<Session, 'id'> = {
     templateType: 'UNKNOWN',
     nhsAppTemplateName: '',
     nhsAppTemplateMessage: '',
-  });
+  };
 
-  expect(response).toEqual(mockResponse.data);
+  const response = await createSession(createSessionInput);
+
+  expect(mockCreateSession).toHaveBeenCalledWith({
+    ...createSessionInput,
+    ttl: new Date('2022-01-06 10:00').getTime() / 1000,
+  });
+  expect(response).toEqual(mockResponseData);
 });
 
 test('createSession - error handling', async () => {
-  mockResponse.errors = [
-    {
-      message: 'test-error-message',
-      errorType: 'test-error-type',
-      errorInfo: { error: 'test-error' },
+  const mockCreateSession = jest.fn().mockReturnValue({
+    errors: [
+      {
+        message: 'test-error-message',
+        errorType: 'test-error-type',
+        errorInfo: { error: 'test-error' },
+      },
+    ],
+  });
+  setup({
+    models: {
+      SessionStorage: {
+        create: mockCreateSession,
+      },
     },
-  ];
-  mockResponse.data = undefined;
+  });
 
   await expect(
     createSession({
@@ -116,6 +114,14 @@ test('createSession - error handling', async () => {
 });
 
 test('saveSession', async () => {
+  setup({
+    models: {
+      SessionStorage: {
+        update: jest.fn().mockReturnValue({ data: mockResponseData }),
+      },
+    },
+  });
+
   const response = await saveSession({
     id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
     templateType: TemplateType.NHS_APP,
@@ -123,18 +129,25 @@ test('saveSession', async () => {
     nhsAppTemplateMessage: 'template-message',
   });
 
-  expect(response).toEqual(mockResponse.data);
+  expect(response).toEqual(mockResponseData);
 });
 
 test('saveSession - error handling', async () => {
-  mockResponse.errors = [
-    {
-      message: 'test-error-message',
-      errorType: 'test-error-type',
-      errorInfo: { error: 'test-error' },
+  setup({
+    models: {
+      SessionStorage: {
+        update: jest.fn().mockReturnValue({
+          errors: [
+            {
+              message: 'test-error-message',
+              errorType: 'test-error-type',
+              errorInfo: { error: 'test-error' },
+            },
+          ],
+        }),
+      },
     },
-  ];
-  mockResponse.data = undefined;
+  });
 
   await expect(
     saveSession({
@@ -147,20 +160,35 @@ test('saveSession - error handling', async () => {
 });
 
 test('getSession', async () => {
+  setup({
+    models: {
+      SessionStorage: {
+        get: jest.fn().mockReturnValue({ data: mockResponseData }),
+      },
+    },
+  });
+
   const response = await getSession('session-id');
 
   expect(response).toEqual(mockResponseData);
 });
 
 test('getSession - returns undefined if session is not found', async () => {
-  mockResponse.errors = [
-    {
-      message: 'test-error-message',
-      errorType: 'test-error-type',
-      errorInfo: { error: 'test-error' },
+  setup({
+    models: {
+      SessionStorage: {
+        get: jest.fn().mockReturnValue({
+          errors: [
+            {
+              message: 'test-error-message',
+              errorType: 'test-error-type',
+              errorInfo: { error: 'test-error' },
+            },
+          ],
+        }),
+      },
     },
-  ];
-  mockResponse.data = undefined;
+  });
 
   const response = await getSession('session-id');
 
@@ -168,20 +196,35 @@ test('getSession - returns undefined if session is not found', async () => {
 });
 
 test('getTemplate', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        get: jest.fn().mockReturnValue({ data: mockTemplateResponseData }),
+      },
+    },
+  });
+
   const response = await getTemplate('template-id');
 
   expect(response).toEqual(mockTemplateResponseData);
 });
 
 test('getTemplate - returns undefined if session is not found', async () => {
-  mockTemplateResponse.errors = [
-    {
-      message: 'test-error-message',
-      errorType: 'test-error-type',
-      errorInfo: { error: 'test-error' },
+  setup({
+    models: {
+      TemplateStorage: {
+        get: jest.fn().mockReturnValue({
+          errors: [
+            {
+              message: 'test-error-message',
+              errorType: 'test-error-type',
+              errorInfo: { error: 'test-error' },
+            },
+          ],
+        }),
+      },
     },
-  ];
-  mockTemplateResponse.data = undefined;
+  });
 
   const response = await getTemplate('template-id');
 
@@ -189,14 +232,21 @@ test('getTemplate - returns undefined if session is not found', async () => {
 });
 
 test('saveTemplate - throws error when failing to save', async () => {
-  const template: TemplateInput = {
+  setup({
+    models: {
+      TemplateStorage: {
+        create: jest.fn().mockReturnValue({ errors: ['something went wrong'] }),
+      },
+    },
+  });
+
+  const template: Template = {
+    id: 'template-id',
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
   };
-
-  mockTemplateResponse.errors = ['something went wrong'];
 
   await expect(saveTemplate(template)).rejects.toThrow(
     'Failed saving NHS_APP template'
@@ -204,15 +254,20 @@ test('saveTemplate - throws error when failing to save', async () => {
 });
 
 test('saveTemplate - no errors but no data', async () => {
-  const template: TemplateInput = {
+  setup({
+    models: {
+      TemplateStorage: {
+        create: jest.fn().mockReturnValue({}),
+      },
+    },
+  });
+
+  const template: Omit<Template, 'id'> = {
     fields: { content: 'body' },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
   };
-
-  mockTemplateResponse.errors = undefined;
-  mockTemplateResponse.data = undefined as unknown as Template;
 
   await expect(saveTemplate(template)).rejects.toThrow(
     'NHS_APP template entity in unknown state. No errors reported but entity returned as falsy'
@@ -220,10 +275,6 @@ test('saveTemplate - no errors but no data', async () => {
 });
 
 test('saveTemplate - should return saved data', async () => {
-  const createSpy = jest.spyOn(mockModels.TemplateStorage, 'create');
-
-  randomUUIDMock.mockReturnValueOnce('abc-123-def-456-ghi');
-
   const template: TemplateInput = {
     fields: { content: 'body' },
     name: 'name',
@@ -238,21 +289,35 @@ test('saveTemplate - should return saved data', async () => {
     updatedAt: 'today',
   };
 
-  mockTemplateResponse.data = expected;
+  const mockCreateTemplate = jest.fn().mockReturnValue({ data: expected });
+
+  setup({
+    models: {
+      TemplateStorage: {
+        create: mockCreateTemplate,
+      },
+    },
+  });
+
+  randomUUIDMock.mockReturnValueOnce('abc-123-def-456-ghi');
 
   const entity = await saveTemplate(template);
 
   expect(entity).toEqual(expected);
 
-  expect(createSpy).toHaveBeenCalledWith({
+  expect(mockCreateTemplate).toHaveBeenCalledWith({
     ...template,
     id: 'nhs_app-abc-123-def-456-ghi',
   });
-
-  createSpy.mockRestore();
 });
 
 test('sendEmail - no errors', async () => {
+  setup({
+    queries: {
+      sendEmail: jest.fn().mockReturnValue({}),
+    },
+  });
+
   const mockLogger = jest.mocked(logger);
   await sendEmail('template-id', 'template-name', 'template-message');
 
@@ -260,6 +325,12 @@ test('sendEmail - no errors', async () => {
 });
 
 test('sendEmail - errors', async () => {
+  setup({
+    queries: {
+      sendEmail: jest.fn().mockReturnValue({ errors: ['email error'] }),
+    },
+  });
+
   const mockLogger = jest.mocked(logger);
   await sendEmail('template-id-error', 'template-name', 'template-message');
 
