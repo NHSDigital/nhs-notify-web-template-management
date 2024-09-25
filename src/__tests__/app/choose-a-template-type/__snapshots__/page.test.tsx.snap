@@ -45,7 +45,6 @@ exports[`ChooseATemplateTypePage 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="templateType-NHS_APP--label"
                 class="nhsuk-radios__input"
                 data-testid="NHS_APP-radio"
                 id="templateType-NHS_APP"
@@ -65,7 +64,6 @@ exports[`ChooseATemplateTypePage 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="templateType-EMAIL--label"
                 class="nhsuk-radios__input"
                 data-testid="EMAIL-radio"
                 id="templateType-EMAIL"
@@ -85,7 +83,6 @@ exports[`ChooseATemplateTypePage 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="templateType-SMS--label"
                 class="nhsuk-radios__input"
                 data-testid="SMS-radio"
                 id="templateType-SMS"
@@ -105,7 +102,6 @@ exports[`ChooseATemplateTypePage 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="templateType-LETTER--label"
                 class="nhsuk-radios__input"
                 data-testid="LETTER-radio"
                 id="templateType-LETTER"

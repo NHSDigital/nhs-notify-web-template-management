@@ -38,7 +38,6 @@ exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other 
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="radios-id-option-1"
@@ -58,7 +57,6 @@ exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other 
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="radios-id-option-2"
@@ -129,7 +127,6 @@ exports[`Renders NHSNotifyRadioButtonForm - renders without validation error fie
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="radios-id-option-1"
@@ -149,7 +146,6 @@ exports[`Renders NHSNotifyRadioButtonForm - renders without validation error fie
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="radios-id-option-2"
@@ -232,7 +228,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="radios-id-option-1"
@@ -252,7 +247,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="radios-id-option-2"
@@ -330,7 +324,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="radios-id-option-1"
@@ -350,7 +343,6 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="radios-id-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="radios-id-option-2"
