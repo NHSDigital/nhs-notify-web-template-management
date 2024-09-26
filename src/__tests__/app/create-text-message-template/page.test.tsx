@@ -1,9 +1,54 @@
 import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page';
-import { render } from '@testing-library/react';
+import { getSession } from '@utils/form-actions';
+import { Session, TemplateType } from '@utils/types';
+import { redirect } from 'next/navigation';
+import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate'
 
-test('CreateSmsTemplatePage', async () => {
-  const page = await CreateSmsTemplatePage();
-  const container = render(page);
+jest.mock('@utils/amplify-utils', () => ({
+  getAmplifyBackendClient: () => ({
+    models: {
+      SessionStorage: {
+        update: () => ({ data: {} }),
+      },
+    },
+  }),
+}));
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@forms/CreateSmsTemplate/CreateSmsTemplate');
 
-  expect(container.asFragment()).toMatchSnapshot();
+const getSessionMock = jest.mocked(getSession);
+const redirectMock = jest.mocked(redirect);
+const CreateSmsTemplateMock = jest.mocked(CreateSmsTemplate);
+
+const initialState: Session = {
+  id: 'session-id',
+  templateType: TemplateType.SMS,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
+
+describe('CreateSmsTemplatePage', () => {
+  beforeEach(jest.resetAllMocks);
+
+  it('should redirect to invalid-session when no session is found', async () => {
+    getSessionMock.mockResolvedValueOnce(undefined);
+
+    await CreateSmsTemplatePage({params: { sessionId: 'session-id' }});
+
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+  });
+
+  it('should render CreateSmsTemplate component when session is found', async () => {
+    getSessionMock.mockResolvedValueOnce(initialState);
+    CreateSmsTemplateMock.mockImplementationOnce(() => <p>rendered</p>)
+
+    const page = await CreateSmsTemplatePage({params: { sessionId: 'session-id' }});
+
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+
+    expect(page).toMatchSnapshot();
+  });
 });

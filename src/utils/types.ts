@@ -25,6 +25,8 @@ export type Session = {
   templateType: TemplateType | 'UNKNOWN';
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
+  smsTemplateName?: string;
+  smsTemplateMessage?: string;
 };
 
 export type FormState = {
