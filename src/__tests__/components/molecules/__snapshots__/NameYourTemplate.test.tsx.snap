@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NameYourTemplate component renders component correctly as NameYourTemplate 1`] = `
+<DocumentFragment>
+  <details
+    class="nhsuk-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Naming your templates
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+    >
+      <p>
+        You should name your templates in a way that works best for your service or organisation.
+      </p>
+      <p>
+        Common template names include the:
+      </p>
+      <ul>
+        <li>
+          message channel it uses
+        </li>
+        <li>
+          subject or reason for the message
+        </li>
+        <li>
+          intended audience for the template
+        </li>
+        <li>
+          version number of the template
+        </li>
+      </ul>
+      <p>
+        For example, 'Email - covid19 2023 - over 65s - version 3'
+      </p>
+    </div>
+  </details>
+</DocumentFragment>
+`;
