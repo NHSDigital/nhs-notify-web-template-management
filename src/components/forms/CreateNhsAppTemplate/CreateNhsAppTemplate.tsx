@@ -21,7 +21,7 @@ import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-a
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
-import { NameYourTemplate } from '@molecules/NameYourTemplate/NameYourTemplate';
+import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { PageComponentProps } from '@utils/types';

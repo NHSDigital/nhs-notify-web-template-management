@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { NameYourTemplate } from '@molecules/NameYourTemplate/NameYourTemplate';
+import { NameYourTemplate } from '@molecules/NameYourTemplate';
 
 describe('NameYourTemplate component', () => {
   it('renders component correctly as NameYourTemplate', () => {
