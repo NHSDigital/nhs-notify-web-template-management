@@ -13,6 +13,7 @@ exports[`SmsTemplateSubmitted 1`] = `
       >
         <h1
           class="nhsuk-heading-l nhsuk-u-margin-bottom-0"
+          id="template-submitted"
         >
           Template submitted
         </h1>

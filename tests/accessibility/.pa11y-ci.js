@@ -11,6 +11,8 @@ const {
   createTextMessageTemplateErrorPage,
   reviewTextMessageTemplatePage,
   reviewTextMessageTemplateErrorPage,
+  submitTextMessageTemplatePage,
+  textMessageTemplateSubmittedPage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -31,6 +33,8 @@ module.exports = {
     performCheck(createTextMessageTemplateErrorPage(baseUrl)),
     performCheck(reviewTextMessageTemplatePage(baseUrl)),
     performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
+    performCheck(submitTextMessageTemplatePage(baseUrl)),
+    performCheck(textMessageTemplateSubmittedPage(baseUrl)),
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
   ],
   defaults: {

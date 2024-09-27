@@ -28,7 +28,10 @@ export const TemplateSubmitted = ({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-two-thirds'>
         <div className='notify-confirmation-panel'>
-          <h1 className='nhsuk-heading-l nhsuk-u-margin-bottom-0'>
+          <h1
+            id='template-submitted'
+            className='nhsuk-heading-l nhsuk-u-margin-bottom-0'
+          >
             {pageHeading}
           </h1>
         </div>
