@@ -315,6 +315,64 @@ exports[`CreateNhsAppTemplatePage 1`] = `
       </details>
       <details
         class="nhsuk-details"
+        data-testid="headings-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="headings-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Headings
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="headings-text"
+        >
+          <p>
+            Use one hash symbol followed by a space for a heading, for example:
+          </p>
+          <code>
+            # This is a heading
+          </code>
+          <p>
+            To add a subheading, use 2 hash symbols:
+          </p>
+          <code>
+            ## This is a subheading
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="bold-text-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="bold-text-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Bold text
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="bold-text-text"
+        >
+          <p>
+            Use two asterisk symbols on either side of the words you want to be bold, for example:
+          </p>
+          <code>
+            **this is bold text**
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -350,32 +408,6 @@ exports[`CreateNhsAppTemplatePage 1`] = `
           </p>
           <code>
             [Read more](https://www.nhs.uk/)
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
           </code>
         </div>
       </details>
