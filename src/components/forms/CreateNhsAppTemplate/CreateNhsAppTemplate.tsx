@@ -24,7 +24,7 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, TemplateType } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 
@@ -98,7 +98,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <div className={templateNameError && 'nhsuk-form-group--error'}>
             <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
             <HintText>{templateNameHintText}</HintText>
-            <NameYourTemplate />
+            <NameYourTemplate template={TemplateType.NHS_APP} />
             <TextInput
               id='nhsAppTemplateName'
               onChange={templateNameHandler}

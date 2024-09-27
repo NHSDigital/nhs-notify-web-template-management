@@ -1,7 +1,8 @@
 import { nameYourTemplateContent } from '@content/content';
 import { Details } from 'nhsuk-react-components';
+import { NameYourTemplateType } from './name-your-template.types';
 
-export function NameYourTemplate() {
+export function NameYourTemplate({ template }: NameYourTemplateType) {
   const {
     templateNameDetailsSummary,
     templateNameDetailsOpeningParagraph,
@@ -9,6 +10,8 @@ export function NameYourTemplate() {
     templateNameDetailsList,
     templateNameDetailsExample,
   } = nameYourTemplateContent;
+
+  const templateNameDetailsExampleText = templateNameDetailsExample[template];
 
   return (
     <Details>
@@ -21,7 +24,9 @@ export function NameYourTemplate() {
             <li key={`list-item-${listItem.id}`}>{listItem.text}</li>
           ))}
         </ul>
-        <p>{templateNameDetailsExample}</p>
+        <p data-testid='template-name-example'>
+          {templateNameDetailsExampleText}
+        </p>
       </Details.Text>
     </Details>
   );
