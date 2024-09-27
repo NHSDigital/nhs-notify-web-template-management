@@ -325,7 +325,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           data-testid="error-summary"
           id="error-summary-title"
         >
-          There was a problem
+          There is a problem
         </h2>
         <ul
           class="nhsuk-list nhsuk-error-summary__list"
@@ -653,7 +653,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           data-testid="error-summary"
           id="error-summary-title"
         >
-          There was a problem
+          There is a problem
         </h2>
         <ul
           class="nhsuk-list nhsuk-error-summary__list"

@@ -19,6 +19,7 @@ import { PageComponentProps } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NameYourTemplate } from '@molecules/NameYourTemplate';
+import { createSmsTemplatePageContent as content } from '@content/content';
 import { createSmsTemplateAction } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
@@ -45,12 +46,14 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
         </Link>
       </div>
       <div className='nhsuk-grid-column-two-thirds'>
-        <ZodErrorSummary errorHeading='There was a problem' state={state} />
-        <h1>Create text message template</h1>
+        <ZodErrorSummary errorHeading={content.errorHeading} state={state} />
+        <h1>{content.pageHeading}</h1>
         <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
           <div className={templateNameError && 'nhsuk-form-group--error'}>
-            <Label htmlFor='smsTemplateName'>Template name</Label>
-            <HintText>This will not be visible to recipients.</HintText>
+            <Label htmlFor='smsTemplateName'>
+              {content.templateNameLabelText}
+            </Label>
+            <HintText>{content.templateNameHintText}</HintText>
             <NameYourTemplate template='SMS' />
             <TextInput
               id='smsTemplateName'
@@ -61,7 +64,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
           </div>
           <Textarea
             id='smsTemplateMessage'
-            label='Message'
+            label={content.templateMessageLabelText}
             defaultValue={smsMessageValue}
             onChange={handler}
             maxLength={918}
@@ -74,22 +77,19 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
               {smsMessageValue.length} characters
             </p>
             <p>
-              This template will be sent as{' '}
-              {calculateHowManySmsMessages(Number(smsMessageValue.length))} text
-              messages. If you&apos;re using personalisation fields, it could
-              send as more.
+              {content.smsCountText1}
+              {calculateHowManySmsMessages(Number(smsMessageValue.length))}
+              {content.smsCountText2}
             </p>
           </div>
           <p>
-            <Link
-              href='https://notify.nhs.uk/pricing/text-messages'
-              target='_blank'
-            >
-              Learn more about character counts and text messaging pricing
-              (opens in a new tab)
+            <Link href={content.smsPricingLink} target='_blank'>
+              {content.smsPricingText}
             </Link>
           </p>
-          <Button id='create-sms-template-submit-button'>Continue</Button>
+          <Button id='create-sms-template-submit-button'>
+            {content.buttonText}
+          </Button>
         </NHSNotifyFormWrapper>
       </div>
       <div className='nhsuk-grid-column-one-third'>
