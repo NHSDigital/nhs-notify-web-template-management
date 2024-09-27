@@ -54,6 +54,48 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           >
             This will not be visible to recipients.
           </div>
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
           <div
             class="nhsuk-form-group"
           >
@@ -327,6 +369,48 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           >
             This will not be visible to recipients.
           </div>
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
           <div
             class="nhsuk-form-group nhsuk-form-group--error"
           >
@@ -614,6 +698,48 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           >
             This will not be visible to recipients.
           </div>
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
           <div
             class="nhsuk-form-group nhsuk-form-group--error"
           >
@@ -879,6 +1005,48 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           >
             This will not be visible to recipients.
           </div>
+          <details
+            class="nhsuk-details"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
           <div
             class="nhsuk-form-group"
           >
