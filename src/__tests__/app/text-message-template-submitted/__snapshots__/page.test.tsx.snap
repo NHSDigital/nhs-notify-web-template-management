@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SmsTemplateSubmitted 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <div
+        class="notify-confirmation-panel"
+      >
+        <h1
+          class="nhsuk-heading-l nhsuk-u-margin-bottom-0"
+        >
+          Template submitted
+        </h1>
+      </div>
+      <h2
+        class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
+      >
+        Template name
+      </h2>
+      <p>
+        template-name
+      </p>
+      <h2
+        class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
+      >
+        Template ID
+      </h2>
+      <p>
+        template-id
+      </p>
+      <a
+        href="/create-template"
+      >
+        Create another template
+      </a>
+      <h2
+        class="nhsuk-u-margin-top-5"
+      >
+        What you need to do next
+      </h2>
+      <p>
+        You'll receive a confirmation email, which contains the template name and ID.
+      </p>
+      <h3>
+        If you're currently onboarding
+      </h3>
+      <p>
+        Tell your onboarding manager once you've submitted all your templates.
+      </p>
+      <h3>
+        If you've already onboarded
+      </h3>
+      <p>
+        <a
+          href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
+        >
+          Raise a request with the service desk
+        </a>
+         once you've submitted all your templates.
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;

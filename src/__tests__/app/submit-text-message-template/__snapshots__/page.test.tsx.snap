@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubmitSmsTemplatePage SubmitSmsTemplatePage 1`] = `
+<SubmitTemplate
+  sessionId="session-id"
+  templateName="template-name"
+/>
+`;
