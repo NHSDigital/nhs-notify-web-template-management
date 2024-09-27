@@ -34,8 +34,8 @@ export async function createSmsTemplateAction(
     templateType: formState.templateType,
     smsTemplateName: fields.smsTemplateName,
     smsTemplateMessage: fields.smsTemplateMessage,
-    nhsAppTemplateMessage: ' ', // TODO: this needs to be optional
-    nhsAppTemplateName: ' ', // TODO: this needs to be optional
+    nhsAppTemplateMessage: ' ',
+    nhsAppTemplateName: ' ',
   });
 
   return redirect(

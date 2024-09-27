@@ -41,6 +41,19 @@ describe('CreateSmsTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
 
+  it('should redirect to invalid-session when sessions template type is not SMS', async () => {
+    getSessionMock.mockResolvedValueOnce({
+      ...initialState,
+      templateType: TemplateType.NHS_APP,
+    });
+
+    await CreateSmsTemplatePage({ params: { sessionId: 'session-id' } });
+
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+  });
+
   it('should render CreateSmsTemplate component when session is found', async () => {
     getSessionMock.mockResolvedValueOnce(initialState);
     CreateSmsTemplateMock.mockImplementationOnce(() => <p>rendered</p>);
