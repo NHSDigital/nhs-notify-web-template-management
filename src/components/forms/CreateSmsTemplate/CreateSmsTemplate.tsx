@@ -19,7 +19,7 @@ import { PageComponentProps } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { createSmsTemplateAction } from './server-action';
-import { calculateHowManySmsMessages } from './form-actions';
+import { calculateHowManySmsMessages } from './view-actions';
 
 export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(createSmsTemplateAction, initialState);

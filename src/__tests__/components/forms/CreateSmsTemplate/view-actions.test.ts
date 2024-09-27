@@ -1,4 +1,4 @@
-import { calculateHowManySmsMessages } from '@forms/CreateSmsTemplate/form-actions';
+import { calculateHowManySmsMessages } from '@forms/CreateSmsTemplate/view-actions';
 
 describe('calculateHowManySmsMessages', () => {
   test.each([
