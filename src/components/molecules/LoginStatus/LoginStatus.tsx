@@ -32,7 +32,7 @@ export default function LoginStatus() {
     case 'unauthenticated': {
       return (
         <Header.NavItem
-          href={`/auth~featuredomain-testing?redirect=${encodeURIComponent(location.href)}`} // eslint-disable-line no-restricted-globals
+          href={`/auth~featuredomain-testing?redirect=${encodeURIComponent(location.pathname)}`} // eslint-disable-line no-restricted-globals
         >
           Sign in
         </Header.NavItem>
