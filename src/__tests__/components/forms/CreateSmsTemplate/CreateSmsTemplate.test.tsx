@@ -60,8 +60,8 @@ describe('CreateSmsTemplate component', () => {
               smsTemplateName: ['Template name error'],
             },
           },
-          smsTemplateName: '',
-          smsTemplateMessage: '',
+          smsTemplateName: undefined,
+          smsTemplateMessage: undefined,
         })}
       />
     );
@@ -79,8 +79,8 @@ describe('CreateSmsTemplate component', () => {
               smsTemplateMessage: ['Template message error'],
             },
           },
-          smsTemplateName: '',
-          smsTemplateMessage: '',
+          smsTemplateName: undefined,
+          smsTemplateMessage: undefined,
         })}
       />
     );
