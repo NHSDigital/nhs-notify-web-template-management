@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
-import { NameYourTemplate } from '@molecules/NameYourTemplate';
+import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { TemplateType } from '@utils/types';
 import { nameYourTemplateContent } from '@content/content';
 
-describe('NameYourTemplate component', () => {
+describe('TemplateNameGuidance component', () => {
   const templateTypes = Object.keys(TemplateType);
 
-  it('renders component correctly as NameYourTemplate', () => {
+  it('renders component correctly as TemplateNameGuidance', () => {
     const container = render(
-      <NameYourTemplate template={TemplateType.NHS_APP} />
+      <TemplateNameGuidance template={TemplateType.NHS_APP} />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -22,7 +22,7 @@ describe('NameYourTemplate component', () => {
         nameYourTemplateContent.templateNameDetailsExample[templateTypeToUse];
 
       const container = render(
-        <NameYourTemplate template={templateTypeToUse} />
+        <TemplateNameGuidance template={templateTypeToUse} />
       );
 
       expect(

@@ -1,8 +1,8 @@
 import { nameYourTemplateContent } from '@content/content';
 import { Details } from 'nhsuk-react-components';
-import { NameYourTemplateType } from './name-your-template.types';
+import { TemplateNameGuidanceType } from './template-name-guidance';
 
-export function NameYourTemplate({ template }: NameYourTemplateType) {
+export function TemplateNameGuidance({ template }: TemplateNameGuidanceType) {
   const {
     templateNameDetailsSummary,
     templateNameDetailsOpeningParagraph,
