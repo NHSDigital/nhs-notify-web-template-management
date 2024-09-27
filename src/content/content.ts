@@ -383,11 +383,7 @@ export const chooseTemplatePageContent = {
   hint: 'Select one option',
 };
 
-export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS App message template',
-  errorHeading: 'There is a problem',
-  templateNameLabelText: 'Template name',
-  templateNameHintText: 'This will not be visible to recipients.',
+export const nameYourTemplateContent = {
   templateNameDetailsSummary: 'Naming your templates',
   templateNameDetailsOpeningParagraph:
     'You should name your templates in a way that works best for your service or organisation.',
@@ -407,8 +403,19 @@ export const createNhsAppTemplatePageContent = {
       text: 'version number of the template',
     },
   ],
-  templateNameDetailsExample:
-    "For example, 'Email - covid19 2023 - over 65s - version 3'",
+  templateNameDetailsExample: {
+    [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.LETTER]: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
+  },
+};
+
+export const createNhsAppTemplatePageContent = {
+  pageHeading: 'Create NHS App message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
   buttonText: 'Continue',
 };

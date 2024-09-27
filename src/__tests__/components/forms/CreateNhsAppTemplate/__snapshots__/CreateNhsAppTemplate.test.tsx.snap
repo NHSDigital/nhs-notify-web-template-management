@@ -112,8 +112,10 @@ exports[`renders page 1`] = `
                   version number of the template
                 </li>
               </ul>
-              <p>
-                For example, 'Email - covid19 2023 - over 65s - version 3'
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -528,8 +530,10 @@ exports[`renders page one error 1`] = `
                   version number of the template
                 </li>
               </ul>
-              <p>
-                For example, 'Email - covid19 2023 - over 65s - version 3'
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -958,8 +962,10 @@ exports[`renders page with multiple errors 1`] = `
                   version number of the template
                 </li>
               </ul>
-              <p>
-                For example, 'Email - covid19 2023 - over 65s - version 3'
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -1366,8 +1372,10 @@ exports[`renders page with preloaded field values 1`] = `
                   version number of the template
                 </li>
               </ul>
-              <p>
-                For example, 'Email - covid19 2023 - over 65s - version 3'
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
