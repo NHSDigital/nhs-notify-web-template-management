@@ -91,6 +91,9 @@ describe('CreateSmsTemplate server actions', () => {
       nhsAppTemplateName: ' ', // TODO: this needs to be optional
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/preview-sms-template/session-id', 'push');
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-sms-template/session-id',
+      'push'
+    );
   });
 });
