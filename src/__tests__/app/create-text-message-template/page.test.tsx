@@ -2,7 +2,7 @@ import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]
 import { getSession } from '@utils/form-actions';
 import { Session, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
-import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate'
+import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate';
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
@@ -32,9 +32,9 @@ describe('CreateSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should redirect to invalid-session when no session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(undefined);
+    getSessionMock.mockResolvedValueOnce();
 
-    await CreateSmsTemplatePage({params: { sessionId: 'session-id' }});
+    await CreateSmsTemplatePage({ params: { sessionId: 'session-id' } });
 
     expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
@@ -43,9 +43,11 @@ describe('CreateSmsTemplatePage', () => {
 
   it('should render CreateSmsTemplate component when session is found', async () => {
     getSessionMock.mockResolvedValueOnce(initialState);
-    CreateSmsTemplateMock.mockImplementationOnce(() => <p>rendered</p>)
+    CreateSmsTemplateMock.mockImplementationOnce(() => <p>rendered</p>);
 
-    const page = await CreateSmsTemplatePage({params: { sessionId: 'session-id' }});
+    const page = await CreateSmsTemplatePage({
+      params: { sessionId: 'session-id' },
+    });
 
     expect(getSessionMock).toHaveBeenCalledWith('session-id');
 

@@ -34,12 +34,12 @@ export async function createSmsTemplateAction(
     templateType: formState.templateType,
     smsTemplateName: fields.smsTemplateName,
     smsTemplateMessage: fields.smsTemplateMessage,
-    nhsAppTemplateMessage: ' ', // TODO: this needs to be optional
-    nhsAppTemplateName: ' ', // TODO: this needs to be optional
+    nhsAppTemplateMessage: '', // TODO: this needs to be optional
+    nhsAppTemplateName: '', // TODO: this needs to be optional
   });
 
   return redirect(
-    `/preview-sms-template/${updatedSession.id}`,
+    `/preview-text-message-template/${updatedSession.id}`,
     RedirectType.push
   );
 }
