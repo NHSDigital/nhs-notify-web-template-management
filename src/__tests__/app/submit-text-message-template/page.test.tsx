@@ -50,4 +50,50 @@ describe('SubmitSmsTemplatePage', () => {
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
+
+  test.each([
+    {
+      templateType: TemplateType.LETTER,
+      smsTemplateName: 'valid-name',
+      smsTemplateMessage: 'valid-message',
+    },
+    {
+      templateType: TemplateType.EMAIL,
+      smsTemplateName: 'valid-name',
+      smsTemplateMessage: 'valid-message',
+    },
+    {
+      templateType: TemplateType.NHS_APP,
+      smsTemplateName: 'valid-name',
+      smsTemplateMessage: 'valid-message',
+    },
+    {
+      templateType: TemplateType.SMS,
+      smsTemplateName: 'name-1',
+      smsTemplateMessage: undefined,
+    },
+    {
+      templateType: TemplateType.SMS,
+      smsTemplateName: undefined,
+      smsTemplateMessage: 'message-1',
+    },
+  ])(
+    'should redirect to invalid-session when session template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
+    async (value) => {
+      getSessionMock.mockResolvedValueOnce({
+        id: 'session-id',
+        nhsAppTemplateMessage: '',
+        nhsAppTemplateName: '',
+        ...value,
+      });
+
+      await SubmitSmsTemplatePage({
+        params: {
+          sessionId: 'session-id',
+        },
+      });
+
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    }
+  );
 });
