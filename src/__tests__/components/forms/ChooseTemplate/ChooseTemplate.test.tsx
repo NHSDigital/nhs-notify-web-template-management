@@ -55,7 +55,7 @@ describe('Choose template page', () => {
     }
     expect(submitButton).toBeInTheDocument();
 
-    for (const [_, radioButton] of radioButtons.entries()) {
+    for (const [, radioButton] of radioButtons.entries()) {
       // select an option
       fireEvent(radioButton, new MouseEvent('click'));
 

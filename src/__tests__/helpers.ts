@@ -8,10 +8,10 @@ function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
 
 export const getMockFormData = (formData: Record<string, string>) =>
   mockDeep<FormData>({
-    entries: () => {
+    entries: jest.fn().mockImplementation(() => {
       const formDataEntries = Object.entries(formData);
 
       return iteratorFromList(formDataEntries);
-    },
+    }),
     get: (key: string) => formData[key],
   });

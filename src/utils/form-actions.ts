@@ -7,9 +7,27 @@ import { randomUUID } from 'node:crypto';
 import { Session } from './types';
 import { logger } from './logger';
 
+const calculateTTL = () => {
+  const currentTimeSeconds = Math.floor(Date.now() / 1000);
+
+  const maxSessionLengthInSeconds = Number.parseInt(
+    process.env.MAX_SESSION_LENGTH_IN_SECONDS ?? '432000',
+    10
+  ); // 5 days in seconds
+
+  return currentTimeSeconds + maxSessionLengthInSeconds;
+};
+
 export async function createSession(session: Omit<Session, 'id'>) {
+  const sessionWithTTL = {
+    ...session,
+    ttl: calculateTTL(),
+  };
   const { data, errors } =
-    await getAmplifyBackendClient().models.SessionStorage.create(session);
+    await getAmplifyBackendClient().models.SessionStorage.create(
+      sessionWithTTL
+    );
+
   if (errors) {
     logger.error('Failed to create session', errors);
     throw new Error('Failed to create new template');
@@ -19,7 +37,11 @@ export async function createSession(session: Omit<Session, 'id'>) {
 
 export async function saveSession(session: Session) {
   const { data, errors } =
-    await getAmplifyBackendClient().models.SessionStorage.update(session);
+    await getAmplifyBackendClient().models.SessionStorage.update({
+      ...session,
+      ttl: calculateTTL(),
+    });
+
   if (errors) {
     logger.error('Failed to save session', errors);
     throw new Error('Failed to save template data');
