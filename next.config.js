@@ -24,13 +24,7 @@ const nextConfig = {
         destination: basePath,
         basePath: false,
         permanent: false,
-      },
-      {
-        source: `${basePath}${authBasePath}`,
-        destination: authBasePath,
-        basePath: false,
-        permanent: false,
-      },
+      }
     ];
   },
 };
