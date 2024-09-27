@@ -90,8 +90,8 @@ describe('CreateSmsTemplate server actions', () => {
       templateType: initialState.templateType,
       smsTemplateName: 'template-name',
       smsTemplateMessage: 'template-message',
-      nhsAppTemplateMessage: '', // TODO: this needs to be optional
-      nhsAppTemplateName: '', // TODO: this needs to be optional
+      nhsAppTemplateMessage: ' ',
+      nhsAppTemplateName: ' ',
     });
 
     expect(redirectMock).toHaveBeenCalledWith(

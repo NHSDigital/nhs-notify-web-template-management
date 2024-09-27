@@ -9,7 +9,7 @@ const nhsAppTemplateMap = (session: Session): TemplateInput => ({
 });
 
 const smsTemplateMap = (session: Session): TemplateInput => ({
-  name: session.smsTemplateName!, // TODO: need to figure this out?
+  name: session.smsTemplateName!,
   type: 'SMS',
   version: 1,
   fields: { content: session.smsTemplateMessage! },

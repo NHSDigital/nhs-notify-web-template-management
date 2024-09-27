@@ -20,7 +20,6 @@ export function ReviewSMSTemplate({
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
 
-  // TODO: this is optional in the DB...
   const templateName = initialState.smsTemplateName!;
   const templateMessage = initialState.smsTemplateMessage!;
 

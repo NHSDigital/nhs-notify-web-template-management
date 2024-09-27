@@ -12,8 +12,6 @@ const SubmitSmsTemplatePage = async ({ params: { sessionId } }: PageProps) => {
     return redirect('/invalid-session', RedirectType.replace);
   }
 
-  // TODO: We probably need to start thinking about how we handle users going direct to different pages
-  // probably validate the session object has the required values on a get?
   return (
     <SubmitTemplate
       templateName={session.smsTemplateName!}
