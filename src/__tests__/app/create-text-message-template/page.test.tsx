@@ -32,7 +32,7 @@ describe('CreateSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should redirect to invalid-session when no session is found', async () => {
-    getSessionMock.mockResolvedValueOnce();
+    getSessionMock.mockResolvedValueOnce(undefined);
 
     await CreateSmsTemplatePage({ params: { sessionId: 'session-id' } });
 

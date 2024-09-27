@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewNhsAppTemplatePage should render ReviewSMSTemplate with session data 1`] = `
+exports[`PreviewSMSTemplatePage should render ReviewSMSTemplate with session data 1`] = `
 <ReviewSMSTemplate
   initialState={
     {
