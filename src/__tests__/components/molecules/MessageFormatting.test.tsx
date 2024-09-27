@@ -12,9 +12,6 @@ describe('MessageFormatting component', () => {
     render(<MessageFormatting {...componentProps} />);
 
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
-    expect(
-      screen.getByTestId('lines-breaks-and-paragraphs-details')
-    ).toBeInTheDocument();
   });
 
   it('renders component correctly with APP related formatting', async () => {
@@ -24,11 +21,12 @@ describe('MessageFormatting component', () => {
     };
     render(<MessageFormatting {...appFormattingProps} />);
 
-    expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
-    expect(screen.getByTestId('bold-text-details')).toBeInTheDocument();
     expect(
       screen.getByTestId('lines-breaks-and-paragraphs-details')
     ).toBeInTheDocument();
+    expect(screen.getByTestId('headings-details')).toBeInTheDocument();
+    expect(screen.getByTestId('bold-text-details')).toBeInTheDocument();
+    expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
   });
 
   it('renders component correctly with EMAIL related formatting', async () => {
@@ -38,16 +36,14 @@ describe('MessageFormatting component', () => {
     };
     render(<MessageFormatting {...emailFormattingProps} />);
 
-    expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
-    expect(screen.getByTestId('bold-text-details')).toBeInTheDocument();
     expect(
       screen.getByTestId('lines-breaks-and-paragraphs-details')
     ).toBeInTheDocument();
     expect(screen.getByTestId('headings-details')).toBeInTheDocument();
     expect(screen.getByTestId('bullet-lists-details')).toBeInTheDocument();
     expect(screen.getByTestId('numbered-list-details')).toBeInTheDocument();
-    expect(screen.getByTestId('signatures-details')).toBeInTheDocument();
     expect(screen.getByTestId('horizontal-lines-details')).toBeInTheDocument();
+    expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
   });
 
   it('renders component correctly with LETTER related formatting', async () => {
@@ -57,16 +53,14 @@ describe('MessageFormatting component', () => {
     };
     render(<MessageFormatting {...letterFormattingProps} />);
 
-    expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
-    expect(screen.getByTestId('bold-text-details')).toBeInTheDocument();
     expect(
       screen.getByTestId('lines-breaks-and-paragraphs-details')
     ).toBeInTheDocument();
     expect(screen.getByTestId('headings-details')).toBeInTheDocument();
+    expect(screen.getByTestId('bold-text-details')).toBeInTheDocument();
     expect(screen.getByTestId('bullet-lists-details')).toBeInTheDocument();
     expect(screen.getByTestId('numbered-list-details')).toBeInTheDocument();
     expect(screen.getByTestId('signatures-details')).toBeInTheDocument();
-    expect(screen.getByTestId('horizontal-lines-details')).toBeInTheDocument();
     expect(screen.getByTestId('page-breaks-details')).toBeInTheDocument();
     expect(screen.getByTestId('content-blocks-details')).toBeInTheDocument();
   });

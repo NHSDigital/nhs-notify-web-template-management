@@ -209,64 +209,6 @@ exports[`CreateSmsTemplate component renders page 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -291,17 +233,6 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           </p>
           <code>
             https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>
@@ -563,64 +494,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -645,17 +518,6 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </p>
           <code>
             https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>
@@ -931,64 +793,6 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -1013,17 +817,6 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </p>
           <code>
             https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>
@@ -1243,64 +1036,6 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -1325,17 +1060,6 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           </p>
           <code>
             https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>
