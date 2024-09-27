@@ -13,7 +13,6 @@ import { useFormState } from 'react-dom';
 import {
   TextInput,
   HintText,
-  Details,
   Label,
   Textarea,
   Button,
@@ -22,9 +21,10 @@ import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-a
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, TemplateType } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 
@@ -38,11 +38,6 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     characterCountText,
     templateNameLabelText,
     templateNameHintText,
-    templateNameDetailsSummary,
-    templateNameDetailsOpeningParagraph,
-    templateNameDetailsListHeader,
-    templateNameDetailsList,
-    templateNameDetailsExample,
   } = createNhsAppTemplatePageContent;
   const [state, action] = useFormState(
     createNhsAppTemplateAction,
@@ -103,19 +98,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <div className={templateNameError && 'nhsuk-form-group--error'}>
             <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
             <HintText>{templateNameHintText}</HintText>
-            <Details>
-              <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
-              <Details.Text>
-                <p>{templateNameDetailsOpeningParagraph}</p>
-                <p>{templateNameDetailsListHeader}</p>
-                <ul>
-                  {templateNameDetailsList.map((listItem) => (
-                    <li key={`list-item-${listItem.id}`}>{listItem.text}</li>
-                  ))}
-                </ul>
-                <p>{templateNameDetailsExample}</p>
-              </Details.Text>
-            </Details>
+            <NameYourTemplate template={TemplateType.NHS_APP} />
             <TextInput
               id='nhsAppTemplateName'
               onChange={templateNameHandler}

@@ -18,6 +18,7 @@ import { useFormState } from 'react-dom';
 import { PageComponentProps } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { createSmsTemplateAction } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
@@ -50,6 +51,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
           <div className={templateNameError && 'nhsuk-form-group--error'}>
             <Label htmlFor='smsTemplateName'>Template name</Label>
             <HintText>This will not be visible to recipients.</HintText>
+            <NameYourTemplate template='SMS' />
             <TextInput
               id='smsTemplateName'
               defaultValue={state.smsTemplateName}
