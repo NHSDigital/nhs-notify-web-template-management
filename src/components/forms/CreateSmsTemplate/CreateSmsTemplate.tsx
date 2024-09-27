@@ -89,7 +89,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
               (opens in a new tab)
             </Link>
           </p>
-          <Button>Continue</Button>
+          <Button id='create-sms-template-submit-button'>Continue</Button>
         </NHSNotifyFormWrapper>
       </div>
       <div className='nhsuk-grid-column-one-third'>
