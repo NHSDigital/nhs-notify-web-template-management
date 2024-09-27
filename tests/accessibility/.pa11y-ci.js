@@ -8,7 +8,9 @@ const {
   reviewNHSAppTemplateErrorPage,
   submitNHSAppTemplatePage,
   createTextMessageTemplatePage,
-  createTextMessageTemplateErrorPage
+  createTextMessageTemplateErrorPage,
+  reviewTextMessageTemplatePage,
+  reviewTextMessageTemplateErrorPage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -27,6 +29,8 @@ module.exports = {
     performCheck(submitNHSAppTemplatePage(baseUrl)),
     performCheck(createTextMessageTemplatePage(baseUrl)),
     performCheck(createTextMessageTemplateErrorPage(baseUrl)),
+    performCheck(reviewTextMessageTemplatePage(baseUrl)),
+    performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
   ],
   defaults: {
