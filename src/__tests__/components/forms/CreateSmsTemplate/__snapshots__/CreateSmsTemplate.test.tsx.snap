@@ -10,7 +10,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"
@@ -622,7 +622,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"
@@ -964,7 +964,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"
