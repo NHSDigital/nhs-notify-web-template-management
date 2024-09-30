@@ -75,9 +75,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
 
   return (
     <div className='nhsuk-grid-row'>
-      <NHSNotifyBackButton
-        formId='create-email-template-back' action={action}
-      >
+      <NHSNotifyBackButton formId='create-email-template-back' action={action}>
         <input type='hidden' name='emailTemplateName' value={templateName} />
         <input
           type='hidden'
