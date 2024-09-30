@@ -10,7 +10,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"
@@ -325,7 +325,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           data-testid="error-summary"
           id="error-summary-title"
         >
-          There was a problem
+          There is a problem
         </h2>
         <ul
           class="nhsuk-list nhsuk-error-summary__list"
@@ -622,7 +622,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"
@@ -653,7 +653,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           data-testid="error-summary"
           id="error-summary-title"
         >
-          There was a problem
+          There is a problem
         </h2>
         <ul
           class="nhsuk-list nhsuk-error-summary__list"
@@ -964,7 +964,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
     >
       <a
         class="nhsuk-back-link__link"
-        href="/choose-a-template-type/undefined"
+        href="/choose-a-template-type/session-id"
       >
         <svg
           aria-hidden="true"

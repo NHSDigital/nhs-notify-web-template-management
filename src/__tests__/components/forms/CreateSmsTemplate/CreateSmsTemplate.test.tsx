@@ -31,6 +31,7 @@ describe('CreateSmsTemplate component', () => {
           validationError: undefined,
           smsTemplateName: '',
           smsTemplateMessage: '',
+          id: 'session-id',
         })}
       />
     );
@@ -44,6 +45,7 @@ describe('CreateSmsTemplate component', () => {
           validationError: undefined,
           smsTemplateName: 'template-name',
           smsTemplateMessage: 'template-message',
+          id: 'session-id',
         })}
       />
     );
@@ -79,6 +81,7 @@ describe('CreateSmsTemplate component', () => {
               smsTemplateMessage: ['Template message error'],
             },
           },
+          id: 'session-id',
           smsTemplateName: undefined,
           smsTemplateMessage: undefined,
         })}
@@ -96,6 +99,7 @@ describe('CreateSmsTemplate component', () => {
           validationError: undefined,
           smsTemplateName: '',
           smsTemplateMessage: '',
+          id: 'session-id',
         })}
       />
     );
