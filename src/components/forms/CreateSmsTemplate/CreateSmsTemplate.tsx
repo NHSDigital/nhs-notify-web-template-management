@@ -20,8 +20,9 @@ import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { createSmsTemplatePageContent as content } from '@content/content';
+import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { createSmsTemplateAction } from './server-action';
-import { calculateHowManySmsMessages } from './form-actions';
+import { calculateHowManySmsMessages } from './view-actions';
 
 export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(createSmsTemplateAction, initialState);
@@ -67,7 +68,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
             label={content.templateMessageLabelText}
             defaultValue={smsMessageValue}
             onChange={handler}
-            maxLength={918}
+            maxLength={MAX_SMS_CHARACTER_LENGTH}
             rows={10}
             error={templateMessageError}
             errorProps={{ id: 'smsTemplateMessage-error-message' }}
