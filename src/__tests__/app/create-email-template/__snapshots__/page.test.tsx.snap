@@ -70,114 +70,122 @@ exports[`CreateEmailTemplatePage 1`] = `
         >
           Create Email message template
         </h1>
-        <div>
-          <label
-            class="nhsuk-label"
-            for="emailTemplateName"
-          >
-            Template name
-          </label>
-          <div
-            class="nhsuk-hint"
-          >
-            This will not be visible to recipients.
-          </div>
-          <details
-            class="nhsuk-details"
-          >
-            <summary
-              class="nhsuk-details__summary"
+        <div
+          class="border"
+        >
+          <div>
+            <label
+              class="nhsuk-label"
+              for="emailTemplateName"
             >
-              <span
-                class="nhsuk-details__summary-text"
-              >
-                Naming your templates
-              </span>
-            </summary>
+              Template name
+            </label>
             <div
-              class="nhsuk-details__text"
+              class="nhsuk-hint"
             >
-              <p>
-                You should name your templates in a way that works best for your service or organisation.
-              </p>
-              <p>
-                Common template names include the:
-              </p>
-              <ul>
-                <li>
-                  message channel it uses
-                </li>
-                <li>
-                  subject or reason for the message
-                </li>
-                <li>
-                  intended audience for the template
-                </li>
-                <li>
-                  version number of the template
-                </li>
-              </ul>
-              <p
-                data-testid="template-name-example"
-              >
-                For example, 'Email - covid19 2023 - over 65s - version 3'
-              </p>
+              This will not be visible to recipients.
             </div>
-          </details>
-          <div
-            class="nhsuk-form-group"
-          >
-            <input
-              class="nhsuk-input"
-              id="emailTemplateName"
-              name="emailTemplateName"
-              type="text"
-              value=""
-            />
-          </div>
-        </div>
-        <div>
-          <label
-            class="nhsuk-label"
-            for="emailTemplateSubjectLine"
-          >
-            Subject line
-          </label>
-          <div
-            class="nhsuk-form-group"
-          >
-            <input
-              class="nhsuk-input"
-              id="emailTemplateSubjectLine"
-              name="emailTemplateSubjectLine"
-              type="text"
-              value=""
-            />
+            <details
+              class="nhsuk-details"
+            >
+              <summary
+                class="nhsuk-details__summary"
+              >
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
+              <div
+                class="nhsuk-details__text"
+              >
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'Email - covid19 2023 - over 65s - version 3'
+                </p>
+              </div>
+            </details>
+            <div
+              class="nhsuk-form-group"
+            >
+              <input
+                class="nhsuk-input"
+                id="emailTemplateName"
+                name="emailTemplateName"
+                type="text"
+                value=""
+              />
+            </div>
           </div>
         </div>
         <div
-          class="nhsuk-form-group"
+          class="border"
         >
-          <label
-            class="nhsuk-label"
-            for="emailTemplateMessage"
-            id="emailTemplateMessage--label"
+          <div>
+            <label
+              class="nhsuk-label"
+              for="emailTemplateSubjectLine"
+            >
+              Subject line
+            </label>
+            <div
+              class="nhsuk-form-group"
+            >
+              <input
+                class="nhsuk-input"
+                id="emailTemplateSubjectLine"
+                name="emailTemplateSubjectLine"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
           >
-            Message
-          </label>
-          <textarea
-            class="nhsuk-textarea"
-            id="emailTemplateMessage"
-            maxlength="5000"
-            name="emailTemplateMessage"
-            rows="10"
-          />
+            <label
+              class="nhsuk-label"
+              for="emailTemplateMessage"
+              id="emailTemplateMessage--label"
+            >
+              Message
+            </label>
+            <textarea
+              class="nhsuk-textarea"
+              id="emailTemplateMessage"
+              maxlength="5000"
+              name="emailTemplateMessage"
+              rows="10"
+            />
+          </div>
+          <p
+            style=""
+          >
+             of 5000 characters
+          </p>
         </div>
-        <p
-          style=""
-        >
-           of 5000 characters
-        </p>
         <button
           aria-disabled="false"
           class="nhsuk-button"

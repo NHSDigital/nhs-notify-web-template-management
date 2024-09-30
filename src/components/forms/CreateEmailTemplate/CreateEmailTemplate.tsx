@@ -27,6 +27,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import { PageComponentProps, TemplateType } from '@utils/types';
 import { createEmailTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
+import { FormSection } from '@molecules/FormSection/FormSection';
 
 export const CreateEmailTemplate: FC<PageComponentProps> = ({
   initialState,
@@ -105,50 +106,55 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {pageHeading}
           </h1>
-          <div className={templateNameError && 'nhsuk-form-group--error'}>
-            <Label htmlFor='emailTemplateName'>{templateNameLabelText}</Label>
-            <HintText>{templateNameHintText}</HintText>
-            <TemplateNameGuidance template={TemplateType.EMAIL} />
-            <TextInput
-              id='emailTemplateName'
-              onChange={templateNameHandler}
-              value={templateName}
-              error={templateNameError}
-              errorProps={{ id: 'emailTemplateName-error-message' }}
-            />
-          </div>
 
-          <div>
-            <Label htmlFor='emailTemplateSubjectLine'>
-              {templateSubjectLineLabelText}
-            </Label>
-            <TextInput
-              id='emailTemplateSubjectLine'
-              onChange={templateSubjectLineHandler}
-              value={templateSubjectLine}
-              error={state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(
+          <FormSection>
+            <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <Label htmlFor='emailTemplateName'>{templateNameLabelText}</Label>
+              <HintText>{templateNameHintText}</HintText>
+              <TemplateNameGuidance template={TemplateType.EMAIL} />
+              <TextInput
+                id='emailTemplateName'
+                onChange={templateNameHandler}
+                value={templateName}
+                error={templateNameError}
+                errorProps={{ id: 'emailTemplateName-error-message' }}
+              />
+            </div>
+          </FormSection>
+
+          <FormSection>
+            <div>
+              <Label htmlFor='emailTemplateSubjectLine'>
+                {templateSubjectLineLabelText}
+              </Label>
+              <TextInput
+                id='emailTemplateSubjectLine'
+                onChange={templateSubjectLineHandler}
+                value={templateSubjectLine}
+                error={state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(
+                  ', '
+                )}
+                errorProps={{ id: 'emailTemplateSubjectLine-error-message' }}
+              />
+            </div>
+
+            <Textarea
+              label='Message'
+              id='emailTemplateMessage'
+              maxLength={5000}
+              rows={10}
+              onChange={templateMessageHandler}
+              value={templateMessage}
+              error={state.validationError?.fieldErrors.emailTemplateMessage?.join(
                 ', '
               )}
-              errorProps={{ id: 'emailTemplateSubjectLine-error-message' }}
+              errorProps={{ id: 'emailTemplateMessage-error-message' }}
             />
-          </div>
-
-          <Textarea
-            label='Message'
-            id='emailTemplateMessage'
-            maxLength={5000}
-            rows={10}
-            onChange={templateMessageHandler}
-            value={templateMessage}
-            error={state.validationError?.fieldErrors.emailTemplateMessage?.join(
-              ', '
-            )}
-            errorProps={{ id: 'emailTemplateMessage-error-message' }}
-          />
-          <p style={jsEnabledStyle}>
-            {templateMessage?.length}
-            {characterCountText}
-          </p>
+            <p style={jsEnabledStyle}>
+              {templateMessage?.length}
+              {characterCountText}
+            </p>
+          </FormSection>
           <Button type='submit' id='create-email-template-submit-button'>
             {buttonText}
           </Button>
