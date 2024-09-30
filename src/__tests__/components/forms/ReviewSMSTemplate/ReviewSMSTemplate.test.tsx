@@ -30,6 +30,7 @@ describe('Preview sms form renders', () => {
           validationError: undefined,
           smsTemplateName: 'test-template-sms',
           smsTemplateMessage: 'message',
+          id: 'session-id',
         })}
       />
     );
@@ -49,6 +50,7 @@ describe('Preview sms form renders', () => {
           },
           smsTemplateName: 'test-template-sms',
           smsTemplateMessage: 'message',
+          id: 'session-id',
         })}
       />
     );
@@ -63,6 +65,7 @@ describe('Preview sms form renders', () => {
           validationError: undefined,
           smsTemplateName: 'test-template-sms',
           smsTemplateMessage: 'message',
+          id: 'session-id',
         })}
       />
     );
@@ -91,6 +94,7 @@ describe('Preview sms form renders', () => {
           validationError: undefined,
           smsTemplateName: 'test-template-sms',
           smsTemplateMessage: message,
+          id: 'session-id',
         })}
       />
     );
