@@ -1,4 +1,4 @@
-import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-action';
+import { createEmailTemplateAction } from '@forms/CreateEmailTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { TemplateType } from '@utils/types';
 
@@ -23,7 +23,7 @@ const initialState = {
 };
 
 test('invalid form id', async () => {
-  const response = await createNhsAppTemplateAction(
+  const response = await createEmailTemplateAction(
     initialState,
     getMockFormData({
       'form-id': 'lemons',
@@ -42,30 +42,33 @@ test('invalid form id', async () => {
 });
 
 test('submit form - no validation error', async () => {
-  const response = await createNhsAppTemplateAction(
+  const response = await createEmailTemplateAction(
     initialState,
     getMockFormData({
-      'form-id': 'create-nhs-app-template',
-      nhsAppTemplateName: 'template-name',
-      nhsAppTemplateMessage: 'template-message',
+      'form-id': 'create-email-template',
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
+      emailTemplateMessage: 'template-message',
     })
   );
 
   expect(response).toEqual({
     ...initialState,
-    nhsAppTemplateName: 'template-name',
-    nhsAppTemplateMessage: 'template-message',
-    redirect: '/preview-nhs-app-template/session-id',
+    emailTemplateName: 'template-name',
+    emailTemplateSubjectLine: 'template-subject-line',
+    emailTemplateMessage: 'template-message',
+    redirect: '/preview-email-template/session-id',
   });
 });
 
 test('submit form - validation error', async () => {
-  const response = await createNhsAppTemplateAction(
+  const response = await createEmailTemplateAction(
     initialState,
     getMockFormData({
-      'form-id': 'create-nhs-app-template',
-      nhsAppTemplateName: 'template-name',
-      nhsAppTemplateMessage:
+      'form-id': 'create-email-template',
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
+      emailTemplateMessage:
         'this template message is very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong',
     })
   );
@@ -75,36 +78,39 @@ test('submit form - validation error', async () => {
     validationError: {
       formErrors: [],
       fieldErrors: {
-        nhsAppTemplateMessage: ['Template message too long'],
+        emailTemplateMessage: ['Template message too long'],
       },
     },
   });
 });
 
 test('back - no validation error', async () => {
-  const response = await createNhsAppTemplateAction(
+  const response = await createEmailTemplateAction(
     initialState,
     getMockFormData({
-      'form-id': 'create-nhs-app-template-back',
-      nhsAppTemplateName: 'template-name',
-      nhsAppTemplateMessage: 'template-message',
+      'form-id': 'create-email-template-back',
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
+      emailTemplateMessage: 'template-message',
     })
   );
 
   expect(response).toEqual({
     ...initialState,
-    nhsAppTemplateName: 'template-name',
-    nhsAppTemplateMessage: 'template-message',
+    emailTemplateName: 'template-name',
+    emailTemplateSubjectLine: 'template-subject-line',
+    emailTemplateMessage: 'template-message',
     redirect: '/choose-a-template-type/session-id',
   });
 });
 
 test('back - validation error', async () => {
-  const response = await createNhsAppTemplateAction(
+  const response = await createEmailTemplateAction(
     initialState,
     getMockFormData({
-      'form-id': 'create-nhs-app-template-back',
-      nhsAppTemplateName: 'template-name',
+      'form-id': 'create-email-template-back',
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
       nhsAppTemplateMessage: 7 as unknown as string,
     })
   );
@@ -114,7 +120,7 @@ test('back - validation error', async () => {
     validationError: {
       formErrors: [],
       fieldErrors: {
-        nhsAppTemplateMessage: ['Internal server error'],
+        emailTemplateMessage: ['Internal server error'],
       },
     },
   });

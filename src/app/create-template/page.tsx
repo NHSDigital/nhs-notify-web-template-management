@@ -9,6 +9,7 @@ const initialSessionState: Omit<Session, 'id'> = {
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
   emailTemplateName: '',
+  emailTemplateSubjectLine: '',
   emailTemplateMessage: '',
 };
 

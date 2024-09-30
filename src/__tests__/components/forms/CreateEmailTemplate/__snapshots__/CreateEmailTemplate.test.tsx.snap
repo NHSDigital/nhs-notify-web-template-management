@@ -23,6 +23,11 @@ exports[`renders page 1`] = `
           value=""
         />
         <input
+          name="emailTemplateSubjectLine"
+          type="hidden"
+          value=""
+        />
+        <input
           name="emailTemplateMessage"
           type="hidden"
           value=""
@@ -126,6 +131,25 @@ exports[`renders page 1`] = `
               class="nhsuk-input"
               id="emailTemplateName"
               name="emailTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="nhsuk-label"
+            for="emailTemplateSubjectLine"
+          >
+            Subject line
+          </label>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="emailTemplateSubjectLine"
+              name="emailTemplateSubjectLine"
               type="text"
               value=""
             />
@@ -583,6 +607,11 @@ exports[`renders page one error 1`] = `
           value=""
         />
         <input
+          name="emailTemplateSubjectLine"
+          type="hidden"
+          value=""
+        />
+        <input
           name="emailTemplateMessage"
           type="hidden"
           value=""
@@ -632,6 +661,11 @@ exports[`renders page one error 1`] = `
             >
               Template name error
             </a>
+          </li>
+          <li>
+            <a
+              href="#emailTemplateSubjectLine"
+            />
           </li>
           <li>
             <a
@@ -730,6 +764,25 @@ exports[`renders page one error 1`] = `
               class="nhsuk-input nhsuk-input--error"
               id="emailTemplateName"
               name="emailTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="nhsuk-label"
+            for="emailTemplateSubjectLine"
+          >
+            Subject line
+          </label>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="emailTemplateSubjectLine"
+              name="emailTemplateSubjectLine"
               type="text"
               value=""
             />
@@ -1187,6 +1240,11 @@ exports[`renders page with multiple errors 1`] = `
           value=""
         />
         <input
+          name="emailTemplateSubjectLine"
+          type="hidden"
+          value=""
+        />
+        <input
           name="emailTemplateMessage"
           type="hidden"
           value=""
@@ -1235,6 +1293,13 @@ exports[`renders page with multiple errors 1`] = `
               href="#emailTemplateName"
             >
               Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#emailTemplateSubjectLine"
+            >
+              Template subject line error
             </a>
           </li>
           <li>
@@ -1336,6 +1401,37 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-input nhsuk-input--error"
               id="emailTemplateName"
               name="emailTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="nhsuk-label"
+            for="emailTemplateSubjectLine"
+          >
+            Subject line
+          </label>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <span
+              class="nhsuk-error-message"
+              id="emailTemplateSubjectLine-error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template subject line error
+            </span>
+            <input
+              aria-describedby="emailTemplateSubjectLine--error-message"
+              class="nhsuk-input nhsuk-input--error"
+              id="emailTemplateSubjectLine"
+              name="emailTemplateSubjectLine"
               type="text"
               value=""
             />
@@ -1805,6 +1901,11 @@ exports[`renders page with preloaded field values 1`] = `
           value="template-name"
         />
         <input
+          name="emailTemplateSubjectLine"
+          type="hidden"
+          value="template-subject-line"
+        />
+        <input
           name="emailTemplateMessage"
           type="hidden"
           value="template-message"
@@ -1910,6 +2011,25 @@ exports[`renders page with preloaded field values 1`] = `
               name="emailTemplateName"
               type="text"
               value="template-name"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="nhsuk-label"
+            for="emailTemplateSubjectLine"
+          >
+            Subject line
+          </label>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="emailTemplateSubjectLine"
+              name="emailTemplateSubjectLine"
+              type="text"
+              value="template-subject-line"
             />
           </div>
         </div>

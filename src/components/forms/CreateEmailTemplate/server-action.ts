@@ -19,6 +19,9 @@ const formIdToServerActionMap: Record<
       formData,
       z.object({
         emailTemplateName: z.string({ message: 'Internal server error' }),
+        emailTemplateSubjectLine: z.string({
+          message: 'Internal server error',
+        }),
         emailTemplateMessage: z.string({ message: 'Internal server error' }),
       })
     ),
@@ -30,6 +33,9 @@ const formIdToServerActionMap: Record<
         emailTemplateName: z
           .string()
           .min(1, { message: 'Enter a template name' }),
+        emailTemplateSubjectLine: z
+          .string()
+          .min(1, { message: 'Enter a template subject line' }),
         emailTemplateMessage: z
           .string()
           .min(1, { message: 'Enter a template message' })

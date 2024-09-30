@@ -27,6 +27,7 @@ export type Session = {
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
   emailTemplateName: string;
+  emailTemplateSubjectLine: string;
   emailTemplateMessage: string;
 };
 

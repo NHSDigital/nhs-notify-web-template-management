@@ -37,6 +37,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     buttonText,
     characterCountText,
     templateNameLabelText,
+    templateSubjectLineLabelText,
     templateNameHintText,
   } = createEmailTemplatePageContent;
   const [state, action] = useFormState(createEmailTemplateAction, initialState);
@@ -47,6 +48,9 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
   }
 
   const [templateName, setTemplateName] = useState(state.emailTemplateName);
+  const [templateSubjectLine, setTemplateSubjectLine] = useState(
+    state.emailTemplateSubjectLine
+  );
   const [templateMessage, setTemplateMessage] = useState(
     state.emailTemplateMessage
   );
@@ -63,6 +67,13 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     setTemplateName(typedEventTarget.value);
   };
 
+  const templateSubjectLineHandler: FormEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
+    setTemplateSubjectLine(typedEventTarget.value);
+  };
+
   const templateMessageHandler: FormEventHandler<HTMLTextAreaElement> = (
     event
   ) => {
@@ -77,6 +88,11 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     <div className='nhsuk-grid-row'>
       <NHSNotifyBackButton formId='create-email-template-back' action={action}>
         <input type='hidden' name='emailTemplateName' value={templateName} />
+        <input
+          type='hidden'
+          name='emailTemplateSubjectLine'
+          value={templateSubjectLine}
+        />
         <input
           type='hidden'
           name='emailTemplateMessage'
@@ -101,6 +117,22 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
               errorProps={{ id: 'emailTemplateName-error-message' }}
             />
           </div>
+
+          <div>
+            <Label htmlFor='emailTemplateSubjectLine'>
+              {templateSubjectLineLabelText}
+            </Label>
+            <TextInput
+              id='emailTemplateSubjectLine'
+              onChange={templateSubjectLineHandler}
+              value={templateSubjectLine}
+              error={state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(
+                ', '
+              )}
+              errorProps={{ id: 'emailTemplateSubjectLine-error-message' }}
+            />
+          </div>
+
           <Textarea
             label='Message'
             id='emailTemplateMessage'

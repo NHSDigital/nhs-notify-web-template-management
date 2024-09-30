@@ -23,6 +23,11 @@ exports[`CreateEmailTemplatePage 1`] = `
           value=""
         />
         <input
+          name="emailTemplateSubjectLine"
+          type="hidden"
+          value=""
+        />
+        <input
           name="emailTemplateMessage"
           type="hidden"
           value=""
@@ -126,6 +131,25 @@ exports[`CreateEmailTemplatePage 1`] = `
               class="nhsuk-input"
               id="emailTemplateName"
               name="emailTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="nhsuk-label"
+            for="emailTemplateSubjectLine"
+          >
+            Subject line
+          </label>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="emailTemplateSubjectLine"
+              name="emailTemplateSubjectLine"
               type="text"
               value=""
             />

@@ -37,6 +37,7 @@ test('renders page', async () => {
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
         emailTemplateName: '',
+        emailTemplateSubjectLine: '',
         emailTemplateMessage: '',
       })}
     />
@@ -48,6 +49,14 @@ test('renders page', async () => {
     throw new Error('Template name box not found');
   }
   await user.type(templateNameBox, 'template-name');
+
+  const templateSubjectLineBox = document.querySelector(
+    '#emailTemplateSubjectLine'
+  );
+  if (!templateSubjectLineBox) {
+    throw new Error('Template name box not found');
+  }
+  await user.type(templateSubjectLineBox, 'template-subject-line');
 
   const templateMessageBox = document.querySelector('#emailTemplateMessage');
   if (!templateMessageBox) {
@@ -62,6 +71,7 @@ test('renders page with preloaded field values', () => {
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
         emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
         emailTemplateMessage: 'template-message',
       })}
     />
@@ -80,6 +90,7 @@ test('renders page one error', () => {
           },
         },
         emailTemplateName: '',
+        emailTemplateSubjectLine: '',
         emailTemplateMessage: '',
       })}
     />
@@ -95,10 +106,12 @@ test('renders page with multiple errors', () => {
           formErrors: [],
           fieldErrors: {
             emailTemplateName: ['Template name error'],
+            emailTemplateSubjectLine: ['Template subject line error'],
             emailTemplateMessage: ['Template message error'],
           },
         },
         emailTemplateName: '',
+        emailTemplateSubjectLine: '',
         emailTemplateMessage: '',
       })}
     />
