@@ -420,6 +420,15 @@ export const createNhsAppTemplatePageContent = {
   buttonText: 'Continue',
 };
 
+export const createEmailTemplatePageContent = {
+  pageHeading: 'Create Email message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
+  characterCountText: ' of 5000 characters',
+  buttonText: 'Continue',
+};
+
 export const templateSubmittedPageContent = {
   pageHeading: 'Template submitted',
   templateNameHeading: 'Template name',

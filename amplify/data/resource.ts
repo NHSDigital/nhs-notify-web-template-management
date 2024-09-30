@@ -8,6 +8,8 @@ const SessionStorageModel = {
   templateType: a.enum([...templateTypes, 'UNKNOWN']),
   nhsAppTemplateName: a.string().required(),
   nhsAppTemplateMessage: a.string().required(),
+  emailTemplateName: a.string().required(),
+  emailTemplateMessage: a.string().required(),
   ttl: a.integer().required(),
 };
 

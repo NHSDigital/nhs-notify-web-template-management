@@ -6,7 +6,8 @@ export type FormId =
   | 'create-text-message-template'
   | 'preview-nhs-app-template'
   | 'submit-template'
-  | 'create-nhs-app-template-back';
+  | 'create-nhs-app-template-back'
+  | 'create-email-template-back';
 
 export type FormErrorState = {
   formErrors: string[];
@@ -25,6 +26,8 @@ export type Session = {
   templateType: TemplateType | 'UNKNOWN';
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
+  emailTemplateName: string;
+  emailTemplateMessage: string;
 };
 
 export type FormState = {
