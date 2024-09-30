@@ -5,4 +5,5 @@ module.exports = {
   ...require('./submit-nhs-app-template.actions'),
   ...require('./create-text-message-template.actions'),
   ...require('./preview-text-message-template.actions'),
+  ...require('./nhs-app-template-submitted.actions'),
 };
