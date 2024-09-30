@@ -7,6 +7,7 @@ const nextConfig = {
   basePath,
   env: {
     basePath,
+    authBasePath,
     MAX_SESSION_LENGTH_IN_SECONDS:
       process.env.MAX_SESSION_LENGTH_IN_SECONDS ?? '432000', // 5 days in seconds
   },
@@ -24,7 +25,7 @@ const nextConfig = {
         destination: basePath,
         basePath: false,
         permanent: false,
-      }
+      },
     ];
   },
 };
