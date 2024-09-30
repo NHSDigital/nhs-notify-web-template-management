@@ -32,5 +32,7 @@ resource "aws_amplify_app" "main" {
     NOTIFY_DOMAIN_NAME  = local.root_domain_name
     ACCOUNT_ID          = var.aws_account_id
     _CUSTOM_IMAGE       = "node:20"
+    USER_POOL_ID        = aws_ssm_parameter.user_pool_id.value
+    USER_POOL_CLIENT_ID = aws_ssm_parameter.user_pool_client_id.value
   }
 }
