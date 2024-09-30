@@ -1,7 +1,7 @@
 'use client';
 
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
-import { useTextAreaInput } from '@hooks/use-text-area-input.hook';
+import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
@@ -26,9 +26,11 @@ import { calculateHowManySmsMessages } from './view-actions';
 
 export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(createSmsTemplateAction, initialState);
-  const [smsMessageValue, handler] = useTextAreaInput(
+
+  const [smsMessageValue, handler] = useTextInput<HTMLTextAreaElement>(
     state.smsTemplateMessage ?? ''
   );
+
   const templateNameError =
     state.validationError?.fieldErrors.smsTemplateName?.join(', ');
 

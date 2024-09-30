@@ -21,7 +21,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import { PageComponentProps, TemplateType } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
-import { useTextAreaInput } from '@hooks/use-text-area-input.hook';
+import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
@@ -45,9 +45,11 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     router.push(state.redirect);
   }
 
-  const [nhsAppTemplateMessage, nhsAppMessageHandler] = useTextAreaInput(
-    state.nhsAppTemplateMessage
-  );
+  const [nhsAppTemplateMessage, nhsAppMessageHandler] =
+    useTextInput<HTMLTextAreaElement>(state.nhsAppTemplateMessage);
+
+  const [nhsAppTemplateName, nhsAppTemplateNameHandler] =
+    useTextInput<HTMLInputElement>(state.nhsAppTemplateName);
 
   const templateNameError =
     state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
@@ -64,12 +66,12 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
         <input
           type='hidden'
           name='nhsAppTemplateName'
-          value={state.nhsAppTemplateName}
+          value={nhsAppTemplateName}
         />
         <input
           type='hidden'
           name='nhsAppTemplateMessage'
-          value={state.nhsAppTemplateMessage}
+          value={nhsAppTemplateMessage}
         />
       </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -84,7 +86,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             <NameYourTemplate template={TemplateType.NHS_APP} />
             <TextInput
               id='nhsAppTemplateName'
-              defaultValue={state.nhsAppTemplateName}
+              defaultValue={nhsAppTemplateName}
+              onChange={nhsAppTemplateNameHandler}
               error={templateNameError}
               errorProps={{ id: 'nhsAppTemplateName-error-message' }}
             />
