@@ -13,6 +13,7 @@ const {
   reviewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
+  NHSAppTemplateSubmittedPage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -29,6 +30,7 @@ module.exports = {
     performCheck(reviewNHSAppTemplatePage(baseUrl)),
     performCheck(reviewNHSAppTemplateErrorPage(baseUrl)),
     performCheck(submitNHSAppTemplatePage(baseUrl)),
+    performCheck(NHSAppTemplateSubmittedPage(baseUrl)),
     performCheck(createTextMessageTemplatePage(baseUrl)),
     performCheck(createTextMessageTemplateErrorPage(baseUrl)),
     performCheck(reviewTextMessageTemplatePage(baseUrl)),

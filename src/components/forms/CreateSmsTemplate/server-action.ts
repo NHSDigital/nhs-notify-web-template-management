@@ -3,6 +3,7 @@ import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
 import { saveSession } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 
 export async function createSmsTemplateAction(
   formState: TemplateFormState,
@@ -18,7 +19,9 @@ export async function createSmsTemplateAction(
       smsTemplateMessage: z
         .string({ message: 'Enter a template message' })
         .min(1, { message: 'Enter a template message' })
-        .max(918, { message: 'Template message too long' }),
+        .max(MAX_SMS_CHARACTER_LENGTH, {
+          message: 'Template message too long',
+        }),
     })
   );
 

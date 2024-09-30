@@ -1,7 +1,15 @@
-export const calculateHowManySmsMessages = (val: number) => {
-  if (typeof val !== 'number' || Number.isNaN(val)) return 0;
+/**
+ * Calculates how many SMS messages are needed to send the given message.
+ * This function replicates SMS logic states here
+ * https://www.notifications.service.gov.uk/pricing/text-messages#long-text-messages
+ * @param {number} characterCount The number of characters in the message.
+ * @returns {number} The number of SMS messages needed.
+ */
+export const calculateHowManySmsMessages = (characterCount: number) => {
+  if (typeof characterCount !== 'number' || Number.isNaN(characterCount))
+    return 0;
 
-  if (val > 0 && val <= 160) return 1;
+  if (characterCount > 0 && characterCount <= 160) return 1;
 
-  return Math.ceil(val / 153);
+  return Math.ceil(characterCount / 153);
 };
