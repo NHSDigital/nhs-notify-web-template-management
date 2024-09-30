@@ -1,4 +1,3 @@
-
 import { render } from '@testing-library/react';
 import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page';
 import { TemplateFormState } from '@utils/types';

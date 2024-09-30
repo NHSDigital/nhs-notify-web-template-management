@@ -1,4 +1,3 @@
-
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 import { PageProps } from '@utils/types';
 import { getSession } from '@utils/form-actions';
