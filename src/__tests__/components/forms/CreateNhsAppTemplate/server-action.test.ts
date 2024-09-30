@@ -17,9 +17,6 @@ const initialState = {
   templateType: TemplateType.NHS_APP,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
-  emailTemplateName: '',
-  emailTemplateSubjectLine: '',
-  emailTemplateMessage: '',
 };
 
 test('invalid form id', async () => {

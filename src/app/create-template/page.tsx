@@ -8,9 +8,6 @@ const initialSessionState: Omit<Session, 'id'> = {
   templateType: 'UNKNOWN',
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
-  emailTemplateName: '',
-  emailTemplateSubjectLine: '',
-  emailTemplateMessage: '',
 };
 
 const CreateTemplate = async () => {
