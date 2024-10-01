@@ -15,7 +15,7 @@ const footerComponent = {
   links: {
     accessibilityStatement: {
       text: 'Accessibility statement',
-      url: 'https://notify.nhs.uk/accessibility',
+      url: '/accessibility',
     },
     contactUs: 'Contact us',
     cookies: 'Cookies',
