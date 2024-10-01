@@ -20,10 +20,10 @@ export function NHSNotifyFooter() {
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
                 <Link
                   className='nhsuk-footer__list-item-link'
-                  href='#'
+                  href={footerContent.links.accessibilityStatement.url}
                   data-testid='accessibility-statement-link'
                 >
-                  {footerContent.links.accessibilityStatement}
+                  {footerContent.links.accessibilityStatement.text}
                 </Link>
               </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
