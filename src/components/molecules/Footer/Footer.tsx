@@ -22,6 +22,7 @@ export function NHSNotifyFooter() {
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.accessibilityStatement.url}
                   data-testid='accessibility-statement-link'
+                  target='_blank'
                 >
                   {footerContent.links.accessibilityStatement.text}
                 </Link>
