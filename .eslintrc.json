@@ -81,7 +81,7 @@
       }
     },
     {
-      "files": ["*.test.ts"],
+      "files": ["*.test.{ts, tsx}"],
       "rules": {
         "unicorn/no-useless-undefined": "off"
       }
