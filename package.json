@@ -26,6 +26,7 @@
     "@aws-sdk/client-ses": "^3.637.0",
     "aws-amplify": "^6.6.1",
     "aws-jwt-verify": "^4.0.1",
+    "jwt-decode": "^4.0.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "14.2.13",

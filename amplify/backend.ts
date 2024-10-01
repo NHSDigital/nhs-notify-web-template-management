@@ -1,10 +1,13 @@
+/* eslint-disable sonarjs/no-commented-code */
 import { defineBackend } from '@aws-amplify/backend';
 import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { data } from './data/resource';
+import { auth } from './auth/resource';
 import { sendEmail } from './functions/send-email/resource';
 
 const backend = defineBackend({
   data,
+  auth,
   sendEmail,
 });
 
@@ -24,7 +27,7 @@ backend.data.resources.cfnResources.amplifyDynamoDbTables.SessionStorage.timeToL
     attributeName: 'ttl',
     enabled: true,
   };
-
+/*
 const userPoolId = process.env.USER_POOL_ID;
 const userPoolClientId = process.env.USER_POOL_CLIENT_ID;
 const hostedLoginDomain = `auth.${process.env.NOTIFY_DOMAIN_NAME}`;
@@ -66,3 +69,5 @@ backend.addOutput({
     },
   },
 });
+
+backend.addOutput() */
