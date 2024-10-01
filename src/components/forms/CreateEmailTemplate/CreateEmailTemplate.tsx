@@ -32,6 +32,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     buttonText,
     templateNameLabelText,
     templateSubjectLineLabelText,
+    templateMessageLabelText,
     templateNameHintText,
   } = createEmailTemplatePageContent;
   const [state, action] = useFormState(createEmailTemplateAction, initialState);
@@ -125,7 +126,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
             </div>
 
             <Textarea
-              label='Message'
+              label={templateMessageLabelText}
               id='emailTemplateMessage'
               rows={10}
               onChange={templateMessageHandler}
