@@ -81,7 +81,10 @@ export default function LoginStatus() {
   if (loggedInUser) {
     return (
       <>
-        <Header.ServiceName key='serviceName'>{loggedInUser}</Header.ServiceName>,
+        <Header.ServiceName key='serviceName'>
+          {loggedInUser}
+        </Header.ServiceName>
+        ,
         <Header.NavItem
           key='navItem'
           onClick={() => signOut(browserCookie, setBrowserCookie)}
