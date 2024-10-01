@@ -112,7 +112,7 @@ test('back - validation error', async () => {
       'form-id': 'create-email-template-back',
       emailTemplateName: 'template-name',
       emailTemplateSubjectLine: 'template-subject-line',
-      nhsAppTemplateMessage: 7 as unknown as string,
+      emailTemplateMessage: 7 as unknown as string,
     })
   );
 
