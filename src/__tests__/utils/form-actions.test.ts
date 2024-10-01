@@ -343,7 +343,7 @@ test('sendEmail - errors', async () => {
   });
 });
 
-test('deleteSession - returns undefined if session is not found', async () => {
+test('deleteSession - returns false when session not deleted', async () => {
   const mock = jest.fn().mockReturnValue({
     errors: [
       {
