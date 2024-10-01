@@ -2,7 +2,6 @@ import { calculateHowManySmsMessages } from '@forms/CreateSmsTemplate/view-actio
 
 describe('calculateHowManySmsMessages', () => {
   test.each([
-    { val: 'ABC' as unknown as number, expected: 0 },
     { val: Number('ABC'), expected: 0 },
     { val: 0, expected: 0 },
     { val: 1, expected: 1 },

@@ -6,8 +6,9 @@
  * @returns {number} The number of SMS messages needed.
  */
 export const calculateHowManySmsMessages = (characterCount: number) => {
-  if (typeof characterCount !== 'number' || Number.isNaN(characterCount))
+  if (Number.isNaN(characterCount)) {
     return 0;
+  }
 
   if (characterCount > 0 && characterCount <= 160) return 1;
 
