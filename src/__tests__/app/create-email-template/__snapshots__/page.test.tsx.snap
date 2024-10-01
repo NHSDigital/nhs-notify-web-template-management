@@ -349,72 +349,6 @@ exports[`CreateEmailTemplatePage 1`] = `
       </details>
       <details
         class="nhsuk-details"
-        data-testid="link-and-url-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="link-and-url-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Links and URLs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="link-and-url-text"
-        >
-          <p>
-            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="headings-details"
       >
         <summary
@@ -527,32 +461,6 @@ exports[`CreateEmailTemplatePage 1`] = `
       </details>
       <details
         class="nhsuk-details"
-        data-testid="signatures-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="signatures-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Signatures
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="signatures-text"
-        >
-          <p>
-            If you upload a signature image, use 2 curly brackets on either side of 'signature' to insert your signature image in the body text. For example:
-          </p>
-          <code>
-            {{signature}}
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="horizontal-lines-details"
       >
         <summary
@@ -584,6 +492,46 @@ exports[`CreateEmailTemplatePage 1`] = `
             <p>
               Second paragraph
             </p>
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>
