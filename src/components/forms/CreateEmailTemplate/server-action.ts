@@ -38,8 +38,7 @@ const formIdToServerActionMap: Record<
           .min(1, { message: 'Enter a template subject line' }),
         emailTemplateMessage: z
           .string()
-          .min(1, { message: 'Enter a template message' })
-          .max(5000, { message: 'Template message too long' }),
+          .min(1, { message: 'Enter a template message' }),
       })
     ),
 };

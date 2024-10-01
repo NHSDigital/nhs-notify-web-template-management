@@ -54,13 +54,13 @@ test('renders page', async () => {
     '#emailTemplateSubjectLine'
   );
   if (!templateSubjectLineBox) {
-    throw new Error('Template name box not found');
+    throw new Error('Template subject line not found');
   }
   await user.type(templateSubjectLineBox, 'template-subject-line');
 
   const templateMessageBox = document.querySelector('#emailTemplateMessage');
   if (!templateMessageBox) {
-    throw new Error('Template name box not found');
+    throw new Error('Template message box not found');
   }
   await user.type(templateMessageBox, 'template-message');
 });
