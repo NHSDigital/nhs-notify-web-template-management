@@ -1,14 +1,13 @@
 'use client';
 
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
-import { useTextAreaInput } from '@hooks/use-text-area-input.hook';
+import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import Link from 'next/link';
 import {
   Button,
-  ChevronLeftIcon,
   HintText,
   Label,
   Textarea,
@@ -21,14 +20,19 @@ import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NameYourTemplate } from '@molecules/NameYourTemplate';
 import { createSmsTemplatePageContent as content } from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
-import { createSmsTemplateAction } from './server-action';
+import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
+import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
-  const [state, action] = useFormState(createSmsTemplateAction, initialState);
-  const [smsMessageValue, handler] = useTextAreaInput(
-    state.smsTemplateMessage ?? ''
-  );
+  const [state, action] = useFormState(processFormActions, initialState);
+
+  const [smsTemplateName, smsTemplateNameHandler] =
+    useTextInput<HTMLInputElement>(state.smsTemplateName ?? '');
+
+  const [smsTemplateMessage, smsTemplateMessageHandler] =
+    useTextInput<HTMLTextAreaElement>(state.smsTemplateMessage ?? '');
+
   const templateNameError =
     state.validationError?.fieldErrors.smsTemplateName?.join(', ');
 
@@ -37,15 +41,14 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
 
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
-        <Link
-          href={`/choose-a-template-type/${initialState.id}`}
-          className='nhsuk-back-link__link'
-        >
-          <ChevronLeftIcon />
-          Go back
-        </Link>
-      </div>
+      <NHSNotifyBackButton formId='create-sms-template-back' action={action}>
+        <input type='hidden' name='smsTemplateName' value={smsTemplateName} />
+        <input
+          type='hidden'
+          name='smsTemplateMessage'
+          value={smsTemplateMessage}
+        />
+      </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={content.errorHeading} state={state} />
         <h1>{content.pageHeading}</h1>
@@ -58,7 +61,8 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
             <NameYourTemplate template='SMS' />
             <TextInput
               id='smsTemplateName'
-              defaultValue={state.smsTemplateName}
+              defaultValue={smsTemplateName}
+              onChange={smsTemplateNameHandler}
               error={templateNameError}
               errorProps={{ id: 'smsTemplateName-error-message' }}
             />
@@ -66,8 +70,8 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
           <Textarea
             id='smsTemplateMessage'
             label={content.templateMessageLabelText}
-            defaultValue={smsMessageValue}
-            onChange={handler}
+            defaultValue={smsTemplateMessage}
+            onChange={smsTemplateMessageHandler}
             maxLength={MAX_SMS_CHARACTER_LENGTH}
             rows={10}
             error={templateMessageError}
@@ -75,11 +79,11 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
           />
           <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
             <p className='nhsuk-u-margin-bottom-0'>
-              {smsMessageValue.length} characters
+              {smsTemplateMessage.length} characters
             </p>
             <p>
               {content.smsCountText1}
-              {calculateHowManySmsMessages(Number(smsMessageValue.length))}
+              {calculateHowManySmsMessages(Number(smsTemplateMessage.length))}
               {content.smsCountText2}
             </p>
           </div>
