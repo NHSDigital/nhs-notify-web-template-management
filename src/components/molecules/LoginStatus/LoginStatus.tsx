@@ -5,10 +5,10 @@
 import { Header } from 'nhsuk-react-components';
 import React from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { cookies as getCookies } from 'next/headers';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
-const getLoggedInUser = () => {
-  const allCookies = getCookies().getAll();
+const getLoggedInUser = (cookies: ReadonlyRequestCookies) => {
+  const allCookies = cookies.getAll();
   const idTokenCookie = allCookies.find(
     (cookie) =>
       cookie.name.includes('CognitoIdentityServiceProvider') &&
@@ -27,8 +27,7 @@ const getLoggedInUser = () => {
   return idTokenCookieDecoded.email;
 };
 
-const signOut = () => {
-  const cookies = getCookies();
+const signOut = (cookies: ReadonlyRequestCookies) => {
   const allCookies = cookies.getAll();
   const authCookies = allCookies.filter((cookie) =>
     cookie.name.includes('CognitoIdentityServiceProvider')
@@ -37,14 +36,18 @@ const signOut = () => {
   for (const cookie of authCookies) cookies.delete(cookie.name);
 };
 
-export default function LoginStatus() {
-  const loggedInUser = getLoggedInUser();
+export default function LoginStatus({
+  cookies,
+}: {
+  cookies: ReadonlyRequestCookies;
+}) {
+  const loggedInUser = getLoggedInUser(cookies);
 
   if (loggedInUser) {
     return (
       <>
         <Header.ServiceName key='serviceName'>loggedInUser</Header.ServiceName>,
-        <Header.NavItem key='navItem' onClick={() => signOut()}>
+        <Header.NavItem key='navItem' onClick={() => signOut(cookies)}>
           Sign out
         </Header.NavItem>
         ,
