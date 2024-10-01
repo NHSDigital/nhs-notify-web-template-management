@@ -139,3 +139,26 @@ export async function sendEmail(
     });
   }
 }
+
+export async function deleteSession(sessionId: string) {
+  const backendClient = getAmplifyBackendClient();
+  const sessionRepository = backendClient.models.SessionStorage;
+
+  const { errors } = await sessionRepository.delete({
+    id: sessionId,
+  });
+
+  if (errors) {
+    logger.warn(
+      `Failed to delete session ${sessionId} `,
+      new DbOperationError({
+        message: `Failed to delete session ${sessionId} `,
+        operation: 'delete',
+        cause: errors,
+      })
+    );
+    return false;
+  }
+
+  return true;
+}

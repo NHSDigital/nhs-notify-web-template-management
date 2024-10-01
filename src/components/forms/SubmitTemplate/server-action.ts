@@ -1,7 +1,12 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
+import {
+  deleteSession,
+  getSession,
+  saveTemplate,
+  sendEmail,
+} from '@utils/form-actions';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
@@ -35,6 +40,8 @@ export async function submitTemplate(formData: FormData) {
       templateEntity.name,
       templateEntity.fields!.content
     );
+
+    await deleteSession(sessionId);
 
     return redirect(
       `/nhs-app-template-submitted/${templateEntity.id}`,
