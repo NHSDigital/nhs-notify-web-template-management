@@ -29,6 +29,8 @@ export type Session = {
   emailTemplateName?: string;
   emailTemplateSubjectLine?: string;
   emailTemplateMessage?: string;
+  smsTemplateName?: string;
+  smsTemplateMessage?: string;
 };
 
 export type FormState = {

@@ -11,6 +11,8 @@ const SessionStorageModel = {
   emailTemplateName: a.string(),
   emailTemplateSubjectLine: a.string(),
   emailTemplateMessage: a.string(),
+  smsTemplateName: a.string(),
+  smsTemplateMessage: a.string(),
   ttl: a.integer().required(),
 };
 

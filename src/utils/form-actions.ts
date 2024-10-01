@@ -46,7 +46,6 @@ export async function saveSession(session: Session) {
     logger.error('Failed to save session', errors);
     throw new Error('Failed to save template data');
   }
-
   if (!data) {
     throw new DbOperationError({
       message:
@@ -54,7 +53,6 @@ export async function saveSession(session: Session) {
       operation: 'update',
     });
   }
-
   return data;
 }
 
