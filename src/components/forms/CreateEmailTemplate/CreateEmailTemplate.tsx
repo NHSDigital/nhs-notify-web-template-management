@@ -2,13 +2,7 @@
 
 // we need this to be a client component because nhsuk-react-components uses client-only react features
 
-import {
-  CSSProperties,
-  useEffect,
-  FC,
-  FormEventHandler,
-  useState,
-} from 'react';
+import { FC, FormEventHandler, useState } from 'react';
 import { useFormState } from 'react-dom';
 import {
   TextInput,
@@ -36,7 +30,6 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     pageHeading,
     errorHeading,
     buttonText,
-    characterCountText,
     templateNameLabelText,
     templateSubjectLineLabelText,
     templateNameHintText,
@@ -55,13 +48,6 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
   const [templateMessage, setTemplateMessage] = useState(
     state.emailTemplateMessage
   );
-  const [jsEnabledStyle, setJsEnabledStyle] = useState<
-    CSSProperties | undefined
-  >({ display: 'none' });
-
-  useEffect(() => {
-    setJsEnabledStyle(undefined);
-  }, []);
 
   const templateNameHandler: FormEventHandler<HTMLInputElement> = (event) => {
     const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
@@ -141,7 +127,6 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
             <Textarea
               label='Message'
               id='emailTemplateMessage'
-              maxLength={5000}
               rows={10}
               onChange={templateMessageHandler}
               value={templateMessage}
@@ -150,10 +135,6 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
               )}
               errorProps={{ id: 'emailTemplateMessage-error-message' }}
             />
-            <p style={jsEnabledStyle}>
-              {templateMessage?.length}
-              {characterCountText}
-            </p>
           </FormSection>
           <Button type='submit' id='create-email-template-submit-button'>
             {buttonText}

@@ -175,16 +175,10 @@ exports[`renders page 1`] = `
             <textarea
               class="nhsuk-textarea"
               id="emailTemplateMessage"
-              maxlength="5000"
               name="emailTemplateMessage"
               rows="10"
             />
           </div>
-          <p
-            style=""
-          >
-            0 of 5000 characters
-          </p>
         </div>
         <button
           aria-disabled="false"
@@ -764,16 +758,10 @@ exports[`renders page one error 1`] = `
             <textarea
               class="nhsuk-textarea"
               id="emailTemplateMessage"
-              maxlength="5000"
               name="emailTemplateMessage"
               rows="10"
             />
           </div>
-          <p
-            style=""
-          >
-            0 of 5000 characters
-          </p>
         </div>
         <button
           aria-disabled="false"
@@ -1381,16 +1369,10 @@ exports[`renders page with multiple errors 1`] = `
               aria-describedby="emailTemplateMessage--error-message"
               class="nhsuk-textarea nhsuk-textarea--error"
               id="emailTemplateMessage"
-              maxlength="5000"
               name="emailTemplateMessage"
               rows="10"
             />
           </div>
-          <p
-            style=""
-          >
-            0 of 5000 characters
-          </p>
         </div>
         <button
           aria-disabled="false"
@@ -1921,18 +1903,12 @@ exports[`renders page with preloaded field values 1`] = `
             <textarea
               class="nhsuk-textarea"
               id="emailTemplateMessage"
-              maxlength="5000"
               name="emailTemplateMessage"
               rows="10"
             >
               template-message
             </textarea>
           </div>
-          <p
-            style=""
-          >
-            16 of 5000 characters
-          </p>
         </div>
         <button
           aria-disabled="false"
