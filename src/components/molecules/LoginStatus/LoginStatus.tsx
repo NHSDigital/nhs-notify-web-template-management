@@ -68,10 +68,12 @@ const signOut = (
 
 export default function LoginStatus() {
   const [browserCookie, setBrowserCookie] = useState<string>('');
+  const [redirectUrl, setRedirectUrl] = useState<string>('/');
 
   useEffect(() => {
     const newBrowserCookie = document.cookie;
     setBrowserCookie(newBrowserCookie);
+    setRedirectUrl(location.pathname); // eslint-disable-line no-restricted-globals
   }, []);
 
   const loggedInUser = getLoggedInUser(browserCookie);
@@ -93,7 +95,7 @@ export default function LoginStatus() {
 
   return (
     <Header.NavItem
-      href={`/auth~featuredomain-testing?redirect=${encodeURIComponent(location.pathname)}`} // eslint-disable-line no-restricted-globals
+      href={`/auth~featuredomain-testing?redirect=${encodeURIComponent(redirectUrl)}`}
     >
       Sign in
     </Header.NavItem>
