@@ -8,21 +8,41 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 const getLoggedInUser = (cookies: ReadonlyRequestCookies) => {
+  console.log('cookies', cookies);
+
   const allCookies = cookies.getAll();
+
+  if (!allCookies) {
+    return;
+  }
+  console.log('allCookies', allCookies);
+
   const idTokenCookie = allCookies.find(
     (cookie) =>
       cookie.name.includes('CognitoIdentityServiceProvider') &&
       cookie.name.includes('idToken')
   );
+
+  if (!idTokenCookie) {
+    return;
+  }
+  console.log('idTokenCookie', idTokenCookie);
+
   const idTokenCookieValue = idTokenCookie?.value;
 
   if (!idTokenCookieValue) {
     return;
   }
+  console.log('idTokenCookieValue', idTokenCookieValue);
 
   const idTokenCookieDecoded = jwtDecode<JwtPayload & { email: string }>(
     idTokenCookieValue
   );
+
+  if (!idTokenCookieDecoded) {
+    return;
+  }
+  console.log('idTokenCookieDecoded', idTokenCookieDecoded);
 
   return idTokenCookieDecoded.email;
 };
