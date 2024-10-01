@@ -1,34 +1,34 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console,unicorn/no-document-cookie */
 
 'use client';
 
 import { Header } from 'nhsuk-react-components';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import cookie from 'cookie';
 
-const getLoggedInUser = (cookies: ReadonlyRequestCookies) => {
+const getLoggedInUser = (cookieString: string) => {
+  console.log('cookies', cookieString);
+
+  const cookies = cookie.parse(cookieString);
+
+  if (!cookies) {
+    return;
+  }
   console.log('cookies', cookies);
 
-  const allCookies = cookies.getAll();
-
-  if (!allCookies) {
-    return;
-  }
-  console.log('allCookies', allCookies);
-
-  const idTokenCookie = allCookies.find(
-    (cookie) =>
-      cookie.name.includes('CognitoIdentityServiceProvider') &&
-      cookie.name.includes('idToken')
+  const idTokenCookieName = Object.keys(cookies).find(
+    (cookieName) =>
+      cookieName.includes('CognitoIdentityServiceProvider') &&
+      cookieName.includes('idToken')
   );
 
-  if (!idTokenCookie) {
+  if (!idTokenCookieName) {
     return;
   }
-  console.log('idTokenCookie', idTokenCookie);
+  console.log('idTokenCookieName', idTokenCookieName);
 
-  const idTokenCookieValue = idTokenCookie?.value;
+  const idTokenCookieValue = cookies[idTokenCookieName];
 
   if (!idTokenCookieValue) {
     return;
@@ -47,27 +47,43 @@ const getLoggedInUser = (cookies: ReadonlyRequestCookies) => {
   return idTokenCookieDecoded.email;
 };
 
-const signOut = (cookies: ReadonlyRequestCookies) => {
-  const allCookies = cookies.getAll();
-  const authCookies = allCookies.filter((cookie) =>
-    cookie.name.includes('CognitoIdentityServiceProvider')
-  );
+const signOut = (
+  cookieString: string,
+  setBrowserCookie: React.Dispatch<React.SetStateAction<string>>
+) => {
+  const cookies = cookie.parse(cookieString);
 
-  for (const cookie of authCookies) cookies.delete(cookie.name);
+  const cookiesWithoutAuthCookies = Object.entries(cookies)
+    .filter(
+      ([cookieName]) => !cookieName.includes('CognitoIdentityServiceProvider')
+    )
+    .map(([cookieName, cookieValue]) =>
+      cookie.serialize(cookieName, cookieValue)
+    )
+    .join(';');
+
+  document.cookie = cookiesWithoutAuthCookies;
+  setBrowserCookie(cookiesWithoutAuthCookies);
 };
 
-export default function LoginStatus({
-  cookies,
-}: {
-  cookies: ReadonlyRequestCookies;
-}) {
-  const loggedInUser = getLoggedInUser(cookies);
+export default function LoginStatus() {
+  const [browserCookie, setBrowserCookie] = useState<string>('');
+
+  useEffect(() => {
+    const newBrowserCookie = document.cookie;
+    setBrowserCookie(newBrowserCookie);
+  }, []);
+
+  const loggedInUser = getLoggedInUser(browserCookie);
 
   if (loggedInUser) {
     return (
       <>
         <Header.ServiceName key='serviceName'>loggedInUser</Header.ServiceName>,
-        <Header.NavItem key='navItem' onClick={() => signOut(cookies)}>
+        <Header.NavItem
+          key='navItem'
+          onClick={() => signOut(browserCookie, setBrowserCookie)}
+        >
           Sign out
         </Header.NavItem>
         ,
