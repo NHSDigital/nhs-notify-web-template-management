@@ -66,11 +66,11 @@ export default function LoginStatus() {
         <Header.ServiceName key='serviceName'>
           {loggedInUser}
         </Header.ServiceName>
-    <Header.NavItem
-      href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(redirectUrl)}`}
-    >
-      Sign in
-    </Header.NavItem>
+        <Header.NavItem
+          href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(redirectUrl)}`}
+        >
+          Sign in
+        </Header.NavItem>
       </>
     );
   }
