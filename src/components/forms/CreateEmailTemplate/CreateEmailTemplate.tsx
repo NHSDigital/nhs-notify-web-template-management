@@ -11,7 +11,7 @@ import {
   Textarea,
   Button,
 } from 'nhsuk-react-components';
-import { createEmailTemplateAction } from '@forms/CreateEmailTemplate/server-action';
+import { processFormActions } from '@forms/CreateEmailTemplate/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
@@ -36,7 +36,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     templateNameHintText,
   } = createEmailTemplatePageContent;
 
-  const [state, action] = useFormState(createEmailTemplateAction, initialState);
+  const [state, action] = useFormState(processFormActions, initialState);
 
   const [emailTemplateName, emailTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.emailTemplateName ?? '');
