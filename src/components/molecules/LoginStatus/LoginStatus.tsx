@@ -6,6 +6,7 @@ import { Header } from 'nhsuk-react-components';
 import React, { useEffect, useState } from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import cookie from 'cookie';
+import { getAuthBasePath } from '@utils/get-base-path';
 
 const getLoggedInUser = (cookieString: string) => {
   console.log('cookies', cookieString);
@@ -47,25 +48,6 @@ const getLoggedInUser = (cookieString: string) => {
   return idTokenCookieDecoded.email;
 };
 
-const signOut = (
-  cookieString: string,
-  setBrowserCookie: React.Dispatch<React.SetStateAction<string>>
-) => {
-  const cookies = cookie.parse(cookieString);
-
-  const cookiesWithoutAuthCookies = Object.entries(cookies)
-    .filter(
-      ([cookieName]) => !cookieName.includes('CognitoIdentityServiceProvider')
-    )
-    .map(([cookieName, cookieValue]) =>
-      cookie.serialize(cookieName, cookieValue)
-    )
-    .join(';');
-
-  document.cookie = cookiesWithoutAuthCookies;
-  setBrowserCookie(cookiesWithoutAuthCookies);
-};
-
 export default function LoginStatus() {
   const [browserCookie, setBrowserCookie] = useState<string>('');
   const [redirectUrl, setRedirectUrl] = useState<string>('/');
@@ -84,21 +66,18 @@ export default function LoginStatus() {
         <Header.ServiceName key='serviceName'>
           {loggedInUser}
         </Header.ServiceName>
-        ,
-        <Header.NavItem
-          key='navItem'
-          onClick={() => signOut(browserCookie, setBrowserCookie)}
-        >
-          Sign out
-        </Header.NavItem>
-        ,
+    <Header.NavItem
+      href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(redirectUrl)}`}
+    >
+      Sign in
+    </Header.NavItem>
       </>
     );
   }
 
   return (
     <Header.NavItem
-      href={`/auth~featuredomain-testing?redirect=${encodeURIComponent(redirectUrl)}`}
+      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(redirectUrl)}`}
     >
       Sign in
     </Header.NavItem>
