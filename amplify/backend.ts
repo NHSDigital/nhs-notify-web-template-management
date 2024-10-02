@@ -11,6 +11,17 @@ const backend = defineBackend({
   sendEmail,
 });
 
+const userPoolId = process.env.USER_POOL_ID;
+const userPoolClientId = process.env.USER_POOL_CLIENT_ID;
+
+backend.addOutput({
+  auth: {
+    aws_region: 'eu-west-2',
+    user_pool_id: userPoolId,
+    user_pool_client_id: userPoolClientId,
+  },
+});
+
 const sendEmailLambda = backend.sendEmail.resources.lambda;
 
 const attachPolicy = new PolicyStatement({
