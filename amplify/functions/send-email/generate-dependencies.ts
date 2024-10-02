@@ -6,7 +6,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const htmlContent = readFileSync(
   path.resolve(dirname, './email-template.html'),
   'utf8'
-);
+).trim();
 
 const encodedHtmlContent = JSON.stringify({ htmlContent });
 
