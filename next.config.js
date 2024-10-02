@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
-const authBasePath = process.env.NEXT_PUBLIC_AUTH_BASE_PATH ?? '/auth~featuredomain-testing';
+const authBasePath =
+  process.env.NEXT_PUBLIC_AUTH_BASE_PATH ?? '/auth~featuredomain-testing';
 
 const nextConfig = {
   basePath,
