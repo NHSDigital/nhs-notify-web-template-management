@@ -24,7 +24,7 @@ const initialState: Session = {
 describe('PreviewEmailActions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should enable text message markdown rules', () => {
+  it('should enable email markdown rules', () => {
     const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
     markdownItWrapperMock.enableLineBreak.mockReturnValue(
@@ -33,9 +33,14 @@ describe('PreviewEmailActions', () => {
 
     renderMarkdown('message', markdownItWrapperMock);
 
-    expect(markdownItWrapperMock.enableLineBreak).not.toHaveBeenCalled();
-
-    expect(markdownItWrapperMock.enable).not.toHaveBeenCalled();
+    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
+    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
+      'heading',
+      'link',
+      'list',
+      'emphasis',
+      'hr',
+    ]);
   });
 
   it('should only process text message markdown rules', () => {
