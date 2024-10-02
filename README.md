@@ -38,7 +38,7 @@
 ### Running the project locally
 
 1) Convert the email HTML template into a JSON file that can be packaged with the email sending lambda.
-  
+
    ```shell
    npm run generate-dependencies
    ```
