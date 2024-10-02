@@ -9,6 +9,8 @@ const {
   submitNHSAppTemplatePage,
   createEmailTemplatePage,
   createEmailTemplateErrorPage,
+  reviewEmailTemplatePage,
+  reviewEmailTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
   NHSAppTemplateSubmittedPage,
@@ -35,6 +37,9 @@ module.exports = {
 
     performCheck(createEmailTemplatePage(baseUrl)),
     performCheck(createEmailTemplateErrorPage(baseUrl)),
+    performCheck(reviewEmailTemplatePage(baseUrl)),
+    performCheck(reviewEmailTemplateErrorPage(baseUrl)),
+
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
   ],
   defaults: {
