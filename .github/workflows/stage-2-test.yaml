@@ -51,6 +51,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm install
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: "Run unit test suite"
         run: |
           make test-unit
@@ -70,6 +73,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm install
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: "Run linting"
         run: |
           make test-lint
@@ -83,6 +89,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm install
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: "Run typecheck"
         run: |
           make test-typecheck
