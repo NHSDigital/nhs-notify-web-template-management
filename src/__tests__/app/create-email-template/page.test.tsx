@@ -41,7 +41,7 @@ describe('CreateEmailTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
 
-  it('should redirect to invalid-session when sessions template type is not SMS', async () => {
+  it('should redirect to invalid-session when sessions template type is not EMAIL', async () => {
     getSessionMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,

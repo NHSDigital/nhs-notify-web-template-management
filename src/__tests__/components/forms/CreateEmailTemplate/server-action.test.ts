@@ -21,7 +21,7 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: Session = {
   id: 'session-id',
-  templateType: TemplateType.SMS,
+  templateType: TemplateType.EMAIL,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
