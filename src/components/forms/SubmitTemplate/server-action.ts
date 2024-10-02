@@ -35,13 +35,16 @@ export async function submitTemplate(formData: FormData) {
 
     const templateEntity = await saveTemplate(validatedTemplate);
 
-    await deleteSession(sessionId);
+    const promises = [
+      deleteSession(sessionId),
+      sendEmail(
+        templateEntity.id,
+        templateEntity.name,
+        templateEntity.fields!.content
+      ),
+    ];
 
-    await sendEmail(
-      templateEntity.id,
-      templateEntity.name,
-      templateEntity.fields!.content
-    );
+    await Promise.all(promises);
 
     return redirect(
       `/nhs-app-template-submitted/${templateEntity.id}`,
