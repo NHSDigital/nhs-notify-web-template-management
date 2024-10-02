@@ -1,7 +1,10 @@
 'use client';
 
 import { render, screen } from '@testing-library/react';
-import { ReviewEmailTemplate, renderMarkdown } from '@forms/ReviewEmailTemplate';
+import {
+  ReviewEmailTemplate,
+  renderMarkdown,
+} from '@forms/ReviewEmailTemplate';
 import { mockDeep } from 'jest-mock-extended';
 import { TemplateFormState } from '@utils/types';
 
