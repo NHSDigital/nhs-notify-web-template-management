@@ -9,14 +9,11 @@ import cookie from 'cookie';
 import { getAuthBasePath } from '@utils/get-base-path';
 
 const getLoggedInUser = (cookieString: string) => {
-  console.log('cookies', cookieString);
-
   const cookies = cookie.parse(cookieString);
 
   if (!cookies) {
     return;
   }
-  console.log('cookies', cookies);
 
   const idTokenCookieName = Object.keys(cookies).find(
     (cookieName) =>
@@ -27,14 +24,12 @@ const getLoggedInUser = (cookieString: string) => {
   if (!idTokenCookieName) {
     return;
   }
-  console.log('idTokenCookieName', idTokenCookieName);
 
   const idTokenCookieValue = cookies[idTokenCookieName];
 
   if (!idTokenCookieValue) {
     return;
   }
-  console.log('idTokenCookieValue', idTokenCookieValue);
 
   const idTokenCookieDecoded = jwtDecode<JwtPayload & { email: string }>(
     idTokenCookieValue
@@ -43,7 +38,6 @@ const getLoggedInUser = (cookieString: string) => {
   if (!idTokenCookieDecoded) {
     return;
   }
-  console.log('idTokenCookieDecoded', idTokenCookieDecoded);
 
   return idTokenCookieDecoded.email;
 };
