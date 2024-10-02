@@ -69,7 +69,7 @@ export default function LoginStatus() {
         <Header.NavItem
           href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(redirectUrl)}`}
         >
-          Sign in
+          Sign out
         </Header.NavItem>
       </>
     );
