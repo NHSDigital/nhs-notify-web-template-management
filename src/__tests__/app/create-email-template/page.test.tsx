@@ -1,72 +1,69 @@
-import { render } from '@testing-library/react';
 import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page';
-import { TemplateFormState } from '@utils/types';
-import nav from 'next/navigation';
+import { getSession } from '@utils/form-actions';
+import { Session, TemplateType } from '@utils/types';
+import { redirect } from 'next/navigation';
+import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
-const mockSessionSupplier = {
-  mockSession: {} as unknown,
+jest.mock('@utils/amplify-utils', () => ({
+  getAmplifyBackendClient: () => ({
+    models: {
+      SessionStorage: {
+        update: () => ({ data: {} }),
+      },
+    },
+  }),
+}));
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+jest.mock('@forms/CreateEmailTemplate/CreateEmailTemplate');
+
+const getSessionMock = jest.mocked(getSession);
+const redirectMock = jest.mocked(redirect);
+const CreateEmailTemplateMock = jest.mocked(CreateEmailTemplate);
+
+const initialState: Session = {
+  id: 'session-id',
+  templateType: TemplateType.EMAIL,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
 };
 
-jest.mock('@utils/form-actions', () => ({
-  getSession: () => Promise.resolve(mockSessionSupplier.mockSession),
-}));
-jest.mock('next/navigation', () => ({
-  redirect: () => {
-    throw new Error('Simulated redirect');
-  },
-  useRouter: () => {},
+describe('CreateEmailTemplatePage', () => {
+  beforeEach(jest.resetAllMocks);
 
-  RedirectType: {
-    push: 'push',
-    replace: 'replace',
-  },
-}));
+  it('should redirect to invalid-session when no session is found', async () => {
+    getSessionMock.mockResolvedValueOnce(undefined);
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+    await CreateEmailTemplatePage({ params: { sessionId: 'session-id' } });
 
-  return {
-    ...originalModule,
-    useFormState: (
-      _: (
-        formState: TemplateFormState,
-        formData: FormData
-      ) => Promise<TemplateFormState>,
-      initialState: TemplateFormState
-    ) => [initialState, '/action'],
-  };
-});
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
-test('CreateEmailTemplatePage', async () => {
-  mockSessionSupplier.mockSession = {
-    id: 'session-id',
-    templateType: 'UNKNOWN',
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
-  };
-
-  const page = await CreateEmailTemplatePage({
-    params: {
-      sessionId: 'session-id',
-    },
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
 
-  const container = render(page);
+  it('should redirect to invalid-session when sessions template type is not SMS', async () => {
+    getSessionMock.mockResolvedValueOnce({
+      ...initialState,
+      templateType: TemplateType.NHS_APP,
+    });
 
-  expect(container.asFragment()).toMatchSnapshot();
-});
+    await CreateEmailTemplatePage({ params: { sessionId: 'session-id' } });
 
-test('CreateEmailTemplatePage - should handle invalid session', async () => {
-  mockSessionSupplier.mockSession = undefined;
-  const redirectSpy = jest.spyOn(nav, 'redirect');
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
-  await expect(
-    CreateEmailTemplatePage({
-      params: {
-        sessionId: 'session-id',
-      },
-    })
-  ).rejects.toThrow('Simulated redirect');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+  });
 
-  expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
+  it('should render CreateEmailTemplatePage component when session is found', async () => {
+    getSessionMock.mockResolvedValueOnce(initialState);
+    CreateEmailTemplateMock.mockImplementationOnce(() => <p>rendered</p>);
+
+    const page = await CreateEmailTemplatePage({
+      params: { sessionId: 'session-id' },
+    });
+
+    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+
+    expect(page).toMatchSnapshot();
+  });
 });

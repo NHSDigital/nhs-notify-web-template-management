@@ -4,12 +4,6 @@ import { mockDeep } from 'jest-mock-extended';
 import { TemplateFormState } from '@utils/types';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
-}));
-
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => {},
 }));
@@ -36,33 +30,22 @@ test('renders page', async () => {
     <CreateEmailTemplate
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
-        emailTemplateName: '',
-        emailTemplateSubjectLine: '',
-        emailTemplateMessage: '',
+        emailTemplateName: undefined,
+        emailTemplateSubjectLine: undefined,
+        emailTemplateMessage: undefined,
       })}
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
 
-  const templateNameBox = document.querySelector('#emailTemplateName');
-  if (!templateNameBox) {
-    throw new Error('Template name box not found');
-  }
-  await user.type(templateNameBox, 'template-name');
+  const templateNameInput = await container.findByTestId('emailTemplateName-input');
+  await user.type(templateNameInput, 'template-name');
 
-  const templateSubjectLineBox = document.querySelector(
-    '#emailTemplateSubjectLine'
-  );
-  if (!templateSubjectLineBox) {
-    throw new Error('Template subject line not found');
-  }
-  await user.type(templateSubjectLineBox, 'template-subject-line');
+  const templateSubjectLineInput = await container.findByTestId('emailTemplateSubjectLine-input');
+  await user.type(templateSubjectLineInput, 'template-subject-line');
 
-  const templateMessageBox = document.querySelector('#emailTemplateMessage');
-  if (!templateMessageBox) {
-    throw new Error('Template message box not found');
-  }
-  await user.type(templateMessageBox, 'template-message');
+  const templateMessageInput = await container.findByTestId('emailTemplateMessage-input');
+  await user.type(templateMessageInput, 'template-message');
 });
 
 test('renders page with preloaded field values', () => {

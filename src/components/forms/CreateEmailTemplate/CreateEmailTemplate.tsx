@@ -2,7 +2,7 @@
 
 // we need this to be a client component because nhsuk-react-components uses client-only react features
 
-import { FC, FormEventHandler, useState } from 'react';
+import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import {
   TextInput,
@@ -20,8 +20,8 @@ import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { PageComponentProps, TemplateType } from '@utils/types';
 import { createEmailTemplatePageContent } from '@content/content';
-import { useRouter } from 'next/navigation';
 import { FormSection } from '@molecules/FormSection/FormSection';
+import { useTextInput } from '@hooks/use-text-input.hook';
 
 export const CreateEmailTemplate: FC<PageComponentProps> = ({
   initialState,
@@ -35,56 +35,40 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
     templateMessageLabelText,
     templateNameHintText,
   } = createEmailTemplatePageContent;
+
   const [state, action] = useFormState(createEmailTemplateAction, initialState);
-  const router = useRouter();
 
-  if (state.redirect) {
-    router.push(state.redirect);
-  }
+  const [emailTemplateName, emailTemplateNameHandler] =
+    useTextInput<HTMLInputElement>(state.emailTemplateName ?? '');
 
-  const [templateName, setTemplateName] = useState(state.emailTemplateName);
-  const [templateSubjectLine, setTemplateSubjectLine] = useState(
-    state.emailTemplateSubjectLine
-  );
-  const [templateMessage, setTemplateMessage] = useState(
-    state.emailTemplateMessage
-  );
+  const [emailTemplateSubjectLine, emailTemplateSubjectLineHandler] =
+    useTextInput<HTMLInputElement>(state.emailTemplateSubjectLine ?? '');
 
-  const templateNameHandler: FormEventHandler<HTMLInputElement> = (event) => {
-    const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
-    setTemplateName(typedEventTarget.value);
-  };
-
-  const templateSubjectLineHandler: FormEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
-    setTemplateSubjectLine(typedEventTarget.value);
-  };
-
-  const templateMessageHandler: FormEventHandler<HTMLTextAreaElement> = (
-    event
-  ) => {
-    const typedEventTarget = event.target as HTMLTextAreaElement; // it would be great if we could do this without forcing the types
-    setTemplateMessage(typedEventTarget.value);
-  };
+  const [emailTemplateMessage, emailTemplateMessageHandler] =
+    useTextInput<HTMLTextAreaElement>(state.emailTemplateMessage ?? '');
 
   const templateNameError =
     state.validationError?.fieldErrors.emailTemplateName?.join(', ');
 
+  const templateSubjectLineError =
+    state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(', ');
+
+  const templateMessageError =
+    state.validationError?.fieldErrors.emailTemplateMessage?.join(', ');
+
   return (
     <div className='nhsuk-grid-row'>
       <NHSNotifyBackButton formId='create-email-template-back' action={action}>
-        <input type='hidden' name='emailTemplateName' value={templateName} />
+        <input type='hidden' name='emailTemplateName' value={emailTemplateName} />
         <input
           type='hidden'
           name='emailTemplateSubjectLine'
-          value={templateSubjectLine}
+          value={emailTemplateSubjectLine}
         />
         <input
           type='hidden'
           name='emailTemplateMessage'
-          value={templateMessage}
+          value={emailTemplateMessage}
         />
       </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -101,27 +85,27 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
               <TemplateNameGuidance template={TemplateType.EMAIL} />
               <TextInput
                 id='emailTemplateName'
-                onChange={templateNameHandler}
-                value={templateName}
+                onChange={emailTemplateNameHandler}
+                value={emailTemplateName}
                 error={templateNameError}
                 errorProps={{ id: 'emailTemplateName-error-message' }}
+                data-testid='emailTemplateName-input'
               />
             </div>
           </FormSection>
 
           <FormSection>
-            <div>
+            <div className={templateSubjectLineError && 'nhsuk-form-group--error'}>
               <Label htmlFor='emailTemplateSubjectLine'>
                 {templateSubjectLineLabelText}
               </Label>
               <TextInput
                 id='emailTemplateSubjectLine'
-                onChange={templateSubjectLineHandler}
-                value={templateSubjectLine}
-                error={state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(
-                  ', '
-                )}
+                onChange={emailTemplateSubjectLineHandler}
+                value={emailTemplateSubjectLine}
+                error={templateSubjectLineError}
                 errorProps={{ id: 'emailTemplateSubjectLine-error-message' }}
+                data-testid='emailTemplateSubjectLine-input'
               />
             </div>
 
@@ -129,12 +113,11 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
               label={templateMessageLabelText}
               id='emailTemplateMessage'
               rows={10}
-              onChange={templateMessageHandler}
-              value={templateMessage}
-              error={state.validationError?.fieldErrors.emailTemplateMessage?.join(
-                ', '
-              )}
+              onChange={emailTemplateMessageHandler}
+              value={emailTemplateMessage}
+              error={templateMessageError}
               errorProps={{ id: 'emailTemplateMessage-error-message' }}
+              data-testid='emailTemplateMessage-input'
             />
           </FormSection>
           <Button type='submit' id='create-email-template-submit-button'>

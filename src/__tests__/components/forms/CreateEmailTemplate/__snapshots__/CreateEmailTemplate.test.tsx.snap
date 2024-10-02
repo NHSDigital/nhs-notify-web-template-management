@@ -132,6 +132,7 @@ exports[`renders page 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="emailTemplateName-input"
                 id="emailTemplateName"
                 name="emailTemplateName"
                 type="text"
@@ -155,6 +156,7 @@ exports[`renders page 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
                 name="emailTemplateSubjectLine"
                 type="text"
@@ -174,6 +176,7 @@ exports[`renders page 1`] = `
             </label>
             <textarea
               class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
               name="emailTemplateMessage"
               rows="10"
@@ -715,6 +718,7 @@ exports[`renders page one error 1`] = `
               <input
                 aria-describedby="emailTemplateName--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateName-input"
                 id="emailTemplateName"
                 name="emailTemplateName"
                 type="text"
@@ -738,6 +742,7 @@ exports[`renders page one error 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
                 name="emailTemplateSubjectLine"
                 type="text"
@@ -757,6 +762,7 @@ exports[`renders page one error 1`] = `
             </label>
             <textarea
               class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
               name="emailTemplateMessage"
               rows="10"
@@ -1302,6 +1308,7 @@ exports[`renders page with multiple errors 1`] = `
               <input
                 aria-describedby="emailTemplateName--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateName-input"
                 id="emailTemplateName"
                 name="emailTemplateName"
                 type="text"
@@ -1313,7 +1320,9 @@ exports[`renders page with multiple errors 1`] = `
         <div
           class="border"
         >
-          <div>
+          <div
+            class="nhsuk-form-group--error"
+          >
             <label
               class="nhsuk-label"
               for="emailTemplateSubjectLine"
@@ -1337,6 +1346,7 @@ exports[`renders page with multiple errors 1`] = `
               <input
                 aria-describedby="emailTemplateSubjectLine--error-message"
                 class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
                 name="emailTemplateSubjectLine"
                 type="text"
@@ -1368,6 +1378,7 @@ exports[`renders page with multiple errors 1`] = `
             <textarea
               aria-describedby="emailTemplateMessage--error-message"
               class="nhsuk-textarea nhsuk-textarea--error"
+              data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
               name="emailTemplateMessage"
               rows="10"
@@ -1860,6 +1871,7 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="emailTemplateName-input"
                 id="emailTemplateName"
                 name="emailTemplateName"
                 type="text"
@@ -1883,6 +1895,7 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
                 name="emailTemplateSubjectLine"
                 type="text"
@@ -1902,6 +1915,7 @@ exports[`renders page with preloaded field values 1`] = `
             </label>
             <textarea
               class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
               name="emailTemplateMessage"
               rows="10"
