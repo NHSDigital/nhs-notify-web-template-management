@@ -38,13 +38,19 @@ test('renders page', async () => {
   );
   expect(container.asFragment()).toMatchSnapshot();
 
-  const templateNameInput = await container.findByTestId('emailTemplateName-input');
+  const templateNameInput = await container.findByTestId(
+    'emailTemplateName-input'
+  );
   await user.type(templateNameInput, 'template-name');
 
-  const templateSubjectLineInput = await container.findByTestId('emailTemplateSubjectLine-input');
+  const templateSubjectLineInput = await container.findByTestId(
+    'emailTemplateSubjectLine-input'
+  );
   await user.type(templateSubjectLineInput, 'template-subject-line');
 
-  const templateMessageInput = await container.findByTestId('emailTemplateMessage-input');
+  const templateMessageInput = await container.findByTestId(
+    'emailTemplateMessage-input'
+  );
   await user.type(templateMessageInput, 'template-message');
 });
 

@@ -59,7 +59,11 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
   return (
     <div className='nhsuk-grid-row'>
       <NHSNotifyBackButton formId='create-email-template-back' action={action}>
-        <input type='hidden' name='emailTemplateName' value={emailTemplateName} />
+        <input
+          type='hidden'
+          name='emailTemplateName'
+          value={emailTemplateName}
+        />
         <input
           type='hidden'
           name='emailTemplateSubjectLine'
@@ -95,7 +99,9 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
           </FormSection>
 
           <FormSection>
-            <div className={templateSubjectLineError && 'nhsuk-form-group--error'}>
+            <div
+              className={templateSubjectLineError && 'nhsuk-form-group--error'}
+            >
               <Label htmlFor='emailTemplateSubjectLine'>
                 {templateSubjectLineLabelText}
               </Label>
