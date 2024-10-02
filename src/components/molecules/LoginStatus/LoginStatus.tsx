@@ -6,7 +6,7 @@ import { Header } from 'nhsuk-react-components';
 import React, { useEffect, useState } from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import cookie from 'cookie';
-import { getAuthBasePath } from '@utils/get-base-path';
+import { getAuthBasePath, getBasePath } from '@utils/get-base-path';
 import { usePathname } from 'next/navigation';
 
 const getLoggedInUser = (cookieString: string) => {
@@ -61,7 +61,7 @@ export default function LoginStatus() {
           {loggedInUser}
         </Header.ServiceName>
         <Header.NavItem
-          href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(pathname)}`}
+          href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(getBasePath())}${encodeURIComponent(pathname)}`}
         >
           Sign out
         </Header.NavItem>
@@ -71,7 +71,7 @@ export default function LoginStatus() {
 
   return (
     <Header.NavItem
-      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(pathname)}`}
+      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(getBasePath())}${encodeURIComponent(pathname)}`}
     >
       Sign in
     </Header.NavItem>
