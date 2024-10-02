@@ -13,5 +13,11 @@
         "../.amplify/generated/*"
       ]
     }
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.json"
+  ],
+  "exclude": ["node_modules"]
 }

@@ -24,6 +24,7 @@ module.exports = {
     performCheck(reviewNHSAppTemplateErrorPage(baseUrl)),
     performCheck(submitNHSAppTemplatePage(baseUrl)),
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
+    performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],
   defaults: {
     reporters: [

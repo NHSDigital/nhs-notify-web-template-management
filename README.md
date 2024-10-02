@@ -35,19 +35,34 @@
   npm install
 ```
 
-- To run the project locally, you will first need to run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
+### Running the project locally
+
+1. Convert the email HTML template into a JSON file that can be packaged with the email sending lambda.
+
+```shell
+  npm run generate-dependencies
+```
+
+2. (Optional) If you want to test sending emails then you will need to set the following environment variables locally.
+
+```shell
+  export ACCOUNT_ID=<aws_account_id>
+  export NOTIFY_DOMAIN_NAME=<ses_verified_domain>
+```
+
+2. To run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
 
 ```shell
   npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
 ```
 
-- Then in a separate terminal, run the app locally:
+3. Then in a separate terminal, run the app locally:
 
 ```shell
   npm run dev
 ```
 
-- Open your browser and go to `localhost:3000` to view the app.
+4. Open your browser and go to `localhost:3000` to view the app.
 
 ### Other commands
 

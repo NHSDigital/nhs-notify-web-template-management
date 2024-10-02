@@ -23,6 +23,7 @@ export async function submitTemplate(formData: FormData) {
     return redirect('/invalid-session', RedirectType.replace);
   }
 
+  let templateId;
   try {
     const templateDTO = createTemplateFromSession(session);
 
@@ -35,11 +36,7 @@ export async function submitTemplate(formData: FormData) {
       templateEntity.name,
       templateEntity.fields!.content
     );
-
-    return redirect(
-      `/nhs-app-template-submitted/${templateEntity.id}`,
-      RedirectType.push
-    );
+    templateId = templateEntity.id;
   } catch (error) {
     logger.error('Failed to submit template', {
       error,
@@ -48,4 +45,9 @@ export async function submitTemplate(formData: FormData) {
 
     throw error;
   }
+
+  return redirect(
+    `/nhs-app-template-submitted/${templateId}`,
+    RedirectType.push
+  );
 }

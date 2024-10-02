@@ -66,7 +66,7 @@ Content-Type: multipart/mixed; boundary=${messageBoundary}
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-${emailTemplate('template-id', 'template-name')}
+${emailTemplate('template-id', 'template-name', 'template-message')}
 
 --${messageBoundary}
 Content-Type: text/markdown; name="template-content.md"
