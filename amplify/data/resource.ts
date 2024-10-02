@@ -26,10 +26,10 @@ const TemplateStorageModel = {
 const schema = a.schema({
   SessionStorage: a
     .model(SessionStorageModel)
-    .authorization((allow) => [allow.authenticated()]),
+    .authorization((allow) => [allow.guest()]),
   TemplateStorage: a
     .model(TemplateStorageModel)
-    .authorization((allow) => [allow.authenticated()]),
+    .authorization((allow) => [allow.guest()]),
   sendEmail: a
     .query()
     .arguments({
@@ -40,7 +40,7 @@ const schema = a.schema({
     })
     .returns(a.string())
     .handler(a.handler.function(sendEmail))
-    .authorization((allow) => [allow.authenticated()]),
+    .authorization((allow) => [allow.guest()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
