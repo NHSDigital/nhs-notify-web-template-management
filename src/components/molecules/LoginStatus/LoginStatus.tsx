@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import cookie from 'cookie';
 import { getAuthBasePath } from '@utils/get-base-path';
+import { usePathname } from 'next/navigation';
 
 const getLoggedInUser = (cookieString: string) => {
   const cookies = cookie.parse(cookieString);
@@ -44,12 +45,11 @@ const getLoggedInUser = (cookieString: string) => {
 
 export default function LoginStatus() {
   const [browserCookie, setBrowserCookie] = useState<string>('');
-  const [redirectUrl, setRedirectUrl] = useState<string>('/');
+  const pathname = usePathname();
 
   useEffect(() => {
     const newBrowserCookie = document.cookie;
     setBrowserCookie(newBrowserCookie);
-    setRedirectUrl(location.pathname); // eslint-disable-line no-restricted-globals
   }, []);
 
   const loggedInUser = getLoggedInUser(browserCookie);
@@ -61,7 +61,7 @@ export default function LoginStatus() {
           {loggedInUser}
         </Header.ServiceName>
         <Header.NavItem
-          href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(redirectUrl)}`}
+          href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(pathname)}`}
         >
           Sign out
         </Header.NavItem>
@@ -71,7 +71,7 @@ export default function LoginStatus() {
 
   return (
     <Header.NavItem
-      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(redirectUrl)}`}
+      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(pathname)}`}
     >
       Sign in
     </Header.NavItem>
