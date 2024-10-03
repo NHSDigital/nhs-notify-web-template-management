@@ -24,7 +24,7 @@ describe('createTemplateFromSession', () => {
       nhsAppTemplateMessage: 'message',
       nhsAppTemplateName: 'name',
       emailTemplateMessage: 'email-message',
-      emailTemplateSubjectLine: 'email-subjectLine',
+      emailTemplateSubjectLine: 'email-subject-line',
       emailTemplateName: 'email-name',
       id: '',
       templateType: TemplateType.EMAIL,
@@ -35,7 +35,10 @@ describe('createTemplateFromSession', () => {
       name: 'email-name',
       type: 'EMAIL',
       version: 1,
-      fields: { content: 'email-message' },
+      fields: {
+        subjectLine: 'email-subject-line',
+        content: 'email-message',
+      },
     });
   });
 

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const baseFields = z.object({
+  subjectLine: z.string().optional(),
   content: z.string(),
 });
 

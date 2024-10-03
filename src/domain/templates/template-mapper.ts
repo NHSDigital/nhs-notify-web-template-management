@@ -12,7 +12,10 @@ const emailTemplateMap = (session: Session): TemplateInput => ({
   name: session.emailTemplateName!,
   type: 'EMAIL',
   version: 1,
-  fields: { content: session.emailTemplateMessage! },
+  fields: {
+    subjectLine: session.emailTemplateSubjectLine,
+    content: session.emailTemplateMessage!,
+  },
 });
 
 export function createTemplateFromSession(session: Session): TemplateInput {
