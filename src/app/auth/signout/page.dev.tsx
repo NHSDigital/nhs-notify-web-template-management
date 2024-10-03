@@ -1,10 +1,14 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,no-console */
 
 'use client';
 
-import { Suspense, useEffect } from 'react';
-import { deleteCookie } from 'cookies-next';
+import { Amplify } from 'aws-amplify';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { signOut } from '@aws-amplify/auth';
+import { Authenticator } from '@aws-amplify/ui-react';
+
+Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
 
 const Redirect = () => {
   const searchParams = useSearchParams();
@@ -28,13 +32,30 @@ const Redirect = () => {
 };
 
 const MockAuthPage = () => {
-  deleteCookie('CognitoIdentityServiceProvider.idToken');
+  const [signedOut, setSignedOut] = useState(false);
 
-  return (
-    <Suspense>
-      <Redirect />
-    </Suspense>
-  );
+  useEffect(() => {
+    if (!signedOut) {
+      signOut()
+        .then(() => setSignedOut(true))
+        .catch((error) => console.error(error));
+    }
+  });
+
+  if (signedOut) {
+    return (
+      <Suspense>
+        <Redirect />
+      </Suspense>
+    );
+  }
+  return <p>Signing out</p>;
 };
 
-export default MockAuthPage;
+const WrappedAuthPage = () => (
+  <Authenticator.Provider>
+    <MockAuthPage />
+  </Authenticator.Provider>
+);
+
+export default WrappedAuthPage;
