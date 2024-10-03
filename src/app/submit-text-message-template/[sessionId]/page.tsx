@@ -22,6 +22,7 @@ const SubmitSmsTemplatePage = async ({ params: { sessionId } }: PageProps) => {
       templateName={session.smsTemplateName!}
       sessionId={session.id}
       goBackPath='preview-text-message-template'
+      submitPath='text-message-template-submitted'
     />
   );
 };

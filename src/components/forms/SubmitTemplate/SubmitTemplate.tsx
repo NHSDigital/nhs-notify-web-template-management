@@ -12,6 +12,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
   sessionId,
   goBackPath,
+  submitPath,
 }) => {
   const {
     backLinkText,
@@ -55,7 +56,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
         ))}
         <NHSNotifyFormWrapper
           formId='submit-template-form'
-          action={submitTemplate}
+          action={submitTemplate.bind(null, submitPath)}
         >
           <input type='hidden' name='sessionId' value={sessionId} readOnly />
           <Button id='submit-template-button'>{buttonText}</Button>

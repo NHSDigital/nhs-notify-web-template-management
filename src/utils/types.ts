@@ -56,6 +56,7 @@ export type SubmitTemplatePageComponentProps = {
   templateName: string;
   sessionId: string;
   goBackPath: string;
+  submitPath: string;
 };
 
 export enum TemplateFormatText {

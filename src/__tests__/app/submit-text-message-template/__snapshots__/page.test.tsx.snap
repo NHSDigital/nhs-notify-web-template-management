@@ -4,6 +4,7 @@ exports[`SubmitSmsTemplatePage SubmitSmsTemplatePage 1`] = `
 <SubmitTemplate
   goBackPath="preview-text-message-template"
   sessionId="session-id"
+  submitPath="text-message-template-submitted"
   templateName="template-name"
 />
 `;

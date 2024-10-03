@@ -19,6 +19,7 @@ const SubmitNhsAppTemplatePage = async ({
       templateName={session.nhsAppTemplateName}
       sessionId={session.id}
       goBackPath='preview-nhs-app-template'
+      submitPath='nhs-app-template-submitted'
     />
   );
 };

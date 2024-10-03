@@ -5,18 +5,10 @@ import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
-import { TemplateType } from '@utils/types';
 
 const $SessionIdSchema = z.string();
 
-const routeMap: Record<TemplateType, string> = {
-  [TemplateType.NHS_APP]: 'nhs-app-template-submitted',
-  [TemplateType.EMAIL]: '404',
-  [TemplateType.LETTER]: '404',
-  [TemplateType.SMS]: 'text-message-template-submitted',
-};
-
-export async function submitTemplate(formData: FormData) {
+export async function submitTemplate(route: string, formData: FormData) {
   const { success, data: sessionId } = $SessionIdSchema.safeParse(
     formData.get('sessionId')
   );
@@ -43,8 +35,6 @@ export async function submitTemplate(formData: FormData) {
       templateEntity.name,
       templateEntity.fields!.content
     );
-
-    const route = routeMap[templateEntity.type!];
 
     return redirect(`/${route}/${templateEntity.id}`, RedirectType.push);
   } catch (error) {

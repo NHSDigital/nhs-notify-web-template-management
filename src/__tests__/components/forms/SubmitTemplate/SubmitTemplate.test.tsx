@@ -12,6 +12,7 @@ describe('SubmitTemplate component', () => {
         sessionId='session-id'
         templateName='template-name'
         goBackPath='example'
+        submitPath='example-submit'
       />
     );
 
