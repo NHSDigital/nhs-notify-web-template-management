@@ -18,6 +18,11 @@ const nextConfig = {
       allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
     },
   },
+  pageExtensions: [
+    'prod.tsx',
+    'layout.tsx',
+    ...(process.env.LOCAL_AUTH === 'true' ? ['dev.tsx'] : []),
+  ],
 
   async redirects() {
     return [
@@ -27,6 +32,22 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
+      ...(process.env.LOCAL_AUTH === 'true'
+        ? [
+            {
+              source: '/auth',
+              destination: `${basePath}/auth`,
+              basePath: false,
+              permanent: false,
+            },
+            {
+              source: '/auth/signout',
+              destination: `${basePath}/auth/signout`,
+              basePath: false,
+              permanent: false,
+            },
+          ]
+        : []),
     ];
   },
 };

@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page';
+import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page.prod';
 import { TemplateFormState } from '@utils/types';
 import nav from 'next/navigation';
 
