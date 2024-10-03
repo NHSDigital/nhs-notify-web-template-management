@@ -43,7 +43,7 @@ describe('PreviewEmailActions', () => {
     ]);
   });
 
-  it('should only process text message markdown rules', () => {
+  it('should only process email markdown rules', () => {
     expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
 });
