@@ -10,7 +10,6 @@ frontend:
   phases:
     build:
       commands:
-        - npm run generate-dependencies
         - npm run build
   artifacts:
     baseDirectory: .next

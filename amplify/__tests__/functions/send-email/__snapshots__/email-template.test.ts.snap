@@ -38,6 +38,54 @@ exports[`generate email content 1`] = `
     table {
       display: block;
     }
+
+    p {
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+    }
+
+    .notifyHeading {
+      margin-left: 12px;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      font-size: 16px;
+    }
+
+    .infoMessage {
+      margin: 10px 0 30px 0;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      font-size: 16px;
+    }
+
+    .dataLabel {
+      margin: 0 0 5px 0;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .dataLabelDetail {
+      margin: 0 0 30px 0;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      color: #757777;
+      font-size: 16px;
+    }
+
+    .dataValueShort {
+      margin: 0 0 30px 0;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      font-size: 16px;
+    }
+
+    .dataValueTemplateContentWrapper {
+      background-color: #e8ecee;
+      padding: 24px;
+    }
+
+    .dataValueTemplateContent {
+      font-size: 16px;
+      font-family: 'Frutiger W01', Arial, Sans-serif;
+      margin-top: 0;
+      white-space: pre-wrap"
+    }
   </style>
 </head>
 
@@ -143,40 +191,39 @@ exports[`generate email content 1`] = `
           AAQbAIINAAg2AHDhfwIMAJCNcOrSAj7MAAAAAElFTkSuQmCC" alt="NHS Logo" width="90" />
               </th>
               <td>
-                <p style="margin-left: 12px; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px;">Notify</p>
+                <p class="notifyHeading">Notify</p>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <p style="margin: 10px 0 30px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px;">You have
+                <p class="infoMessage">You have
                   successfully submitted your template to NHS Notify.</p>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <p style="margin: 0 0 5px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px; font-weight: bold;">Template name</p>
-                <p style="margin: 0 0 30px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px;">test-name</p>
+                <p class="dataLabel">Template name</p>
+                <p class="dataValueShort">test-name</p>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <p style="margin: 0 0 5px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px; font-weight: bold;">Template ID</p>
-                <p style="margin: 0 0 30px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px;">test-id</p>
+                <p class="dataLabel">Template ID</p>
+                <p class="dataValueShort">test-id</p>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <p style="margin: 0 0 5px 0; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px; font-weight: bold;">Template content
-                </p>
-                <p style="margin: 0 0 30px 0; color: #757777; font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px;">
+                <p class="dataLabel">Template content</p>
+                <p class="dataLabelDetail">
                   This content does not have your formatting applied. This is not how your message will look when it's sent to
                   recipients.
                 </p>
               </td>
             </tr>
             <tr>
-              <td colspan="2" style="background-color: #e8ecee; padding: 24px;">
-                <p style="font-family: 'Frutiger W01', Arial, Sans-serif; font-size: 16px; margin-top: 0; white-space: pre-wrap"># Message heading<br /><br />## Heading 2<br /><br />**bold text**<br /><br />*This text will be italic*<br /><br />* bullet<br />* bullet<br />* bullet<br /><br />[link text](https://www.nhs.uk/)<br /><br />### Ordered<br />1. Item 1<br />2. Item 2<br />3. Item 3<br />   1. Item 3a<br />   2. Item 3b</p>
+              <td colspan="2" class="dataValueTemplateContentWrapper">
+                <p class="dataValueTemplateContent"># Message heading<br /><br />## Heading 2<br /><br />**bold text**<br /><br />*This text will be italic*<br /><br />* bullet<br />* bullet<br />* bullet<br /><br />[link text](https://www.nhs.uk/)<br /><br />### Ordered<br />1. Item 1<br />2. Item 2<br />3. Item 3<br />   1. Item 3a<br />   2. Item 3b</p>
               </td>
             </tr>
           </table>
