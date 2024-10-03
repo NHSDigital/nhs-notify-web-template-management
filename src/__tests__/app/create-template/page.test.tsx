@@ -4,7 +4,7 @@
 
 import { mockDeep } from 'jest-mock-extended';
 import { redirect } from 'next/navigation';
-import CreateTemplate from '@app/create-template/page';
+import CreateTemplate from '@app/create-template/page.prod';
 
 const mockSession = {
   id: undefined as unknown,

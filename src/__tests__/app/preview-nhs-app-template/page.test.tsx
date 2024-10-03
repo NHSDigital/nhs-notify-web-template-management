@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page';
+import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page.prod';
 import { TemplateFormState, TemplateType } from '@utils/types';
 import nav from 'next/navigation';
 

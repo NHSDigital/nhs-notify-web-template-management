@@ -1,4 +1,4 @@
-import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[sessionId]/page';
+import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[sessionId]/page.prod';
 import { render } from '@testing-library/react';
 import { TemplateType } from '@utils/types';
 import nav from 'next/navigation';
