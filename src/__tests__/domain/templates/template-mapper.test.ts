@@ -2,7 +2,7 @@ import { createTemplateFromSession } from '@domain/templates';
 import { Session, TemplateType } from '@utils/types';
 
 describe('createTemplateFromSession', () => {
-  it('should map session to template', () => {
+  it('should map session nhs-app to template', () => {
     const session: Session = {
       nhsAppTemplateMessage: 'message',
       nhsAppTemplateName: 'name',
@@ -19,6 +19,26 @@ describe('createTemplateFromSession', () => {
     });
   });
 
+  it('should map session email to template', () => {
+    const session: Session = {
+      nhsAppTemplateMessage: 'message',
+      nhsAppTemplateName: 'name',
+      emailTemplateMessage: 'email-message',
+      emailTemplateSubjectLine: 'email-subjectLine',
+      emailTemplateName: 'email-name',
+      id: '',
+      templateType: TemplateType.EMAIL,
+    };
+
+    const template = createTemplateFromSession(session);
+    expect(template).toEqual({
+      name: 'email-name',
+      type: 'EMAIL',
+      version: 1,
+      fields: { content: 'email-message' },
+    });
+  });
+
   it('should throw error when templateType is unknown', () => {
     const session: Session = {
       nhsAppTemplateMessage: 'message',
@@ -29,7 +49,7 @@ describe('createTemplateFromSession', () => {
     expect(() => createTemplateFromSession(session)).toThrow();
   });
 
-  test.each([TemplateType.EMAIL, TemplateType.SMS, TemplateType.LETTER])(
+  test.each([TemplateType.SMS, TemplateType.LETTER])(
     'should throw error when templateType is is %s',
     (type) => {
       const session: Session = {

@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 const $SessionIdSchema = z.string();
 
-export async function submitTemplate(formData: FormData) {
+export async function submitTemplate(route: string, formData: FormData) {
   const { success, data: sessionId } = $SessionIdSchema.safeParse(
     formData.get('sessionId')
   );
@@ -36,10 +36,7 @@ export async function submitTemplate(formData: FormData) {
       templateEntity.fields!.content
     );
 
-    return redirect(
-      `/nhs-app-template-submitted/${templateEntity.id}`,
-      RedirectType.push
-    );
+    return redirect(`/${route}/${templateEntity.id}`, RedirectType.push);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,
