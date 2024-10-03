@@ -10,7 +10,6 @@ import { logger } from '@utils/logger';
 const ChooseATemplateTypePage = async ({
   params: { sessionId },
 }: PageProps) => {
-
   logger.info('all cookies', cookies().getAll());
 
   const session = await getSession(sessionId);
