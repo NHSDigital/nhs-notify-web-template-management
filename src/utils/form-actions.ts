@@ -133,7 +133,7 @@ export async function sendEmail(
   templateMessage: string
 ) {
   const res = await getAmplifyBackendClient().queries.sendEmail({
-    recipientEmail: 'england.test.cm@nhs.net',
+    recipientEmail: 'fawad.ali@bjss.com',
     templateId,
     templateName,
     templateMessage,

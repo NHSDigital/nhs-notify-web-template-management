@@ -13,7 +13,7 @@ const emailTemplateMap = (session: Session): TemplateInput => ({
   type: 'EMAIL',
   version: 1,
   fields: {
-    subjectLine: session.emailTemplateSubjectLine,
+    subjectLine: session.emailTemplateSubjectLine!,
     content: session.emailTemplateMessage!,
   },
 });
