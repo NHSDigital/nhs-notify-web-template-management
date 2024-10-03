@@ -1,11 +1,14 @@
-/* eslint-disable sonarjs/insecure-jwt-token,unicorn/no-null,no-restricted-globals */
+/* eslint-disable sonarjs/insecure-jwt-token,unicorn/no-null,no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module */
 
 'use client';
 
+import { Amplify } from 'aws-amplify';
 import { Suspense, useEffect } from 'react';
-import { setCookie } from 'cookies-next';
 import { useSearchParams } from 'next/navigation';
-import { sign } from 'jsonwebtoken';
+import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
+Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
 
 const Redirect = () => {
   const searchParams = useSearchParams();
@@ -28,18 +31,23 @@ const Redirect = () => {
   }
 };
 
+const WrappedRedirect = () => (
+  <Suspense>
+    <Redirect />
+  </Suspense>
+);
+
 const MockAuthPage = () => {
-  const jwt = sign({ email: 'localhost@nhs.net ' }, null, {
-    algorithm: 'none',
-  });
-
-  setCookie('CognitoIdentityServiceProvider.idToken', jwt);
-
-  return (
-    <Suspense>
-      <Redirect />
-    </Suspense>
-  );
+  return withAuthenticator(WrappedRedirect, {
+    variation: 'default',
+    hideSignUp: true,
+  })({});
 };
 
-export default MockAuthPage;
+const WrappedAuthPage = () => (
+  <Authenticator.Provider>
+    <MockAuthPage />
+  </Authenticator.Provider>
+);
+
+export default WrappedAuthPage;
