@@ -18,6 +18,7 @@ const SubmitNhsAppTemplatePage = async ({
     <SubmitTemplate
       templateName={session.nhsAppTemplateName}
       sessionId={session.id}
+      goBackPath='preview-nhs-app-template'
     />
   );
 };

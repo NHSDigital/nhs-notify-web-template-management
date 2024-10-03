@@ -11,6 +11,7 @@ import { submitTemplate } from './server-action';
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
   sessionId,
+  goBackPath,
 }) => {
   const {
     backLinkText,
@@ -27,7 +28,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/preview-nhs-app-template/${sessionId}`}
+        href={`${getBasePath()}/${goBackPath}/${sessionId}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         {backLinkText}
