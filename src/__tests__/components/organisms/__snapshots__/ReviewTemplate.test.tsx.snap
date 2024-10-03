@@ -92,7 +92,6 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-example-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="preview-example-option-1"
@@ -112,7 +111,6 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-example-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="preview-example-option-2"
@@ -214,7 +212,6 @@ exports[`ReviewTemplate component matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-example-option-1--label"
                 class="nhsuk-radios__input"
                 data-testid="option-1-radio"
                 id="preview-example-option-1"
@@ -234,7 +231,6 @@ exports[`ReviewTemplate component matches snapshot 1`] = `
               class="nhsuk-radios__item"
             >
               <input
-                aria-labelledby="preview-example-option-2--label"
                 class="nhsuk-radios__input"
                 data-testid="option-2-radio"
                 id="preview-example-option-2"

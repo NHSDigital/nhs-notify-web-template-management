@@ -8,11 +8,9 @@ const mockSessionSupplier = {
 };
 
 jest.mock('@utils/form-actions', () => ({
-  getSession: () =>
-    new Promise((resolve, _) => {
-      resolve(mockSessionSupplier.mockSession);
-    }),
+  getSession: () => Promise.resolve(mockSessionSupplier.mockSession),
 }));
+
 jest.mock('next/navigation', () => ({
   redirect: () => {
     throw new Error('Simulated redirect');

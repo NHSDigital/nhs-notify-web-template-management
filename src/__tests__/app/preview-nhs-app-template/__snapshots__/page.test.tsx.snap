@@ -135,7 +135,6 @@ exports[`PreviewNhsAppTemplatePage 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewNHSAppTemplateAction-nhsapp-edit--label"
                     class="nhsuk-radios__input"
                     data-testid="nhsapp-edit-radio"
                     id="reviewNHSAppTemplateAction-nhsapp-edit"
@@ -155,7 +154,6 @@ exports[`PreviewNhsAppTemplatePage 1`] = `
                   class="nhsuk-radios__item"
                 >
                   <input
-                    aria-labelledby="reviewNHSAppTemplateAction-nhsapp-submit--label"
                     class="nhsuk-radios__input"
                     data-testid="nhsapp-submit-radio"
                     id="reviewNHSAppTemplateAction-nhsapp-submit"

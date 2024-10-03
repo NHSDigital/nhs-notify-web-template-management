@@ -315,7 +315,7 @@ const reviewSMSTemplateContent = {
   },
 };
 
-const invalidSessionPageContent = {
+const error404PageContent = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
   backLink: {
@@ -366,7 +366,7 @@ const content = {
   },
   pages: {
     homePage,
-    invalidSessionPageContent,
+    error404PageContent,
   },
 };
 
@@ -383,11 +383,7 @@ export const chooseTemplatePageContent = {
   hint: 'Select one option',
 };
 
-export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS App message template',
-  errorHeading: 'There is a problem',
-  templateNameLabelText: 'Template name',
-  templateNameHintText: 'This will not be visible to recipients.',
+export const nameYourTemplateContent = {
   templateNameDetailsSummary: 'Naming your templates',
   templateNameDetailsOpeningParagraph:
     'You should name your templates in a way that works best for your service or organisation.',
@@ -407,10 +403,37 @@ export const createNhsAppTemplatePageContent = {
       text: 'version number of the template',
     },
   ],
-  templateNameDetailsExample:
-    "For example, 'Email - covid19 2023 - over 65s - version 3'",
+  templateNameDetailsExample: {
+    [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.LETTER]: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
+  },
+};
+
+export const createNhsAppTemplatePageContent = {
+  pageHeading: 'Create NHS App message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
   buttonText: 'Continue',
+};
+
+export const templateSubmittedPageContent = {
+  pageHeading: 'Template submitted',
+  templateNameHeading: 'Template name',
+  templateIdHeading: 'Template ID',
+  newTemplateText: 'Create another template',
+  doNextHeading: 'What you need to do next',
+  doNextText:
+    "You'll receive a confirmation email, which contains the template name and ID.",
+  notLiveHeading: "If you're currently onboarding",
+  notLiveText:
+    "Tell your onboarding manager once you've submitted all your templates.",
+  liveHeading: "If you've already onboarded",
+  liveLinkText: 'Raise a request with the service desk',
+  liveText: "once you've submitted all your templates.",
 };
 
 export default content;
