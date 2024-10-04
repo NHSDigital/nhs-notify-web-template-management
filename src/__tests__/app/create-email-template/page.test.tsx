@@ -1,4 +1,4 @@
-import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page';
+import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page.prod';
 import { render } from '@testing-library/react';
 
 test('CreateEmailTemplatePage', async () => {

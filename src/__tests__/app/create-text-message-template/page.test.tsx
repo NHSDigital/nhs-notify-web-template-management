@@ -1,4 +1,4 @@
-import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page';
+import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page.prod';
 import { render } from '@testing-library/react';
 
 test('CreateSmsTemplatePage', async () => {

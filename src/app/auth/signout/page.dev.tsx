@@ -1,0 +1,33 @@
+/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,import/no-unresolved */
+
+'use client';
+
+import { Amplify } from 'aws-amplify';
+import { Suspense, useState, useEffect } from 'react';
+import { signOut } from '@aws-amplify/auth';
+import { Authenticator } from '@aws-amplify/ui-react';
+import { Redirect } from '@molecules/Redirect/Redirect';
+
+Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
+
+const MockSignoutPage = () => {
+  const [signedOut, setSignedOut] = useState(false);
+
+  useEffect(() => {
+    if (!signedOut) {
+      signOut().then(() => setSignedOut(true));
+    }
+  });
+
+  return signedOut ? <Redirect /> : <p>Signing out</p>;
+};
+
+const WrappedSignoutPage = () => (
+  <Authenticator.Provider>
+    <Suspense>
+      <MockSignoutPage />
+    </Suspense>
+  </Authenticator.Provider>
+);
+
+export default WrappedSignoutPage;
