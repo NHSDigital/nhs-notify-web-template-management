@@ -49,15 +49,14 @@ test('sends email', async () => {
 
   const rawMimeMessage = sesCallInput.RawMessage?.Data?.toString();
 
-  const messageId = rawMimeMessage?.match(
-    /Message-ID: <([\dA-z]+)@undefined>/
-  )?.[1];
+  const messageId = rawMimeMessage?.match(/Message-ID: <([^@]+)@/)?.[1];
+
   const messageBoundary = rawMimeMessage?.match(/boundary=([\dA-z]+)/)?.[1];
 
   const expectedMessage = `Date: Sat, 01 Jan 2022 10:00:00 +0000
-From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@undefined>
+From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@${process.env.NOTIFY_DOMAIN_NAME}>
 To: <recipient-email>
-Message-ID: <${messageId}@undefined>
+Message-ID: <${messageId}@${process.env.NOTIFY_DOMAIN_NAME}>
 Subject: =?utf-8?B?VGVtcGxhdGUgY3JlYXRlZCAtIHRlbXBsYXRlLW5hbWU=?=
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=${messageBoundary}
