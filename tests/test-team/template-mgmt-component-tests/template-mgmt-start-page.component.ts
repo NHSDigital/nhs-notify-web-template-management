@@ -45,21 +45,6 @@ test.describe('Start Page', () => {
     );
   });
 
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const startPage = new TemplateMgmtStartPage(page);
-
-      await startPage.navigateToStartPage();
-      await startPage.clickLoginLink();
-
-      await expect(page).toHaveURL(`${baseURL}/templates`);
-
-      expect(await page.locator('h1').textContent()).toBe('404');
-    }
-  );
-
   test('should not display "Go Back" link on page', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);
 

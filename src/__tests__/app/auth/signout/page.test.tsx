@@ -16,9 +16,6 @@ jest.mock('@aws-amplify/ui-react', () => ({
   },
   withAuthenticator: (Component: ComponentType) => Component,
 }));
-jest.mock('@molecules/Redirect/Redirect', () => ({
-  Redirect: () => <p>redirect</p>,
-}));
 
 test('MockSignoutPage', async () => {
   const container = render(<MockSignoutPage />);
