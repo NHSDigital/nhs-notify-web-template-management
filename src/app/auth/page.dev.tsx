@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/insecure-jwt-token,unicorn/no-null,no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-require-imports,unicorn/prefer-module,import/no-unresolved */
 
 'use client';
 
