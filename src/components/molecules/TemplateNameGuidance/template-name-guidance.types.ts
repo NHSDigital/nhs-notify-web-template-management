@@ -1,5 +1,5 @@
 import { TemplateType } from '@utils/types';
 
-export type NameYourTemplateType = {
+export type TemplateNameGuidanceType = {
   template: keyof typeof TemplateType;
 };
