@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,no-console */
+/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,no-console,import/no-unresolved */
 
 'use client';
 
