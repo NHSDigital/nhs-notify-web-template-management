@@ -15,8 +15,7 @@ const MockSignoutPage = () => {
 
   useEffect(() => {
     if (!signedOut) {
-      signOut()
-        .then(() => setSignedOut(true));
+      signOut().then(() => setSignedOut(true));
     }
   });
 
