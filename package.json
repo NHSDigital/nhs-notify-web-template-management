@@ -72,7 +72,8 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
-    "wait-on": "^8.0.0"
+    "wait-on": "^8.0.0",
+    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team"
   },
   "overrides": {
     "pa11y-ci": {
