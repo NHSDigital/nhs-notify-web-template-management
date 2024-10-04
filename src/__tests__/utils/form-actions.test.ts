@@ -9,6 +9,7 @@ import {
   saveTemplate,
   sendEmail,
   getTemplate,
+  deleteSession,
 } from '@utils/form-actions';
 import { Template, TemplateInput } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
@@ -364,4 +365,51 @@ test('sendEmail - errors', async () => {
       errors: ['email error'],
     },
   });
+});
+
+test('deleteSession - returns false when session not deleted', async () => {
+  const mock = jest.fn().mockReturnValue({
+    errors: [
+      {
+        message: 'test-error-message',
+        errorType: 'test-error-type',
+        errorInfo: { error: 'test-error' },
+      },
+    ],
+  });
+
+  setup({
+    models: {
+      SessionStorage: {
+        delete: mock,
+      },
+    },
+  });
+
+  const response = await deleteSession('session-id');
+
+  expect(response).toBeFalsy();
+
+  expect(mock).toHaveBeenCalledWith({ id: 'session-id' });
+});
+
+test('deleteSession - returns true when deleted', async () => {
+  const mock = jest.fn().mockReturnValue({
+    errors: undefined,
+    data: {},
+  });
+
+  setup({
+    models: {
+      SessionStorage: {
+        delete: mock,
+      },
+    },
+  });
+
+  const response = await deleteSession('session-id');
+
+  expect(response).toBeTruthy();
+
+  expect(mock).toHaveBeenCalledWith({ id: 'session-id' });
 });

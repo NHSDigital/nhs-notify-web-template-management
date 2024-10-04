@@ -1,7 +1,12 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
+import {
+  deleteSession,
+  getSession,
+  saveTemplate,
+  sendEmail,
+} from '@utils/form-actions';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
@@ -30,11 +35,16 @@ export async function submitTemplate(route: string, formData: FormData) {
 
     const templateEntity = await saveTemplate(validatedTemplate);
 
-    await sendEmail(
-      templateEntity.id,
-      templateEntity.name,
-      templateEntity.fields!.content
-    );
+    const promises = [
+      deleteSession(sessionId),
+      sendEmail(
+        templateEntity.id,
+        templateEntity.name,
+        templateEntity.fields!.content
+      ),
+    ];
+
+    await Promise.all(promises);
 
     return redirect(`/${route}/${templateEntity.id}`, RedirectType.push);
   } catch (error) {

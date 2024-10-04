@@ -15,7 +15,7 @@ import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-a
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
-import { NameYourTemplate } from '@molecules/NameYourTemplate';
+import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { PageComponentProps, TemplateType } from '@utils/types';
@@ -83,7 +83,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
           <div className={templateNameError && 'nhsuk-form-group--error'}>
             <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
             <HintText>{templateNameHintText}</HintText>
-            <NameYourTemplate template={TemplateType.NHS_APP} />
+            <TemplateNameGuidance template={TemplateType.NHS_APP} />
             <TextInput
               id='nhsAppTemplateName'
               defaultValue={nhsAppTemplateName}
