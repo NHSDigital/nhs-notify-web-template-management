@@ -5,8 +5,6 @@ export class TemplateMgmtBasePage {
 
   readonly notifyBannerLink: Locator;
 
-  readonly loginLink: Locator;
-
   readonly goBackLink: Locator;
 
   readonly pageHeader: Locator;
@@ -18,9 +16,6 @@ export class TemplateMgmtBasePage {
     this.notifyBannerLink = page.locator(
       '[class="nhsuk-header__link nhsuk-header__link--service"]'
     );
-    this.loginLink = page
-      .locator('[class="nhsuk-account__login--link"]')
-      .and(page.getByText('Log in'));
     this.goBackLink = page
       .locator('[class="nhsuk-back-link__link"]')
       .and(page.getByText('Go back'));
@@ -39,10 +34,6 @@ export class TemplateMgmtBasePage {
 
   async clickNotifyBannerLink() {
     await this.notifyBannerLink.click();
-  }
-
-  async clickLoginLink() {
-    await this.loginLink.click();
   }
 
   async clickContinueButton() {
