@@ -13,6 +13,8 @@ const {
   reviewEmailTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
+  submitEmailTemplatePage,
+  emailTemplateSubmittedPage,
   NHSAppTemplateSubmittedPage,
 } = require('./actions');
 
@@ -39,6 +41,8 @@ module.exports = {
     performCheck(createEmailTemplateErrorPage(baseUrl)),
     performCheck(reviewEmailTemplatePage(baseUrl)),
     performCheck(reviewEmailTemplateErrorPage(baseUrl)),
+    performCheck(submitEmailTemplatePage(baseUrl)),
+    performCheck(emailTemplateSubmittedPage(baseUrl)),
 
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
   ],
