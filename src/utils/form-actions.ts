@@ -104,7 +104,7 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
       ],
     });
   }
-  return data;
+  return data as Template;
 }
 
 export async function getTemplate(
