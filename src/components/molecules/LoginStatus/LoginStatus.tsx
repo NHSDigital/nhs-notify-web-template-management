@@ -9,13 +9,16 @@ import cookie from 'cookie';
 import { getAuthBasePath, getBasePath } from '@utils/get-base-path';
 import { usePathname } from 'next/navigation';
 
+const decodeCookie = (cookieValue: string) => {
+  try {
+    return jwtDecode<JwtPayload & { email: string }>(cookieValue);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getLoggedInUser = (cookieString: string) => {
   const cookies = cookie.parse(cookieString);
-
-  if (!cookies) {
-    return;
-  }
-
   const idTokenCookieName = Object.keys(cookies).find(
     (cookieName) =>
       cookieName.includes('CognitoIdentityServiceProvider') &&
@@ -27,14 +30,7 @@ const getLoggedInUser = (cookieString: string) => {
   }
 
   const idTokenCookieValue = cookies[idTokenCookieName];
-
-  if (!idTokenCookieValue) {
-    return;
-  }
-
-  const idTokenCookieDecoded = jwtDecode<JwtPayload & { email: string }>(
-    idTokenCookieValue
-  );
+  const idTokenCookieDecoded = decodeCookie(idTokenCookieValue);
 
   if (!idTokenCookieDecoded) {
     return;
@@ -43,7 +39,7 @@ const getLoggedInUser = (cookieString: string) => {
   return idTokenCookieDecoded.email;
 };
 
-export default function LoginStatus() {
+export const LoginStatus = () => {
   const [browserCookie, setBrowserCookie] = useState<string>('');
   const pathname = usePathname();
 
@@ -76,4 +72,4 @@ export default function LoginStatus() {
       Sign in
     </Header.NavItem>
   );
-}
+};
