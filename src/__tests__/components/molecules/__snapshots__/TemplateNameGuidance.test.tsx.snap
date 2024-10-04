@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NameYourTemplate component renders component correctly as NameYourTemplate 1`] = `
+exports[`TemplateNameGuidance component renders component correctly as TemplateNameGuidance 1`] = `
 <DocumentFragment>
   <details
     class="nhsuk-details"

@@ -17,7 +17,7 @@ import { useFormState } from 'react-dom';
 import { PageComponentProps } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
-import { NameYourTemplate } from '@molecules/NameYourTemplate';
+import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createSmsTemplatePageContent as content } from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
@@ -58,7 +58,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
               {content.templateNameLabelText}
             </Label>
             <HintText>{content.templateNameHintText}</HintText>
-            <NameYourTemplate template='SMS' />
+            <TemplateNameGuidance template='SMS' />
             <TextInput
               id='smsTemplateName'
               defaultValue={smsTemplateName}
