@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import concatClassNames from '@utils/concat-class-names';
 import content from '@content/content';
-import LoginStatus from '@molecules/LoginStatus/LoginStatus';
+import { LoginStatus } from '@molecules/LoginStatus/LoginStatus';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
 
