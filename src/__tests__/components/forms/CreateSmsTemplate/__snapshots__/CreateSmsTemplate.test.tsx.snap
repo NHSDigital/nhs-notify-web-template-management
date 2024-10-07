@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders page 1`] = `
+exports[`CreateSmsTemplate component renders page 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -15,15 +15,15 @@ exports[`renders page 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template-back"
+          value="create-sms-template-back"
         />
         <input
-          name="nhsAppTemplateName"
+          name="smsTemplateName"
           type="hidden"
           value=""
         />
         <input
-          name="nhsAppTemplateMessage"
+          name="smsTemplateMessage"
           type="hidden"
           value=""
         />
@@ -50,6 +50,9 @@ exports[`renders page 1`] = `
     <div
       class="nhsuk-grid-column-two-thirds"
     >
+      <h1>
+        Create text message template
+      </h1>
       <form
         action="/action"
       >
@@ -57,18 +60,12 @@ exports[`renders page 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template"
+          value="create-sms-template"
         />
-        <h1
-          class="nhsuk-heading-xl"
-          data-testid="page-heading"
-        >
-          Create NHS App message template
-        </h1>
         <div>
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateName"
+            for="smsTemplateName"
           >
             Template name
           </label>
@@ -115,7 +112,7 @@ exports[`renders page 1`] = `
               <p
                 data-testid="template-name-example"
               >
-                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -124,8 +121,8 @@ exports[`renders page 1`] = `
           >
             <input
               class="nhsuk-input"
-              id="nhsAppTemplateName"
-              name="nhsAppTemplateName"
+              id="smsTemplateName"
+              name="smsTemplateName"
               type="text"
               value=""
             />
@@ -136,28 +133,44 @@ exports[`renders page 1`] = `
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateMessage"
-            id="nhsAppTemplateMessage--label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
           >
             Message
           </label>
           <textarea
             class="nhsuk-textarea"
-            id="nhsAppTemplateMessage"
-            maxlength="5000"
-            name="nhsAppTemplateMessage"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
             rows="10"
           />
         </div>
-        <p
+        <div
+          id="smsMessageCharacterCount"
           style=""
         >
-          0 of 5000 characters
+          <p
+            class="nhsuk-u-margin-bottom-0"
+          >
+            0 characters
+          </p>
+          <p>
+            This template will be sent as 0 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
         </p>
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          id="create-nhs-app-template-submit-button"
+          id="create-sms-template-submit-button"
           type="submit"
         >
           Continue
@@ -259,122 +272,6 @@ exports[`renders page 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="headings-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="headings-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Headings
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="headings-text"
-        >
-          <p>
-            Use one hash symbol followed by a space for a heading, for example:
-          </p>
-          <code>
-            # This is a heading
-          </code>
-          <p>
-            To add a subheading, use 2 hash symbols:
-          </p>
-          <code>
-            ## This is a subheading
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -400,17 +297,6 @@ exports[`renders page 1`] = `
           <code>
             https://www.nhs.uk/example
           </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
-          </code>
         </div>
       </details>
     </div>
@@ -418,7 +304,7 @@ exports[`renders page 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders page one error 1`] = `
+exports[`CreateSmsTemplate component renders page one error 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -433,15 +319,15 @@ exports[`renders page one error 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template-back"
+          value="create-sms-template-back"
         />
         <input
-          name="nhsAppTemplateName"
+          name="smsTemplateName"
           type="hidden"
           value=""
         />
         <input
-          name="nhsAppTemplateMessage"
+          name="smsTemplateMessage"
           type="hidden"
           value=""
         />
@@ -486,18 +372,21 @@ exports[`renders page one error 1`] = `
         >
           <li>
             <a
-              href="#nhsAppTemplateName"
+              href="#smsTemplateName"
             >
               Template name error
             </a>
           </li>
           <li>
             <a
-              href="#nhsAppTemplateMessage"
+              href="#smsTemplateMessage"
             />
           </li>
         </ul>
       </div>
+      <h1>
+        Create text message template
+      </h1>
       <form
         action="/action"
       >
@@ -505,20 +394,14 @@ exports[`renders page one error 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template"
+          value="create-sms-template"
         />
-        <h1
-          class="nhsuk-heading-xl"
-          data-testid="page-heading"
-        >
-          Create NHS App message template
-        </h1>
         <div
           class="nhsuk-form-group--error"
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateName"
+            for="smsTemplateName"
           >
             Template name
           </label>
@@ -565,7 +448,7 @@ exports[`renders page one error 1`] = `
               <p
                 data-testid="template-name-example"
               >
-                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -574,7 +457,7 @@ exports[`renders page one error 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="nhsAppTemplateName-error-message"
+              id="smsTemplateName-error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -584,10 +467,10 @@ exports[`renders page one error 1`] = `
               Template name error
             </span>
             <input
-              aria-describedby="nhsAppTemplateName--error-message"
+              aria-describedby="smsTemplateName--error-message"
               class="nhsuk-input nhsuk-input--error"
-              id="nhsAppTemplateName"
-              name="nhsAppTemplateName"
+              id="smsTemplateName"
+              name="smsTemplateName"
               type="text"
               value=""
             />
@@ -598,28 +481,44 @@ exports[`renders page one error 1`] = `
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateMessage"
-            id="nhsAppTemplateMessage--label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
           >
             Message
           </label>
           <textarea
             class="nhsuk-textarea"
-            id="nhsAppTemplateMessage"
-            maxlength="5000"
-            name="nhsAppTemplateMessage"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
             rows="10"
           />
         </div>
-        <p
+        <div
+          id="smsMessageCharacterCount"
           style=""
         >
-          0 of 5000 characters
+          <p
+            class="nhsuk-u-margin-bottom-0"
+          >
+            0 characters
+          </p>
+          <p>
+            This template will be sent as 0 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
         </p>
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          id="create-nhs-app-template-submit-button"
+          id="create-sms-template-submit-button"
           type="submit"
         >
           Continue
@@ -721,122 +620,6 @@ exports[`renders page one error 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="headings-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="headings-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Headings
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="headings-text"
-        >
-          <p>
-            Use one hash symbol followed by a space for a heading, for example:
-          </p>
-          <code>
-            # This is a heading
-          </code>
-          <p>
-            To add a subheading, use 2 hash symbols:
-          </p>
-          <code>
-            ## This is a subheading
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -862,17 +645,6 @@ exports[`renders page one error 1`] = `
           <code>
             https://www.nhs.uk/example
           </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
-          </code>
         </div>
       </details>
     </div>
@@ -880,7 +652,7 @@ exports[`renders page one error 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders page with multiple errors 1`] = `
+exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -895,15 +667,15 @@ exports[`renders page with multiple errors 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template-back"
+          value="create-sms-template-back"
         />
         <input
-          name="nhsAppTemplateName"
+          name="smsTemplateName"
           type="hidden"
           value=""
         />
         <input
-          name="nhsAppTemplateMessage"
+          name="smsTemplateMessage"
           type="hidden"
           value=""
         />
@@ -948,20 +720,23 @@ exports[`renders page with multiple errors 1`] = `
         >
           <li>
             <a
-              href="#nhsAppTemplateName"
+              href="#smsTemplateName"
             >
               Template name error
             </a>
           </li>
           <li>
             <a
-              href="#nhsAppTemplateMessage"
+              href="#smsTemplateMessage"
             >
               Template message error
             </a>
           </li>
         </ul>
       </div>
+      <h1>
+        Create text message template
+      </h1>
       <form
         action="/action"
       >
@@ -969,20 +744,14 @@ exports[`renders page with multiple errors 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template"
+          value="create-sms-template"
         />
-        <h1
-          class="nhsuk-heading-xl"
-          data-testid="page-heading"
-        >
-          Create NHS App message template
-        </h1>
         <div
           class="nhsuk-form-group--error"
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateName"
+            for="smsTemplateName"
           >
             Template name
           </label>
@@ -1029,7 +798,7 @@ exports[`renders page with multiple errors 1`] = `
               <p
                 data-testid="template-name-example"
               >
-                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -1038,7 +807,7 @@ exports[`renders page with multiple errors 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="nhsAppTemplateName-error-message"
+              id="smsTemplateName-error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -1048,10 +817,10 @@ exports[`renders page with multiple errors 1`] = `
               Template name error
             </span>
             <input
-              aria-describedby="nhsAppTemplateName--error-message"
+              aria-describedby="smsTemplateName--error-message"
               class="nhsuk-input nhsuk-input--error"
-              id="nhsAppTemplateName"
-              name="nhsAppTemplateName"
+              id="smsTemplateName"
+              name="smsTemplateName"
               type="text"
               value=""
             />
@@ -1062,14 +831,14 @@ exports[`renders page with multiple errors 1`] = `
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateMessage"
-            id="nhsAppTemplateMessage--label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
           >
             Message
           </label>
           <span
             class="nhsuk-error-message"
-            id="nhsAppTemplateMessage-error-message"
+            id="smsTemplateMessage-error-message"
           >
             <span
               class="nhsuk-u-visually-hidden"
@@ -1079,23 +848,39 @@ exports[`renders page with multiple errors 1`] = `
             Template message error
           </span>
           <textarea
-            aria-describedby="nhsAppTemplateMessage--error-message"
+            aria-describedby="smsTemplateMessage--error-message"
             class="nhsuk-textarea nhsuk-textarea--error"
-            id="nhsAppTemplateMessage"
-            maxlength="5000"
-            name="nhsAppTemplateMessage"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
             rows="10"
           />
         </div>
-        <p
+        <div
+          id="smsMessageCharacterCount"
           style=""
         >
-          0 of 5000 characters
+          <p
+            class="nhsuk-u-margin-bottom-0"
+          >
+            0 characters
+          </p>
+          <p>
+            This template will be sent as 0 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
         </p>
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          id="create-nhs-app-template-submit-button"
+          id="create-sms-template-submit-button"
           type="submit"
         >
           Continue
@@ -1197,122 +982,6 @@ exports[`renders page with multiple errors 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="headings-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="headings-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Headings
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="headings-text"
-        >
-          <p>
-            Use one hash symbol followed by a space for a heading, for example:
-          </p>
-          <code>
-            # This is a heading
-          </code>
-          <p>
-            To add a subheading, use 2 hash symbols:
-          </p>
-          <code>
-            ## This is a subheading
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -1338,17 +1007,6 @@ exports[`renders page with multiple errors 1`] = `
           <code>
             https://www.nhs.uk/example
           </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
-          </code>
         </div>
       </details>
     </div>
@@ -1356,7 +1014,7 @@ exports[`renders page with multiple errors 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders page with preloaded field values 1`] = `
+exports[`CreateSmsTemplate component renders page with preloaded field values 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -1371,15 +1029,15 @@ exports[`renders page with preloaded field values 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template-back"
+          value="create-sms-template-back"
         />
         <input
-          name="nhsAppTemplateName"
+          name="smsTemplateName"
           type="hidden"
           value="template-name"
         />
         <input
-          name="nhsAppTemplateMessage"
+          name="smsTemplateMessage"
           type="hidden"
           value="template-message"
         />
@@ -1406,6 +1064,9 @@ exports[`renders page with preloaded field values 1`] = `
     <div
       class="nhsuk-grid-column-two-thirds"
     >
+      <h1>
+        Create text message template
+      </h1>
       <form
         action="/action"
       >
@@ -1413,18 +1074,12 @@ exports[`renders page with preloaded field values 1`] = `
           name="form-id"
           readonly=""
           type="hidden"
-          value="create-nhs-app-template"
+          value="create-sms-template"
         />
-        <h1
-          class="nhsuk-heading-xl"
-          data-testid="page-heading"
-        >
-          Create NHS App message template
-        </h1>
         <div>
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateName"
+            for="smsTemplateName"
           >
             Template name
           </label>
@@ -1471,7 +1126,7 @@ exports[`renders page with preloaded field values 1`] = `
               <p
                 data-testid="template-name-example"
               >
-                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
               </p>
             </div>
           </details>
@@ -1480,8 +1135,8 @@ exports[`renders page with preloaded field values 1`] = `
           >
             <input
               class="nhsuk-input"
-              id="nhsAppTemplateName"
-              name="nhsAppTemplateName"
+              id="smsTemplateName"
+              name="smsTemplateName"
               type="text"
               value="template-name"
             />
@@ -1492,30 +1147,46 @@ exports[`renders page with preloaded field values 1`] = `
         >
           <label
             class="nhsuk-label"
-            for="nhsAppTemplateMessage"
-            id="nhsAppTemplateMessage--label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
           >
             Message
           </label>
           <textarea
             class="nhsuk-textarea"
-            id="nhsAppTemplateMessage"
-            maxlength="5000"
-            name="nhsAppTemplateMessage"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
             rows="10"
           >
             template-message
           </textarea>
         </div>
-        <p
+        <div
+          id="smsMessageCharacterCount"
           style=""
         >
-          16 of 5000 characters
+          <p
+            class="nhsuk-u-margin-bottom-0"
+          >
+            16 characters
+          </p>
+          <p>
+            This template will be sent as 1 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
         </p>
         <button
           aria-disabled="false"
           class="nhsuk-button"
-          id="create-nhs-app-template-submit-button"
+          id="create-sms-template-submit-button"
           type="submit"
         >
           Continue
@@ -1617,122 +1288,6 @@ exports[`renders page with preloaded field values 1`] = `
       </h2>
       <details
         class="nhsuk-details"
-        data-testid="lines-breaks-and-paragraphs-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="lines-breaks-and-paragraphs-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Line breaks and paragraphs
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="lines-breaks-and-paragraphs-text"
-        >
-          <p>
-            To add a line break, use 2 spaces at the end of your text, for example:
-          </p>
-          <code>
-            <span
-              class="inlineText"
-            >
-              line 1
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 2
-            </span>
-            <span
-              class="inlineText"
-            >
-              line 3
-            </span>
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To add a paragraph, use a blank line between each paragraph, for example:
-          </p>
-          <code
-            class="codeLine"
-          >
-            <p>
-              line 1
-            </p>
-            <p>
-              line 2
-            </p>
-            <p>
-              line 3
-            </p>
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="headings-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="headings-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Headings
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="headings-text"
-        >
-          <p>
-            Use one hash symbol followed by a space for a heading, for example:
-          </p>
-          <code>
-            # This is a heading
-          </code>
-          <p>
-            To add a subheading, use 2 hash symbols:
-          </p>
-          <code>
-            ## This is a subheading
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
-        data-testid="bold-text-details"
-      >
-        <summary
-          class="nhsuk-details__summary"
-          data-testid="bold-text-summary"
-        >
-          <span
-            class="nhsuk-details__summary-text"
-          >
-            Bold text
-          </span>
-        </summary>
-        <div
-          class="nhsuk-details__text"
-          data-testid="bold-text-text"
-        >
-          <p>
-            Use two asterisk symbols on either side of the words you want to be bold, for example:
-          </p>
-          <code>
-            **this is bold text**
-          </code>
-        </div>
-      </details>
-      <details
-        class="nhsuk-details"
         data-testid="link-and-url-details"
       >
         <summary
@@ -1757,17 +1312,6 @@ exports[`renders page with preloaded field values 1`] = `
           </p>
           <code>
             https://www.nhs.uk/example
-          </code>
-          <p
-            class="nhsuk-u-margin-top-4"
-          >
-            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
-          </p>
-          <p>
-            For example:
-          </p>
-          <code>
-            [Read more](https://www.nhs.uk/)
           </code>
         </div>
       </details>

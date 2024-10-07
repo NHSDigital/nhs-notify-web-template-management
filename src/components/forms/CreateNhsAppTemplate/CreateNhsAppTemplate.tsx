@@ -2,13 +2,7 @@
 
 // we need this to be a client component because nhsuk-react-components uses client-only react features
 
-import {
-  CSSProperties,
-  useEffect,
-  FC,
-  FormEventHandler,
-  useState,
-} from 'react';
+import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import {
   TextInput,
@@ -27,6 +21,8 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import { PageComponentProps, TemplateType } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
+import { useTextInput } from '@hooks/use-text-input.hook';
+import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 
 export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   initialState,
@@ -49,32 +45,17 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     router.push(state.redirect);
   }
 
-  const [templateName, setTemplateName] = useState(state.nhsAppTemplateName);
-  const [templateMessage, setTemplateMessage] = useState(
-    state.nhsAppTemplateMessage
-  );
-  const [jsEnabledStyle, setJsEnabledStyle] = useState<
-    CSSProperties | undefined
-  >({ display: 'none' });
+  const [nhsAppTemplateMessage, nhsAppMessageHandler] =
+    useTextInput<HTMLTextAreaElement>(state.nhsAppTemplateMessage);
 
-  useEffect(() => {
-    setJsEnabledStyle(undefined);
-  }, []);
-
-  const templateNameHandler: FormEventHandler<HTMLInputElement> = (event) => {
-    const typedEventTarget = event.target as HTMLInputElement; // it would be great if we could do this without forcing the types
-    setTemplateName(typedEventTarget.value);
-  };
-
-  const templateMessageHandler: FormEventHandler<HTMLTextAreaElement> = (
-    event
-  ) => {
-    const typedEventTarget = event.target as HTMLTextAreaElement; // it would be great if we could do this without forcing the types
-    setTemplateMessage(typedEventTarget.value);
-  };
+  const [nhsAppTemplateName, nhsAppTemplateNameHandler] =
+    useTextInput<HTMLInputElement>(state.nhsAppTemplateName);
 
   const templateNameError =
     state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
+
+  const templateMessageError =
+    state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
   return (
     <div className='nhsuk-grid-row'>
@@ -82,11 +63,15 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
         formId='create-nhs-app-template-back'
         action={action}
       >
-        <input type='hidden' name='nhsAppTemplateName' value={templateName} />
+        <input
+          type='hidden'
+          name='nhsAppTemplateName'
+          value={nhsAppTemplateName}
+        />
         <input
           type='hidden'
           name='nhsAppTemplateMessage'
-          value={templateMessage}
+          value={nhsAppTemplateMessage}
         />
       </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
@@ -101,8 +86,8 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             <TemplateNameGuidance template={TemplateType.NHS_APP} />
             <TextInput
               id='nhsAppTemplateName'
-              onChange={templateNameHandler}
-              value={templateName}
+              defaultValue={nhsAppTemplateName}
+              onChange={nhsAppTemplateNameHandler}
               error={templateNameError}
               errorProps={{ id: 'nhsAppTemplateName-error-message' }}
             />
@@ -112,15 +97,13 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             id='nhsAppTemplateMessage'
             maxLength={5000}
             rows={10}
-            onChange={templateMessageHandler}
-            value={templateMessage}
-            error={state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(
-              ', '
-            )}
+            onChange={nhsAppMessageHandler}
+            defaultValue={nhsAppTemplateMessage}
+            error={templateMessageError}
             errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
-          <p style={jsEnabledStyle}>
-            {templateMessage.length}
+          <p style={useJsEnabledStyle()}>
+            {nhsAppTemplateMessage.length}
             {characterCountText}
           </p>
           <Button type='submit' id='create-nhs-app-template-submit-button'>

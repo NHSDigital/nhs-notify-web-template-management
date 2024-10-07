@@ -46,6 +46,13 @@ export async function saveSession(session: Session) {
     logger.error('Failed to save session', errors);
     throw new Error('Failed to save template data');
   }
+  if (!data) {
+    throw new DbOperationError({
+      message:
+        'Session in unknown state. No errors reported but entity returned as falsy',
+      operation: 'update',
+    });
+  }
   return data;
 }
 
