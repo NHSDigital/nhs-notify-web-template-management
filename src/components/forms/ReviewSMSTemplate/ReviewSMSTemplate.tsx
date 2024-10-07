@@ -3,27 +3,39 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { renderMarkdown } from './server-actions';
-
-export type ReviewSMSTemplateProps = {
-  templateName: string;
-  message: string;
-};
+import { PageComponentProps } from '@utils/types';
+import { useFormState } from 'react-dom';
+import Link from 'next/link';
+import { ChevronLeftIcon } from 'nhsuk-react-components';
+import { renderMarkdown, reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
-  templateName,
-  message,
-}: Readonly<ReviewSMSTemplateProps>) {
+  initialState,
+}: Readonly<PageComponentProps>) {
   const {
     components: {
       reviewSMSTemplateContent: { sectionHeading, details, form },
     },
   } = content;
 
-  const html = renderMarkdown(message);
+  const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
+
+  const templateName = initialState.smsTemplateName!;
+  const templateMessage = initialState.smsTemplateMessage!;
+
+  const html = renderMarkdown(templateMessage);
 
   return (
     <div className='nhsuk-grid-row'>
+      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
+        <Link
+          href={`/create-text-message-template/${initialState.id}`}
+          className='nhsuk-back-link__link'
+        >
+          <ChevronLeftIcon />
+          Go back
+        </Link>
+      </div>
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
           templateName={templateName}
@@ -31,12 +43,10 @@ export function ReviewSMSTemplate({
           details={details}
           form={{
             ...form,
-            action: '',
-            state: {
-              validationError: undefined,
-            },
-            formId: 'review-email-template',
-            radiosId: 'reviewEmailTemplateAction',
+            state,
+            action,
+            formId: 'review-sms-template',
+            radiosId: 'reviewSMSTemplateAction',
           }}
           PreviewComponent={<PreviewTemplate.Sms message={html} />}
         />

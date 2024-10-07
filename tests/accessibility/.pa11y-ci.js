@@ -11,6 +11,8 @@ const {
   createEmailTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
+  reviewTextMessageTemplatePage,
+  reviewTextMessageTemplateErrorPage,
   NHSAppTemplateSubmittedPage,
 } = require('./actions');
 
@@ -32,6 +34,8 @@ module.exports = {
     performCheck(NHSAppTemplateSubmittedPage(baseUrl)),
     performCheck(createTextMessageTemplatePage(baseUrl)),
     performCheck(createTextMessageTemplateErrorPage(baseUrl)),
+    performCheck(reviewTextMessageTemplatePage(baseUrl)),
+    performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
 
     performCheck(createEmailTemplatePage(baseUrl)),
     performCheck(createEmailTemplateErrorPage(baseUrl)),
