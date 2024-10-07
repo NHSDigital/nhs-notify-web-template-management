@@ -9,6 +9,7 @@ const PreviewNhsAppTemplatePage = async ({
   params: { sessionId },
 }: PageProps) => {
   const session = await getSession(sessionId);
+
   if (!session) {
     redirect('/invalid-session', RedirectType.replace);
   }
