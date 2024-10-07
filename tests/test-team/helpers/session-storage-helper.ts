@@ -70,7 +70,10 @@ export default class SessionStorageHelper {
       this.ddbDocClient.send(
         new PutCommand({
           TableName: tableName,
-          Item: session,
+          Item: {
+            ...session,
+            ttl: 500,
+          },
         })
       )
     );
