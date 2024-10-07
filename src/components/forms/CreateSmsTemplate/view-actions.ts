@@ -5,8 +5,10 @@
  * @param {number} characterCount The number of characters in the message.
  * @returns {number} The number of SMS messages needed.
  */
-export const calculateHowManySmsMessages = (characterCount: number): number => {
-  if (Number.isNaN(characterCount)) return 0;
+export const calculateHowManySmsMessages = (characterCount: number) => {
+  if (Number.isNaN(characterCount)) {
+    return 0;
+  }
 
   if (characterCount > 0 && characterCount <= 160) return 1;
 
