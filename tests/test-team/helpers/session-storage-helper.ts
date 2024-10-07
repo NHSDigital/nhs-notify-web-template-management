@@ -66,13 +66,15 @@ export default class SessionStorageHelper {
     // removes the need to repeat building tableName when deleting session data
     this.tableName = tableName;
 
+    const currentTimeSeconds = Math.floor(Date.now() / 1000);
+
     const promises = this.sessionData.map((session) =>
       this.ddbDocClient.send(
         new PutCommand({
           TableName: tableName,
           Item: {
             ...session,
-            ttl: 500,
+            ttl: currentTimeSeconds + (60 * 5), // 5 minutes in the future
           },
         })
       )
