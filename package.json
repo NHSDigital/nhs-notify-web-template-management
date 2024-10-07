@@ -21,6 +21,7 @@
     "@aws-amplify/adapter-nextjs": "^1.2.19",
     "@aws-amplify/backend": "^1.2.0",
     "@aws-sdk/client-ses": "^3.637.0",
+    "handlebars": "^4.7.8",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "14.2.13",
@@ -62,6 +63,7 @@
     "jest-html-reporter": "^3.10.2",
     "jest-mock-extended": "^3.0.7",
     "mochawesome": "^7.1.3",
+    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team",
     "pa11y": "^8.0.0",
     "pa11y-ci": "^3.1.0",
     "pa11y-ci-reporter-html": "^6.0.2",
@@ -72,8 +74,7 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
-    "wait-on": "^8.0.0",
-    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team"
+    "wait-on": "^8.0.0"
   },
   "overrides": {
     "pa11y-ci": {

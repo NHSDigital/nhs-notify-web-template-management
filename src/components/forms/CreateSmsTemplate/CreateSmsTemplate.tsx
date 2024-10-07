@@ -16,6 +16,7 @@ import {
 import { useFormState } from 'react-dom';
 import { PageComponentProps } from '@utils/types';
 import { FC } from 'react';
+import Handlebars from 'handlebars';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createSmsTemplatePageContent as content } from '@content/content';
@@ -38,6 +39,11 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
 
   const templateMessageError =
     state.validationError?.fieldErrors.smsTemplateMessage?.join(', ');
+
+  const smsCountTemplate = Handlebars.compile(content.smsCountText);
+  const smsCountText = smsCountTemplate({
+    smsCount: calculateHowManySmsMessages(Number(smsTemplateMessage.length)),
+  });
 
   return (
     <div className='nhsuk-grid-row'>
@@ -81,6 +87,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
             <p className='nhsuk-u-margin-bottom-0'>
               {smsTemplateMessage.length} characters
             </p>
+            <p>USING HANDLEBARS: {smsCountText}</p>
             <p>
               {content.smsCountText1}
               {calculateHowManySmsMessages(Number(smsTemplateMessage.length))}
