@@ -25,6 +25,8 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
+const smsCountTemplate = Handlebars.compile(content.smsCountText);
+
 export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const [state, action] = useFormState(processFormActions, initialState);
 
@@ -40,7 +42,6 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
   const templateMessageError =
     state.validationError?.fieldErrors.smsTemplateMessage?.join(', ');
 
-  const smsCountTemplate = Handlebars.compile(content.smsCountText);
   const smsCountText = smsCountTemplate({
     smsCount: calculateHowManySmsMessages(Number(smsTemplateMessage.length)),
   });
