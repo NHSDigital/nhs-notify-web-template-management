@@ -74,7 +74,7 @@ export default class SessionStorageHelper {
           TableName: tableName,
           Item: {
             ...session,
-            ttl: currentTimeSeconds + (60 * 5), // 5 minutes in the future
+            ttl: currentTimeSeconds + 60 * 5, // 5 minutes in the future
           },
         })
       )
