@@ -18,14 +18,15 @@ export function NHSNotifyFooter() {
           <div className='nhsuk-footer'>
             <ul className='nhsuk-footer__list'>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
-                <Link
+                <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.accessibilityStatement.url}
                   data-testid='accessibility-statement-link'
                   target='_blank'
+                  rel='noreferrer'
                 >
                   {footerContent.links.accessibilityStatement.text}
-                </Link>
+                </a>
               </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
                 <Link
