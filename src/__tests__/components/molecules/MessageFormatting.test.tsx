@@ -8,7 +8,7 @@ const componentProps: MessageFormattingType = {
 };
 
 describe('MessageFormatting component', () => {
-  it('renders component correctly with SMS related formatting', async () => {
+  it('renders component correctly with SMS related formatting', () => {
     render(<MessageFormatting {...componentProps} />);
 
     expect(screen.getByTestId('personalisation-header')).toHaveTextContent(
@@ -17,7 +17,7 @@ describe('MessageFormatting component', () => {
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
   });
 
-  it('renders component correctly with APP related formatting', async () => {
+  it('renders component correctly with APP related formatting', () => {
     const appFormattingProps: MessageFormattingType = {
       ...componentProps,
       template: TemplateFormatText.APP,
@@ -35,7 +35,7 @@ describe('MessageFormatting component', () => {
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
   });
 
-  it('renders component correctly with EMAIL related formatting', async () => {
+  it('renders component correctly with EMAIL related formatting', () => {
     const emailFormattingProps: MessageFormattingType = {
       ...componentProps,
       template: TemplateFormatText.EMAIL,
@@ -55,7 +55,7 @@ describe('MessageFormatting component', () => {
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
   });
 
-  it('renders component correctly with LETTER related formatting', async () => {
+  it('renders component correctly with LETTER related formatting', () => {
     const letterFormattingProps: MessageFormattingType = {
       ...componentProps,
       template: TemplateFormatText.LETTER,

@@ -13,13 +13,13 @@ const pageActions = [
 ];
 
 const reviewTextMessageTemplatePage = (baseUrl) => ({
-  name: 'preview-sms-app-template',
+  name: 'preview-text-message-template',
   url: url(baseUrl),
   actions: pageActions,
 });
 
 const reviewTextMessageTemplateErrorPage = (baseUrl) => ({
-  name: 'preview-sms-app-template-error',
+  name: 'preview-text-message-template-error',
   url: url(baseUrl),
   actions: [
     ...pageActions,

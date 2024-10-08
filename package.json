@@ -9,12 +9,14 @@
     "lint": "next lint --dir .",
     "lint:fix": "next lint  --dir . --fix",
     "test:unit": "jest",
-    "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
+    "test:accessibility": "npm run copy-files-for-testing && pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
     "app:stop": "pm2 kill",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
     "destroy-sandbox": "npx ampx sandbox delete --y",
+    "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
+    "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
     "typecheck": "tsc --project ./tsconfig.json"
   },
   "dependencies": {
