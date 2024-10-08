@@ -20,6 +20,30 @@ const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
 const sendEmailMock = jest.mocked(sendEmail);
 
+const mockNhsAppSession = {
+  templateType: TemplateType.NHS_APP,
+  nhsAppTemplateMessage: 'body',
+  nhsAppTemplateName: 'name',
+  id: '1',
+};
+
+const mockNhsAppTemplate = {
+  name: 'name',
+  type: TemplateType.NHS_APP,
+  version: 1,
+  fields: { content: 'body' },
+};
+
+const mockNhsAppTemplateEntity = {
+  id: 'templateId-1',
+  name: 'name',
+  type: TemplateType.NHS_APP,
+  version: 1,
+  fields: { content: 'body' },
+  createdAt: 'yesterday',
+  updatedAt: 'today',
+};
+
 describe('submitTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
@@ -44,12 +68,7 @@ describe('submitTemplate', () => {
   });
 
   it('should handle error when mapping from session to template', async () => {
-    getSessionMock.mockResolvedValueOnce({
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateMessage: '',
-      nhsAppTemplateName: '',
-      id: '1',
-    });
+    getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
     createTemplateFromSessionMock.mockImplementationOnce(() => {
       throw new Error('unable to map session to template');
@@ -65,21 +84,9 @@ describe('submitTemplate', () => {
   });
 
   it('should handle error when validating template', async () => {
-    const session = {
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateMessage: 'body',
-      nhsAppTemplateName: 'name',
-      id: '1',
-    };
+    getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
-    getSessionMock.mockResolvedValueOnce(session);
-
-    createTemplateFromSessionMock.mockReturnValueOnce({
-      name: 'name',
-      type: TemplateType.NHS_APP,
-      version: 1,
-      fields: { content: 'body' },
-    });
+    createTemplateFromSessionMock.mockReturnValueOnce(mockNhsAppTemplate);
 
     validateTemplateMock.mockImplementationOnce(() => {
       throw new Error('unable to to validate template');
@@ -93,32 +100,17 @@ describe('submitTemplate', () => {
       'unable to to validate template'
     );
 
-    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(
+      mockNhsAppSession
+    );
   });
 
   it('should handle error when saving template', async () => {
-    const session = {
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateMessage: 'body',
-      nhsAppTemplateName: 'name',
-      id: '1',
-    };
+    getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
-    const template = {
-      name: 'name',
-      type: TemplateType.NHS_APP,
-      version: 1,
-      fields: { content: 'body' },
-    };
+    createTemplateFromSessionMock.mockReturnValueOnce(mockNhsAppTemplate);
 
-    getSessionMock.mockResolvedValueOnce(session);
-
-    createTemplateFromSessionMock.mockReturnValueOnce(template);
-
-    validateTemplateMock.mockReturnValueOnce({
-      ...template,
-      type: 'NHS_APP',
-    });
+    validateTemplateMock.mockReturnValueOnce(mockNhsAppTemplate);
 
     saveTemplateMock.mockImplementationOnce(() => {
       throw new Error('failed saving to database');
@@ -132,37 +124,22 @@ describe('submitTemplate', () => {
       'failed saving to database'
     );
 
-    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(
+      mockNhsAppSession
+    );
 
-    expect(validateTemplateMock).toHaveBeenCalledWith(template);
+    expect(validateTemplateMock).toHaveBeenCalledWith(mockNhsAppTemplate);
   });
 
   it('should handle error when failing to send email', async () => {
-    const session = {
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateMessage: 'body',
-      nhsAppTemplateName: 'name',
-      id: '1',
-    };
+    getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
-    const template = {
-      name: 'name',
-      type: TemplateType.NHS_APP,
-      version: 1,
-      fields: { content: 'body' },
-    };
+    createTemplateFromSessionMock.mockReturnValueOnce(mockNhsAppTemplate);
 
-    getSessionMock.mockResolvedValueOnce(session);
-
-    createTemplateFromSessionMock.mockReturnValueOnce(template);
-
-    validateTemplateMock.mockReturnValueOnce({
-      ...template,
-      type: 'NHS_APP',
-    });
+    validateTemplateMock.mockReturnValueOnce(mockNhsAppTemplate);
 
     saveTemplateMock.mockResolvedValueOnce({
-      ...template,
+      ...mockNhsAppTemplate,
       id: '1',
     });
 
@@ -178,46 +155,24 @@ describe('submitTemplate', () => {
       'failed to send email'
     );
 
-    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(
+      mockNhsAppSession
+    );
 
-    expect(validateTemplateMock).toHaveBeenCalledWith(template);
+    expect(validateTemplateMock).toHaveBeenCalledWith(mockNhsAppTemplate);
   });
 
   it('should redirect when successfully saved template and sent email', async () => {
-    const session = {
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateMessage: 'body',
-      nhsAppTemplateName: 'name',
-      id: '1',
-    };
+    getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
-    const template = {
-      name: 'name',
-      type: TemplateType.NHS_APP,
-      version: 1,
-      fields: { content: 'body' },
-    };
-
-    const templateEntity = {
-      id: 'templateId-1',
-      name: 'name',
-      type: TemplateType.NHS_APP,
-      version: 1,
-      fields: { content: 'body' },
-      createdAt: 'yesterday',
-      updatedAt: 'today',
-    };
-
-    getSessionMock.mockResolvedValueOnce(session);
-
-    createTemplateFromSessionMock.mockReturnValueOnce(template);
+    createTemplateFromSessionMock.mockReturnValueOnce(mockNhsAppTemplate);
 
     validateTemplateMock.mockReturnValueOnce({
-      ...template,
+      ...mockNhsAppTemplate,
       type: 'NHS_APP',
     });
 
-    saveTemplateMock.mockResolvedValueOnce(templateEntity);
+    saveTemplateMock.mockResolvedValueOnce(mockNhsAppTemplateEntity);
 
     const formData = getMockFormData({
       sessionId: '1',
@@ -225,22 +180,76 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
+    expect(createTemplateFromSessionMock).toHaveBeenCalledWith(
+      mockNhsAppSession
+    );
 
-    expect(validateTemplateMock).toHaveBeenCalledWith(template);
+    expect(validateTemplateMock).toHaveBeenCalledWith(mockNhsAppTemplate);
 
-    expect(saveTemplateMock).toHaveBeenCalledWith(template);
+    expect(saveTemplateMock).toHaveBeenCalledWith(mockNhsAppTemplate);
 
     expect(sendEmailMock).toHaveBeenCalledWith(
-      templateEntity.id,
-      templateEntity.name,
-      templateEntity.fields.content,
+      mockNhsAppTemplateEntity.id,
+      mockNhsAppTemplateEntity.name,
+      mockNhsAppTemplateEntity.fields.content,
       undefined
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/submit-route/templateId-1',
       'push'
+    );
+  });
+
+  it('should send an email with the subject line when template type is EMAIL', async () => {
+    const mockEmailSession = {
+      ...mockNhsAppSession,
+      templateType: TemplateType.EMAIL,
+      emailTemplateMessage: 'body',
+      emailTemplateName: 'name',
+      emailTemplateSubjectLine: 'subjectLine',
+    };
+
+    const mockEmailTemplate = {
+      ...mockNhsAppTemplate,
+      type: TemplateType.EMAIL,
+      fields: {
+        ...mockNhsAppTemplate.fields,
+        subjectLine: 'subjectLine',
+      },
+    };
+
+    const mockEmailTemplateEntity = {
+      ...mockNhsAppTemplateEntity,
+      type: TemplateType.EMAIL,
+      fields: {
+        ...mockNhsAppTemplateEntity.fields,
+        subjectLine: 'subjectLine',
+      },
+    };
+
+    getSessionMock.mockResolvedValueOnce(mockEmailSession);
+
+    createTemplateFromSessionMock.mockReturnValueOnce(mockEmailTemplate);
+
+    validateTemplateMock.mockReturnValueOnce({
+      ...mockEmailTemplate,
+      type: 'EMAIL',
+    });
+
+    saveTemplateMock.mockResolvedValueOnce(mockEmailTemplateEntity);
+
+    const formData = getMockFormData({
+      sessionId: '1',
+    });
+
+    await submitTemplate('submit-route', formData);
+
+    expect(sendEmailMock).toHaveBeenCalledWith(
+      mockEmailTemplateEntity.id,
+      mockEmailTemplateEntity.name,
+      mockEmailTemplateEntity.fields.content,
+      mockEmailTemplateEntity.fields.subjectLine
     );
   });
 });
