@@ -58,7 +58,7 @@ test('sends email', async () => {
 From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@undefined>
 To: <recipient-email>
 Message-ID: <${messageId}@undefined>
-Subject: =?utf-8?B?VGVtcGxhdGUgY3JlYXRlZCAtIHRlbXBsYXRlLW5hbWU=?=
+Subject: =?utf-8?B?VGVtcGxhdGUgc3VibWl0dGVkIC0gdGVtcGxhdGUtbmFtZQ==?=
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=${messageBoundary}
 
