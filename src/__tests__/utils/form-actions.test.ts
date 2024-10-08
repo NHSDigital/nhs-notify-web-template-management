@@ -9,6 +9,7 @@ import {
   saveTemplate,
   sendEmail,
   getTemplate,
+  deleteSession,
 } from '@utils/form-actions';
 import { Template, TemplateInput } from '@domain/templates';
 import { randomUUID } from 'node:crypto';
@@ -157,6 +158,30 @@ test('saveSession - error handling', async () => {
       nhsAppTemplateMessage: 'template-message',
     })
   ).rejects.toThrow('Failed to save template data');
+});
+
+test('saveSession - error handling - when no data returned', async () => {
+  setup({
+    models: {
+      SessionStorage: {
+        update: jest.fn().mockReturnValue({
+          errors: undefined,
+          data: undefined,
+        }),
+      },
+    },
+  });
+
+  await expect(
+    saveSession({
+      id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+      templateType: TemplateType.NHS_APP,
+      nhsAppTemplateName: 'template-name',
+      nhsAppTemplateMessage: 'template-message',
+    })
+  ).rejects.toThrow(
+    'Session in unknown state. No errors reported but entity returned as falsy'
+  );
 });
 
 test('getSession', async () => {
@@ -340,4 +365,51 @@ test('sendEmail - errors', async () => {
       errors: ['email error'],
     },
   });
+});
+
+test('deleteSession - returns false when session not deleted', async () => {
+  const mock = jest.fn().mockReturnValue({
+    errors: [
+      {
+        message: 'test-error-message',
+        errorType: 'test-error-type',
+        errorInfo: { error: 'test-error' },
+      },
+    ],
+  });
+
+  setup({
+    models: {
+      SessionStorage: {
+        delete: mock,
+      },
+    },
+  });
+
+  const response = await deleteSession('session-id');
+
+  expect(response).toBeFalsy();
+
+  expect(mock).toHaveBeenCalledWith({ id: 'session-id' });
+});
+
+test('deleteSession - returns true when deleted', async () => {
+  const mock = jest.fn().mockReturnValue({
+    errors: undefined,
+    data: {},
+  });
+
+  setup({
+    models: {
+      SessionStorage: {
+        delete: mock,
+      },
+    },
+  });
+
+  const response = await deleteSession('session-id');
+
+  expect(response).toBeTruthy();
+
+  expect(mock).toHaveBeenCalledWith({ id: 'session-id' });
 });

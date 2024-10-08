@@ -46,6 +46,13 @@ export async function saveSession(session: Session) {
     logger.error('Failed to save session', errors);
     throw new Error('Failed to save template data');
   }
+  if (!data) {
+    throw new DbOperationError({
+      message:
+        'Session in unknown state. No errors reported but entity returned as falsy',
+      operation: 'update',
+    });
+  }
   return data;
 }
 
@@ -138,4 +145,27 @@ export async function sendEmail(
       res,
     });
   }
+}
+
+export async function deleteSession(sessionId: string) {
+  const backendClient = getAmplifyBackendClient();
+  const sessionRepository = backendClient.models.SessionStorage;
+
+  const { errors } = await sessionRepository.delete({
+    id: sessionId,
+  });
+
+  if (errors) {
+    logger.warn(
+      `Failed to delete session ${sessionId} `,
+      new DbOperationError({
+        message: `Failed to delete session ${sessionId} `,
+        operation: 'delete',
+        cause: errors,
+      })
+    );
+    return false;
+  }
+
+  return true;
 }

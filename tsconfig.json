@@ -31,7 +31,8 @@
       "@types/*": ["./src/types/*"],
       "@testhelpers": ["./src/__tests__/helpers"],
       "@utils/*": ["./src/utils/*"],
-      "@domain/*": ["./src/domain/*"]
+      "@domain/*": ["./src/domain/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": [

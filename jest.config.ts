@@ -72,7 +72,7 @@ const config: Config = {
   // The test environment that will be used for testing
   testEnvironment: 'jsdom',
 
-  testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts'],
+  testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts', '/tests/test-team/'],
 
   // Set the absolute path for imports
   moduleNameMapper: {
