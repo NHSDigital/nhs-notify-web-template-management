@@ -79,7 +79,9 @@ exports[`SubmitTemplate component should render 1`] = `
       <p>
         If you want to change a submitted template, you must create and submit a new template to replace it.
       </p>
-      <form>
+      <form
+        action="submitTemplatePlaceholder"
+      >
         <input
           name="form-id"
           readonly=""

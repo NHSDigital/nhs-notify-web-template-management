@@ -65,3 +65,5 @@ group_target-env.tfvars
 
 .amplify/
 amplify_outputs.json
+public/testing
+amplify/functions/send-email/email-template.json

@@ -53,6 +53,7 @@ const config: Config = {
     '.snap',
     'resource.ts',
     'backend.ts',
+    'generate-dependencies.ts'
   ],
 
   // Use this configuration option to add custom reporters to Jest
