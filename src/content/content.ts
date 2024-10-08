@@ -311,7 +311,6 @@ const reviewSMSTemplateContent = {
     pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'sms-edit', text: 'Edit' },
-      { id: 'sms-send', text: 'Send a test text message' },
       { id: 'sms-submit', text: 'Submit' },
     ],
     buttonText: 'Continue',
@@ -351,26 +350,6 @@ export const submitNhsAppTemplateContent = {
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
   buttonText: 'Submit template',
-};
-
-const content = {
-  global: {
-    mainLayout,
-  },
-  components: {
-    headerComponent,
-    footerComponent,
-    personalisationComponent,
-    reviewEmailTemplateContent,
-    reviewLetterTemplateContent,
-    reviewNHSAppTemplateContent,
-    reviewSMSTemplateContent,
-    messageFormattingComponent,
-  },
-  pages: {
-    homePage,
-    error404PageContent,
-  },
 };
 
 export const chooseTemplatePageContent = {
@@ -437,6 +416,40 @@ export const templateSubmittedPageContent = {
   liveHeading: "If you've already onboarded",
   liveLinkText: 'Raise a request with the service desk',
   liveText: "once you've submitted all your templates.",
+};
+
+export const createSmsTemplatePageContent = {
+  pageHeading: 'Create text message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateMessageLabelText: 'Message',
+  templateNameHintText: 'This will not be visible to recipients.',
+  smsCountText1: 'This template will be sent as ',
+  smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
+  smsPricingLink: 'https://notify.nhs.uk/pricing/text-messages',
+  smsPricingText:
+    'Learn more about character counts and text messaging pricing (opens in a new tab)',
+  buttonText: 'Continue',
+};
+
+const content = {
+  global: {
+    mainLayout,
+  },
+  components: {
+    headerComponent,
+    footerComponent,
+    personalisationComponent,
+    reviewEmailTemplateContent,
+    reviewLetterTemplateContent,
+    reviewNHSAppTemplateContent,
+    reviewSMSTemplateContent,
+    messageFormattingComponent,
+  },
+  pages: {
+    homePage,
+    error404PageContent,
+  },
 };
 
 export default content;

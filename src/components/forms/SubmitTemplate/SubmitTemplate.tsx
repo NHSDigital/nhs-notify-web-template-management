@@ -6,7 +6,7 @@ import { SubmitTemplatePageComponentProps } from '@utils/types';
 import { submitNhsAppTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
-import { submitTemplate } from './server-action';
+import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
