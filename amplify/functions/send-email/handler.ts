@@ -24,7 +24,7 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
   const msg = createMimeMessage();
   msg.setSender({ name: 'NHS Notify', addr: senderEmail });
   msg.setTo([{ addr: recipientEmail }]);
-  msg.setSubject(`Template created - ${templateName}`);
+  msg.setSubject(`Template submitted - ${templateName}`);
   msg.addMessage({
     contentType: 'text/html',
     data: emailTemplate(templateId, templateName, templateMessage),
