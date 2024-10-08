@@ -34,6 +34,7 @@ module.exports = {
     performCheck(reviewTextMessageTemplatePage(baseUrl)),
     performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
+    performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],
   defaults: {
     reporters: [
