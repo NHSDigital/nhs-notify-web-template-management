@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 const $SessionIdSchema = z.string();
 
-export async function submitTemplate(formData: FormData) {
+export async function submitTemplate(route: string, formData: FormData) {
   const { success, data: sessionId } = $SessionIdSchema.safeParse(
     formData.get('sessionId')
   );
@@ -55,8 +55,5 @@ export async function submitTemplate(formData: FormData) {
     throw error;
   }
 
-  return redirect(
-    `/nhs-app-template-submitted/${templateId}`,
-    RedirectType.push
-  );
+  return redirect(`/${route}/${templateId}`, RedirectType.push);
 }

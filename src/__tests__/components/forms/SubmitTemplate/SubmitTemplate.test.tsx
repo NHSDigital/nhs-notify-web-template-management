@@ -6,13 +6,20 @@ jest.mock('@utils/amplify-utils', () => ({
 }));
 
 jest.mock('@forms/SubmitTemplate/server-action', () => ({
-  submitTemplate: 'submitTemplatePlaceholder',
+  submitTemplate: {
+    bind: () => {},
+  },
 }));
 
 describe('SubmitTemplate component', () => {
   it('should render', () => {
     const container = render(
-      <SubmitTemplate sessionId='session-id' templateName='template-name' />
+      <SubmitTemplate
+        sessionId='session-id'
+        templateName='template-name'
+        goBackPath='example'
+        submitPath='example-submit'
+      />
     );
 
     expect(container.asFragment()).toMatchSnapshot();

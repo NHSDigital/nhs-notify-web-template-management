@@ -8,10 +8,20 @@ const nhsAppTemplateMap = (session: Session): TemplateInput => ({
   fields: { content: session.nhsAppTemplateMessage },
 });
 
+const smsTemplateMap = (session: Session): TemplateInput => ({
+  name: session.smsTemplateName!,
+  type: 'SMS',
+  version: 1,
+  fields: { content: session.smsTemplateMessage! },
+});
+
 export function createTemplateFromSession(session: Session): TemplateInput {
   switch (session.templateType) {
     case TemplateType.NHS_APP: {
       return nhsAppTemplateMap(session);
+    }
+    case TemplateType.SMS: {
+      return smsTemplateMap(session);
     }
     default: {
       throw new Error(`Invalid ${session.templateType} template type`);
