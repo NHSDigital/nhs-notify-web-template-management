@@ -26,6 +26,21 @@ test.describe('Create NHS App Template Page', () => {
     await sessionStorageHelper.deleteSessionData();
   });
 
+  test('place holder jazzman', async ({ page, baseURL }) => {
+    const createTemplatePage = new TemplateMgmtCreatePage(page);
+
+    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
+      nhsAppNoTemplateSessionData.id
+    );
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
+    );
+    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+      'Create NHS App message template'
+    );
+  });
+
   test('should navigate to the NHS App template creation page when radio button selected', async ({
     page,
     baseURL,
