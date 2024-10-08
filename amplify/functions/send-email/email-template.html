@@ -209,6 +209,14 @@
                 <p class="dataValueShort">{{templateId}}</p>
               </td>
             </tr>
+            {{#if templateSubjectLine}}
+              <tr>
+                <td colspan="2">
+                  <p class="dataLabel">Subject line</p>
+                  <p class="dataValueShort">{{templateSubjectLine}}</p>
+                </td>
+              </tr>
+            {{/if}}
             <tr>
               <td colspan="2">
                 <p class="dataLabel">Template content</p>

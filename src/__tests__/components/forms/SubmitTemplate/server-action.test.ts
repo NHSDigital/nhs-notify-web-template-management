@@ -234,7 +234,8 @@ describe('submitTemplate', () => {
     expect(sendEmailMock).toHaveBeenCalledWith(
       templateEntity.id,
       templateEntity.name,
-      templateEntity.fields.content
+      templateEntity.fields.content,
+      undefined
     );
 
     expect(redirectMock).toHaveBeenCalledWith(

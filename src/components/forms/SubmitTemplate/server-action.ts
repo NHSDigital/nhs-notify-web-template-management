@@ -33,7 +33,8 @@ export async function submitTemplate(route: string, formData: FormData) {
     await sendEmail(
       templateEntity.id,
       templateEntity.name,
-      templateEntity.fields!.content
+      templateEntity.fields!.content,
+      templateEntity.fields!.subjectLine
     );
 
     return redirect(`/${route}/${templateEntity.id}`, RedirectType.push);
