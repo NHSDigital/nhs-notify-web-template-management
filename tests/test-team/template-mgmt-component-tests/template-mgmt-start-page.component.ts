@@ -91,25 +91,38 @@ test('Footer links exist and are visible', async ({ page }) => {
     {
       name: 'Accessibility statement',
       selector: 'a[data-testid="accessibility-statement-link"]',
+      href: '/accessibility',
     },
-    { name: 'Contact Us', selector: 'a[data-testid="contact-us-link"]' },
-    { name: 'Cookies', selector: 'a[data-testid="cookies-link"]' },
+    {
+      name: 'Contact Us',
+      selector: 'a[data-testid="contact-us-link"]',
+      href: '#',
+    },
+    {
+      name: 'Cookies',
+      selector: 'a[data-testid="cookies-link"]',
+      href: '#',
+    },
     {
       name: 'Privacy Policy',
       selector: 'a[data-testid="privacy-policy-link"]',
+      href: '#',
     },
     {
       name: 'Terms and Conditions',
       selector: 'a[data-testid="terms-and-conditions-link"]',
+      href: '#',
     },
   ];
 
   await Promise.all(
-    footerLinks.map((link) =>
-      expect(
-        page.locator(link.selector),
-        `${link.name} should be visible`
-      ).toBeVisible()
-    )
+    footerLinks.map(async (link) => {
+      const linkLocator = page.locator(link.selector);
+      const href = await linkLocator.getAttribute('href');
+      expect(linkLocator, `${link.name} should be visible`).toBeVisible();
+      expect(href, `${link.name} should have href ${link.href}`).toBe(
+        link.href
+      );
+    })
   );
 });

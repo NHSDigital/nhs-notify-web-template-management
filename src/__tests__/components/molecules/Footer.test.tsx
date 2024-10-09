@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
+import content from '@content/content';
+
+const footerContent = content.components.footerComponent;
 
 describe('Footer component', () => {
   it('renders component correctly', () => {
@@ -13,7 +16,7 @@ describe('Footer component', () => {
     ).toBeInTheDocument();
     expect(screen.getByTestId('accessibility-statement-link')).toHaveAttribute(
       'href',
-      '#'
+      `${footerContent.links.accessibilityStatement.url}`
     );
 
     expect(screen.getByTestId('contact-us-link')).toBeInTheDocument();
