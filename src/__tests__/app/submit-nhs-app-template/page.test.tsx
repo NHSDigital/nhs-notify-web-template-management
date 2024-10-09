@@ -28,6 +28,10 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
+jest.mock('@forms/SubmitTemplate/SubmitTemplate', () => ({
+  SubmitTemplate: () => <div>SubmitTemplatePlaceholder</div>,
+}));
+
 test('SubmitTemplatePage', async () => {
   const page = await SubmitNhsAppTemplatePage({
     params: {

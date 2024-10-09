@@ -51,6 +51,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -93,6 +96,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -122,6 +128,9 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Configure AWS credentials
@@ -153,6 +162,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

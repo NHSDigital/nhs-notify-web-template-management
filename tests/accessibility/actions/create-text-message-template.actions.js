@@ -8,13 +8,13 @@ const pageActions = [
 ];
 
 const createTextMessageTemplatePage = (baseUrl) => ({
-  name: 'create-sms-template',
+  name: 'create-text-message-template',
   url: url(baseUrl),
   actions: pageActions,
 });
 
 const createTextMessageTemplateErrorPage = (baseUrl) => ({
-  name: 'create-sms-template-error',
+  name: 'create-text-message-template-error',
   url: url(baseUrl),
   actions: [
     ...pageActions,

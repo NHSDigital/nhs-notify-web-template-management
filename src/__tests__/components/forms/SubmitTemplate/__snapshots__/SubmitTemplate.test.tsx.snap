@@ -10,7 +10,7 @@ exports[`SubmitTemplate component should render 1`] = `
     >
       <a
         class="nhsuk-back-link__link nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3"
-        href="/templates/preview-nhs-app-template/session-id"
+        href="/templates/example/session-id"
       >
         <svg
           aria-hidden="true"

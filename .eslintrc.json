@@ -68,7 +68,9 @@
     "no-param-reassign": "off",
     "react/require-default-props": "off",
     "no-useless-constructor": "off",
-    "sonarjs/no-small-switch": "off"
+    "sonarjs/no-small-switch": "off",
+    "react/jsx-no-bind": "off",
+    "unicorn/no-null": "off"
   },
   "overrides": [
     {

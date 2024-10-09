@@ -32,7 +32,7 @@ describe('submitTemplate', () => {
   it('should redirect when sessionId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
 
@@ -44,7 +44,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ sessionId: '1' });
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
@@ -65,7 +65,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'unable to map session to template'
     );
   });
@@ -95,7 +95,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'unable to to validate template'
     );
 
@@ -134,7 +134,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'failed saving to database'
     );
 
@@ -182,7 +182,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'failed to send email'
     );
 
@@ -231,7 +231,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
 
@@ -248,7 +248,7 @@ describe('submitTemplate', () => {
     expect(deleteSessionMock).toHaveBeenCalledWith(session.id);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/nhs-app-template-submitted/templateId-1',
+      '/submit-route/templateId-1',
       'push'
     );
   });
