@@ -65,3 +65,12 @@ group_target-env.tfvars
 
 .amplify/
 amplify_outputs.json
+public/testing
+amplify/functions/send-email/email-template.json
+
+# playwright
+test-results/
+tests/test-team/test-results/
+tests/test-team/playwright-report/
+tests/test-team/blob-report/
+tests/test-team/playwright/.cache/

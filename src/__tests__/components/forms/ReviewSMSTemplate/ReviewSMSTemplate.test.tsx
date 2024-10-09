@@ -1,12 +1,58 @@
+'use client';
+
 import { render, screen } from '@testing-library/react';
 import { ReviewSMSTemplate, renderMarkdown } from '@forms/ReviewSMSTemplate';
+import { mockDeep } from 'jest-mock-extended';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('@forms/ReviewSMSTemplate/server-actions');
+
+jest.mock('react-dom', () => {
+  const originalModule = jest.requireActual('react-dom');
+
+  return {
+    ...originalModule,
+    useFormState: (
+      _: (
+        formState: TemplateFormState,
+        formData: FormData
+      ) => Promise<TemplateFormState>,
+      initialState: TemplateFormState
+    ) => [initialState, '/action'],
+  };
+});
 
 describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
     const container = render(
-      <ReviewSMSTemplate templateName='test-template-sms' message='message' />
+      <ReviewSMSTemplate
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          smsTemplateName: 'test-template-sms',
+          smsTemplateMessage: 'message',
+          id: 'session-id',
+        })}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches error snapshot', () => {
+    const container = render(
+      <ReviewSMSTemplate
+        initialState={mockDeep<TemplateFormState>({
+          validationError: {
+            formErrors: [],
+            fieldErrors: {
+              reviewSMSTemplateAction: ['Select an option'],
+            },
+          },
+          smsTemplateName: 'test-template-sms',
+          smsTemplateMessage: 'message',
+          id: 'session-id',
+        })}
+      />
     );
 
     expect(container.asFragment()).toMatchSnapshot();
@@ -15,19 +61,18 @@ describe('Preview sms form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewSMSTemplate
-        templateName='test-template-sms'
-        message='sms message body'
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          smsTemplateName: 'test-template-sms',
+          smsTemplateMessage: 'message',
+          id: 'session-id',
+        })}
       />
     );
 
     expect(screen.getByTestId('sms-edit-radio')).toHaveAttribute(
       'value',
       'sms-edit'
-    );
-
-    expect(screen.getByTestId('sms-send-radio')).toHaveAttribute(
-      'value',
-      'sms-send'
     );
 
     expect(screen.getByTestId('sms-submit-radio')).toHaveAttribute(
@@ -42,8 +87,16 @@ describe('Preview sms form renders', () => {
     renderMock.mockReturnValue('Rendered via MD');
 
     const message = 'sms message body';
+
     render(
-      <ReviewSMSTemplate templateName='test-template-sms' message={message} />
+      <ReviewSMSTemplate
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          smsTemplateName: 'test-template-sms',
+          smsTemplateMessage: message,
+          id: 'session-id',
+        })}
+      />
     );
 
     expect(renderMock).toHaveBeenCalledWith(message);

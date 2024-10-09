@@ -1,6 +1,6 @@
 import { mockDeep } from 'jest-mock-extended';
 import { SendRawEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
-import { handler } from '../../../functions/send-email/handler';
+import { handler, emailTemplate } from '../../../functions/send-email';
 import type { Schema } from '../../../data/resource';
 
 jest.mock('@aws-sdk/client-ses', () => ({
@@ -57,15 +57,15 @@ test('sends email', async () => {
 From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@${process.env.NOTIFY_DOMAIN_NAME}>
 To: <recipient-email>
 Message-ID: <${messageId}@${process.env.NOTIFY_DOMAIN_NAME}>
-Subject: =?utf-8?B?VGVtcGxhdGUgY3JlYXRlZCAtIHRlbXBsYXRlLW5hbWU=?=
+Subject: =?utf-8?B?VGVtcGxhdGUgc3VibWl0dGVkIC0gdGVtcGxhdGUtbmFtZQ==?=
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=${messageBoundary}
 
 --${messageBoundary}
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Template has been successfully created. The template name is template-name and the template ID is template-id. The template content is attached.
+${emailTemplate('template-id', 'template-name', 'template-message')}
 
 --${messageBoundary}
 Content-Type: text/markdown; name="template-content.md"
