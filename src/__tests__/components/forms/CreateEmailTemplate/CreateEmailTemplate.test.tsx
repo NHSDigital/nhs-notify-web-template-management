@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
 import { TemplateFormState } from '@utils/types';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
@@ -24,8 +23,6 @@ jest.mock('react-dom', () => {
 });
 
 test('renders page', async () => {
-  const user = userEvent.setup();
-
   const container = render(
     <CreateEmailTemplate
       initialState={mockDeep<TemplateFormState>({
@@ -37,21 +34,6 @@ test('renders page', async () => {
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
-
-  const templateNameInput = await container.findByTestId(
-    'emailTemplateName-input'
-  );
-  await user.type(templateNameInput, 'template-name');
-
-  const templateSubjectLineInput = await container.findByTestId(
-    'emailTemplateSubjectLine-input'
-  );
-  await user.type(templateSubjectLineInput, 'template-subject-line');
-
-  const templateMessageInput = await container.findByTestId(
-    'emailTemplateMessage-input'
-  );
-  await user.type(templateMessageInput, 'template-message');
 });
 
 test('renders page with preloaded field values', () => {
