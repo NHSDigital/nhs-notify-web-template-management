@@ -7,4 +7,5 @@ export const sendEmail = defineFunction({
     NOTIFY_DOMAIN_NAME: process.env.NOTIFY_DOMAIN_NAME ?? 'no-domain',
     ACCOUNT_ID: process.env.ACCOUNT_ID ?? 'no-account-id',
   },
+  runtime: 20,
 });

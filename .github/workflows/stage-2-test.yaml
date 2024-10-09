@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v4
       - name: "Repo setup"
         run: |
-          npm install
+          npm ci
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -72,7 +72,8 @@ jobs:
         uses: actions/checkout@v4
       - name: "Repo setup"
         run: |
-          npm install
+          npm ci
+          npm ci tests/test-team
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -88,7 +89,8 @@ jobs:
         uses: actions/checkout@v4
       - name: "Repo setup"
         run: |
-          npm install
+          npm ci
+          npm ci tests/test-team
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies

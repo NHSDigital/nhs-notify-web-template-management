@@ -18,6 +18,7 @@ type HandlerCallbackType = Parameters<
 beforeAll(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date('2022-01-01 10:00'));
+  process.env.NOTIFY_DOMAIN_NAME = 'test.notify.nhs.uk';
 });
 
 test('sends email', async () => {
@@ -54,10 +55,10 @@ test('sends email', async () => {
   const messageBoundary = rawMimeMessage?.match(/boundary=([\dA-z]+)/)?.[1];
 
   const expectedMessage = `Date: Sat, 01 Jan 2022 10:00:00 +0000
-From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@${process.env.NOTIFY_DOMAIN_NAME}>
+From: =?utf-8?B?TkhTIE5vdGlmeQ==?= <no-reply@test.notify.nhs.uk>
 To: <recipient-email>
-Message-ID: <${messageId}@${process.env.NOTIFY_DOMAIN_NAME}>
-Subject: =?utf-8?B?VGVtcGxhdGUgY3JlYXRlZCAtIHRlbXBsYXRlLW5hbWU=?=
+Message-ID: <${messageId}@test.notify.nhs.uk>
+Subject: =?utf-8?B?VGVtcGxhdGUgc3VibWl0dGVkIC0gdGVtcGxhdGUtbmFtZQ==?=
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary=${messageBoundary}
 

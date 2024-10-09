@@ -1,7 +1,12 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
+import {
+  getSession,
+  saveTemplate,
+  sendEmail,
+  deleteSession,
+} from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 
@@ -19,6 +24,7 @@ const saveTemplateMock = jest.mocked(saveTemplate);
 const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
 const sendEmailMock = jest.mocked(sendEmail);
+const deleteSessionMock = jest.mocked(deleteSession);
 
 const mockNhsAppSession = {
   templateType: TemplateType.NHS_APP,
@@ -162,7 +168,7 @@ describe('submitTemplate', () => {
     expect(validateTemplateMock).toHaveBeenCalledWith(mockNhsAppTemplate);
   });
 
-  it('should redirect when successfully saved template and sent email', async () => {
+  it('should redirect when successfully saved template, sent email and deleted session', async () => {
     getSessionMock.mockResolvedValueOnce(mockNhsAppSession);
 
     createTemplateFromSessionMock.mockReturnValueOnce(mockNhsAppTemplate);
@@ -194,6 +200,8 @@ describe('submitTemplate', () => {
       mockNhsAppTemplateEntity.fields.content,
       undefined
     );
+
+    expect(deleteSessionMock).toHaveBeenCalledWith(mockNhsAppSession.id);
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/submit-route/templateId-1',
