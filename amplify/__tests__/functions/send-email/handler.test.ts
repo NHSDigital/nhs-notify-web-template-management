@@ -25,7 +25,7 @@ beforeAll(() => {
 
 afterAll(() => {
   process.env.NOTIFY_DOMAIN_NAME = notifyDomainName;
-})
+});
 
 test('sends email', async () => {
   const mockSESClient = mockDeep<SESClient>({
