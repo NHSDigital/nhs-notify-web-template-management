@@ -169,3 +169,180 @@ test.describe('Choose Template Type Page', () => {
     await expect(chooseTemplatePage.goBackLink).toBeHidden();
   });
 });
+
+test.describe('NHS App Message Template tests -in progress', () => {
+  const sessionStorageHelper = new SessionStorageHelper([
+    emptySessionData,
+    emptySessionDataForRadioSelect,
+    nhsAppRadioSelectedSessionData,
+  ]);
+
+  test.beforeAll(async () => {
+    await sessionStorageHelper.seedSessionData();
+  });
+
+  test.afterAll(async () => {
+    await sessionStorageHelper.deleteSessionData();
+  });
+  test('Validate error messages on the create NHS App message template page', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    await page.waitForTimeout(3000);
+    await chooseTemplatePage.clickContinueButton();
+    await page.waitForTimeout(3000);
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.locator('.nhsuk-error-summary')).toHaveText([
+      'There is a problemEnter a template nameEnter a template message',
+    ]);
+  });
+
+  test('NHS App Message template populated and continued to the preview screen displayed', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    await expect(page.locator('h1')).toHaveText(
+      'Create NHS App message template'
+    );
+    const templateName = 'NHS Testing 123'; // Replace with the text you want to enter
+    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
+    const templateMessage = 'Test Message box'; // Replace with the text you want to enter
+    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
+    await chooseTemplatePage.clickContinueButton();
+    await expect(page.locator('h1')).toHaveText(
+      'NHS App message templateNHS Testing 123'
+    );
+  });
+
+  test('Hyperlinks & back button functionality', async ({ page, baseURL }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    const footerLinks = [
+      {
+        name: 'Home',
+        selector: 'a[data-testid="accessibility-statement-link"]',
+      },
+      { name: 'Contact Us', selector: 'a[data-testid="contact-us-link"]' },
+      { name: 'Cookies', selector: 'a[data-testid="cookies-link"]' },
+      {
+        name: 'Privacy Policy',
+        selector: 'a[data-testid="privacy-policy-link"]',
+      },
+      {
+        name: 'Terms and Conditions',
+        selector: 'a[data-testid="terms-and-conditions-link"]',
+      },
+    ];
+
+    await Promise.all(
+      footerLinks.map((link) =>
+        expect(
+          page.locator(link.selector),
+          `${link.name} should be visible`
+        ).toBeVisible()
+      )
+    );
+    await expect(page.locator('.nhsuk-back-link__link')).toBeVisible();
+    await chooseTemplatePage.clickBackLink();
+  });
+
+  test('personalisation mark expanding fields', async ({ page, baseURL }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    await expect(chooseTemplatePage.fieldsetHeading).toHaveText(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    const personalisationSummary = page.locator(
+      '[data-testid="personalisation-summary"]'
+    );
+    await expect(personalisationSummary).toBeVisible();
+    await personalisationSummary.click();
+    async function clickFieldByText(fieldText: string) {
+      const field = page.locator('span.nhsuk-details__summary-text', {
+        hasText: fieldText,
+      });
+      await expect(field).toBeVisible();
+      await field.click();
+    }
+    const fields = [
+      'Line breaks and paragraphs',
+      'headings',
+      'Bold text',
+      'links and URLs',
+      'Naming your templates',
+    ];
+
+    await Promise.all(fields.map((field) => clickFieldByText(field)));
+  });
+  test('Invalid session ID test', async ({ page, baseURL }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    await expect(chooseTemplatePage.fieldsetHeading).toHaveText(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    const invalidSessionId = 'invalid-session-id';
+    await page.goto(
+      `${baseURL}/templates/choose-a-template-type/${invalidSessionId}`
+    );
+    const errorMessage = page.locator('.nhsuk-heading-xl');
+    await Promise.all([
+      expect(errorMessage).toBeVisible(),
+      expect(errorMessage).toHaveText('Sorry, we could not find that page'),
+      expect(page).toHaveURL(`${baseURL}/templates/invalid-session`),
+    ]);
+  });
+});
