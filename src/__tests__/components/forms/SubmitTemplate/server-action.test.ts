@@ -198,7 +198,7 @@ describe('submitTemplate', () => {
       mockNhsAppTemplateEntity.id,
       mockNhsAppTemplateEntity.name,
       mockNhsAppTemplateEntity.fields.content,
-      undefined
+      null
     );
 
     expect(deleteSessionMock).toHaveBeenCalledWith(mockNhsAppSession.id);
