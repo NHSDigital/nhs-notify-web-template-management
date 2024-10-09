@@ -22,6 +22,7 @@ const TemplateStorageModel = {
   type: a.enum(templateTypes),
   version: a.integer().required(),
   fields: a.customType({
+    subjectLine: a.string(),
     content: a.string().required(),
   }),
 };

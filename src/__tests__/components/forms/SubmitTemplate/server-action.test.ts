@@ -170,8 +170,6 @@ describe('submitTemplate', () => {
     saveTemplateMock.mockResolvedValueOnce({
       ...template,
       id: '1',
-      createdAt: 'today',
-      updatedAt: 'tomorrow',
     });
 
     sendEmailMock.mockImplementationOnce(() => {

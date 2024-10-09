@@ -38,6 +38,29 @@ describe('createTemplateFromSession', () => {
     });
   });
 
+  it('should map session email to template', () => {
+    const session: Session = {
+      nhsAppTemplateMessage: 'message',
+      nhsAppTemplateName: 'name',
+      emailTemplateMessage: 'email-message',
+      emailTemplateSubjectLine: 'email-subject-line',
+      emailTemplateName: 'email-name',
+      id: '',
+      templateType: TemplateType.EMAIL,
+    };
+
+    const template = createTemplateFromSession(session);
+    expect(template).toEqual({
+      name: 'email-name',
+      type: 'EMAIL',
+      version: 1,
+      fields: {
+        subjectLine: 'email-subject-line',
+        content: 'email-message',
+      },
+    });
+  });
+
   it('should throw error when templateType is unknown', () => {
     const session: Session = {
       nhsAppTemplateMessage: 'message',
@@ -48,7 +71,7 @@ describe('createTemplateFromSession', () => {
     expect(() => createTemplateFromSession(session)).toThrow();
   });
 
-  test.each([TemplateType.EMAIL, TemplateType.LETTER])(
+  test.each([TemplateType.LETTER])(
     'should throw error when templateType is is %s',
     (type) => {
       const session: Session = {
