@@ -9,4 +9,5 @@ module.exports = {
   ...require('./text-message-template-submitted.actions'),
   ...require('./nhs-app-template-submitted.actions'),
   ...require('./create-email-template.actions'),
+  ...require('./preview-email-template.actions'),
 };
