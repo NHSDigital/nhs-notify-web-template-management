@@ -201,100 +201,10 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
       'Choose a template type to create'
     );
   });
-
-  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
-
-  test('3 invalid session ID test - In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
-
-  test('4 should display correct radio button options - In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
-
-  test('5 Back button functionality -  In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
-
-  test('6 NHS Notify Return to home page - In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
-
-  test('7 Hyperlinks to CMSIn progress placeholder-In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-  });
+  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', () => {});
+  test('3 personalisation mark expanding fields', () => {});
+  test('4 invalid session ID test - In progress placeholder', () => {});
+  test('5 should display correct radio button options - In progress placeholder', () => {});
+  test('6 Back button functionality -  In progress placeholder', () => {});
+  test('7 Hyperlinks to CMSIn progress placeholder-In progress placeholder', () => {});
 });
