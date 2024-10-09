@@ -41,7 +41,8 @@ export async function submitTemplate(route: string, formData: FormData) {
       sendEmail(
         templateId,
         templateEntity.name,
-        templateEntity.fields!.content
+        templateEntity.fields!.content,
+        templateEntity.fields!.subjectLine
       ),
     ];
 

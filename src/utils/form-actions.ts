@@ -130,13 +130,15 @@ export async function getTemplate(
 export async function sendEmail(
   templateId: string,
   templateName: string,
-  templateMessage: string
+  templateMessage: string,
+  templateSubjectLine: string | null
 ) {
   const res = await getAmplifyBackendClient().queries.sendEmail({
     recipientEmail: 'england.test.cm@nhs.net',
     templateId,
     templateName,
     templateMessage,
+    templateSubjectLine,
   });
 
   if (res.errors) {

@@ -5,14 +5,14 @@ const nhsAppTemplateMap = (session: Session): TemplateInput => ({
   name: session.nhsAppTemplateName,
   type: 'NHS_APP',
   version: 1,
-  fields: { content: session.nhsAppTemplateMessage },
+  fields: { content: session.nhsAppTemplateMessage, subjectLine: null },
 });
 
 const smsTemplateMap = (session: Session): TemplateInput => ({
   name: session.smsTemplateName!,
   type: 'SMS',
   version: 1,
-  fields: { content: session.smsTemplateMessage! },
+  fields: { content: session.smsTemplateMessage!, subjectLine: null },
 });
 
 const emailTemplateMap = (session: Session): TemplateInput => ({
