@@ -1,7 +1,12 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getSession, saveTemplate, sendEmail } from '@utils/form-actions';
+import {
+  getSession,
+  saveTemplate,
+  sendEmail,
+  deleteSession,
+} from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 import { createTemplateFromSession, validateTemplate } from '@domain/templates';
 
@@ -19,6 +24,7 @@ const saveTemplateMock = jest.mocked(saveTemplate);
 const createTemplateFromSessionMock = jest.mocked(createTemplateFromSession);
 const validateTemplateMock = jest.mocked(validateTemplate);
 const sendEmailMock = jest.mocked(sendEmail);
+const deleteSessionMock = jest.mocked(deleteSession);
 
 describe('submitTemplate', () => {
   beforeEach(jest.resetAllMocks);
@@ -26,7 +32,7 @@ describe('submitTemplate', () => {
   it('should redirect when sessionId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
 
@@ -38,7 +44,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ sessionId: '1' });
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
@@ -59,7 +65,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'unable to map session to template'
     );
   });
@@ -89,7 +95,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'unable to to validate template'
     );
 
@@ -128,7 +134,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'failed saving to database'
     );
 
@@ -176,7 +182,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await expect(submitTemplate(formData)).rejects.toThrow(
+    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
       'failed to send email'
     );
 
@@ -185,7 +191,7 @@ describe('submitTemplate', () => {
     expect(validateTemplateMock).toHaveBeenCalledWith(template);
   });
 
-  it('should redirect when successfully saved template and sent email', async () => {
+  it('should redirect when successfully saved template, sent email and deleted session', async () => {
     const session = {
       templateType: TemplateType.NHS_APP,
       nhsAppTemplateMessage: 'body',
@@ -225,7 +231,7 @@ describe('submitTemplate', () => {
       sessionId: '1',
     });
 
-    await submitTemplate(formData);
+    await submitTemplate('submit-route', formData);
 
     expect(createTemplateFromSessionMock).toHaveBeenCalledWith(session);
 
@@ -239,8 +245,10 @@ describe('submitTemplate', () => {
       templateEntity.fields.content
     );
 
+    expect(deleteSessionMock).toHaveBeenCalledWith(session.id);
+
     expect(redirectMock).toHaveBeenCalledWith(
-      '/nhs-app-template-submitted/templateId-1',
+      '/submit-route/templateId-1',
       'push'
     );
   });

@@ -307,7 +307,6 @@ const reviewSMSTemplateContent = {
     pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'sms-edit', text: 'Edit' },
-      { id: 'sms-send', text: 'Send a test text message' },
       { id: 'sms-submit', text: 'Submit' },
     ],
     buttonText: 'Continue',
