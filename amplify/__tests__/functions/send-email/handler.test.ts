@@ -18,7 +18,7 @@ type HandlerCallbackType = Parameters<
 beforeAll(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date('2022-01-01 10:00'));
-  process.env.NOTIFY_DOMAIN_NAME = 'test.notify.nhs.uk'
+  process.env.NOTIFY_DOMAIN_NAME = 'test.notify.nhs.uk';
 });
 
 test('sends email', async () => {
