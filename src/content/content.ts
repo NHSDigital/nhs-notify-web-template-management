@@ -426,7 +426,7 @@ export const createSmsTemplatePageContent = {
   templateNameHintText: 'This will not be visible to recipients.',
   smsCountText1: 'This template will be sent as ',
   smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
-  smsPricingLink: 'https://notify.nhs.uk/pricing/text-messages',
+  smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Continue',
