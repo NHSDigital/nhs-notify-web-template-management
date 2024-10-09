@@ -53,7 +53,7 @@ export async function saveSession(session: Session) {
       operation: 'update',
     });
   }
-  return data as Session;
+  return data;
 }
 
 export async function getSession(
