@@ -169,3 +169,132 @@ test.describe('Choose Template Type Page', () => {
     await expect(chooseTemplatePage.goBackLink).toBeHidden();
   });
 });
+
+// place holder jazman ----------------------------------------------
+test.describe.only('NHS App Message Template tests-in progress', () => {
+  const sessionStorageHelper = new SessionStorageHelper([
+    emptySessionData,
+    emptySessionDataForRadioSelect,
+    nhsAppRadioSelectedSessionData,
+  ]);
+
+  test.beforeAll(async () => {
+    await sessionStorageHelper.seedSessionData();
+  });
+
+  test.afterAll(async () => {
+    await sessionStorageHelper.deleteSessionData();
+  });
+
+  test('1 NHS App Message template populated and continued to the preview screen displayed -In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('3 invalid session ID test - In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('4 should display correct radio button options - In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('5 Back button functionality -  In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('6 NHS Notify Return to home page - In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+
+  test('7 Hyperlinks to CMSIn progress placeholder-In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+  });
+});
