@@ -37,7 +37,7 @@ const mockNhsAppTemplate = {
   name: 'name',
   type: TemplateType.NHS_APP,
   version: 1,
-  fields: { content: 'body' },
+  fields: { content: 'body', subjectLine: null },
 };
 
 const mockNhsAppTemplateEntity = {
@@ -45,7 +45,7 @@ const mockNhsAppTemplateEntity = {
   name: 'name',
   type: TemplateType.NHS_APP,
   version: 1,
-  fields: { content: 'body' },
+  fields: { content: 'body', subjectLine: null },
   createdAt: 'yesterday',
   updatedAt: 'today',
 };
