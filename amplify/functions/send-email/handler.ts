@@ -39,11 +39,6 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
       templateSubjectLine
     ),
   });
-  msg.addAttachment({
-    filename: 'template-content.md',
-    contentType: 'text/markdown',
-    data: Buffer.from(templateMessage).toString('base64'),
-  });
 
   const command = new SendRawEmailCommand({
     RawMessage: {
