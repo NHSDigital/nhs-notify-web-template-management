@@ -2,7 +2,8 @@ import { getMockFormData } from '@testhelpers';
 import { saveSession } from '@utils/form-actions';
 import { Session, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
-import { processFormActions } from '@forms/CreateSmsTemplate/server-action';
+import { processFormActions } from '@forms/CreateEmailTemplate/server-action';
+import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
@@ -21,12 +22,12 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: Session = {
   id: 'session-id',
-  templateType: TemplateType.SMS,
+  templateType: TemplateType.EMAIL,
   nhsAppTemplateName: '',
   nhsAppTemplateMessage: '',
 };
 
-describe('CreateSmsTemplate server actions', () => {
+describe('CreateEmailTemplate server actions', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should return response when no form-id', async () => {
@@ -46,10 +47,10 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
-  it('create-sms-template - should return response when no template name or template message', async () => {
+  it('create-email-template - should return response when no template name, template subject line or template message', async () => {
     const response = await processFormActions(
       initialState,
-      getMockFormData({ 'form-id': 'create-sms-template' })
+      getMockFormData({ 'form-id': 'create-email-template' })
     );
 
     expect(response).toEqual({
@@ -57,26 +58,9 @@ describe('CreateSmsTemplate server actions', () => {
       validationError: {
         formErrors: [],
         fieldErrors: {
-          smsTemplateName: ['Enter a template name'],
-          smsTemplateMessage: ['Enter a template message'],
-        },
-      },
-    });
-  });
-
-  it('create-sms-template-back - should return response when no template name or template message', async () => {
-    const response = await processFormActions(
-      initialState,
-      getMockFormData({ 'form-id': 'create-sms-template-back' })
-    );
-
-    expect(response).toEqual({
-      ...initialState,
-      validationError: {
-        formErrors: [],
-        fieldErrors: {
-          smsTemplateName: ['Internal server error'],
-          smsTemplateMessage: ['Internal server error'],
+          emailTemplateName: ['Enter a template name'],
+          emailTemplateSubjectLine: ['Enter a template subject line'],
+          emailTemplateMessage: ['Enter a template message'],
         },
       },
     });
@@ -86,9 +70,10 @@ describe('CreateSmsTemplate server actions', () => {
     const response = await processFormActions(
       initialState,
       getMockFormData({
-        'form-id': 'create-sms-template',
-        smsTemplateName: 'template-name',
-        smsTemplateMessage: 'a'.repeat(919),
+        'form-id': 'create-email-template',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'a'.repeat(MAX_EMAIL_CHARACTER_LENGTH + 1),
       })
     );
 
@@ -97,38 +82,60 @@ describe('CreateSmsTemplate server actions', () => {
       validationError: {
         formErrors: [],
         fieldErrors: {
-          smsTemplateMessage: ['Template message too long'],
+          emailTemplateMessage: ['Template message too long'],
+        },
+      },
+    });
+  });
+
+  it('create-email-template-back - should return response when no template name, template subject line or template message', async () => {
+    const response = await processFormActions(
+      initialState,
+      getMockFormData({ 'form-id': 'create-email-template-back' })
+    );
+
+    expect(response).toEqual({
+      ...initialState,
+      validationError: {
+        formErrors: [],
+        fieldErrors: {
+          emailTemplateName: ['Internal server error'],
+          emailTemplateSubjectLine: ['Internal server error'],
+          emailTemplateMessage: ['Internal server error'],
         },
       },
     });
   });
 
   test.each([
-    { formId: 'create-sms-template', route: 'preview-text-message-template' },
-    { formId: 'create-sms-template-back', route: 'choose-a-template-type' },
+    { formId: 'create-email-template', route: 'preview-email-template' },
+    { formId: 'create-email-template-back', route: 'choose-a-template-type' },
   ])(
     '$formId - should save the session and redirect to $route',
     async ({ formId, route }) => {
       saveSessionMock.mockResolvedValue({
         ...initialState,
-        smsTemplateName: 'template-name',
-        smsTemplateMessage: 'template-message',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'template-message',
       });
 
       await processFormActions(
         initialState,
         getMockFormData({
           'form-id': formId,
-          smsTemplateName: 'template-name',
-          smsTemplateMessage: 'template-message',
+          emailTemplateName: 'template-name',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: 'template-message',
         })
       );
 
       expect(saveSessionMock).toHaveBeenCalledWith({
         id: initialState.id,
         templateType: initialState.templateType,
-        smsTemplateName: 'template-name',
-        smsTemplateMessage: 'template-message',
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'template-message',
         nhsAppTemplateMessage: '',
         nhsAppTemplateName: '',
       });

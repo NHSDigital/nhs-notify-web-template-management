@@ -394,8 +394,19 @@ export const createNhsAppTemplatePageContent = {
   pageHeading: 'Create NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
+  templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
+  buttonText: 'Continue',
+};
+
+export const createEmailTemplatePageContent = {
+  pageHeading: 'Create Email message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateSubjectLineLabelText: 'Subject line',
+  templateMessageLabelText: 'Message',
+  templateNameHintText: 'This will not be visible to recipients.',
   buttonText: 'Continue',
 };
 
