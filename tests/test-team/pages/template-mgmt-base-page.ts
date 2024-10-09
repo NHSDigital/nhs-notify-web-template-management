@@ -77,4 +77,8 @@ export class TemplateMgmtBasePage {
   async loadPage(_: string) {
     throw new Error('Not implemented');
   }
+
+  async clickBackLink() {
+    await this.goBackLink.click();
+  }
 }
