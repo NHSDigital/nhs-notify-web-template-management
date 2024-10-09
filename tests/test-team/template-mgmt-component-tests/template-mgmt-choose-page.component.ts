@@ -200,8 +200,43 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
     expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
       'Choose a template type to create'
     );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    await expect(page.locator('h1')).toHaveText(
+      'Create NHS App message template'
+    );
+    const templateName = 'NHS Testing 123'; // Replace with the text you want to enter
+    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
+    const templateMessage = 'Test Message box'; // Replace with the text you want to enter
+    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
+    await chooseTemplatePage.clickContinueButton();
+    await expect(page.locator('h1')).toHaveText(
+      'NHS App message templateNHS Testing 123'
+    );
   });
-  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', () => {});
+  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await chooseTemplatePage.clickContinueButton();
+    // await expect(page.locator('[class="nhsuk-error-summary"]')).toBeVisible();
+    // await expect(page.locator('.nhsuk-error-summary')).toHaveText([
+    //  'Enter a template name',
+    // ]);
+  });
+
   test('3 personalisation mark expanding fields', () => {});
   test('4 invalid session ID test - In progress placeholder', () => {});
   test('5 should display correct radio button options - In progress placeholder', () => {});
