@@ -407,7 +407,6 @@ export const createEmailTemplatePageContent = {
   templateSubjectLineLabelText: 'Subject line',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
-  characterCountText: ' of 5000 characters',
   buttonText: 'Continue',
 };
 

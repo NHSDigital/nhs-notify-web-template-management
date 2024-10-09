@@ -3,6 +3,7 @@ import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
 import { saveSession } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 
 const $CreateEmailTemplateSchema = z.object({
   emailTemplateName: z
@@ -13,7 +14,10 @@ const $CreateEmailTemplateSchema = z.object({
     .min(1, { message: 'Enter a template subject line' }),
   emailTemplateMessage: z
     .string({ message: 'Enter a template message' })
-    .min(1, { message: 'Enter a template message' }),
+    .min(1, { message: 'Enter a template message' })
+    .max(MAX_EMAIL_CHARACTER_LENGTH, {
+      message: 'Template message too long',
+    }),
 });
 
 const $GoBackSchema = z.object({
