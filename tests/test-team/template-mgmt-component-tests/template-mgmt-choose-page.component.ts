@@ -185,8 +185,34 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
   });
+  test('1 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-  test('1 NHS App Message template populated and continued to the preview screen displayed -In progress placeholder', async ({
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    await page.waitForTimeout(3000);
+    await chooseTemplatePage.clickContinueButton();
+    await page.waitForTimeout(3000);
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.locator('.nhsuk-error-summary')).toHaveText([
+      'There is a problemEnter a template nameEnter a template message',
+    ]);
+  });
+
+  test('2 NHS App Message template populated and continued to the preview screen displayed -In progress placeholder', async ({
     page,
     baseURL,
   }) => {
@@ -215,26 +241,6 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
     await expect(page.locator('h1')).toHaveText(
       'NHS App message templateNHS Testing 123'
     );
-  });
-  test('2 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
-    );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-    await chooseTemplatePage.clickContinueButton();
-    // await expect(page.locator('[class="nhsuk-error-summary"]')).toBeVisible();
-    // await expect(page.locator('.nhsuk-error-summary')).toHaveText([
-    //  'Enter a template name',
-    // ]);
   });
 
   test('3 personalisation mark expanding fields', () => {});
