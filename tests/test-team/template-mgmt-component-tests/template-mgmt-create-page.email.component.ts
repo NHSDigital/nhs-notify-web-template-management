@@ -2,77 +2,36 @@ import { test, expect } from '@playwright/test';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
+import { SessionFactory } from '../helpers/session-factory';
 
-// TODO: session factory.
-const emailErrorSession: Session = {
-  __typename: 'SessionStorage',
-  id: '001-email-error-session',
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
-const emailBackSession: Session = {
-  __typename: 'SessionStorage',
-  id: '002-email-back-session',
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
-const emailBackSessionWithData: Session = {
-  __typename: 'SessionStorage',
-  id: '003-email-back-session-with-data',
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
-const invalidEmailSession: Session = {
-  __typename: 'SessionStorage',
-  id: '3d98b0c4-6666-0000-1111-95eb27590002',
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.NHS_APP,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
-const validEmailSession: Session = {
-  __typename: 'SessionStorage',
-  id: '3d98b0c4-6666-0000-1111-95eb27590003', // TODO: do these need to be GUUIDs?
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
-const validEmailSessionUserReturns: Session = {
-  __typename: 'SessionStorage',
-  id: '3d98b0c4-6666-0000-1111-95eb27590004', // TODO: do these need to be GUUIDs?
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
+// TODO: do I really need this many different sessions?
+const sessions: Record<string, Session> = {
+  emailErrorSession: SessionFactory.createEmailSession(
+    '001-email-error-session'
+  ),
+  emailBackSession: SessionFactory.createEmailSession('002-email-back-session'),
+  emailBackSessionWithData: SessionFactory.createEmailSession(
+    '003-email-back-session-with-data'
+  ),
+  validEmailSession: SessionFactory.createEmailSession(
+    '004-valid-email-session'
+  ),
+  validEmailSessionUserReturns: SessionFactory.createEmailSession(
+    '005-valid-email-session-user-returns'
+  ),
+  invalidEmailSession: SessionFactory.create({
+    id: '006-invalid-email-session',
+    templateType: TemplateType.NHS_APP,
+  }),
+  invalidEmailSessionUserReturns: SessionFactory.createEmailSession(
+    '007-invalid-email-session-user-returns'
+  ),
 };
 
 test.describe('Create NHS App Template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper([
-    emailErrorSession,
-    emailBackSession,
-    invalidEmailSession,
-    validEmailSession,
-    emailBackSessionWithData,
-    validEmailSessionUserReturns,
-  ]);
+  const sessionStorageHelper = new SessionStorageHelper(
+    Object.values(sessions)
+  );
 
   test.beforeAll(async () => {
     await sessionStorageHelper.seedSessionData();
@@ -88,10 +47,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(validEmailSession.id);
+    await createEmailTemplatePage.loadPage(sessions.validEmailSession.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-email-template/${validEmailSession.id}`
+      `${baseURL}/templates/create-email-template/${sessions.validEmailSession.id}`
     );
 
     expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
@@ -99,13 +58,25 @@ test.describe('Create NHS App Template Page', () => {
     );
   });
 
-  // TODO: is this more of an accessability test? It's functionality on this page though.
-  test('when user visits page and skips to main content, then page heading is focused', async ({
+  // TODO: this type of logic tested in unit-tests. Should we cover this here?
+  test('when user visits page with mismatched template journey, then invalid session error is displayed', async ({
+    baseURL,
     page,
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(validEmailSession.id);
+    await createEmailTemplatePage.loadPage(sessions.invalidEmailSession.id);
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+  });
+
+  // TODO: is this more of an accessability test? It's functionality on this page though.
+  test('when user clicks skips to main content, then page heading is focused', async ({
+    page,
+  }) => {
+    const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+    await createEmailTemplatePage.loadPage(sessions.validEmailSession.id);
 
     await page.keyboard.press('Tab');
 
@@ -116,18 +87,6 @@ test.describe('Create NHS App Template Page', () => {
     await expect(createEmailTemplatePage.pageHeader).toBeFocused();
   });
 
-  // TODO: this type of logic tested in unit-tests. Should we cover this here?
-  test('when user visits page with mismatched template journey, then invalid session error is displayed', async ({
-    baseURL,
-    page,
-  }) => {
-    const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-    await createEmailTemplatePage.loadPage(invalidEmailSession.id);
-
-    await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
-  });
-
   // TODO: is this going outside of the boundary of the test?
   test('when user clicks go back, then the previous page is displayed', async ({
     baseURL,
@@ -135,12 +94,12 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(emailBackSession.id);
+    await createEmailTemplatePage.loadPage(sessions.emailBackSession.id);
 
     await createEmailTemplatePage.goBackLink.click();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emailBackSession.id}`
+      `${baseURL}/templates/choose-a-template-type/${sessions.emailBackSession.id}`
     );
   });
 
@@ -151,7 +110,7 @@ test.describe('Create NHS App Template Page', () => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
     await createEmailTemplatePage.loadPage(
-      emailBackSessionWithData.id // TODO: make a new session?
+      sessions.emailBackSessionWithData.id // TODO: make a new session?
     );
 
     await createEmailTemplatePage.nameInput.fill(
@@ -186,7 +145,7 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(emailErrorSession.id);
+    await createEmailTemplatePage.loadPage(sessions.emailErrorSession.id);
 
     createEmailTemplatePage.clickContinueButton();
 
@@ -228,7 +187,7 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(validEmailSession.id);
+    await createEmailTemplatePage.loadPage(sessions.validEmailSession.id);
 
     await createEmailTemplatePage.nameInput.fill(
       'This is an email template name'
@@ -245,7 +204,7 @@ test.describe('Create NHS App Template Page', () => {
     await createEmailTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-email-template/${validEmailSession.id}`
+      `${baseURL}/templates/preview-email-template/${sessions.validEmailSession.id}`
     );
   });
 
@@ -254,7 +213,9 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(validEmailSessionUserReturns.id);
+    await createEmailTemplatePage.loadPage(
+      sessions.validEmailSessionUserReturns.id
+    );
 
     const templateName = 'This is an email template name';
     const templateSubjectLine = 'This is an email template subject line';
