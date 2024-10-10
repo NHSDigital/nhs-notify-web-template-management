@@ -171,7 +171,7 @@ test.describe('Choose Template Type Page', () => {
 });
 
 // place holder jazman ----------------------------------------------
-test.describe.only('NHS App Message Template tests-in progress', () => {
+test.describe.only('NHS App Message Template tests -in progress', () => {
   const sessionStorageHelper = new SessionStorageHelper([
     emptySessionData,
     emptySessionDataForRadioSelect,
@@ -185,7 +185,7 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
   });
-  test('1 Validate error messages on the create NHS App message template page -In progress placeholder', async ({
+  test('Validate error messages on the create NHS App message template page', async ({
     page,
     baseURL,
   }) => {
@@ -212,7 +212,7 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
     ]);
   });
 
-  test('2 NHS App Message template populated and continued to the preview screen displayed -In progress placeholder', async ({
+  test('NHS App Message template populated and continued to the preview screen displayed', async ({
     page,
     baseURL,
   }) => {
@@ -243,9 +243,51 @@ test.describe.only('NHS App Message Template tests-in progress', () => {
     );
   });
 
-  test('3 personalisation mark expanding fields', () => {});
-  test('4 invalid session ID test - In progress placeholder', () => {});
-  test('5 should display correct radio button options - In progress placeholder', () => {});
-  test('6 Back button functionality -  In progress placeholder', () => {});
-  test('7 Hyperlinks to CMSIn progress placeholder-In progress placeholder', () => {});
+  test('Hyperlinks & back button functionality', async ({ page, baseURL }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+    );
+    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+      'Choose a template type to create'
+    );
+    await TemplateMgmtChoosePage.checkRadioButton(
+      page.locator('[id="templateType-NHS_APP"]')
+    );
+    await chooseTemplatePage.clickContinueButton();
+    const footerLinks = [
+      {
+        name: 'Home',
+        selector: 'a[data-testid="accessibility-statement-link"]',
+      },
+      { name: 'Contact Us', selector: 'a[data-testid="contact-us-link"]' },
+      { name: 'Cookies', selector: 'a[data-testid="cookies-link"]' },
+      {
+        name: 'Privacy Policy',
+        selector: 'a[data-testid="privacy-policy-link"]',
+      },
+      {
+        name: 'Terms and Conditions',
+        selector: 'a[data-testid="terms-and-conditions-link"]',
+      },
+    ];
+
+    await Promise.all(
+      footerLinks.map((link) =>
+        expect(
+          page.locator(link.selector),
+          `${link.name} should be visible`
+        ).toBeVisible()
+      )
+    );
+    await expect(page.locator('.nhsuk-back-link__link')).toBeVisible();
+    await chooseTemplatePage.clickBackLink();
+  });
+
+  test('4 personalisation mark expanding fields', () => {});
+  test('5 invalid session ID test - In progress placeholder', () => {});
+  test('6 should display correct radio button options - In progress placeholder', () => {});
 });

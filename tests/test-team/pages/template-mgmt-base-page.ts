@@ -48,4 +48,8 @@ export class TemplateMgmtBasePage {
   async clickContinueButton() {
     await this.continueButton.click();
   }
+
+  async clickBackLink() {
+    await this.goBackLink.click();
+  }
 }
