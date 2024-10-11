@@ -1,20 +1,20 @@
 import { Session, TemplateType } from './types';
 
-export class SessionFactory {
-  static createEmailSession(id: string) {
+export const SessionFactory = {
+  createEmailSession: (id: string): Session => {
     return SessionFactory.create({
       id,
       templateType: TemplateType.EMAIL,
     });
-  }
+  },
 
-  static create({
+  create: ({
     id,
     templateType,
   }: {
     id: string;
     templateType: Session['templateType'];
-  }): Session {
+  }): Session => {
     return {
       __typename: 'SessionStorage',
       id,
@@ -24,5 +24,5 @@ export class SessionFactory {
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
     };
-  }
-}
+  },
+};
