@@ -1,5 +1,3 @@
-/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,import/no-unresolved */
-
 'use client';
 
 import { Amplify } from 'aws-amplify';

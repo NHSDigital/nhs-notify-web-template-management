@@ -29,7 +29,7 @@ const schema = a.schema({
   SessionStorage: a
     .model(SessionStorageModel)
     .authorization((allow) => [
-      allow.owner('userPools').to(['create', 'get', 'update', 'delete'])
+      allow.owner('userPools').to(['create', 'get', 'update', 'delete']),
     ]),
   TemplateStorage: a
     .model(TemplateStorageModel)
@@ -50,5 +50,5 @@ const schema = a.schema({
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
-  schema
+  schema,
 });

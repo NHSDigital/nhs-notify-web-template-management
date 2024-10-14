@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports,unicorn/prefer-module,import/no-unresolved */
-
 'use client';
 
 import { Amplify } from 'aws-amplify';
@@ -7,8 +5,9 @@ import { Suspense } from 'react';
 import { Authenticator, withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { Redirect } from '@molecules/Redirect/Redirect';
+import { getAmplifyOutputs } from '@utils/get-amplify-outputs';
 
-Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
+Amplify.configure(getAmplifyOutputs(), { ssr: true });
 
 const MockAuthPage = () =>
   withAuthenticator(Redirect, {
