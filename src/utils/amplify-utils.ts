@@ -10,7 +10,7 @@ const config = require('@/amplify_outputs.json');
 
 export const getAmplifyBackendClient = () =>
   generateServerClientUsingCookies<Schema>({
-    config,
+    config: process.env.FEATURE_VISIBILITY_TESTING === 'on' ? {} : config,
     cookies,
     authMode: 'iam',
   });
