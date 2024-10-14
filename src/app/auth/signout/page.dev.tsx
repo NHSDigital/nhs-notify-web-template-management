@@ -7,8 +7,9 @@ import { Suspense, useState, useEffect } from 'react';
 import { signOut } from '@aws-amplify/auth';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Redirect } from '@molecules/Redirect/Redirect';
+import { getAmplifyOutputs } from '@utils/get-amplify-outputs';
 
-Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
+Amplify.configure(getAmplifyOutputs(), { ssr: true });
 
 const MockSignoutPage = () => {
   const [signedOut, setSignedOut] = useState(false);

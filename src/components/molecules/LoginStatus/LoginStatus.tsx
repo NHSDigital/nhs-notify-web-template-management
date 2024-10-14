@@ -4,57 +4,27 @@
 
 import { Header } from 'nhsuk-react-components';
 import React, { useEffect, useState } from 'react';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import cookie from 'cookie';
 import { getAuthBasePath, getBasePath } from '@utils/get-base-path';
 import { usePathname } from 'next/navigation';
-
-const decodeCookie = (cookieValue: string) => {
-  try {
-    return jwtDecode<JwtPayload & { email: string }>(cookieValue);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const getLoggedInUser = (cookieString: string) => {
-  const cookies = cookie.parse(cookieString);
-  const idTokenCookieName = Object.keys(cookies).find(
-    (cookieName) =>
-      cookieName.includes('CognitoIdentityServiceProvider') &&
-      cookieName.includes('idToken')
-  );
-
-  if (!idTokenCookieName) {
-    return;
-  }
-
-  const idTokenCookieValue = cookies[idTokenCookieName];
-  const idTokenCookieDecoded = decodeCookie(idTokenCookieValue);
-
-  if (!idTokenCookieDecoded) {
-    return;
-  }
-
-  return idTokenCookieDecoded.email;
-};
+import { fetchAuthSession, JWT } from '@aws-amplify/auth';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 export const LoginStatus = () => {
-  const [browserCookie, setBrowserCookie] = useState<string>('');
   const pathname = usePathname();
+  const { authStatus } = useAuthenticator();
+  const [idToken, setIdToken] = useState<JWT['payload'] | undefined>();
 
   useEffect(() => {
-    const newBrowserCookie = document.cookie;
-    setBrowserCookie(newBrowserCookie);
-  }, []);
+    fetchAuthSession().then((session) =>
+      setIdToken(session.tokens?.idToken?.payload)
+    );
+  }, [authStatus]);
 
-  const loggedInUser = getLoggedInUser(browserCookie);
-
-  if (loggedInUser) {
+  if (authStatus === 'authenticated') {
     return (
       <>
         <Header.ServiceName key='serviceName'>
-          {loggedInUser}
+          {idToken?.email?.toString() || ''}
         </Header.ServiceName>
         <Header.NavItem
           href={`${getAuthBasePath()}/signout?redirect=${encodeURIComponent(getBasePath())}${encodeURIComponent(pathname)}`}
@@ -65,11 +35,13 @@ export const LoginStatus = () => {
     );
   }
 
-  return (
-    <Header.NavItem
-      href={`${getAuthBasePath()}?redirect=${encodeURIComponent(getBasePath())}${encodeURIComponent(pathname)}`}
-    >
-      Sign in
-    </Header.NavItem>
-  );
+  if (authStatus === 'unauthenticated') {
+    return (
+      <Header.NavItem
+        href={`${getAuthBasePath()}?redirect=${encodeURIComponent(getBasePath())}${encodeURIComponent(pathname)}`}
+      >
+        Sign in
+      </Header.NavItem>
+    );
+  }
 };
