@@ -5,12 +5,12 @@ describe('Header component', () => {
   const ENV = process.env;
 
   beforeEach(() => {
-    jest.resetModules(); // Most important - it clears the cache
-    process.env = { ...ENV }; // Make a copy
+    jest.resetModules();
+    process.env = { ...ENV };
   });
 
   afterAll(() => {
-    process.env = ENV; // Restore old environment
+    process.env = ENV;
   });
 
   it('renders component correctly', () => {
