@@ -10,6 +10,7 @@ frontend:
   phases:
     build:
       commands:
+        - npm run augment-sandbox
         - npm run build
   artifacts:
     baseDirectory: .next

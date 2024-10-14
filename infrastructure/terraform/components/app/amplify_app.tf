@@ -36,6 +36,4 @@ resource "aws_amplify_app" "main" {
     USER_POOL_CLIENT_ID = local.auth_remote_state.user_pool_client_id
     IDENTITY_POOL_ID    = local.auth_remote_state.identity_pool_id
   }
-
-  build_spec = file("${path.module}/amplify.yaml")
 }
