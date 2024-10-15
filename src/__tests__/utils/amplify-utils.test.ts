@@ -45,7 +45,7 @@ test('getAmplifyBackendClient', () => {
 });
 
 test('getAmplifyBackendClient without proper config params', () => {
-  process.env.FEATURE_VISIBILITY_TESTING = 'on';
+  process.env.NEXT_PUBLIC_FEATURE_VISIBILITY_TESTING = 'on';
   // arrange
   const generateServerClientUsingCookiesMock = jest.mocked(
     generateServerClientUsingCookies

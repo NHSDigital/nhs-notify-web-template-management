@@ -98,3 +98,9 @@ variable "branch_name" {
   description = "The branch name to deploy"
   default     = "main"
 }
+
+variable "NEXT_PUBLIC_FEATURE_VISIBILITY_TESTING" {
+  type        = string
+  description = "Value for turning on/off feature testing"
+  default     = "on"
+}
