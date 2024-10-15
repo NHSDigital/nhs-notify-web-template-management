@@ -17,8 +17,8 @@ export const LoginStatus = () => {
   useEffect(() => {
     fetchAuthSession().then((session) => {
       console.log(session);
-      setIdToken(session.tokens?.idToken?.payload) }
-    );
+      setIdToken(session.tokens?.idToken?.payload);
+    });
   }, [authStatus]);
 
   if (authStatus === 'authenticated') {
