@@ -17,7 +17,7 @@
     "destroy-sandbox": "npx ampx sandbox delete --y",
     "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
     "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
-    "augment-sandbox": "./scripts/augment_sandbox.sh",
+    "augment-sandbox": "tsx ./scripts/augment-sandbox.ts",
     "typecheck": "tsc --project ./tsconfig.json"
   },
   "dependencies": {
