@@ -13,11 +13,17 @@ type NHSNotifyAutheticatorProps = {
   children: ReactNode;
 };
 
-const exemptPathnames = new Set([
-  '/create-and-submit-templates',
-  '/auth',
-  '/auth/signout',
-]);
+const isPathnameExempt = (pathname: string) => {
+  if (pathname.includes('auth')) {
+    return true;
+  }
+
+  if (pathname === '/create-and-submit-templates') {
+    return true;
+  }
+
+  return false;
+}
 
 const NHSNotifyAuthenticatorCheck: FC<NHSNotifyAutheticatorProps> = ({
   children,
@@ -27,7 +33,7 @@ const NHSNotifyAuthenticatorCheck: FC<NHSNotifyAutheticatorProps> = ({
 
   console.log('debug', pathname, authStatus);
 
-  if (authStatus === 'authenticated' || exemptPathnames.has(pathname)) {
+  if (authStatus === 'authenticated' || isPathnameExempt(pathname)) {
     return children;
   }
 
