@@ -49,8 +49,8 @@ const nextConfig = {
           ]
         : [
             {
-              source: `${basePath}/auth`,
-              destination: '/auth',
+              source: `${basePath}${authBasePath}`,
+              destination: authBasePath,
               basePath: false,
               permanent: false,
             },
