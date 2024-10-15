@@ -14,24 +14,16 @@ type NHSNotifyAutheticatorProps = {
 };
 
 const isPathnameExempt = (pathname: string) => {
-  if (pathname.includes('auth')) {
-    return true;
-  }
-
-  if (pathname === '/create-and-submit-templates') {
-    return true;
-  }
-
-  return false;
-}
+  return (
+    pathname.includes('auth') || pathname === '/create-and-submit-templates'
+  );
+};
 
 const NHSNotifyAuthenticatorCheck: FC<NHSNotifyAutheticatorProps> = ({
   children,
 }) => {
   const { authStatus } = useAuthenticator();
   const pathname = usePathname();
-
-  console.log('debug', pathname, authStatus);
 
   if (authStatus === 'authenticated' || isPathnameExempt(pathname)) {
     return children;
