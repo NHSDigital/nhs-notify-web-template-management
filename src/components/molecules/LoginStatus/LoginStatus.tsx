@@ -15,8 +15,9 @@ export const LoginStatus = () => {
   const [idToken, setIdToken] = useState<JWT['payload'] | undefined>();
 
   useEffect(() => {
-    fetchAuthSession().then((session) =>
-      setIdToken(session.tokens?.idToken?.payload)
+    fetchAuthSession().then((session) => {
+      console.log(session);
+      setIdToken(session.tokens?.idToken?.payload) }
     );
   }, [authStatus]);
 
