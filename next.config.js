@@ -21,6 +21,7 @@ const nextConfig = {
   pageExtensions: [
     'prod.tsx',
     'layout.tsx',
+    'ts',
     ...(process.env.LOCAL_AUTH === 'true' ? ['dev.tsx'] : []),
   ],
 
