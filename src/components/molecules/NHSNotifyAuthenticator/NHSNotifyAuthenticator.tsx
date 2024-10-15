@@ -25,6 +25,8 @@ const NHSNotifyAuthenticatorCheck: FC<NHSNotifyAutheticatorProps> = ({
   const { authStatus } = useAuthenticator();
   const pathname = usePathname();
 
+  console.log('debug', pathname, authStatus);
+
   if (authStatus === 'authenticated' || exemptPathnames.has(pathname)) {
     return children;
   }
