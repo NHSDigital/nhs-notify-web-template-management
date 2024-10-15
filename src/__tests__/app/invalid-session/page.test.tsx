@@ -1,4 +1,4 @@
-import InvalidSessionPage from '@app/invalid-session/page';
+import InvalidSessionPage from '@app/invalid-session/page.prod';
 import { render } from '@testing-library/react';
 
 test('InvalidSessionPage', async () => {

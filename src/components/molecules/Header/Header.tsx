@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import concatClassNames from '@utils/concat-class-names';
 import content from '@content/content';
+import { LoginStatus } from '@molecules/LoginStatus/LoginStatus';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
 
@@ -51,11 +52,7 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
           id='content-header'
         >
           {/* I am currently testing the link wrapper, this will change later when we implement auth as the link will change based on auth state */}
-          <div className='nhsuk-account__login' data-testid='login-link'>
-            <Link className='nhsuk-account__login--link' href='/'>
-              {content.components.headerComponent.links.logIn}
-            </Link>
-          </div>
+          <LoginStatus />
         </div>
       </div>
     </header>

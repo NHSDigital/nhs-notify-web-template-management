@@ -26,3 +26,12 @@ backend.data.resources.cfnResources.amplifyDynamoDbTables.SessionStorage.timeToL
     attributeName: 'ttl',
     enabled: true,
   };
+
+if (process.env.USER_POOL_ID) {
+  backend.data.resources.cfnResources.cfnGraphqlApi.userPoolConfig = {
+    userPoolId: process.env.USER_POOL_ID,
+    awsRegion: 'eu-west-2',
+    appIdClientRegex: undefined,
+    defaultAction: 'ALLOW',
+  };
+}
