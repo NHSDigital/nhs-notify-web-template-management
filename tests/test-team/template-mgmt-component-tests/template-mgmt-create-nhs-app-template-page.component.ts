@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreatePage } from '../pages/template-mgmt-create-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
+import { TestUserClient } from '../helpers/test-user-client';
 
 export const nhsAppNoTemplateSessionData: Session = {
   __typename: 'SessionStorage',
@@ -13,17 +14,27 @@ export const nhsAppNoTemplateSessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
+const testUserEmail = 'create-nhs-app-page@nhs.net';
+const testUserPassword = 'Test-Password1';
+
 test.describe('Create NHS App Template Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([
     nhsAppNoTemplateSessionData,
   ]);
 
+  const testUserClient = new TestUserClient();
+
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    const username = await testUserClient.createTestUser(
+      testUserEmail,
+      testUserPassword
+    );
+    await sessionStorageHelper.seedSessionData(username);
   });
 
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
+    await testUserClient.deleteTestUser(testUserEmail);
   });
 
   test('should navigate to the NHS App template creation page when radio button selected', async ({
@@ -31,6 +42,8 @@ test.describe('Create NHS App Template Page', () => {
     baseURL,
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
+
+    await createTemplatePage.signIn(testUserEmail, testUserPassword);
 
     await createTemplatePage.navigateToCreateNhsAppTemplatePage(
       nhsAppNoTemplateSessionData.id

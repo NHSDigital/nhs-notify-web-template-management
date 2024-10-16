@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
+import Head from 'next/head';
 import '@styles/app.scss';
 import content from '@content/content';
-import { NHSNotifyHeader } from '@molecules/Header/Header';
-import { NHSNotifyContainer } from '@layouts/container/container';
-import { NHSNotifyFooter } from '@molecules/Footer/Footer';
-import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
+import { ClientLayout } from '@molecules/ClientLayout/ClientLayout';
 import { getBasePath } from '@utils/get-base-path';
 
 export const metadata: Metadata = {
@@ -19,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <head>
+      <Head>
         <script src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`} defer />
         <title>{content.global.mainLayout.title}</title>
         <link
@@ -67,12 +65,9 @@ export default function RootLayout({
           src={`${getBasePath()}/lib/nhs-frontend-js-check.js`}
           defer
         />
-      </head>
+      </Head>
       <body suppressHydrationWarning>
-        <NHSNotifySkipLink />
-        <NHSNotifyHeader />
-        <NHSNotifyContainer>{children}</NHSNotifyContainer>
-        <NHSNotifyFooter />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

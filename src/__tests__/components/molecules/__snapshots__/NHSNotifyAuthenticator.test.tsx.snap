@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NHSNotifyAuthenticator - authenticated 1`] = `
+<DocumentFragment>
+  <p>
+    testing
+  </p>
+</DocumentFragment>
+`;
+
+exports[`NHSNotifyAuthenticator - configuring 1`] = `<DocumentFragment />`;

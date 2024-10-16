@@ -13,5 +13,8 @@
     "@aws-sdk/lib-dynamodb": "^3.654.0",
     "@playwright/test": "^1.45.1",
     "aws-amplify": "^6.6.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.670.0"
   }
 }

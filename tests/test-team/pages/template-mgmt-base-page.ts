@@ -1,11 +1,9 @@
-import { Locator, type Page } from '@playwright/test';
+import { Locator, type Page, expect } from '@playwright/test';
 
 export class TemplateMgmtBasePage {
   readonly page: Page;
 
   readonly notifyBannerLink: Locator;
-
-  readonly loginLink: Locator;
 
   readonly goBackLink: Locator;
 
@@ -18,9 +16,6 @@ export class TemplateMgmtBasePage {
     this.notifyBannerLink = page.locator(
       '[class="nhsuk-header__link nhsuk-header__link--service"]'
     );
-    this.loginLink = page
-      .locator('[class="nhsuk-account__login--link"]')
-      .and(page.getByText('Log in'));
     this.goBackLink = page
       .locator('[class="nhsuk-back-link__link"]')
       .and(page.getByText('Go back'));
@@ -41,11 +36,25 @@ export class TemplateMgmtBasePage {
     await this.notifyBannerLink.click();
   }
 
-  async clickLoginLink() {
-    await this.loginLink.click();
-  }
-
   async clickContinueButton() {
     await this.continueButton.click();
+  }
+
+  async signIn(email: string, password: string) {
+    await this.navigateTo('/templates/create-and-submit-templates');
+    const signinLink = this.page.getByText('Sign in');
+
+    await signinLink.click();
+
+    const emailInput = this.page.getByPlaceholder('Enter your Email');
+    await emailInput.fill(email);
+
+    const passwordInput = this.page.getByPlaceholder('Enter your Password');
+    await passwordInput.fill(password);
+
+    const signinButton = this.page.getByRole('button', { name: 'Sign in' });
+    await signinButton.click();
+
+    await expect(this.page).toHaveURL('/templates/create-and-submit-templates');
   }
 }

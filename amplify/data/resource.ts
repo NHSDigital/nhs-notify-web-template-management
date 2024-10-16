@@ -11,6 +11,7 @@ const SessionStorageModel = {
   smsTemplateName: a.string(),
   smsTemplateMessage: a.string(),
   ttl: a.integer().required(),
+  owner: a.string(),
 };
 
 const TemplateStorageModel = {
@@ -21,15 +22,18 @@ const TemplateStorageModel = {
   fields: a.customType({
     content: a.string().required(),
   }),
+  owner: a.string(),
 };
 
 const schema = a.schema({
   SessionStorage: a
     .model(SessionStorageModel)
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [
+      allow.owner('userPools').to(['create', 'get', 'update', 'delete']),
+    ]),
   TemplateStorage: a
     .model(TemplateStorageModel)
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.owner('userPools').to(['create', 'get'])]),
   sendEmail: a
     .query()
     .arguments({
@@ -40,14 +44,11 @@ const schema = a.schema({
     })
     .returns(a.string())
     .handler(a.handler.function(sendEmail))
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.authenticated('userPools')]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
-  authorizationModes: {
-    defaultAuthorizationMode: 'iam',
-  },
 });

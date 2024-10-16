@@ -2,8 +2,9 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
+import { TestUserClient } from '../helpers/test-user-client';
 
-export const emptySessionData: Session = {
+const emptySessionData: Session = {
   __typename: 'SessionStorage',
   id: '3d98b0c4-6666-0000-0000-95eb27590000',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -13,7 +14,7 @@ export const emptySessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
-export const emptySessionDataForRadioSelect: Session = {
+const emptySessionDataForRadioSelect: Session = {
   __typename: 'SessionStorage',
   id: '3d98b0c4-6666-0000-0000-95eb27590001',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -23,7 +24,7 @@ export const emptySessionDataForRadioSelect: Session = {
   nhsAppTemplateMessage: '',
 };
 
-export const nhsAppRadioSelectedSessionData: Session = {
+const nhsAppRadioSelectedSessionData: Session = {
   __typename: 'SessionStorage',
   id: '3d90000-6666-0000-0000-95eb27590002',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -33,6 +34,9 @@ export const nhsAppRadioSelectedSessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
+const testUserEmail = 'choose-page@nhs.net';
+const testUserPassword = 'Test-Password1';
+
 test.describe('Choose Template Type Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([
     emptySessionData,
@@ -40,12 +44,19 @@ test.describe('Choose Template Type Page', () => {
     nhsAppRadioSelectedSessionData,
   ]);
 
+  const testUserClient = new TestUserClient();
+
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    const username = await testUserClient.createTestUser(
+      testUserEmail,
+      testUserPassword
+    );
+    await sessionStorageHelper.seedSessionData(username);
   });
 
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
+    await testUserClient.deleteTestUser(testUserEmail);
   });
 
   test('should land on "Choose Template Type" page when navigating to "/choose-a-template-type" url with empty session', async ({
@@ -53,6 +64,8 @@ test.describe('Choose Template Type Page', () => {
     baseURL,
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
 
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
 
@@ -70,6 +83,8 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
+
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
     await chooseTemplatePage.clickNotifyBannerLink();
 
@@ -78,23 +93,10 @@ test.describe('Choose Template Type Page', () => {
     );
   });
 
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-      await chooseTemplatePage.navigateToChooseTemplatePage(
-        emptySessionData.id
-      );
-      await chooseTemplatePage.clickLoginLink();
-
-      await expect(page).toHaveURL(`${baseURL}/templates`);
-    }
-  );
-
   test('should display correct radio button options', async ({ page }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
 
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
 
@@ -109,6 +111,8 @@ test.describe('Choose Template Type Page', () => {
     baseURL,
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
 
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
     await chooseTemplatePage.clickContinueButton();
@@ -136,6 +140,8 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
+
     await chooseTemplatePage.navigateToChooseTemplatePage(
       emptySessionDataForRadioSelect.id
     );
@@ -154,6 +160,8 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
+
     await chooseTemplatePage.navigateToChooseTemplatePage(
       nhsAppRadioSelectedSessionData.id
     );
@@ -163,6 +171,8 @@ test.describe('Choose Template Type Page', () => {
 
   test('should not display "Go Back" link on page', async ({ page }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.signIn(testUserEmail, testUserPassword);
 
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
 

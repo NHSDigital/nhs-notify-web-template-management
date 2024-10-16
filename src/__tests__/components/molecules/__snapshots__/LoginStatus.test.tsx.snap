@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginStatus - authenticated 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-header__transactional-service-name"
+  >
+    <a
+      class="nhsuk-header__transactional-service-name--link"
+    >
+      test-user@nhs.net
+    </a>
+  </div>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/templates/auth/signout?redirect=%2F"
+    >
+      Sign out
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`LoginStatus - authenticated, no tokens 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-header__transactional-service-name"
+  >
+    <a
+      class="nhsuk-header__transactional-service-name--link"
+    />
+  </div>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/templates/auth/signout?redirect=%2F"
+    >
+      Sign out
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`LoginStatus - unauthenticated 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/templates/auth?redirect=%2F"
+    >
+      Sign in
+    </a>
+  </li>
+</DocumentFragment>
+`;
