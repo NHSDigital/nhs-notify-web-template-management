@@ -10,7 +10,7 @@ export async function NHSNotifyContainer({
         id='maincontent'
         role='main'
       >
-        {process.env.NEXT_PUBLIC_FEATURE_VISIBILITY_TESTING === 'on' ? (
+        {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? (
           <h1>Coming soon</h1>
         ) : (
           children

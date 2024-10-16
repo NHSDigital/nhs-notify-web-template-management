@@ -99,8 +99,8 @@ variable "branch_name" {
   default     = "main"
 }
 
-variable "NEXT_PUBLIC_FEATURE_VISIBILITY_TESTING" {
+variable "disable_content" {
   type        = string
   description = "Value for turning on/off feature testing"
-  default     = "on"
+  default     = "false"
 }
