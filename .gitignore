@@ -74,3 +74,5 @@ tests/test-team/test-results/
 tests/test-team/playwright-report/
 tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
+
+37ca9f5670f4cd7d91869845ca27defbe6156bb9:src/__tests__/components/molecules/LoginStatus.test.tsx
