@@ -115,6 +115,7 @@ describe('CreateSmsTemplate server actions', () => {
         smsTemplateMessage: 'template-message',
         updatedAt: 'today',
         createdAt: 'today',
+        owner: 'owner',
         ttl: 0,
       });
 
