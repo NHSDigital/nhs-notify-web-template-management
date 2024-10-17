@@ -1,15 +1,4 @@
-
-const pageActions = [
-  'wait for element .nhsuk-header__navigation-link to be visible',
-  'click element .nhsuk-header__navigation-link',
-  'wait for element input[type="email"] to be visible',
-  'set field input[type="email"] to accessibility-test@nhs.net',
-  'set field input[type="password"] to Test-Password1',
-  'click element .amplify-button',
-  'wait for element .nhsuk-heading-xl to be visible',
-  'click element .nhsuk-button',
-  'wait for element .nhsuk-form-group to be visible',
-];
+const { pageActions } = require('./sign-in-page-actions');
 
 const chooseATemplatePage = (startUrl) => ({
   name: 'choose-a-template',

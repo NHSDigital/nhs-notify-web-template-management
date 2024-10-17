@@ -14,7 +14,9 @@ type NHSNotifyAutheticatorProps = {
 
 const isPathnameExempt = (pathname: string) => {
   return (
-    pathname.includes('auth') || pathname === '/create-and-submit-templates'
+    pathname.includes('auth') ||
+    pathname.includes('test') ||
+    pathname === '/create-and-submit-templates'
   );
 };
 

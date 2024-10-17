@@ -1,4 +1,9 @@
+const {
+  pageActions: chooseATemplateTypeActions,
+} = require('./choose-a-template-type.actions');
+
 const pageActions = [
+  ...chooseATemplateTypeActions,
   'wait for element #templateType-SMS to be visible',
   'click element #templateType-SMS',
   'click element #choose-a-template-type-submit-button',

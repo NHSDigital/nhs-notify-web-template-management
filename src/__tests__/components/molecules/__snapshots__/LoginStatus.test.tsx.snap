@@ -26,13 +26,6 @@ exports[`LoginStatus - authenticated 1`] = `
 
 exports[`LoginStatus - authenticated, no tokens 1`] = `
 <DocumentFragment>
-  <div
-    class="nhsuk-header__transactional-service-name"
-  >
-    <a
-      class="nhsuk-header__transactional-service-name--link"
-    />
-  </div>
   <li
     class="nhsuk-header__navigation-item"
   >

@@ -21,9 +21,11 @@ export const LoginStatus = () => {
   if (authStatus === 'authenticated') {
     return (
       <>
-        <Header.ServiceName key='serviceName'>
-          {loggedInUser}
-        </Header.ServiceName>
+        {loggedInUser && (
+          <Header.ServiceName key='serviceName'>
+            {loggedInUser}
+          </Header.ServiceName>
+        )}
         <Header.NavItem
           href={`${getBasePath()}/auth/signout?redirect=${encodeURIComponent(pathname)}`}
         >

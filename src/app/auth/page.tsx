@@ -13,6 +13,13 @@ const AuthPage = () =>
   withAuthenticator(Redirect, {
     variation: 'default',
     hideSignUp: true,
+    formFields: {
+      signIn: {
+        username: {
+          type: 'text',
+        },
+      },
+    },
   })({});
 
 const WrappedAuthPage = () => (

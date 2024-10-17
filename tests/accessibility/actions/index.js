@@ -8,4 +8,5 @@ module.exports = {
   ...require('./submit-text-message-template.actions'),
   ...require('./text-message-template-submitted.actions'),
   ...require('./nhs-app-template-submitted.actions'),
+  ...require('./error-pages.actions'),
 };

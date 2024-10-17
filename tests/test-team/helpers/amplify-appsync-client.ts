@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
+
 import {
   AppSyncClient,
   GraphqlApi,
@@ -10,12 +12,19 @@ export class AmplifyAppSyncClient {
 
   private apiUrl: string;
 
+  private userPoolId: string;
+
   constructor(amplifyOutputsPathPrefix = '../..') {
     const amplifyOutputs = JSON.parse(
       readFileSync(`${amplifyOutputsPathPrefix}/amplify_outputs.json`, 'utf8')
     );
 
     this.apiUrl = amplifyOutputs.data.url;
+    this.userPoolId = amplifyOutputs.auth.user_pool_id;
+  }
+
+  getUserPoolId() {
+    return this.userPoolId;
   }
 
   private async listGraphqlAPIs() {
