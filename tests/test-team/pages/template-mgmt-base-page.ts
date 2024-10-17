@@ -13,6 +13,8 @@ export class TemplateMgmtBasePage {
 
   readonly continueButton: Locator;
 
+  readonly skipLink: Locator;
+
   constructor(page: Page) {
     this.page = page;
     this.notifyBannerLink = page.locator(
@@ -24,13 +26,14 @@ export class TemplateMgmtBasePage {
     this.goBackLink = page
       .locator('[class="nhsuk-back-link__link"]')
       .and(page.getByText('Go back'));
-    this.pageHeader = page
-      .locator('[class="nhsuk-heading-xl"]')
-      .and(page.locator('h1'));
+    this.pageHeader = page.locator('h1');
     this.continueButton = page
       .locator('[class="nhsuk-button"]')
       .and(page.getByRole('button'))
       .and(page.getByText('Continue'));
+    this.skipLink = page
+      .locator('[id="skip-link"]')
+      .and(page.getByText('Skip to main content'));
   }
 
   async navigateTo(url: string) {

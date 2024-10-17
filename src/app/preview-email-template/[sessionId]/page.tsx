@@ -7,9 +7,9 @@ import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
 
 const isValid = (session?: Session) =>
   session?.templateType === TemplateType.EMAIL &&
-  session?.emailTemplateName !== undefined &&
-  session?.emailTemplateSubjectLine !== undefined &&
-  session?.emailTemplateMessage !== undefined;
+  Boolean(session?.emailTemplateName) &&
+  Boolean(session?.emailTemplateSubjectLine) &&
+  Boolean(session?.emailTemplateMessage);
 
 const PreviewEmailTemplatePage = async ({
   params: { sessionId },
