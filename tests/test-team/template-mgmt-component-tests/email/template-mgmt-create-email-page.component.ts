@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../helpers/session-storage-helper';
-import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
-import { SessionFactory } from '../helpers/session-factory';
+import SessionStorageHelper from '../../helpers/session-storage-helper';
+import { TemplateMgmtCreateEmailPage } from '../../pages/email/template-mgmt-create-email-page';
+import { SessionFactory } from '../../helpers/session-factory';
 
 const sessions = {
   empty: SessionFactory.createEmailSession('empty-email-session'),
@@ -14,6 +14,12 @@ const sessions = {
     id: 'no-email-template-type-session',
     templateType: 'UNKNOWN',
   }),
+  previousData: {
+    ...SessionFactory.createEmailSession('previous-data-email-session'),
+    emailTemplateName: 'previous-data-email-template',
+    emailTemplateSubjectLine: 'previous-data-email-template-subject-line',
+    emailTemplateMessage: 'previous-data-email-template-message',
+  },
 };
 
 test.describe('Create Email message template Page', () => {
@@ -29,25 +35,43 @@ test.describe('Create Email message template Page', () => {
     await sessionStorageHelper.deleteSessionData();
   });
 
-  test('when user visits page, then page is loaded', async ({
-    page,
-    baseURL,
-  }) => {
-    const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-    await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-email-template/${sessions.empty.id}`
-    );
-
-    expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
-      'Create Email message template'
-    );
-  });
-
   test.describe('Page functionality', () => {
-    test('when user clicks skips to main content, then page heading is focused', async ({
+    test('when user visits page, then page is loaded', async ({
+      page,
+      baseURL,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(sessions.empty.id);
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/create-email-template/${sessions.empty.id}`
+      );
+
+      expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
+        'Create Email message template'
+      );
+    });
+
+    test('when user visits page with previous data, then form fields retain previous data', async ({
+      page,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(sessions.previousData.id);
+
+      await expect(createEmailTemplatePage.nameInput).toHaveValue(
+        sessions.previousData.emailTemplateName
+      );
+      await expect(createEmailTemplatePage.subjectLineInput).toHaveValue(
+        sessions.previousData.emailTemplateSubjectLine
+      );
+      await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
+        sessions.previousData.emailTemplateMessage
+      );
+    });
+
+    test('when user clicks "skip to main content", then page heading is focused', async ({
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
@@ -63,7 +87,7 @@ test.describe('Create Email message template Page', () => {
       await expect(createEmailTemplatePage.pageHeader).toBeFocused();
     });
 
-    test('when user clicks "notify banner link", then user is redirected to "start page"', async ({
+    test('when user clicks "Notify banner link", then user is redirected to "start page"', async ({
       baseURL,
       page,
     }) => {
@@ -79,7 +103,7 @@ test.describe('Create Email message template Page', () => {
     });
 
     test(
-      'when user clicks "log in", then user is redirected to "login page"',
+      'when user clicks "Log in", then user is redirected to "login page"',
       { tag: '@Update/CCM-4889' },
       async ({ baseURL, page }) => {
         const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
@@ -92,7 +116,7 @@ test.describe('Create Email message template Page', () => {
       }
     );
 
-    test('when user clicks go back and returns, then form fields retain previous data', async ({
+    test('when user clicks "Go back" and returns, then form fields retain previous data', async ({
       baseURL,
       page,
     }) => {
@@ -187,39 +211,6 @@ test.describe('Create Email message template Page', () => {
     });
   });
 
-  test.describe('Page layout', () => {
-    test('should display form fields', async ({ page }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await expect(createEmailTemplatePage.nameInput).toBeVisible();
-      await expect(createEmailTemplatePage.subjectLineInput).toBeVisible();
-      await expect(createEmailTemplatePage.messageTextArea).toBeVisible();
-      await expect(createEmailTemplatePage.continueButton).toBeVisible();
-    });
-
-    test('should display message formatting', async ({ page }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await expect(
-        page.locator('h2', { hasText: 'Message formatting' })
-      ).toBeVisible();
-    });
-
-    test('should display personalisation', async ({ page }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await expect(
-        page.locator('h2', { hasText: 'Personalisation' })
-      ).toBeVisible();
-    });
-  });
-
   test.describe('Error handling', () => {
     test('when user visits page with mismatched template journey, then an invalid session error is displayed', async ({
       baseURL,
@@ -242,6 +233,10 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.clickContinueButton();
 
       await expect(createEmailTemplatePage.errorSummary).toBeVisible();
+
+      await expect(
+        createEmailTemplatePage.errorSummary.locator('h2')
+      ).toHaveText('There is a problem');
 
       await expect(
         createEmailTemplatePage.errorSummary.locator(

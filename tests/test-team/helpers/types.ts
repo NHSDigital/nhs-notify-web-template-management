@@ -13,4 +13,7 @@ export type Session = {
   templateType: TemplateType | 'UNKNOWN';
   nhsAppTemplateName: string;
   nhsAppTemplateMessage: string;
+  emailTemplateName?: string;
+  emailTemplateSubjectLine?: string;
+  emailTemplateMessage?: string;
 };
