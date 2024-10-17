@@ -25,7 +25,7 @@ export class TemplateMgmtBasePage {
       .locator('[class="nhsuk-back-link__link"]')
       .and(page.getByText('Go back'));
     this.pageHeader = page
-      .locator('[class="nhsuk-heading-xl"]')
+      .locator('[data-testid="page-heading"]')
       .and(page.locator('h1'));
     this.continueButton = page
       .locator('[class="nhsuk-button"]')
