@@ -2,7 +2,7 @@ const {
   pageActions: goToPreviewNHSAppTemplateActions,
 } = require('./preview-nhs-app-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
+const url = (baseUrl) => `${baseUrl}/create-and-submit-templates`;
 
 const pageActions = [
   ...goToPreviewNHSAppTemplateActions,

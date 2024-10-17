@@ -14,9 +14,13 @@ export class TestUserClient {
     region: 'eu-west-2',
   });
 
-  private readonly amplifyAppSyncClient = new AmplifyAppSyncClient();
+  private readonly amplifyAppSyncClient;
 
   private readonly appSyncClient = new AppSyncClient({ region: 'eu-west-2' });
+
+  constructor(amplifyOutputsPathPrefix = '../..') {
+    this.amplifyAppSyncClient = new AmplifyAppSyncClient(amplifyOutputsPathPrefix);
+  }
 
   async getUserPoolId() {
     if (this.userPoolId) {

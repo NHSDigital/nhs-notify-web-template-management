@@ -2,8 +2,6 @@ const {
   pageActions: goToCreateTextMessageTemplateActions,
 } = require('./create-text-message-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToCreateTextMessageTemplateActions,
   'set field #smsTemplateName to example-template-1',
@@ -12,15 +10,15 @@ const pageActions = [
   'wait for #review-sms-template-submit-button to be visible',
 ];
 
-const reviewTextMessageTemplatePage = (baseUrl) => ({
+const reviewTextMessageTemplatePage = (startUrl) => ({
   name: 'preview-text-message-template',
-  url: url(baseUrl),
+  url: startUrl,
   actions: pageActions,
 });
 
-const reviewTextMessageTemplateErrorPage = (baseUrl) => ({
+const reviewTextMessageTemplateErrorPage = (startUrl) => ({
   name: 'preview-text-message-template-error',
-  url: url(baseUrl),
+  url: startUrl,
   actions: [
     ...pageActions,
     'click element #review-sms-template-submit-button',

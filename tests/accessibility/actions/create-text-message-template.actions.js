@@ -1,5 +1,3 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   'wait for element #templateType-SMS to be visible',
   'click element #templateType-SMS',
@@ -7,15 +5,15 @@ const pageActions = [
   'wait for element #create-sms-template-submit-button to be visible',
 ];
 
-const createTextMessageTemplatePage = (baseUrl) => ({
+const createTextMessageTemplatePage = (startUrl) => ({
   name: 'create-text-message-template',
-  url: url(baseUrl),
+  url: startUrl,
   actions: pageActions,
 });
 
-const createTextMessageTemplateErrorPage = (baseUrl) => ({
+const createTextMessageTemplateErrorPage = (startUrl) => ({
   name: 'create-text-message-template-error',
-  url: url(baseUrl),
+  url: startUrl,
   actions: [
     ...pageActions,
     'click element #create-sms-template-submit-button',

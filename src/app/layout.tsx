@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Head from 'next/head';
 import '@styles/app.scss';
 import content from '@content/content';
 import { ClientLayout } from '@molecules/ClientLayout/ClientLayout';
@@ -17,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <Head>
+      <head>
         <script src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`} defer />
         <title>{content.global.mainLayout.title}</title>
         <link
@@ -65,7 +64,7 @@ export default function RootLayout({
           src={`${getBasePath()}/lib/nhs-frontend-js-check.js`}
           defer
         />
-      </Head>
+      </head>
       <body suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
       </body>

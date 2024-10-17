@@ -10,9 +10,9 @@ export class AmplifyAppSyncClient {
 
   private apiUrl: string;
 
-  constructor() {
+  constructor(amplifyOutputsPathPrefix = '../..') {
     const amplifyOutputs = JSON.parse(
-      readFileSync('../../amplify_outputs.json', 'utf8')
+      readFileSync(`${amplifyOutputsPathPrefix}/amplify_outputs.json`, 'utf8')
     );
 
     this.apiUrl = amplifyOutputs.data.url;
