@@ -30,11 +30,11 @@ test.describe('Create SMS Template Page', () => {
       testUserPassword
     );
     await sessionStorageHelper.seedSessionData(username);
-    await testUserClient.deleteTestUser(testUserEmail);
   });
 
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
+    await testUserClient.deleteTestUser(testUserEmail);
   });
 
   test('should navigate to the SMS template creation page when radio button selected', async ({
