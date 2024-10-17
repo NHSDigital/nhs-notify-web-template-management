@@ -27,10 +27,10 @@ resource "aws_amplify_app" "main" {
   ]
 
   environment_variables = {
-    NOTIFY_GROUP        = var.group
-    NOTIFY_ENVIRONMENT  = var.environment
-    NOTIFY_DOMAIN_NAME  = local.root_domain_name
-    ACCOUNT_ID          = var.aws_account_id
-    _CUSTOM_IMAGE       = "node:20"
+    NOTIFY_GROUP                            = var.group
+    NOTIFY_ENVIRONMENT                      = var.environment
+    NOTIFY_DOMAIN_NAME                      = local.root_domain_name
+    ACCOUNT_ID                              = var.aws_account_id
+    NEXT_PUBLIC_DISABLE_CONTENT             = var.disable_content
   }
 }

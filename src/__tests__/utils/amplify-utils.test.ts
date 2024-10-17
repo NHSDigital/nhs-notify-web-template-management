@@ -13,8 +13,6 @@ jest.mock('next/headers', () => ({
   cookies: () => {},
 }));
 
-beforeEach(() => jest.clearAllMocks());
-
 test('getAmplifyBackendClient', () => {
   // arrange
   const generateServerClientUsingCookiesMock = jest.mocked(

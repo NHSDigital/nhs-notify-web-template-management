@@ -10,7 +10,11 @@ export async function NHSNotifyContainer({
         id='maincontent'
         role='main'
       >
-        {children}
+        {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? (
+          <h1>Coming soon</h1>
+        ) : (
+          children
+        )}
       </main>
     </div>
   );
