@@ -43,6 +43,8 @@ test.describe('Create SMS Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
+    await createTemplatePage.signIn(testUserEmail, testUserPassword);
+
     await createTemplatePage.navigateToCreateSmsTemplatePage(
       smsTemplateSessionData.id
     );

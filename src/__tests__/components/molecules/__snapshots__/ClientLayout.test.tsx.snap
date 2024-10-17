@@ -110,7 +110,9 @@ exports[`ClientLayout 1`] = `
               <a
                 class="nhsuk-footer__list-item-link"
                 data-testid="accessibility-statement-link"
-                href="#"
+                href="/accessibility"
+                rel="noreferrer"
+                target="_blank"
               >
                 Accessibility statement
               </a>
