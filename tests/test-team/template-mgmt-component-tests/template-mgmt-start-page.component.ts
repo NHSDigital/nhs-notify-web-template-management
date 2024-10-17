@@ -77,7 +77,9 @@ test.describe('Start Page', () => {
     await startPage.navigateToStartPage();
     await startPage.clickStartButton();
 
-    await expect(page).toHaveURL(/\/templates\/choose-a-template-type\/.*/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/templates\/choose-a-template-type\/.*/, {
+      timeout: 10_000,
+    });
   });
 });
 
