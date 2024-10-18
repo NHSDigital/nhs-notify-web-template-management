@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
+import { generate } from 'generate-password';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
@@ -36,7 +37,14 @@ const nhsAppRadioSelectedSessionData: Session = {
 };
 
 const testUserEmail = `nhs-notify-automated-test-choose-page-${randomUUID()}@nhs.net`;
-const testUserPassword = randomUUID();
+const testUserPassword = generate({
+  length: 20,
+  lowercase: true,
+  uppercase: true,
+  numbers: true,
+  symbols: true,
+  strict: true,
+});
 
 test.describe('Choose Template Type Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([

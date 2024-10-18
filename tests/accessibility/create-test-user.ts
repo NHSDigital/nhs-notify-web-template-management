@@ -11,6 +11,7 @@ const generateTestUser = async () => {
     uppercase: true,
     numbers: true,
     symbols: true,
+    strict: true,
   });
   const testUserClient = new TestUserClient('.');
   await testUserClient.createTestUser(testEmail, testPassword);

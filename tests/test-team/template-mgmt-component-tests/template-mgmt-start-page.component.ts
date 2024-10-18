@@ -1,10 +1,18 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
+import { generate } from 'generate-password';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import { TestUserClient } from '../helpers/test-user-client';
 
 const testUserEmail = `nhs-notify-automated-test-start-page-${randomUUID()}@nhs.net`;
-const testUserPassword = randomUUID();
+const testUserPassword = generate({
+  length: 20,
+  lowercase: true,
+  uppercase: true,
+  numbers: true,
+  symbols: true,
+  strict: true,
+});
 
 test.describe('Start Page', () => {
   const testUserClient = new TestUserClient();

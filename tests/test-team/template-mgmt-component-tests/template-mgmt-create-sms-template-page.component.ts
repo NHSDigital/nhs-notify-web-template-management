@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
+import { generate } from 'generate-password';
 import { TemplateMgmtCreatePage } from '../pages/template-mgmt-create-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
@@ -16,7 +17,14 @@ export const smsTemplateSessionData: Session = {
 };
 
 const testUserEmail = `nhs-notify-automated-test-create-sms-page-${randomUUID()}@nhs.net`;
-const testUserPassword = randomUUID();
+const testUserPassword = generate({
+  length: 20,
+  lowercase: true,
+  uppercase: true,
+  numbers: true,
+  symbols: true,
+  strict: true,
+});
 
 test.describe('Create SMS Template Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([
