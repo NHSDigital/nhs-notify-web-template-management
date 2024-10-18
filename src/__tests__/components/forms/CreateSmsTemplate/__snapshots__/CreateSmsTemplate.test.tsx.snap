@@ -50,7 +50,9 @@ exports[`CreateSmsTemplate component renders page 1`] = `
     <div
       class="nhsuk-grid-column-two-thirds"
     >
-      <h1>
+      <h1
+        data-testid="page-heading"
+      >
         Create text message template
       </h1>
       <form
@@ -161,7 +163,9 @@ exports[`CreateSmsTemplate component renders page 1`] = `
         </div>
         <p>
           <a
-            href="https://notify.nhs.uk/pricing/text-messages"
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -384,7 +388,9 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </li>
         </ul>
       </div>
-      <h1>
+      <h1
+        data-testid="page-heading"
+      >
         Create text message template
       </h1>
       <form
@@ -509,7 +515,9 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         </div>
         <p>
           <a
-            href="https://notify.nhs.uk/pricing/text-messages"
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -734,7 +742,9 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </li>
         </ul>
       </div>
-      <h1>
+      <h1
+        data-testid="page-heading"
+      >
         Create text message template
       </h1>
       <form
@@ -871,7 +881,9 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         </div>
         <p>
           <a
-            href="https://notify.nhs.uk/pricing/text-messages"
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -1064,7 +1076,9 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
     <div
       class="nhsuk-grid-column-two-thirds"
     >
-      <h1>
+      <h1
+        data-testid="page-heading"
+      >
         Create text message template
       </h1>
       <form
@@ -1177,7 +1191,9 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
         </div>
         <p>
           <a
-            href="https://notify.nhs.uk/pricing/text-messages"
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)

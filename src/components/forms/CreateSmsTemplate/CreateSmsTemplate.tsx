@@ -5,7 +5,6 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
-import Link from 'next/link';
 import {
   Button,
   HintText,
@@ -51,7 +50,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
       </NHSNotifyBackButton>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={content.errorHeading} state={state} />
-        <h1>{content.pageHeading}</h1>
+        <h1 data-testid='page-heading'>{content.pageHeading}</h1>
         <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
           <div className={templateNameError && 'nhsuk-form-group--error'}>
             <Label htmlFor='smsTemplateName'>
@@ -88,9 +87,14 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
             </p>
           </div>
           <p>
-            <Link href={content.smsPricingLink} target='_blank'>
+            <a
+              href={content.smsPricingLink}
+              data-testid='sms-pricing-link'
+              target='_blank'
+              rel='noreferrer'
+            >
               {content.smsPricingText}
-            </Link>
+            </a>
           </p>
           <Button id='create-sms-template-submit-button'>
             {content.buttonText}
