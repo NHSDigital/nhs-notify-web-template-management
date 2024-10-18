@@ -110,7 +110,7 @@ describe('CreateSmsTemplate component', () => {
       throw new Error('Template name box not found');
     }
 
-    const longMessage = 'x'.repeat(30);
+    const longMessage = 'x'.repeat(300);
 
     await user.type(templateMessageBox, longMessage);
 
