@@ -31,7 +31,9 @@ exports[`SmsTemplateSubmitted 1`] = `
       >
         Template ID
       </h2>
-      <p>
+      <p
+        id="template-id"
+      >
         template-id
       </p>
       <a

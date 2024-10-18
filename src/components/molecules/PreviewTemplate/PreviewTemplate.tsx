@@ -15,6 +15,7 @@ export function PreviewTemplate({
           <Row key={id} className={styles.preview__row}>
             <Col width='one-third' className={styles.preview__col}>
               <div
+                id={`preview-heading-${id}`}
                 data-testid={`preview__heading-${idx}`}
                 className={styles.preview__col_heading}
               >
@@ -23,6 +24,7 @@ export function PreviewTemplate({
             </Col>
             <Col width='two-thirds' className={styles.col}>
               <div
+                id={`preview-content-${id}`}
                 data-testid={`preview__content-${idx}`}
                 className={styles.preview__col_content}
                 dangerouslySetInnerHTML={{ __html: value }}
