@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreatePage } from '../pages/template-mgmt-create-page';
 import { Session, TemplateType } from '../helpers/types';
@@ -14,8 +15,8 @@ export const nhsAppNoTemplateSessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
-const testUserEmail = 'create-nhs-app-page@nhs.net';
-const testUserPassword = 'Test-Password1';
+const testUserEmail = `nhs-notify-automated-test-create-nhs-app-page-${randomUUID()}@nhs.net`;
+const testUserPassword = randomUUID();
 
 test.describe('Create NHS App Template Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([

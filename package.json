@@ -28,6 +28,7 @@
     "@aws-amplify/ui-react": "^6.5.2",
     "@aws-sdk/client-ses": "^3.637.0",
     "aws-amplify": "^6.6.3",
+    "generate-password": "^1.7.1",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "14.2.13",
