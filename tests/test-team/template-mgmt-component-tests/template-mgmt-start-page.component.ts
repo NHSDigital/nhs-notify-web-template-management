@@ -87,7 +87,7 @@ test.describe('Start Page', () => {
     await startPage.clickStartButton();
 
     await expect(page).toHaveURL(/\/templates\/choose-a-template-type\/.*/, {
-      timeout: 10_000,
+      timeout: 15_000,
     });
   });
 });

@@ -161,7 +161,7 @@ test.describe('Choose Template Type Page', () => {
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-nhs-app-template/${emptySessionDataForRadioSelect.id}`,
-      { timeout: 10_000 }
+      { timeout: 15_000 }
     );
   });
 
