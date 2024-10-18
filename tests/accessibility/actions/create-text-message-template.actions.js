@@ -1,21 +1,24 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
+const {
+  pageActions: chooseATemplateTypeActions,
+} = require('./choose-a-template-type.actions');
 
 const pageActions = [
+  ...chooseATemplateTypeActions,
   'wait for element #templateType-SMS to be visible',
   'click element #templateType-SMS',
   'click element #choose-a-template-type-submit-button',
   'wait for element #create-sms-template-submit-button to be visible',
 ];
 
-const createTextMessageTemplatePage = (baseUrl) => ({
+const createTextMessageTemplatePage = (startUrl) => ({
   name: 'create-text-message-template',
-  url: url(baseUrl),
+  url: startUrl,
   actions: pageActions,
 });
 
-const createTextMessageTemplateErrorPage = (baseUrl) => ({
+const createTextMessageTemplateErrorPage = (startUrl) => ({
   name: 'create-text-message-template-error',
-  url: url(baseUrl),
+  url: startUrl,
   actions: [
     ...pageActions,
     'click element #create-sms-template-submit-button',

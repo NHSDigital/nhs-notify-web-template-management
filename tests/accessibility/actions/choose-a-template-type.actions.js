@@ -1,14 +1,16 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
+const { pageActions } = require('./sign-in-page-actions');
 
-const chooseATemplatePage = (baseUrl) => ({
+const chooseATemplatePage = (startUrl) => ({
   name: 'choose-a-template',
-  url: url(baseUrl),
+  actions: pageActions,
+  url: startUrl,
 });
 
-const chooseATemplatePageError = (baseUrl) => ({
+const chooseATemplatePageError = (startUrl) => ({
   name: 'choose-a-template-error',
-  url: url(baseUrl),
+  url: startUrl,
   actions: [
+    ...pageActions,
     'click element #choose-a-template-type-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
@@ -21,4 +23,5 @@ const chooseATemplatePageError = (baseUrl) => ({
 module.exports = {
   chooseATemplatePage,
   chooseATemplatePageError,
+  pageActions,
 };
