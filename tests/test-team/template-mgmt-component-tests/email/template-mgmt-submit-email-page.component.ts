@@ -47,9 +47,7 @@ test.describe('Submit Email message template Page', () => {
 
   test.afterAll(async () => {
     await sessionStorageHelper.deleteSessionData();
-    await templateStorageHelper.deleteTemplates(
-      Array.from(templateIds.values())
-    );
+    await templateStorageHelper.deleteTemplates([...templateIds.values()]);
   });
 
   test.describe('Page functionality', () => {
@@ -131,7 +129,6 @@ test.describe('Submit Email message template Page', () => {
     );
 
     test('when user submits form with, then the "Template submitted" page is displayed', async ({
-      baseURL,
       page,
     }) => {
       const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
@@ -141,7 +138,7 @@ test.describe('Submit Email message template Page', () => {
       await submitEmailTemplatePage.clickSubmitTemplateButton();
 
       await expect(page).toHaveURL(
-        new RegExp(`${baseURL}/templates/email-template-submitted/email-(.*)`)
+        new RegExp('(.*)/templates/email-template-submitted/email-(.*)')
       );
 
       const templateId = getAndStoreTemplateId(page.url());
