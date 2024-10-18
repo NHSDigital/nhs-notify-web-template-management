@@ -17,3 +17,15 @@ export type Session = {
   emailTemplateSubjectLine?: string;
   emailTemplateMessage?: string;
 };
+
+export type Template = {
+  id: string;
+  __typename: 'TemplateStorage';
+  name: string;
+  type: TemplateType;
+  version: number;
+  fields: {
+    subjectLine?: string;
+    content: string;
+  };
+};
