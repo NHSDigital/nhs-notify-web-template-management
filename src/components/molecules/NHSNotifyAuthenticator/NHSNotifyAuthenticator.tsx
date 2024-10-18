@@ -3,10 +3,6 @@
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import { usePathname, redirect } from 'next/navigation';
 import { ReactNode, FC } from 'react';
-import { Amplify } from 'aws-amplify';
-import { getAmplifyOutputs } from '@utils/get-amplify-outputs';
-
-Amplify.configure(getAmplifyOutputs(), { ssr: true });
 
 type NHSNotifyAutheticatorProps = {
   children: ReactNode;
