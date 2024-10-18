@@ -3,6 +3,12 @@ import SessionStorageHelper from '../../helpers/session-storage-helper';
 import { TemplateMgmtSubmitEmailPage } from '../../pages/email/template-mgmt-submit-email-page';
 import { SessionFactory } from '../../helpers/session-factory';
 import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
+import {
+  assertGoBackLink,
+  assertLoginLink,
+  assertNotifyBannerLink,
+  assertSkipToMainContent,
+} from '../template-mgmt-common.steps';
 
 const templateIds = new Set<string>();
 
@@ -50,83 +56,39 @@ test.describe('Submit Email message template Page', () => {
     await templateStorageHelper.deleteTemplates([...templateIds.values()]);
   });
 
-  test.describe('Page functionality', () => {
-    test('when user visits page, then page is loaded', async ({
-      page,
-      baseURL,
-    }) => {
-      const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
+  test('when user visits page, then page is loaded', async ({
+    page,
+    baseURL,
+  }) => {
+    const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
 
-      await submitEmailTemplatePage.loadPage(sessions.valid.id);
+    await submitEmailTemplatePage.loadPage(sessions.valid.id);
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-email-template/${sessions.valid.id}`
-      );
-
-      await expect(submitEmailTemplatePage.pageHeader).toContainText(
-        'test-template-email'
-      );
-    });
-
-    test('when user clicks "skip to main content", then page heading is focused', async ({
-      page,
-    }) => {
-      const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
-
-      await submitEmailTemplatePage.loadPage(sessions.valid.id);
-
-      await page.keyboard.press('Tab');
-
-      await expect(submitEmailTemplatePage.skipLink).toBeFocused();
-
-      await page.keyboard.press('Enter');
-
-      await expect(submitEmailTemplatePage.pageHeader).toBeFocused();
-    });
-
-    test('when user clicks "Notify banner link", then user is redirected to "start page"', async ({
-      baseURL,
-      page,
-    }) => {
-      const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
-
-      await submitEmailTemplatePage.loadPage(sessions.valid.id);
-
-      await submitEmailTemplatePage.clickNotifyBannerLink();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/create-and-submit-templates`
-      );
-    });
-
-    test('when user clicks "Go back", then user is redirect to "Preview email message template" page', async ({
-      page,
-      baseURL,
-    }) => {
-      const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
-
-      await submitEmailTemplatePage.loadPage(sessions.valid.id);
-
-      await submitEmailTemplatePage.goBackLink.click();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${sessions.valid.id}`
-      );
-    });
-
-    test(
-      'when user clicks "Log in", then user is redirected to "login page"',
-      { tag: '@Update/CCM-4889' },
-      async ({ baseURL, page }) => {
-        const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
-
-        await submitEmailTemplatePage.loadPage(sessions.valid.id);
-
-        await submitEmailTemplatePage.clickLoginLink();
-
-        await expect(page).toHaveURL(`${baseURL}/templates`);
-      }
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/submit-email-template/${sessions.valid.id}`
     );
+
+    await expect(submitEmailTemplatePage.pageHeader).toContainText(
+      'test-template-email'
+    );
+  });
+
+  test.describe('Page functionality', () => {
+    test('common page tests', async ({ page, baseURL }) => {
+      const props = {
+        page: new TemplateMgmtSubmitEmailPage(page),
+        sessionId: sessions.valid.id,
+        baseURL,
+      };
+
+      await assertSkipToMainContent(props);
+      await assertNotifyBannerLink(props);
+      await assertLoginLink(props);
+      await assertGoBackLink({
+        ...props,
+        expectedUrl: `templates/preview-email-template/${sessions.valid.id}`,
+      });
+    });
 
     test('when user submits form with, then the "Template submitted" page is displayed', async ({
       page,
@@ -138,7 +100,7 @@ test.describe('Submit Email message template Page', () => {
       await submitEmailTemplatePage.clickSubmitTemplateButton();
 
       await expect(page).toHaveURL(
-        new RegExp('(.*)/templates/email-template-submitted/email-(.*)')
+        new RegExp('/templates/email-template-submitted/email-(.*)')
       );
 
       const templateId = getAndStoreTemplateId(page.url());

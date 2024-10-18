@@ -17,9 +17,11 @@ export class TemplateMgmtBasePage {
 
   constructor(page: Page) {
     this.page = page;
+
     this.notifyBannerLink = page.locator(
       '[class="nhsuk-header__link nhsuk-header__link--service"]'
     );
+
     this.loginLink = page
       .locator('[class="nhsuk-account__login--link"]')
       .and(page.getByText('Log in'));
@@ -55,5 +57,9 @@ export class TemplateMgmtBasePage {
 
   async clickContinueButton() {
     await this.continueButton.click();
+  }
+
+  async loadPage(_: string) {
+    throw new Error('Not implemented');
   }
 }

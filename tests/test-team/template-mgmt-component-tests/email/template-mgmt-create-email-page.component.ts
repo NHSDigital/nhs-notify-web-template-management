@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 import SessionStorageHelper from '../../helpers/session-storage-helper';
 import { TemplateMgmtCreateEmailPage } from '../../pages/email/template-mgmt-create-email-page';
 import { SessionFactory } from '../../helpers/session-factory';
+import {
+  assertGoBackLink,
+  assertLoginLink,
+  assertNotifyBannerLink,
+  assertSkipToMainContent,
+} from '../template-mgmt-common.steps';
 
 const sessions = {
   empty: SessionFactory.createEmailSession('empty-email-session'),
@@ -35,22 +41,38 @@ test.describe('Create Email message template Page', () => {
     await sessionStorageHelper.deleteSessionData();
   });
 
+  test('when user visits page, then page is loaded', async ({
+    page,
+    baseURL,
+  }) => {
+    const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+    await createEmailTemplatePage.loadPage(sessions.empty.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/create-email-template/${sessions.empty.id}`
+    );
+
+    expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
+      'Create Email message template'
+    );
+  });
+
   test.describe('Page functionality', () => {
-    test('when user visits page, then page is loaded', async ({
-      page,
-      baseURL,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+    test('common page tests', async ({ page, baseURL }) => {
+      const props = {
+        page: new TemplateMgmtCreateEmailPage(page),
+        sessionId: sessions.empty.id,
+        baseURL,
+      };
 
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/create-email-template/${sessions.empty.id}`
-      );
-
-      expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
-        'Create Email message template'
-      );
+      await assertSkipToMainContent(props);
+      await assertNotifyBannerLink(props);
+      await assertLoginLink(props);
+      await assertGoBackLink({
+        ...props,
+        expectedUrl: `templates/choose-a-template-type/${sessions.empty.id}`,
+      });
     });
 
     test('when user visits page with previous data, then form fields retain previous data', async ({
@@ -70,51 +92,6 @@ test.describe('Create Email message template Page', () => {
         sessions.previousData.emailTemplateMessage
       );
     });
-
-    test('when user clicks "skip to main content", then page heading is focused', async ({
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await page.keyboard.press('Tab');
-
-      await expect(createEmailTemplatePage.skipLink).toBeFocused();
-
-      await page.keyboard.press('Enter');
-
-      await expect(createEmailTemplatePage.pageHeader).toBeFocused();
-    });
-
-    test('when user clicks "Notify banner link", then user is redirected to "start page"', async ({
-      baseURL,
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-      await createEmailTemplatePage.clickNotifyBannerLink();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/create-and-submit-templates`
-      );
-    });
-
-    test(
-      'when user clicks "Log in", then user is redirected to "login page"',
-      { tag: '@Update/CCM-4889' },
-      async ({ baseURL, page }) => {
-        const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-        await createEmailTemplatePage.loadPage(sessions.empty.id);
-
-        await createEmailTemplatePage.clickLoginLink();
-
-        await expect(page).toHaveURL(`${baseURL}/templates`);
-      }
-    );
 
     test('when user clicks "Go back" and returns, then form fields retain previous data', async ({
       baseURL,
