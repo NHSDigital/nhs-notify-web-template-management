@@ -1,6 +1,6 @@
 locals {
   bootstrap = data.terraform_remote_state.bootstrap.outputs
-  app = data.terraform_remote_state.app.outputs
+  app       = data.terraform_remote_state.app.outputs
 }
 
 data "terraform_remote_state" "bootstrap" {
