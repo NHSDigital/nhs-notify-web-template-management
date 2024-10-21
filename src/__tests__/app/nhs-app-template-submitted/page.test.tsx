@@ -1,5 +1,5 @@
 import nav from 'next/navigation';
-import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
+import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page.prod';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
 

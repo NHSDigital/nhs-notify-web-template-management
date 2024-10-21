@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import HomePage from '@app/create-and-submit-templates/page';
+import HomePage from '@app/create-and-submit-templates/page.prod';
 import content from '@content/content';
 
 const homePageContent = content.pages.homePage;

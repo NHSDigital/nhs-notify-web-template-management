@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[sessionId]/page';
+import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[sessionId]/page.prod';
 import { TemplateFormState } from '@utils/types';
 import nav from 'next/navigation';
 

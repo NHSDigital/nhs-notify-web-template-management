@@ -20,6 +20,7 @@ module "amplify_branch" {
   environment_variables = {
     NOTIFY_SUBDOMAIN      = var.environment
     NEXT_PUBLIC_BASE_PATH = "/templates~${local.normalised_branch_name}"
+    NEXT_PUBLIC_AUTH_BASE_PATH = "/auth~featuredomain-testing"
     MAX_SESSION_LENGTH_IN_SECONDS = 432000 # 5 days in seconds
   }
 }

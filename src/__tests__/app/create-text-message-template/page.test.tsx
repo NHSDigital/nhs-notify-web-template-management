@@ -1,4 +1,4 @@
-import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page';
+import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page.prod';
 import { getSession } from '@utils/form-actions';
 import { Session, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
