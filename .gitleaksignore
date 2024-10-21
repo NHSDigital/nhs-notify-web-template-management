@@ -1,4 +1,5 @@
 # SEE: https://github.com/gitleaks/gitleaks/blob/master/README.md#gitleaksignore
 
 cd9c0efec38c5d63053dd865e5d4e207c0760d91:docs/guides/Perform_static_analysis.md:generic-api-key:37
-87312c6a627a7b0420956d49187fd15b130df170:src/__tests__/components/molecules/LoginStatus.test.tsx:jwt:23
+87312c6a627a7b0420956d49187fd15b130df170:src/**tests**/components/molecules/LoginStatus.test.tsx:jwt:23
+37ca9f5670f4cd7d91869845ca27defbe6156bb9:src/**tests**/components/molecules/LoginStatus.test.tsx:jwt:23
