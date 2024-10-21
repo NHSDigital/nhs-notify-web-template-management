@@ -5,7 +5,6 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Session } from './types';
-import { DatabaseTableNameHelper } from './database-tablename-helper';
 
 export default class SessionStorageHelper {
   private readonly ddbDocClient: DynamoDBDocumentClient;
@@ -16,15 +15,12 @@ export default class SessionStorageHelper {
   }
 
   async seedSessionData() {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getSessionStorageTableName();
-
     const currentTimeSeconds = Math.floor(Date.now() / 1000);
 
     const promises = this.sessionData.map((session) =>
       this.ddbDocClient.send(
         new PutCommand({
-          TableName: tableName,
+          TableName: process.env.SESSION_STORAGE_TABLE_NAME,
           Item: {
             ...session,
             ttl: currentTimeSeconds + 60 * 5, // 5 minutes in the future
@@ -37,13 +33,10 @@ export default class SessionStorageHelper {
   }
 
   async deleteSessionData() {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getSessionStorageTableName();
-
     const promises = this.sessionData.map((session) =>
       this.ddbDocClient.send(
         new DeleteCommand({
-          TableName: tableName,
+          TableName: process.env.SESSION_STORAGE_TABLE_NAME,
           Key: {
             id: session.id,
           },

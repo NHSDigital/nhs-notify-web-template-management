@@ -5,7 +5,6 @@ import {
   GetCommand,
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { DatabaseTableNameHelper } from './database-tablename-helper';
 import { Template } from './types';
 
 export class TemplateStorageHelper {
@@ -20,13 +19,10 @@ export class TemplateStorageHelper {
   }
 
   async seedTemplateData() {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getTemplateStorageTableName();
-
     const promises = this._templates.map((template) =>
       this._ddbDocClient.send(
         new PutCommand({
-          TableName: tableName,
+          TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
           Item: {
             ...template,
           },
@@ -37,19 +33,13 @@ export class TemplateStorageHelper {
   }
 
   async deleteTemplateData() {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getTemplateStorageTableName();
-
     await this.deleteTemplates(this._templates.map((template) => template.id));
   }
 
   async getTemplate(templateId: string) {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getTemplateStorageTableName();
-
     const template = await this._ddbDocClient.send(
       new GetCommand({
-        TableName: tableName,
+        TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
         Key: {
           id: templateId,
         },
@@ -60,13 +50,10 @@ export class TemplateStorageHelper {
   }
 
   async deleteTemplates(templateIds: string[]) {
-    const tableName =
-      await DatabaseTableNameHelper.instance.getTemplateStorageTableName();
-
     const promises = templateIds.map((templateId) =>
       this._ddbDocClient.send(
         new DeleteCommand({
-          TableName: tableName,
+          TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
           Key: {
             id: templateId,
           },

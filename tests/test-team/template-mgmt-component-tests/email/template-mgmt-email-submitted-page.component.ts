@@ -72,7 +72,6 @@ test.describe('Submit Email message template Page', () => {
     });
 
     test('when user submits clicks "Create another template", then user is redirected to "create-template"', async ({
-      baseURL,
       page,
     }) => {
       const emailTemplateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
@@ -83,7 +82,9 @@ test.describe('Submit Email message template Page', () => {
 
       await emailTemplateSubmittedPage.clickCreateAnotherTemplateLink();
 
-      await expect(page).toHaveURL(`${baseURL}/templates/create-template`);
+      await expect(page).toHaveURL(
+        new RegExp('/templates/choose-a-template-type/(.*)')
+      );
     });
   });
 

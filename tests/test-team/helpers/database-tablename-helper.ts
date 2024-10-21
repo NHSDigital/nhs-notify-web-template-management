@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import {
   AppSyncClient,
   paginateListGraphqlApis,
@@ -8,13 +7,11 @@ import { Amplify } from 'aws-amplify';
 import * as fs from 'node:fs';
 
 export class DatabaseTableNameHelper {
-  private static _instance: DatabaseTableNameHelper;
-
   private readonly _appSyncClient: AppSyncClient;
 
   private _appApiId?: string;
 
-  private constructor() {
+  constructor() {
     this._appSyncClient = new AppSyncClient({ region: 'eu-west-2' });
   }
 
@@ -56,14 +53,6 @@ export class DatabaseTableNameHelper {
     this._appApiId = matchingGraphqlAPI?.apiId;
 
     return this._appApiId;
-  }
-
-  public static get instance(): DatabaseTableNameHelper {
-    if (!DatabaseTableNameHelper._instance) {
-      DatabaseTableNameHelper._instance = new DatabaseTableNameHelper();
-    }
-
-    return DatabaseTableNameHelper._instance;
   }
 
   public async getSessionStorageTableName() {
