@@ -1,7 +1,30 @@
+import { randomUUID } from 'node:crypto';
 import { test, expect } from '@playwright/test';
+import { generate } from 'generate-password';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
+import { TestUserClient } from '../helpers/test-user-client';
+
+const testUserEmail = `nhs-notify-automated-test-start-page-${randomUUID()}@nhs.net`;
+const testUserPassword = generate({
+  length: 20,
+  lowercase: true,
+  uppercase: true,
+  numbers: true,
+  symbols: true,
+  strict: true,
+});
 
 test.describe('Start Page', () => {
+  const testUserClient = new TestUserClient();
+
+  test.beforeAll(async () => {
+    await testUserClient.createTestUser(testUserEmail, testUserPassword);
+  });
+
+  test.afterAll(async () => {
+    await testUserClient.deleteTestUser(testUserEmail);
+  });
+
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({
     page,
     baseURL,
@@ -45,21 +68,6 @@ test.describe('Start Page', () => {
     );
   });
 
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const startPage = new TemplateMgmtStartPage(page);
-
-      await startPage.navigateToStartPage();
-      await startPage.clickLoginLink();
-
-      await expect(page).toHaveURL(`${baseURL}/templates`);
-
-      expect(await page.locator('h1').textContent()).toBe('404');
-    }
-  );
-
   test('should not display "Go Back" link on page', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
@@ -70,16 +78,17 @@ test.describe('Start Page', () => {
 
   test('should navigate to "choose template" page when start button clicked', async ({
     page,
-    baseURL,
   }) => {
     const startPage = new TemplateMgmtStartPage(page);
+
+    await startPage.signIn(testUserEmail, testUserPassword);
 
     await startPage.navigateToStartPage();
     await startPage.clickStartButton();
 
-    expect(page.url()).toContain(
-      `${baseURL}/templates/choose-a-template-type/`
-    );
+    await expect(page).toHaveURL(/\/templates\/choose-a-template-type\/.*/, {
+      timeout: 15_000,
+    });
   });
 });
 

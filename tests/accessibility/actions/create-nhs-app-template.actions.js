@@ -1,21 +1,24 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
+const {
+  pageActions: chooseATemplateTypeActions,
+} = require('./choose-a-template-type.actions');
 
 const pageActions = [
+  ...chooseATemplateTypeActions,
   'wait for element #templateType-NHS_APP to be visible',
   'click element #templateType-NHS_APP',
   'click element #choose-a-template-type-submit-button',
   'wait for element #create-nhs-app-template-submit-button to be visible',
 ];
 
-const createNHSAppTemplatePage = (baseUrl) => ({
+const createNHSAppTemplatePage = (startUrl) => ({
   name: 'create-nhs-app-template',
-  url: url(baseUrl),
+  url: startUrl,
   actions: pageActions,
 });
 
-const createNHSAppTemplateErrorPage = (baseUrl) => ({
+const createNHSAppTemplateErrorPage = (startUrl) => ({
   name: 'create-nhs-app-template-error',
-  url: url(baseUrl),
+  url: startUrl,
   actions: [
     ...pageActions,
     'click element #create-nhs-app-template-submit-button',
