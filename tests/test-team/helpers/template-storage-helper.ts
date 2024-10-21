@@ -40,18 +40,7 @@ export class TemplateStorageHelper {
     const tableName =
       await DatabaseTableNameHelper.instance.getTemplateStorageTableName();
 
-    const promises = this._templates.map((template) =>
-      this._ddbDocClient.send(
-        new DeleteCommand({
-          TableName: tableName,
-          Key: {
-            id: template.id,
-          },
-        })
-      )
-    );
-
-    await Promise.all(promises);
+    await this.deleteTemplates(this._templates.map((template) => template.id));
   }
 
   async getTemplate(templateId: string) {

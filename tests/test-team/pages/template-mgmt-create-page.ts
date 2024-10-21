@@ -11,10 +11,4 @@ export class TemplateMgmtCreatePage extends TemplateMgmtBasePage {
       `${TemplateMgmtCreatePage.createTemplatePageUrl}/${sessionId}`
     );
   }
-
-  async navigateToCreatEmailTemplatePage(sessionId: string) {
-    await this.navigateTo(
-      `${TemplateMgmtCreatePage.createEmailTemplatePageUrl}/${sessionId}`
-    );
-  }
 }
