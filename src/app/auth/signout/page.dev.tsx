@@ -1,61 +1,32 @@
-/* eslint-disable no-restricted-globals,@typescript-eslint/no-require-imports,unicorn/prefer-module,no-console */
-
 'use client';
 
 import { Amplify } from 'aws-amplify';
 import { Suspense, useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { signOut } from '@aws-amplify/auth';
 import { Authenticator } from '@aws-amplify/ui-react';
+import { Redirect } from '@molecules/Redirect/Redirect';
+import { getAmplifyOutputs } from '@utils/get-amplify-outputs';
 
-Amplify.configure(require('@/amplify_outputs.json'), { ssr: true });
+Amplify.configure(getAmplifyOutputs(), { ssr: true });
 
-const Redirect = () => {
-  const searchParams = useSearchParams();
-
-  const redirect = searchParams.get('redirect') ?? '/';
-
-  useEffect(() => {
-    location.href = redirect;
-  }, [redirect]);
-
-  if (redirect) {
-    return (
-      <h3>
-        Redirecting to{' '}
-        <code>
-          <a href={redirect}>{redirect}</a>
-        </code>
-      </h3>
-    );
-  }
-};
-
-const MockAuthPage = () => {
+const MockSignoutPage = () => {
   const [signedOut, setSignedOut] = useState(false);
 
   useEffect(() => {
     if (!signedOut) {
-      signOut()
-        .then(() => setSignedOut(true))
-        .catch((error) => console.error(error));
+      signOut().then(() => setSignedOut(true));
     }
   });
 
-  if (signedOut) {
-    return (
-      <Suspense>
-        <Redirect />
-      </Suspense>
-    );
-  }
-  return <p>Signing out</p>;
+  return signedOut ? <Redirect /> : <p>Signing out</p>;
 };
 
-const WrappedAuthPage = () => (
+const WrappedSignoutPage = () => (
   <Authenticator.Provider>
-    <MockAuthPage />
+    <Suspense>
+      <MockSignoutPage />
+    </Suspense>
   </Authenticator.Provider>
 );
 
-export default WrappedAuthPage;
+export default WrappedSignoutPage;

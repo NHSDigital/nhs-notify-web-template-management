@@ -21,6 +21,7 @@ const nextConfig = {
   pageExtensions: [
     'prod.tsx',
     'layout.tsx',
+    'ts',
     ...(process.env.LOCAL_AUTH === 'true' ? ['dev.tsx'] : []),
   ],
 
@@ -47,7 +48,14 @@ const nextConfig = {
               permanent: false,
             },
           ]
-        : []),
+        : [
+            {
+              source: `${basePath}${authBasePath}`,
+              destination: authBasePath,
+              basePath: false,
+              permanent: false,
+            },
+          ]),
     ];
   },
 };

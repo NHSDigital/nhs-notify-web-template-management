@@ -78,21 +78,6 @@ test.describe('Choose Template Type Page', () => {
     );
   });
 
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-      await chooseTemplatePage.navigateToChooseTemplatePage(
-        emptySessionData.id
-      );
-      await chooseTemplatePage.clickLoginLink();
-
-      await expect(page).toHaveURL(`${baseURL}/templates`);
-    }
-  );
-
   test('should display correct radio button options', async ({ page }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 

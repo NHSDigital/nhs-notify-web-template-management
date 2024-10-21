@@ -31,6 +31,8 @@ resource "aws_amplify_app" "main" {
     NOTIFY_ENVIRONMENT  = var.environment
     NOTIFY_DOMAIN_NAME  = local.root_domain_name
     ACCOUNT_ID          = var.aws_account_id
-    _CUSTOM_IMAGE       = "node:20"
+    USER_POOL_ID        = local.auth_remote_state.user_pool_id
+    USER_POOL_CLIENT_ID = local.auth_remote_state.user_pool_client_id
+    IDENTITY_POOL_ID    = local.auth_remote_state.identity_pool_id
   }
 }

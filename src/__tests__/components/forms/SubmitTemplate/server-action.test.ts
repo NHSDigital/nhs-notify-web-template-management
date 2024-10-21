@@ -172,6 +172,7 @@ describe('submitTemplate', () => {
       id: '1',
       createdAt: 'today',
       updatedAt: 'tomorrow',
+      owner: 'owner',
     });
 
     sendEmailMock.mockImplementationOnce(() => {
@@ -214,6 +215,7 @@ describe('submitTemplate', () => {
       fields: { content: 'body' },
       createdAt: 'yesterday',
       updatedAt: 'today',
+      owner: 'owner',
     };
 
     getSessionMock.mockResolvedValueOnce(session);

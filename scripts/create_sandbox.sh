@@ -2,10 +2,6 @@
 
 set -euo pipefail
 
-#!/bin/bash
-
-set -euo pipefail
-
 echo "Creating sandbox"
 
 if [[ ! -f amplify_outputs.json ]]; then
