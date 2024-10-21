@@ -45,7 +45,7 @@ test.describe('Submit Email message template Page', () => {
     Object.values(sessions)
   );
 
-  const templateStorageHelper = new TemplateStorageHelper();
+  const templateStorageHelper = new TemplateStorageHelper([]);
 
   test.beforeAll(async () => {
     await sessionStorageHelper.seedSessionData();
@@ -68,8 +68,8 @@ test.describe('Submit Email message template Page', () => {
       `${baseURL}/templates/submit-email-template/${sessions.valid.id}`
     );
 
-    await expect(submitEmailTemplatePage.pageHeader).toContainText(
-      'test-template-email'
+    await expect(submitEmailTemplatePage.pageHeader).toHaveText(
+      `Submit '${sessions.valid.emailTemplateName}'`
     );
   });
 
@@ -77,7 +77,7 @@ test.describe('Submit Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtSubmitEmailPage(page),
-        sessionId: sessions.valid.id,
+        id: sessions.valid.id,
         baseURL,
       };
 
@@ -135,7 +135,7 @@ test.describe('Submit Email message template Page', () => {
 
       getAndStoreTemplateId(page.url());
 
-      // Minor delay here to ensure session is correctly deleted
+      // Minor delay here to ensure session is deleted
       // This test feels inherently flakey due to waiting on a session being deleted
       // 3 seconds is more than ample time to have a session deleted.
       await page.waitForTimeout(3000);

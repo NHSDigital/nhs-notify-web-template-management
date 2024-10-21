@@ -23,7 +23,9 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
       >
         Template name
       </h2>
-      <p>
+      <p
+        id="template-name"
+      >
         template-name
       </p>
       <h2
@@ -38,6 +40,7 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
       </p>
       <a
         href="/create-template"
+        id="create-another-template"
       >
         Create another template
       </a>

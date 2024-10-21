@@ -72,7 +72,8 @@
     "react/jsx-no-bind": "off",
     "unicorn/no-null": "off",
     "prefer-regex-literals": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off"
   },
   "overrides": [
     {

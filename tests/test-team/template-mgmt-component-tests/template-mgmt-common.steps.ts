@@ -3,11 +3,14 @@ import { TemplateMgmtBasePage } from '../pages/template-mgmt-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
-  sessionId: string;
+  id: string;
   baseURL?: string;
 };
 
-export function assertSkipToMainContent({ page, sessionId }: CommonStepsProps) {
+export function assertSkipToMainContent({
+  page,
+  id: sessionId,
+}: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
     await page.loadPage(sessionId);
 
@@ -23,11 +26,11 @@ export function assertSkipToMainContent({ page, sessionId }: CommonStepsProps) {
 
 export function assertNotifyBannerLink({
   page,
-  sessionId,
+  id,
   baseURL,
 }: CommonStepsProps) {
   return test.step('when user clicks "Notify banner link", then user is redirected to "start page"', async () => {
-    await page.loadPage(sessionId);
+    await page.loadPage(id);
 
     await page.clickNotifyBannerLink();
 
@@ -37,13 +40,9 @@ export function assertNotifyBannerLink({
   });
 }
 
-export function assertLoginLink({
-  page,
-  sessionId,
-  baseURL,
-}: CommonStepsProps) {
+export function assertLoginLink({ page, id, baseURL }: CommonStepsProps) {
   return test.step('when user clicks "Log in", then user is redirected to "login page"', async () => {
-    await page.loadPage(sessionId);
+    await page.loadPage(id);
 
     await page.clickLoginLink();
 
@@ -53,12 +52,12 @@ export function assertLoginLink({
 
 export function assertGoBackLink({
   page,
-  sessionId,
+  id,
   baseURL,
   expectedUrl,
 }: CommonStepsProps & { expectedUrl: string }) {
   return test.step('when user clicks "Go back", then user is redirect to previous page', async () => {
-    await page.loadPage(sessionId);
+    await page.loadPage(id);
 
     await page.goBackLink.click();
 

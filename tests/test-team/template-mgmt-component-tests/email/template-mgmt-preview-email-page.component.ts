@@ -67,7 +67,7 @@ test.describe('Preview Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewEmailPage(page),
-        sessionId: sessions.valid.id,
+        id: sessions.valid.id,
         baseURL,
       };
 

@@ -28,4 +28,6 @@ export type Template = {
     subjectLine?: string;
     content: string;
   };
+  createdAt: string;
+  updatedAt: string;
 };

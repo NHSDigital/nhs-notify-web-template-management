@@ -62,7 +62,7 @@ test.describe('Create Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtCreateEmailPage(page),
-        sessionId: sessions.empty.id,
+        id: sessions.empty.id,
         baseURL,
       };
 

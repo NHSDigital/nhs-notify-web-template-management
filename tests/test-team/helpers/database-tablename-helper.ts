@@ -1,5 +1,4 @@
 /* eslint-disable no-use-before-define */
-/* eslint-disable no-underscore-dangle */
 import {
   AppSyncClient,
   paginateListGraphqlApis,
@@ -8,7 +7,6 @@ import {
 import { Amplify } from 'aws-amplify';
 import * as fs from 'node:fs';
 
-// TODO: this can probably just be done once at global setup.
 export class DatabaseTableNameHelper {
   private static _instance: DatabaseTableNameHelper;
 
