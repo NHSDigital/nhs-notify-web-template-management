@@ -28,7 +28,7 @@ export default defineConfig({
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run test:start-local-app',
+    command: 'LOCAL_AUTH=true npm run test:start-local-app',
     url: 'http://localhost:3000/templates/create-and-submit-templates',
     reuseExistingServer: !process.env.CI,
     stderr: 'pipe',

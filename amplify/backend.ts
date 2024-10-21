@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-commented-code */
 import { defineBackend } from '@aws-amplify/backend';
 import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { auth } from './auth/resource';

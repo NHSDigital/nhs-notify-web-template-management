@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginStatus - invalid cookie 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/auth~featuredomain-testing?redirect=%2Ftemplatesnull"
+    >
+      Sign in
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`LoginStatus - no cookie 1`] = `
+<DocumentFragment>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/auth~featuredomain-testing?redirect=%2Ftemplatesnull"
+    >
+      Sign in
+    </a>
+  </li>
+</DocumentFragment>
+`;
+
+exports[`LoginStatus - valid cookie 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-header__transactional-service-name"
+  >
+    <a
+      class="nhsuk-header__transactional-service-name--link"
+    >
+      localhost@nhs.net
+    </a>
+  </div>
+  <li
+    class="nhsuk-header__navigation-item"
+  >
+    <a
+      class="nhsuk-header__navigation-link"
+      href="/auth~featuredomain-testing/signout?redirect=%2Ftemplatesnull"
+    >
+      Sign out
+    </a>
+  </li>
+</DocumentFragment>
+`;
