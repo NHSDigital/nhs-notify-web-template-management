@@ -13,13 +13,20 @@ jest.mock('@aws-amplify/auth', () => ({
   fetchAuthSession: jest.fn(),
 }));
 
+const mockFetchAuthSession = jest.mocked(fetchAuthSession);
+const mockUseAuthenticator = jest.mocked(useAuthenticator);
+
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 test('LoginStatus - unauthenticated', async () => {
-  jest.mocked(useAuthenticator).mockReturnValue(
+  mockUseAuthenticator.mockReturnValue(
     mockDeep<ReturnType<typeof useAuthenticator>>({
       authStatus: 'unauthenticated',
     })
   );
-  jest.mocked(fetchAuthSession).mockResolvedValue({
+  mockFetchAuthSession.mockResolvedValue({
     tokens: undefined,
   });
 
@@ -34,12 +41,12 @@ test('LoginStatus - unauthenticated', async () => {
 });
 
 test('LoginStatus - authenticated, no tokens', async () => {
-  jest.mocked(useAuthenticator).mockReturnValue(
+  mockUseAuthenticator.mockReturnValue(
     mockDeep<ReturnType<typeof useAuthenticator>>({
       authStatus: 'authenticated',
     })
   );
-  jest.mocked(fetchAuthSession).mockResolvedValue({
+  mockFetchAuthSession.mockResolvedValue({
     tokens: undefined,
   });
 
@@ -54,12 +61,12 @@ test('LoginStatus - authenticated, no tokens', async () => {
 });
 
 test('LoginStatus - authenticated', async () => {
-  jest.mocked(useAuthenticator).mockReturnValue(
+  mockUseAuthenticator.mockReturnValue(
     mockDeep<ReturnType<typeof useAuthenticator>>({
       authStatus: 'authenticated',
     })
   );
-  jest.mocked(fetchAuthSession).mockResolvedValue({
+  mockFetchAuthSession.mockResolvedValue({
     tokens: {
       idToken: {
         payload: {

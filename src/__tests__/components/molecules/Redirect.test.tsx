@@ -1,4 +1,3 @@
-import { mockDeep } from 'jest-mock-extended';
 import { render } from '@testing-library/react';
 import { Redirect } from '@molecules/Redirect/Redirect';
 import {
@@ -14,8 +13,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 test('Redirect - URL provided', () => {
-  const mockRedirect = jest.fn(mockDeep<typeof redirect>());
-  jest.mocked(redirect).mockImplementation(mockRedirect);
+  const mockRedirect = jest.mocked(redirect);
 
   const mockSearchParams = new ReadonlyURLSearchParams({
     redirect: 'redirect',
@@ -28,8 +26,7 @@ test('Redirect - URL provided', () => {
 });
 
 test('Redirect - URL not provided', () => {
-  const mockRedirect = jest.fn(mockDeep<typeof redirect>());
-  jest.mocked(redirect).mockImplementation(mockRedirect);
+  const mockRedirect = jest.mocked(redirect);
 
   const mockSearchParams = new ReadonlyURLSearchParams({});
   jest.mocked(useSearchParams).mockReturnValue(mockSearchParams);

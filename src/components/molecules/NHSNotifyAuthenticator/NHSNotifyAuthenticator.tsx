@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports,unicorn/prefer-module */
-
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import { usePathname, redirect } from 'next/navigation';
 import { ReactNode, FC } from 'react';
