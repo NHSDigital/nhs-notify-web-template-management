@@ -12,13 +12,6 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     this.fieldsetHeading = page.locator('[class="nhsuk-fieldset__heading"]');
   }
 
-  static readonly templateOptions = [
-    'NHS App message',
-    'Email',
-    'Text message (SMS)',
-    'Letter',
-  ];
-
   private static readonly chooseTemplatePageUrl = `/templates/choose-a-template-type`;
 
   async navigateToChooseTemplatePage(sessionId: string) {
