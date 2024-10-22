@@ -7,14 +7,10 @@ type BaseTemplateFields = Omit<
 
 export const TemplateFactory = {
   createEmailTemplate: (props: Omit<BaseTemplateFields, 'type'>): Template => {
-    return {
+    return TemplateFactory.create({
       ...props,
-      __typename: 'TemplateStorage',
       type: TemplateType.EMAIL,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      version: 1,
-    };
+    });
   },
 
   create: (props: BaseTemplateFields): Template => {

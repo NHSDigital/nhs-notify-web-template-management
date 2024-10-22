@@ -3,6 +3,7 @@ import SessionStorageHelper from '../../helpers/session-storage-helper';
 import { TemplateMgmtCreateEmailPage } from '../../pages/email/template-mgmt-create-email-page';
 import { SessionFactory } from '../../helpers/session-factory';
 import {
+  assertFooterLinks,
   assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
@@ -69,6 +70,7 @@ test.describe('Create Email message template Page', () => {
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
+      await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
         expectedUrl: `templates/choose-a-template-type/${sessions.empty.id}`,
@@ -125,6 +127,53 @@ test.describe('Create Email message template Page', () => {
 
       await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
         'This is an email template message'
+      );
+    });
+
+    test('when user clicks "Personalisation" tool tips, then tool tips are displayed', async ({
+      page,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(sessions.goBackAndReturn.id);
+
+      await createEmailTemplatePage.personalisationFields.click();
+
+      await expect(
+        createEmailTemplatePage.personalisationFields
+      ).toHaveAttribute('open');
+    });
+
+    test('when user clicks "Message formatting" tool tips, then tool tips are displayed', async ({
+      page,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(sessions.empty.id);
+
+      await createEmailTemplatePage.messageFormatting.assertDetailsOpen([
+        createEmailTemplatePage.messageFormatting.lineBreaksAndParagraphs,
+        createEmailTemplatePage.messageFormatting.headings,
+        createEmailTemplatePage.messageFormatting.bulletPoints,
+        createEmailTemplatePage.messageFormatting.numberedList,
+        createEmailTemplatePage.messageFormatting.horizontalLines,
+        createEmailTemplatePage.messageFormatting.linksAndUrls,
+      ]);
+    });
+
+    test('when user clicks "Naming your templates" tool tips, then tool tips are displayed', async ({
+      page,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage(sessions.empty.id);
+
+      await createEmailTemplatePage.namingYourTemplate.click({
+        position: { x: 0, y: 0 },
+      });
+
+      await expect(createEmailTemplatePage.namingYourTemplate).toHaveAttribute(
+        'open'
       );
     });
 
@@ -196,6 +245,17 @@ test.describe('Create Email message template Page', () => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
       await createEmailTemplatePage.loadPage(sessions.noEmailTemplateType.id);
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+    });
+
+    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+      await createEmailTemplatePage.loadPage('/fake-session-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
     });

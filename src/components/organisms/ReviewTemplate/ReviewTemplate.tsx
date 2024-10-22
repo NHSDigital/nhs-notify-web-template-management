@@ -25,7 +25,7 @@ export function ReviewTemplate({
         </span>
         {props.templateName}
       </h1>
-      <Details>
+      <Details data-testid='preview-message-details'>
         <Details.Summary data-testid='preview-message-details__heading'>
           {props.details.heading}
         </Details.Summary>

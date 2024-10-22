@@ -3,6 +3,7 @@ import SessionStorageHelper from '../../helpers/session-storage-helper';
 import { TemplateMgmtPreviewEmailPage } from '../../pages/email/template-mgmt-preview-email-page';
 import { SessionFactory } from '../../helpers/session-factory';
 import {
+  assertFooterLinks,
   assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
@@ -74,10 +75,27 @@ test.describe('Preview Email message template Page', () => {
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
+      await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
         expectedUrl: `templates/create-email-template/${sessions.valid.id}`,
       });
+    });
+
+    test('when user clicks "Who your email will be sent from" tool tips, then tool tips are displayed', async ({
+      page,
+    }) => {
+      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+
+      await previewEmailTemplatePage.loadPage(sessions.valid.id);
+
+      await previewEmailTemplatePage.whoYourEmailWillBeSentFrom.click({
+        position: { x: 0, y: 0 },
+      });
+
+      await expect(
+        previewEmailTemplatePage.whoYourEmailWillBeSentFrom
+      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({
@@ -123,6 +141,17 @@ test.describe('Preview Email message template Page', () => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
       await previewEmailTemplatePage.loadPage(sessions.empty.id);
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+    });
+
+    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
+
+      await previewEmailTemplatePage.loadPage('/fake-session-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
     });

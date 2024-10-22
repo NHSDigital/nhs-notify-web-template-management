@@ -64,3 +64,34 @@ export function assertGoBackLink({
     await expect(page.page).toHaveURL(`${baseURL}/${expectedUrl}`);
   });
 }
+
+export function assertFooterLinks({ page, id }: CommonStepsProps) {
+  return test.step('when page loads, then "Footer links" should be visible', async () => {
+    await page.loadPage(id);
+
+    const promises = [
+      // Accessibility link
+      await page.page
+        .locator('[data-testid="accessibility-statement-link"]')
+        .isVisible(),
+
+      // Contact us link
+      await page.page.locator('[data-testid="contact-use-link"]').isVisible(),
+
+      // Cookies link
+      await page.page.locator('[data-testid="cookies-link"]').isVisible(),
+
+      // Privacy policy link
+      await page.page
+        .locator('[data-testid="privacy-policy-link"]')
+        .isVisible(),
+
+      // Terms and conditions link
+      await page.page
+        .locator('[data-testid="terms-and-conditions-link"]')
+        .isVisible(),
+    ];
+
+    await Promise.all(promises);
+  });
+}

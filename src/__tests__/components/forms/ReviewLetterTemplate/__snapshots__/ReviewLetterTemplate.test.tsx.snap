@@ -16,6 +16,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
   </h1>
   <details
     class="nhsuk-details"
+    data-testid="preview-message-details"
   >
     <summary
       class="nhsuk-details__summary"

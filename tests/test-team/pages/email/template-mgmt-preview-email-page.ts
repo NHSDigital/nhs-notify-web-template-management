@@ -12,6 +12,8 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtBasePage {
 
   public readonly messageText: Locator;
 
+  public readonly whoYourEmailWillBeSentFrom: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -23,6 +25,9 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtBasePage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.subjectLineText = page.locator('[id="preview-content-subject"]');
     this.messageText = page.locator('[id="preview-content-message"]');
+    this.whoYourEmailWillBeSentFrom = page.locator(
+      '[data-testid="preview-message-details"]'
+    );
   }
 
   async loadPage(sessionId: string) {

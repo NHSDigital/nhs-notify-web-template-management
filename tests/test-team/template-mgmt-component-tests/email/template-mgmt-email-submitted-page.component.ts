@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import {
+  assertFooterLinks,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -68,6 +69,7 @@ test.describe('Submit Email message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
+      await assertFooterLinks(props);
       await assertLoginLink(props);
     });
 
@@ -97,7 +99,7 @@ test.describe('Submit Email message template Page', () => {
         page
       );
 
-      await emailTemplateSubmittedPage.loadPage('non-existent-template-id');
+      await emailTemplateSubmittedPage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

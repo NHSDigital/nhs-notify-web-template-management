@@ -4,6 +4,7 @@ import { TemplateMgmtSubmitEmailPage } from '../../pages/email/template-mgmt-sub
 import { SessionFactory } from '../../helpers/session-factory';
 import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import {
+  assertFooterLinks,
   assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
@@ -84,13 +85,14 @@ test.describe('Submit Email message template Page', () => {
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
+      await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
         expectedUrl: `templates/preview-email-template/${sessions.valid.id}`,
       });
     });
 
-    test('when user submits form with, then the "Template submitted" page is displayed', async ({
+    test('when user submits form, then the "Template submitted" page is displayed', async ({
       page,
     }) => {
       const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
@@ -123,6 +125,17 @@ test.describe('Submit Email message template Page', () => {
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
     });
 
+    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+      baseURL,
+      page,
+    }) => {
+      const submitEmailTemplatePage = new TemplateMgmtSubmitEmailPage(page);
+
+      await submitEmailTemplatePage.loadPage('/fake-session-id');
+
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+    });
+
     test('when user submits form and returns, then an invalid session error is displayed', async ({
       baseURL,
       page,
@@ -135,14 +148,17 @@ test.describe('Submit Email message template Page', () => {
 
       getAndStoreTemplateId(page.url());
 
-      // Minor delay here to ensure session is deleted
-      // This test feels inherently flakey due to waiting on a session being deleted
-      // 3 seconds is more than ample time to have a session deleted.
-      await page.waitForTimeout(3000);
-
-      await submitEmailTemplatePage.loadPage(sessions.submitAndReturn.id);
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect
+        .poll(
+          async () => {
+            await submitEmailTemplatePage.loadPage(sessions.submitAndReturn.id);
+            return page.url();
+          },
+          {
+            intervals: [1000, 2000, 3000],
+          }
+        )
+        .toBe(`${baseURL}/templates/invalid-session`);
     });
   });
 });
