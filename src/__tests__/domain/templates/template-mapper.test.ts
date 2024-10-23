@@ -15,7 +15,7 @@ describe('createTemplateFromSession', () => {
       name: 'name',
       type: 'NHS_APP',
       version: 1,
-      fields: { content: 'message' },
+      fields: { content: 'message', subjectLine: null },
     });
   });
 
@@ -34,7 +34,7 @@ describe('createTemplateFromSession', () => {
       name: 'sms-name',
       type: 'SMS',
       version: 1,
-      fields: { content: 'sms-message' },
+      fields: { content: 'sms-message', subjectLine: null },
     });
   });
 

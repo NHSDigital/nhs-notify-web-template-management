@@ -43,6 +43,7 @@ const schema = a.schema({
       templateId: a.string().required(),
       templateName: a.string().required(),
       templateMessage: a.string().required(),
+      templateSubjectLine: a.string(),
     })
     .returns(a.string())
     .handler(a.handler.function(sendEmail))
