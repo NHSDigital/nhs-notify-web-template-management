@@ -37,15 +37,15 @@ export function PreviewTemplate({
 
 PreviewTemplate.Email = ({
   subject,
-  value,
+  message,
 }: {
   subject: string;
-  value: string;
+  message: string;
 }) => (
   <PreviewTemplate
     preview={[
       { heading: 'Subject', id: 'subject', value: subject },
-      { heading: 'Message', id: 'message', value },
+      { heading: 'Message', id: 'message', value: message },
     ]}
   />
 );

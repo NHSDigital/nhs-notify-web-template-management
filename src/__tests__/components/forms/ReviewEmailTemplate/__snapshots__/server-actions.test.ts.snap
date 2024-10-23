@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Preview email server actions should only process email markdown rules 1`] = `
+exports[`PreviewEmailActions should only process email markdown rules 1`] = `
 "<h1>Heading</h1>
 <h2>sub heading</h2>
-<p>**bold**</p>
+<p><strong>bold</strong></p>
 <ul>
 <li>bullet point 1</li>
 <li>bullet point 2</li>
