@@ -27,13 +27,15 @@ const TemplateStorageModel = {
   }),
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const authPermission = (allow: any) =>
+  process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true'
+    ? [allow.authenticated()]
+    : [allow.guest()];
+
 const schema = a.schema({
-  SessionStorage: a
-    .model(SessionStorageModel)
-    .authorization((allow) => [allow.guest()]),
-  TemplateStorage: a
-    .model(TemplateStorageModel)
-    .authorization((allow) => [allow.guest()]),
+  SessionStorage: a.model(SessionStorageModel).authorization(authPermission),
+  TemplateStorage: a.model(TemplateStorageModel).authorization(authPermission),
   sendEmail: a
     .query()
     .arguments({
@@ -45,7 +47,7 @@ const schema = a.schema({
     })
     .returns(a.string())
     .handler(a.handler.function(sendEmail))
-    .authorization((allow) => [allow.guest()]),
+    .authorization(authPermission),
 });
 
 export type Schema = ClientSchema<typeof schema>;
