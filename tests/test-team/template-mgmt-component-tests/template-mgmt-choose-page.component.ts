@@ -13,7 +13,7 @@ export const emptySessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
-export const emptySessionDataForRadioSelect: Session = {
+export const sessionDataForRadioSelect: Session = {
   __typename: 'SessionStorage',
   id: '3d98b0c4-6666-0000-0000-95eb27590001',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -25,7 +25,7 @@ export const emptySessionDataForRadioSelect: Session = {
 
 export const nhsAppRadioSelectedSessionData: Session = {
   __typename: 'SessionStorage',
-  id: '3d90000-6666-0000-0000-95eb27590002',
+  id: 'nhsapp-6666-0000-0000-95eb27590002',
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
@@ -33,11 +33,44 @@ export const nhsAppRadioSelectedSessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
+export const emailRadioSelectedSessionData: Session = {
+  __typename: 'SessionStorage',
+  id: 'email-6666-0000-0000-95eb27590002',
+  createdAt: '2024-09-19T23:36:20.815Z',
+  updatedAt: '2024-09-19T23:36:20.815Z',
+  templateType: TemplateType.EMAIL,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
+
+export const letterRadioSelectedSessionData: Session = {
+  __typename: 'SessionStorage',
+  id: 'letter-6666-0000-0000-95eb27590002',
+  createdAt: '2024-09-19T23:36:20.815Z',
+  updatedAt: '2024-09-19T23:36:20.815Z',
+  templateType: TemplateType.LETTER,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
+
+export const smsRadioSelectedSessionData: Session = {
+  __typename: 'SessionStorage',
+  id: 'sms-6666-0000-0000-95eb27590002',
+  createdAt: '2024-09-19T23:36:20.815Z',
+  updatedAt: '2024-09-19T23:36:20.815Z',
+  templateType: TemplateType.SMS,
+  nhsAppTemplateName: '',
+  nhsAppTemplateMessage: '',
+};
+
 test.describe('Choose Template Type Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([
     emptySessionData,
-    emptySessionDataForRadioSelect,
+    sessionDataForRadioSelect,
     nhsAppRadioSelectedSessionData,
+    emailRadioSelectedSessionData,
+    smsRadioSelectedSessionData,
+    letterRadioSelectedSessionData,
   ]);
 
   test.beforeAll(async () => {
@@ -99,9 +132,13 @@ test.describe('Choose Template Type Page', () => {
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
 
     await expect(page.locator('[class="nhsuk-radios__item"]')).toHaveCount(4);
-    await expect(page.locator('[class="nhsuk-radios__item"]')).toHaveText(
-      TemplateMgmtChoosePage.templateOptions
-    );
+
+    await expect(page.locator('[class="nhsuk-radios__item"]')).toHaveText([
+      'NHS App message',
+      'Email',
+      'Text message (SMS)',
+      'Letter',
+    ]);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({
@@ -130,36 +167,45 @@ test.describe('Choose Template Type Page', () => {
     ).toHaveText(['Select a template type']);
   });
 
-  test('should navigate to the NHS App template creation page when radio button selected and continue button clicked', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+  for (const { label, path } of [
+    { label: 'NHS App message', path: 'nhs-app' },
+    { label: 'Email', path: 'email' },
+    { label: 'Text message (SMS)', path: 'text-message' },
+    { label: 'Letter', path: 'letter' },
+  ])
+    test(`should navigate to the ${label} template creation page when radio button selected and continue button clicked`, async ({
+      page,
+      baseURL,
+    }) => {
+      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage(
-      emptySessionDataForRadioSelect.id
-    );
-    await TemplateMgmtChoosePage.checkRadioButton(
-      page.locator('[id="templateType-NHS_APP"]')
-    );
-    await chooseTemplatePage.clickContinueButton();
+      await chooseTemplatePage.navigateToChooseTemplatePage(
+        sessionDataForRadioSelect.id
+      );
+      await TemplateMgmtChoosePage.checkRadioButton(page.getByLabel(label));
+      await chooseTemplatePage.clickContinueButton();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${emptySessionDataForRadioSelect.id}`
-    );
-  });
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/create-${path}-template/${sessionDataForRadioSelect.id}`
+      );
+    });
 
-  test('should display NHS App radio button selected if present in session storage', async ({
-    page,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+  for (const { label, sessionData } of [
+    { label: 'NHS App message', sessionData: nhsAppRadioSelectedSessionData },
+    { label: 'Email', sessionData: emailRadioSelectedSessionData },
+    { label: 'Text message (SMS)', sessionData: smsRadioSelectedSessionData },
+    { label: 'Letter', sessionData: letterRadioSelectedSessionData },
+  ]) {
+    test(`should display ${label} radio button selected if present in session storage`, async ({
+      page,
+    }) => {
+      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage(
-      nhsAppRadioSelectedSessionData.id
-    );
+      await chooseTemplatePage.navigateToChooseTemplatePage(sessionData.id);
 
-    // expect to assert radio selected
-  });
+      expect(page.getByLabel(label)).toBeChecked();
+    });
+  }
 
   test('should not display "Go Back" link on page', async ({ page }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
@@ -167,5 +213,60 @@ test.describe('Choose Template Type Page', () => {
     await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
 
     await expect(chooseTemplatePage.goBackLink).toBeHidden();
+  });
+
+  test('should navigate to error page if sessionId invalid', async ({
+    page,
+    baseURL,
+  }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+
+    await chooseTemplatePage.navigateToChooseTemplatePage('invalid-sessionId');
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+  });
+
+  test('Footer links exist and are visible', async ({ page }) => {
+    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
+    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+
+    const footerLinks = [
+      {
+        name: 'Accessibility statement',
+        selector: 'a[data-testid="accessibility-statement-link"]',
+        href: '/accessibility',
+      },
+      {
+        name: 'Contact Us',
+        selector: 'a[data-testid="contact-us-link"]',
+        href: '#',
+      },
+      {
+        name: 'Cookies',
+        selector: 'a[data-testid="cookies-link"]',
+        href: '#',
+      },
+      {
+        name: 'Privacy Policy',
+        selector: 'a[data-testid="privacy-policy-link"]',
+        href: '#',
+      },
+      {
+        name: 'Terms and Conditions',
+        selector: 'a[data-testid="terms-and-conditions-link"]',
+        href: '#',
+      },
+    ];
+
+    await Promise.all(
+      footerLinks.map(async (link) => {
+        const linkLocator = page.locator(link.selector);
+        const href = await linkLocator.getAttribute('href');
+        expect(linkLocator, `${link.name} should be visible`).toBeVisible();
+        expect(href, `${link.name} should have href ${link.href}`).toBe(
+          link.href
+        );
+      })
+    );
   });
 });

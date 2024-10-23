@@ -44,7 +44,7 @@ export class TemplateMgmtBasePage {
   }
 
   async navigateTo(url: string) {
-    await this.page.goto(url, { waitUntil: 'load' });
+    await this.page.goto(url, { waitUntil: 'commit' });
   }
 
   async clickNotifyBannerLink() {
