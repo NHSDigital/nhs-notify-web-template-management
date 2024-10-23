@@ -38,12 +38,14 @@ export const TemplateSubmitted = ({
         <h2 className='nhsuk-heading-xs nhsuk-u-margin-bottom-1'>
           {templateNameHeading}
         </h2>
-        <p>{templateName}</p>
+        <p id='template-name'>{templateName}</p>
         <h2 className='nhsuk-heading-xs nhsuk-u-margin-bottom-1'>
           {templateIdHeading}
         </h2>
-        <p>{templateId}</p>
-        <Link href='/create-template'>{newTemplateText}</Link>
+        <p id='template-id'>{templateId}</p>
+        <Link id='create-another-template' href='/create-template'>
+          {newTemplateText}
+        </Link>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
         <p>{doNextText}</p>
         <h3>{notLiveHeading}</h3>

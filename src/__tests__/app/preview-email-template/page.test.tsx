@@ -69,6 +69,12 @@ describe('PreviewEmailTemplatePage', () => {
       emailTemplateSubjectLine: 'valid-subject-line',
       emailTemplateMessage: undefined,
     },
+    {
+      templateType: TemplateType.EMAIL,
+      emailTemplateName: 'valid-name',
+      emailTemplateSubjectLine: 'valid-subject-line',
+      emailTemplateMessage: null as unknown as string,
+    },
   ])(
     'should redirect to invalid-session when session template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',
     async (value) => {

@@ -23,7 +23,9 @@ exports[`EmailTemplateSubmitted 1`] = `
       >
         Template name
       </h2>
-      <p>
+      <p
+        id="template-name"
+      >
         template-name
       </p>
       <h2
@@ -31,11 +33,14 @@ exports[`EmailTemplateSubmitted 1`] = `
       >
         Template ID
       </h2>
-      <p>
+      <p
+        id="template-id"
+      >
         template-id
       </p>
       <a
         href="/create-template"
+        id="create-another-template"
       >
         Create another template
       </a>

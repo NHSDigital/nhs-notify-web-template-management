@@ -79,6 +79,7 @@ exports[`CreateNhsAppTemplatePage 1`] = `
           </div>
           <details
             class="nhsuk-details"
+            data-testid="how-to-name-your-template"
           >
             <summary
               class="nhsuk-details__summary"
