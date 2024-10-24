@@ -3,13 +3,6 @@ import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      SessionStorage: {},
-    },
-  }),
-}));
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitTemplate');
@@ -20,7 +13,7 @@ const redirectMock = jest.mocked(redirect);
 describe('SubmitSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('SubmitSmsTemplatePage', async () => {
+  test('should load page', async () => {
     getSessionMock.mockResolvedValue({
       id: 'session-id',
       templateType: TemplateType.SMS,
@@ -39,7 +32,7 @@ describe('SubmitSmsTemplatePage', () => {
     expect(page).toMatchSnapshot();
   });
 
-  test('SubmitSmsTemplatePage - should handle invalid session', async () => {
+  test('should handle invalid session', async () => {
     getSessionMock.mockResolvedValue(undefined);
 
     await SubmitSmsTemplatePage({
