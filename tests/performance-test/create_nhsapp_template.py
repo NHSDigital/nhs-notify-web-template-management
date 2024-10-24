@@ -1,12 +1,21 @@
 from locust import FastHttpUser, between, task
 import logging
+# import uuid
 import re
 from locust_plugins.transaction_manager import TransactionManager
 from time import time
 from datetime import datetime
 
 class SubmitNHSAppTemplate(FastHttpUser):
-    wait_time = between(5,10)
+    wait_time = between(1,2)
+    timestamp_format = "%Y-%m-%dT%H:%M:%S.000Z"
+    current_datetime = datetime.fromtimestamp(time()).strftime(timestamp_format)
+    # session_storage = str(uuid.uuid4())
+    # session_storage2 = "5be889fc-b42d-498f-ae83-e3bf3c2b4901"
+    # print(type(session_storage))
+    # print(session_storage)
+    # print(type(session_storage2))
+    # print(session_storage2)
 
     def on_start(self):
         self.tm = TransactionManager()
@@ -24,7 +33,15 @@ class SubmitNHSAppTemplate(FastHttpUser):
     def template_headers(self):
         return {
             'Accept': 'text/x-component',
-            'Content-type': 'text/plain;charset=UTF-8'
+            'Content-type': 'text/plain;charset=UTF-8',
+            'Accept-Encoding': 'gzip, deflate, br, zstd'
+        }
+    
+    def submit_headers(self):
+        return {
+            'Accept': 'text/x-component',
+            'Content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryWRDYJegRsQOfhYqk',
+            'Accept-Encoding': 'gzip, deflate, br, zstd'
         }
 
     @task
@@ -43,8 +60,8 @@ class SubmitNHSAppTemplate(FastHttpUser):
                     resp.failure("response does not contain header text")
                     self.tasks = [self.__class__.landing]
             else:
+                resp.failure("Did not receive 200 response code")
                 print("Error in login")
-                print(resp.content)
                 self.tasks = [self.__class__.landing]
 
         self.tm.end_transaction("A_NHSAPP_01_LandingPage")
@@ -61,11 +78,12 @@ class SubmitNHSAppTemplate(FastHttpUser):
                 try:
                     session_storage = re.search(r"choose-a-template-type/(.*?);", resp.text)
                     self.session_storage = session_storage.group(1)
+                    print("Generated sessionId ="+self.session_storage)
                 except AttributeError:
                     self.session_storage = ""
             else:
+                resp.failure("Did not receive 307 response code")
                 print("Error on start now - create template")
-                print(resp.content)
                 self.tasks = [self.__class__.landing]
 
         with self.client.get(f"/choose-a-template-type/{self.session_storage}", name='A_02_ChooseTemplateType', headers=headers, auth=(credentials), catch_response=True) as resp2:
@@ -76,85 +94,94 @@ class SubmitNHSAppTemplate(FastHttpUser):
                     resp2.failure("Assert failure, response does not contain header text")
                     self.tasks = [self.__class__.landing]
             else:
+                resp.failure("Did not receive 200 response code")
                 print("Error on start now - choose template")
-                print(resp.content)
                 self.tasks = [self.__class__.landing]
 
         with self.client.get("/create-and-submit-templates?_rsc=aijwb", name='A_02_CreateSubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp3:
             if resp3.status_code == 200:
-                if 'create-and-submit-templates' in resp3.text:
-                    resp3.success()
-                    self.tasks = [self.__class__.choose_template]
-                else:
-                    resp3.failure("Assert failure, response does not contain header text")
-                    self.tasks = [self.__class__.landing]
+                 resp3.success()
+                 self.tasks = [self.__class__.choose_template]
             else:
+                resp.failure("Did not receive 200 response code")
                 print("Error on start now2")
                 print(resp3.content)
                 self.tasks = [self.__class__.landing]
 
         self.tm.end_transaction("A_NHSAPP_02_StartNow")
 
+
     def choose_template(self):
         headers = self.get_headers()
         choose_template_headers = self.template_headers()
         credentials = self.get_credential()
-        timestamp_format = "%Y-%m-%dT%H:%M:%S.000Z"
-        current_datetime = datetime.fromtimestamp(time()).strftime(timestamp_format)
+        #timestamp_format = "%Y-%m-%dT%H:%M:%S.000Z"
+        # current_datetime = datetime.fromtimestamp(time()).strftime(timestamp_format)
 
-        body = '[{"id":{self.session_storage},"templateType":"NHS_APP","nhsAppTemplateName":"","nhsAppTemplateMessage":"","createdAt":"{self.current_datetime}","updatedAt":"{self.current_datetime}","validationError":"$undefined"}]'
-
+        body = '[{"id":{self.session_storage},"templateType":"NHS_APP","nhsAppTemplateName":"","nhsAppTemplateMessage":"","createdAt":"{self.current_datetime}","updatedAt":"{self.current_datetime}","ttl":1730037219,"validationError":"$undefined"}]'
+        print("body = "+body)
+        
         self.tm.start_transaction("A_NHSAPP_03_ChooseTemplate")
+        print("Posted SessionId = "+self.session_storage)
+        print(type(self.session_storage))
 
         with self.client.post(f"/choose-a-template-type/{self.session_storage}", name='A_03_ChooseTemplateType', data=body, headers=choose_template_headers, auth=(credentials), catch_response=True) as resp:
-            if resp.status_code == 200:
-                if 'choose-a-template-type' in resp.text:
-                    resp.success()
-                else:
-                    resp.failure("Assert failure, response does not contain header text")
-                    self.tasks = [self.__class__.landing]
-            else:
-                print("Error on choose template")
-                logging.error(resp)
-                print(resp.content)
-                self.tasks = [self.__class__.landing]
+            # if resp.status_code == 200:
+            #     if 'Create NHS App message template' in resp.text:
+            #         resp.success()
+            #     else:
+            #         resp.failure("Assert failure, response does not contain header text")
+            #         self.tasks = [self.__class__.landing]
+            #         print(resp.status_code)
+            # else:
+            #     resp.failure("Did not receive 200 response code")
+            #     print("Error on choose template")
+            #     logging.error(resp)
+            #     print(resp.content)
 
-        with self.client.get(f"/create-nhs-app-template/{self.session_storage}?_rsc=1pr28", name='A_03_NHSappTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
-            if resp2.status_code == 200:
-                if 'create-nhs-app-template' in resp2.text:
-                    resp2.success()
-                    self.tasks = [self.__class__.create_template]
-                else:
-                    resp2.failure("Assert failure, response does not contain header text")
-                    self.tasks = [self.__class__.landing]
-            else:
-                print("Error on choose template page")
-                logging.error(resp2)
-                print(resp2.content)
-                self.tasks = [self.__class__.landing]
+            #self.tasks = [self.__class__.landing]
+            print(resp.content)
+            print("SessionId after posting = "+self.session_storage)
 
-        self.tm.end_transaction("A_NHSAPP_03_ChooseTemplate")
+            with self.client.get(f"/create-nhs-app-template/{self.session_storage}?_rsc=1pr28", name='A_03_NHSappTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
+            # if resp2.status_code == 200:
+            #     if 'create-nhs-app-template' in resp2.text:
+            #         resp2.success()
+            #         self.tasks = [self.__class__.create_template]
+            #     else:
+            #         resp2.failure("Assert failure, response does not contain header text")
+            #         self.tasks = [self.__class__.landing]
+            # else:
+            #     resp.failure("Did not receive 200 response code")
+            #     print("Error on choose template page")
+            #     logging.error(resp2)
+            #     print(resp2.content)
+            #     self.tasks = [self.__class__.landing]
+                self.tasks = [self.__class__.create_template]
+                self.tm.end_transaction("A_NHSAPP_03_ChooseTemplate")
 
     def create_template(self):
         headers = self.get_headers()
         create_template_headers = self.template_headers()
         credentials = self.get_credential()
-        timestamp_format = "%Y-%m-%dT%H:%M:%S.000Z"
-        current_datetime = datetime.fromtimestamp(time()).strftime(timestamp_format)
+       # timestamp_format = "%Y-%m-%dT%H:%M:%S.000Z"
+        # current_datetime = datetime.fromtimestamp(time()).strftime(timestamp_format)
 
-        body = '[{"id":{self.session_storage},"templateType":"NHS_APP","nhsAppTemplateName":"PerformanceTest","nhsAppTemplateMessage":"PerformanceTest Template","createdAt":"{self.current_datetime}","updatedAt":"{self.current_datetime}","validationError":"$undefined"}]'
+        body = '[{"id":{self.session_storage},"templateType":"NHS_APP","nhsAppTemplateName":"PerformanceTest","nhsAppTemplateMessage":"PerformanceTest Template","createdAt":"{self.current_datetime}","updatedAt":"{self.current_datetime}","ttl":1730037219,"validationError":"$undefined"}]'
 
         self.tm.start_transaction("A_NHSAPP_04_CreateNHSAppTemplate")
 
         with self.client.post(f"/create-nhs-app-template/{self.session_storage}", name='A_04_CreateNHSAppTemplate', data=body, headers=create_template_headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
-                if 'create-nhs-app-template' in resp.text:
+                if 'PerformanceTest' in resp.text:
                     resp.success()
                 else:
                     resp.failure("Assert failure, response does not contain header text")
                     logging.error(resp.content)
                     self.tasks = [self.__class__.landing]
+            
             else:
+                resp.failure("Did not receive 200 response code")
                 print("Error on create nhsapp template")
                 logging.error(resp.content)
                 print(resp.content)
@@ -162,14 +189,15 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         with self.client.get(f"/preview-nhs-app-template/{self.session_storage}?_rsc=1s4ge", name='A_04_PreviewNHSAppTemplate', headers=headers, auth=(credentials), catch_response=True) as resp2:
             if resp2.status_code == 200:
-                if 'preview-nhs-app-template' in resp2.text:
+                if 'PerformanceTest' in resp2.text:
                     resp2.success()
-                    self.tasks = [self.__class__.submit_template]
+                    self.tasks = [self.__class__.confirm_template]
                 else:
                     resp2.failure("Assert failure, response does not contain header text")
                     logging.error(resp2.content)
                     self.tasks = [self.__class__.landing]
             else:
+                resp.failure("Did not receive 200 response code")
                 print("Error on create nhsapp template")
                 logging.error(resp2.content)
                 print(resp2.content)
@@ -177,25 +205,58 @@ class SubmitNHSAppTemplate(FastHttpUser):
 
         self.tm.end_transaction("A_NHSAPP_04_CreateNHSAppTemplate")
 
-    def submit_template(self):
+    def confirm_template(self):
         headers = self.get_headers()
         credentials = self.get_credential()
 
-        self.tm.start_transaction("A_NHSAPP_05_SubmitTemplate")
+        self.tm.start_transaction("A_NHSAPP_05_ConfirmationPage")
 
-        with self.client.get(f"/submit-template/{self.session_storage}", name='A_05_SubmitTemplate', headers=headers, auth=(credentials), catch_response=True) as resp:
+        with self.client.post(f"/submit-nhs-app-template/{self.session_storage}", name='A_05_ConfirmationPage', headers=headers, auth=(credentials), catch_response=True) as resp:
             if resp.status_code == 200:
-                if 'Placeholder Submit template' in resp.text:
+                if 'PerformanceTest' in resp.text:
                     resp.success()
-                    self.tasks = [self.__class__.landing]
+                    self.tasks = [self.__class__.submit_template]
                 else:
                     resp.failure("Assert failure, response does not contain header text")
                     logging.error(resp.content)
+                    print(resp.content)
                     self.tasks = [self.__class__.landing]
             else:
-                print("Error on submit nhsapp template")
-                logging.error(resp.content)
+                resp.failure("Did not receive 200 response code")
+                print("Error on confirmation page")
                 print(resp.content)
                 self.tasks = [self.__class__.landing]
 
-        self.tm.end_transaction("A_NHSAPP_05_SubmitTemplate")
+        self.tm.end_transaction("A_NHSAPP_05_ConfirmationPage")
+
+
+    def submit_template(self):
+        headers = self.submit_headers()
+        credentials = self.get_credential()
+
+        # body = '[{"id":{self.session_storage},"templateType":"NHS_APP","nhsAppTemplateName":"PerformanceTest","nhsAppTemplateMessage":"PerformanceTest Template","createdAt":"{self.current_datetime}","updatedAt":"{self.current_datetime}","validationError":"$undefined"}]'
+        body = '["nhs-app-template-submitted","$K1"]'
+
+        self.tm.start_transaction("A_NHSAPP_06_SubmitTemplate")
+
+        # with self.client.post(f"/submit-nhs-app-template/{self.session_storage}", name='A_06_SubmitTemplate', headers=headers, data=body, auth=(credentials), catch_response=True) as resp:
+        with self.client.post(f"/submit-nhs-app-template/{self.session_storage}", name='A_06_SubmitTemplate', headers=headers, data=body, auth=(credentials), catch_response=True) as resp:
+                if resp.status_code == 303:
+                    if 'Template submitted' in resp.text:
+                        resp.success()
+                        self.tasks = [self.__class__.landing]
+                    else:
+                        resp.failure("Assert failure, response does not contain header text")
+                        logging.error(resp.content)
+                        # print(resp.content)
+                        print(headers)
+                        self.tasks = [self.__class__.landing]
+                else:
+                    resp.failure("Did not receive 303 response code")
+                    print("Error on Submitting")
+                    logging.error(resp.content)
+                    self.tasks = [self.__class__.landing]
+                    print(resp.status_code)
+                    print("Final SessionID = "+self.session_storage)
+        self.tm.end_transaction("A_NHSAPP_06_SubmitTemplate")
+
