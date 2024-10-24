@@ -10,10 +10,9 @@ const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('TextMessageTemplateSubmittedPage', () => {
-
   beforeEach(jest.resetAllMocks);
 
-  test('SmsTemplateSubmitted', async () => {
+  test('should load page', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
       name: 'template-name',
@@ -22,7 +21,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
       fields: {
         content: 'example',
         subjectLine: null,
-      }
+      },
     });
 
     const page = await SmsTemplateSubmittedPage({
@@ -36,7 +35,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
     expect(page).toMatchSnapshot();
   });
 
-  test('SmsTemplateSubmitted - should handle invalid template', async () => {
+  test('should handle invalid template', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await SmsTemplateSubmittedPage({

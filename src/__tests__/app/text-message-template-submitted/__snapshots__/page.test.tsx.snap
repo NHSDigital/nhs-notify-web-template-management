@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TextMessageTemplateSubmittedPage SmsTemplateSubmitted 1`] = `
+exports[`TextMessageTemplateSubmittedPage should load page 1`] = `
 <TemplateSubmitted
   templateId="template-id"
   templateName="template-name"

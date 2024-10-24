@@ -22,6 +22,26 @@ const getSessionMock = jest.mocked(getSession);
 describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
+  it('should load page', async () => {
+    getSessionMock.mockResolvedValueOnce({
+      id: 'session-id',
+      templateType: TemplateType.EMAIL,
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
+      emailTemplateMessage: 'template-message',
+      nhsAppTemplateMessage: '',
+      nhsAppTemplateName: '',
+    });
+
+    const page = await PreviewEmailTemplatePage({
+      params: {
+        sessionId: 'session-id',
+      },
+    });
+
+    expect(page).toMatchSnapshot();
+  });
+
   it('should redirect to invalid-session when no session is found', async () => {
     await PreviewEmailTemplatePage({
       params: {
@@ -94,24 +114,4 @@ describe('PreviewEmailTemplatePage', () => {
       expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
     }
   );
-
-  it('should render ReviewEmailTemplate with session data', async () => {
-    getSessionMock.mockResolvedValueOnce({
-      id: 'session-id',
-      templateType: TemplateType.EMAIL,
-      emailTemplateName: 'template-name',
-      emailTemplateSubjectLine: 'template-subject-line',
-      emailTemplateMessage: 'template-message',
-      nhsAppTemplateMessage: '',
-      nhsAppTemplateName: '',
-    });
-
-    const page = await PreviewEmailTemplatePage({
-      params: {
-        sessionId: 'session-id',
-      },
-    });
-
-    expect(page).toMatchSnapshot();
-  });
 });

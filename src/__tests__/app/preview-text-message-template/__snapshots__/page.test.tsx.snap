@@ -14,18 +14,3 @@ exports[`PreviewSMSTemplatePage should load page 1`] = `
   }
 />
 `;
-
-exports[`PreviewSMSTemplatePage should render ReviewSMSTemplate with session data 1`] = `
-<ReviewSMSTemplate
-  initialState={
-    {
-      "id": "session-id",
-      "nhsAppTemplateMessage": "",
-      "nhsAppTemplateName": "",
-      "smsTemplateMessage": "template-message",
-      "smsTemplateName": "template-name",
-      "templateType": "SMS",
-    }
-  }
-/>
-`;

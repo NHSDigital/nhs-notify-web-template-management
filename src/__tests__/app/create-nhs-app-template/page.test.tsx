@@ -21,7 +21,9 @@ describe('CreateNhsAppTemplatePage', () => {
       nhsAppTemplateMessage: '',
     });
 
-    const page = await CreateNhsAppTemplatePage({ params: { sessionId: 'session-id' } });
+    const page = await CreateNhsAppTemplatePage({
+      params: { sessionId: 'session-id' },
+    });
 
     expect(page).toMatchSnapshot();
   });
@@ -38,13 +40,14 @@ describe('CreateNhsAppTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
   });
 
-  test.each(
-    [
-      TemplateType.EMAIL,
-      TemplateType.SMS,
-      TemplateType.LETTER,
-      'UNKNOWN',
-    ])('should render invalid session, when session template type is %p', async (templateType) => {
+  test.each([
+    TemplateType.EMAIL,
+    TemplateType.SMS,
+    TemplateType.LETTER,
+    'UNKNOWN',
+  ])(
+    'should render invalid session, when session template type is %p',
+    async (templateType) => {
       getSessionMock.mockResolvedValueOnce({
         id: 'session-id',
         templateType: templateType as TemplateType,
@@ -52,12 +55,13 @@ describe('CreateNhsAppTemplatePage', () => {
         nhsAppTemplateMessage: '',
       });
 
-    await CreateNhsAppTemplatePage({
-      params: {
-        sessionId: 'session-id',
-      },
-    });
+      await CreateNhsAppTemplatePage({
+        params: {
+          sessionId: 'session-id',
+        },
+      });
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
-  });
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    }
+  );
 });

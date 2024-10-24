@@ -4,15 +4,6 @@ import { Session, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      SessionStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/CreateEmailTemplate/CreateEmailTemplate');

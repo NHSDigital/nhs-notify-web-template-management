@@ -61,18 +61,18 @@ describe('SubmitNhsAppTemplatePage', () => {
     {
       templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: 'name-1',
-      // Note: We have todo this casting because nhsAppTemplateMessage on Session type is required
+      // Note: We have need this casting because nhsAppTemplateMessage on Session type is required
       nhsAppTemplateMessage: undefined as unknown as string,
     },
     {
       templateType: TemplateType.NHS_APP,
-      // Note: We have todo this casting because nhsAppTemplateName on Session type is required
+      // Note: We have need this casting because nhsAppTemplateName on Session type is required
       nhsAppTemplateName: undefined as unknown as string,
       nhsAppTemplateMessage: 'message-1',
     },
     {
       templateType: TemplateType.NHS_APP,
-      // Note: We have todo this casting because Session type does not have a null typing
+      // Note: We have need this casting because Session type does not have a null typing
       nhsAppTemplateName: null as unknown as string,
       nhsAppTemplateMessage: null as unknown as string,
     },
