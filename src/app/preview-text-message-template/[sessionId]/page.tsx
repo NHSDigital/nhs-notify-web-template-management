@@ -14,7 +14,7 @@ const PreviewSMSTemplatePage = async ({ params: { sessionId } }: PageProps) => {
   const session = await getSession(sessionId);
 
   if (!session || !isValid(session)) {
-    redirect('/invalid-session', RedirectType.replace);
+    return redirect('/invalid-session', RedirectType.replace);
   }
 
   return <ReviewSMSTemplate initialState={session} />;
