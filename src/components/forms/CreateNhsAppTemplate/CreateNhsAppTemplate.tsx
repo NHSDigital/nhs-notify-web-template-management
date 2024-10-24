@@ -112,7 +112,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
       </div>
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
-        <MessageFormatting template='APP' />
+        <MessageFormatting template={TemplateType.NHS_APP} />
       </div>
     </div>
   );

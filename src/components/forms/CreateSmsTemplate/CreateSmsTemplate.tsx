@@ -13,7 +13,7 @@ import {
   TextInput,
 } from 'nhsuk-react-components';
 import { useFormState } from 'react-dom';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, TemplateType } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -103,7 +103,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
       </div>
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
-        <MessageFormatting template='SMS' />
+        <MessageFormatting template={TemplateType.SMS} />
       </div>
     </div>
   );
