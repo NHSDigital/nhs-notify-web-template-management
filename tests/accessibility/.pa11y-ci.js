@@ -32,6 +32,7 @@ module.exports = {
     performCheck(chooseATemplatePage(baseUrl)),
     performCheck(chooseATemplatePageError(baseUrl)),
 
+    // NHS App journey
     performCheck(createNHSAppTemplatePage(baseUrl)),
     performCheck(createNHSAppTemplateErrorPage(baseUrl)),
     performCheck(reviewNHSAppTemplatePage(baseUrl)),
@@ -39,6 +40,7 @@ module.exports = {
     performCheck(submitNHSAppTemplatePage(baseUrl)),
     performCheck(NhsAppTemplateSubmittedPage(baseUrl)),
 
+    // Text message journey
     performCheck(createTextMessageTemplatePage(baseUrl)),
     performCheck(createTextMessageTemplateErrorPage(baseUrl)),
     performCheck(reviewTextMessageTemplatePage(baseUrl)),
@@ -46,6 +48,7 @@ module.exports = {
     performCheck(submitTextMessageTemplatePage(baseUrl)),
     performCheck(textMessageTemplateSubmittedPage(baseUrl)),
 
+    // Email journey
     performCheck(createEmailTemplatePage(baseUrl)),
     performCheck(createEmailTemplateErrorPage(baseUrl)),
     performCheck(reviewEmailTemplatePage(baseUrl)),
@@ -54,6 +57,7 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(baseUrl)),
 
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
+    performCheck({ url: `${baseUrl}/invalid-template`, name: 'invalid-template'}),
     performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],
   defaults: {
