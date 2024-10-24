@@ -39,6 +39,7 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
   </h1>
   <details
     class="nhsuk-details"
+    data-testid="preview-message-details"
   >
     <summary
       class="nhsuk-details__summary"
@@ -159,6 +160,7 @@ exports[`ReviewTemplate component matches snapshot 1`] = `
   </h1>
   <details
     class="nhsuk-details"
+    data-testid="preview-message-details"
   >
     <summary
       class="nhsuk-details__summary"

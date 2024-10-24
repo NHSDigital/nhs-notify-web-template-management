@@ -8,7 +8,7 @@ describe('validateTemplate', () => {
     '%p - should throw error when validation fails',
     (type) => {
       const templateDTO: TemplateInput = {
-        fields: { content: undefined as unknown as string },
+        fields: { content: undefined as unknown as string, subjectLine: null },
         name: 'name',
         type,
         version: 1,
@@ -24,7 +24,7 @@ describe('validateTemplate', () => {
     '%p - should return data when validation passes',
     (type) => {
       const templateDTO: TemplateInput = {
-        fields: { content: 'body' },
+        fields: { content: 'body', subjectLine: null },
         name: 'name',
         type,
         version: 1,

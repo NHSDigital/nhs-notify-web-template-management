@@ -8,6 +8,9 @@ const SessionStorageModel = {
   templateType: a.enum([...templateTypes, 'UNKNOWN']),
   nhsAppTemplateName: a.string().required(),
   nhsAppTemplateMessage: a.string().required(),
+  emailTemplateName: a.string(),
+  emailTemplateSubjectLine: a.string(),
+  emailTemplateMessage: a.string(),
   smsTemplateName: a.string(),
   smsTemplateMessage: a.string(),
   ttl: a.integer().required(),
@@ -19,6 +22,7 @@ const TemplateStorageModel = {
   type: a.enum(templateTypes),
   version: a.integer().required(),
   fields: a.customType({
+    subjectLine: a.string(),
     content: a.string().required(),
   }),
 };
@@ -39,6 +43,7 @@ const schema = a.schema({
       templateId: a.string().required(),
       templateName: a.string().required(),
       templateMessage: a.string().required(),
+      templateSubjectLine: a.string(),
     })
     .returns(a.string())
     .handler(a.handler.function(sendEmail))

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders form section 1`] = `
+<DocumentFragment>
+  <div
+    class="border"
+  >
+    <input
+      id="input"
+      readonly=""
+      value="4"
+    />
+  </div>
+</DocumentFragment>
+`;

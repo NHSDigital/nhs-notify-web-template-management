@@ -231,7 +231,6 @@ const reviewEmailTemplateContent = {
     pageHeading: 'What would you like to do next with this template?',
     options: [
       { id: 'email-edit', text: 'Edit' },
-      { id: 'email-send', text: 'Send a test email' },
       { id: 'email-submit', text: 'Submit' },
     ],
     buttonText: 'Continue',
@@ -397,8 +396,19 @@ export const createNhsAppTemplatePageContent = {
   pageHeading: 'Create NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
+  templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
+  buttonText: 'Continue',
+};
+
+export const createEmailTemplatePageContent = {
+  pageHeading: 'Create Email message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateSubjectLineLabelText: 'Subject line',
+  templateMessageLabelText: 'Message',
+  templateNameHintText: 'This will not be visible to recipients.',
   buttonText: 'Continue',
 };
 

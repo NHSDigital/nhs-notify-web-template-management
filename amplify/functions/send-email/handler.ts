@@ -14,8 +14,13 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
   const client = new SESClient({ region: 'eu-west-2' });
 
   const { senderEmail } = config();
-  const { recipientEmail, templateId, templateName, templateMessage } =
-    event.arguments;
+  const {
+    recipientEmail,
+    templateId,
+    templateName,
+    templateMessage,
+    templateSubjectLine,
+  } = event.arguments;
 
   logger.info(
     `Sending email for template ${templateName} with ID ${templateId}`
@@ -27,12 +32,12 @@ export const handler: Schema['sendEmail']['functionHandler'] = async (
   msg.setSubject(`Template submitted - ${templateName}`);
   msg.addMessage({
     contentType: 'text/html',
-    data: emailTemplate(templateId, templateName, templateMessage),
-  });
-  msg.addAttachment({
-    filename: 'template-content.md',
-    contentType: 'text/markdown',
-    data: Buffer.from(templateMessage).toString('base64'),
+    data: emailTemplate(
+      templateId,
+      templateName,
+      templateMessage,
+      templateSubjectLine
+    ),
   });
 
   const command = new SendRawEmailCommand({

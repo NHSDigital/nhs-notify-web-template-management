@@ -39,6 +39,7 @@ const mockTemplateResponseData = {
   version: 1,
   fields: {
     content: 'template-content',
+    subjectLine: null,
   },
 };
 jest.mock('@utils/amplify-utils');
@@ -267,7 +268,7 @@ test('saveTemplate - throws error when failing to save', async () => {
 
   const template: Template = {
     id: 'template-id',
-    fields: { content: 'body' },
+    fields: { content: 'body', subjectLine: null },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
@@ -288,7 +289,7 @@ test('saveTemplate - no errors but no data', async () => {
   });
 
   const template: Omit<Template, 'id'> = {
-    fields: { content: 'body' },
+    fields: { content: 'body', subjectLine: null },
     name: 'name',
     type: TemplateType.NHS_APP,
     version: 1,
@@ -301,7 +302,7 @@ test('saveTemplate - no errors but no data', async () => {
 
 test('saveTemplate - should return saved data', async () => {
   const template: TemplateInput = {
-    fields: { content: 'body' },
+    fields: { content: 'body', subjectLine: null },
     name: 'name',
     type: 'NHS_APP',
     version: 1,
@@ -344,7 +345,7 @@ test('sendEmail - no errors', async () => {
   });
 
   const mockLogger = jest.mocked(logger);
-  await sendEmail('template-id', 'template-name', 'template-message');
+  await sendEmail('template-id', 'template-name', 'template-message', null);
 
   expect(mockLogger.error).not.toHaveBeenCalled();
 });
@@ -357,7 +358,12 @@ test('sendEmail - errors', async () => {
   });
 
   const mockLogger = jest.mocked(logger);
-  await sendEmail('template-id-error', 'template-name', 'template-message');
+  await sendEmail(
+    'template-id-error',
+    'template-name',
+    'template-message',
+    null
+  );
 
   expect(mockLogger.error).toHaveBeenCalledWith({
     description: 'Error sending email',

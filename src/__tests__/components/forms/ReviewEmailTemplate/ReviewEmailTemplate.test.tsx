@@ -1,18 +1,62 @@
+'use client';
+
 import { render, screen } from '@testing-library/react';
 import {
   ReviewEmailTemplate,
   renderMarkdown,
 } from '@forms/ReviewEmailTemplate';
+import { mockDeep } from 'jest-mock-extended';
+import { TemplateFormState } from '@utils/types';
 
 jest.mock('@forms/ReviewEmailTemplate/server-actions');
+
+jest.mock('react-dom', () => {
+  const originalModule = jest.requireActual('react-dom');
+
+  return {
+    ...originalModule,
+    useFormState: (
+      _: (
+        formState: TemplateFormState,
+        formData: FormData
+      ) => Promise<TemplateFormState>,
+      initialState: TemplateFormState
+    ) => [initialState, '/action'],
+  };
+});
 
 describe('Preview email form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <ReviewEmailTemplate
-        templateName='test-template-email'
-        subject='email subject'
-        message='message'
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          emailTemplateName: 'test-template-email',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: 'message',
+          id: 'session-id',
+        })}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches error snapshot', () => {
+    const container = render(
+      <ReviewEmailTemplate
+        initialState={mockDeep<TemplateFormState>({
+          validationError: {
+            formErrors: [],
+            fieldErrors: {
+              reviewEmailTemplateAction: ['Select an option'],
+            },
+          },
+          emailTemplateName: 'test-template-email',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: 'message',
+          id: 'session-id',
+        })}
       />
     );
 
@@ -22,9 +66,13 @@ describe('Preview email form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewEmailTemplate
-        templateName='test-template-email'
-        subject='email subject'
-        message='email message body'
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          emailTemplateName: 'test-template-email',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: 'message',
+          id: 'session-id',
+        })}
       />
     );
 
@@ -33,18 +81,13 @@ describe('Preview email form renders', () => {
       'email-edit'
     );
 
-    expect(screen.getByTestId('email-send-radio')).toHaveAttribute(
-      'value',
-      'email-send'
-    );
-
     expect(screen.getByTestId('email-submit-radio')).toHaveAttribute(
       'value',
       'email-submit'
     );
   });
 
-  it('should should render message with markdown', () => {
+  it('should should render subject line and message with markdown', () => {
     const renderMock = jest.mocked(renderMarkdown);
 
     renderMock.mockReturnValue('Rendered via MD');
@@ -53,14 +96,21 @@ describe('Preview email form renders', () => {
 
     render(
       <ReviewEmailTemplate
-        templateName='test-template-email'
-        subject='email subject'
-        message={message}
+        initialState={mockDeep<TemplateFormState>({
+          validationError: undefined,
+          emailTemplateName: 'test-template-email',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: message,
+          id: 'session-id',
+        })}
       />
     );
 
     expect(renderMock).toHaveBeenCalledWith(message);
 
+    expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
+      'template-subject-line'
+    );
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'
     );
