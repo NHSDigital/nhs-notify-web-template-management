@@ -6,8 +6,12 @@ authors = ["NHS"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.9"
 locust = "^2.20.1"
+locust_plugins = "^4.5.3"
+playwright = "^1.48"
+pytest-playwright = "^0.5"
+nest_asyncio = "^1.6.0"
 
 [build-system]
 requires = ["poetry-core"]
