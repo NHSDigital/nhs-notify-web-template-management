@@ -77,6 +77,12 @@ describe('SubmitSmsTemplatePage', () => {
       smsTemplateName: undefined,
       smsTemplateMessage: 'message-1',
     },
+    {
+      templateType: TemplateType.SMS,
+      // Note: We have todo this casting because Session type does not have a null typing
+      smsTemplateName: null as unknown as string,
+      smsTemplateMessage:  null as unknown as string,
+    },
   ])(
     'should redirect to invalid-session when session template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
     async (value) => {
