@@ -1,5 +1,6 @@
 import asyncio
 import nest_asyncio
+from locust import task
 from playwright.async_api import async_playwright
 
 # Apply nest_asyncio to avoid "event loop is already running" errors
