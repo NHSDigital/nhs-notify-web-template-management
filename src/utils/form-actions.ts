@@ -53,7 +53,7 @@ export async function saveSession(session: Session) {
       operation: 'update',
     });
   }
-  return data;
+  return data as Session;
 }
 
 export async function getSession(
@@ -104,7 +104,7 @@ export async function saveTemplate(template: Omit<Template, 'id'>) {
       ],
     });
   }
-  return data;
+  return data as Template;
 }
 
 export async function getTemplate(
@@ -130,13 +130,15 @@ export async function getTemplate(
 export async function sendEmail(
   templateId: string,
   templateName: string,
-  templateMessage: string
+  templateMessage: string,
+  templateSubjectLine: string | null
 ) {
   const res = await getAmplifyBackendClient().queries.sendEmail({
     recipientEmail: 'england.test.cm@nhs.net',
     templateId,
     templateName,
     templateMessage,
+    templateSubjectLine,
   });
 
   if (res.errors) {

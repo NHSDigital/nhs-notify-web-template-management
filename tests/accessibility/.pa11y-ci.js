@@ -7,12 +7,18 @@ const {
   reviewNHSAppTemplatePage,
   reviewNHSAppTemplateErrorPage,
   submitNHSAppTemplatePage,
+  createEmailTemplatePage,
+  createEmailTemplateErrorPage,
+  reviewEmailTemplatePage,
+  reviewEmailTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
   reviewTextMessageTemplatePage,
   reviewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
+  submitEmailTemplatePage,
+  emailTemplateSubmittedPage,
   NHSAppTemplateSubmittedPage,
 } = require('./actions');
 
@@ -25,6 +31,7 @@ module.exports = {
     performCheck({ url: startUrl, name: 'landing-page' }),
     performCheck(chooseATemplatePage(baseUrl)),
     performCheck(chooseATemplatePageError(baseUrl)),
+
     performCheck(createNHSAppTemplatePage(baseUrl)),
     performCheck(createNHSAppTemplateErrorPage(baseUrl)),
     performCheck(reviewNHSAppTemplatePage(baseUrl)),
@@ -37,6 +44,14 @@ module.exports = {
     performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
     performCheck(submitTextMessageTemplatePage(baseUrl)),
     performCheck(textMessageTemplateSubmittedPage(baseUrl)),
+
+    performCheck(createEmailTemplatePage(baseUrl)),
+    performCheck(createEmailTemplateErrorPage(baseUrl)),
+    performCheck(reviewEmailTemplatePage(baseUrl)),
+    performCheck(reviewEmailTemplateErrorPage(baseUrl)),
+    performCheck(submitEmailTemplatePage(baseUrl)),
+    performCheck(emailTemplateSubmittedPage(baseUrl)),
+
     performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
     performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],

@@ -5,14 +5,24 @@ const nhsAppTemplateMap = (session: Session): TemplateInput => ({
   name: session.nhsAppTemplateName,
   type: 'NHS_APP',
   version: 1,
-  fields: { content: session.nhsAppTemplateMessage },
+  fields: { content: session.nhsAppTemplateMessage, subjectLine: null },
 });
 
 const smsTemplateMap = (session: Session): TemplateInput => ({
   name: session.smsTemplateName!,
   type: 'SMS',
   version: 1,
-  fields: { content: session.smsTemplateMessage! },
+  fields: { content: session.smsTemplateMessage!, subjectLine: null },
+});
+
+const emailTemplateMap = (session: Session): TemplateInput => ({
+  name: session.emailTemplateName!,
+  type: 'EMAIL',
+  version: 1,
+  fields: {
+    subjectLine: session.emailTemplateSubjectLine!,
+    content: session.emailTemplateMessage!,
+  },
 });
 
 export function createTemplateFromSession(session: Session): TemplateInput {
@@ -22,6 +32,9 @@ export function createTemplateFromSession(session: Session): TemplateInput {
     }
     case TemplateType.SMS: {
       return smsTemplateMap(session);
+    }
+    case TemplateType.EMAIL: {
+      return emailTemplateMap(session);
     }
     default: {
       throw new Error(`Invalid ${session.templateType} template type`);

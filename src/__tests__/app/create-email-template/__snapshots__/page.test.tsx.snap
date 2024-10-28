@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateEmailTemplatePage 1`] = `
-<DocumentFragment>
-  <h2
-    class="nhsuk-heading-l"
-    data-testid="page-sub-heading"
-  >
-    Placeholder email page
-  </h2>
-</DocumentFragment>
+exports[`CreateEmailTemplatePage should render CreateEmailTemplatePage component when session is found 1`] = `
+<CreateEmailTemplate
+  initialState={
+    {
+      "id": "session-id",
+      "nhsAppTemplateMessage": "",
+      "nhsAppTemplateName": "",
+      "templateType": "EMAIL",
+    }
+  }
+/>
 `;

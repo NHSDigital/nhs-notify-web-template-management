@@ -78,6 +78,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           </div>
           <details
             class="nhsuk-details"
+            data-testid="how-to-name-your-template"
           >
             <summary
               class="nhsuk-details__summary"
@@ -418,6 +419,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </div>
           <details
             class="nhsuk-details"
+            data-testid="how-to-name-your-template"
           >
             <summary
               class="nhsuk-details__summary"
@@ -772,6 +774,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </div>
           <details
             class="nhsuk-details"
+            data-testid="how-to-name-your-template"
           >
             <summary
               class="nhsuk-details__summary"
@@ -1104,6 +1107,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           </div>
           <details
             class="nhsuk-details"
+            data-testid="how-to-name-your-template"
           >
             <summary
               class="nhsuk-details__summary"

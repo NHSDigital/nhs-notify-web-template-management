@@ -33,6 +33,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     buttonText,
     characterCountText,
     templateNameLabelText,
+    templateMessageLabelText,
     templateNameHintText,
   } = createNhsAppTemplatePageContent;
   const [state, action] = useFormState(
@@ -93,7 +94,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             />
           </div>
           <Textarea
-            label='Message'
+            label={templateMessageLabelText}
             id='nhsAppTemplateMessage'
             maxLength={5000}
             rows={10}
