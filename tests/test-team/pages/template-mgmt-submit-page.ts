@@ -1,10 +1,13 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtSubmitEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
   public readonly submitButton: Locator;
 
-  constructor(page: Page) {
+  constructor(
+    page: Page,
+    private readonly channelIdentifier: string
+  ) {
     super(page);
     this.submitButton = page
       .locator('[id="submit-template-button"]')
@@ -12,7 +15,9 @@ export class TemplateMgmtSubmitEmailPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(sessionId: string) {
-    await this.navigateTo(`/templates/submit-email-template/${sessionId}`);
+    await this.navigateTo(
+      `/templates/submit-${this.channelIdentifier}-template/${sessionId}`
+    );
   }
 
   async clickSubmitTemplateButton() {

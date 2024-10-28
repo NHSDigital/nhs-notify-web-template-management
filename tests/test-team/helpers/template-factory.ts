@@ -1,4 +1,4 @@
-import { Template, TemplateType } from './types';
+import { Template } from './types';
 
 type BaseTemplateFields = Omit<
   Template,
@@ -6,13 +6,6 @@ type BaseTemplateFields = Omit<
 >;
 
 export const TemplateFactory = {
-  createEmailTemplate: (props: Omit<BaseTemplateFields, 'type'>): Template => {
-    return TemplateFactory.create({
-      ...props,
-      type: TemplateType.EMAIL,
-    });
-  },
-
   create: (props: BaseTemplateFields): Template => {
     return {
       ...props,

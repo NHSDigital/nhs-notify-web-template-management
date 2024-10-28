@@ -14,7 +14,7 @@ const sessions = {
   empty: SessionFactory.createEmailSession('empty-email-session'),
   submit: SessionFactory.createEmailSession('submit-email-session'),
   submitAndReturn: SessionFactory.createEmailSession(
-    'submit-and-return-session'
+    'submit-and-return-create-email-session'
   ),
   goBackAndReturn: SessionFactory.createEmailSession('go-back-email-session'),
   noEmailTemplateType: SessionFactory.create({
