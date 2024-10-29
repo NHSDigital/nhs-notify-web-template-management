@@ -26,6 +26,7 @@ class UserTasks(SequentialTaskSet):
 
     async def stop_playwright(self):
         # This is executed when a simulated user stops.
+        await self.page.close()
         await self.context.close()
         await self.browser.close()
         await self.playwright.stop()
@@ -55,9 +56,8 @@ class UserTasks(SequentialTaskSet):
         await self.page.get_by_role("button", name="Submit template").click()
 
 class PlaywrightScriptUser(HttpUser):
-    host = "https://main.web-gateway.dev.nhsnotify.national.nhs.uk"
-    tasks = [UserTasks]
-    wait_time = between(1, 5)  # Wait time between task executions
+    tasks = {UserTasks: 1}  # Assign UserTasks to this user class
+    wait_time = between(1, 5)
 
 # If you need to run the script independently (for debugging):
 if __name__ == "__main__":
