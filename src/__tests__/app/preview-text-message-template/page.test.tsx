@@ -1,4 +1,5 @@
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[sessionId]/page';
+import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
 import { TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
@@ -14,14 +15,16 @@ describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    getSessionMock.mockResolvedValueOnce({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.SMS,
       smsTemplateName: 'template-name',
       smsTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValueOnce(state);
 
     const page = await PreviewSMSTemplatePage({
       params: {
@@ -29,7 +32,7 @@ describe('PreviewSMSTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(<ReviewSMSTemplate initialState={state}/>);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

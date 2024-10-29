@@ -1,4 +1,5 @@
 import SubmitEmailTemplatePage from '@app/submit-email-template/[sessionId]/page';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
@@ -14,7 +15,7 @@ describe('SubmitEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    getSessionMock.mockResolvedValue({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.EMAIL,
       emailTemplateName: 'template-name',
@@ -22,7 +23,9 @@ describe('SubmitEmailTemplatePage', () => {
       emailTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValue(state);
 
     const page = await SubmitEmailTemplatePage({
       params: {
@@ -30,7 +33,13 @@ describe('SubmitEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+    <SubmitTemplate
+      templateName={state.emailTemplateName}
+      sessionId={state.id}
+      goBackPath='preview-email-template'
+      submitPath='email-template-submitted'/>
+    );
   });
 
   test('should handle invalid session', async () => {

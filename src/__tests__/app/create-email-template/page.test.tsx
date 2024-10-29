@@ -2,6 +2,7 @@ import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page
 import { getSession } from '@utils/form-actions';
 import { Session, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
+import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -52,6 +53,9 @@ describe('CreateEmailTemplatePage', () => {
 
     expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+    <CreateEmailTemplate
+      initialState={initialState}
+    />);
   });
 });

@@ -1,4 +1,5 @@
 import PreviewEmailTemplatePage from '@app/preview-email-template/[sessionId]/page';
+import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
 import { TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
@@ -14,7 +15,7 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    getSessionMock.mockResolvedValueOnce({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.EMAIL,
       emailTemplateName: 'template-name',
@@ -22,7 +23,9 @@ describe('PreviewEmailTemplatePage', () => {
       emailTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValueOnce(state);
 
     const page = await PreviewEmailTemplatePage({
       params: {
@@ -30,7 +33,7 @@ describe('PreviewEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(<ReviewEmailTemplate initialState={state}/>);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

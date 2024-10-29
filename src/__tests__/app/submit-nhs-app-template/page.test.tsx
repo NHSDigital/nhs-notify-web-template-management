@@ -1,4 +1,5 @@
 import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[sessionId]/page';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
@@ -14,20 +15,30 @@ describe('SubmitNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    getSessionMock.mockResolvedValue({
-      id: 'session-id',
-      templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: 'template-name',
-      nhsAppTemplateMessage: 'template-message',
-    });
+    const state = {
+
+        id: 'session-id',
+        templateType: TemplateType.NHS_APP,
+        nhsAppTemplateName: 'template-name',
+        nhsAppTemplateMessage: 'template-message',
+
+    };
+
+    getSessionMock.mockResolvedValue(state);
 
     const page = await SubmitNhsAppTemplatePage({
       params: {
         sessionId: 'session-id',
       },
     });
-
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+      <SubmitTemplate
+      templateName={state.nhsAppTemplateName}
+      sessionId={state.id}
+      goBackPath='preview-nhs-app-template'
+      submitPath='nhs-app-template-submitted'
+    />
+    )
   });
 
   test('should handle invalid session', async () => {

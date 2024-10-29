@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { TemplateType } from '@utils/types';
 import { getSession } from '@utils/form-actions';
+import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[sessionId]/page';
 
 jest.mock('@forms/CreateNhsAppTemplate/CreateNhsAppTemplate');
@@ -14,18 +15,20 @@ describe('CreateNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
-    getSessionMock.mockResolvedValueOnce({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: '',
       nhsAppTemplateMessage: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValueOnce(state);
 
     const page = await CreateNhsAppTemplatePage({
       params: { sessionId: 'session-id' },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(<CreateNhsAppTemplate  initialState={state}/>)
   });
 
   test('should render invalid session, when session is not found', async () => {

@@ -1,4 +1,6 @@
 import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
+import { Template } from '@domain/templates';
+import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 
@@ -13,7 +15,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    getTemplateMock.mockResolvedValueOnce({
+    const template: Template = {
       id: 'template-id',
       name: 'template-name',
       type: 'SMS',
@@ -22,7 +24,9 @@ describe('TextMessageTemplateSubmittedPage', () => {
         content: 'example',
         subjectLine: null,
       },
-    });
+    };
+
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const page = await SmsTemplateSubmittedPage({
       params: {
@@ -32,7 +36,9 @@ describe('TextMessageTemplateSubmittedPage', () => {
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+      <TemplateSubmitted templateId={template.id} templateName={template.name} />
+    )
   });
 
   test('should handle invalid template', async () => {

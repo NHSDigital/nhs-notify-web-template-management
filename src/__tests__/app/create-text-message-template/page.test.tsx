@@ -10,7 +10,6 @@ jest.mock('@forms/CreateSmsTemplate/CreateSmsTemplate');
 
 const getSessionMock = jest.mocked(getSession);
 const redirectMock = jest.mocked(redirect);
-const CreateSmsTemplateMock = jest.mocked(CreateSmsTemplate);
 
 const initialState: Session = {
   id: 'session-id',
@@ -47,7 +46,6 @@ describe('CreateSmsTemplatePage', () => {
 
   it('should render CreateSmsTemplate component when session is found', async () => {
     getSessionMock.mockResolvedValueOnce(initialState);
-    CreateSmsTemplateMock.mockImplementationOnce(() => <p>rendered</p>);
 
     const page = await CreateSmsTemplatePage({
       params: { sessionId: 'session-id' },
@@ -55,6 +53,6 @@ describe('CreateSmsTemplatePage', () => {
 
     expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(<CreateSmsTemplate initialState={initialState} />);
   });
 });

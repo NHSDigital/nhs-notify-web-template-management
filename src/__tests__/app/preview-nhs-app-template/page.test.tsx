@@ -1,11 +1,12 @@
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page';
+import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate'
 import { TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewNHSAppTemplate');
+jest.mock('@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getSessionMock = jest.mocked(getSession);
@@ -14,12 +15,14 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    getSessionMock.mockResolvedValueOnce({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.NHS_APP,
       nhsAppTemplateName: 'template-name',
       nhsAppTemplateMessage: 'template-message',
-    });
+    };
+
+    getSessionMock.mockResolvedValueOnce(state);
 
     const page = await PreviewNhsAppTemplatePage({
       params: {
@@ -27,7 +30,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(<ReviewNHSAppTemplate initialState={state}/>);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

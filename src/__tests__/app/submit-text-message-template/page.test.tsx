@@ -1,4 +1,5 @@
 import SubmitSmsTemplatePage from '@app/submit-text-message-template/[sessionId]/page';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
@@ -14,14 +15,16 @@ describe('SubmitSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    getSessionMock.mockResolvedValue({
+    const state = {
       id: 'session-id',
       templateType: TemplateType.SMS,
       smsTemplateName: 'template-name',
       smsTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValue(state);
 
     const page = await SubmitSmsTemplatePage({
       params: {
@@ -29,7 +32,14 @@ describe('SubmitSmsTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+      <SubmitTemplate
+      templateName={state.smsTemplateName}
+      sessionId={state.id}
+      goBackPath='preview-text-message-template'
+      submitPath='text-message-template-submitted'
+    />
+    )
   });
 
   test('should handle invalid session', async () => {
