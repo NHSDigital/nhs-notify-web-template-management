@@ -2,6 +2,13 @@ import { test, expect } from '@playwright/test';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
+import {
+  assertFooterLinks,
+  assertGoBackLinkNotPresent,
+  assertLoginLink,
+  assertNotifyBannerLink,
+  assertSkipToMainContent,
+} from './template-mgmt-common.steps';
 
 export const emptySessionData: Session = {
   __typename: 'SessionStorage',
@@ -87,58 +94,38 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+    await chooseTemplatePage.loadPage(emptySessionData.id);
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
     );
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
+    await expect(chooseTemplatePage.pageHeader).toHaveText(
       'Choose a template type to create'
     );
   });
 
-  test('should navigate to start page when "notify banner link" clicked', async ({
+  test('common page tests', async ({ page, baseURL }) => {
+    const props = {
+      page: new TemplateMgmtChoosePage(page),
+      id: emptySessionData.id,
+      baseURL,
+    };
+
+    await assertSkipToMainContent(props);
+    await assertNotifyBannerLink(props);
+    await assertFooterLinks(props);
+    await assertLoginLink(props);
+    await assertGoBackLinkNotPresent(props);
+  });
+
+  test('should display correct number of radio button options', async ({
     page,
-    baseURL,
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-    await chooseTemplatePage.clickNotifyBannerLink();
+    await chooseTemplatePage.loadPage(emptySessionData.id);
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-and-submit-templates`
-    );
-  });
-
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-      await chooseTemplatePage.navigateToChooseTemplatePage(
-        emptySessionData.id
-      );
-      await chooseTemplatePage.clickLoginLink();
-
-      await expect(page).toHaveURL(`${baseURL}/templates`);
-    }
-  );
-
-  test('should display correct radio button options', async ({ page }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(page.locator('[class="nhsuk-radios__item"]')).toHaveCount(4);
-
-    await expect(page.locator('[class="nhsuk-radios__item"]')).toHaveText([
-      'NHS App message',
-      'Email',
-      'Text message (SMS)',
-      'Letter',
-    ]);
+    await expect(chooseTemplatePage.radioButtons).toHaveCount(4);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({
@@ -147,24 +134,17 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
+    await chooseTemplatePage.loadPage(emptySessionData.id);
     await chooseTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
     );
 
-    expect(await chooseTemplatePage.fieldsetHeading.textContent()).toBe(
-      'Choose a template type to create'
-    );
-
-    await expect(page.locator('[class="nhsuk-error-summary"]')).toBeVisible();
-
-    await expect(
-      page
-        .locator('[class="nhsuk-list nhsuk-error-summary__list"]')
-        .getByRole('listitem')
-    ).toHaveText(['Select a template type']);
+    await expect(chooseTemplatePage.errorSummary).toBeVisible();
+    await expect(chooseTemplatePage.errorSummaryList).toHaveText([
+      'Select a template type',
+    ]);
   });
 
   for (const { label, path } of [
@@ -179,10 +159,8 @@ test.describe('Choose Template Type Page', () => {
     }) => {
       const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.navigateToChooseTemplatePage(
-        sessionDataForRadioSelect.id
-      );
-      await TemplateMgmtChoosePage.checkRadioButton(page.getByLabel(label));
+      await chooseTemplatePage.loadPage(sessionDataForRadioSelect.id);
+      await chooseTemplatePage.checkRadioButton(label);
       await chooseTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
@@ -201,19 +179,11 @@ test.describe('Choose Template Type Page', () => {
     }) => {
       const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.navigateToChooseTemplatePage(sessionData.id);
+      await chooseTemplatePage.loadPage(sessionData.id);
 
       expect(page.getByLabel(label)).toBeChecked();
     });
   }
-
-  test('should not display "Go Back" link on page', async ({ page }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    await expect(chooseTemplatePage.goBackLink).toBeHidden();
-  });
 
   test('should navigate to error page if sessionId invalid', async ({
     page,
@@ -221,52 +191,8 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.navigateToChooseTemplatePage('invalid-sessionId');
+    await chooseTemplatePage.loadPage('invalid-sessionId');
 
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
-  });
-
-  test('Footer links exist and are visible', async ({ page }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-    await chooseTemplatePage.navigateToChooseTemplatePage(emptySessionData.id);
-
-    const footerLinks = [
-      {
-        name: 'Accessibility statement',
-        selector: 'a[data-testid="accessibility-statement-link"]',
-        href: '/accessibility',
-      },
-      {
-        name: 'Contact Us',
-        selector: 'a[data-testid="contact-us-link"]',
-        href: '#',
-      },
-      {
-        name: 'Cookies',
-        selector: 'a[data-testid="cookies-link"]',
-        href: '#',
-      },
-      {
-        name: 'Privacy Policy',
-        selector: 'a[data-testid="privacy-policy-link"]',
-        href: '#',
-      },
-      {
-        name: 'Terms and Conditions',
-        selector: 'a[data-testid="terms-and-conditions-link"]',
-        href: '#',
-      },
-    ];
-
-    await Promise.all(
-      footerLinks.map(async (link) => {
-        const linkLocator = page.locator(link.selector);
-        const href = await linkLocator.getAttribute('href');
-        expect(linkLocator, `${link.name} should be visible`).toBeVisible();
-        expect(href, `${link.name} should have href ${link.href}`).toBe(
-          link.href
-        );
-      })
-    );
   });
 });

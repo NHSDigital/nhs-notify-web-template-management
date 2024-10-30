@@ -2,25 +2,18 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
-  readonly chooseTemplateRadioGroup: Locator;
-
-  readonly fieldsetHeading: Locator;
+  readonly radioButtons: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.chooseTemplateRadioGroup = page.getByRole('radiogroup');
-    this.fieldsetHeading = page.locator('[class="nhsuk-fieldset__heading"]');
+    this.radioButtons = page.getByRole('radio');
   }
 
-  private static readonly chooseTemplatePageUrl = `/templates/choose-a-template-type`;
-
-  async navigateToChooseTemplatePage(sessionId: string) {
-    await this.navigateTo(
-      `${TemplateMgmtChoosePage.chooseTemplatePageUrl}/${sessionId}`
-    );
+  async loadPage(sessionId: string) {
+    await this.navigateTo(`/templates/choose-a-template-type/${sessionId}`);
   }
 
-  static async checkRadioButton(templateRadioButton: Locator) {
-    await templateRadioButton.check();
+  async checkRadioButton(radioButtonLabel: string) {
+    await this.page.getByLabel(radioButtonLabel).check();
   }
 }
