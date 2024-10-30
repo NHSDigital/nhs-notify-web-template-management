@@ -53,9 +53,6 @@ describe('CreateEmailTemplatePage', () => {
 
     expect(getSessionMock).toHaveBeenCalledWith('session-id');
 
-    expect(page).toEqual(
-    <CreateEmailTemplate
-      initialState={initialState}
-    />);
+    expect(page).toEqual(<CreateEmailTemplate initialState={initialState} />);
   });
 });

@@ -28,7 +28,7 @@ describe('CreateNhsAppTemplatePage', () => {
       params: { sessionId: 'session-id' },
     });
 
-    expect(page).toEqual(<CreateNhsAppTemplate  initialState={state}/>)
+    expect(page).toEqual(<CreateNhsAppTemplate initialState={state} />);
   });
 
   test('should render invalid session, when session is not found', async () => {

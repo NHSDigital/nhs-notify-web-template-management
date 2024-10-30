@@ -34,11 +34,12 @@ describe('SubmitEmailTemplatePage', () => {
     });
 
     expect(page).toEqual(
-    <SubmitTemplate
-      templateName={state.emailTemplateName}
-      sessionId={state.id}
-      goBackPath='preview-email-template'
-      submitPath='email-template-submitted'/>
+      <SubmitTemplate
+        templateName={state.emailTemplateName}
+        sessionId={state.id}
+        goBackPath='preview-email-template'
+        submitPath='email-template-submitted'
+      />
     );
   });
 

@@ -33,7 +33,7 @@ describe('PreviewEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewEmailTemplate initialState={state}/>);
+    expect(page).toEqual(<ReviewEmailTemplate initialState={state} />);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

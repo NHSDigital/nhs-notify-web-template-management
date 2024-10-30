@@ -34,12 +34,12 @@ describe('SubmitSmsTemplatePage', () => {
 
     expect(page).toEqual(
       <SubmitTemplate
-      templateName={state.smsTemplateName}
-      sessionId={state.id}
-      goBackPath='preview-text-message-template'
-      submitPath='text-message-template-submitted'
-    />
-    )
+        templateName={state.smsTemplateName}
+        sessionId={state.id}
+        goBackPath='preview-text-message-template'
+        submitPath='text-message-template-submitted'
+      />
+    );
   });
 
   test('should handle invalid session', async () => {

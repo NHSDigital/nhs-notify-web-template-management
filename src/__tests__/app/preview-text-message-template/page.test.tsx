@@ -32,7 +32,7 @@ describe('PreviewSMSTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewSMSTemplate initialState={state}/>);
+    expect(page).toEqual(<ReviewSMSTemplate initialState={state} />);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

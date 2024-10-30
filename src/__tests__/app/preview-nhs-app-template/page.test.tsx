@@ -1,5 +1,5 @@
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[sessionId]/page';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate'
+import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
 import { TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
@@ -30,7 +30,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewNHSAppTemplate initialState={state}/>);
+    expect(page).toEqual(<ReviewNHSAppTemplate initialState={state} />);
   });
 
   it('should redirect to invalid-session when no session is found', async () => {

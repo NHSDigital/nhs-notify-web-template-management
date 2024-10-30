@@ -37,8 +37,11 @@ describe('TextMessageTemplateSubmittedPage', () => {
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(
-      <TemplateSubmitted templateId={template.id} templateName={template.name} />
-    )
+      <TemplateSubmitted
+        templateId={template.id}
+        templateName={template.name}
+      />
+    );
   });
 
   test('should handle invalid template', async () => {

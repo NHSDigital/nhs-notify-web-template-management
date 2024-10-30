@@ -16,12 +16,10 @@ describe('SubmitNhsAppTemplatePage', () => {
 
   test('should load page', async () => {
     const state = {
-
-        id: 'session-id',
-        templateType: TemplateType.NHS_APP,
-        nhsAppTemplateName: 'template-name',
-        nhsAppTemplateMessage: 'template-message',
-
+      id: 'session-id',
+      templateType: TemplateType.NHS_APP,
+      nhsAppTemplateName: 'template-name',
+      nhsAppTemplateMessage: 'template-message',
     };
 
     getSessionMock.mockResolvedValue(state);
@@ -33,12 +31,12 @@ describe('SubmitNhsAppTemplatePage', () => {
     });
     expect(page).toEqual(
       <SubmitTemplate
-      templateName={state.nhsAppTemplateName}
-      sessionId={state.id}
-      goBackPath='preview-nhs-app-template'
-      submitPath='nhs-app-template-submitted'
-    />
-    )
+        templateName={state.nhsAppTemplateName}
+        sessionId={state.id}
+        goBackPath='preview-nhs-app-template'
+        submitPath='nhs-app-template-submitted'
+      />
+    );
   });
 
   test('should handle invalid session', async () => {
