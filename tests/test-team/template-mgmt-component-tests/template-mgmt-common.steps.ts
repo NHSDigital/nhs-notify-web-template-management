@@ -7,12 +7,9 @@ type CommonStepsProps = {
   baseURL?: string;
 };
 
-export function assertSkipToMainContent({
-  page,
-  id: sessionId,
-}: CommonStepsProps) {
+export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
-    await page.loadPage(sessionId);
+    await page.loadPage(id);
 
     await page.page.keyboard.press('Tab');
 

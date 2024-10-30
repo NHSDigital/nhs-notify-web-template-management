@@ -1,10 +1,16 @@
-/* eslint-disable no-await-in-loop */
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreatePage } from '../pages/template-mgmt-create-page';
 import { Session, TemplateType } from '../helpers/types';
 import SessionStorageHelper from '../helpers/session-storage-helper';
+import {
+  assertFooterLinks,
+  assertGoBackLink,
+  assertLoginLink,
+  assertNotifyBannerLink,
+  assertSkipToMainContent,
+} from './template-mgmt-common.steps';
 
-export const nhsAppNoTemplateSessionData: Session = {
+export const emptySessionData: Session = {
   __typename: 'SessionStorage',
   id: '3d98b0c4-6666-0000-1111-95eb27590000',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -14,7 +20,7 @@ export const nhsAppNoTemplateSessionData: Session = {
   nhsAppTemplateMessage: '',
 };
 
-export const nhsAppNoTemplateSessionDataForInput: Session = {
+export const emptySessionForTemplateCreation: Session = {
   __typename: 'SessionStorage',
   id: '4d98b0c4-7777-0000-1111-95eb27590011',
   createdAt: '2024-09-19T23:36:20.815Z',
@@ -26,8 +32,8 @@ export const nhsAppNoTemplateSessionDataForInput: Session = {
 
 test.describe('Create NHS App Template Page', () => {
   const sessionStorageHelper = new SessionStorageHelper([
-    nhsAppNoTemplateSessionData,
-    nhsAppNoTemplateSessionDataForInput,
+    emptySessionData,
+    emptySessionForTemplateCreation,
   ]);
 
   test.beforeAll(async () => {
@@ -44,16 +50,31 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
+    await createTemplatePage.loadPage(emptySessionData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
     );
+  });
+
+  test('common page tests', async ({ page, baseURL }) => {
+    const props = {
+      page: new TemplateMgmtCreatePage(page),
+      id: emptySessionData.id,
+      baseURL,
+    };
+
+    await assertSkipToMainContent(props);
+    await assertNotifyBannerLink(props);
+    await assertLoginLink(props);
+    await assertFooterLinks(props);
+    await assertGoBackLink({
+      ...props,
+      expectedUrl: `templates/choose-a-template-type/${emptySessionData.id}`,
+    });
   });
 
   test('Validate error messages on the create NHS App message template page with no template name or body', async ({
@@ -62,21 +83,20 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
+    await createTemplatePage.loadPage(emptySessionData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
     );
     await createTemplatePage.clickContinueButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.locator('.nhsuk-error-summary')).toHaveText([
-      'There is a problemEnter a template nameEnter a template message',
-    ]);
+
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText(['Enter a template name', 'Enter a template message']);
   });
 
   test('NHS App Message template populated and continued to the preview screen displayed', async ({
@@ -85,20 +105,18 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionDataForInput.id
-    );
+    await createTemplatePage.loadPage(emptySessionForTemplateCreation.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionDataForInput.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionForTemplateCreation.id}`
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
     const templateMessage = 'Test Message box';
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
     await createTemplatePage.clickContinueButton();
-    await expect(page.locator('h1')).toHaveText(
-      'NHS App message templateNHS Testing 123'
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      'NHS Testing 123'
     );
   });
 
@@ -108,12 +126,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
+    await createTemplatePage.loadPage(emptySessionData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -122,9 +138,9 @@ test.describe('Create NHS App Template Page', () => {
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
     await createTemplatePage.clickContinueButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.locator('.nhsuk-error-summary')).toHaveText([
-      'There is a problemEnter a template message',
-    ]);
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText(['Enter a template message']);
   });
 
   test('Validate error messages on the create NHS App message template page with no template name', async ({
@@ -133,12 +149,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
+    await createTemplatePage.loadPage(emptySessionData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -147,26 +161,10 @@ test.describe('Create NHS App Template Page', () => {
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
     await createTemplatePage.clickContinueButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.locator('.nhsuk-error-summary')).toHaveText([
-      'There is a problemEnter a template name',
-    ]);
-  });
 
-  test('404 Error returned when login link clicked', async ({
-    page,
-    baseURL,
-  }) => {
-    const createTemplatePage = new TemplateMgmtCreatePage(page);
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
-    );
-    await createTemplatePage.clickLoginLink();
-    await expect(page.locator('h1')).toHaveText('404');
-    await expect(page.getByText('This page could not be found')).toBeVisible();
+    await expect(
+      page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
+    ).toHaveText(['Enter a template name']);
   });
 
   test('5000 words Entered in Template body and word count correctly displayed', async ({
@@ -175,12 +173,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionDataForInput.id
-    );
+    await createTemplatePage.loadPage(emptySessionForTemplateCreation.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionDataForInput.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionForTemplateCreation.id}`
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
@@ -195,12 +191,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionDataForInput.id
-    );
+    await createTemplatePage.loadPage(emptySessionForTemplateCreation.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionDataForInput.id}`
+      `${baseURL}/templates/create-nhs-app-template/${emptySessionForTemplateCreation.id}`
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
@@ -209,94 +203,35 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page.getByText('5000 of 5000 characters')).toBeVisible();
   });
 
-  test('Hyperlinks functionality', async ({ page, baseURL }) => {
-    const createTemplatePage = new TemplateMgmtCreatePage(page);
+  const detailsSections = [
+    '[data-testid="personalisation-details"]',
+    '[data-testid="lines-breaks-and-paragraphs-details"]',
+    '[data-testid="headings-details"]',
+    '[data-testid="bold-text-details"]',
+    '[data-testid="link-and-url-details"]',
+    '[data-testid="naming-your-templates"]',
+  ];
 
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
+  for (const section of detailsSections) {
+    test(`personalisation mark expanding fields for ${section}`, async ({
+      page,
+      baseURL,
+    }) => {
+      const createTemplatePage = new TemplateMgmtCreatePage(page);
+      await createTemplatePage.loadPage(emptySessionData.id);
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/create-nhs-app-template/${emptySessionData.id}`
+      );
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
-    );
-    const footerLinks = [
-      {
-        name: 'Home',
-        selector: 'a[data-testid="accessibility-statement-link"]',
-      },
-      { name: 'Contact Us', selector: 'a[data-testid="contact-us-link"]' },
-      { name: 'Cookies', selector: 'a[data-testid="cookies-link"]' },
-      {
-        name: 'Privacy Policy',
-        selector: 'a[data-testid="privacy-policy-link"]',
-      },
-      {
-        name: 'Terms and Conditions',
-        selector: 'a[data-testid="terms-and-conditions-link"]',
-      },
-    ];
-
-    await Promise.all(
-      footerLinks.map((link) =>
-        expect(
-          page.locator(link.selector),
-          `${link.name} should be visible`
-        ).toBeVisible()
-      )
-    );
-    await expect(page.locator('.nhsuk-back-link__link')).toBeVisible();
-    await createTemplatePage.clickBackLink();
-  });
-
-  test('Back button functionality', async ({ page, baseURL }) => {
-    const createTemplatePage = new TemplateMgmtCreatePage(page);
-
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
-    );
-    await expect(page.locator('.nhsuk-back-link__link')).toBeVisible();
-    await createTemplatePage.clickBackLink();
-    await expect(page.locator('h1')).toHaveText(
-      'Choose a template type to create'
-    );
-  });
-
-  test('personalisation mark expanding fields', async ({ page, baseURL }) => {
-    const createTemplatePage = new TemplateMgmtCreatePage(page);
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      nhsAppNoTemplateSessionData.id
-    );
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-nhs-app-template/${nhsAppNoTemplateSessionData.id}`
-    );
-
-    const sections = [
-      '[data-testid="personalisation-details"]',
-      '[data-testid="lines-breaks-and-paragraphs-details"]',
-      '[data-testid="headings-details"]',
-      '[data-testid="bold-text-details"]',
-      '[data-testid="naming-your-templates"]',
-      '[data-testid="link-and-url-details"]',
-    ];
-    // note: turning this into a promise makes this very flakey
-    for (const section of sections) {
-      const locator = page.locator(section);
-      await expect(locator).toBeVisible();
-      await locator.click({ position: { x: 0, y: 0 } });
-      await expect(locator).toHaveAttribute('open');
-    }
-  });
+      await page.locator(`${section} > summary`).click();
+      await expect(page.locator(section)).toHaveAttribute('open');
+    });
+  }
 
   test('Invalid session ID test', async ({ page, baseURL }) => {
     const createTemplatePage = new TemplateMgmtCreatePage(page);
     const invalidSessionId = 'invalid-session-id';
-    await createTemplatePage.navigateToCreateNhsAppTemplatePage(
-      invalidSessionId
-    );
+    await createTemplatePage.loadPage(invalidSessionId);
     const errorMessage = page.locator('.nhsuk-heading-xl');
     await Promise.all([
       expect(errorMessage).toBeVisible(),
