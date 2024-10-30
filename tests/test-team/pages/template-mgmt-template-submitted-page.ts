@@ -8,6 +8,8 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
 
   public readonly createAnotherTemplateLink: Locator;
 
+  public readonly serviceNowLink: Locator;
+
   constructor(
     page: Page,
     private readonly channelIdentifier: string
@@ -18,6 +20,7 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
     this.createAnotherTemplateLink = page.locator(
       '[id="create-another-template"]'
     );
+    this.serviceNowLink = page.locator('[id="servicenow-link"]');
   }
 
   async clickCreateAnotherTemplateLink() {

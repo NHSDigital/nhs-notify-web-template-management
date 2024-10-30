@@ -44,6 +44,10 @@ test.describe('Preview SMS message template Page', () => {
       `${baseURL}/templates/preview-text-message-template/${sessions.valid.id}`
     );
 
+    await expect(previewSmsTemplatePage.editRadioOption).not.toBeChecked();
+
+    await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
+
     await expect(previewSmsTemplatePage.pageHeader).toContainText(
       'Text message template'
     );
@@ -73,6 +77,22 @@ test.describe('Preview SMS message template Page', () => {
         ...props,
         expectedUrl: `templates/create-text-message-template/${sessions.valid.id}`,
       });
+    });
+
+    test('when user clicks "Who your text message will be sent from" tool tips, then tool tips are displayed', async ({
+      page,
+    }) => {
+      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
+
+      await previewSmsTemplatePage.loadPage(sessions.valid.id);
+
+      await previewSmsTemplatePage.whoYourSmsWillBeSentFrom.click({
+        position: { x: 0, y: 0 },
+      });
+
+      await expect(
+        previewSmsTemplatePage.whoYourSmsWillBeSentFrom
+      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create text message template" page is displayed', async ({

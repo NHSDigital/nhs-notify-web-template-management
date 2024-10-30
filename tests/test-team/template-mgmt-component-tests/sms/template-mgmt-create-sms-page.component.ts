@@ -56,6 +56,11 @@ test.describe('Create SMS message template Page', () => {
     expect(await createSmsTemplatePage.pageHeader.textContent()).toBe(
       'Create text message template'
     );
+
+    await expect(createSmsTemplatePage.pricingLink).toHaveAttribute(
+      'href',
+      '/pricing/text-messages'
+    );
   });
 
   test.describe('Page functionality', () => {
@@ -88,6 +93,26 @@ test.describe('Create SMS message template Page', () => {
       );
       await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
         sessions.previousData.smsTemplateMessage
+      );
+    });
+
+    test('character count', async ({ page }) => {
+      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+      await createSmsTemplatePage.loadPage(sessions.submit.id);
+
+      await createSmsTemplatePage.nameInput.fill('template-name');
+
+      await createSmsTemplatePage.messageTextArea.fill('a'.repeat(100));
+
+      await expect(createSmsTemplatePage.characterCountText).toHaveText(
+        '100 characters'
+      );
+
+      await createSmsTemplatePage.messageTextArea.fill('a'.repeat(1000));
+
+      await expect(createSmsTemplatePage.characterCountText).toHaveText(
+        '918 characters'
       );
     });
 

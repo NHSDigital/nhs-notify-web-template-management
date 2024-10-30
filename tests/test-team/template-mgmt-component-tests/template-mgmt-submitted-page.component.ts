@@ -72,6 +72,11 @@ test.describe('Submit Email message template Page', () => {
       await expect(templateSubmittedPage.templateIdText).toHaveText(
         templates[channelIdentifier].id
       );
+
+      await expect(templateSubmittedPage.serviceNowLink).toHaveAttribute(
+        'href',
+        'https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5'
+      );
     });
 
     test.describe('Page functionality', () => {

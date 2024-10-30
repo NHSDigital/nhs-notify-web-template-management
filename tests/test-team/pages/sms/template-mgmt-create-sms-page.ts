@@ -13,6 +13,10 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
 
   public readonly namingYourTemplate: Locator;
 
+  public readonly pricingLink: Locator;
+
+  public readonly characterCountText: Locator;
+
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   constructor(page: Page) {
@@ -26,6 +30,8 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
+    this.pricingLink = page.locator('[data-testid="sms-pricing-link"]');
+    this.characterCountText = page.locator('[id="character-count"]');
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
