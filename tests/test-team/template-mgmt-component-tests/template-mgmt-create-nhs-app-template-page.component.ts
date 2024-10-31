@@ -216,7 +216,7 @@ test.describe('Create NHS App Template Page', () => {
     '[data-testid="headings-details"]',
     '[data-testid="bold-text-details"]',
     '[data-testid="link-and-url-details"]',
-    '[data-testid="naming-your-templates"]',
+    '[data-testid="how-to-name-your-template"]',
   ];
 
   for (const section of detailsSections) {

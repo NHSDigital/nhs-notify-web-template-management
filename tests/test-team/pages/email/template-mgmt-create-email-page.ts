@@ -27,7 +27,7 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
       '[data-testid="personalisation-details"]'
     );
     this.namingYourTemplate = page.locator(
-      '[data-testid="naming-your-templates"]'
+      '[data-testid="how-to-name-your-template"]'
     );
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
