@@ -15,6 +15,13 @@ export const SessionFactory = {
     });
   },
 
+  createNhsAppSession: (id: string): Session => {
+    return SessionFactory.create({
+      id,
+      templateType: TemplateType.NHS_APP,
+    });
+  },
+
   create: ({
     id,
     templateType,

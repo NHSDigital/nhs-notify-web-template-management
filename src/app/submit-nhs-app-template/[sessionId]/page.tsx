@@ -2,15 +2,20 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
-import { PageProps } from '@utils/types';
+import { PageProps, Session, TemplateType } from '@utils/types';
 import { getSession } from '@utils/form-actions';
+
+const isValid = (session?: Session) =>
+  session?.templateType === TemplateType.NHS_APP &&
+  Boolean(session?.nhsAppTemplateName) &&
+  Boolean(session?.nhsAppTemplateMessage);
 
 const SubmitNhsAppTemplatePage = async ({
   params: { sessionId },
 }: PageProps) => {
   const session = await getSession(sessionId);
 
-  if (!session) {
+  if (!session || !isValid(session)) {
     redirect('/invalid-session', RedirectType.replace);
   }
 

@@ -27,6 +27,14 @@ const templates = {
       content: 'test example content',
     },
   }),
+  'nhs-app': TemplateFactory.create({
+    type: TemplateType.NHS_APP,
+    id: 'valid-nhs-app-template',
+    name: 'test-template-nhs-app',
+    fields: {
+      content: 'test example content',
+    },
+  }),
 };
 
 test.describe('Submit Email message template Page', () => {
@@ -45,6 +53,7 @@ test.describe('Submit Email message template Page', () => {
   for (const { channelName, channelIdentifier } of [
     { channelName: 'Email', channelIdentifier: 'email' },
     { channelName: 'SMS', channelIdentifier: 'text-message' },
+    { channelName: 'NHS App', channelIdentifier: 'nhs-app' },
   ] as const) {
     test(`when user visits ${channelName} page, then page is loaded`, async ({
       page,

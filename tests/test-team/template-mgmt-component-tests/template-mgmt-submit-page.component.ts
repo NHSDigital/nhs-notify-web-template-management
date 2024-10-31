@@ -30,6 +30,11 @@ const smsFields = {
   smsTemplateMessage: 'test-template-message',
 };
 
+const nhsAppFields = {
+  nhsAppTemplateName: 'test-template-name',
+  nhsAppTemplateMessage: 'test-template-message',
+};
+
 const sessions = {
   email: {
     empty: SessionFactory.createEmailSession('empty-email-submit-session'),
@@ -61,11 +66,29 @@ const sessions = {
       ...smsFields,
     },
   },
+  'nhs-app': {
+    empty: SessionFactory.createNhsAppSession('empty-nhs-app-submit-session'),
+    submit: {
+      ...SessionFactory.createNhsAppSession('submit-nhs-app-submit-session'),
+      ...nhsAppFields,
+    },
+    submitAndReturn: {
+      ...SessionFactory.createNhsAppSession(
+        'submit-and-return-nhs-app-session'
+      ),
+      ...nhsAppFields,
+    },
+    valid: {
+      ...SessionFactory.createNhsAppSession('valid-nhs-app-submit-session'),
+      ...nhsAppFields,
+    },
+  },
 };
 
 const sessionsList = [
   ...Object.values(sessions.email),
   ...Object.values(sessions['text-message']),
+  ...Object.values(sessions['nhs-app']),
 ];
 
 test.describe('Submit template Page', () => {
@@ -85,6 +108,7 @@ test.describe('Submit template Page', () => {
   for (const { channelName, channelIdentifier } of [
     { channelName: 'Email', channelIdentifier: 'email' },
     { channelName: 'SMS', channelIdentifier: 'text-message' },
+    { channelName: 'NHS App', channelIdentifier: 'nhs-app' },
   ] as const) {
     test(`when user visits ${channelName} page, then page is loaded`, async ({
       page,
