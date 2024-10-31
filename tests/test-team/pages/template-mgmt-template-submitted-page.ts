@@ -8,13 +8,19 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
 
   public readonly createAnotherTemplateLink: Locator;
 
-  constructor(page: Page) {
+  public readonly serviceNowLink: Locator;
+
+  constructor(
+    page: Page,
+    private readonly channelIdentifier: string
+  ) {
     super(page);
     this.templateIdText = page.locator('[id="template-id"]');
     this.templateNameText = page.locator('[id="template-name"]');
     this.createAnotherTemplateLink = page.locator(
       '[id="create-another-template"]'
     );
+    this.serviceNowLink = page.locator('[id="servicenow-link"]');
   }
 
   async clickCreateAnotherTemplateLink() {
@@ -22,6 +28,8 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/email-template-submitted/${templateId}`);
+    await this.navigateTo(
+      `/templates/${this.channelIdentifier}-template-submitted/${templateId}`
+    );
   }
 }

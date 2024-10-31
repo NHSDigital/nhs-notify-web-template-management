@@ -155,6 +155,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
         >
           <p
             class="nhsuk-u-margin-bottom-0"
+            id="character-count"
           >
             0 characters
           </p>
@@ -508,6 +509,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         >
           <p
             class="nhsuk-u-margin-bottom-0"
+            id="character-count"
           >
             0 characters
           </p>
@@ -875,6 +877,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         >
           <p
             class="nhsuk-u-margin-bottom-0"
+            id="character-count"
           >
             0 characters
           </p>
@@ -1186,6 +1189,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
         >
           <p
             class="nhsuk-u-margin-bottom-0"
+            id="character-count"
           >
             16 characters
           </p>

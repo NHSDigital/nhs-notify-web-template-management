@@ -77,7 +77,7 @@ export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
             errorProps={{ id: 'smsTemplateMessage-error-message' }}
           />
           <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
-            <p className='nhsuk-u-margin-bottom-0'>
+            <p className='nhsuk-u-margin-bottom-0' id='character-count'>
               {smsTemplateMessage.length} characters
             </p>
             <p>

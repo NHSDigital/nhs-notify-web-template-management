@@ -8,6 +8,13 @@ export const SessionFactory = {
     });
   },
 
+  createSmsSession: (id: string): Session => {
+    return SessionFactory.create({
+      id,
+      templateType: TemplateType.SMS,
+    });
+  },
+
   create: ({
     id,
     templateType,
