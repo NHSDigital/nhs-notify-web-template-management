@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import {
   assertFooterLinks,
+  assertGoBackLinkNotPresent,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -100,6 +101,7 @@ test.describe('Submit Email message template Page', () => {
         await assertNotifyBannerLink(props);
         await assertFooterLinks(props);
         await assertLoginLink(props);
+        await assertGoBackLinkNotPresent(props);
       });
 
       test(`when user submits clicks ${channelName} "Create another template", then user is redirected to "create-template"`, async ({
