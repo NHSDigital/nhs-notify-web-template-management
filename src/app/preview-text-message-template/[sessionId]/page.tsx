@@ -7,8 +7,8 @@ import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
 
 const isValid = (session?: Session) =>
   session?.templateType === TemplateType.SMS &&
-  session?.smsTemplateMessage !== undefined &&
-  session?.smsTemplateName !== undefined;
+  Boolean(session?.smsTemplateName) &&
+  Boolean(session?.smsTemplateMessage);
 
 const PreviewSMSTemplatePage = async ({ params: { sessionId } }: PageProps) => {
   const session = await getSession(sessionId);

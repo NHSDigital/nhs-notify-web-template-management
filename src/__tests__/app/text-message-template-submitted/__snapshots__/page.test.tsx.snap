@@ -64,6 +64,7 @@ exports[`SmsTemplateSubmitted 1`] = `
       <p>
         <a
           href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
+          id="servicenow-link"
         >
           Raise a request with the service desk
         </a>
