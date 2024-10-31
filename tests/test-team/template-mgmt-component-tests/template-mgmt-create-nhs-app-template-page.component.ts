@@ -178,10 +178,10 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-nhs-app-template/${emptySessionForTemplateCreation.id}`
     );
-    const templateName = 'NHS Testing 123';
-    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    const templateMessage = 'T'.repeat(5000).trim();
-    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
+    await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('T'.repeat(5000).trim());
     await expect(page.getByText('5000 of 5000 characters')).toBeVisible();
   });
 
@@ -196,11 +196,18 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-nhs-app-template/${emptySessionForTemplateCreation.id}`
     );
-    const templateName = 'NHS Testing 123';
-    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    const templateMessage = 'T'.repeat(5001).trim();
-    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
+
+    await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('T'.repeat(5001).trim());
     await expect(page.getByText('5000 of 5000 characters')).toBeVisible();
+
+    const messageContent = await page
+      .getByRole('textbox', { name: 'Message' })
+      .textContent();
+
+    expect(messageContent).toHaveLength(5000);
   });
 
   const detailsSections = [
@@ -225,6 +232,11 @@ test.describe('Create NHS App Template Page', () => {
 
       await page.locator(`${section} > summary`).click();
       await expect(page.locator(section)).toHaveAttribute('open');
+      await expect(page.locator(`${section} > div`)).toBeVisible();
+
+      await page.locator(`${section} > summary`).click();
+      await expect(page.locator(section)).not.toHaveAttribute('open');
+      await expect(page.locator(`${section} > div`)).toBeHidden();
     });
   }
 
