@@ -75,7 +75,8 @@
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
     "wait-on": "^8.0.0",
-    "whatwg-fetch": "^3.6.20"
+    "whatwg-fetch": "^3.6.20",
+    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team"
   },
   "overrides": {
     "pa11y-ci": {
