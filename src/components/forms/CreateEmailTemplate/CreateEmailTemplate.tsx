@@ -133,7 +133,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
       </div>
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
-        <MessageFormatting template='EMAIL' />
+        <MessageFormatting template={TemplateType.EMAIL} />
       </div>
     </div>
   );

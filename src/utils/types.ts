@@ -62,10 +62,3 @@ export type SubmitTemplatePageComponentProps = {
   goBackPath: string;
   submitPath: string;
 };
-
-export enum TemplateFormatText {
-  APP = 'APP',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-  SMS = 'SMS',
-}
