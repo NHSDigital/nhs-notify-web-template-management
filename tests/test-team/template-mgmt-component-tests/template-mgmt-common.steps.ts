@@ -7,12 +7,9 @@ type CommonStepsProps = {
   baseURL?: string;
 };
 
-export function assertSkipToMainContent({
-  page,
-  id: sessionId,
-}: CommonStepsProps) {
+export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
-    await page.loadPage(sessionId);
+    await page.loadPage(id);
 
     await page.page.keyboard.press('Tab');
 
@@ -65,31 +62,44 @@ export function assertGoBackLink({
   });
 }
 
+export function assertGoBackLinkNotPresent({ page, id }: CommonStepsProps) {
+  return test.step('should not display "Go Back" link on page', async () => {
+    await page.loadPage(id);
+
+    await expect(page.goBackLink).toBeHidden();
+  });
+}
+
 export function assertFooterLinks({ page, id }: CommonStepsProps) {
-  return test.step('when page loads, then "Footer links" should be visible', async () => {
+  return test.step('when page loads, then Page Footer should have the correct links', async () => {
     await page.loadPage(id);
 
     const promises = [
       // Accessibility link
-      await page.page
-        .locator('[data-testid="accessibility-statement-link"]')
-        .isVisible(),
+      expect(
+        page.page.getByRole('link', { name: 'Accessibility statement' })
+      ).toHaveAttribute('href', '/accessibility'),
 
       // Contact us link
-      await page.page.locator('[data-testid="contact-use-link"]').isVisible(),
+      expect(
+        page.page.getByRole('link', { name: 'Contact us' })
+      ).toHaveAttribute('href', '#'),
 
       // Cookies link
-      await page.page.locator('[data-testid="cookies-link"]').isVisible(),
+      expect(page.page.getByRole('link', { name: 'Cookies' })).toHaveAttribute(
+        'href',
+        '#'
+      ),
 
       // Privacy policy link
-      await page.page
-        .locator('[data-testid="privacy-policy-link"]')
-        .isVisible(),
+      expect(
+        page.page.getByRole('link', { name: 'Privacy policy' })
+      ).toHaveAttribute('href', '#'),
 
       // Terms and conditions link
-      await page.page
-        .locator('[data-testid="terms-and-conditions-link"]')
-        .isVisible(),
+      expect(
+        page.page.getByRole('link', { name: 'Terms and conditions' })
+      ).toHaveAttribute('href', '#'),
     ];
 
     await Promise.all(promises);

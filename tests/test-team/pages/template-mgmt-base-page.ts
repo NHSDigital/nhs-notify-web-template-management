@@ -11,6 +11,12 @@ export class TemplateMgmtBasePage {
 
   readonly pageHeader: Locator;
 
+  readonly errorSummary: Locator;
+
+  readonly errorSummaryHeading: Locator;
+
+  readonly errorSummaryList: Locator;
+
   readonly continueButton: Locator;
 
   readonly skipLink: Locator;
@@ -31,7 +37,16 @@ export class TemplateMgmtBasePage {
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Go back'));
 
-    this.pageHeader = page.locator('h1');
+    this.pageHeader = page.getByRole('heading', { level: 1 });
+
+    this.errorSummary = page.getByRole('alert', { name: 'There is a problem' });
+
+    this.errorSummaryHeading = page.getByRole('heading', {
+      level: 2,
+      name: 'There is a problem',
+    });
+
+    this.errorSummaryList = this.errorSummary.getByRole('listitem');
 
     this.continueButton = page
       .locator('[class="nhsuk-button"]')
@@ -44,7 +59,7 @@ export class TemplateMgmtBasePage {
   }
 
   async navigateTo(url: string) {
-    await this.page.goto(url, { waitUntil: 'load' });
+    await this.page.goto(url);
   }
 
   async clickNotifyBannerLink() {
@@ -61,5 +76,9 @@ export class TemplateMgmtBasePage {
 
   async loadPage(_: string) {
     throw new Error('Not implemented');
+  }
+
+  async clickBackLink() {
+    await this.goBackLink.click();
   }
 }

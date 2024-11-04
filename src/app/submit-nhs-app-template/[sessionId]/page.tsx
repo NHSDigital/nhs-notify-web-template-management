@@ -7,8 +7,8 @@ import { getSession } from '@utils/form-actions';
 
 const isValid = (session?: Session) =>
   session?.templateType === TemplateType.NHS_APP &&
-  Boolean(session?.nhsAppTemplateMessage) &&
-  Boolean(session?.nhsAppTemplateName);
+  Boolean(session?.nhsAppTemplateName) &&
+  Boolean(session?.nhsAppTemplateMessage);
 
 const SubmitNhsAppTemplatePage = async ({
   params: { sessionId },
