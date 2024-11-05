@@ -7,8 +7,8 @@ import { getSession } from '@utils/form-actions';
 
 const isValid = (session?: Session) =>
   session?.templateType === TemplateType.SMS &&
-  Boolean(session?.smsTemplateName) &&
-  Boolean(session?.smsTemplateMessage);
+  Boolean(session?.smsTemplateMessage) &&
+  Boolean(session?.smsTemplateName);
 
 const SubmitSmsTemplatePage = async ({ params: { sessionId } }: PageProps) => {
   const session = await getSession(sessionId);

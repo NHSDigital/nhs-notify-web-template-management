@@ -76,11 +76,11 @@ const sessions = {
       ...SessionFactory.createNhsAppSession(
         'submit-and-return-nhs-app-session'
       ),
-      ...smsFields,
+      ...nhsAppFields,
     },
     valid: {
       ...SessionFactory.createNhsAppSession('valid-nhs-app-submit-session'),
-      ...smsFields,
+      ...nhsAppFields,
     },
   },
 };
@@ -88,6 +88,7 @@ const sessions = {
 const sessionsList = [
   ...Object.values(sessions.email),
   ...Object.values(sessions['text-message']),
+  ...Object.values(sessions['nhs-app']),
 ];
 
 test.describe('Submit template Page', () => {
@@ -107,6 +108,7 @@ test.describe('Submit template Page', () => {
   for (const { channelName, channelIdentifier } of [
     { channelName: 'Email', channelIdentifier: 'email' },
     { channelName: 'SMS', channelIdentifier: 'text-message' },
+    { channelName: 'NHS App', channelIdentifier: 'nhs-app' },
   ] as const) {
     test(`when user visits ${channelName} page, then page is loaded`, async ({
       page,

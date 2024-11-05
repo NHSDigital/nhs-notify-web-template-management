@@ -11,7 +11,7 @@ const SmsTemplateSubmittedPage = async ({
   const template = await getTemplate(templateId);
 
   if (!template) {
-    redirect('/invalid-template', RedirectType.replace);
+    return redirect('/invalid-template', RedirectType.replace);
   }
 
   const { name, id } = template;

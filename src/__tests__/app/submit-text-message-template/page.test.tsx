@@ -1,15 +1,9 @@
 import SubmitSmsTemplatePage from '@app/submit-text-message-template/[sessionId]/page';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      SessionStorage: {},
-    },
-  }),
-}));
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitTemplate');
@@ -20,15 +14,17 @@ const redirectMock = jest.mocked(redirect);
 describe('SubmitSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('SubmitSmsTemplatePage', async () => {
-    getSessionMock.mockResolvedValue({
+  test('should load page', async () => {
+    const state = {
       id: 'session-id',
       templateType: TemplateType.SMS,
       smsTemplateName: 'template-name',
       smsTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValue(state);
 
     const page = await SubmitSmsTemplatePage({
       params: {
@@ -36,10 +32,17 @@ describe('SubmitSmsTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+      <SubmitTemplate
+        templateName={state.smsTemplateName}
+        sessionId={state.id}
+        goBackPath='preview-text-message-template'
+        submitPath='text-message-template-submitted'
+      />
+    );
   });
 
-  test('SubmitSmsTemplatePage - should handle invalid session', async () => {
+  test('should handle invalid session', async () => {
     getSessionMock.mockResolvedValue(undefined);
 
     await SubmitSmsTemplatePage({
@@ -76,6 +79,12 @@ describe('SubmitSmsTemplatePage', () => {
       templateType: TemplateType.SMS,
       smsTemplateName: undefined,
       smsTemplateMessage: 'message-1',
+    },
+    {
+      templateType: TemplateType.SMS,
+      // Note: We have need this casting because Session type does not have a null typing
+      smsTemplateName: null as unknown as string,
+      smsTemplateMessage: null as unknown as string,
     },
   ])(
     'should redirect to invalid-session when session template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',

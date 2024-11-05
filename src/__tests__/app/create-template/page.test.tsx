@@ -1,7 +1,3 @@
-/**
- * @jest-environment node
- */
-
 import { mockDeep } from 'jest-mock-extended';
 import { redirect } from 'next/navigation';
 import CreateTemplate from '@app/create-template/page';
