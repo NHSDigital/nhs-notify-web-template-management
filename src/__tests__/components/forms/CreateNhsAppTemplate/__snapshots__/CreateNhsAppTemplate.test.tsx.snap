@@ -151,6 +151,7 @@ exports[`renders page 1`] = `
           />
         </div>
         <p
+          id="character-count"
           style=""
         >
           0 of 5000 characters
@@ -614,6 +615,7 @@ exports[`renders page one error 1`] = `
           />
         </div>
         <p
+          id="character-count"
           style=""
         >
           0 of 5000 characters
@@ -1091,6 +1093,7 @@ exports[`renders page with multiple errors 1`] = `
           />
         </div>
         <p
+          id="character-count"
           style=""
         >
           0 of 5000 characters
@@ -1512,6 +1515,7 @@ exports[`renders page with preloaded field values 1`] = `
           </textarea>
         </div>
         <p
+          id="character-count"
           style=""
         >
           16 of 5000 characters
