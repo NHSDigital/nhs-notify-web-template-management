@@ -1,0 +1,162 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "NHS Notify - Web UI - POC3",
+      "description": "Backend for NHS Notify Web UI",
+      "version": "v1"
+    },
+    "paths": {
+      "/v1/session": {
+        "post": {
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "201 response",
+              "headers": {
+                "Content-Type": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              },
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/SessionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "x-amazon-apigateway-integration": {
+            "credentials": "{INVOKE_LAMBDA_ENDPOINT_ROLE_ARN}",
+            "httpMethod": "POST",
+            "uri": "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/{LAMBDA_ENDPOINT_ARN}/invocations",
+            "responses": {
+              ".*": {
+                "statusCode": "201"
+              }
+            },
+            "passthroughBehavior": "when_no_match",
+            "timeoutInMillis": 29000,
+            "contentHandling": "CONVERT_TO_TEXT",
+            "type": "aws"
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "BaseTemplateFields": {
+          "type": "object",
+          "required": [
+            "name",
+            "message"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "BaseTemplateFieldsWithSubject": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/BaseTemplateFields"
+            },
+            {
+              "type": "object",
+              "required": [
+                "subject"
+              ],
+              "properties": {
+                "subject": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "Session": {
+          "type": "object",
+          "required": [
+            "templateType"
+          ],
+          "properties": {
+            "templateType": {
+              "type": "string",
+              "enum": [
+                "UNKNOWN",
+                "EMAIL",
+                "NHS_APP",
+                "SMS",
+                "LETTER"
+              ]
+            },
+            "nhsApp": {
+              "$ref": "#/components/schemas/BaseTemplateFields"
+            },
+            "email": {
+              "$ref": "#/components/schemas/BaseTemplateFieldsWithSubject"
+            },
+            "sms": {
+              "$ref": "#/components/schemas/BaseTemplateFields"
+            }
+          }
+        },
+        "SessionResponse": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Session"
+            },
+            {
+              "type": "object",
+              "required": [
+                "id",
+                "version"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "securitySchemes": {
+        "authorizer": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header",
+          "x-amazon-apigateway-authorizer": {
+            "type": "token",
+            "authorizerUri": "arn:aws:apigateway:eu-west-2:lambda:path/2015-03-31/functions/{LAMBDA_AUTHORIZER_ARN}/invocations",
+            "authorizerCredentials": "{INVOKE_LAMBDA_AUTHORIZER_ROLE_ARN}"
+          },
+          "x-amazon-apigateway-authtype": "custom"
+        }
+      }
+    },
+    "x-amazon-apigateway-request-validators": {
+      "validate": {
+        "validateRequestBody": true,
+        "validateRequestParameters": true
+      }
+    },
+    "x-amazon-apigateway-request-validator": "validate"
+  }
