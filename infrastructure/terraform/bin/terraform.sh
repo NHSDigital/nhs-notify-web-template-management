@@ -14,6 +14,7 @@ readonly script_ver="1.8.0";
 # Standardised failure function
 ##
 function error_and_die {
+  echo "debug 1"
   echo -e "ERROR: ${1}" >&2;
   exit 1;
 };
@@ -424,8 +425,11 @@ fi;
 
 # Run pre.sh
 if [ -f "pre.sh" ]; then
+  echo "start pre script $( pwd )"
   source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Component pre script execution failed with exit code ${?}";
+
+  echo "end pre script $( pwd )"
 fi;
 
 # Pull down secret TFVAR file from S3
@@ -446,6 +450,8 @@ if [ $? -eq 0 ]; then
     secrets=($(aws kms decrypt --ciphertext-blob fileb://${secrets_file_path} --output text --query Plaintext | base64 --decode));
   fi;
 fi;
+
+echo "debug 2"
 
 if [ -n "${secrets[0]}" ]; then
   secret_regex='^[A-Za-z0-9_-]+=.+$';
