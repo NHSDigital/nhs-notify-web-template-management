@@ -30,6 +30,11 @@ const smsFields = {
   smsTemplateMessage: 'test-template-message',
 };
 
+const nhsAppFields = {
+  nhsAppTemplateName: 'test-template-name',
+  nhsAppTemplateMessage: 'test-template-message',
+};
+
 const sessions = {
   email: {
     empty: SessionFactory.createEmailSession('empty-email-submit-session'),
@@ -58,6 +63,23 @@ const sessions = {
     },
     valid: {
       ...SessionFactory.createSmsSession('valid-sms-submit-session'),
+      ...smsFields,
+    },
+  },
+  'nhs-app': {
+    empty: SessionFactory.createNhsAppSession('empty-nhs-app-submit-session'),
+    submit: {
+      ...SessionFactory.createNhsAppSession('submit-nhs-app-submit-session'),
+      ...nhsAppFields,
+    },
+    submitAndReturn: {
+      ...SessionFactory.createNhsAppSession(
+        'submit-and-return-nhs-app-session'
+      ),
+      ...smsFields,
+    },
+    valid: {
+      ...SessionFactory.createNhsAppSession('valid-nhs-app-submit-session'),
       ...smsFields,
     },
   },
