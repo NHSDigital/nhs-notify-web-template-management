@@ -6,7 +6,7 @@ authors = ["NHS"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 locust = "^2.20.1"
 locust_plugins = "^4.5.3"
 playwright = "^1.48"
