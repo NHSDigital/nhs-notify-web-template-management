@@ -17,4 +17,4 @@ echo "build succeeded"
 cd $original_dir
 echo "pre script finished $( pwd )"
 
-exit 0
+# exit 0
