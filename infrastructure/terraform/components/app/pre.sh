@@ -2,6 +2,8 @@
 
 set -euo pipefail # safe scripting
 
+set -x
+
 # build backend API lambdas
 
 original_dir=$( pwd )
