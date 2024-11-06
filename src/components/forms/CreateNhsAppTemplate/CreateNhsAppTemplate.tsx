@@ -101,7 +101,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             error={templateMessageError}
             errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
-          <p style={useJsEnabledStyle()}>
+          <p style={useJsEnabledStyle()} id='character-count'>
             {nhsAppTemplateMessage.length}
             {characterCountText}
           </p>
