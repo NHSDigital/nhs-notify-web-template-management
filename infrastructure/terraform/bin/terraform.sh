@@ -5,8 +5,6 @@
 # - handles remote state
 # - uses consistent .tfvars files for each environment
 
-set -x
-
 ##
 # Set Script Version
 ##
