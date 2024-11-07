@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "tsc --outDir ./.build src"
+    "build": "tsc --outDir ./.build src/endpoint.ts src/authorizer.ts"
   },
   "devDependencies": {
     "@types/node": "^22.8.1",
