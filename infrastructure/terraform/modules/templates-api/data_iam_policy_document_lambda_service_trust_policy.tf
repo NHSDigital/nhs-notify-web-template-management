@@ -1,6 +1,6 @@
-data "aws_iam_policy_document" "api_gateway_assumerole" {
+data "aws_iam_policy_document" "lambda_service_trust_policy" {
   statement {
-    sid    = "ApiGatewayAssumeRole"
+    sid    = "LambdaAssumeRole"
     effect = "Allow"
 
     actions = [
@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "api_gateway_assumerole" {
       type = "Service"
 
       identifiers = [
-        "apigateway.amazonaws.com"
+        "lambda.amazonaws.com"
       ]
     }
   }
