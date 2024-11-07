@@ -23,7 +23,7 @@ export function ReviewNHSAppTemplate({
     router.push(state.redirect);
   }
 
-  const { name, message } = state.NHS_APP!;
+  const { name, message } = state.NHS_APP;
 
   const html = renderMarkdown(message);
 

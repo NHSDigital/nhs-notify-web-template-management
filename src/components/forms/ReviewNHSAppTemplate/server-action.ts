@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { TemplateFormState } from '@utils/types';
+import { NHSAppTemplate, TemplateFormState } from '@utils/types';
 
 export function renderMarkdown(
   value: string,
@@ -24,9 +24,9 @@ const schema = z.object({
 });
 
 export function reviewNhsAppTemplateAction(
-  formState: TemplateFormState,
+  formState: TemplateFormState<NHSAppTemplate>,
   formData: FormData
-): TemplateFormState {
+): TemplateFormState<NHSAppTemplate> {
   const form = Object.fromEntries(formData.entries());
   const validationResponse = schema.safeParse(form);
 

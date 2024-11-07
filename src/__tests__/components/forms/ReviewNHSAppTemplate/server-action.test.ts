@@ -5,7 +5,7 @@ import {
 } from '@forms/ReviewNHSAppTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { getMockFormData } from '@testhelpers';
-import { TemplateFormState, TemplateType } from '@utils/types';
+import { NHSAppTemplate, TemplateFormState, TemplateType } from '@utils/types';
 import { markdown } from '../fixtures';
 
 describe('Markdown rendering', () => {
@@ -33,7 +33,7 @@ describe('Markdown rendering', () => {
 });
 
 describe('reviewNhsAppTemplateAction', () => {
-  const currentState: TemplateFormState = {
+  const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
     version: 1,
     templateType: TemplateType.NHS_APP,

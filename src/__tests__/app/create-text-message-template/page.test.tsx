@@ -20,7 +20,7 @@ const initialState: Template = {
 describe('CreateSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should redirect to invalid-templateId when no templateId is found', async () => {
+  it('should redirect to invalid-template when no templateId is found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await CreateSmsTemplatePage({ params: { templateId: 'template-id' } });
@@ -30,7 +30,7 @@ describe('CreateSmsTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should redirect to invalid-templateId when template type is not SMS', async () => {
+  it('should redirect to invalid-template when template type is not SMS', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,

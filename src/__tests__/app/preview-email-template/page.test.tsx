@@ -38,7 +38,7 @@ describe('PreviewEmailTemplatePage', () => {
     expect(page).toEqual(<ReviewEmailTemplate initialState={state} />);
   });
 
-  it('should redirect to invalid-templateId when no templateId is found', async () => {
+  it('should redirect to invalid-template when no templateId is found', async () => {
     await PreviewEmailTemplatePage({
       params: {
         templateId: 'template-id',
@@ -106,7 +106,7 @@ describe('PreviewEmailTemplatePage', () => {
       },
     },
   ])(
-    'should redirect to invalid-templateId when template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',
+    'should redirect to invalid-template when template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
