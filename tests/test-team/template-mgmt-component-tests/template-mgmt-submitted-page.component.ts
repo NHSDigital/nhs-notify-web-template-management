@@ -13,32 +13,33 @@ import { TemplateType } from '../helpers/types';
 
 const templates = {
   email: TemplateFactory.create({
-    type: TemplateType.EMAIL,
+    templateType: TemplateType.EMAIL,
     id: 'valid-email-template',
-    name: 'test-template-email',
-    fields: {
-      content: 'test example content',
+    EMAIL: {
+      name: 'test-template-email',
+      subject: 'test-template-subject',
+      message: 'test example content',
     },
   }),
   'text-message': TemplateFactory.create({
-    type: TemplateType.SMS,
+    templateType: TemplateType.SMS,
     id: 'valid-sms-template',
-    name: 'test-template-sms',
-    fields: {
-      content: 'test example content',
+    SMS: {
+      name: 'test-template-sms',
+      message: 'test example content',
     },
   }),
   'nhs-app': TemplateFactory.create({
-    type: TemplateType.NHS_APP,
+    templateType: TemplateType.NHS_APP,
     id: 'valid-nhs-app-template',
-    name: 'test-template-nhs-app',
-    fields: {
-      content: 'test example content',
+    NHS_APP: {
+      name: 'test-template-nhs-app',
+      message: 'test example content',
     },
   }),
 };
 
-test.describe('Submit Email message template Page', () => {
+test.describe('Template Submitted Page', () => {
   const templateStorageHelper = new TemplateStorageHelper(
     Object.values(templates)
   );
@@ -52,9 +53,9 @@ test.describe('Submit Email message template Page', () => {
   });
 
   for (const { channelName, channelIdentifier } of [
-    { channelName: 'Email', channelIdentifier: 'email' },
-    { channelName: 'SMS', channelIdentifier: 'text-message' },
-    { channelName: 'NHS App', channelIdentifier: 'nhs-app' },
+    { channelName: 'email', channelIdentifier: 'email' },
+    { channelName: 'sms', channelIdentifier: 'text-message' },
+    { channelName: 'nhs-app', channelIdentifier: 'nhs-app' },
   ] as const) {
     test(`when user visits ${channelName} page, then page is loaded`, async ({
       page,
@@ -76,7 +77,7 @@ test.describe('Submit Email message template Page', () => {
       );
 
       await expect(templateSubmittedPage.templateNameText).toHaveText(
-        templates[channelIdentifier].name
+        `test-template-${channelName}`
       );
 
       await expect(templateSubmittedPage.templateIdText).toHaveText(
@@ -104,11 +105,11 @@ test.describe('Submit Email message template Page', () => {
         await assertGoBackLinkNotPresent(props);
       });
 
-      test(`when user submits clicks ${channelName} "Create another template", then user is redirected to "create-template"`, async ({
+      test(`when user clicks ${channelName} "Create another template", then user is redirected to "create-template"`, async ({
         page,
       }) => {
         const emailTemplateSubmittedPage =
-          new TemplateMgmtTemplateSubmittedPage(page, 'email');
+          new TemplateMgmtTemplateSubmittedPage(page, channelIdentifier);
 
         await emailTemplateSubmittedPage.loadPage(
           templates[channelIdentifier].id

@@ -1,18 +1,39 @@
-import { Template } from './types';
-
-type BaseTemplateFields = Omit<
-  Template,
-  'version' | '__typename' | 'createdAt' | 'updatedAt'
->;
+import { Template, TemplateType } from './types';
 
 export const TemplateFactory = {
-  create: (props: BaseTemplateFields): Template => {
+  createEmailTemplate: (id: string): Template => {
+    return TemplateFactory.create({
+      id,
+      templateType: TemplateType.EMAIL,
+    });
+  },
+
+  createSmsTemplate: (id: string): Template => {
+    return TemplateFactory.create({
+      id,
+      templateType: TemplateType.SMS,
+    });
+  },
+
+  createNhsAppTemplate: (id: string): Template => {
+    return TemplateFactory.create({
+      id,
+      templateType: TemplateType.NHS_APP,
+    });
+  },
+
+  create: (
+    template: Partial<Template> & {
+      id: string;
+      templateType: string;
+    }
+  ): Template => {
     return {
-      ...props,
       __typename: 'TemplateStorage',
+      version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      version: 1,
+      ...template,
     };
   },
 };

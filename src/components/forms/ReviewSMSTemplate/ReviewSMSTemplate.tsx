@@ -3,7 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, SMSTemplate } from '@utils/types';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { ChevronLeftIcon } from 'nhsuk-react-components';
@@ -11,7 +11,7 @@ import { renderMarkdown, reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<SMSTemplate>>) {
   const {
     components: {
       reviewSMSTemplateContent: { sectionHeading, details, form },
@@ -20,8 +20,8 @@ export function ReviewSMSTemplate({
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
 
-  const templateName = initialState.smsTemplateName!;
-  const templateMessage = initialState.smsTemplateMessage!;
+  const templateName = initialState.SMS.name;
+  const templateMessage = initialState.SMS.message;
 
   const html = renderMarkdown(templateMessage);
 

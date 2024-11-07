@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation';
 import { TemplateType } from '@utils/types';
-import { getSession } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
-import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[sessionId]/page';
+import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[templateId]/page';
 
 jest.mock('@forms/CreateNhsAppTemplate/CreateNhsAppTemplate');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
-const getSessionMock = jest.mocked(getSession);
+const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('CreateNhsAppTemplatePage', () => {
@@ -16,55 +16,55 @@ describe('CreateNhsAppTemplatePage', () => {
 
   test('page loads', async () => {
     const state = {
-      id: 'session-id',
+      id: 'template-id',
+      version: 1,
       templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: '',
-      nhsAppTemplateMessage: '',
     };
 
-    getSessionMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce(state);
 
     const page = await CreateNhsAppTemplatePage({
-      params: { sessionId: 'session-id' },
+      params: { templateId: 'template-id' },
     });
 
     expect(page).toEqual(<CreateNhsAppTemplate initialState={state} />);
   });
 
-  test('should render invalid session, when session is not found', async () => {
-    getSessionMock.mockResolvedValueOnce(undefined);
+  test('should render invalid template, when template is not found', async () => {
+    getTemplateMock.mockResolvedValueOnce(undefined);
 
     await CreateNhsAppTemplatePage({
       params: {
-        sessionId: 'session-id',
+        templateId: 'template-id',
       },
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  test.each([
+  const invalidTemplateTypes: (TemplateType | 'UNKNOWN')[] = [
     TemplateType.EMAIL,
     TemplateType.SMS,
     TemplateType.LETTER,
     'UNKNOWN',
-  ])(
-    'should render invalid session, when session template type is %p',
+  ];
+
+  test.each(invalidTemplateTypes)(
+    'should render invalid template, when template type is %p',
     async (templateType) => {
-      getSessionMock.mockResolvedValueOnce({
-        id: 'session-id',
-        templateType: templateType as TemplateType,
-        nhsAppTemplateName: '',
-        nhsAppTemplateMessage: '',
+      getTemplateMock.mockResolvedValueOnce({
+        id: 'template-id',
+        version: 1,
+        templateType,
       });
 
       await CreateNhsAppTemplatePage({
         params: {
-          sessionId: 'session-id',
+          templateId: 'template-id',
         },
       });
 
-      expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
 });

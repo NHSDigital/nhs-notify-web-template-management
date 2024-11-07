@@ -5,7 +5,7 @@ import { TemplateFormState, TemplateType } from '@utils/types';
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
     models: {
-      SessionStorage: {
+      TemplateStorage: {
         update: () => ({ data: {} }),
       },
     },
@@ -13,10 +13,9 @@ jest.mock('@utils/amplify-utils', () => ({
 }));
 
 const initialState: TemplateFormState = {
-  id: 'session-id',
+  id: 'template-id',
+  version: 1,
   templateType: 'UNKNOWN',
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
 test('submit form - validation error', async () => {
@@ -50,6 +49,6 @@ test('submit form - no validation error', async () => {
   expect(response).toEqual({
     ...initialState,
     templateType: TemplateType.NHS_APP,
-    redirect: '/create-nhs-app-template/session-id',
+    redirect: '/create-nhs-app-template/template-id',
   });
 });

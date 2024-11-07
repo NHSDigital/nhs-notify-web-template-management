@@ -21,7 +21,7 @@ const attachPolicy = new PolicyStatement({
 
 sendEmailLambda.addToRolePolicy(attachPolicy);
 
-backend.data.resources.cfnResources.amplifyDynamoDbTables.SessionStorage.timeToLiveAttribute =
+backend.data.resources.cfnResources.amplifyDynamoDbTables.TemplateStorage.timeToLiveAttribute =
   {
     attributeName: 'ttl',
     enabled: true,

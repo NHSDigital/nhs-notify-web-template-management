@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../../helpers/session-storage-helper';
+import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtCreateSmsPage } from '../../pages/sms/template-mgmt-create-sms-page';
-import { SessionFactory } from '../../helpers/session-factory';
+import { TemplateFactory } from '../../helpers/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -10,35 +10,37 @@ import {
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 
-const sessions = {
-  empty: SessionFactory.createSmsSession('empty-sms-session'),
-  submit: SessionFactory.createSmsSession('submit-sms-session'),
-  submitAndReturn: SessionFactory.createSmsSession(
-    'submit-and-return-create-sms-session'
+const templates = {
+  empty: TemplateFactory.createSmsTemplate('empty-sms-template'),
+  submit: TemplateFactory.createSmsTemplate('submit-sms-template'),
+  submitAndReturn: TemplateFactory.createSmsTemplate(
+    'submit-and-return-create-sms-template'
   ),
-  goBackAndReturn: SessionFactory.createSmsSession('go-back-sms-session'),
-  noSmsTemplateType: SessionFactory.create({
-    id: 'no-sms-template-type-session',
+  goBackAndReturn: TemplateFactory.createSmsTemplate('go-back-sms-template'),
+  noSmsTemplateType: TemplateFactory.create({
+    id: 'no-sms-template-type-template',
     templateType: 'UNKNOWN',
   }),
   previousData: {
-    ...SessionFactory.createSmsSession('previous-data-sms-session'),
-    smsTemplateName: 'previous-data-sms-template',
-    smsTemplateMessage: 'previous-data-sms-template-message',
+    ...TemplateFactory.createSmsTemplate('previous-data-sms-template'),
+    SMS: {
+      name: 'previous-data-sms-template',
+      message: 'previous-data-sms-template-message',
+    },
   },
 };
 
 test.describe('Create SMS message template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper(
-    Object.values(sessions)
+  const templateStorageHelper = new TemplateStorageHelper(
+    Object.values(templates)
   );
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
+    await templateStorageHelper.deleteTemplateData();
   });
 
   test('when user visits page, then page is loaded', async ({
@@ -47,10 +49,10 @@ test.describe('Create SMS message template Page', () => {
   }) => {
     const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-    await createSmsTemplatePage.loadPage(sessions.empty.id);
+    await createSmsTemplatePage.loadPage(templates.empty.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/create-text-message-template/${sessions.empty.id}`
+      `${baseURL}/templates/create-text-message-template/${templates.empty.id}`
     );
 
     expect(await createSmsTemplatePage.pageHeader.textContent()).toBe(
@@ -67,7 +69,7 @@ test.describe('Create SMS message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtCreateSmsPage(page),
-        id: sessions.empty.id,
+        id: templates.empty.id,
         baseURL,
       };
 
@@ -77,7 +79,7 @@ test.describe('Create SMS message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/choose-a-template-type/${sessions.empty.id}`,
+        expectedUrl: `templates/choose-a-template-type/${templates.empty.id}`,
       });
     });
 
@@ -86,20 +88,20 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.previousData.id);
+      await createSmsTemplatePage.loadPage(templates.previousData.id);
 
       await expect(createSmsTemplatePage.nameInput).toHaveValue(
-        sessions.previousData.smsTemplateName
+        templates.previousData.SMS.name
       );
       await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
-        sessions.previousData.smsTemplateMessage
+        templates.previousData.SMS.message
       );
     });
 
     test('character count', async ({ page }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.submit.id);
+      await createSmsTemplatePage.loadPage(templates.submit.id);
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
@@ -122,7 +124,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.goBackAndReturn.id);
+      await createSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
 
       await createSmsTemplatePage.nameInput.fill(
         'This is an SMS template name'
@@ -135,7 +137,7 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.goBackLink.click();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/choose-a-template-type/${sessions.goBackAndReturn.id}`
+        `${baseURL}/templates/choose-a-template-type/${templates.goBackAndReturn.id}`
       );
 
       await page.getByRole('button', { name: 'Continue' }).click();
@@ -154,7 +156,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.goBackAndReturn.id);
+      await createSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
 
       await createSmsTemplatePage.personalisationFields.click();
 
@@ -168,7 +170,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.empty.id);
+      await createSmsTemplatePage.loadPage(templates.empty.id);
 
       await createSmsTemplatePage.messageFormatting.assertDetailsOpen([
         createSmsTemplatePage.messageFormatting.linksAndUrls,
@@ -180,7 +182,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.empty.id);
+      await createSmsTemplatePage.loadPage(templates.empty.id);
 
       await createSmsTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -197,7 +199,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.submit.id);
+      await createSmsTemplatePage.loadPage(templates.submit.id);
 
       await createSmsTemplatePage.nameInput.fill(
         'This is an SMS template name'
@@ -210,7 +212,7 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-text-message-template/${sessions.submit.id}`
+        `${baseURL}/templates/preview-text-message-template/${templates.submit.id}`
       );
     });
 
@@ -219,7 +221,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.submitAndReturn.id);
+      await createSmsTemplatePage.loadPage(templates.submitAndReturn.id);
 
       const templateName = 'This is an SMS template name';
       const templateMessage = 'This is an SMS message';
@@ -241,26 +243,26 @@ test.describe('Create SMS message template Page', () => {
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with mismatched template journey, then an invalid session error is displayed', async ({
+    test('when user visits page with mismatched template journey, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.noSmsTemplateType.id);
+      await createSmsTemplatePage.loadPage(templates.noSmsTemplateType.id);
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage('/fake-session-id');
+      await createSmsTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when user submits form with no data, then errors are displayed', async ({
@@ -268,7 +270,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.empty.id);
+      await createSmsTemplatePage.loadPage(templates.empty.id);
 
       await createSmsTemplatePage.clickContinueButton();
 
@@ -296,7 +298,7 @@ test.describe('Create SMS message template Page', () => {
 
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.empty.id);
+      await createSmsTemplatePage.loadPage(templates.empty.id);
 
       await createSmsTemplatePage.messageTextArea.fill('template-message');
 
@@ -320,7 +322,7 @@ test.describe('Create SMS message template Page', () => {
 
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(sessions.empty.id);
+      await createSmsTemplatePage.loadPage(templates.empty.id);
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 

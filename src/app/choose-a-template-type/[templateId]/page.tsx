@@ -1,19 +1,20 @@
 'use server';
 
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
-import { getSession } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 import { PageProps } from '@utils/types';
 import { redirect, RedirectType } from 'next/navigation';
 
 const ChooseATemplateTypePage = async ({
-  params: { sessionId },
+  params: { templateId },
 }: PageProps) => {
-  const session = await getSession(sessionId);
-  if (!session) {
-    redirect('/invalid-session', RedirectType.replace);
+  const template = await getTemplate(templateId);
+
+  if (!template) {
+    redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ChooseTemplate initialState={session} />;
+  return <ChooseTemplate initialState={template} />;
 };
 
 export default ChooseATemplateTypePage;

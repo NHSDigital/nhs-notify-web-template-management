@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
-import { Session, TemplateType } from '../helpers/types';
-import SessionStorageHelper from '../helpers/session-storage-helper';
+import { Template, TemplateType } from '../helpers/types';
+import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
@@ -10,94 +10,88 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 
-export const emptySessionData: Session = {
-  __typename: 'SessionStorage',
+export const emptyTemplateData: Template = {
+  __typename: 'TemplateStorage',
   id: '3d98b0c4-6666-0000-0000-95eb27590000',
+  version: 1,
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: 'UNKNOWN',
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
-export const sessionDataForRadioSelect: Session = {
-  __typename: 'SessionStorage',
+export const templateDataForRadioSelect: Template = {
+  __typename: 'TemplateStorage',
+  version: 1,
   id: '3d98b0c4-6666-0000-0000-95eb27590001',
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: 'UNKNOWN',
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
-export const nhsAppRadioSelectedSessionData: Session = {
-  __typename: 'SessionStorage',
+export const nhsAppRadioSelectedTemplateData: Template = {
+  __typename: 'TemplateStorage',
   id: 'nhsapp-6666-0000-0000-95eb27590002',
+  version: 1,
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
-export const emailRadioSelectedSessionData: Session = {
-  __typename: 'SessionStorage',
+export const emailRadioSelectedTemplateData: Template = {
+  __typename: 'TemplateStorage',
   id: 'email-6666-0000-0000-95eb27590002',
+  version: 1,
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
-export const letterRadioSelectedSessionData: Session = {
-  __typename: 'SessionStorage',
+export const letterRadioSelectedTemplateData: Template = {
+  __typename: 'TemplateStorage',
   id: 'letter-6666-0000-0000-95eb27590002',
+  version: 1,
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.LETTER,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
-export const smsRadioSelectedSessionData: Session = {
-  __typename: 'SessionStorage',
+export const smsRadioSelectedTemplateData: Template = {
+  __typename: 'TemplateStorage',
   id: 'sms-6666-0000-0000-95eb27590002',
+  version: 1,
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.SMS,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
 test.describe('Choose Template Type Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper([
-    emptySessionData,
-    sessionDataForRadioSelect,
-    nhsAppRadioSelectedSessionData,
-    emailRadioSelectedSessionData,
-    smsRadioSelectedSessionData,
-    letterRadioSelectedSessionData,
+  const templateStorageHelper = new TemplateStorageHelper([
+    emptyTemplateData,
+    templateDataForRadioSelect,
+    nhsAppRadioSelectedTemplateData,
+    emailRadioSelectedTemplateData,
+    smsRadioSelectedTemplateData,
+    letterRadioSelectedTemplateData,
   ]);
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
+    await templateStorageHelper.deleteTemplateData();
   });
 
-  test('should land on "Choose Template Type" page when navigating to "/choose-a-template-type" url with empty session', async ({
+  test('should land on "Choose Template Type" page when navigating to "/choose-a-template-type" url with empty template', async ({
     page,
     baseURL,
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage(emptySessionData.id);
+    await chooseTemplatePage.loadPage(emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+      `${baseURL}/templates/choose-a-template-type/${emptyTemplateData.id}`
     );
     await expect(chooseTemplatePage.pageHeader).toHaveText(
       'Choose a template type to create'
@@ -107,7 +101,7 @@ test.describe('Choose Template Type Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new TemplateMgmtChoosePage(page),
-      id: emptySessionData.id,
+      id: emptyTemplateData.id,
       baseURL,
     };
 
@@ -123,7 +117,7 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage(emptySessionData.id);
+    await chooseTemplatePage.loadPage(emptyTemplateData.id);
 
     await expect(chooseTemplatePage.radioButtons).toHaveCount(4);
   });
@@ -134,11 +128,11 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage(emptySessionData.id);
+    await chooseTemplatePage.loadPage(emptyTemplateData.id);
     await chooseTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/choose-a-template-type/${emptySessionData.id}`
+      `${baseURL}/templates/choose-a-template-type/${emptyTemplateData.id}`
     );
 
     await expect(chooseTemplatePage.errorSummary).toBeVisible();
@@ -159,40 +153,40 @@ test.describe('Choose Template Type Page', () => {
     }) => {
       const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.loadPage(sessionDataForRadioSelect.id);
+      await chooseTemplatePage.loadPage(templateDataForRadioSelect.id);
       await chooseTemplatePage.checkRadioButton(label);
       await chooseTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-${path}-template/${sessionDataForRadioSelect.id}`
+        `${baseURL}/templates/create-${path}-template/${templateDataForRadioSelect.id}`
       );
     });
 
-  for (const { label, sessionData } of [
-    { label: 'NHS App message', sessionData: nhsAppRadioSelectedSessionData },
-    { label: 'Email', sessionData: emailRadioSelectedSessionData },
-    { label: 'Text message (SMS)', sessionData: smsRadioSelectedSessionData },
-    { label: 'Letter', sessionData: letterRadioSelectedSessionData },
+  for (const { label, templateData } of [
+    { label: 'NHS App message', templateData: nhsAppRadioSelectedTemplateData },
+    { label: 'Email', templateData: emailRadioSelectedTemplateData },
+    { label: 'Text message (SMS)', templateData: smsRadioSelectedTemplateData },
+    { label: 'Letter', templateData: letterRadioSelectedTemplateData },
   ]) {
-    test(`should display ${label} radio button selected if present in session storage`, async ({
+    test(`should display ${label} radio button selected if present in template storage`, async ({
       page,
     }) => {
       const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.loadPage(sessionData.id);
+      await chooseTemplatePage.loadPage(templateData.id);
 
       expect(page.getByLabel(label)).toBeChecked();
     });
   }
 
-  test('should navigate to error page if sessionId invalid', async ({
+  test('should navigate to error page if templateId invalid', async ({
     page,
     baseURL,
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage('invalid-sessionId');
+    await chooseTemplatePage.loadPage('invalid-templateId');
 
-    await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
 });

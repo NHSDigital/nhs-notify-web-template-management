@@ -3,28 +3,25 @@ import { sendEmail } from '../functions/send-email/resource';
 
 const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
 
-const SessionStorageModel = {
-  id: a.string().required(),
-  templateType: a.enum([...templateTypes, 'UNKNOWN']),
-  nhsAppTemplateName: a.string().required(),
-  nhsAppTemplateMessage: a.string().required(),
-  emailTemplateName: a.string(),
-  emailTemplateSubjectLine: a.string(),
-  emailTemplateMessage: a.string(),
-  smsTemplateName: a.string(),
-  smsTemplateMessage: a.string(),
-  ttl: a.integer().required(),
-};
-
 const TemplateStorageModel = {
   id: a.string().required(),
-  name: a.string().required(),
-  type: a.enum(templateTypes),
+  templateType: a.enum([...templateTypes, 'UNKNOWN']),
   version: a.integer().required(),
-  fields: a.customType({
-    subjectLine: a.string(),
-    content: a.string().required(),
+
+  NHS_APP: a.customType({
+    name: a.string().required(),
+    message: a.string().required(),
   }),
+  EMAIL: a.customType({
+    name: a.string().required(),
+    subject: a.string().required(),
+    message: a.string().required(),
+  }),
+  SMS: a.customType({
+    name: a.string().required(),
+    message: a.string().required(),
+  }),
+  ttl: a.integer(),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +31,6 @@ const authPermission = (allow: any) =>
     : [allow.guest()];
 
 const schema = a.schema({
-  SessionStorage: a.model(SessionStorageModel).authorization(authPermission),
   TemplateStorage: a.model(TemplateStorageModel).authorization(authPermission),
   sendEmail: a
     .query()

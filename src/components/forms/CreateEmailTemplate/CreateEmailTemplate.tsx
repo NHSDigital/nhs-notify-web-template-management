@@ -18,12 +18,12 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps, TemplateType } from '@utils/types';
+import { PageComponentProps, TemplateType, Template } from '@utils/types';
 import { createEmailTemplatePageContent } from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
 
-export const CreateEmailTemplate: FC<PageComponentProps> = ({
+export const CreateEmailTemplate: FC<PageComponentProps<Template>> = ({
   initialState,
 }) => {
   const {
@@ -39,13 +39,13 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
   const [state, action] = useFormState(processFormActions, initialState);
 
   const [emailTemplateName, emailTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.emailTemplateName ?? '');
+    useTextInput<HTMLInputElement>(state.EMAIL?.name ?? '');
 
   const [emailTemplateSubjectLine, emailTemplateSubjectLineHandler] =
-    useTextInput<HTMLInputElement>(state.emailTemplateSubjectLine ?? '');
+    useTextInput<HTMLInputElement>(state.EMAIL?.subject ?? '');
 
   const [emailTemplateMessage, emailTemplateMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.emailTemplateMessage ?? '');
+    useTextInput<HTMLTextAreaElement>(state.EMAIL?.message ?? '');
 
   const templateNameError =
     state.validationError?.fieldErrors.emailTemplateName?.join(', ');

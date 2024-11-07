@@ -1,23 +1,22 @@
 'use server';
 
-import { Session } from '@utils/types';
-import { createSession } from '@utils/form-actions';
+import { Template } from '@utils/types';
+import { createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 
-const initialSessionState: Omit<Session, 'id'> = {
+const initialTemplateState: Omit<Template, 'id'> = {
   templateType: 'UNKNOWN',
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
+  version: 1,
 };
 
 const CreateTemplate = async () => {
-  const sessionData = await createSession(initialSessionState);
+  const templateData = await createTemplate(initialTemplateState);
 
-  if (!sessionData?.id) {
-    throw new Error('Error creating session');
+  if (!templateData?.id) {
+    throw new Error('Error creating template');
   }
 
-  redirect(`/choose-a-template-type/${sessionData.id}`, RedirectType.replace);
+  redirect(`/choose-a-template-type/${templateData.id}`, RedirectType.replace);
 };
 
 export default CreateTemplate;

@@ -6,8 +6,8 @@ const nextConfig = {
   basePath,
   env: {
     basePath,
-    MAX_SESSION_LENGTH_IN_SECONDS:
-      process.env.MAX_SESSION_LENGTH_IN_SECONDS ?? '432000', // 5 days in seconds
+    MAX_TTL_DURATION_IN_SECONDS:
+      process.env.MAX_TTL_DURATION_IN_SECONDS ?? '432000', // 5 days in seconds
   },
 
   experimental: {

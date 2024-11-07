@@ -27,9 +27,7 @@ test('renders page', async () => {
     <CreateEmailTemplate
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
-        emailTemplateName: undefined,
-        emailTemplateSubjectLine: undefined,
-        emailTemplateMessage: undefined,
+        EMAIL: undefined,
       })}
     />
   );
@@ -41,9 +39,11 @@ test('renders page with preloaded field values', () => {
     <CreateEmailTemplate
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
-        emailTemplateName: 'template-name',
-        emailTemplateSubjectLine: 'template-subject-line',
-        emailTemplateMessage: 'template-message',
+        EMAIL: {
+          name: 'template-name',
+          subject: 'template-subject-line',
+          message: 'template-message',
+        },
       })}
     />
   );
@@ -60,9 +60,11 @@ test('renders page one error', () => {
             emailTemplateName: ['Template name error'],
           },
         },
-        emailTemplateName: '',
-        emailTemplateSubjectLine: '',
-        emailTemplateMessage: '',
+        EMAIL: {
+          name: '',
+          subject: '',
+          message: '',
+        },
       })}
     />
   );
@@ -81,9 +83,11 @@ test('renders page with multiple errors', () => {
             emailTemplateMessage: ['Template message error'],
           },
         },
-        emailTemplateName: '',
-        emailTemplateSubjectLine: '',
-        emailTemplateMessage: '',
+        EMAIL: {
+          name: '',
+          subject: '',
+          message: '',
+        },
       })}
     />
   );

@@ -9,20 +9,20 @@ import {
   Textarea,
   Button,
 } from 'nhsuk-react-components';
-import { createNhsAppTemplateAction } from '@forms/CreateNhsAppTemplate/server-action';
+import { processFormActions } from '@forms/CreateNhsAppTemplate/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps, TemplateType } from '@utils/types';
+import { PageComponentProps, TemplateType, Template } from '@utils/types';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 
-export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
+export const CreateNhsAppTemplate: FC<PageComponentProps<Template>> = ({
   initialState,
 }) => {
   const {
@@ -34,10 +34,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
     templateMessageLabelText,
     templateNameHintText,
   } = createNhsAppTemplatePageContent;
-  const [state, action] = useFormState(
-    createNhsAppTemplateAction,
-    initialState
-  );
+  const [state, action] = useFormState(processFormActions, initialState);
   const router = useRouter();
 
   if (state.redirect) {
@@ -45,10 +42,10 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
   }
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.nhsAppTemplateMessage);
+    useTextInput<HTMLTextAreaElement>(state?.NHS_APP?.message ?? '');
 
   const [nhsAppTemplateName, nhsAppTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.nhsAppTemplateName);
+    useTextInput<HTMLInputElement>(state?.NHS_APP?.name ?? '');
 
   const templateNameError =
     state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');

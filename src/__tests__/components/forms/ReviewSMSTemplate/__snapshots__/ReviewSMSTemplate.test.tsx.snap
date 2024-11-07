@@ -10,7 +10,7 @@ exports[`Preview sms form renders matches error snapshot 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/create-text-message-template/session-id"
+        href="/create-text-message-template/template-id"
       >
         <svg
           aria-hidden="true"
@@ -232,7 +232,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
     >
       <a
         class="nhsuk-back-link__link"
-        href="/create-text-message-template/session-id"
+        href="/create-text-message-template/template-id"
       >
         <svg
           aria-hidden="true"

@@ -1,7 +1,6 @@
 import { TemplateFormState } from '@utils/types';
-import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
-import { saveSession } from '@utils/form-actions';
+import { saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 
@@ -26,27 +25,15 @@ const $GoBackSchema = z.object({
   emailTemplateMessage: z.string({ message: 'Internal server error' }),
 });
 
-const $FormIdSchema = z.object({
-  formId: z.enum(['create-email-template-back', 'create-email-template'], {
-    message: 'Internal server error',
-  }),
-});
-
-type FormId = z.infer<typeof $FormIdSchema>['formId'];
-
-const formIdToServerActionMap: Record<
-  FormId,
-  (formState: TemplateFormState, formData: FormData) => TemplateFormState
-> = {
-  'create-email-template-back': (formState, formData) =>
-    zodValidationServerAction(formState, formData, $GoBackSchema),
-  'create-email-template': (formState, formData) =>
-    zodValidationServerAction(formState, formData, $CreateEmailTemplateSchema),
-};
-
-const formIdToPageMap: Record<FormId, string> = {
-  'create-email-template-back': 'choose-a-template-type',
-  'create-email-template': 'preview-email-template',
+const formIdMap = {
+  'create-email-template-back': {
+    schema: $GoBackSchema,
+    redirectPath: 'choose-a-template-type',
+  },
+  'create-email-template': {
+    schema: $CreateEmailTemplateSchema,
+    redirectPath: 'preview-email-template',
+  },
 };
 
 export async function processFormActions(
@@ -55,31 +42,43 @@ export async function processFormActions(
 ): Promise<TemplateFormState> {
   const formId = formData.get('form-id');
 
-  const { success, error, data } = $FormIdSchema.safeParse({ formId });
-
-  if (!success) {
+  if (
+    formId !== 'create-email-template-back' &&
+    formId !== 'create-email-template'
+  ) {
     return {
       ...formState,
-      validationError: error.flatten(),
+      validationError: {
+        formErrors: ['Internal server error'],
+        fieldErrors: {},
+      },
     };
   }
 
-  const { validationError, ...fields } = formIdToServerActionMap[data.formId](
-    formState,
-    formData
-  );
+  const { schema, redirectPath } = formIdMap[formId];
 
-  if (validationError) {
+  const parsedForm = schema.safeParse(Object.fromEntries(formData.entries()));
+
+  if (!parsedForm.success) {
     return {
       ...formState,
-      validationError,
+      validationError: parsedForm.error.flatten(),
     };
   }
 
-  const updatedSession = await saveSession(fields);
+  const { emailTemplateName, emailTemplateSubjectLine, emailTemplateMessage } =
+    parsedForm.data;
 
-  return redirect(
-    `/${formIdToPageMap[data.formId]}/${updatedSession.id}`,
-    RedirectType.push
-  );
+  const updatedTemplate = {
+    ...formState,
+    EMAIL: {
+      name: emailTemplateName,
+      subject: emailTemplateSubjectLine,
+      message: emailTemplateMessage,
+    },
+  };
+
+  const savedTemplate = await saveTemplate(updatedTemplate);
+
+  return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
 }

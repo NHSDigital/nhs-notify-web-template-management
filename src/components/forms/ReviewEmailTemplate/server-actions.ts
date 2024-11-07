@@ -1,5 +1,5 @@
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { TemplateFormState } from '@utils/types';
+import { EmailTemplate, TemplateFormState } from '@utils/types';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
 
@@ -21,7 +21,7 @@ export function renderMarkdown(
 }
 
 export async function reviewEmailTemplateAction(
-  formState: TemplateFormState,
+  formState: TemplateFormState<EmailTemplate>,
   formData: FormData
 ) {
   const form = Object.fromEntries(formData.entries());

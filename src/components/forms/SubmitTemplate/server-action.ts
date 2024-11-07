@@ -1,56 +1,41 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  deleteSession,
-  getSession,
-  saveTemplate,
-  sendEmail,
-} from '@utils/form-actions';
-import { createTemplateFromSession, validateTemplate } from '@domain/templates';
+import { getTemplate, sendEmail } from '@utils/form-actions';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
+import {
+  parseTemplate,
+  validateChannelTemplate,
+} from '@utils/validate-template';
 
-const $SessionIdSchema = z.string();
+const $TemplateIdSchema = z.string();
 
 export async function submitTemplate(route: string, formData: FormData) {
-  const { success, data: sessionId } = $SessionIdSchema.safeParse(
-    formData.get('sessionId')
+  const { success, data: templateId } = $TemplateIdSchema.safeParse(
+    formData.get('templateId')
   );
 
   if (!success) {
-    return redirect('/invalid-session', RedirectType.replace);
+    return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const session = await getSession(sessionId);
-  if (!session) {
-    return redirect('/invalid-session', RedirectType.replace);
+  const template = await getTemplate(templateId);
+
+  const validatedTemplate = validateChannelTemplate(template);
+
+  if (!validatedTemplate) {
+    return redirect('/invalid-template', RedirectType.replace);
   }
 
-  let templateId;
   try {
-    const templateDTO = createTemplateFromSession(session);
+    const { name, subject, message } = parseTemplate(validatedTemplate);
 
-    const validatedTemplate = validateTemplate(templateDTO);
-
-    const templateEntity = await saveTemplate(validatedTemplate);
-
-    templateId = templateEntity.id;
-    const promises = [
-      deleteSession(sessionId),
-      sendEmail(
-        templateId,
-        templateEntity.name,
-        templateEntity.fields!.content,
-        templateEntity.fields!.subjectLine
-      ),
-    ];
-
-    await Promise.all(promises);
+    await sendEmail(templateId, name, message, subject);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,
-      sessionId,
+      templateId,
     });
 
     throw error;

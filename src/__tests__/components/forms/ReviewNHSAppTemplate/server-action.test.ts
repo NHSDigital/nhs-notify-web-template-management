@@ -34,10 +34,13 @@ describe('Markdown rendering', () => {
 
 describe('reviewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState = {
-    id: 'session-id',
+    id: 'template-id',
+    version: 1,
     templateType: TemplateType.NHS_APP,
-    nhsAppTemplateName: 'Example name',
-    nhsAppTemplateMessage: 'Example message',
+    NHS_APP: {
+      name: 'Example name',
+      message: 'Example message',
+    },
     validationError: undefined,
   };
 
@@ -49,10 +52,13 @@ describe('reviewNhsAppTemplateAction', () => {
     const newState = reviewNhsAppTemplateAction(currentState, formData);
 
     expect(newState).toEqual({
-      id: 'session-id',
+      id: 'template-id',
+      version: 1,
       templateType: 'NHS_APP',
-      nhsAppTemplateName: 'Example name',
-      nhsAppTemplateMessage: 'Example message',
+      NHS_APP: {
+        name: 'Example name',
+        message: 'Example message',
+      },
       validationError: {
         fieldErrors: {
           reviewNHSAppTemplateAction: ['Select an option'],
@@ -71,7 +77,7 @@ describe('reviewNhsAppTemplateAction', () => {
 
     expect(response).toEqual({
       ...currentState,
-      redirect: '/submit-nhs-app-template/session-id',
+      redirect: '/submit-nhs-app-template/template-id',
     });
   });
 
@@ -84,7 +90,7 @@ describe('reviewNhsAppTemplateAction', () => {
 
     expect(response).toEqual({
       ...currentState,
-      redirect: '/create-nhs-app-template/session-id',
+      redirect: '/create-nhs-app-template/template-id',
     });
   });
 });

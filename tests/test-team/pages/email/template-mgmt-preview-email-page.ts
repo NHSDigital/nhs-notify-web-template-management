@@ -30,7 +30,7 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtBasePage {
     );
   }
 
-  async loadPage(sessionId: string) {
-    await this.navigateTo(`/templates/preview-email-template/${sessionId}`);
+  async loadPage(templateId: string) {
+    await this.navigateTo(`/templates/preview-email-template/${templateId}`);
   }
 }

@@ -6,7 +6,7 @@ import {
   renderMarkdown,
 } from '@forms/ReviewEmailTemplate';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateFormState } from '@utils/types';
+import { EmailTemplate, TemplateFormState } from '@utils/types';
 
 jest.mock('@forms/ReviewEmailTemplate/server-actions');
 
@@ -29,12 +29,14 @@ describe('Preview email form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <ReviewEmailTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          emailTemplateName: 'test-template-email',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: 'message',
-          id: 'session-id',
+          EMAIL: {
+            name: 'test-template-email',
+            subject: 'template-subject-line',
+            message: 'message',
+          },
+          id: 'template-id',
         })}
       />
     );
@@ -45,17 +47,19 @@ describe('Preview email form renders', () => {
   it('matches error snapshot', () => {
     const container = render(
       <ReviewEmailTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
               reviewEmailTemplateAction: ['Select an option'],
             },
           },
-          emailTemplateName: 'test-template-email',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: 'message',
-          id: 'session-id',
+          EMAIL: {
+            name: 'test-template-email',
+            subject: 'template-subject-line',
+            message: 'message',
+          },
+          id: 'template-id',
         })}
       />
     );
@@ -66,12 +70,14 @@ describe('Preview email form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewEmailTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          emailTemplateName: 'test-template-email',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: 'message',
-          id: 'session-id',
+          EMAIL: {
+            name: 'test-template-email',
+            subject: 'template-subject-line',
+            message: 'message',
+          },
+          id: 'template-id',
         })}
       />
     );
@@ -96,12 +102,14 @@ describe('Preview email form renders', () => {
 
     render(
       <ReviewEmailTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          emailTemplateName: 'test-template-email',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: message,
-          id: 'session-id',
+          EMAIL: {
+            name: 'test-template-email',
+            subject: 'template-subject-line',
+            message,
+          },
+          id: 'template-id',
         })}
       />
     );

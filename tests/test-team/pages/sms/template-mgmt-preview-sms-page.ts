@@ -27,9 +27,9 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtBasePage {
     );
   }
 
-  async loadPage(sessionId: string) {
+  async loadPage(templateId: string) {
     await this.navigateTo(
-      `/templates/preview-text-message-template/${sessionId}`
+      `/templates/preview-text-message-template/${templateId}`
     );
   }
 }

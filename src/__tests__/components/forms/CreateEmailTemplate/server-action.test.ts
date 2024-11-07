@@ -1,6 +1,6 @@
 import { getMockFormData } from '@testhelpers';
-import { saveSession } from '@utils/form-actions';
-import { Session, TemplateType } from '@utils/types';
+import { saveTemplate } from '@utils/form-actions';
+import { Template, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/CreateEmailTemplate/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
@@ -8,7 +8,7 @@ import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
     models: {
-      SessionStorage: {
+      TemplateStorage: {
         update: () => ({ data: {} }),
       },
     },
@@ -17,14 +17,13 @@ jest.mock('@utils/amplify-utils', () => ({
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
-const saveSessionMock = jest.mocked(saveSession);
+const saveTemplateMock = jest.mocked(saveTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Session = {
-  id: 'session-id',
+const initialState: Template = {
+  id: 'template-id',
+  version: 1,
   templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
 describe('CreateEmailTemplate server actions', () => {
@@ -39,10 +38,8 @@ describe('CreateEmailTemplate server actions', () => {
     expect(response).toEqual({
       ...initialState,
       validationError: {
-        formErrors: [],
-        fieldErrors: {
-          formId: ['Internal server error'],
-        },
+        formErrors: ['Internal server error'],
+        fieldErrors: {},
       },
     });
   });
@@ -111,13 +108,15 @@ describe('CreateEmailTemplate server actions', () => {
     { formId: 'create-email-template', route: 'preview-email-template' },
     { formId: 'create-email-template-back', route: 'choose-a-template-type' },
   ])(
-    '$formId - should save the session and redirect to $route',
+    '$formId - should save the template and redirect to $route',
     async ({ formId, route }) => {
-      saveSessionMock.mockResolvedValue({
+      saveTemplateMock.mockResolvedValue({
         ...initialState,
-        emailTemplateName: 'template-name',
-        emailTemplateSubjectLine: 'template-subject-line',
-        emailTemplateMessage: 'template-message',
+        EMAIL: {
+          name: 'template-name',
+          subject: 'template-subject-line',
+          message: 'template-message',
+        },
       });
 
       await processFormActions(
@@ -130,17 +129,21 @@ describe('CreateEmailTemplate server actions', () => {
         })
       );
 
-      expect(saveSessionMock).toHaveBeenCalledWith({
+      expect(saveTemplateMock).toHaveBeenCalledWith({
         id: initialState.id,
+        version: 1,
         templateType: initialState.templateType,
-        emailTemplateName: 'template-name',
-        emailTemplateSubjectLine: 'template-subject-line',
-        emailTemplateMessage: 'template-message',
-        nhsAppTemplateMessage: '',
-        nhsAppTemplateName: '',
+        EMAIL: {
+          name: 'template-name',
+          subject: 'template-subject-line',
+          message: 'template-message',
+        },
       });
 
-      expect(redirectMock).toHaveBeenCalledWith(`/${route}/session-id`, 'push');
+      expect(redirectMock).toHaveBeenCalledWith(
+        `/${route}/template-id`,
+        'push'
+      );
     }
   );
 });

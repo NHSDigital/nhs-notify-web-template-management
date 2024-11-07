@@ -1,14 +1,15 @@
-import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[sessionId]/page';
+import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
-import { getSession } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitTemplate');
+jest.mock('@utils/logger');
 
-const getSessionMock = jest.mocked(getSession);
+const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('SubmitNhsAppTemplatePage', () => {
@@ -16,90 +17,103 @@ describe('SubmitNhsAppTemplatePage', () => {
 
   test('should load page', async () => {
     const state = {
-      id: 'session-id',
+      id: 'template-id',
+      version: 1,
       templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: 'template-name',
-      nhsAppTemplateMessage: 'template-message',
+      NHS_APP: {
+        name: 'template-name',
+        message: 'template-message',
+      },
     };
 
-    getSessionMock.mockResolvedValue(state);
+    getTemplateMock.mockResolvedValue(state);
 
     const page = await SubmitNhsAppTemplatePage({
       params: {
-        sessionId: 'session-id',
+        templateId: 'template-id',
       },
     });
     expect(page).toEqual(
       <SubmitTemplate
-        templateName={state.nhsAppTemplateName}
-        sessionId={state.id}
+        templateName={state.NHS_APP.name}
+        templateId={state.id}
         goBackPath='preview-nhs-app-template'
         submitPath='nhs-app-template-submitted'
       />
     );
   });
 
-  test('should handle invalid session', async () => {
-    getSessionMock.mockResolvedValue(undefined);
+  test('should handle invalid template', async () => {
+    getTemplateMock.mockResolvedValue(undefined);
 
     await SubmitNhsAppTemplatePage({
       params: {
-        sessionId: 'invalid-session',
+        templateId: 'invalid-template',
       },
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test.each([
     {
       templateType: TemplateType.LETTER,
-      nhsAppTemplateName: 'valid-name',
-      nhsAppTemplateMessage: 'valid-message',
+      NHS_APP: {
+        name: 'template-name',
+        message: 'template-message',
+      },
     },
     {
       templateType: TemplateType.EMAIL,
-      nhsAppTemplateName: 'valid-name',
-      nhsAppTemplateMessage: 'valid-message',
+      NHS_APP: {
+        name: 'template-name',
+        message: 'template-message',
+      },
     },
     {
       templateType: TemplateType.SMS,
-      nhsAppTemplateName: 'valid-name',
-      nhsAppTemplateMessage: 'valid-message',
+      NHS_APP: {
+        name: 'template-name',
+        message: 'template-message',
+      },
     },
     {
       templateType: TemplateType.NHS_APP,
-      nhsAppTemplateName: 'name-1',
-      // Note: We have need this casting because nhsAppTemplateMessage on Session type is required
-      nhsAppTemplateMessage: undefined as unknown as string,
+      NHS_APP: {
+        name: 'template-name',
+        message: undefined as unknown as string,
+      },
     },
     {
       templateType: TemplateType.NHS_APP,
-      // Note: We have need this casting because nhsAppTemplateName on Session type is required
-      nhsAppTemplateName: undefined as unknown as string,
-      nhsAppTemplateMessage: 'message-1',
+      NHS_APP: {
+        name: undefined as unknown as string,
+        message: 'template-message',
+      },
     },
     {
       templateType: TemplateType.NHS_APP,
-      // Note: We have need this casting because Session type does not have a null typing
-      nhsAppTemplateName: null as unknown as string,
-      nhsAppTemplateMessage: null as unknown as string,
+      NHS_APP: {
+        name: null as unknown as string,
+        message: null as unknown as string,
+      },
     },
   ])(
-    'should redirect to invalid-session when session template is $templateType and name is $nhsAppTemplateName and message is $nhsAppTemplateMessage',
+    'should redirect to invalid-template when template is $templateType and name is $nhsAppTemplateName and message is $nhsAppTemplateMessage',
     async (value) => {
-      getSessionMock.mockResolvedValueOnce({
-        id: 'session-id',
+      getTemplateMock.mockResolvedValueOnce({
+        id: 'template-id',
+        version: 1,
         ...value,
       });
 
       await SubmitNhsAppTemplatePage({
         params: {
-          sessionId: 'session-id',
+          templateId: 'template-id',
         },
       });
 
-      expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
 });

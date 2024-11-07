@@ -6,7 +6,7 @@ import {
 } from '@forms/ReviewEmailTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
-import { Session, TemplateType } from '@utils/types';
+import { EmailTemplate, TemplateType } from '@utils/types';
 import { getMockFormData } from '@testhelpers';
 import { markdown } from '../fixtures';
 
@@ -14,11 +14,15 @@ jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Session = {
-  id: 'session-id',
+const initialState: EmailTemplate = {
+  id: 'template-id',
+  version: 1,
   templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
+  EMAIL: {
+    name: 'template-name',
+    subject: 'template-subject',
+    message: 'template-message',
+  },
 };
 
 describe('PreviewEmailActions', () => {
@@ -77,7 +81,7 @@ describe('reviewEmailTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/create-email-template/session-id',
+      '/create-email-template/template-id',
       'push'
     );
   });
@@ -91,7 +95,7 @@ describe('reviewEmailTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-email-template/session-id',
+      '/submit-email-template/template-id',
       'push'
     );
   });

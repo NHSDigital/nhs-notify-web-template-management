@@ -2,13 +2,19 @@ import nav from 'next/navigation';
 import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateType } from '@utils/types';
 
 jest.mock('@utils/form-actions', () => ({
   getTemplate: jest.fn().mockImplementation((templateId: string) => {
     if (templateId === 'template-id') {
       return {
         id: 'template-id',
-        name: 'template-name',
+        version: 1,
+        templateType: TemplateType.NHS_APP,
+        NHS_APP: {
+          name: 'template-name',
+          message: 'template-message',
+        },
       };
     }
   }),
@@ -25,6 +31,8 @@ jest.mock('next/navigation', () => ({
     replace: 'replace',
   },
 }));
+
+jest.mock('@utils/logger');
 
 test('NhsAppTemplateSubmittedPage', async () => {
   const page = await NhsAppTemplateSubmittedPage({

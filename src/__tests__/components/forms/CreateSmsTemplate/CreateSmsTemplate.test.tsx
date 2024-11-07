@@ -29,9 +29,8 @@ describe('CreateSmsTemplate component', () => {
       <CreateSmsTemplate
         initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
-          smsTemplateName: '',
-          smsTemplateMessage: '',
-          id: 'session-id',
+          id: 'template-id',
+          SMS: undefined,
         })}
       />
     );
@@ -43,9 +42,11 @@ describe('CreateSmsTemplate component', () => {
       <CreateSmsTemplate
         initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
-          smsTemplateName: 'template-name',
-          smsTemplateMessage: 'template-message',
-          id: 'session-id',
+          SMS: {
+            name: 'template-name',
+            message: 'template-message',
+          },
+          id: 'template-id',
         })}
       />
     );
@@ -62,8 +63,7 @@ describe('CreateSmsTemplate component', () => {
               smsTemplateName: ['Template name error'],
             },
           },
-          smsTemplateName: undefined,
-          smsTemplateMessage: undefined,
+          SMS: undefined,
         })}
       />
     );
@@ -81,9 +81,8 @@ describe('CreateSmsTemplate component', () => {
               smsTemplateMessage: ['Template message error'],
             },
           },
-          id: 'session-id',
-          smsTemplateName: undefined,
-          smsTemplateMessage: undefined,
+          id: 'template-id',
+          SMS: undefined,
         })}
       />
     );
@@ -97,9 +96,11 @@ describe('CreateSmsTemplate component', () => {
       <CreateSmsTemplate
         initialState={mockDeep<TemplateFormState>({
           validationError: undefined,
-          smsTemplateName: '',
-          smsTemplateMessage: '',
-          id: 'session-id',
+          SMS: {
+            name: '',
+            message: '',
+          },
+          id: 'template-id',
         })}
       />
     );
@@ -123,5 +124,5 @@ describe('CreateSmsTemplate component', () => {
     expect(characterCount.textContent).toContain(
       `${longMessage.length} characters`
     );
-  });
+  }, 10_000);
 });

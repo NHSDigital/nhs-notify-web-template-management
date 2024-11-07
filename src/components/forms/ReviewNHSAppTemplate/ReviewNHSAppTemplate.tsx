@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
-import { PageComponentProps } from '@utils/types';
+import { NHSAppTemplate, PageComponentProps } from '@utils/types';
 import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import { useFormState } from 'react-dom';
@@ -12,7 +12,7 @@ import { reviewNhsAppTemplateAction, renderMarkdown } from './server-action';
 
 export function ReviewNHSAppTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const [state, action] = useFormState(
     reviewNhsAppTemplateAction,
     initialState
@@ -23,9 +23,9 @@ export function ReviewNHSAppTemplate({
     router.push(state.redirect);
   }
 
-  const { nhsAppTemplateName, nhsAppTemplateMessage } = state;
+  const { name, message } = state.NHS_APP!;
 
-  const html = renderMarkdown(nhsAppTemplateMessage);
+  const html = renderMarkdown(message);
 
   const {
     components: {
@@ -43,7 +43,7 @@ export function ReviewNHSAppTemplate({
       </BackLink>
       <div className='nhsuk-grid-column-two-thirds'>
         <ReviewTemplate
-          templateName={nhsAppTemplateName}
+          templateName={name}
           sectionHeading={sectionHeading}
           details={details}
           form={{

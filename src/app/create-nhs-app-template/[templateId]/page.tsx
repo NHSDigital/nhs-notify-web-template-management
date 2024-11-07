@@ -2,19 +2,19 @@
 
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 import { PageProps, TemplateType } from '@utils/types';
-import { getSession } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 
 const CreateNhsAppTemplatePage = async ({
-  params: { sessionId },
+  params: { templateId },
 }: PageProps) => {
-  const session = await getSession(sessionId);
+  const template = await getTemplate(templateId);
 
-  if (!session || session.templateType !== TemplateType.NHS_APP) {
-    redirect('/invalid-session', RedirectType.replace);
+  if (!template || template.templateType !== TemplateType.NHS_APP) {
+    redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <CreateNhsAppTemplate initialState={session} />;
+  return <CreateNhsAppTemplate initialState={template} />;
 };
 
 export default CreateNhsAppTemplatePage;

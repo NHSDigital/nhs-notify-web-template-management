@@ -36,8 +36,7 @@ test('renders page', async () => {
     <CreateNhsAppTemplate
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
-        nhsAppTemplateName: '',
-        nhsAppTemplateMessage: '',
+        NHS_APP: undefined,
       })}
     />
   );
@@ -61,8 +60,10 @@ test('renders page with preloaded field values', () => {
     <CreateNhsAppTemplate
       initialState={mockDeep<TemplateFormState>({
         validationError: undefined,
-        nhsAppTemplateName: 'template-name',
-        nhsAppTemplateMessage: 'template-message',
+        NHS_APP: {
+          name: 'template-name',
+          message: 'template-message',
+        },
       })}
     />
   );
@@ -79,8 +80,10 @@ test('renders page one error', () => {
             nhsAppTemplateName: ['Template name error'],
           },
         },
-        nhsAppTemplateName: '',
-        nhsAppTemplateMessage: '',
+        NHS_APP: {
+          name: '',
+          message: '',
+        },
       })}
     />
   );
@@ -98,8 +101,10 @@ test('renders page with multiple errors', () => {
             nhsAppTemplateMessage: ['Template message error'],
           },
         },
-        nhsAppTemplateName: '',
-        nhsAppTemplateMessage: '',
+        NHS_APP: {
+          name: '',
+          message: '',
+        },
       })}
     />
   );

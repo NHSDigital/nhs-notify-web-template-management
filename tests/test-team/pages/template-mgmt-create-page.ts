@@ -4,18 +4,9 @@ export class TemplateMgmtCreatePage extends TemplateMgmtBasePage {
   private static createNhsAppTemplatePageUrl =
     '/templates/create-nhs-app-template';
 
-  private static createSmsTemplatePageUrl =
-    '/templates/create-text-message-template';
-
-  async loadPage(sessionId: string) {
+  async loadPage(templateId: string) {
     await this.navigateTo(
-      `${TemplateMgmtCreatePage.createNhsAppTemplatePageUrl}/${sessionId}`
-    );
-  }
-
-  async navigateToCreateSmsTemplatePage(sessionId: string) {
-    await this.navigateTo(
-      `${TemplateMgmtCreatePage.createSmsTemplatePageUrl}/${sessionId}`
+      `${TemplateMgmtCreatePage.createNhsAppTemplatePageUrl}/${templateId}`
     );
   }
 }

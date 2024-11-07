@@ -1,9 +1,7 @@
 import { TemplateFormState } from '@utils/types';
-import { zodValidationServerAction } from '@utils/zod-validation-server-action';
 import { z } from 'zod';
-import { saveSession } from '@utils/form-actions';
+import { saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 
 const $CreateSmsTemplateSchema = z.object({
   smsTemplateName: z
@@ -12,9 +10,7 @@ const $CreateSmsTemplateSchema = z.object({
   smsTemplateMessage: z
     .string({ message: 'Enter a template message' })
     .min(1, { message: 'Enter a template message' })
-    .max(MAX_SMS_CHARACTER_LENGTH, {
-      message: 'Template message too long',
-    }),
+    .max(918, { message: 'Template message too long' }),
 });
 
 const $GoBackSchema = z.object({
@@ -22,27 +18,15 @@ const $GoBackSchema = z.object({
   smsTemplateMessage: z.string({ message: 'Internal server error' }),
 });
 
-const $FormIdSchema = z.object({
-  formId: z.enum(['create-sms-template-back', 'create-sms-template'], {
-    message: 'Internal server error',
-  }),
-});
-
-type FormId = z.infer<typeof $FormIdSchema>['formId'];
-
-const formIdToServerActionMap: Record<
-  FormId,
-  (formState: TemplateFormState, formData: FormData) => TemplateFormState
-> = {
-  'create-sms-template-back': (formState, formData) =>
-    zodValidationServerAction(formState, formData, $GoBackSchema),
-  'create-sms-template': (formState, formData) =>
-    zodValidationServerAction(formState, formData, $CreateSmsTemplateSchema),
-};
-
-const formIdToPageMap: Record<FormId, string> = {
-  'create-sms-template-back': 'choose-a-template-type',
-  'create-sms-template': 'preview-text-message-template',
+const formIdMap = {
+  'create-sms-template-back': {
+    schema: $GoBackSchema,
+    redirectPath: 'choose-a-template-type',
+  },
+  'create-sms-template': {
+    schema: $CreateSmsTemplateSchema,
+    redirectPath: 'preview-text-message-template',
+  },
 };
 
 export async function processFormActions(
@@ -51,31 +35,41 @@ export async function processFormActions(
 ): Promise<TemplateFormState> {
   const formId = formData.get('form-id');
 
-  const { success, error, data } = $FormIdSchema.safeParse({ formId });
-
-  if (!success) {
+  if (
+    formId !== 'create-sms-template-back' &&
+    formId !== 'create-sms-template'
+  ) {
     return {
       ...formState,
-      validationError: error.flatten(),
+      validationError: {
+        formErrors: ['Internal server error'],
+        fieldErrors: {},
+      },
     };
   }
 
-  const { validationError, ...fields } = formIdToServerActionMap[data.formId](
-    formState,
-    formData
-  );
+  const { schema, redirectPath } = formIdMap[formId];
 
-  if (validationError) {
+  const parsedForm = schema.safeParse(Object.fromEntries(formData.entries()));
+
+  if (!parsedForm.success) {
     return {
       ...formState,
-      validationError,
+      validationError: parsedForm.error.flatten(),
     };
   }
 
-  const updatedSession = await saveSession(fields);
+  const { smsTemplateName, smsTemplateMessage } = parsedForm.data;
 
-  return redirect(
-    `/${formIdToPageMap[data.formId]}/${updatedSession.id}`,
-    RedirectType.push
-  );
+  const updatedTemplate = {
+    ...formState,
+    SMS: {
+      name: smsTemplateName,
+      message: smsTemplateMessage,
+    },
+  };
+
+  const savedTemplate = await saveTemplate(updatedTemplate);
+
+  return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
 }

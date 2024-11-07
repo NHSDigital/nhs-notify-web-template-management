@@ -5,13 +5,15 @@
 import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, Template } from '@utils/types';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { chooseTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 
-export const ChooseTemplate: FC<PageComponentProps> = ({ initialState }) => {
+export const ChooseTemplate: FC<PageComponentProps<Template>> = ({
+  initialState,
+}) => {
   const [state, action] = useFormState(chooseTemplateAction, initialState);
   const router = useRouter();
 

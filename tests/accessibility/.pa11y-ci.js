@@ -56,7 +56,6 @@ module.exports = {
     performCheck(submitEmailTemplatePage(baseUrl)),
     performCheck(emailTemplateSubmittedPage(baseUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
     performCheck({ url: `${baseUrl}/invalid-template`, name: 'invalid-template'}),
     performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],

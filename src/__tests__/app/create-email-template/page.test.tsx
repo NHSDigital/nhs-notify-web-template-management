@@ -1,6 +1,6 @@
-import CreateEmailTemplatePage from '@app/create-email-template/[sessionId]/page';
-import { getSession } from '@utils/form-actions';
-import { Session, TemplateType } from '@utils/types';
+import CreateEmailTemplatePage from '@app/create-email-template/[templateId]/page';
+import { getTemplate } from '@utils/form-actions';
+import { Template, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
@@ -8,50 +8,49 @@ jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/CreateEmailTemplate/CreateEmailTemplate');
 
-const getSessionMock = jest.mocked(getSession);
+const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Session = {
-  id: 'session-id',
+const initialState: Template = {
+  id: 'template-id',
+  version: 1,
   templateType: TemplateType.EMAIL,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
 describe('CreateEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should redirect to invalid-session when no session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(undefined);
+  it('should redirect to invalid-template when no template is found', async () => {
+    getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await CreateEmailTemplatePage({ params: { sessionId: 'session-id' } });
+    await CreateEmailTemplatePage({ params: { templateId: 'template-id' } });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should redirect to invalid-session when sessions template type is not EMAIL', async () => {
-    getSessionMock.mockResolvedValueOnce({
+  it('should redirect to invalid-template when template type is not EMAIL', async () => {
+    getTemplateMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,
     });
 
-    await CreateEmailTemplatePage({ params: { sessionId: 'session-id' } });
+    await CreateEmailTemplatePage({ params: { templateId: 'template-id' } });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should render CreateEmailTemplatePage component when session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(initialState);
+  it('should render CreateEmailTemplatePage component when template is found', async () => {
+    getTemplateMock.mockResolvedValueOnce(initialState);
 
     const page = await CreateEmailTemplatePage({
-      params: { sessionId: 'session-id' },
+      params: { templateId: 'template-id' },
     });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<CreateEmailTemplate initialState={initialState} />);
   });

@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page';
+import ChooseATemplateTypePage from '@app/choose-a-template-type/[templateId]/page';
 import { TemplateFormState } from '@utils/types';
 import nav from 'next/navigation';
 
-const mockSessionSupplier = {
-  mockSession: {} as unknown,
+const mockTemplateSupplier = {
+  mockTemplate: {} as unknown,
 };
 
 jest.mock('@utils/form-actions', () => ({
-  getSession: () => Promise.resolve(mockSessionSupplier.mockSession),
+  getTemplate: () => Promise.resolve(mockTemplateSupplier.mockTemplate),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -39,16 +39,14 @@ jest.mock('react-dom', () => {
 });
 
 test('ChooseATemplateTypePage', async () => {
-  mockSessionSupplier.mockSession = {
-    id: 'session-id',
+  mockTemplateSupplier.mockTemplate = {
+    id: 'template-id',
     templateType: 'UNKNOWN',
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
   };
 
   const page = await ChooseATemplateTypePage({
     params: {
-      sessionId: 'session-id',
+      templateId: 'template-id',
     },
   });
 
@@ -57,17 +55,17 @@ test('ChooseATemplateTypePage', async () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('ChooseATemplateTypePage - should handle invalid session', async () => {
-  mockSessionSupplier.mockSession = undefined;
+test('ChooseATemplateTypePage - should handle invalid template', async () => {
+  mockTemplateSupplier.mockTemplate = undefined;
   const redirectSpy = jest.spyOn(nav, 'redirect');
 
   await expect(
     ChooseATemplateTypePage({
       params: {
-        sessionId: 'session-id',
+        templateId: 'template-id',
       },
     })
   ).rejects.toThrow('Simulated redirect');
 
-  expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
+  expect(redirectSpy).toHaveBeenCalledWith('/invalid-template', 'replace');
 });

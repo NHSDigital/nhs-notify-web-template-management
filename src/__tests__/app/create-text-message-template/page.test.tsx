@@ -1,6 +1,6 @@
-import CreateSmsTemplatePage from '@app/create-text-message-template/[sessionId]/page';
-import { getSession } from '@utils/form-actions';
-import { Session, TemplateType } from '@utils/types';
+import CreateSmsTemplatePage from '@app/create-text-message-template/[templateId]/page';
+import { getTemplate } from '@utils/form-actions';
+import { Template, TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate';
 
@@ -8,50 +8,49 @@ jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/CreateSmsTemplate/CreateSmsTemplate');
 
-const getSessionMock = jest.mocked(getSession);
+const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Session = {
-  id: 'session-id',
+const initialState: Template = {
+  id: 'template-id',
+  version: 1,
   templateType: TemplateType.SMS,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
 };
 
 describe('CreateSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should redirect to invalid-session when no session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(undefined);
+  it('should redirect to invalid-templateId when no templateId is found', async () => {
+    getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await CreateSmsTemplatePage({ params: { sessionId: 'session-id' } });
+    await CreateSmsTemplatePage({ params: { templateId: 'template-id' } });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should redirect to invalid-session when sessions template type is not SMS', async () => {
-    getSessionMock.mockResolvedValueOnce({
+  it('should redirect to invalid-templateId when template type is not SMS', async () => {
+    getTemplateMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,
     });
 
-    await CreateSmsTemplatePage({ params: { sessionId: 'session-id' } });
+    await CreateSmsTemplatePage({ params: { templateId: 'template-id' } });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should render CreateSmsTemplate component when session is found', async () => {
-    getSessionMock.mockResolvedValueOnce(initialState);
+  it('should render CreateSmsTemplate component when templateId is found', async () => {
+    getTemplateMock.mockResolvedValueOnce(initialState);
 
     const page = await CreateSmsTemplatePage({
-      params: { sessionId: 'session-id' },
+      params: { templateId: 'template-id' },
     });
 
-    expect(getSessionMock).toHaveBeenCalledWith('session-id');
+    expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<CreateSmsTemplate initialState={initialState} />);
   });

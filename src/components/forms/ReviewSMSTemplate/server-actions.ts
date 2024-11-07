@@ -1,5 +1,5 @@
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { TemplateFormState } from '@utils/types';
+import { SMSTemplate, TemplateFormState } from '@utils/types';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
 
@@ -17,7 +17,7 @@ export function renderMarkdown(
 }
 
 export async function reviewSmsTemplateAction(
-  formState: TemplateFormState,
+  formState: TemplateFormState<SMSTemplate>,
   formData: FormData
 ) {
   const form = Object.fromEntries(formData.entries());

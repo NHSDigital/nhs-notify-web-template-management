@@ -10,7 +10,7 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
-  sessionId,
+  templateId,
   goBackPath,
   submitPath,
 }) => {
@@ -29,7 +29,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/${goBackPath}/${sessionId}`}
+        href={`${getBasePath()}/${goBackPath}/${templateId}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         {backLinkText}
@@ -58,7 +58,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           formId='submit-template-form'
           action={submitTemplate.bind(null, submitPath)}
         >
-          <input type='hidden' name='sessionId' value={sessionId} readOnly />
+          <input type='hidden' name='templateId' value={templateId} readOnly />
           <Button id='submit-template-button'>{buttonText}</Button>
         </NHSNotifyFormWrapper>
       </div>

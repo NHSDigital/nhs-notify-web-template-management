@@ -3,7 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { PageComponentProps } from '@utils/types';
+import { EmailTemplate, PageComponentProps } from '@utils/types';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { ChevronLeftIcon } from 'nhsuk-react-components';
@@ -11,7 +11,7 @@ import { renderMarkdown, reviewEmailTemplateAction } from './server-actions';
 
 export function ReviewEmailTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<EmailTemplate>>) {
   const {
     components: {
       reviewEmailTemplateContent: { sectionHeading, details, form },
@@ -20,9 +20,9 @@ export function ReviewEmailTemplate({
 
   const [state, action] = useFormState(reviewEmailTemplateAction, initialState);
 
-  const templateName = initialState.emailTemplateName!;
-  const templateSubjectLine = initialState.emailTemplateSubjectLine!;
-  const templateMessage = initialState.emailTemplateMessage!;
+  const templateName = initialState.EMAIL!.name;
+  const templateSubjectLine = initialState.EMAIL!.subject;
+  const templateMessage = initialState.EMAIL!.message;
 
   const html = renderMarkdown(templateMessage);
 

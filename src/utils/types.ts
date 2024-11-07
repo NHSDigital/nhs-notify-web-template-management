@@ -21,28 +21,52 @@ export enum TemplateType {
   LETTER = 'LETTER',
 }
 
-export type Session = {
-  id: string;
-  templateType: TemplateType | 'UNKNOWN';
-  nhsAppTemplateName: string;
-  nhsAppTemplateMessage: string;
-  emailTemplateName?: string;
-  emailTemplateSubjectLine?: string;
-  emailTemplateMessage?: string;
-  smsTemplateName?: string;
-  smsTemplateMessage?: string;
+export type BaseTemplateFields = {
+  name: string;
+  message: string;
 };
+
+export type BaseTemplateFieldsWithSubject = BaseTemplateFields & {
+  subject: string;
+};
+
+export type Template = {
+  id: string;
+  version: number;
+  templateType: TemplateType | 'UNKNOWN';
+  NHS_APP?: BaseTemplateFields | null;
+  EMAIL?: BaseTemplateFieldsWithSubject | null;
+  SMS?: BaseTemplateFields | null;
+  LETTER?: BaseTemplateFields | null;
+};
+
+export type NHSAppTemplate = Omit<Template, 'templateType' | 'NHS_APP'> & {
+  templateType: TemplateType.NHS_APP;
+  NHS_APP: BaseTemplateFields;
+};
+
+export type EmailTemplate = Omit<Template, 'templateType' | 'EMAIL'> & {
+  templateType: TemplateType.EMAIL;
+  EMAIL: BaseTemplateFieldsWithSubject;
+};
+
+export type SMSTemplate = Omit<Template, 'templateType' | 'SMS'> & {
+  templateType: TemplateType.SMS;
+  SMS: BaseTemplateFields;
+};
+
+export type ChannelTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
 
 export type FormState = {
   validationError?: FormErrorState;
   redirect?: string;
 };
 
-export type TemplateFormState = FormState & Session;
+export type TemplateFormState<T = Template> = FormState & T;
 
 export type PageProps = {
   params: {
-    sessionId: string;
+    templateId: string;
   };
 };
 
@@ -52,13 +76,13 @@ export type TemplateSubmittedPageProps = {
   };
 };
 
-export type PageComponentProps = {
-  initialState: TemplateFormState;
+export type PageComponentProps<T> = {
+  initialState: TemplateFormState<T>;
 };
 
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
-  sessionId: string;
+  templateId: string;
   goBackPath: string;
   submitPath: string;
 };

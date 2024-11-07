@@ -2,21 +2,19 @@ import { mockDeep } from 'jest-mock-extended';
 import { redirect } from 'next/navigation';
 import CreateTemplate from '@app/create-template/page';
 
-const mockSession = {
+const mockTemplate = {
   id: undefined as unknown,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
   createdAt: 'created-at',
   updatedAt: 'updated-at',
 };
 
 jest.mock('@utils/form-actions', () => ({
-  createSession: () => mockSession,
+  createTemplate: () => mockTemplate,
 }));
 jest.mock('next/navigation');
 
 test('CreateTemplate', async () => {
-  mockSession.id = 'session-id';
+  mockTemplate.id = 'template-id';
 
   const mockRedirect = jest.fn(mockDeep<typeof redirect>());
   jest.mocked(redirect).mockImplementation(mockRedirect);
@@ -24,13 +22,13 @@ test('CreateTemplate', async () => {
   await CreateTemplate();
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/choose-a-template-type/session-id',
+    '/choose-a-template-type/template-id',
     'replace'
   );
 });
 
 test('CreateTemplate - error', async () => {
-  mockSession.id = undefined;
+  mockTemplate.id = undefined;
 
-  await expect(CreateTemplate()).rejects.toThrow('Error creating session');
+  await expect(CreateTemplate()).rejects.toThrow('Error creating template');
 });

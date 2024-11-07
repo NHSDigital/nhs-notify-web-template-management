@@ -13,7 +13,7 @@ import {
   TextInput,
 } from 'nhsuk-react-components';
 import { useFormState } from 'react-dom';
-import { PageComponentProps, TemplateType } from '@utils/types';
+import { PageComponentProps, TemplateType, Template } from '@utils/types';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -23,14 +23,16 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
-export const CreateSmsTemplate: FC<PageComponentProps> = ({ initialState }) => {
+export const CreateSmsTemplate: FC<PageComponentProps<Template>> = ({
+  initialState,
+}) => {
   const [state, action] = useFormState(processFormActions, initialState);
 
   const [smsTemplateName, smsTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.smsTemplateName ?? '');
+    useTextInput<HTMLInputElement>(state?.SMS?.name ?? '');
 
   const [smsTemplateMessage, smsTemplateMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.smsTemplateMessage ?? '');
+    useTextInput<HTMLTextAreaElement>(state?.SMS?.message ?? '');
 
   const templateNameError =
     state.validationError?.fieldErrors.smsTemplateName?.join(', ');
