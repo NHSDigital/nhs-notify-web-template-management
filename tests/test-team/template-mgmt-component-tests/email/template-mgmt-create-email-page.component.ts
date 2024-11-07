@@ -175,7 +175,6 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
       });
-
       await expect(createEmailTemplatePage.namingYourTemplate).toHaveAttribute(
         'open'
       );
