@@ -1,8 +1,8 @@
 data "archive_file" "authorizer_lambda" {
   depends_on  = [null_resource.typescript_build]
   type        = "zip"
-  source_file = "${local.api_source_code_directory}/.build/authorizer.js"
-  output_path = "${local.api_source_code_directory}/.build/authorizer.zip"
+  source_file = "${local.api_source_code_dir}/.build/authorizer.js"
+  output_path = "${local.api_source_code_dir}/.build/authorizer.zip"
 }
 
 module "authorizer_lambda" {

@@ -1,8 +1,8 @@
 data "archive_file" "endpoint_lambda" {
   depends_on  = [null_resource.typescript_build]
   type        = "zip"
-  source_file = "${local.api_source_code_directory}/.build/endpoint.js"
-  output_path = "${local.api_source_code_directory}/.build/endpoint.zip"
+  source_file = "${local.api_source_code_dir}/.build/endpoint.js"
+  output_path = "${local.api_source_code_dir}/.build/endpoint.zip"
 }
 
 module "endpoint_lambda" {
