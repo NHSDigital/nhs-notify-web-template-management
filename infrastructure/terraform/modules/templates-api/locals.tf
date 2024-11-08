@@ -1,6 +1,8 @@
 locals {
   csi = "${var.csi}-${var.component}"
 
+  api_source_code_dir = abspath("${path.module}/../../../../lambdas/api")
+
   openapi_spec = templatefile("./spec.json", {
     AWS_REGION              = var.region
     APIG_EXECUTION_ROLE_ARN = aws_iam_role.api_gateway_execution_role.arn
