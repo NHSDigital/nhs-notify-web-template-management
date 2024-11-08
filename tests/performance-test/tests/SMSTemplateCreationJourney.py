@@ -32,13 +32,13 @@ class SMSCreate(PlaywrightUser):
         template_confirmation = TemplateConfirmation(page)
 
         try:
-            run_async(log_and_handle_error(self,"1_Load Homepage", create_template.load_homepage()))
-            run_async(log_and_handle_error(self,"2_Click Start Now", create_template.click_start_now()))
-            run_async(log_and_handle_error(self,"3_Select SMS And Continue", choose_template.choose_template_type("SMS-radio")))
-            run_async(log_and_handle_error(self,"4_Populate SMS Template", populate_template.populate_template()))
-            run_async(log_and_handle_error(self,"5_Preview SMS Template", preview_template.preview_template("sms-submit-radio")))
-            run_async(log_and_handle_error(self,"6_Submit SMS Template", submit_template.submit_template()))
-            run_async(log_and_handle_error(self,"7_Confirm SMS Template", template_confirmation.confirm_template()))
+            await run_async(log_and_handle_error(self,"1_Load Homepage", create_template.load_homepage()))
+            await run_async(log_and_handle_error(self,"2_Click Start Now", create_template.click_start_now()))
+            await run_async(log_and_handle_error(self,"3_Select SMS And Continue", choose_template.choose_template_type("SMS-radio")))
+            await run_async(log_and_handle_error(self,"4_Populate SMS Template", populate_template.populate_template()))
+            await run_async(log_and_handle_error(self,"5_Preview SMS Template", preview_template.preview_template("sms-submit-radio")))
+            await run_async(log_and_handle_error(self,"6_Submit SMS Template", submit_template.submit_template()))
+            await run_async(log_and_handle_error(self,"7_Confirm SMS Template", template_confirmation.confirm_template()))
         except Exception as e:
             playwright_logger.error(f"Playwright encountered a critical error: {e}")
             raise  # Reraising to allow Locust to capture it as a task failure
