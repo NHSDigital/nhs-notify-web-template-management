@@ -1,16 +1,18 @@
-locals {
-  endpoint_lambda_function_name = "${local.csi}-endpoint"
-  endpoint_lambda_file_path     = "${path.module}/../../../api/.build/endpoint.js"
+data "archive_file" "endpoint_lambda" {
+  depends_on  = [null_resource.typescript_build]
+  type        = "zip"
+  source_file = "${local.api_source_code_directory}/.build/endpoint.js"
+  output_path = "${local.api_source_code_directory}/.build/endpoint.zip"
 }
 
-resource "aws_lambda_function" "endpoint" {
+module "endpoint_lambda" {
+  source      = "../lambda-function"
   description = "templates api endpoint"
 
-  function_name    = local.endpoint_lambda_function_name
-  role             = aws_iam_role.endpoint_lambda_execution_role.arn
-  filename         = local.endpoint_lambda_file_path
-  source_code_hash = filebase64sha256(local.endpoint_lambda_file_path)
+  function_name    = "${local.csi}-endpoint"
+  filename         = data.archive_file.endpoint_lambda.output_path
+  source_code_hash = data.archive_file.endpoint_lambda.output_base64sha256
+  handler          = "endpoint.handler"
 
-  handler = "endpoint.handler"
-  runtime = "nodejs20.x"
+  log_retention_in_days = var.log_retention_in_days
 }

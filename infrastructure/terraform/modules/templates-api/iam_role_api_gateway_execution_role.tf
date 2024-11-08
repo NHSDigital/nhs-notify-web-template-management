@@ -40,8 +40,8 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
     ]
 
     resources = [
-      aws_lambda_function.authorizer.arn,
-      aws_lambda_function.endpoint.arn,
+      module.endpoint_lambda.function_arn,
+      module.authorizer_lambda.function_arn
     ]
   }
 }

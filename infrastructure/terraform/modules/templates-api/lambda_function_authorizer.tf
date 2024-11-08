@@ -1,16 +1,18 @@
-locals {
-  authorizer_lambda_function_name = "${local.csi}-authorizer"
-  authorizer_lambda_file_path     = "${path.module}/../../../api/.build/authorizer.js"
+data "archive_file" "authorizer_lambda" {
+  depends_on  = [null_resource.typescript_build]
+  type        = "zip"
+  source_file = "${local.api_source_code_directory}/.build/authorizer.js"
+  output_path = "${local.api_source_code_directory}/.build/authorizer.zip"
 }
 
-resource "aws_lambda_function" "authorizer" {
+module "authorizer_lambda" {
+  source      = "../lambda-function"
   description = "templates api authorizer"
 
-  function_name    = local.authorizer_lambda_function_name
-  role             = aws_iam_role.authorizer_lambda_execution_role.arn
-  filename         = local.authorizer_lambda_file_path
-  source_code_hash = filebase64sha256(local.authorizer_lambda_file_path)
+  function_name    = "${local.csi}-authorizer"
+  filename         = data.archive_file.authorizer_lambda.output_path
+  source_code_hash = data.archive_file.authorizer_lambda.output_base64sha256
+  handler          = "authorizer.handler"
 
-  handler = "authorizer.handler"
-  runtime = "nodejs20.x"
+  log_retention_in_days = var.log_retention_in_days
 }
