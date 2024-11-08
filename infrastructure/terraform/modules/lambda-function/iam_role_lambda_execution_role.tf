@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "lambda_execution_policy" {
     ]
 
     resources = [
-      "${aws_cloudwatch_log_group.authorizer_lambda.arn}:log-stream:*",
+      "${aws_cloudwatch_log_group.lambda.arn}:log-stream:*",
     ]
   }
 }
