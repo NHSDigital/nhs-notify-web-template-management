@@ -13,7 +13,7 @@ export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
 
     await page.page.keyboard.press('Tab');
 
-    await expect(page.skipLink).not.toBeFocused();
+    await expect(page.skipLink).toBeFocused();
 
     await page.page.keyboard.press('Enter');
 
