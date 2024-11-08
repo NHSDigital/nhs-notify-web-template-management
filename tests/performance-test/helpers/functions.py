@@ -1,20 +1,24 @@
 import asyncio
 import logging
 import time
-import nest_asyncio
-from locust import task, between
-from locust_plugins.users.playwright import pw, PlaywrightUser, event, PageWithRetry
+from locust_plugins.users.playwright import event
 from playwright.async_api import TimeoutError
 
 # Configure logging to capture Playwright errors
 logging.basicConfig(level=logging.ERROR)
 playwright_logger = logging.getLogger(__name__)
 
-def run_async(coro):
-            return asyncio.get_event_loop().run_until_complete(coro)
+async def run_async(coro):
+    if not asyncio.iscoroutine(coro):
+        raise TypeError("run_async received a non-coroutine function.")
+    return await coro
+    # return asyncio.get_event_loop().run_until_complete(coro)
 
 async def log_and_handle_error(self, event_name, coro):
-    for attempt in range(1, 2):
+    if not asyncio.iscoroutine(coro):
+        raise TypeError(f"Expected coroutine in '{event_name}', got {type(coro).__name__}")
+
+    for attempt in range(1, 3):
         async def inner(self):
             async with event(self, event_name):  # log the specific event
                 try:
@@ -34,9 +38,10 @@ async def log_and_handle_error(self, event_name, coro):
         if success:
             return
 
-        if attempt < 2:
+        if attempt < 3:
             playwright_logger.info(f"Retrying '{event_name}' after {1} seconds...")
-            time.sleep(2)  # Delay before the next retry attempt
+            await asyncio.sleep(2)
+            # time.sleep(2)  # Delay before the next retry attempt
 
     # After exhausting retries, log and fail
     playwright_logger.error(f"Failed '{event_name}' after {1} attempts.")
