@@ -18,7 +18,8 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps, TemplateType, Template } from '@utils/types';
+import { PageComponentProps, Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { createEmailTemplatePageContent } from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';

@@ -1,7 +1,8 @@
 'use server';
 
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
-import { PageProps, TemplateType } from '@utils/types';
+import { PageProps } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 

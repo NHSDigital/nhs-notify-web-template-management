@@ -1,5 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 const headerComponent = {
   serviceName: 'Notify',

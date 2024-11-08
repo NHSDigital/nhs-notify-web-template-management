@@ -1,6 +1,7 @@
 import CreateEmailTemplatePage from '@app/create-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
-import { Template, TemplateType } from '@utils/types';
+import { Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 

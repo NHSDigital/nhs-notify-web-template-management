@@ -16,7 +16,8 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps, TemplateType, Template } from '@utils/types';
+import { PageComponentProps, Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 import { useTextInput } from '@hooks/use-text-input.hook';

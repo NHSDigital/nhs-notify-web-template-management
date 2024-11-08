@@ -1,6 +1,7 @@
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
 import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
-import { SMSTemplate, TemplateType } from '@utils/types';
+import { SMSTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 

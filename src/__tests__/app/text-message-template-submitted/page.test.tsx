@@ -1,5 +1,5 @@
 import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';

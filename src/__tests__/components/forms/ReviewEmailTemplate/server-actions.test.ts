@@ -6,7 +6,8 @@ import {
 } from '@forms/ReviewEmailTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
-import { EmailTemplate, TemplateType } from '@utils/types';
+import { EmailTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { getMockFormData } from '@testhelpers';
 import { markdown } from '../fixtures';
 

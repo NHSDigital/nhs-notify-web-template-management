@@ -1,7 +1,8 @@
 /**
  * @jest-environment node
  */
-import { TemplateType, Template } from '@utils/types';
+import { Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import {
   createTemplate,
   saveTemplate,

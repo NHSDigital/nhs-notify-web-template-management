@@ -6,7 +6,8 @@ import {
 } from '@forms/ReviewSMSTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
-import { SMSTemplate, TemplateType } from '@utils/types';
+import { SMSTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { getMockFormData } from '@testhelpers';
 import { markdown } from '../fixtures';
 

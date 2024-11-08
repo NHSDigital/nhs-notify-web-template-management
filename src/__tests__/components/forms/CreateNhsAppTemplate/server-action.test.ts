@@ -1,6 +1,7 @@
 import { getMockFormData } from '@testhelpers';
 import { saveTemplate } from '@utils/form-actions';
-import { Template, TemplateType } from '@utils/types';
+import { Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/CreateNhsAppTemplate/server-action';
 

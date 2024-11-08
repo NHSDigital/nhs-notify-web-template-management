@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { getTemplate } from '@utils/form-actions';
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[templateId]/page';

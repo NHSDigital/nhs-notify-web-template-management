@@ -1,4 +1,5 @@
-import { TemplateFormState, TemplateType } from '@utils/types';
+import { TemplateFormState } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { z } from 'zod';
 import { saveTemplate } from '@utils/form-actions';
 

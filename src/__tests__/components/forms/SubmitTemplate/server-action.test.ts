@@ -2,7 +2,8 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
-import { Template, TemplateType } from '@utils/types';
+import { Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');

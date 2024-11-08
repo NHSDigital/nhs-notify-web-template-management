@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TemplateType } from './types';
+import { TemplateType } from '@utils/enum';
 
 export const $BaseTemplateFields = z.object({
   name: z.string(),
@@ -24,15 +24,6 @@ export const $Template = z.object({
   EMAIL: $BaseTemplateFieldsWithSubject.optional().nullable(),
   SMS: $BaseTemplateFields.optional().nullable(),
   LETTER: $BaseTemplateFields.optional().nullable(),
-});
-
-export const $TypedTemplate = $Template.extend({
-  templateType: z.enum([
-    TemplateType.EMAIL,
-    TemplateType.SMS,
-    TemplateType.NHS_APP,
-    TemplateType.LETTER,
-  ]),
 });
 
 export const $EmailTemplate = $Template.extend({

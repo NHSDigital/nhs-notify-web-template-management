@@ -1,6 +1,7 @@
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
-import { TemplateFormState, TemplateType } from '@utils/types';
+import { TemplateFormState } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({

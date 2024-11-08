@@ -13,7 +13,8 @@ import {
   TextInput,
 } from 'nhsuk-react-components';
 import { useFormState } from 'react-dom';
-import { PageComponentProps, TemplateType, Template } from '@utils/types';
+import { PageComponentProps, Template } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';

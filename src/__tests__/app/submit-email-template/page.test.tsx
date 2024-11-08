@@ -2,7 +2,7 @@ import SubmitEmailTemplatePage from '@app/submit-email-template/[templateId]/pag
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

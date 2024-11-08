@@ -2,7 +2,7 @@ import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[templateId]/
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

@@ -1,6 +1,7 @@
 import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
 import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
-import { EmailTemplate, TemplateType } from '@utils/types';
+import { EmailTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 

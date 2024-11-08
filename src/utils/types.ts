@@ -1,3 +1,12 @@
+import { z } from 'zod';
+import {
+  $Template,
+  $EmailTemplate,
+  $SMSTemplate,
+  $NHSAppTemplate,
+  $ChannelTemplate,
+} from '@utils/zod-validators';
+
 export type FormId =
   | 'choose-a-template-type'
   | 'create-nhs-app-template'
@@ -14,48 +23,15 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-}
+export type Template = z.infer<typeof $Template>;
 
-export type BaseTemplateFields = {
-  name: string;
-  message: string;
-};
+export type EmailTemplate = z.infer<typeof $EmailTemplate>;
 
-export type BaseTemplateFieldsWithSubject = BaseTemplateFields & {
-  subject: string;
-};
+export type SMSTemplate = z.infer<typeof $SMSTemplate>;
 
-export type Template = {
-  id: string;
-  version: number;
-  templateType: TemplateType | 'UNKNOWN';
-  NHS_APP?: BaseTemplateFields | null;
-  EMAIL?: BaseTemplateFieldsWithSubject | null;
-  SMS?: BaseTemplateFields | null;
-  LETTER?: BaseTemplateFields | null;
-};
+export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
-export type NHSAppTemplate = Omit<Template, 'templateType' | 'NHS_APP'> & {
-  templateType: TemplateType.NHS_APP;
-  NHS_APP: BaseTemplateFields;
-};
-
-export type EmailTemplate = Omit<Template, 'templateType' | 'EMAIL'> & {
-  templateType: TemplateType.EMAIL;
-  EMAIL: BaseTemplateFieldsWithSubject;
-};
-
-export type SMSTemplate = Omit<Template, 'templateType' | 'SMS'> & {
-  templateType: TemplateType.SMS;
-  SMS: BaseTemplateFields;
-};
-
-export type ChannelTemplate = NHSAppTemplate | EmailTemplate | SMSTemplate;
+export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
 
 export type FormState = {
   validationError?: FormErrorState;

@@ -1,6 +1,7 @@
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
 import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
-import { NHSAppTemplate, TemplateType } from '@utils/types';
+import { NHSAppTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 
