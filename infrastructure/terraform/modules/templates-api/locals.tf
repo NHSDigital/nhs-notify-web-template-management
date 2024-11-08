@@ -3,7 +3,7 @@ locals {
 
   api_source_code_dir = abspath("${path.module}/../../../../lambdas/api")
 
-  openapi_spec = templatefile("./spec.json", {
+  openapi_spec = templatefile("${path.module}/spec.json", {
     AWS_REGION              = var.region
     APIG_EXECUTION_ROLE_ARN = aws_iam_role.api_gateway_execution_role.arn
     AUTHORIZER_LAMBDA_ARN   = module.authorizer_lambda.function_arn
