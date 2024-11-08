@@ -1,7 +1,5 @@
 # NHS Notify Template Management (WebUI) Repository
 
-Dummy change
-
 ## Setting up locally
 
 ### Git
