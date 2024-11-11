@@ -171,3 +171,21 @@ export async function deleteSession(sessionId: string) {
 
   return true;
 }
+
+export async function getTemplates(): Promise<Template[] | undefined> {
+  const { data, errors } =
+    await getAmplifyBackendClient().models.TemplateStorage.list();
+
+  if (errors) {
+    logger.error('Failed to get template', errors);
+  }
+
+  if (!data) {
+    logger.warn(`Failed to retrieve templates`);
+    return undefined;
+  }
+
+  const parsedData = data.map((template) => $Template.parse(template));
+
+  return parsedData;
+}

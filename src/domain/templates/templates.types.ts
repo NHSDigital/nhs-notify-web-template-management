@@ -10,6 +10,7 @@ const $BaseTemplateInput = z.object({
   type: z.enum(['NHS_APP', 'SMS', 'EMAIL', 'LETTER']),
   version: z.number(),
   fields: baseFields,
+  createdAt: z.string().optional(),
 });
 
 const $NHSAppTemplateInput = $BaseTemplateInput.extend({
