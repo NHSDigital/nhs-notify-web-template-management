@@ -41,7 +41,7 @@
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${ENDPOINT_LAMBDA_ARN}/invocations",
           "responses": {
             ".*": {
-              "statusCode": "200"
+              "statusCode": "201"
             }
           },
           "timeoutInMillis": 29000,
