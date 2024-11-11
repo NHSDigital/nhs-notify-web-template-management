@@ -29,7 +29,7 @@
           }
         },
         "x-amazon-apigateway-integration": {
-          "credentials": "{APIG_EXECUTION_ROLE_ARN}",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
           "httpMethod": "GET",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${ENDPOINT_LAMBDA_ARN}/invocations",
           "responses": {
