@@ -1,6 +1,6 @@
-import type { APIGatewayAuthorizerHandler } from 'aws-lambda';
+import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
 
-export const handler: APIGatewayAuthorizerHandler = async (event) => {
+export const handler: APIGatewayTokenAuthorizerHandler = async (event) => {
   console.log(event);
 
   const { methodArn } = event;

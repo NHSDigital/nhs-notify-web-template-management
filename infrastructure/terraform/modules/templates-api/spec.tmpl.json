@@ -8,6 +8,11 @@
   "paths": {
     "/v1/endpoint": {
       "get": {
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "200 response",
@@ -30,17 +35,17 @@
         },
         "x-amazon-apigateway-integration": {
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
           "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${ENDPOINT_LAMBDA_ARN}/invocations",
           "responses": {
             ".*": {
               "statusCode": "200"
             }
           },
-          "passthroughBehavior": "when_no_match",
           "timeoutInMillis": 29000,
-          "contentHandling": "CONVERT_TO_TEXT",
-          "type": "aws"
+          "type": "AWS_PROXY"
         }
       }
     }
@@ -51,20 +56,13 @@
         "type": "apiKey",
         "name": "Authorization",
         "in": "header",
+        "x-amazon-apigateway-authtype": "custom",
         "x-amazon-apigateway-authorizer": {
           "type": "token",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
           "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}"
-        },
-        "x-amazon-apigateway-authtype": "custom"
+        }
       }
     }
   },
-  "x-amazon-apigateway-request-validators": {
-    "validate": {
-      "validateRequestBody": true,
-      "validateRequestParameters": true
-    }
-  },
-  "x-amazon-apigateway-request-validator": "validate"
 }
