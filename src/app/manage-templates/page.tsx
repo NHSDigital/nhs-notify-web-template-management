@@ -1,15 +1,13 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
-import {
-  getAllMessageTemplatesAction,
-  MessageTemplates,
-} from '@molecules/MessageTemplates';
+import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
 import { Template } from '@domain/templates';
+import { getTemplates } from '@utils/form-actions';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
 export default async function ManageTemplatesPage() {
-  const list: Template[] | undefined = await getAllMessageTemplatesAction();
+  const availableTemplateList: Template[] | undefined = await getTemplates();
   return (
     <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
       <div className='nhsuk-grid-column-full'>
@@ -21,9 +19,11 @@ export default async function ManageTemplatesPage() {
           {manageTemplatesContent.createTemplateButton.text}
         </NHSNotifyButton>
 
-        <MessageTemplates list={list} />
-
-        <p>{manageTemplatesContent.emptyTemplates}</p>
+        {availableTemplateList && availableTemplateList.length > 0 ? (
+          <MessageTemplates availableTemplateList={availableTemplateList} />
+        ) : (
+          <p>{manageTemplatesContent.emptyTemplates}</p>
+        )}
       </div>
     </div>
   );
