@@ -68,7 +68,7 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
           id="servicenow-link"
           target="_blank"
         >
-          raise a request with the service desk (opens in a new tab)
+          raise a request with the service desk (opens in a new tab).
         </a>
       </p>
     </div>
