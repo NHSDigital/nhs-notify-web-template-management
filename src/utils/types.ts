@@ -37,7 +37,6 @@ export type Draft<T> = Omit<T, 'id'>;
 
 export type FormState = {
   validationError?: FormErrorState;
-  redirect?: string;
 };
 
 export type TemplateFormState<T = Template> = FormState & T;

@@ -1,4 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
+import { redirect } from 'next/navigation';
 import {
   renderMarkdown,
   reviewNhsAppTemplateAction,
@@ -8,6 +9,10 @@ import { getMockFormData } from '@testhelpers';
 import { NHSAppTemplate, TemplateFormState } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 import { markdown } from '../fixtures';
+
+jest.mock('next/navigation');
+
+const redirectMock = jest.mocked(redirect);
 
 describe('Markdown rendering', () => {
   it('should enable nhs app markdown rules', () => {
@@ -70,12 +75,12 @@ describe('reviewNhsAppTemplateAction', () => {
       reviewNHSAppTemplateAction: 'nhsapp-submit',
     });
 
-    const response = reviewNhsAppTemplateAction(currentState, formData);
+    reviewNhsAppTemplateAction(currentState, formData);
 
-    expect(response).toEqual({
-      ...currentState,
-      redirect: '/submit-nhs-app-template/template-id',
-    });
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/submit-nhs-app-template/template-id',
+      'push'
+    );
   });
 
   it('should return previous edit page when edit action is chosen', () => {
@@ -83,11 +88,11 @@ describe('reviewNhsAppTemplateAction', () => {
       reviewNHSAppTemplateAction: 'nhsapp-edit',
     });
 
-    const response = reviewNhsAppTemplateAction(currentState, formData);
+    reviewNhsAppTemplateAction(currentState, formData);
 
-    expect(response).toEqual({
-      ...currentState,
-      redirect: '/create-nhs-app-template/template-id',
-    });
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/create-nhs-app-template/template-id',
+      'push'
+    );
   });
 });

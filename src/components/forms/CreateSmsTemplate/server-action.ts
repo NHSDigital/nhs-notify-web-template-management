@@ -14,44 +14,13 @@ const $CreateSmsTemplateSchema = z.object({
     .max(MAX_SMS_CHARACTER_LENGTH, { message: 'Template message too long' }),
 });
 
-const $GoBackSchema = z.object({
-  smsTemplateName: z.string({ message: 'Internal server error' }),
-  smsTemplateMessage: z.string({ message: 'Internal server error' }),
-});
-
-const formIdMap = {
-  'create-sms-template-back': {
-    schema: $GoBackSchema,
-    redirectPath: 'choose-a-template-type',
-  },
-  'create-sms-template': {
-    schema: $CreateSmsTemplateSchema,
-    redirectPath: 'preview-text-message-template',
-  },
-};
-
 export async function processFormActions(
   formState: TemplateFormState<SMSTemplate | Draft<SMSTemplate>>,
   formData: FormData
 ): Promise<TemplateFormState<SMSTemplate | Draft<SMSTemplate>>> {
-  const formId = formData.get('form-id');
-
-  if (
-    formId !== 'create-sms-template-back' &&
-    formId !== 'create-sms-template'
-  ) {
-    return {
-      ...formState,
-      validationError: {
-        formErrors: ['Internal server error'],
-        fieldErrors: {},
-      },
-    };
-  }
-
-  const { schema, redirectPath } = formIdMap[formId];
-
-  const parsedForm = schema.safeParse(Object.fromEntries(formData.entries()));
+  const parsedForm = $CreateSmsTemplateSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!parsedForm.success) {
     return {
@@ -72,5 +41,8 @@ export async function processFormActions(
     ? saveTemplate(updatedTemplate)
     : createTemplate(updatedTemplate));
 
-  return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
+  return redirect(
+    `/preview-text-message-template/${savedTemplate.id}`,
+    RedirectType.push
+  );
 }

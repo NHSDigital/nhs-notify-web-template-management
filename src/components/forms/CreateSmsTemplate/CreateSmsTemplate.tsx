@@ -11,7 +11,9 @@ import {
   Label,
   Textarea,
   TextInput,
+  ChevronLeftIcon,
 } from 'nhsuk-react-components';
+import Link from 'next/link';
 import { useFormState } from 'react-dom';
 import { PageComponentProps, SMSTemplate, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
@@ -20,7 +22,6 @@ import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createSmsTemplatePageContent as content } from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
-import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
@@ -43,14 +44,12 @@ export const CreateSmsTemplate: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <NHSNotifyBackButton formId='create-sms-template-back' action={action}>
-        <input type='hidden' name='smsTemplateName' value={smsTemplateName} />
-        <input
-          type='hidden'
-          name='smsTemplateMessage'
-          value={smsTemplateMessage}
-        />
-      </NHSNotifyBackButton>
+      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
+        <Link href='/choose-a-template-type' className='nhsuk-back-link__link'>
+          <ChevronLeftIcon />
+          Go back
+        </Link>
+      </div>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={content.errorHeading} state={state} />
         <h1 data-testid='page-heading'>{content.pageHeading}</h1>

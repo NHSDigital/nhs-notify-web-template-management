@@ -75,7 +75,7 @@ test.describe('Create NHS App Template Page', () => {
     await assertFooterLinks(props);
     await assertGoBackLink({
       ...props,
-      expectedUrl: `templates/choose-a-template-type/${emptyTemplateData.id}`,
+      expectedUrl: 'templates/choose-a-template-type',
     });
   });
 

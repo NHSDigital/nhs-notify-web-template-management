@@ -34,21 +34,6 @@ const initialState: EmailTemplate = {
 describe('CreateEmailTemplate server actions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should return response when no form-id', async () => {
-    const response = await processFormActions(
-      initialState,
-      getMockFormData({})
-    );
-
-    expect(response).toEqual({
-      ...initialState,
-      validationError: {
-        formErrors: ['Internal server error'],
-        fieldErrors: {},
-      },
-    });
-  });
-
   it('create-email-template - should return response when no template name, template subject line or template message', async () => {
     const response = await processFormActions(
       initialState,
@@ -90,102 +75,69 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
-  it('create-email-template-back - should return response when no template name, template subject line or template message', async () => {
-    const response = await processFormActions(
+  test('$formId - should save the template and redirect to $route', async () => {
+    saveTemplateMock.mockResolvedValue({
+      ...initialState,
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
+    });
+
+    await processFormActions(
       initialState,
-      getMockFormData({ 'form-id': 'create-email-template-back' })
+      getMockFormData({
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'template-message',
+      })
     );
 
-    expect(response).toEqual({
-      ...initialState,
-      validationError: {
-        formErrors: [],
-        fieldErrors: {
-          emailTemplateName: ['Internal server error'],
-          emailTemplateSubjectLine: ['Internal server error'],
-          emailTemplateMessage: ['Internal server error'],
-        },
-      },
+    expect(saveTemplateMock).toHaveBeenCalledWith({
+      id: initialState.id,
+      version: 1,
+      templateType: initialState.templateType,
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
     });
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-email-template/template-id',
+      'push'
+    );
   });
 
-  test.each([
-    { formId: 'create-email-template', route: 'preview-email-template' },
-    { formId: 'create-email-template-back', route: 'choose-a-template-type' },
-  ])(
-    '$formId - should save the template and redirect to $route',
-    async ({ formId, route }) => {
-      saveTemplateMock.mockResolvedValue({
-        ...initialState,
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      });
+  test('should create the template and redirect', async () => {
+    const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
 
-      await processFormActions(
-        initialState,
-        getMockFormData({
-          'form-id': formId,
-          emailTemplateName: 'template-name',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: 'template-message',
-        })
-      );
+    createTemplateMock.mockResolvedValue({
+      ...initialDraftState,
+      id: 'new-template-id',
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
+    });
 
-      expect(saveTemplateMock).toHaveBeenCalledWith({
-        id: initialState.id,
-        version: 1,
-        templateType: initialState.templateType,
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      });
+    await processFormActions(
+      initialDraftState,
+      getMockFormData({
+        emailTemplateName: 'template-name',
+        emailTemplateSubjectLine: 'template-subject-line',
+        emailTemplateMessage: 'template-message',
+      })
+    );
 
-      expect(redirectMock).toHaveBeenCalledWith(
-        `/${route}/template-id`,
-        'push'
-      );
-    }
-  );
+    expect(createTemplateMock).toHaveBeenCalledWith({
+      version: 1,
+      templateType: initialState.templateType,
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
+    });
 
-  test.each([
-    { formId: 'create-email-template', route: 'preview-email-template' },
-    { formId: 'create-email-template-back', route: 'choose-a-template-type' },
-  ])(
-    '$formId - should create the template and redirect to $route',
-    async ({ formId, route }) => {
-      const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
-
-      createTemplateMock.mockResolvedValue({
-        ...initialDraftState,
-        id: 'new-template-id',
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      });
-
-      await processFormActions(
-        initialDraftState,
-        getMockFormData({
-          'form-id': formId,
-          emailTemplateName: 'template-name',
-          emailTemplateSubjectLine: 'template-subject-line',
-          emailTemplateMessage: 'template-message',
-        })
-      );
-
-      expect(createTemplateMock).toHaveBeenCalledWith({
-        version: 1,
-        templateType: initialState.templateType,
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      });
-
-      expect(redirectMock).toHaveBeenCalledWith(
-        `/${route}/new-template-id`,
-        'push'
-      );
-    }
-  );
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-email-template/new-template-id',
+      'push'
+    );
+  });
 });

@@ -4,12 +4,6 @@ import { mockDeep } from 'jest-mock-extended';
 import { NHSAppTemplate, TemplateFormState } from '@utils/types';
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
-}));
-
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => {},
 }));

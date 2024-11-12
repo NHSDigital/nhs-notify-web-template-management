@@ -5,12 +5,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
 import { TemplateFormState } from '@utils/types';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
-}));
-
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => {},
 }));

@@ -32,21 +32,6 @@ const initialState: SMSTemplate = {
 describe('CreateSmsTemplate server actions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should return response when no form-id', async () => {
-    const response = await processFormActions(
-      initialState,
-      getMockFormData({})
-    );
-
-    expect(response).toEqual({
-      ...initialState,
-      validationError: {
-        formErrors: ['Internal server error'],
-        fieldErrors: {},
-      },
-    });
-  });
-
   it('create-sms-template - should return response when no template name or template message', async () => {
     const response = await processFormActions(
       initialState,
@@ -60,24 +45,6 @@ describe('CreateSmsTemplate server actions', () => {
         fieldErrors: {
           smsTemplateName: ['Enter a template name'],
           smsTemplateMessage: ['Enter a template message'],
-        },
-      },
-    });
-  });
-
-  it('create-sms-template-back - should return response when no template name or template message', async () => {
-    const response = await processFormActions(
-      initialState,
-      getMockFormData({ 'form-id': 'create-sms-template-back' })
-    );
-
-    expect(response).toEqual({
-      ...initialState,
-      validationError: {
-        formErrors: [],
-        fieldErrors: {
-          smsTemplateName: ['Internal server error'],
-          smsTemplateMessage: ['Internal server error'],
         },
       },
     });
@@ -104,74 +71,60 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
-  test.each([
-    { formId: 'create-sms-template', route: 'preview-text-message-template' },
-    { formId: 'create-sms-template-back', route: 'choose-a-template-type' },
-  ])(
-    '$formId - should save the template and redirect to $route',
-    async ({ formId, route }) => {
-      saveTemplateMock.mockResolvedValue({
-        ...initialState,
-        name: 'template-name',
-        message: 'template-message',
-      });
+  test('$formId - should save the template and redirect to $route', async () => {
+    saveTemplateMock.mockResolvedValue({
+      ...initialState,
+      name: 'template-name',
+      message: 'template-message',
+    });
 
-      await processFormActions(
-        initialState,
-        getMockFormData({
-          'form-id': formId,
-          smsTemplateName: 'template-name',
-          smsTemplateMessage: 'template-message',
-        })
-      );
+    await processFormActions(
+      initialState,
+      getMockFormData({
+        smsTemplateName: 'template-name',
+        smsTemplateMessage: 'template-message',
+      })
+    );
 
-      expect(saveTemplateMock).toHaveBeenCalledWith({
-        ...initialState,
-        name: 'template-name',
-        message: 'template-message',
-      });
+    expect(saveTemplateMock).toHaveBeenCalledWith({
+      ...initialState,
+      name: 'template-name',
+      message: 'template-message',
+    });
 
-      expect(redirectMock).toHaveBeenCalledWith(
-        `/${route}/template-id`,
-        'push'
-      );
-    }
-  );
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-text-message-template/template-id',
+      'push'
+    );
+  });
 
-  test.each([
-    { formId: 'create-sms-template', route: 'preview-text-message-template' },
-    { formId: 'create-sms-template-back', route: 'choose-a-template-type' },
-  ])(
-    '$formId - should create the template and redirect to $route',
-    async ({ formId, route }) => {
-      const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
+  test('$formId - should create the template and redirect to $route', async () => {
+    const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
 
-      createTemplateMock.mockResolvedValue({
-        ...initialDraftState,
-        id: 'new-template-id',
-        name: 'template-name',
-        message: 'template-message',
-      });
+    createTemplateMock.mockResolvedValue({
+      ...initialDraftState,
+      id: 'new-template-id',
+      name: 'template-name',
+      message: 'template-message',
+    });
 
-      await processFormActions(
-        initialDraftState,
-        getMockFormData({
-          'form-id': formId,
-          smsTemplateName: 'template-name',
-          smsTemplateMessage: 'template-message',
-        })
-      );
+    await processFormActions(
+      initialDraftState,
+      getMockFormData({
+        smsTemplateName: 'template-name',
+        smsTemplateMessage: 'template-message',
+      })
+    );
 
-      expect(createTemplateMock).toHaveBeenCalledWith({
-        ...initialDraftState,
-        name: 'template-name',
-        message: 'template-message',
-      });
+    expect(createTemplateMock).toHaveBeenCalledWith({
+      ...initialDraftState,
+      name: 'template-name',
+      message: 'template-message',
+    });
 
-      expect(redirectMock).toHaveBeenCalledWith(
-        `/${route}/new-template-id`,
-        'push'
-      );
-    }
-  );
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/preview-text-message-template/new-template-id',
+      'push'
+    );
+  });
 });

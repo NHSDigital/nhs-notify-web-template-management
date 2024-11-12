@@ -78,7 +78,7 @@ test.describe('Create SMS message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/choose-a-template-type/${templates.empty.id}`,
+        expectedUrl: 'templates/choose-a-template-type',
       });
     });
 

@@ -8,18 +8,18 @@ import {
   Label,
   Textarea,
   Button,
+  ChevronLeftIcon,
 } from 'nhsuk-react-components';
+import Link from 'next/link';
 import { processFormActions } from '@forms/CreateNhsAppTemplate/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSAppTemplate, PageComponentProps, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 import { createNhsAppTemplatePageContent } from '@content/content';
-import { useRouter } from 'next/navigation';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 
@@ -36,11 +36,6 @@ export const CreateNhsAppTemplate: FC<
     templateNameHintText,
   } = createNhsAppTemplatePageContent;
   const [state, action] = useFormState(processFormActions, initialState);
-  const router = useRouter();
-
-  if (state.redirect) {
-    router.push(state.redirect);
-  }
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
@@ -56,21 +51,12 @@ export const CreateNhsAppTemplate: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <NHSNotifyBackButton
-        formId='create-nhs-app-template-back'
-        action={action}
-      >
-        <input
-          type='hidden'
-          name='nhsAppTemplateName'
-          value={nhsAppTemplateName}
-        />
-        <input
-          type='hidden'
-          name='nhsAppTemplateMessage'
-          value={nhsAppTemplateMessage}
-        />
-      </NHSNotifyBackButton>
+      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
+        <Link href='/choose-a-template-type' className='nhsuk-back-link__link'>
+          <ChevronLeftIcon />
+          Go back
+        </Link>
+      </div>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template'>

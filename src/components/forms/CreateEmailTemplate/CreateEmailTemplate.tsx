@@ -10,11 +10,12 @@ import {
   Label,
   Textarea,
   Button,
+  ChevronLeftIcon,
 } from 'nhsuk-react-components';
+import Link from 'next/link';
 import { processFormActions } from '@forms/CreateEmailTemplate/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
-import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBackButton';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
@@ -59,23 +60,12 @@ export const CreateEmailTemplate: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <NHSNotifyBackButton formId='create-email-template-back' action={action}>
-        <input
-          type='hidden'
-          name='emailTemplateName'
-          value={emailTemplateName}
-        />
-        <input
-          type='hidden'
-          name='emailTemplateSubjectLine'
-          value={emailTemplateSubjectLine}
-        />
-        <input
-          type='hidden'
-          name='emailTemplateMessage'
-          value={emailTemplateMessage}
-        />
-      </NHSNotifyBackButton>
+      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
+        <Link href='/choose-a-template-type' className='nhsuk-back-link__link'>
+          <ChevronLeftIcon />
+          Go back
+        </Link>
+      </div>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-email-template'>

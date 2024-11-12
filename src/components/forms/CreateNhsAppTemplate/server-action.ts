@@ -13,44 +13,13 @@ const $CreateNhsAppTemplateSchema = z.object({
     .max(5000, { message: 'Template message too long' }),
 });
 
-const $GoBackSchema = z.object({
-  nhsAppTemplateName: z.string({ message: 'Internal server error' }),
-  nhsAppTemplateMessage: z.string({ message: 'Internal server error' }),
-});
-
-const formIdMap = {
-  'create-nhs-app-template-back': {
-    schema: $GoBackSchema,
-    redirectPath: 'choose-a-template-type',
-  },
-  'create-nhs-app-template': {
-    schema: $CreateNhsAppTemplateSchema,
-    redirectPath: 'preview-nhs-app-template',
-  },
-};
-
 export async function processFormActions(
   formState: TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>,
   formData: FormData
 ): Promise<TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>> {
-  const formId = formData.get('form-id');
-
-  if (
-    formId !== 'create-nhs-app-template-back' &&
-    formId !== 'create-nhs-app-template'
-  ) {
-    return {
-      ...formState,
-      validationError: {
-        formErrors: ['Internal server error'],
-        fieldErrors: {},
-      },
-    };
-  }
-
-  const { schema, redirectPath } = formIdMap[formId];
-
-  const parsedForm = schema.safeParse(Object.fromEntries(formData.entries()));
+  const parsedForm = $CreateNhsAppTemplateSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!parsedForm.success) {
     return {
@@ -71,5 +40,8 @@ export async function processFormActions(
     ? saveTemplate(updatedTemplate)
     : createTemplate(updatedTemplate));
 
-  return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
+  return redirect(
+    `/preview-nhs-app-template/${savedTemplate.id}`,
+    RedirectType.push
+  );
 }

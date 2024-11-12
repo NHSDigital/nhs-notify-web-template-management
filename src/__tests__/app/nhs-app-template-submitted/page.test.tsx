@@ -22,7 +22,6 @@ jest.mock('next/navigation', () => ({
   redirect: () => {
     throw new Error('Simulated redirect');
   },
-  useRouter: () => {},
 
   RedirectType: {
     push: 'push',
