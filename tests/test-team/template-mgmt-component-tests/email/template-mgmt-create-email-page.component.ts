@@ -55,7 +55,7 @@ test.describe('Create Email message template Page', () => {
     );
 
     expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
-      'Create Email message template'
+      'Create email template'
     );
   });
 
