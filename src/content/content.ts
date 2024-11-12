@@ -425,8 +425,8 @@ export const templateSubmittedPageContent = {
   notLiveText:
     "Tell your onboarding manager once you've submitted all your templates.",
   liveHeading: "If you've already onboarded",
-  liveLinkText: 'Raise a request with the service desk',
-  liveText: "once you've submitted all your templates.",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab)',
 };
 
 export const createSmsTemplatePageContent = {

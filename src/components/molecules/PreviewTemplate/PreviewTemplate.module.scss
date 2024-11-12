@@ -26,10 +26,10 @@ $nhsuk-secondary-button-color: #4c6272;
 
     &_content {
       word-wrap: anywhere;
-    }
 
-    &_content > :last-child {
-      margin-bottom: 0;
+      > :last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
