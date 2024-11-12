@@ -92,6 +92,16 @@ exports[`SubmitTemplate component should render 1`] = `
           type="hidden"
           value="session-id"
         />
+        <a
+          aria-disabled="false"
+          class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+          draggable="false"
+          href="/templates/example/session-id"
+          id="go-back-button"
+          role="button"
+        >
+          Go back
+        </a>
         <button
           aria-disabled="false"
           class="nhsuk-button"
