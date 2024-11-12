@@ -9,8 +9,8 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     this.radioButtons = page.getByRole('radio');
   }
 
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/choose-a-template-type/${templateId}`);
+  async loadPage(_: string) {
+    await this.navigateTo('/templates/choose-a-template-type');
   }
 
   async checkRadioButton(radioButtonLabel: string) {

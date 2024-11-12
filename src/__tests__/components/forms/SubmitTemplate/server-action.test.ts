@@ -20,10 +20,8 @@ const sendEmailMock = jest.mocked(sendEmail);
 const mockNhsAppTemplate = {
   templateType: TemplateType.NHS_APP,
   version: 1,
-  NHS_APP: {
-    name: 'name',
-    message: 'body',
-  },
+  name: 'name',
+  message: 'body',
   id: '1',
 };
 
@@ -91,8 +89,8 @@ describe('submitTemplate', () => {
 
     expect(sendEmailMock).toHaveBeenCalledWith(
       mockNhsAppTemplate.id,
-      mockNhsAppTemplate.NHS_APP.name,
-      mockNhsAppTemplate.NHS_APP.message,
+      mockNhsAppTemplate.name,
+      mockNhsAppTemplate.message,
       null
     );
 
@@ -104,11 +102,9 @@ describe('submitTemplate', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: 'name',
-        subject: 'subjectLine',
-        message: 'body',
-      },
+      name: 'name',
+      subject: 'subjectLine',
+      message: 'body',
     };
 
     getTemplateMock.mockResolvedValueOnce(mockEmailTemplate);
@@ -121,9 +117,9 @@ describe('submitTemplate', () => {
 
     expect(sendEmailMock).toHaveBeenCalledWith(
       mockEmailTemplate.id,
-      mockEmailTemplate.EMAIL.name,
-      mockEmailTemplate.EMAIL.message,
-      mockEmailTemplate.EMAIL.subject
+      mockEmailTemplate.name,
+      mockEmailTemplate.message,
+      mockEmailTemplate.subject
     );
   });
 });

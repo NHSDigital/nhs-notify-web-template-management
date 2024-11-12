@@ -43,7 +43,7 @@ export const TemplateSubmitted = ({
           {templateIdHeading}
         </h2>
         <p id='template-id'>{templateId}</p>
-        <Link id='create-another-template' href='/create-template'>
+        <Link id='create-another-template' href='/choose-a-template-type'>
           {newTemplateText}
         </Link>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>

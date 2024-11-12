@@ -1,6 +1,6 @@
-import { TemplateFormState } from '@utils/types';
+import { TemplateFormState, EmailTemplate, Draft } from '@utils/types';
 import { z } from 'zod';
-import { saveTemplate } from '@utils/form-actions';
+import { createTemplate, saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 
@@ -37,9 +37,9 @@ const formIdMap = {
 };
 
 export async function processFormActions(
-  formState: TemplateFormState,
+  formState: TemplateFormState<EmailTemplate | Draft<EmailTemplate>>,
   formData: FormData
-): Promise<TemplateFormState> {
+): Promise<TemplateFormState<EmailTemplate | Draft<EmailTemplate>>> {
   const formId = formData.get('form-id');
 
   if (
@@ -71,14 +71,14 @@ export async function processFormActions(
 
   const updatedTemplate = {
     ...formState,
-    EMAIL: {
-      name: emailTemplateName,
-      subject: emailTemplateSubjectLine,
-      message: emailTemplateMessage,
-    },
+    name: emailTemplateName,
+    subject: emailTemplateSubjectLine,
+    message: emailTemplateMessage,
   };
 
-  const savedTemplate = await saveTemplate(updatedTemplate);
+  const savedTemplate = await ('id' in updatedTemplate
+    ? saveTemplate(updatedTemplate)
+    : createTemplate(updatedTemplate));
 
   return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
 }

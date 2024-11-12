@@ -11,10 +11,8 @@ jest.mock('@utils/form-actions', () => ({
         id: 'template-id',
         version: 1,
         templateType: TemplateType.NHS_APP,
-        NHS_APP: {
-          name: 'template-name',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        message: 'template-message',
       };
     }
   }),

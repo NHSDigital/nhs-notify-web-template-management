@@ -20,8 +20,8 @@ export function ReviewSMSTemplate({
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
 
-  const templateName = initialState.SMS.name;
-  const templateMessage = initialState.SMS.message;
+  const templateName = initialState.name;
+  const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 

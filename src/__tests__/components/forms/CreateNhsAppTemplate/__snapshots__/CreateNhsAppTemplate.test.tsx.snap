@@ -20,12 +20,12 @@ exports[`renders page 1`] = `
         <input
           name="nhsAppTemplateName"
           type="hidden"
-          value=""
+          value="template-name"
         />
         <input
           name="nhsAppTemplateMessage"
           type="hidden"
-          value=""
+          value="template-message"
         />
         <button
           class="nhsuk-back-link__link"
@@ -128,7 +128,7 @@ exports[`renders page 1`] = `
               id="nhsAppTemplateName"
               name="nhsAppTemplateName"
               type="text"
-              value=""
+              value="template-name"
             />
           </div>
         </div>
@@ -148,13 +148,15 @@ exports[`renders page 1`] = `
             maxlength="5000"
             name="nhsAppTemplateMessage"
             rows="10"
-          />
+          >
+            template-message
+          </textarea>
         </div>
         <p
           id="character-count"
           style=""
         >
-          0 of 5000 characters
+          16 of 5000 characters
         </p>
         <button
           aria-disabled="false"

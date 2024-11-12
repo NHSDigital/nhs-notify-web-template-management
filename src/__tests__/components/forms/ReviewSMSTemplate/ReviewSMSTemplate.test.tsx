@@ -28,10 +28,8 @@ describe('Preview sms form renders', () => {
       <ReviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          SMS: {
-            name: 'test-template-sms',
-            message: 'message',
-          },
+          name: 'test-template-sms',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -50,10 +48,8 @@ describe('Preview sms form renders', () => {
               reviewSMSTemplateAction: ['Select an option'],
             },
           },
-          SMS: {
-            name: 'test-template-sms',
-            message: 'message',
-          },
+          name: 'test-template-sms',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -67,10 +63,8 @@ describe('Preview sms form renders', () => {
       <ReviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          SMS: {
-            name: 'test-template-sms',
-            message: 'message',
-          },
+          name: 'test-template-sms',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -98,10 +92,8 @@ describe('Preview sms form renders', () => {
       <ReviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          SMS: {
-            name: 'test-template-sms',
-            message,
-          },
+          name: 'test-template-sms',
+          message,
           id: 'template-id',
         })}
       />

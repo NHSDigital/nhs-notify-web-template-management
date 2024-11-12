@@ -19,10 +19,8 @@ const initialState: SMSTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.SMS,
-  SMS: {
-    name: 'template-name',
-    message: 'template-message',
-  },
+  name: 'template-name',
+  message: 'template-message',
 };
 
 describe('PreviewTextMessageActions', () => {

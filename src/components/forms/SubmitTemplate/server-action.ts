@@ -1,13 +1,10 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate, sendEmail } from '@utils/form-actions';
+import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
-import {
-  parseTemplate,
-  validateChannelTemplate,
-} from '@utils/validate-template';
+import { validateChannelTemplate } from '@utils/validate-template';
 
 const $TemplateIdSchema = z.string();
 
@@ -29,8 +26,11 @@ export async function submitTemplate(route: string, formData: FormData) {
   }
 
   try {
-    const { name, subject, message } = parseTemplate(validatedTemplate);
+    await saveTemplate({
+      ...validatedTemplate,
+    });
 
+    const { name, subject, message } = { subject: null, ...validatedTemplate };
     await sendEmail(templateId, name, message, subject);
   } catch (error) {
     logger.error('Failed to submit template', {

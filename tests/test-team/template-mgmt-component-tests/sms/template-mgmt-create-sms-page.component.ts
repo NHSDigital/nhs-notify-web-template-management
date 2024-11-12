@@ -9,6 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType } from '../../helpers/types';
 
 const templates = {
   empty: TemplateFactory.createSmsTemplate('empty-sms-template'),
@@ -19,14 +20,12 @@ const templates = {
   goBackAndReturn: TemplateFactory.createSmsTemplate('go-back-sms-template'),
   noSmsTemplateType: TemplateFactory.create({
     id: 'no-sms-template-type-template',
-    templateType: 'UNKNOWN',
+    templateType: TemplateType.EMAIL,
   }),
   previousData: {
     ...TemplateFactory.createSmsTemplate('previous-data-sms-template'),
-    SMS: {
-      name: 'previous-data-sms-template',
-      message: 'previous-data-sms-template-message',
-    },
+    name: 'previous-data-sms-template',
+    message: 'previous-data-sms-template-message',
   },
 };
 
@@ -91,10 +90,10 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.loadPage(templates.previousData.id);
 
       await expect(createSmsTemplatePage.nameInput).toHaveValue(
-        templates.previousData.SMS.name
+        templates.previousData.name
       );
       await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
-        templates.previousData.SMS.message
+        templates.previousData.message
       );
     });
 
@@ -115,39 +114,6 @@ test.describe('Create SMS message template Page', () => {
 
       await expect(createSmsTemplatePage.characterCountText).toHaveText(
         '918 characters'
-      );
-    });
-
-    test('when user clicks "Go back" and returns, then form fields retain previous data', async ({
-      baseURL,
-      page,
-    }) => {
-      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-      await createSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
-
-      await createSmsTemplatePage.nameInput.fill(
-        'This is an SMS template name'
-      );
-
-      await createSmsTemplatePage.messageTextArea.fill(
-        'This is an SMS template message'
-      );
-
-      await createSmsTemplatePage.goBackLink.click();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/choose-a-template-type/${templates.goBackAndReturn.id}`
-      );
-
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      await expect(createSmsTemplatePage.nameInput).toHaveValue(
-        'This is an SMS template name'
-      );
-
-      await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
-        'This is an SMS template message'
       );
     });
 

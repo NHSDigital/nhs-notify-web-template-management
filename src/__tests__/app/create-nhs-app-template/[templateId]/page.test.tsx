@@ -1,0 +1,77 @@
+/**
+ * @jest-environment node
+ */
+import { redirect } from 'next/navigation';
+import { TemplateType } from '@utils/enum';
+import { getTemplate } from '@utils/form-actions';
+import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
+import CreateNhsAppTemplatePage from '@app/create-nhs-app-template/[templateId]/page';
+import { NHSAppTemplate } from '@utils/types';
+
+jest.mock('@forms/CreateNhsAppTemplate/CreateNhsAppTemplate');
+jest.mock('@utils/form-actions');
+jest.mock('next/navigation');
+
+const getTemplateMock = jest.mocked(getTemplate);
+const redirectMock = jest.mocked(redirect);
+
+describe('CreateNhsAppTemplatePage', () => {
+  beforeEach(jest.resetAllMocks);
+
+  test('page loads', async () => {
+    const state: NHSAppTemplate = {
+      id: 'template-id',
+      version: 1,
+      templateType: TemplateType.NHS_APP,
+      name: 'name',
+      message: 'message',
+    };
+
+    getTemplateMock.mockResolvedValueOnce(state);
+
+    const page = await CreateNhsAppTemplatePage({
+      params: { templateId: 'template-id' },
+    });
+
+    expect(page).toEqual(<CreateNhsAppTemplate initialState={state} />);
+  });
+
+  test('should render invalid template, when template is not found', async () => {
+    getTemplateMock.mockResolvedValueOnce(undefined);
+
+    await CreateNhsAppTemplatePage({
+      params: {
+        templateId: 'template-id',
+      },
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  const invalidTemplateTypes: TemplateType[] = [
+    TemplateType.EMAIL,
+    TemplateType.SMS,
+    TemplateType.LETTER,
+  ];
+
+  test.each(invalidTemplateTypes)(
+    'should render invalid template, when template type is %p',
+    async (templateType) => {
+      getTemplateMock.mockResolvedValueOnce({
+        id: 'template-id',
+        version: 1,
+        templateType,
+        name: 'name',
+        message: 'message',
+      });
+
+      await CreateNhsAppTemplatePage({
+        params: {
+          templateId: 'template-id',
+        },
+      });
+
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+    }
+  );
+});

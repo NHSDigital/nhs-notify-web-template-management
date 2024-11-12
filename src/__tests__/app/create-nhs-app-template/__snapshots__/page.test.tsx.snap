@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateNHSAppTemplatePage should render CreateNHSAppTemplatePage 1`] = `
+<CreateNhsAppTemplate
+  initialState={
+    {
+      "message": "",
+      "name": "",
+      "templateType": "NHS_APP",
+      "version": 1,
+    }
+  }
+/>
+`;

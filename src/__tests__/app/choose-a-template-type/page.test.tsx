@@ -1,15 +1,6 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/[templateId]/page';
+import ChooseATemplateTypePage from '@app/choose-a-template-type/page';
 import { TemplateFormState } from '@utils/types';
-import nav from 'next/navigation';
-
-const mockTemplateSupplier = {
-  mockTemplate: {} as unknown,
-};
-
-jest.mock('@utils/form-actions', () => ({
-  getTemplate: () => Promise.resolve(mockTemplateSupplier.mockTemplate),
-}));
 
 jest.mock('next/navigation', () => ({
   redirect: () => {
@@ -39,33 +30,9 @@ jest.mock('react-dom', () => {
 });
 
 test('ChooseATemplateTypePage', async () => {
-  mockTemplateSupplier.mockTemplate = {
-    id: 'template-id',
-    templateType: 'UNKNOWN',
-  };
-
-  const page = await ChooseATemplateTypePage({
-    params: {
-      templateId: 'template-id',
-    },
-  });
+  const page = await ChooseATemplateTypePage();
 
   const container = render(page);
 
   expect(container.asFragment()).toMatchSnapshot();
-});
-
-test('ChooseATemplateTypePage - should handle invalid template', async () => {
-  mockTemplateSupplier.mockTemplate = undefined;
-  const redirectSpy = jest.spyOn(nav, 'redirect');
-
-  await expect(
-    ChooseATemplateTypePage({
-      params: {
-        templateId: 'template-id',
-      },
-    })
-  ).rejects.toThrow('Simulated redirect');
-
-  expect(redirectSpy).toHaveBeenCalledWith('/invalid-template', 'replace');
 });

@@ -15,27 +15,21 @@ const templates = {
   email: TemplateFactory.create({
     templateType: TemplateType.EMAIL,
     id: 'valid-email-template',
-    EMAIL: {
-      name: 'test-template-email',
-      subject: 'test-template-subject',
-      message: 'test example content',
-    },
+    name: 'test-template-email',
+    subject: 'test-template-subject',
+    message: 'test example content',
   }),
   'text-message': TemplateFactory.create({
     templateType: TemplateType.SMS,
     id: 'valid-sms-template',
-    SMS: {
-      name: 'test-template-sms',
-      message: 'test example content',
-    },
+    name: 'test-template-sms',
+    message: 'test example content',
   }),
   'nhs-app': TemplateFactory.create({
     templateType: TemplateType.NHS_APP,
     id: 'valid-nhs-app-template',
-    NHS_APP: {
-      name: 'test-template-nhs-app',
-      message: 'test example content',
-    },
+    name: 'test-template-nhs-app',
+    message: 'test example content',
   }),
 };
 
@@ -105,20 +99,20 @@ test.describe('Template Submitted Page', () => {
         await assertGoBackLinkNotPresent(props);
       });
 
-      test(`when user clicks ${channelName} "Create another template", then user is redirected to "create-template"`, async ({
+      test(`when user clicks ${channelName} "Create another template", then user is redirected to "choose-a-template-type"`, async ({
         page,
       }) => {
-        const emailTemplateSubmittedPage =
-          new TemplateMgmtTemplateSubmittedPage(page, channelIdentifier);
-
-        await emailTemplateSubmittedPage.loadPage(
-          templates[channelIdentifier].id
+        const templateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
+          page,
+          channelIdentifier
         );
 
-        await emailTemplateSubmittedPage.clickCreateAnotherTemplateLink();
+        await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
+
+        await templateSubmittedPage.clickCreateAnotherTemplateLink();
 
         await expect(page).toHaveURL(
-          new RegExp('/templates/choose-a-template-type/(.*)')
+          new RegExp('/templates/choose-a-template-type')
         );
       });
     });

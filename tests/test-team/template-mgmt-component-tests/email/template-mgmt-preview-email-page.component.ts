@@ -9,16 +9,22 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType, Template } from '../../helpers/types';
 
 const templates = {
-  empty: TemplateFactory.createEmailTemplate('empty-email-preview-template'),
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-email-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.EMAIL,
+  } as Template,
   valid: {
     ...TemplateFactory.createEmailTemplate('valid-email-preview-template'),
-    EMAIL: {
-      name: 'test-template-email',
-      subject: 'test-template-subject-line',
-      message: 'test-template-message',
-    },
+    name: 'test-template-email',
+    subject: 'test-template-subject-line',
+    message: 'test-template-message',
   },
 };
 

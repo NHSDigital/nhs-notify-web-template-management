@@ -9,6 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType } from '../../helpers/types';
 
 const templates = {
   empty: TemplateFactory.createEmailTemplate('empty-email-template'),
@@ -21,15 +22,13 @@ const templates = {
   ),
   noEmailTemplateType: TemplateFactory.create({
     id: 'no-email-template-type-template',
-    templateType: 'UNKNOWN',
+    templateType: TemplateType.NHS_APP,
   }),
   previousData: {
     ...TemplateFactory.createEmailTemplate('previous-data-email-template'),
-    EMAIL: {
-      name: 'previous-data-email-template',
-      subject: 'previous-data-email-template-subject-line',
-      message: 'previous-data-email-template-message',
-    },
+    name: 'previous-data-email-template',
+    subject: 'previous-data-email-template-subject-line',
+    message: 'previous-data-email-template-message',
   },
 };
 
@@ -89,48 +88,13 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.loadPage(templates.previousData.id);
 
       await expect(createEmailTemplatePage.nameInput).toHaveValue(
-        templates.previousData.EMAIL.name
+        templates.previousData.name
       );
       await expect(createEmailTemplatePage.subjectLineInput).toHaveValue(
-        templates.previousData.EMAIL.subject
+        templates.previousData.subject
       );
       await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
-        templates.previousData.EMAIL.message
-      );
-    });
-
-    test('when user clicks "Go back" and returns, then form fields retain previous data', async ({
-      baseURL,
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(templates.goBackAndReturn.id);
-
-      await createEmailTemplatePage.nameInput.fill(
-        'This is an email template name'
-      );
-
-      await createEmailTemplatePage.messageTextArea.fill(
-        'This is an email template message'
-      );
-
-      await createEmailTemplatePage.goBackLink.click();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/choose-a-template-type/${templates.goBackAndReturn.id}`
-      );
-
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      await expect(createEmailTemplatePage.nameInput).toHaveValue(
-        'This is an email template name'
-      );
-
-      await expect(createEmailTemplatePage.subjectLineInput).toHaveValue('');
-
-      await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
-        'This is an email template message'
+        templates.previousData.message
       );
     });
 

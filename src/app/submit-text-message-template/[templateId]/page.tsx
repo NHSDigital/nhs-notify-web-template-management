@@ -17,7 +17,7 @@ const SubmitSmsTemplatePage = async ({ params: { templateId } }: PageProps) => {
 
   return (
     <SubmitTemplate
-      templateName={validatedTemplate.SMS.name}
+      templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-text-message-template'
       submitPath='text-message-template-submitted'

@@ -17,10 +17,7 @@ const NhsAppTemplateSubmittedPage = async ({
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  const {
-    id,
-    NHS_APP: { name },
-  } = validatedTemplate;
+  const { id, name } = validatedTemplate;
 
   return <TemplateSubmitted templateId={id} templateName={name} />;
 };

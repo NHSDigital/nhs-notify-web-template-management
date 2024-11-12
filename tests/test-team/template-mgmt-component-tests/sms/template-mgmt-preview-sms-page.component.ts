@@ -9,15 +9,21 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType, Template } from '../../helpers/types';
 
 const templates = {
-  empty: TemplateFactory.createSmsTemplate('empty-sms-preview-template'),
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-sms-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.SMS,
+  } as Template,
   valid: {
     ...TemplateFactory.createSmsTemplate('valid-sms-preview-template'),
-    SMS: {
-      name: 'test-template-sms',
-      message: 'test-template-message',
-    },
+    name: 'test-template-sms',
+    message: 'test-template-message',
   },
 };
 

@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { Template } from '@utils/types';
+import { NHSAppTemplate, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 import {
   createTemplate,
@@ -12,6 +12,7 @@ import {
 import { logger } from '@utils/logger';
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { mockDeep } from 'jest-mock-extended';
+import type { Template } from '@utils/types';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 jest.mock('node:crypto');
@@ -32,9 +33,6 @@ jest.mock('@utils/amplify-utils');
 
 beforeEach(() => {
   jest.resetAllMocks();
-
-  jest.useFakeTimers();
-  jest.setSystemTime(new Date('2022-01-01 10:00'));
 });
 
 type MockSchema = ReturnType<typeof getAmplifyBackendClient>;
@@ -59,17 +57,16 @@ test('createTemplate', async () => {
     },
   });
 
-  const createTemplateInput: Omit<Template, 'id'> = {
+  const createTemplateInput: Draft<NHSAppTemplate> = {
     version: 1,
-    templateType: 'UNKNOWN',
+    templateType: TemplateType.NHS_APP,
+    name: 'name',
+    message: 'message',
   };
 
   const response = await createTemplate(createTemplateInput);
 
-  expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...createTemplateInput,
-    ttl: new Date('2022-01-06 10:00').getTime() / 1000,
-  });
+  expect(mockCreateTemplate).toHaveBeenCalledWith(createTemplateInput);
   expect(response).toEqual(mockResponseData);
 });
 
@@ -94,8 +91,8 @@ test('createTemplate - error handling', async () => {
   await expect(
     createTemplate({
       version: 1,
-      templateType: 'UNKNOWN',
-    })
+      templateType: TemplateType.NHS_APP,
+    } as unknown as Template)
   ).rejects.toThrow('Failed to create new template');
 });
 
@@ -112,43 +109,10 @@ test('saveTemplate', async () => {
     id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
     version: 1,
     templateType: TemplateType.NHS_APP,
-    NHS_APP: {
-      name: 'template-name',
-      message: 'template-message',
-    },
+    name: 'template-name',
+    message: 'template-message',
   });
 
-  expect(response).toEqual(mockResponseData);
-});
-
-test('saveTemplate - include TTL', async () => {
-  const mockSaveTemplate = jest
-    .fn()
-    .mockReturnValue({ data: mockResponseData });
-  setup({
-    models: {
-      TemplateStorage: {
-        update: mockSaveTemplate,
-      },
-    },
-  });
-
-  const saveTemplateInput = {
-    id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
-    version: 1,
-    templateType: TemplateType.NHS_APP,
-    NHS_APP: {
-      name: 'template-name',
-      message: 'template-message',
-    },
-  };
-
-  const response = await saveTemplate(saveTemplateInput, true);
-
-  expect(mockSaveTemplate).toHaveBeenCalledWith({
-    ...saveTemplateInput,
-    ttl: new Date('2022-01-06 10:00').getTime() / 1000,
-  });
   expect(response).toEqual(mockResponseData);
 });
 
@@ -174,10 +138,8 @@ test('saveTemplate - error handling', async () => {
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
       version: 1,
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     })
   ).rejects.toThrow('Failed to save template data');
 });
@@ -199,10 +161,8 @@ test('saveTemplate - error handling - when no data returned', async () => {
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
       version: 1,
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     })
   ).rejects.toThrow(
     'Template in unknown state. No errors reported but entity returned as falsy'

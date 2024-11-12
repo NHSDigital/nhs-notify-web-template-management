@@ -11,11 +11,9 @@ jest.mock('@utils/form-actions', () => ({
         id: 'template-id',
         version: 1,
         templateType: TemplateType.EMAIL,
-        EMAIL: {
-          name: 'template-name',
-          subject: 'template-subject',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        subject: 'template-subject',
+        message: 'template-message',
       };
     }
   }),

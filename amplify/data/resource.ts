@@ -1,27 +1,21 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { TemplateType } from '../../src/utils/enum';
 import { sendEmail } from '../functions/send-email/resource';
 
-const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
+const templateTypes = [
+  TemplateType.NHS_APP,
+  TemplateType.SMS,
+  TemplateType.EMAIL,
+  TemplateType.LETTER,
+] as const;
 
 const TemplateStorageModel = {
   id: a.string().required(),
-  templateType: a.enum([...templateTypes, 'UNKNOWN']),
+  templateType: a.ref('TemplateType').required(),
   version: a.integer().required(),
-
-  NHS_APP: a.customType({
-    name: a.string().required(),
-    message: a.string().required(),
-  }),
-  EMAIL: a.customType({
-    name: a.string().required(),
-    subject: a.string().required(),
-    message: a.string().required(),
-  }),
-  SMS: a.customType({
-    name: a.string().required(),
-    message: a.string().required(),
-  }),
-  ttl: a.integer(),
+  name: a.string().required(),
+  subject: a.string(),
+  message: a.string().required(),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +25,7 @@ const authPermission = (allow: any) =>
     : [allow.guest()];
 
 const schema = a.schema({
+  TemplateType: a.enum(templateTypes),
   TemplateStorage: a.model(TemplateStorageModel).authorization(authPermission),
   sendEmail: a
     .query()

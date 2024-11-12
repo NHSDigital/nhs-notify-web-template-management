@@ -20,10 +20,8 @@ describe('SubmitNhsAppTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     };
 
     getTemplateMock.mockResolvedValue(state);
@@ -35,7 +33,7 @@ describe('SubmitNhsAppTemplatePage', () => {
     });
     expect(page).toEqual(
       <SubmitTemplate
-        templateName={state.NHS_APP.name}
+        templateName={state.name}
         templateId={state.id}
         goBackPath='preview-nhs-app-template'
         submitPath='nhs-app-template-submitted'
@@ -58,45 +56,33 @@ describe('SubmitNhsAppTemplatePage', () => {
   test.each([
     {
       templateType: TemplateType.LETTER,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      NHS_APP: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: 'template-name',
-        message: undefined as unknown as string,
-      },
+      name: 'template-name',
+      message: undefined as unknown as string,
     },
     {
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: undefined as unknown as string,
-        message: 'template-message',
-      },
+      name: undefined as unknown as string,
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      NHS_APP: {
-        name: null as unknown as string,
-        message: null as unknown as string,
-      },
+      name: null as unknown as string,
+      message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $nhsAppTemplateName and message is $nhsAppTemplateMessage',

@@ -21,10 +21,8 @@ describe('PreviewSMSTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.SMS,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     };
 
     getTemplateMock.mockResolvedValueOnce(state);
@@ -51,45 +49,33 @@ describe('PreviewSMSTemplatePage', () => {
   test.each([
     {
       templateType: TemplateType.LETTER,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: 'template-name',
-        message: undefined as unknown as string,
-      },
+      name: 'template-name',
+      message: undefined as unknown as string,
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: undefined as unknown as string,
-        message: 'template-message',
-      },
+      name: undefined as unknown as string,
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: null as unknown as string,
-        message: null as unknown as string,
-      },
+      name: null as unknown as string,
+      message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',

@@ -9,32 +9,34 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
+import { Template, TemplateType } from '../helpers/types';
 
 const emailFields = {
-  EMAIL: {
-    name: 'test-template-name',
-    subject: 'test-template-subject-line',
-    message: 'test-template-message',
-  },
+  name: 'test-template-name',
+  subject: 'test-template-subject-line',
+  message: 'test-template-message',
 };
 
 const smsFields = {
-  SMS: {
-    name: 'test-template-name',
-    message: 'test-template-message',
-  },
+  name: 'test-template-name',
+  message: 'test-template-message',
 };
 
 const nhsAppFields = {
-  NHS_APP: {
-    name: 'test-template-name',
-    message: 'test-template-message',
-  },
+  name: 'test-template-name',
+  message: 'test-template-message',
 };
 
 const templates = {
   email: {
-    empty: TemplateFactory.createEmailTemplate('empty-email-submit-template'),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-email-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.EMAIL,
+    } as Template,
     submit: {
       ...TemplateFactory.createEmailTemplate('submit-email-submit-template'),
       ...emailFields,
@@ -51,7 +53,14 @@ const templates = {
     },
   },
   'text-message': {
-    empty: TemplateFactory.createSmsTemplate('empty-sms-submit-template'),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-sms-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.SMS,
+    } as Template,
     submit: {
       ...TemplateFactory.createSmsTemplate('submit-sms-submit-template'),
       ...smsFields,
@@ -66,9 +75,14 @@ const templates = {
     },
   },
   'nhs-app': {
-    empty: TemplateFactory.createNhsAppTemplate(
-      'empty-nhs-app-submit-template'
-    ),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-nhs-app-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.NHS_APP,
+    } as Template,
     submit: {
       ...TemplateFactory.createNhsAppTemplate('submit-nhs-app-submit-template'),
       ...nhsAppFields,

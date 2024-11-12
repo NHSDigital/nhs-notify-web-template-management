@@ -31,11 +31,9 @@ describe('Preview email form renders', () => {
       <ReviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          EMAIL: {
-            name: 'test-template-email',
-            subject: 'template-subject-line',
-            message: 'message',
-          },
+          name: 'test-template-email',
+          subject: 'template-subject-line',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -54,11 +52,9 @@ describe('Preview email form renders', () => {
               reviewEmailTemplateAction: ['Select an option'],
             },
           },
-          EMAIL: {
-            name: 'test-template-email',
-            subject: 'template-subject-line',
-            message: 'message',
-          },
+          name: 'test-template-email',
+          subject: 'template-subject-line',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -72,11 +68,9 @@ describe('Preview email form renders', () => {
       <ReviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          EMAIL: {
-            name: 'test-template-email',
-            subject: 'template-subject-line',
-            message: 'message',
-          },
+          name: 'test-template-email',
+          subject: 'template-subject-line',
+          message: 'message',
           id: 'template-id',
         })}
       />
@@ -104,11 +98,9 @@ describe('Preview email form renders', () => {
       <ReviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          EMAIL: {
-            name: 'test-template-email',
-            subject: 'template-subject-line',
-            message,
-          },
+          name: 'test-template-email',
+          subject: 'template-subject-line',
+          message,
           id: 'template-id',
         })}
       />

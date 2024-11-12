@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateFormState } from '@utils/types';
+import { TemplateFormState, EmailTemplate } from '@utils/types';
 import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
 
 jest.mock('@utils/amplify-utils', () => ({
@@ -22,28 +22,14 @@ jest.mock('react-dom', () => {
   };
 });
 
-test('renders page', async () => {
-  const container = render(
-    <CreateEmailTemplate
-      initialState={mockDeep<TemplateFormState>({
-        validationError: undefined,
-        EMAIL: undefined,
-      })}
-    />
-  );
-  expect(container.asFragment()).toMatchSnapshot();
-});
-
 test('renders page with preloaded field values', () => {
   const container = render(
     <CreateEmailTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<EmailTemplate>>({
         validationError: undefined,
-        EMAIL: {
-          name: 'template-name',
-          subject: 'template-subject-line',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
       })}
     />
   );
@@ -53,18 +39,16 @@ test('renders page with preloaded field values', () => {
 test('renders page one error', () => {
   const container = render(
     <CreateEmailTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<EmailTemplate>>({
         validationError: {
           formErrors: [],
           fieldErrors: {
             emailTemplateName: ['Template name error'],
           },
         },
-        EMAIL: {
-          name: '',
-          subject: '',
-          message: '',
-        },
+        name: '',
+        subject: '',
+        message: '',
       })}
     />
   );
@@ -74,7 +58,7 @@ test('renders page one error', () => {
 test('renders page with multiple errors', () => {
   const container = render(
     <CreateEmailTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<EmailTemplate>>({
         validationError: {
           formErrors: [],
           fieldErrors: {
@@ -83,11 +67,9 @@ test('renders page with multiple errors', () => {
             emailTemplateMessage: ['Template message error'],
           },
         },
-        EMAIL: {
-          name: '',
-          subject: '',
-          message: '',
-        },
+        name: '',
+        subject: '',
+        message: '',
       })}
     />
   );

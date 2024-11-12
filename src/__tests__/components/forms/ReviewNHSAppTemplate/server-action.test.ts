@@ -38,10 +38,8 @@ describe('reviewNhsAppTemplateAction', () => {
     id: 'template-id',
     version: 1,
     templateType: TemplateType.NHS_APP,
-    NHS_APP: {
-      name: 'Example name',
-      message: 'Example message',
-    },
+    name: 'Example name',
+    message: 'Example message',
     validationError: undefined,
   };
 
@@ -56,10 +54,8 @@ describe('reviewNhsAppTemplateAction', () => {
       id: 'template-id',
       version: 1,
       templateType: 'NHS_APP',
-      NHS_APP: {
-        name: 'Example name',
-        message: 'Example message',
-      },
+      name: 'Example name',
+      message: 'Example message',
       validationError: {
         fieldErrors: {
           reviewNHSAppTemplateAction: ['Select an option'],

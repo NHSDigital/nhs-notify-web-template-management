@@ -1,6 +1,6 @@
-import { TemplateFormState } from '@utils/types';
+import { TemplateFormState, NHSAppTemplate, Draft } from '@utils/types';
 import { z } from 'zod';
-import { saveTemplate } from '@utils/form-actions';
+import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 
 const $CreateNhsAppTemplateSchema = z.object({
@@ -30,9 +30,9 @@ const formIdMap = {
 };
 
 export async function processFormActions(
-  formState: TemplateFormState,
+  formState: TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>,
   formData: FormData
-): Promise<TemplateFormState> {
+): Promise<TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>> {
   const formId = formData.get('form-id');
 
   if (
@@ -63,13 +63,13 @@ export async function processFormActions(
 
   const updatedTemplate = {
     ...formState,
-    NHS_APP: {
-      name: nhsAppTemplateName,
-      message: nhsAppTemplateMessage,
-    },
+    name: nhsAppTemplateName,
+    message: nhsAppTemplateMessage,
   };
 
-  const savedTemplate = await saveTemplate(updatedTemplate);
+  const savedTemplate = await ('id' in updatedTemplate
+    ? saveTemplate(updatedTemplate)
+    : createTemplate(updatedTemplate));
 
   return redirect(`/${redirectPath}/${savedTemplate.id}`, RedirectType.push);
 }

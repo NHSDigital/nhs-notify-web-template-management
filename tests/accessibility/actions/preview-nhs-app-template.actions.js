@@ -1,9 +1,6 @@
 const {
   pageActions: goToCreateNHSAppTemplateActions,
 } = require('./create-nhs-app-template.actions');
-
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToCreateNHSAppTemplateActions,
   'set field #nhsAppTemplateName to example-template-1',
@@ -11,15 +8,15 @@ const pageActions = [
   'click element #create-nhs-app-template-submit-button',
 ];
 
-const reviewNHSAppTemplatePage = (baseUrl) => ({
+const reviewNHSAppTemplatePage = (url) => ({
   name: 'preview-nhs-app-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 
-const reviewNHSAppTemplateErrorPage = (baseUrl) => ({
+const reviewNHSAppTemplateErrorPage = (url) => ({
   name: 'preview-nhs-app-template-error',
-  url: url(baseUrl),
+  url,
   actions: [
     ...pageActions,
     'wait for #preview-nhs-app-template-submit-button to be visible',

@@ -16,16 +16,16 @@ import { NHSNotifyBackButton } from '@molecules/NHSNotifyBackButton/NHSNotifyBac
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { PageComponentProps, Template } from '@utils/types';
+import { NHSAppTemplate, PageComponentProps, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useRouter } from 'next/navigation';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 
-export const CreateNhsAppTemplate: FC<PageComponentProps<Template>> = ({
-  initialState,
-}) => {
+export const CreateNhsAppTemplate: FC<
+  PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
+> = ({ initialState }) => {
   const {
     pageHeading,
     errorHeading,
@@ -43,10 +43,10 @@ export const CreateNhsAppTemplate: FC<PageComponentProps<Template>> = ({
   }
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state?.NHS_APP?.message ?? '');
+    useTextInput<HTMLTextAreaElement>(state.message);
 
   const [nhsAppTemplateName, nhsAppTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state?.NHS_APP?.name ?? '');
+    useTextInput<HTMLInputElement>(state.name);
 
   const templateNameError =
     state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');

@@ -20,9 +20,9 @@ export function ReviewEmailTemplate({
 
   const [state, action] = useFormState(reviewEmailTemplateAction, initialState);
 
-  const templateName = initialState.EMAIL.name;
-  const templateSubjectLine = initialState.EMAIL.subject;
-  const templateMessage = initialState.EMAIL.message;
+  const templateName = initialState.name;
+  const templateSubjectLine = initialState.subject;
+  const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 

@@ -2,43 +2,25 @@
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
-import { Template } from './types';
+import { Template, Draft } from './types';
 import { logger } from './logger';
 
-const calculateTTL = () => {
-  const currentTimeSeconds = Math.floor(Date.now() / 1000);
-
-  const maxTTLDurationInSeconds = Number.parseInt(
-    process.env.MAX_TTL_DURATION_IN_SECONDS ?? '432000',
-    10
-  ); // 5 days in seconds
-
-  return currentTimeSeconds + maxTTLDurationInSeconds;
-};
-
-export async function createTemplate(template: Omit<Template, 'id'>) {
-  const templateWithTTL = {
-    ...template,
-    ttl: calculateTTL(),
-  };
+export async function createTemplate(
+  template: Draft<Template>
+): Promise<Template> {
   const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.create(
-      templateWithTTL
-    );
+    await getAmplifyBackendClient().models.TemplateStorage.create(template);
 
-  if (errors) {
+  if (errors || !data) {
     logger.error('Failed to create template', errors);
     throw new Error('Failed to create new template');
   }
   return data;
 }
 
-export async function saveTemplate(template: Template, ttl = false) {
+export async function saveTemplate(template: Template): Promise<Template> {
   const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.update({
-      ...template,
-      ...(ttl && { ttl: calculateTTL() }),
-    });
+    await getAmplifyBackendClient().models.TemplateStorage.update(template);
 
   if (errors) {
     logger.error('Failed to save template', errors);
@@ -52,7 +34,7 @@ export async function saveTemplate(template: Template, ttl = false) {
       operation: 'update',
     });
   }
-  return data as Template;
+  return data;
 }
 
 export async function getTemplate(
@@ -62,6 +44,7 @@ export async function getTemplate(
     await getAmplifyBackendClient().models.TemplateStorage.get({
       id: templateId,
     });
+
   if (errors) {
     logger.error('Failed to get template', errors);
   }
@@ -71,7 +54,7 @@ export async function getTemplate(
     return undefined;
   }
 
-  return data as Template;
+  return data;
 }
 
 export async function sendEmail(

@@ -9,15 +9,21 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { Template, TemplateType } from '../../helpers/types';
 
 const templates = {
-  empty: TemplateFactory.createNhsAppTemplate('empty-nhs-app-preview-template'),
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-nhs-app-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.NHS_APP,
+  } as Template,
   valid: {
     ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-preview-template'),
-    NHS_APP: {
-      name: 'test-template-nhs-app',
-      message: 'test-template-message',
-    },
+    name: 'test-template-nhs-app',
+    message: 'test-template-message',
   },
 };
 

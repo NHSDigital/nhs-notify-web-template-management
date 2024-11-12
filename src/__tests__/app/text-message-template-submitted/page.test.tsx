@@ -20,10 +20,8 @@ describe('TextMessageTemplateSubmittedPage', () => {
       id: 'template-id',
       templateType: TemplateType.SMS,
       version: 1,
-      SMS: {
-        name: 'template-name',
-        message: 'example',
-      },
+      name: 'template-name',
+      message: 'example',
     };
 
     getTemplateMock.mockResolvedValueOnce(template);
@@ -39,7 +37,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
     expect(page).toEqual(
       <TemplateSubmitted
         templateId={template.id}
-        templateName={template.SMS.name}
+        templateName={template.name}
       />
     );
   });

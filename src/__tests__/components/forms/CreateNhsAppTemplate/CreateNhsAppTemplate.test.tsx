@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateFormState } from '@utils/types';
+import { NHSAppTemplate, TemplateFormState } from '@utils/types';
 import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
 
 jest.mock('next/navigation', () => ({
@@ -34,9 +34,10 @@ test('renders page', async () => {
 
   const container = render(
     <CreateNhsAppTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
         validationError: undefined,
-        NHS_APP: undefined,
+        name: 'template-name',
+        message: 'template-message',
       })}
     />
   );
@@ -58,12 +59,10 @@ test('renders page', async () => {
 test('renders page with preloaded field values', () => {
   const container = render(
     <CreateNhsAppTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
         validationError: undefined,
-        NHS_APP: {
-          name: 'template-name',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        message: 'template-message',
       })}
     />
   );
@@ -73,17 +72,15 @@ test('renders page with preloaded field values', () => {
 test('renders page one error', () => {
   const container = render(
     <CreateNhsAppTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
         validationError: {
           formErrors: [],
           fieldErrors: {
             nhsAppTemplateName: ['Template name error'],
           },
         },
-        NHS_APP: {
-          name: '',
-          message: '',
-        },
+        name: '',
+        message: '',
       })}
     />
   );
@@ -93,7 +90,7 @@ test('renders page one error', () => {
 test('renders page with multiple errors', () => {
   const container = render(
     <CreateNhsAppTemplate
-      initialState={mockDeep<TemplateFormState>({
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
         validationError: {
           formErrors: [],
           fieldErrors: {
@@ -101,10 +98,8 @@ test('renders page with multiple errors', () => {
             nhsAppTemplateMessage: ['Template message error'],
           },
         },
-        NHS_APP: {
-          name: '',
-          message: '',
-        },
+        name: '',
+        message: '',
       })}
     />
   );

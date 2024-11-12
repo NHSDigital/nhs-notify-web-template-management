@@ -20,10 +20,8 @@ describe('SubmitSmsTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.SMS,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     };
 
     getTemplateMock.mockResolvedValue(state);
@@ -36,7 +34,7 @@ describe('SubmitSmsTemplatePage', () => {
 
     expect(page).toEqual(
       <SubmitTemplate
-        templateName={state.SMS.name}
+        templateName={state.name}
         templateId={state.id}
         goBackPath='preview-text-message-template'
         submitPath='text-message-template-submitted'
@@ -59,45 +57,33 @@ describe('SubmitSmsTemplatePage', () => {
   test.each([
     {
       templateType: TemplateType.LETTER,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      SMS: {
-        name: 'template-name',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: 'template-name',
-        message: undefined as unknown as string,
-      },
+      name: 'template-name',
+      message: undefined as unknown as string,
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: undefined as unknown as string,
-        message: 'template-message',
-      },
+      name: undefined as unknown as string,
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      SMS: {
-        name: null as unknown as string,
-        message: null as unknown as string,
-      },
+      name: null as unknown as string,
+      message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',

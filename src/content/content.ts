@@ -207,7 +207,7 @@ const homePage = {
     'You can access this tool by signing in with your NHSmail account or Care Identity.',
   linkButton: {
     text: 'Start now',
-    url: `${getBasePath()}/create-template`,
+    url: `${getBasePath()}/choose-a-template-type`,
   },
 };
 

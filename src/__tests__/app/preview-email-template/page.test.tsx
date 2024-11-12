@@ -21,11 +21,9 @@ describe('PreviewEmailTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
     };
 
     getTemplateMock.mockResolvedValueOnce(state);
@@ -52,59 +50,45 @@ describe('PreviewEmailTemplatePage', () => {
   test.each([
     {
       templateType: TemplateType.LETTER,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: 'template-message',
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: undefined as unknown as string,
-        subject: 'template-subject-line',
-        message: 'template-message',
-      },
+      name: undefined as unknown as string,
+      subject: 'template-subject-line',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: 'template-name',
-        subject: undefined as unknown as string,
-        message: 'template-message',
-      },
+      name: 'template-name',
+      subject: undefined as unknown as string,
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: undefined as unknown as string,
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: undefined as unknown as string,
     },
     {
       templateType: TemplateType.EMAIL,
-      EMAIL: {
-        name: 'template-name',
-        subject: 'template-subject-line',
-        message: null as unknown as string,
-      },
+      name: 'template-name',
+      subject: 'template-subject-line',
+      message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',

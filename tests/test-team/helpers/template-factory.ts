@@ -5,6 +5,7 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       templateType: TemplateType.EMAIL,
+      subject: '',
     });
   },
 
@@ -33,6 +34,8 @@ export const TemplateFactory = {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      name: '',
+      message: '',
       ...template,
     };
   },

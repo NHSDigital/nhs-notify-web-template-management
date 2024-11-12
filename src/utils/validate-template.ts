@@ -56,12 +56,3 @@ export const validateChannelTemplate = (
     return undefined;
   }
 };
-
-export const parseTemplate = (template: ChannelTemplate) => {
-  return {
-    name: '',
-    message: '',
-    subject: null,
-    ...template[template.templateType],
-  };
-};

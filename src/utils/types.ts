@@ -33,6 +33,8 @@ export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
 export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
 
+export type Draft<T> = Omit<T, 'id'>;
+
 export type FormState = {
   validationError?: FormErrorState;
   redirect?: string;

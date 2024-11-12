@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtCreatePage } from '../pages/template-mgmt-create-page';
-import { Template, TemplateType } from '../helpers/types';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateMgmtCreatePage } from '../../pages/template-mgmt-create-page';
+import { Template, TemplateType } from '../../helpers/types';
+import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import {
   assertFooterLinks,
   assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
-} from './template-mgmt-common.steps';
+} from '../template-mgmt-common.steps';
 
 export const emptyTemplateData: Template = {
   __typename: 'TemplateStorage',
@@ -17,6 +17,8 @@ export const emptyTemplateData: Template = {
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
+  name: '',
+  message: '',
 };
 
 export const emptyTemplateForTemplateCreation: Template = {
@@ -26,6 +28,8 @@ export const emptyTemplateForTemplateCreation: Template = {
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
+  name: '',
+  message: '',
 };
 
 test.describe('Create NHS App Template Page', () => {

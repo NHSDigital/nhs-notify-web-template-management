@@ -1,6 +1,6 @@
 import { getMockFormData } from '@testhelpers';
-import { saveTemplate } from '@utils/form-actions';
-import { Template } from '@utils/types';
+import { saveTemplate, createTemplate } from '@utils/form-actions';
+import { EmailTemplate } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/CreateEmailTemplate/server-action';
@@ -19,12 +19,16 @@ jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
 const saveTemplateMock = jest.mocked(saveTemplate);
+const createTemplateMock = jest.mocked(createTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Template = {
+const initialState: EmailTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.EMAIL,
+  name: 'name',
+  subject: 'subject',
+  message: 'message',
 };
 
 describe('CreateEmailTemplate server actions', () => {
@@ -64,7 +68,7 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
-  it('create-sms-template - should return response when when template message is too long', async () => {
+  it('create-email-template - should return response when when template message is too long', async () => {
     const response = await processFormActions(
       initialState,
       getMockFormData({
@@ -113,11 +117,9 @@ describe('CreateEmailTemplate server actions', () => {
     async ({ formId, route }) => {
       saveTemplateMock.mockResolvedValue({
         ...initialState,
-        EMAIL: {
-          name: 'template-name',
-          subject: 'template-subject-line',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
       });
 
       await processFormActions(
@@ -134,15 +136,54 @@ describe('CreateEmailTemplate server actions', () => {
         id: initialState.id,
         version: 1,
         templateType: initialState.templateType,
-        EMAIL: {
-          name: 'template-name',
-          subject: 'template-subject-line',
-          message: 'template-message',
-        },
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
       });
 
       expect(redirectMock).toHaveBeenCalledWith(
         `/${route}/template-id`,
+        'push'
+      );
+    }
+  );
+
+  test.each([
+    { formId: 'create-email-template', route: 'preview-email-template' },
+    { formId: 'create-email-template-back', route: 'choose-a-template-type' },
+  ])(
+    '$formId - should create the template and redirect to $route',
+    async ({ formId, route }) => {
+      const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
+
+      createTemplateMock.mockResolvedValue({
+        ...initialDraftState,
+        id: 'new-template-id',
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
+      });
+
+      await processFormActions(
+        initialDraftState,
+        getMockFormData({
+          'form-id': formId,
+          emailTemplateName: 'template-name',
+          emailTemplateSubjectLine: 'template-subject-line',
+          emailTemplateMessage: 'template-message',
+        })
+      );
+
+      expect(createTemplateMock).toHaveBeenCalledWith({
+        version: 1,
+        templateType: initialState.templateType,
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
+      });
+
+      expect(redirectMock).toHaveBeenCalledWith(
+        `/${route}/new-template-id`,
         'push'
       );
     }

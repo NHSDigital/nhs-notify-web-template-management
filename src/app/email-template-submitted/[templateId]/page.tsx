@@ -17,10 +17,7 @@ const EmailTemplateSubmittedPage = async ({
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  const {
-    id,
-    EMAIL: { name },
-  } = validatedTemplate;
+  const { id, name } = validatedTemplate;
 
   return <TemplateSubmitted templateId={id} templateName={name} />;
 };

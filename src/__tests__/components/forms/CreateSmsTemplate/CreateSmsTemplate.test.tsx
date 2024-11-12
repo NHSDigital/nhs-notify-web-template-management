@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateFormState } from '@utils/types';
+import { TemplateFormState, SMSTemplate } from '@utils/types';
 import { CreateSmsTemplate } from '@forms/CreateSmsTemplate/CreateSmsTemplate';
 
 jest.mock('react-dom', () => {
@@ -27,10 +27,11 @@ describe('CreateSmsTemplate component', () => {
   test('renders page', async () => {
     const container = render(
       <CreateSmsTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
           id: 'template-id',
-          SMS: undefined,
+          name: 'template-name',
+          message: 'template-message',
         })}
       />
     );
@@ -40,12 +41,10 @@ describe('CreateSmsTemplate component', () => {
   test('renders page with preloaded field values', () => {
     const container = render(
       <CreateSmsTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          SMS: {
-            name: 'template-name',
-            message: 'template-message',
-          },
+          name: 'template-name',
+          message: 'template-message',
           id: 'template-id',
         })}
       />
@@ -56,14 +55,16 @@ describe('CreateSmsTemplate component', () => {
   test('renders page one error', () => {
     const container = render(
       <CreateSmsTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
               smsTemplateName: ['Template name error'],
             },
           },
-          SMS: undefined,
+          id: 'template-id',
+          name: 'template-name',
+          message: 'template-message',
         })}
       />
     );
@@ -73,7 +74,7 @@ describe('CreateSmsTemplate component', () => {
   test('renders page with multiple errors', () => {
     const container = render(
       <CreateSmsTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
@@ -82,7 +83,8 @@ describe('CreateSmsTemplate component', () => {
             },
           },
           id: 'template-id',
-          SMS: undefined,
+          name: 'template-name',
+          message: 'template-message',
         })}
       />
     );
@@ -94,12 +96,10 @@ describe('CreateSmsTemplate component', () => {
 
     render(
       <CreateSmsTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          SMS: {
-            name: '',
-            message: '',
-          },
+          name: '',
+          message: '',
           id: 'template-id',
         })}
       />

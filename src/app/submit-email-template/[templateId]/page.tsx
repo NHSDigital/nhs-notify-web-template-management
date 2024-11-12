@@ -19,7 +19,7 @@ const SubmitEmailTemplatePage = async ({
 
   return (
     <SubmitTemplate
-      templateName={validatedTemplate.EMAIL.name}
+      templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-email-template'
       submitPath='email-template-submitted'
