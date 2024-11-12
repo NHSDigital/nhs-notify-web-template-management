@@ -1,6 +1,7 @@
 const {
   pageActions: goToCreateNHSAppTemplateActions,
 } = require('./create-nhs-app-template.actions');
+
 const pageActions = [
   ...goToCreateNHSAppTemplateActions,
   'set field #nhsAppTemplateName to example-template-1',
