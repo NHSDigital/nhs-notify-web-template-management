@@ -3,7 +3,7 @@ import { TemplateMgmtBasePage } from '../pages/template-mgmt-base-page';
 
 type CommonStepsProps = {
   page: TemplateMgmtBasePage;
-  id: string;
+  id?: string;
   baseURL?: string;
 };
 

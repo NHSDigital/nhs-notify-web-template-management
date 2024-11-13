@@ -78,7 +78,7 @@ test.describe('Start Page', () => {
     await startPage.clickStartButton();
 
     expect(page.url()).toContain(
-      `${baseURL}/templates/choose-a-template-type/`
+      `${baseURL}/templates/templates/manage-templates/`
     );
   });
 });

@@ -50,8 +50,7 @@ export class TemplateMgmtBasePage {
 
     this.continueButton = page
       .locator('[class="nhsuk-button"]')
-      .and(page.getByRole('button'))
-      .and(page.getByText('Continue'));
+      .and(page.getByRole('button'));
 
     this.skipLink = page
       .locator('[id="skip-link"]')
@@ -74,7 +73,7 @@ export class TemplateMgmtBasePage {
     await this.continueButton.click();
   }
 
-  async loadPage(_: string) {
+  async loadPage(_?: string) {
     throw new Error('Not implemented');
   }
 
