@@ -75,7 +75,7 @@ exports[`renders page 1`] = `
         >
           <div>
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
             >
               Template name
@@ -147,7 +147,7 @@ exports[`renders page 1`] = `
         >
           <div>
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
             >
               Subject line
@@ -169,7 +169,7 @@ exports[`renders page 1`] = `
             class="nhsuk-form-group"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateMessage"
               id="emailTemplateMessage--label"
             >
@@ -190,7 +190,7 @@ exports[`renders page 1`] = `
           id="create-email-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -650,7 +650,7 @@ exports[`renders page one error 1`] = `
             class="nhsuk-form-group--error"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
             >
               Template name
@@ -734,7 +734,7 @@ exports[`renders page one error 1`] = `
         >
           <div>
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
             >
               Subject line
@@ -756,7 +756,7 @@ exports[`renders page one error 1`] = `
             class="nhsuk-form-group"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateMessage"
               id="emailTemplateMessage--label"
             >
@@ -777,7 +777,7 @@ exports[`renders page one error 1`] = `
           id="create-email-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -1241,7 +1241,7 @@ exports[`renders page with multiple errors 1`] = `
             class="nhsuk-form-group--error"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
             >
               Template name
@@ -1327,7 +1327,7 @@ exports[`renders page with multiple errors 1`] = `
             class="nhsuk-form-group--error"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
             >
               Subject line
@@ -1361,7 +1361,7 @@ exports[`renders page with multiple errors 1`] = `
             class="nhsuk-form-group nhsuk-form-group--error"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateMessage"
               id="emailTemplateMessage--label"
             >
@@ -1394,7 +1394,7 @@ exports[`renders page with multiple errors 1`] = `
           id="create-email-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -1817,7 +1817,7 @@ exports[`renders page with preloaded field values 1`] = `
         >
           <div>
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
             >
               Template name
@@ -1889,7 +1889,7 @@ exports[`renders page with preloaded field values 1`] = `
         >
           <div>
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
             >
               Subject line
@@ -1911,7 +1911,7 @@ exports[`renders page with preloaded field values 1`] = `
             class="nhsuk-form-group"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="emailTemplateMessage"
               id="emailTemplateMessage--label"
             >
@@ -1934,7 +1934,7 @@ exports[`renders page with preloaded field values 1`] = `
           id="create-email-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>

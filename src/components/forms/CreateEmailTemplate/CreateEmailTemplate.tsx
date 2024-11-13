@@ -84,7 +84,9 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
 
           <FormSection>
             <div className={templateNameError && 'nhsuk-form-group--error'}>
-              <Label htmlFor='emailTemplateName'>{templateNameLabelText}</Label>
+              <Label htmlFor='emailTemplateName' size='s'>
+                {templateNameLabelText}
+              </Label>
               <HintText>{templateNameHintText}</HintText>
               <TemplateNameGuidance template={TemplateType.EMAIL} />
               <TextInput
@@ -102,7 +104,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
             <div
               className={templateSubjectLineError && 'nhsuk-form-group--error'}
             >
-              <Label htmlFor='emailTemplateSubjectLine'>
+              <Label htmlFor='emailTemplateSubjectLine' size='s'>
                 {templateSubjectLineLabelText}
               </Label>
               <TextInput
@@ -117,6 +119,7 @@ export const CreateEmailTemplate: FC<PageComponentProps> = ({
 
             <Textarea
               label={templateMessageLabelText}
+              labelProps={{ size: 's' }}
               id='emailTemplateMessage'
               rows={10}
               onChange={emailTemplateMessageHandler}
