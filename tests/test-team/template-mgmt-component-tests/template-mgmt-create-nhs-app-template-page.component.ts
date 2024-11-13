@@ -91,7 +91,7 @@ test.describe('Create NHS App Template Page', () => {
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
     );
-    await createTemplatePage.clickContinueButton();
+    await createTemplatePage.clickSubmitButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
 
     await expect(
@@ -114,7 +114,7 @@ test.describe('Create NHS App Template Page', () => {
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
     const templateMessage = 'Test Message box';
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
-    await createTemplatePage.clickContinueButton();
+    await createTemplatePage.clickSubmitButton();
     await expect(page.getByRole('heading', { level: 1 })).toContainText(
       'NHS Testing 123'
     );
@@ -136,7 +136,7 @@ test.describe('Create NHS App Template Page', () => {
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    await createTemplatePage.clickContinueButton();
+    await createTemplatePage.clickSubmitButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
@@ -159,7 +159,7 @@ test.describe('Create NHS App Template Page', () => {
     );
     const templateMessage = 'Test Message box';
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
-    await createTemplatePage.clickContinueButton();
+    await createTemplatePage.clickSubmitButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
 
     await expect(

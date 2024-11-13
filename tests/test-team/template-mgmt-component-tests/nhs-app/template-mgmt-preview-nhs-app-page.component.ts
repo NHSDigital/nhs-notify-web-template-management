@@ -107,7 +107,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.editRadioOption.click();
 
-      await previewNhsAppTemplatePage.clickContinueButton();
+      await previewNhsAppTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/create-nhs-app-template/${sessions.valid.id}`
@@ -124,7 +124,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.submitRadioOption.click();
 
-      await previewNhsAppTemplatePage.clickContinueButton();
+      await previewNhsAppTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-nhs-app-template/${sessions.valid.id}`
@@ -164,7 +164,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
 
-      await previewNhsAppTemplatePage.clickContinueButton();
+      await previewNhsAppTemplatePage.clickSubmitButton();
 
       await expect(previewNhsAppTemplatePage.errorSummary).toBeVisible();
 

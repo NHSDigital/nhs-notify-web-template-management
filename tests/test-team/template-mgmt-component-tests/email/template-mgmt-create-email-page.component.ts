@@ -197,7 +197,7 @@ test.describe('Create Email message template Page', () => {
         'This is an email message'
       );
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-email-template/${sessions.submit.id}`
@@ -221,9 +221,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill(templateMessage);
 
-      await createEmailTemplatePage.clickContinueButton();
-
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await createEmailTemplatePage.clickSubmitButton();
 
       await expect(createEmailTemplatePage.nameInput).toHaveValue(templateName);
 
@@ -267,7 +265,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage(sessions.empty.id);
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       await expect(createEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -309,7 +307,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailNameErrorLink = createEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -335,7 +333,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailSubjectLineErrorLink =
         createEmailTemplatePage.errorSummary.locator(
@@ -364,7 +362,7 @@ test.describe('Create Email message template Page', () => {
         'template-subject-line'
       );
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailMessageErrorLink =
         createEmailTemplatePage.errorSummary.locator(

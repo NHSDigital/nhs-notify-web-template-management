@@ -207,7 +207,7 @@ test.describe('Create SMS message template Page', () => {
         'This is an SMS message'
       );
 
-      await createSmsTemplatePage.clickContinueButton();
+      await createSmsTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-text-message-template/${sessions.submit.id}`
@@ -228,9 +228,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.messageTextArea.fill(templateMessage);
 
-      await createSmsTemplatePage.clickContinueButton();
-
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await createSmsTemplatePage.clickSubmitButton();
 
       await expect(createSmsTemplatePage.nameInput).toHaveValue(templateName);
 
@@ -270,7 +268,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.loadPage(sessions.empty.id);
 
-      await createSmsTemplatePage.clickContinueButton();
+      await createSmsTemplatePage.clickSubmitButton();
 
       await expect(createSmsTemplatePage.errorSummary).toBeVisible();
 
@@ -300,7 +298,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.messageTextArea.fill('template-message');
 
-      await createSmsTemplatePage.clickContinueButton();
+      await createSmsTemplatePage.clickSubmitButton();
 
       const smsNameErrorLink = createSmsTemplatePage.errorSummary.locator(
         `[href="#smsTemplateName"]`
@@ -324,7 +322,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
-      await createSmsTemplatePage.clickContinueButton();
+      await createSmsTemplatePage.clickSubmitButton();
 
       const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
         '[href="#smsTemplateMessage"]'
