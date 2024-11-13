@@ -1,4 +1,4 @@
-import { CreateNhsAppTemplate } from '@forms/CreateNhsAppTemplate/CreateNhsAppTemplate';
+import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import { NHSAppTemplate, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 
@@ -10,7 +10,7 @@ const CreateNHSAppTemplatePage = async () => {
     message: '',
   };
 
-  return <CreateNhsAppTemplate initialState={initialState} />;
+  return <NhsAppTemplateForm initialState={initialState} />;
 };
 
 export default CreateNHSAppTemplatePage;

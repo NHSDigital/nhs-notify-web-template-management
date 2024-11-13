@@ -15,16 +15,11 @@ export class TemplateStorageHelper {
   }
 
   async seedTemplateData() {
-    const currentTimeSeconds = Math.floor(Date.now() / 1000);
-
     const promises = this.templateData.map((template) =>
       this.ddbDocClient.send(
         new PutCommand({
           TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
-          Item: {
-            ...template,
-            ttl: currentTimeSeconds + 60 * 5, // 5 minutes in the future
-          },
+          Item: template,
         })
       )
     );

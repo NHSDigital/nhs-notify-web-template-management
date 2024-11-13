@@ -3,7 +3,7 @@
  */
 import CreateSMSTemplatePage from '@app/create-text-message-template/page';
 
-jest.mock('@forms/CreateSmsTemplate/CreateSmsTemplate');
+jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
 
 describe('CreateSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

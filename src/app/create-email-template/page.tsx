@@ -1,4 +1,4 @@
-import { CreateEmailTemplate } from '@forms/CreateEmailTemplate/CreateEmailTemplate';
+import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { EmailTemplate, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
 
@@ -11,7 +11,7 @@ const CreateEmailTemplatePage = async () => {
     message: '',
   };
 
-  return <CreateEmailTemplate initialState={initialState} />;
+  return <EmailTemplateForm initialState={initialState} />;
 };
 
 export default CreateEmailTemplatePage;

@@ -3,7 +3,7 @@
  */
 import CreateNHSAppTemplatePage from '@app/create-nhs-app-template/page';
 
-jest.mock('@forms/CreateNhsAppTemplate/CreateNhsAppTemplate');
+jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 
 describe('CreateNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

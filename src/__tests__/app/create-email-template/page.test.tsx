@@ -3,7 +3,7 @@
  */
 import CreateEmailTemplatePage from '@app/create-email-template/page';
 
-jest.mock('@forms/CreateEmailTemplate/CreateEmailTemplate');
+jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 
 describe('CreateEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
