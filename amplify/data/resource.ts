@@ -8,6 +8,11 @@ enum TemplateType {
   LETTER = 'LETTER',
 }
 
+enum TemplateStatus {
+  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
+  SUBMITTED = 'SUBMITTED',
+}
+
 const templateTypes = [
   TemplateType.NHS_APP,
   TemplateType.SMS,
@@ -15,9 +20,15 @@ const templateTypes = [
   TemplateType.LETTER,
 ] as const;
 
+const templateStatuses = [
+  TemplateStatus.NOT_YET_SUBMITTED,
+  TemplateStatus.SUBMITTED,
+];
+
 const TemplateStorageModel = {
   id: a.string().required(),
   templateType: a.ref('TemplateType').required(),
+  templateStatus: a.ref('TemplateStatus').required(),
   version: a.integer().required(),
   name: a.string().required(),
   subject: a.string(),
@@ -32,6 +43,7 @@ const authPermission = (allow: any) =>
 
 const schema = a.schema({
   TemplateType: a.enum(templateTypes),
+  TemplateStatus: a.enum(templateStatuses),
   TemplateStorage: a.model(TemplateStorageModel).authorization(authPermission),
   sendEmail: a
     .query()

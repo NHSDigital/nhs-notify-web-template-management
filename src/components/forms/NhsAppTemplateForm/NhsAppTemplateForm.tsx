@@ -8,9 +8,9 @@ import {
   Label,
   Textarea,
   Button,
-  ChevronLeftIcon,
+  BackLink,
 } from 'nhsuk-react-components';
-import Link from 'next/link';
+import { getBasePath } from '@utils/get-base-path';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -51,12 +51,12 @@ export const NhsAppTemplateForm: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
-        <Link href='/choose-a-template-type' className='nhsuk-back-link__link'>
-          <ChevronLeftIcon />
-          Go back
-        </Link>
-      </div>
+      <BackLink
+        href={`${getBasePath()}/choose-a-template-type`}
+        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
+      >
+        Go back
+      </BackLink>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template'>

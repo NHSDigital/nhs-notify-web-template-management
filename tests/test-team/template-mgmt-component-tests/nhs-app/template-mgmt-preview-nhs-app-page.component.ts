@@ -9,7 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType } from '../../helpers/types';
+import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
@@ -19,6 +19,7 @@ const templates = {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   } as Template,
   valid: {
     ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-preview-template'),
@@ -57,10 +58,6 @@ test.describe('Preview NHS App template Page', () => {
     await expect(previewNhsAppTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewNhsAppTemplatePage.pageHeader).toContainText(
-      'NHS App message template'
-    );
-
-    await expect(previewNhsAppTemplatePage.pageHeader).toContainText(
       'test-template-nhs-app'
     );
 
@@ -85,24 +82,6 @@ test.describe('Preview NHS App template Page', () => {
         ...props,
         expectedUrl: `templates/edit-nhs-app-template/${templates.valid.id}`,
       });
-    });
-
-    test('when user clicks "Who your NHS App notification will be sent from" tool tips, then tool tips are displayed', async ({
-      page,
-    }) => {
-      const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
-
-      await previewNhsAppTemplatePage.loadPage(templates.valid.id);
-
-      await previewNhsAppTemplatePage.whoYourNhsAppNotificationWillBeSentFrom.click(
-        {
-          position: { x: 0, y: 0 },
-        }
-      );
-
-      await expect(
-        previewNhsAppTemplatePage.whoYourNhsAppNotificationWillBeSentFrom
-      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create NHS App message template" page is displayed', async ({

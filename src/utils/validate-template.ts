@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import {
   NHSAppTemplate,
   EmailTemplate,
@@ -51,6 +52,18 @@ export const validateChannelTemplate = (
 ): ChannelTemplate | undefined => {
   try {
     return $ChannelTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const zodValidate = <T extends z.AnyZodObject>(
+  schema: T,
+  obj: unknown
+): z.infer<T> | undefined => {
+  try {
+    return schema.parse(obj);
   } catch (error) {
     logger.error(error);
     return undefined;

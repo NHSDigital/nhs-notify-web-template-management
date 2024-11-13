@@ -212,26 +212,13 @@ const homePage = {
 };
 
 const reviewEmailTemplateContent = {
-  sectionHeading: 'Email template',
-  details: {
-    heading: 'Who your email will be sent from',
-    text: [
-      {
-        id: 'email-text-1',
-        text: 'Set your reply-to and from email addresses during onboarding.',
-      },
-      {
-        id: 'email-text-2',
-        text: 'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
-      },
-    ],
-  },
+  sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'email-edit', text: 'Edit' },
-      { id: 'email-submit', text: 'Submit' },
+      { id: 'email-edit', text: 'Edit template' },
+      { id: 'email-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },
@@ -239,19 +226,6 @@ const reviewEmailTemplateContent = {
 
 const reviewLetterTemplateContent = {
   sectionHeading: 'Letter template',
-  details: {
-    heading: 'Who your letter will be sent from',
-    text: [
-      {
-        id: 'letter-text-1',
-        text: `The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.`,
-      },
-      {
-        id: 'letter-text-2',
-        text: 'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
-      },
-    ],
-  },
   form: {
     errorHeading: 'There is a problem',
     pageHeading: 'What would you like to do next with this template?',
@@ -265,33 +239,20 @@ const reviewLetterTemplateContent = {
 };
 
 const reviewNHSAppTemplateContent = {
-  sectionHeading: 'NHS App message template',
-  details: {
-    heading: 'Who your NHS App message will be sent from',
-    text: [
-      {
-        id: 'nhsapp-text-1',
-        text: 'Set your NHS App message sender name during onboarding.',
-      },
-      {
-        id: 'nhsapp-text-2',
-        text: 'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
-      },
-    ],
-  },
+  sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'nhsapp-edit', text: 'Edit' },
-      { id: 'nhsapp-submit', text: 'Submit' },
+      { id: 'nhsapp-edit', text: 'Edit template' },
+      { id: 'nhsapp-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },
 };
 
 const reviewSMSTemplateContent = {
-  sectionHeading: 'Text message template',
+  sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
     text: [
@@ -307,10 +268,10 @@ const reviewSMSTemplateContent = {
   },
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'sms-edit', text: 'Edit' },
-      { id: 'sms-submit', text: 'Submit' },
+      { id: 'sms-edit', text: 'Edit template' },
+      { id: 'sms-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },

@@ -1,7 +1,7 @@
 import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { EmailTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
@@ -26,6 +26,7 @@ const initialState: EmailTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.EMAIL,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   subject: 'subject',
   message: 'message',
@@ -75,7 +76,7 @@ describe('CreateEmailTemplate server actions', () => {
     });
   });
 
-  test('$formId - should save the template and redirect to $route', async () => {
+  test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,
       name: 'template-name',
@@ -93,9 +94,7 @@ describe('CreateEmailTemplate server actions', () => {
     );
 
     expect(saveTemplateMock).toHaveBeenCalledWith({
-      id: initialState.id,
-      version: 1,
-      templateType: initialState.templateType,
+      ...initialState,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -128,8 +127,7 @@ describe('CreateEmailTemplate server actions', () => {
     );
 
     expect(createTemplateMock).toHaveBeenCalledWith({
-      version: 1,
-      templateType: initialState.templateType,
+      ...initialDraftState,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',

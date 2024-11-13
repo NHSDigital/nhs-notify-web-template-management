@@ -5,6 +5,11 @@ export enum TemplateType {
   LETTER = 'LETTER',
 }
 
+export enum TemplateStatus {
+  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
+  SUBMITTED = 'SUBMITTED',
+}
+
 export type Template = {
   __typename: string;
   createdAt: string;
@@ -15,4 +20,5 @@ export type Template = {
   message: string;
   subject?: string;
   templateType: TemplateType;
+  templateStatus: TemplateStatus;
 };

@@ -11,9 +11,9 @@ import {
   Label,
   Textarea,
   TextInput,
-  ChevronLeftIcon,
+  BackLink,
 } from 'nhsuk-react-components';
-import Link from 'next/link';
+import { getBasePath } from '@utils/get-base-path';
 import { useFormState } from 'react-dom';
 import { PageComponentProps, SMSTemplate, Draft } from '@utils/types';
 import { TemplateType } from '@utils/enum';
@@ -44,12 +44,12 @@ export const SmsTemplateForm: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
-        <Link href='/choose-a-template-type' className='nhsuk-back-link__link'>
-          <ChevronLeftIcon />
-          Go back
-        </Link>
-      </div>
+      <BackLink
+        href={`${getBasePath()}/choose-a-template-type`}
+        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
+      >
+        Go back
+      </BackLink>
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={content.errorHeading} state={state} />
         <h1 data-testid='page-heading'>{content.pageHeading}</h1>

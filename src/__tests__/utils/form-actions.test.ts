@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { NHSAppTemplate, Draft } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import {
   createTemplate,
   saveTemplate,
@@ -23,10 +23,8 @@ const mockResponseData = {
   templateId: 'template-id',
   createdAt: 'created-at',
   updatedAt: 'updated-at',
-  NHS_APP: {
-    name: 'template-name',
-    message: 'template-message',
-  },
+  name: 'template-name',
+  message: 'template-message',
 };
 
 jest.mock('@utils/amplify-utils');
@@ -60,6 +58,7 @@ test('createTemplate', async () => {
   const createTemplateInput: Draft<NHSAppTemplate> = {
     version: 1,
     templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'name',
     message: 'message',
   };
@@ -109,6 +108,7 @@ test('saveTemplate', async () => {
     id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
     version: 1,
     templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'template-name',
     message: 'template-message',
   });
@@ -138,6 +138,7 @@ test('saveTemplate - error handling', async () => {
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
       version: 1,
       templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
     })
@@ -161,6 +162,7 @@ test('saveTemplate - error handling - when no data returned', async () => {
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
       version: 1,
       templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
     })

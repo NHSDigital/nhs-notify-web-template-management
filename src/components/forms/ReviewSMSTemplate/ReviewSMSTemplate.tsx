@@ -5,8 +5,8 @@ import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
 import { PageComponentProps, SMSTemplate } from '@utils/types';
 import { useFormState } from 'react-dom';
-import Link from 'next/link';
-import { ChevronLeftIcon } from 'nhsuk-react-components';
+import { BackLink } from 'nhsuk-react-components';
+import { getBasePath } from '@utils/get-base-path';
 import { renderMarkdown, reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
@@ -14,43 +14,36 @@ export function ReviewSMSTemplate({
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const {
     components: {
-      reviewSMSTemplateContent: { sectionHeading, details, form },
+      reviewSMSTemplateContent: { sectionHeading, form },
     },
   } = content;
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
 
-  const templateName = initialState.name;
   const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
-        <Link
-          href={`/edit-text-message-template/${initialState.id}`}
-          className='nhsuk-back-link__link'
-        >
-          <ChevronLeftIcon />
-          Go back
-        </Link>
-      </div>
-      <div className='nhsuk-grid-column-two-thirds'>
-        <ReviewTemplate
-          templateName={templateName}
-          sectionHeading={sectionHeading}
-          details={details}
-          form={{
-            ...form,
-            state,
-            action,
-            formId: 'review-sms-template',
-            radiosId: 'reviewSMSTemplateAction',
-          }}
-          PreviewComponent={<PreviewTemplate.Sms message={html} />}
-        />
-      </div>
+      <BackLink
+        href={`${getBasePath()}/edit-text-message-template/${initialState.id}`}
+        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
+      >
+        Go back
+      </BackLink>
+      <ReviewTemplate
+        template={initialState}
+        sectionHeading={sectionHeading}
+        form={{
+          ...form,
+          state,
+          action,
+          formId: 'review-sms-template',
+          radiosId: 'reviewSMSTemplateAction',
+        }}
+        PreviewComponent={<PreviewTemplate.Sms message={html} />}
+      />
     </div>
   );
 }

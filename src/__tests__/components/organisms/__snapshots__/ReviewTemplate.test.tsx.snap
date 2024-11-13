@@ -3,6 +3,11 @@
 exports[`ReviewTemplate component matches error snapshot 1`] = `
 <DocumentFragment>
   <div
+    class="notify-confirmation-panel"
+  >
+    NHS app message template
+  </div>
+  <div
     aria-labelledby="error-summary-title"
     class="nhsuk-error-summary"
     role="alert"
@@ -29,37 +34,68 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
     class="review__heading"
     data-testid="preview-message__heading"
   >
-    <span
-      class="nhsuk-caption-l"
-      data-testid="preview-message__heading-caption"
-    >
-      NHS app message template
-    </span>
     Example NHS APP template
   </h1>
-  <details
-    class="nhsuk-details"
-    data-testid="preview-message-details"
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-4 nhsuk-body-m"
   >
-    <summary
-      class="nhsuk-details__summary"
-      data-testid="preview-message-details__heading"
-    >
-      <span
-        class="nhsuk-details__summary-text"
-      >
-        Details heading
-      </span>
-    </summary>
     <div
-      class="nhsuk-details__text"
-      data-testid="preview-message-details__text"
+      class="preview"
     >
-      <p>
-        Details text
-      </p>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Template ID
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        />
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Type
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        />
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Status
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <div
+            class="nhsuk-tag"
+          />
+        </div>
+      </div>
     </div>
-  </details>
+  </div>
   Preview
   <form
     action=""
@@ -146,41 +182,77 @@ exports[`ReviewTemplate component matches error snapshot 1`] = `
 
 exports[`ReviewTemplate component matches snapshot 1`] = `
 <DocumentFragment>
+  <div
+    class="notify-confirmation-panel"
+  >
+    NHS app message template
+  </div>
   <h1
     class="review__heading"
     data-testid="preview-message__heading"
   >
-    <span
-      class="nhsuk-caption-l"
-      data-testid="preview-message__heading-caption"
-    >
-      NHS app message template
-    </span>
     Example NHS APP template
   </h1>
-  <details
-    class="nhsuk-details"
-    data-testid="preview-message-details"
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-4 nhsuk-body-m"
   >
-    <summary
-      class="nhsuk-details__summary"
-      data-testid="preview-message-details__heading"
-    >
-      <span
-        class="nhsuk-details__summary-text"
-      >
-        Details heading
-      </span>
-    </summary>
     <div
-      class="nhsuk-details__text"
-      data-testid="preview-message-details__text"
+      class="preview"
     >
-      <p>
-        Details text
-      </p>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Template ID
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        />
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Type
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        />
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Status
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <div
+            class="nhsuk-tag"
+          />
+        </div>
+      </div>
     </div>
-  </details>
+  </div>
   Preview
   <form
     action=""

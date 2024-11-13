@@ -1,7 +1,7 @@
 import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { SMSTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
 
@@ -25,6 +25,7 @@ const initialState: SMSTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.SMS,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   message: 'message',
 };
@@ -71,7 +72,7 @@ describe('CreateSmsTemplate server actions', () => {
     });
   });
 
-  test('$formId - should save the template and redirect to $route', async () => {
+  test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
       ...initialState,
       name: 'template-name',
@@ -98,7 +99,7 @@ describe('CreateSmsTemplate server actions', () => {
     );
   });
 
-  test('$formId - should create the template and redirect to $route', async () => {
+  test('should create the template and redirect', async () => {
     const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
 
     createTemplateMock.mockResolvedValue({

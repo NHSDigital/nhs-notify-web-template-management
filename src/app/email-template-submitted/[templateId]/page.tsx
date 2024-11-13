@@ -4,14 +4,15 @@ import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitte
 import { TemplateSubmittedPageProps } from '@utils/types';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateEmailTemplate } from '@utils/validate-template';
+import { zodValidate } from '@utils/validate-template';
+import { $SubmittedEmailTemplate } from '@utils/zod-validators';
 
 const EmailTemplateSubmittedPage = async ({
   params: { templateId },
 }: TemplateSubmittedPageProps) => {
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateEmailTemplate(template);
+  const validatedTemplate = zodValidate($SubmittedEmailTemplate, template);
 
   if (!validatedTemplate) {
     redirect('/invalid-template', RedirectType.replace);

@@ -7,7 +7,7 @@ import {
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { getMockFormData } from '@testhelpers';
 import { NHSAppTemplate, TemplateFormState } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { markdown } from '../fixtures';
 
 jest.mock('next/navigation');
@@ -43,6 +43,7 @@ describe('reviewNhsAppTemplateAction', () => {
     id: 'template-id',
     version: 1,
     templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Example name',
     message: 'Example message',
     validationError: undefined,
@@ -59,6 +60,7 @@ describe('reviewNhsAppTemplateAction', () => {
       id: 'template-id',
       version: 1,
       templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Example name',
       message: 'Example message',
       validationError: {

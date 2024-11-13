@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreateNhsAppPage } from '../../pages/nhs-app/template-mgmt-create-nhs-app-page';
-import { Template, TemplateType } from '../../helpers/types';
+import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
 import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import {
   assertFooterLinks,
@@ -17,6 +17,7 @@ export const emptyTemplateData: Template = {
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: '',
   message: '',
 };
@@ -28,6 +29,7 @@ export const emptyTemplateForTemplateCreation: Template = {
   createdAt: '2024-09-19T23:36:20.815Z',
   updatedAt: '2024-09-19T23:36:20.815Z',
   templateType: TemplateType.NHS_APP,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: '',
   message: '',
 };

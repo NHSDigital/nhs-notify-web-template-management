@@ -1,13 +1,13 @@
 import { mockDeep } from 'jest-mock-extended';
 import {
   renderMarkdown,
-  reviewSmsTemplateAction,
+  reviewEmailTemplateAction,
   $FormSchema,
-} from '@forms/ReviewSMSTemplate';
+} from '@forms/ReviewEmailTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
-import { SMSTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { EmailTemplate } from '@utils/types';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { getMockFormData } from '@testhelpers';
 import { markdown } from '../fixtures';
 
@@ -15,18 +15,20 @@ jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
 
-const initialState: SMSTemplate = {
+const initialState: EmailTemplate = {
   id: 'template-id',
   version: 1,
-  templateType: TemplateType.SMS,
+  templateType: TemplateType.EMAIL,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'template-name',
+  subject: 'template-subject',
   message: 'template-message',
 };
 
-describe('PreviewTextMessageActions', () => {
+describe('PreviewEmailActions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should enable text message markdown rules', () => {
+  it('should enable email markdown rules', () => {
     const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
     markdownItWrapperMock.enableLineBreak.mockReturnValue(
@@ -35,21 +37,26 @@ describe('PreviewTextMessageActions', () => {
 
     renderMarkdown('message', markdownItWrapperMock);
 
-    expect(markdownItWrapperMock.enableLineBreak).not.toHaveBeenCalled();
-
-    expect(markdownItWrapperMock.enable).not.toHaveBeenCalled();
+    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
+    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
+      'heading',
+      'link',
+      'list',
+      'emphasis',
+      'hr',
+    ]);
   });
 
-  it('should only process text message markdown rules', () => {
+  it('should only process email markdown rules', () => {
     expect(renderMarkdown(markdown)).toMatchSnapshot();
   });
 });
 
-describe('reviewSmsTemplateAction server action', () => {
+describe('reviewEmailTemplateAction server action', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should return state when validation fails', async () => {
-    const response = await reviewSmsTemplateAction(
+    const response = await reviewEmailTemplateAction(
       initialState,
       getMockFormData({})
     );
@@ -59,36 +66,36 @@ describe('reviewSmsTemplateAction server action', () => {
       validationError: {
         formErrors: [],
         fieldErrors: {
-          reviewSMSTemplateAction: ['Select an option'],
+          reviewEmailTemplateAction: ['Select an option'],
         },
       },
     });
   });
 
-  it('should redirect to create-text-message-template page when sms-edit is selected', async () => {
-    await reviewSmsTemplateAction(
+  it('should redirect to create-email-template page when email-edit is selected', async () => {
+    await reviewEmailTemplateAction(
       initialState,
       getMockFormData({
-        reviewSMSTemplateAction: 'sms-edit',
+        reviewEmailTemplateAction: 'email-edit',
       })
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/edit-text-message-template/template-id',
+      '/edit-email-template/template-id',
       'push'
     );
   });
 
-  it('should redirect to submit-text-message-template page when sms-submit is selected', async () => {
-    await reviewSmsTemplateAction(
+  it('should redirect to submit-email-template page when email-submit is selected', async () => {
+    await reviewEmailTemplateAction(
       initialState,
       getMockFormData({
-        reviewSMSTemplateAction: 'sms-submit',
+        reviewEmailTemplateAction: 'email-submit',
       })
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-text-message-template/template-id',
+      '/submit-email-template/template-id',
       'push'
     );
   });
@@ -97,17 +104,17 @@ describe('reviewSmsTemplateAction server action', () => {
     jest.spyOn($FormSchema, 'safeParse').mockReturnValue({
       success: true,
       data: {
-        reviewSMSTemplateAction: 'unknown' as never,
+        reviewEmailTemplateAction: 'unknown' as never,
       },
     });
 
     await expect(
-      reviewSmsTemplateAction(
+      reviewEmailTemplateAction(
         initialState,
         getMockFormData({
-          reviewSMSTemplateAction: 'unknown',
+          reviewEmailTemplateAction: 'unknown',
         })
       )
-    ).rejects.toThrow('Unknown review sms template action.');
+    ).rejects.toThrow('Unknown review email template action.');
   });
 });

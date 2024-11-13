@@ -1,7 +1,7 @@
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
 import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
 import { SMSTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 
@@ -21,6 +21,7 @@ describe('PreviewSMSTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
     };
@@ -82,6 +83,7 @@ describe('PreviewSMSTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         version: 1,
         ...value,
       });

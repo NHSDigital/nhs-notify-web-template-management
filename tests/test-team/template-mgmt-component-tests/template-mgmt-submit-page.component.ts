@@ -9,7 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-import { Template, TemplateType } from '../helpers/types';
+import { Template, TemplateType, TemplateStatus } from '../helpers/types';
 
 const emailFields = {
   name: 'test-template-name',
@@ -36,6 +36,7 @@ const templates = {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     } as Template,
     submit: {
       ...TemplateFactory.createEmailTemplate('submit-email-submit-template'),
@@ -60,6 +61,7 @@ const templates = {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     } as Template,
     submit: {
       ...TemplateFactory.createSmsTemplate('submit-sms-submit-template'),
@@ -82,6 +84,7 @@ const templates = {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     } as Template,
     submit: {
       ...TemplateFactory.createNhsAppTemplate('submit-nhs-app-submit-template'),

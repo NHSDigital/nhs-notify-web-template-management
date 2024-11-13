@@ -9,11 +9,12 @@ import {
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/template-factory';
 import { TemplateMgmtTemplateSubmittedPage } from '../pages/template-mgmt-template-submitted-page';
-import { TemplateType } from '../helpers/types';
+import { TemplateType, TemplateStatus } from '../helpers/types';
 
 const templates = {
   email: TemplateFactory.create({
     templateType: TemplateType.EMAIL,
+    templateStatus: TemplateStatus.SUBMITTED,
     id: 'valid-email-template',
     name: 'test-template-email',
     subject: 'test-template-subject',
@@ -21,12 +22,14 @@ const templates = {
   }),
   'text-message': TemplateFactory.create({
     templateType: TemplateType.SMS,
+    templateStatus: TemplateStatus.SUBMITTED,
     id: 'valid-sms-template',
     name: 'test-template-sms',
     message: 'test example content',
   }),
   'nhs-app': TemplateFactory.create({
     templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.SUBMITTED,
     id: 'valid-nhs-app-template',
     name: 'test-template-nhs-app',
     message: 'test example content',
