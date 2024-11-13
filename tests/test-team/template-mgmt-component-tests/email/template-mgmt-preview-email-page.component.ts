@@ -86,7 +86,7 @@ test.describe('Preview Email message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-email-template/${templates.valid.id}`,
+        expectedUrl: `templates/edit-email-template/${templates.valid.id}`,
       });
     });
 
@@ -119,7 +119,7 @@ test.describe('Preview Email message template Page', () => {
       await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-email-template/${templates.valid.id}`
+        `${baseURL}/templates/edit-email-template/${templates.valid.id}`
       );
     });
 

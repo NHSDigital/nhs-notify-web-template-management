@@ -30,7 +30,7 @@ export function ReviewEmailTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
         <Link
-          href={`/create-email-template/${initialState.id}`}
+          href={`/edit-email-template/${initialState.id}`}
           className='nhsuk-back-link__link'
         >
           <ChevronLeftIcon />

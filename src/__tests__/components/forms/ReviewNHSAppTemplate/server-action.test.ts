@@ -91,7 +91,7 @@ describe('reviewNhsAppTemplateAction', () => {
     reviewNhsAppTemplateAction(currentState, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/create-nhs-app-template/template-id',
+      '/edit-nhs-app-template/template-id',
       'push'
     );
   });

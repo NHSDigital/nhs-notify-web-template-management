@@ -83,7 +83,7 @@ test.describe('Preview SMS message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-text-message-template/${templates.valid.id}`,
+        expectedUrl: `templates/edit-text-message-template/${templates.valid.id}`,
       });
     });
 
@@ -116,7 +116,7 @@ test.describe('Preview SMS message template Page', () => {
       await previewSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-text-message-template/${templates.valid.id}`
+        `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
       );
     });
 

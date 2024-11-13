@@ -29,7 +29,7 @@ export function ReviewSMSTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
         <Link
-          href={`/create-text-message-template/${initialState.id}`}
+          href={`/edit-text-message-template/${initialState.id}`}
           className='nhsuk-back-link__link'
         >
           <ChevronLeftIcon />

@@ -30,7 +30,7 @@ export function ReviewNHSAppTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/create-nhs-app-template/${initialState.id}`}
+        href={`${getBasePath()}/edit-nhs-app-template/${initialState.id}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         Go back

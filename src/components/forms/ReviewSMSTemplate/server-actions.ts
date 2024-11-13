@@ -33,7 +33,7 @@ export async function reviewSmsTemplateAction(
 
   if (data.reviewSMSTemplateAction === 'sms-edit') {
     return redirect(
-      `/create-text-message-template/${formState.id}`,
+      `/edit-text-message-template/${formState.id}`,
       RedirectType.push
     );
   }

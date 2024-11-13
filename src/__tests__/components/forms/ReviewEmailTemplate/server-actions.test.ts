@@ -80,7 +80,7 @@ describe('reviewEmailTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/create-email-template/template-id',
+      '/edit-email-template/template-id',
       'push'
     );
   });

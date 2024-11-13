@@ -83,7 +83,7 @@ test.describe('Preview NHS App template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-nhs-app-template/${templates.valid.id}`,
+        expectedUrl: `templates/edit-nhs-app-template/${templates.valid.id}`,
       });
     });
 
@@ -118,7 +118,7 @@ test.describe('Preview NHS App template Page', () => {
       await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-nhs-app-template/${templates.valid.id}`
+        `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
       );
     });
 

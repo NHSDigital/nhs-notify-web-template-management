@@ -74,7 +74,7 @@ describe('reviewSmsTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/create-text-message-template/template-id',
+      '/edit-text-message-template/template-id',
       'push'
     );
   });

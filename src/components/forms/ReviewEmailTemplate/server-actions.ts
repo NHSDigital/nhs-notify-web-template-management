@@ -36,10 +36,7 @@ export async function reviewEmailTemplateAction(
   }
 
   if (data.reviewEmailTemplateAction === 'email-edit') {
-    return redirect(
-      `/create-email-template/${formState.id}`,
-      RedirectType.push
-    );
+    return redirect(`/edit-email-template/${formState.id}`, RedirectType.push);
   }
 
   if (data.reviewEmailTemplateAction === 'email-submit') {
