@@ -80,7 +80,9 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             {pageHeading}
           </h1>
           <div className={templateNameError && 'nhsuk-form-group--error'}>
-            <Label htmlFor='nhsAppTemplateName' size='s'>{templateNameLabelText}</Label>
+            <Label htmlFor='nhsAppTemplateName' size='s'>
+              {templateNameLabelText}
+            </Label>
             <HintText>{templateNameHintText}</HintText>
             <TemplateNameGuidance template={TemplateType.NHS_APP} />
             <TextInput

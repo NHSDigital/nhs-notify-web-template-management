@@ -48,8 +48,7 @@ export class TemplateMgmtBasePage {
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
 
-    this.submitButton = page
-      .locator('button.nhsuk-button[type="submit"]');
+    this.submitButton = page.locator('button.nhsuk-button[type="submit"]');
 
     this.skipLink = page
       .locator('[id="skip-link"]')
