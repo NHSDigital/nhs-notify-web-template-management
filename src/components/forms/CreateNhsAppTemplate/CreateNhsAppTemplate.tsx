@@ -1,7 +1,5 @@
 'use client';
 
-// we need this to be a client component because nhsuk-react-components uses client-only react features
-
 import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import {
@@ -103,7 +101,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
             error={templateMessageError}
             errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
           />
-          <p style={useJsEnabledStyle()}>
+          <p style={useJsEnabledStyle()} id='character-count'>
             {nhsAppTemplateMessage.length}
             {characterCountText}
           </p>
@@ -114,7 +112,7 @@ export const CreateNhsAppTemplate: FC<PageComponentProps> = ({
       </div>
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
-        <MessageFormatting template='APP' />
+        <MessageFormatting template={TemplateType.NHS_APP} />
       </div>
     </div>
   );

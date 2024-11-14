@@ -1,15 +1,9 @@
 import SubmitEmailTemplatePage from '@app/submit-email-template/[sessionId]/page';
+import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 import { TemplateType } from '@utils/types';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      SessionStorage: {},
-    },
-  }),
-}));
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitTemplate');
@@ -20,8 +14,8 @@ const redirectMock = jest.mocked(redirect);
 describe('SubmitEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('SubmitEmailTemplatePage', async () => {
-    getSessionMock.mockResolvedValue({
+  test('should load page', async () => {
+    const state = {
       id: 'session-id',
       templateType: TemplateType.EMAIL,
       emailTemplateName: 'template-name',
@@ -29,7 +23,9 @@ describe('SubmitEmailTemplatePage', () => {
       emailTemplateMessage: 'template-message',
       nhsAppTemplateMessage: '',
       nhsAppTemplateName: '',
-    });
+    };
+
+    getSessionMock.mockResolvedValue(state);
 
     const page = await SubmitEmailTemplatePage({
       params: {
@@ -37,10 +33,17 @@ describe('SubmitEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toMatchSnapshot();
+    expect(page).toEqual(
+      <SubmitTemplate
+        templateName={state.emailTemplateName}
+        sessionId={state.id}
+        goBackPath='preview-email-template'
+        submitPath='email-template-submitted'
+      />
+    );
   });
 
-  test('SubmitEmailTemplatePage - should handle invalid session', async () => {
+  test('should handle invalid session', async () => {
     getSessionMock.mockResolvedValue(undefined);
 
     await SubmitEmailTemplatePage({

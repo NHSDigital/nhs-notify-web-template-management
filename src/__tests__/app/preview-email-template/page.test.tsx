@@ -1,17 +1,9 @@
 import PreviewEmailTemplatePage from '@app/preview-email-template/[sessionId]/page';
+import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
 import { TemplateType } from '@utils/types';
 import { redirect } from 'next/navigation';
 import { getSession } from '@utils/form-actions';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      SessionStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/ReviewEmailTemplate');
@@ -21,6 +13,28 @@ const getSessionMock = jest.mocked(getSession);
 
 describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
+
+  it('should load page', async () => {
+    const state = {
+      id: 'session-id',
+      templateType: TemplateType.EMAIL,
+      emailTemplateName: 'template-name',
+      emailTemplateSubjectLine: 'template-subject-line',
+      emailTemplateMessage: 'template-message',
+      nhsAppTemplateMessage: '',
+      nhsAppTemplateName: '',
+    };
+
+    getSessionMock.mockResolvedValueOnce(state);
+
+    const page = await PreviewEmailTemplatePage({
+      params: {
+        sessionId: 'session-id',
+      },
+    });
+
+    expect(page).toEqual(<ReviewEmailTemplate initialState={state} />);
+  });
 
   it('should redirect to invalid-session when no session is found', async () => {
     await PreviewEmailTemplatePage({
@@ -94,24 +108,4 @@ describe('PreviewEmailTemplatePage', () => {
       expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
     }
   );
-
-  it('should render ReviewEmailTemplate with session data', async () => {
-    getSessionMock.mockResolvedValueOnce({
-      id: 'session-id',
-      templateType: TemplateType.EMAIL,
-      emailTemplateName: 'template-name',
-      emailTemplateSubjectLine: 'template-subject-line',
-      emailTemplateMessage: 'template-message',
-      nhsAppTemplateMessage: '',
-      nhsAppTemplateName: '',
-    });
-
-    const page = await PreviewEmailTemplatePage({
-      params: {
-        sessionId: 'session-id',
-      },
-    });
-
-    expect(page).toMatchSnapshot();
-  });
 });

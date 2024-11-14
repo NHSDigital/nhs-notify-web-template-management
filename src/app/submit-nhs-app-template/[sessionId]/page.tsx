@@ -16,7 +16,7 @@ const SubmitNhsAppTemplatePage = async ({
   const session = await getSession(sessionId);
 
   if (!session || !isValid(session)) {
-    redirect('/invalid-session', RedirectType.replace);
+    return redirect('/invalid-session', RedirectType.replace);
   }
 
   return (

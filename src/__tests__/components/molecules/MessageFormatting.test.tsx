@@ -1,10 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { MessageFormattingType } from '@molecules/MessageFormatting/message-formatting.types';
-import { TemplateFormatText } from '@utils/types';
+import { TemplateType } from '@utils/types';
 
-const componentProps: MessageFormattingType = {
-  template: TemplateFormatText.SMS,
+const componentProps = {
+  template: TemplateType.SMS,
 };
 
 describe('MessageFormatting component', () => {
@@ -18,9 +17,9 @@ describe('MessageFormatting component', () => {
   });
 
   it('renders component correctly with APP related formatting', () => {
-    const appFormattingProps: MessageFormattingType = {
+    const appFormattingProps = {
       ...componentProps,
-      template: TemplateFormatText.APP,
+      template: TemplateType.NHS_APP,
     };
     render(<MessageFormatting {...appFormattingProps} />);
 
@@ -36,9 +35,9 @@ describe('MessageFormatting component', () => {
   });
 
   it('renders component correctly with EMAIL related formatting', () => {
-    const emailFormattingProps: MessageFormattingType = {
+    const emailFormattingProps = {
       ...componentProps,
-      template: TemplateFormatText.EMAIL,
+      template: TemplateType.EMAIL,
     };
     render(<MessageFormatting {...emailFormattingProps} />);
 
@@ -56,9 +55,9 @@ describe('MessageFormatting component', () => {
   });
 
   it('renders component correctly with LETTER related formatting', () => {
-    const letterFormattingProps: MessageFormattingType = {
+    const letterFormattingProps = {
       ...componentProps,
-      template: TemplateFormatText.LETTER,
+      template: TemplateType.LETTER,
     };
     render(<MessageFormatting {...letterFormattingProps} />);
 
