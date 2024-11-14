@@ -2,7 +2,7 @@
 
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { Container, Row, Col } from 'nhsuk-react-components';
+import { Container, Row, Col, Tag } from 'nhsuk-react-components';
 import { TemplateType, TemplateStatus } from '@utils/enum';
 import concatClassNames from '@utils/concat-class-names';
 import styles from './ReviewTemplate.module.scss';
@@ -63,9 +63,9 @@ export function ReviewTemplate({
               <div className={styles.preview__col_heading}>Status</div>
             </Col>
             <Col width='two-thirds' className={styles.col}>
-              <div className='nhsuk-tag'>
+              <Tag>
                 {templateStatustoDisplayMappings(props.template.templateStatus)}
-              </div>
+              </Tag>
             </Col>
           </Row>
         </div>
