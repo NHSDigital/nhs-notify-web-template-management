@@ -9,6 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateMgmtPreviewSmsPage } from '../../pages/sms/template-mgmt-preview-sms-page';
 
 const sessions = {
   empty: SessionFactory.createSmsSession('empty-sms-session'),
@@ -229,6 +230,11 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.messageTextArea.fill(templateMessage);
 
       await createSmsTemplatePage.clickSubmitButton();
+
+      await page
+        .locator('.nhsuk-back-link__link')
+        .and(page.getByText('Go back'))
+        .click();
 
       await expect(createSmsTemplatePage.nameInput).toHaveValue(templateName);
 

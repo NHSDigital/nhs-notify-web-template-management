@@ -223,6 +223,11 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.clickSubmitButton();
 
+      await page
+        .locator('.nhsuk-back-link__link')
+        .and(page.getByText('Go back'))
+        .click();
+
       await expect(createEmailTemplatePage.nameInput).toHaveValue(templateName);
 
       await expect(createEmailTemplatePage.subjectLineInput).toHaveValue(
