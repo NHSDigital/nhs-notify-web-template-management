@@ -28,7 +28,9 @@ export function ReviewTemplate({
 }: Readonly<ReviewTemplateProps>) {
   return (
     <>
-      <div className='notify-confirmation-panel nhsuk-heading-l'>{props.sectionHeading}</div>
+      <div className='notify-confirmation-panel nhsuk-heading-l'>
+        {props.sectionHeading}
+      </div>
       <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
       <h1
         data-testid='preview-message__heading'
