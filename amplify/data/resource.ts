@@ -23,7 +23,7 @@ const templateTypes = [
 const templateStatuses = [
   TemplateStatus.NOT_YET_SUBMITTED,
   TemplateStatus.SUBMITTED,
-];
+] as const;
 
 const TemplateStorageModel = {
   id: a.string().required(),
