@@ -70,11 +70,11 @@ exports[`Preview letter form renders matches snapshot 1`] = `
         <div
           class="nhsuk-grid-column-two-thirds col"
         >
-          <div
+          <strong
             class="nhsuk-tag"
           >
             Not yet submitted
-          </div>
+          </strong>
         </div>
       </div>
     </div>

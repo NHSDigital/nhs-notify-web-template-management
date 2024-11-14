@@ -118,7 +118,7 @@ exports[`Preview sms form renders matches error snapshot 1`] = `
           <div
             class="nhsuk-grid-column-two-thirds col"
           >
-            <div
+            <strong
               class="nhsuk-tag"
             />
           </div>
@@ -346,7 +346,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
           <div
             class="nhsuk-grid-column-two-thirds col"
           >
-            <div
+            <strong
               class="nhsuk-tag"
             />
           </div>
