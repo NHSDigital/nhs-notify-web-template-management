@@ -9,7 +9,6 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateMgmtPreviewSmsPage } from '../../pages/sms/template-mgmt-preview-sms-page';
 
 const sessions = {
   empty: SessionFactory.createSmsSession('empty-sms-session'),
