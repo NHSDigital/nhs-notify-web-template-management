@@ -29,6 +29,8 @@ export async function processFormActions(
     };
   }
 
+  delete formState.validationError;
+
   const { smsTemplateName, smsTemplateMessage } = parsedForm.data;
 
   const updatedTemplate = {

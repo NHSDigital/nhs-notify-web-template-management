@@ -11,6 +11,7 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='NHS app message template'
         template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
           name: 'Example NHS APP template',
         })}
         form={{
@@ -46,6 +47,7 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='NHS app message template'
         template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
           name: 'Example NHS APP template',
         })}
         form={{
@@ -73,6 +75,7 @@ describe('ReviewTemplate component', () => {
       <ReviewTemplate
         sectionHeading='Email template'
         template={mockDeep<EmailTemplate>({
+          id: 'template-id',
           name: 'Example template',
         })}
         form={{

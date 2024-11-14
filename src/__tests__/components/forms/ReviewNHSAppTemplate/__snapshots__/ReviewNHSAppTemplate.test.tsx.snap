@@ -10,7 +10,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
     >
       <a
         class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
-        href="/templates/edit-nhs-app-template/undefined"
+        href="/templates/edit-nhs-app-template/template-id"
       >
         <svg
           aria-hidden="true"
@@ -28,7 +28,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
       </a>
     </div>
     <div
-      class="notify-confirmation-panel"
+      class="notify-confirmation-panel nhsuk-heading-l"
     >
       Template saved
     </div>
@@ -83,7 +83,9 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
           </div>
           <div
             class="nhsuk-grid-column-two-thirds col"
-          />
+          >
+            template-id
+          </div>
         </div>
         <div
           class="nhsuk-grid-row preview__row"
@@ -261,7 +263,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
     >
       <a
         class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
-        href="/templates/edit-nhs-app-template/undefined"
+        href="/templates/edit-nhs-app-template/template-id"
       >
         <svg
           aria-hidden="true"
@@ -279,7 +281,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
       </a>
     </div>
     <div
-      class="notify-confirmation-panel"
+      class="notify-confirmation-panel nhsuk-heading-l"
     >
       Template saved
     </div>
@@ -309,7 +311,9 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
           </div>
           <div
             class="nhsuk-grid-column-two-thirds col"
-          />
+          >
+            template-id
+          </div>
         </div>
         <div
           class="nhsuk-grid-row preview__row"

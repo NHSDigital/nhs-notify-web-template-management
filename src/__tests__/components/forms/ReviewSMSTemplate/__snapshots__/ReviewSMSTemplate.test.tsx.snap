@@ -28,7 +28,7 @@ exports[`Preview sms form renders matches error snapshot 1`] = `
       </a>
     </div>
     <div
-      class="notify-confirmation-panel"
+      class="notify-confirmation-panel nhsuk-heading-l"
     >
       Template saved
     </div>
@@ -281,7 +281,7 @@ exports[`Preview sms form renders matches snapshot 1`] = `
       </a>
     </div>
     <div
-      class="notify-confirmation-panel"
+      class="notify-confirmation-panel nhsuk-heading-l"
     >
       Template saved
     </div>

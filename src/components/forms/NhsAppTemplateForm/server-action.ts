@@ -28,6 +28,8 @@ export async function processFormActions(
     };
   }
 
+  delete formState.validationError;
+
   const { nhsAppTemplateName, nhsAppTemplateMessage } = parsedForm.data;
 
   const updatedTemplate = {
