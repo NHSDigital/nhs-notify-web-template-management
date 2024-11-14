@@ -12,6 +12,7 @@ locust_plugins = "^4.5.3"
 playwright = "^1.48"
 pytest-playwright = "^0.5"
 nest_asyncio = "^1.6.0"
+polars = "^1.13"
 
 [build-system]
 requires = ["poetry-core"]
