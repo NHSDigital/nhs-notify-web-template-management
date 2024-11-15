@@ -1,32 +1,44 @@
 import polars as pl
 
+# Configure Polars to display more rows
+pl.Config.set_tbl_rows(100)  # Set this to the maximum number of rows you want to display
+pl.Config.set_tbl_cols(100)  # Set this to the maximum number of columns you want to display
+
 # Define pass/fail thresholds
-MAX_AVERAGE_RESPONSE_TIME_MS = 500  # e.g., 500 ms
-MAX_FAILURES = 10  # Max allowed failures
-MAX_95 = 1000  # Max value for 95%ile for tasks
+MIN_TOTAL_TPS = 1          # Minimum total TPS across all events
+MAX_95_PERCENTILE_MS = 5000  # Max value for 95th percentile response time for any event (in ms)
+MAX_TOTAL_FAILURES = 0       # Max allowed failures across all events
 
-# Load CSV data with Polars
-results_df = pl.read_csv("../results_stats.csv")
+# Load CSV data with Polars, filtering out rows to only include events
+results_df = pl.read_csv("results_stats.csv")
+event_results_df = results_df.filter(pl.col("Type") == "event")
 
-# Filter to select TASKS only
-task_results_df = results_df.filter(pl.col("Type")=="TASK")
-print(task_results_df)
+# Select only the specified columns
+selected_columns = [
+    "Type", "Name", "Request Count", "Requests/s", "Failure Count",
+    "Average Response Time", "Min Response Time", "Max Response Time",
+    "95%", "99%"
+]
+event_results_df = event_results_df.select(selected_columns)
+all_results_df = results_df.select(selected_columns)
 
-# Calculate average response time and total failures
-response_95_time = task_results_df.select(pl.col("95%").max()).item()
-avg_response_time = results_df.select(pl.col("Average Response Time").mean()).item()
-total_failures = results_df.select(pl.col("Failures/s").sum()).item()
+print(all_results_df)
+
+# Calculate the metrics for pass/fail criteria
+total_tps = event_results_df.select(pl.col("Requests/s").sum()).item()
+max_95_percentile = event_results_df.select(pl.col("95%").max()).item()
+total_failures = event_results_df.select(pl.col("Failure Count").sum()).item()
 
 # Check if test meets pass/fail criteria
 if (
-    avg_response_time > MAX_AVERAGE_RESPONSE_TIME_MS
-    or total_failures > MAX_FAILURES
-    or response_95_time > MAX_95
+    total_tps < MIN_TOTAL_TPS
+    or max_95_percentile > MAX_95_PERCENTILE_MS
+    or total_failures > MAX_TOTAL_FAILURES
 ):
     print("Test Failed: Thresholds exceeded")
-    print("Average response time = ", avg_response_time)
-    print("Total failures = ", total_failures)
-    print("Max 95th percentile = ", response_95_time)
+    print(f"Total TPS = {total_tps}")
+    print(f"Max 95th percentile response time = {max_95_percentile} ms")
+    print(f"Total failures = {total_failures}")
     exit(1)  # Non-zero exit code for CI/CD to mark test as failed
 else:
     print("Test Passed: Within thresholds")
