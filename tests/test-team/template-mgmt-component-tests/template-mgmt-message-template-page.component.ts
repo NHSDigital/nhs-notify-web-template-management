@@ -16,7 +16,7 @@ const templates = {
   email: TemplateFactory.create({
     type: TemplateType.EMAIL,
     id: 'valid-email-template',
-    name: 'test-template-email',
+    name: 'test-template-cat-email',
     fields: {
       content: 'test example content',
     },
@@ -24,7 +24,7 @@ const templates = {
   'text-message': TemplateFactory.create({
     type: TemplateType.SMS,
     id: 'valid-sms-template',
-    name: 'test-template-sms',
+    name: 'test-template-mat-sms',
     fields: {
       content: 'test example content',
     },
@@ -32,14 +32,14 @@ const templates = {
   'nhs-app': TemplateFactory.create({
     type: TemplateType.NHS_APP,
     id: 'valid-nhs-app-template',
-    name: 'test-template-nhs-app',
+    name: 'test-template-hat-nhs-app',
     fields: {
       content: 'test example content',
     },
   }),
 };
 
-test.describe.only('Message templates page', () => {
+test.describe('Message templates page', () => {
   const templateStorageHelper = new TemplateStorageHelper(
     Object.values(templates)
   );
@@ -96,34 +96,28 @@ test.describe.only('Message templates page', () => {
     baseURL,
   }) => {
     const messageTemplatePage = new MessageTemplatePage(page);
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
     await messageTemplatePage.loadPage();
+
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    await messageTemplatePage.clickContinueButton();
-    await chooseTemplatePage.checkRadioButton('NHS App message');
-    await messageTemplatePage.clickContinueButton();
-    const templateName = 'NHS Testing 123';
-    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    const templateMessage = 'Test Message box';
-    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
-    await messageTemplatePage.clickContinueButton();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'NHS Testing 123'
+
+    const email = await page.locator('tr:has-text("test-template-cat-email")');
+    await expect(await email.getByText('Submitted')).toBeVisible();
+
+    const sms = await page.locator('tr:has-text("test-template-mat-sms")');
+    await expect(await sms.getByText('Submitted')).toBeVisible();
+
+    const nhsapp = await page.locator(
+      'tr:has-text("test-template-hat-nhs-app")'
     );
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'NHS Testing 123'
-    );
-    await chooseTemplatePage.checkRadioButton('Submit');
-    await messageTemplatePage.clickContinueButton();
-    await page.waitForTimeout(1000);
-    const submittedPageHeader = await page.waitForSelector('h1');
-    const headerText = await submittedPageHeader.textContent();
-    await expect(headerText).toContain("Submit 'NHS Testing 123'");
-    await messageTemplatePage.clickContinueButton();
-    await page.waitForTimeout(3000);
-    const submittedPage = await page.waitForSelector('h1');
-    const submittedText = await submittedPage.textContent();
-    await expect(submittedText).toContain('Template submitted');
-    await messageTemplatePage.loadPage();
+    await expect(await nhsapp.getByText('Submitted')).toBeVisible();
   });
+
+  //test placeholders:
+  test('Template item has correct status if it has been has been Unsubmitted', async ({}) => {});
+
+  test('Template name link navigation - navigates to preview page', async ({}) => {});
+
+  test('Copy link navigation - Navigates user to duplicate template type page ', async ({}) => {});
+
+  test('Delete link navigation - Navigates user to delete template page ', async ({}) => {});
 });
