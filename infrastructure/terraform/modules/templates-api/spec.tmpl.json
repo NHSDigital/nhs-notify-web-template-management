@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "NHS Notify - Web UI - POC3",
-    "description": "Backend for NHS Notify Web UI",
+    "title": "NHS Notify - Web UI - Template Management API",
+    "description": "Backend for NHS Notify Template Management Web UI",
     "version": "v1"
   },
   "paths": {
