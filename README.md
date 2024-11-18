@@ -64,7 +64,7 @@
 
 5. Open your browser and go to `localhost:3000` to view the app.
 
-### Running templates and webauth projects locally
+### Running Team and IAM Web Auth projects locally
 
 Read more in the [README.md](./local/README.md).
 

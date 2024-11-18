@@ -2,7 +2,7 @@
 
 This has only been tried on a mac.
 
-If this local setup proves useful for others it would be great to move this `/local` directory to it's own github repo.
+If this local setup proves useful for others it would be great to move this `/local` directory to it's own GitHub repository.
 
 ## Description
 
@@ -19,7 +19,7 @@ The `docker-compose` file is hooked up to local volume of the projects so any ch
 
 At first the application may take a few seconds to warm up. After the app has warmed up it's usually just as fast as running the application natively.
 
-If you install a new `npm` package in either webapp then you'll need to rebuild the docker images.
+If you install a new `npm` package in either web application then you'll need to rebuild the docker images.
 
 ## Requirements
 
