@@ -36,5 +36,6 @@ done
 
 
 cat ~/.pm2/logs/npx-out.log
+
 echo "Amplify outputs file not found after ${wait_seconds} seconds. Failing job"
 exit 1
