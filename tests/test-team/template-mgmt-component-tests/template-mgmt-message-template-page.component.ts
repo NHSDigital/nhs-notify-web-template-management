@@ -112,7 +112,7 @@ test.describe('Message templates page', () => {
     await expect(await nhsapp.getByText('Submitted')).toBeVisible();
   });
 
-  //test placeholders:
+  // test placeholders:
   test('Template item has correct status if it has been has been Unsubmitted', async ({}) => {});
 
   test('Template name link navigation - navigates to preview page', async ({}) => {});
