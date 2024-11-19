@@ -1,6 +1,7 @@
+import { mockDeep } from 'jest-mock-extended';
 import { render, screen } from '@testing-library/react';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
-import { FormState } from '@utils/types';
+import { EmailTemplate, FormState, NHSAppTemplate } from '@utils/types';
 
 describe('ReviewTemplate component', () => {
   beforeEach(jest.resetAllMocks);
@@ -9,11 +10,10 @@ describe('ReviewTemplate component', () => {
     const container = render(
       <ReviewTemplate
         sectionHeading='NHS app message template'
-        templateName='Example NHS APP template'
-        details={{
-          heading: 'Details heading',
-          text: [{ id: 'example-1', text: 'Details text' }],
-        }}
+        template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
+          name: 'Example NHS APP template',
+        })}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
@@ -46,11 +46,10 @@ describe('ReviewTemplate component', () => {
     const container = render(
       <ReviewTemplate
         sectionHeading='NHS app message template'
-        templateName='Example NHS APP template'
-        details={{
-          heading: 'Details heading',
-          text: [{ id: 'example-1', text: 'Details text' }],
-        }}
+        template={mockDeep<NHSAppTemplate>({
+          id: 'template-id',
+          name: 'Example NHS APP template',
+        })}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
@@ -75,11 +74,10 @@ describe('ReviewTemplate component', () => {
     render(
       <ReviewTemplate
         sectionHeading='Email template'
-        templateName='Example template'
-        details={{
-          heading: 'Details heading',
-          text: [{ id: 'example-1', text: 'Details text' }],
-        }}
+        template={mockDeep<EmailTemplate>({
+          id: 'template-id',
+          name: 'Example template',
+        })}
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
@@ -97,21 +95,9 @@ describe('ReviewTemplate component', () => {
       />
     );
 
-    expect(
-      screen.getByTestId('preview-message__heading-caption')
-    ).toHaveTextContent('Email template');
-
     expect(screen.getByTestId('preview-message__heading')).toHaveTextContent(
       'Example template'
     );
-
-    expect(
-      screen.getByTestId('preview-message-details__heading')
-    ).toHaveTextContent('Details heading');
-
-    expect(
-      screen.getByTestId('preview-message-details__text')
-    ).toHaveTextContent('Details text');
 
     expect(
       screen.getByTestId('preview-example-form__legend')

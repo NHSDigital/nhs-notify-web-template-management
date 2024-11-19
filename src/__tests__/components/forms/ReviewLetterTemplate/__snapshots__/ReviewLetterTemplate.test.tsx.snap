@@ -2,44 +2,83 @@
 
 exports[`Preview letter form renders matches snapshot 1`] = `
 <DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    Letter template
+  </div>
   <h1
     class="review__heading"
     data-testid="preview-message__heading"
   >
-    <span
-      class="nhsuk-caption-l"
-      data-testid="preview-message__heading-caption"
-    >
-      Letter template
-    </span>
-    test-template-letter
+    name
   </h1>
-  <details
-    class="nhsuk-details"
-    data-testid="preview-message-details"
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-4 nhsuk-body-m"
   >
-    <summary
-      class="nhsuk-details__summary"
-      data-testid="preview-message-details__heading"
-    >
-      <span
-        class="nhsuk-details__summary-text"
-      >
-        Who your letter will be sent from
-      </span>
-    </summary>
     <div
-      class="nhsuk-details__text"
-      data-testid="preview-message-details__text"
+      class="preview"
     >
-      <p>
-        The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.
-      </p>
-      <p>
-        If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.
-      </p>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Template ID
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          id
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Type
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          Letter
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Status
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <strong
+            class="nhsuk-tag"
+          >
+            Not yet submitted
+          </strong>
+        </div>
+      </div>
     </div>
-  </details>
+  </div>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
