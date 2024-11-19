@@ -1,6 +1,7 @@
+import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { TemplateFormState } from '@utils/types';
+import { NHSAppTemplate, TemplateFormState } from '@utils/types';
 
 export function renderMarkdown(
   value: string,
@@ -13,7 +14,7 @@ export function renderMarkdown(
 
 const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
   {
-    'nhsapp-edit': 'create-nhs-app-template',
+    'nhsapp-edit': 'edit-nhs-app-template',
     'nhsapp-submit': 'submit-nhs-app-template',
   };
 
@@ -24,9 +25,9 @@ const schema = z.object({
 });
 
 export function reviewNhsAppTemplateAction(
-  formState: TemplateFormState,
+  formState: TemplateFormState<NHSAppTemplate>,
   formData: FormData
-): TemplateFormState {
+): TemplateFormState<NHSAppTemplate> {
   const form = Object.fromEntries(formData.entries());
   const validationResponse = schema.safeParse(form);
 
@@ -40,8 +41,5 @@ export function reviewNhsAppTemplateAction(
   const page =
     radioSelectionToPageMap[validationResponse.data.reviewNHSAppTemplateAction];
 
-  return {
-    ...formState,
-    redirect: `/${page}/${formState.id}`,
-  };
+  return redirect(`/${page}/${formState.id}`, RedirectType.push);
 }

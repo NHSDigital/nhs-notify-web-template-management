@@ -1,30 +1,27 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sendEmail } from '../functions/send-email/resource';
 
-const templateTypes = ['NHS_APP', 'SMS', 'EMAIL', 'LETTER'] as const;
+enum TemplateType {
+  NHS_APP = 'NHS_APP',
+  SMS = 'SMS',
+  EMAIL = 'EMAIL',
+  LETTER = 'LETTER',
+}
 
-const SessionStorageModel = {
-  id: a.string().required(),
-  templateType: a.enum([...templateTypes, 'UNKNOWN']),
-  nhsAppTemplateName: a.string().required(),
-  nhsAppTemplateMessage: a.string().required(),
-  emailTemplateName: a.string(),
-  emailTemplateSubjectLine: a.string(),
-  emailTemplateMessage: a.string(),
-  smsTemplateName: a.string(),
-  smsTemplateMessage: a.string(),
-  ttl: a.integer().required(),
-};
+const templateTypes = [
+  TemplateType.NHS_APP,
+  TemplateType.SMS,
+  TemplateType.EMAIL,
+  TemplateType.LETTER,
+] as const;
 
 const TemplateStorageModel = {
   id: a.string().required(),
-  name: a.string().required(),
-  type: a.enum(templateTypes),
+  templateType: a.ref('TemplateType').required(),
   version: a.integer().required(),
-  fields: a.customType({
-    subjectLine: a.string(),
-    content: a.string().required(),
-  }),
+  name: a.string().required(),
+  subject: a.string(),
+  message: a.string().required(),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +31,7 @@ const authPermission = (allow: any) =>
     : [allow.guest()];
 
 const schema = a.schema({
-  SessionStorage: a.model(SessionStorageModel).authorization(authPermission),
+  TemplateType: a.enum(templateTypes),
   TemplateStorage: a.model(TemplateStorageModel).authorization(authPermission),
   sendEmail: a
     .query()

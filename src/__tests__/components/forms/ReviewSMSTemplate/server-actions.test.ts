@@ -6,7 +6,8 @@ import {
 } from '@forms/ReviewSMSTemplate';
 import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
-import { Session, TemplateType } from '@utils/types';
+import { SMSTemplate } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { getMockFormData } from '@testhelpers';
 import { markdown } from '../fixtures';
 
@@ -14,11 +15,12 @@ jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
 
-const initialState: Session = {
-  id: 'session-id',
+const initialState: SMSTemplate = {
+  id: 'template-id',
+  version: 1,
   templateType: TemplateType.SMS,
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
+  name: 'template-name',
+  message: 'template-message',
 };
 
 describe('PreviewTextMessageActions', () => {
@@ -72,7 +74,7 @@ describe('reviewSmsTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/create-text-message-template/session-id',
+      '/edit-text-message-template/template-id',
       'push'
     );
   });
@@ -86,7 +88,7 @@ describe('reviewSmsTemplateAction server action', () => {
     );
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/submit-text-message-template/session-id',
+      '/submit-text-message-template/template-id',
       'push'
     );
   });

@@ -2,8 +2,6 @@ const {
   pageActions: goToPreviewEmailTemplateActions,
 } = require('./preview-email-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToPreviewEmailTemplateActions,
   'click element #reviewEmailTemplateAction-email-submit',
@@ -11,9 +9,9 @@ const pageActions = [
   'wait for element #submit-template-button to be visible',
 ];
 
-const submitEmailTemplatePage = (baseUrl) => ({
+const submitEmailTemplatePage = (url) => ({
   name: 'submit-email-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 

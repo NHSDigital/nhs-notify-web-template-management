@@ -1,0 +1,1271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateSmsTemplate component renders page 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+    >
+      <a
+        class="nhsuk-back-link__link"
+        href="/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="34"
+          viewBox="0 0 24 24"
+          width="34"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="page-heading"
+      >
+        Create text message template
+      </h1>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-sms-template"
+        />
+        <div>
+          <label
+            class="nhsuk-label"
+            for="smsTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="smsTemplateName"
+              name="smsTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <div
+          id="smsMessageCharacterCount"
+          style=""
+        >
+          <p
+            class="nhsuk-u-margin-bottom-0"
+            id="character-count"
+          >
+            16 characters
+          </p>
+          <p>
+            This template will be sent as 1 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-sms-template-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CreateSmsTemplate component renders page one error 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+    >
+      <a
+        class="nhsuk-back-link__link"
+        href="/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="34"
+          viewBox="0 0 24 24"
+          width="34"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#smsTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            />
+          </li>
+        </ul>
+      </div>
+      <h1
+        data-testid="page-heading"
+      >
+        Create text message template
+      </h1>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-sms-template"
+        />
+        <div
+          class="nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <span
+              class="nhsuk-error-message"
+              id="smsTemplateName-error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template name error
+            </span>
+            <input
+              aria-describedby="smsTemplateName--error-message"
+              class="nhsuk-input nhsuk-input--error"
+              id="smsTemplateName"
+              name="smsTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <div
+          id="smsMessageCharacterCount"
+          style=""
+        >
+          <p
+            class="nhsuk-u-margin-bottom-0"
+            id="character-count"
+          >
+            16 characters
+          </p>
+          <p>
+            This template will be sent as 1 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-sms-template-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+    >
+      <a
+        class="nhsuk-back-link__link"
+        href="/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="34"
+          viewBox="0 0 24 24"
+          width="34"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#smsTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            >
+              Template message error
+            </a>
+          </li>
+        </ul>
+      </div>
+      <h1
+        data-testid="page-heading"
+      >
+        Create text message template
+      </h1>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-sms-template"
+        />
+        <div
+          class="nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <span
+              class="nhsuk-error-message"
+              id="smsTemplateName-error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template name error
+            </span>
+            <input
+              aria-describedby="smsTemplateName--error-message"
+              class="nhsuk-input nhsuk-input--error"
+              id="smsTemplateName"
+              name="smsTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
+          >
+            Message
+          </label>
+          <span
+            class="nhsuk-error-message"
+            id="smsTemplateMessage-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Template message error
+          </span>
+          <textarea
+            aria-describedby="smsTemplateMessage--error-message"
+            class="nhsuk-textarea nhsuk-textarea--error"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <div
+          id="smsMessageCharacterCount"
+          style=""
+        >
+          <p
+            class="nhsuk-u-margin-bottom-0"
+            id="character-count"
+          >
+            16 characters
+          </p>
+          <p>
+            This template will be sent as 1 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-sms-template-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CreateSmsTemplate component renders page with preloaded field values 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+    >
+      <a
+        class="nhsuk-back-link__link"
+        href="/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="34"
+          viewBox="0 0 24 24"
+          width="34"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="page-heading"
+      >
+        Create text message template
+      </h1>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-sms-template"
+        />
+        <div>
+          <label
+            class="nhsuk-label"
+            for="smsTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'SMS - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="smsTemplateName"
+              name="smsTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label"
+            for="smsTemplateMessage"
+            id="smsTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="smsTemplateMessage"
+            maxlength="918"
+            name="smsTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <div
+          id="smsMessageCharacterCount"
+          style=""
+        >
+          <p
+            class="nhsuk-u-margin-bottom-0"
+            id="character-count"
+          >
+            16 characters
+          </p>
+          <p>
+            This template will be sent as 1 text messages. If you're using personalisation fields, it could send as more.
+          </p>
+        </div>
+        <p>
+          <a
+            data-testid="sms-pricing-link"
+            href="/pricing/text-messages"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Learn more about character counts and text messaging pricing (opens in a new tab)
+          </a>
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-sms-template-submit-button"
+          type="submit"
+        >
+          Continue
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;

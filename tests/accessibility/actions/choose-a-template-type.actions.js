@@ -1,13 +1,11 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
-const chooseATemplatePage = (baseUrl) => ({
+const chooseATemplatePage = (url) => ({
   name: 'choose-a-template',
-  url: url(baseUrl),
+  url,
 });
 
-const chooseATemplatePageError = (baseUrl) => ({
+const chooseATemplatePageError = (url) => ({
   name: 'choose-a-template-error',
-  url: url(baseUrl),
+  url,
   actions: [
     'click element #choose-a-template-type-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',

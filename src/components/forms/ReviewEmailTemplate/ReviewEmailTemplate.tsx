@@ -3,7 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { PageComponentProps } from '@utils/types';
+import { EmailTemplate, PageComponentProps } from '@utils/types';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { ChevronLeftIcon } from 'nhsuk-react-components';
@@ -11,7 +11,7 @@ import { renderMarkdown, reviewEmailTemplateAction } from './server-actions';
 
 export function ReviewEmailTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<EmailTemplate>>) {
   const {
     components: {
       reviewEmailTemplateContent: { sectionHeading, details, form },
@@ -20,9 +20,9 @@ export function ReviewEmailTemplate({
 
   const [state, action] = useFormState(reviewEmailTemplateAction, initialState);
 
-  const templateName = initialState.emailTemplateName!;
-  const templateSubjectLine = initialState.emailTemplateSubjectLine!;
-  const templateMessage = initialState.emailTemplateMessage!;
+  const templateName = initialState.name;
+  const templateSubjectLine = initialState.subject;
+  const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 
@@ -30,7 +30,7 @@ export function ReviewEmailTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
         <Link
-          href={`/create-email-template/${initialState.id}`}
+          href={`/edit-email-template/${initialState.id}`}
           className='nhsuk-back-link__link'
         >
           <ChevronLeftIcon />

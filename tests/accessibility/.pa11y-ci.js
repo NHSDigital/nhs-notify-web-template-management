@@ -23,40 +23,40 @@ const {
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
+const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 
 module.exports = {
   urls: [
     performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
     performCheck({ url: startUrl, name: 'landing-page' }),
-    performCheck(chooseATemplatePage(baseUrl)),
-    performCheck(chooseATemplatePageError(baseUrl)),
+    performCheck(chooseATemplatePage(chooseTemplateUrl)),
+    performCheck(chooseATemplatePageError(chooseTemplateUrl)),
 
     // NHS App journey
-    performCheck(createNHSAppTemplatePage(baseUrl)),
-    performCheck(createNHSAppTemplateErrorPage(baseUrl)),
-    performCheck(reviewNHSAppTemplatePage(baseUrl)),
-    performCheck(reviewNHSAppTemplateErrorPage(baseUrl)),
-    performCheck(submitNHSAppTemplatePage(baseUrl)),
-    performCheck(NhsAppTemplateSubmittedPage(baseUrl)),
+    performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
+    performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(reviewNHSAppTemplatePage(chooseTemplateUrl)),
+    performCheck(reviewNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
+    performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
 
     // Text message journey
-    performCheck(createTextMessageTemplatePage(baseUrl)),
-    performCheck(createTextMessageTemplateErrorPage(baseUrl)),
-    performCheck(reviewTextMessageTemplatePage(baseUrl)),
-    performCheck(reviewTextMessageTemplateErrorPage(baseUrl)),
-    performCheck(submitTextMessageTemplatePage(baseUrl)),
-    performCheck(textMessageTemplateSubmittedPage(baseUrl)),
+    performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
+    performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
+    performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
+    performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
 
     // Email journey
-    performCheck(createEmailTemplatePage(baseUrl)),
-    performCheck(createEmailTemplateErrorPage(baseUrl)),
-    performCheck(reviewEmailTemplatePage(baseUrl)),
-    performCheck(reviewEmailTemplateErrorPage(baseUrl)),
-    performCheck(submitEmailTemplatePage(baseUrl)),
-    performCheck(emailTemplateSubmittedPage(baseUrl)),
+    performCheck(createEmailTemplatePage(chooseTemplateUrl)),
+    performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(reviewEmailTemplatePage(chooseTemplateUrl)),
+    performCheck(reviewEmailTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
+    performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-session`, name: 'invalid-session'}),
     performCheck({ url: `${baseUrl}/invalid-template`, name: 'invalid-template'}),
     performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],

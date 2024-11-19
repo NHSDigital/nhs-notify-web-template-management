@@ -3,7 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { PageComponentProps } from '@utils/types';
+import { PageComponentProps, SMSTemplate } from '@utils/types';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { ChevronLeftIcon } from 'nhsuk-react-components';
@@ -11,7 +11,7 @@ import { renderMarkdown, reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<SMSTemplate>>) {
   const {
     components: {
       reviewSMSTemplateContent: { sectionHeading, details, form },
@@ -20,8 +20,8 @@ export function ReviewSMSTemplate({
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
 
-  const templateName = initialState.smsTemplateName!;
-  const templateMessage = initialState.smsTemplateMessage!;
+  const templateName = initialState.name;
+  const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 
@@ -29,7 +29,7 @@ export function ReviewSMSTemplate({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
         <Link
-          href={`/create-text-message-template/${initialState.id}`}
+          href={`/edit-text-message-template/${initialState.id}`}
           className='nhsuk-back-link__link'
         >
           <ChevronLeftIcon />

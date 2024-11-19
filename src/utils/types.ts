@@ -1,3 +1,12 @@
+import { z } from 'zod';
+import {
+  $Template,
+  $EmailTemplate,
+  $SMSTemplate,
+  $NHSAppTemplate,
+  $ChannelTemplate,
+} from '@utils/zod-validators';
+
 export type FormId =
   | 'choose-a-template-type'
   | 'create-nhs-app-template'
@@ -14,35 +23,27 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-}
+export type Template = z.infer<typeof $Template>;
 
-export type Session = {
-  id: string;
-  templateType: TemplateType | 'UNKNOWN';
-  nhsAppTemplateName: string;
-  nhsAppTemplateMessage: string;
-  emailTemplateName?: string;
-  emailTemplateSubjectLine?: string;
-  emailTemplateMessage?: string;
-  smsTemplateName?: string;
-  smsTemplateMessage?: string;
-};
+export type EmailTemplate = z.infer<typeof $EmailTemplate>;
+
+export type SMSTemplate = z.infer<typeof $SMSTemplate>;
+
+export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
+
+export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
+
+export type Draft<T> = Omit<T, 'id'>;
 
 export type FormState = {
   validationError?: FormErrorState;
-  redirect?: string;
 };
 
-export type TemplateFormState = FormState & Session;
+export type TemplateFormState<T = Template> = FormState & T;
 
 export type PageProps = {
   params: {
-    sessionId: string;
+    templateId: string;
   };
 };
 
@@ -52,13 +53,13 @@ export type TemplateSubmittedPageProps = {
   };
 };
 
-export type PageComponentProps = {
-  initialState: TemplateFormState;
+export type PageComponentProps<T> = {
+  initialState: TemplateFormState<T>;
 };
 
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
-  sessionId: string;
+  templateId: string;
   goBackPath: string;
   submitPath: string;
 };

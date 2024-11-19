@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../../helpers/session-storage-helper';
+import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewEmailPage } from '../../pages/email/template-mgmt-preview-email-page';
-import { SessionFactory } from '../../helpers/session-factory';
+import { TemplateFactory } from '../../helpers/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -9,28 +9,36 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType, Template } from '../../helpers/types';
 
-const sessions = {
-  empty: SessionFactory.createEmailSession('empty-email-preview-session'),
+const templates = {
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-email-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.EMAIL,
+  } as Template,
   valid: {
-    ...SessionFactory.createEmailSession('valid-email-preview-session'),
-    emailTemplateName: 'test-template-email',
-    emailTemplateSubjectLine: 'test-template-subject-line',
-    emailTemplateMessage: 'test-template-message',
+    ...TemplateFactory.createEmailTemplate('valid-email-preview-template'),
+    name: 'test-template-email',
+    subject: 'test-template-subject-line',
+    message: 'test-template-message',
   },
 };
 
 test.describe('Preview Email message template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper(
-    Object.values(sessions)
+  const templateStorageHelper = new TemplateStorageHelper(
+    Object.values(templates)
   );
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
+    await templateStorageHelper.deleteTemplateData();
   });
 
   test('when user visits page, then page is loaded', async ({
@@ -39,10 +47,10 @@ test.describe('Preview Email message template Page', () => {
   }) => {
     const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-    await previewEmailTemplatePage.loadPage(sessions.valid.id);
+    await previewEmailTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-email-template/${sessions.valid.id}`
+      `${baseURL}/templates/preview-email-template/${templates.valid.id}`
     );
 
     // Note; I've broken this check into 2 pieces otherwise it's an unreadable mess of;
@@ -68,7 +76,7 @@ test.describe('Preview Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewEmailPage(page),
-        id: sessions.valid.id,
+        id: templates.valid.id,
         baseURL,
       };
 
@@ -78,7 +86,7 @@ test.describe('Preview Email message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-email-template/${sessions.valid.id}`,
+        expectedUrl: `templates/edit-email-template/${templates.valid.id}`,
       });
     });
 
@@ -87,7 +95,7 @@ test.describe('Preview Email message template Page', () => {
     }) => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(sessions.valid.id);
+      await previewEmailTemplatePage.loadPage(templates.valid.id);
 
       await previewEmailTemplatePage.whoYourEmailWillBeSentFrom.click({
         position: { x: 0, y: 0 },
@@ -104,14 +112,14 @@ test.describe('Preview Email message template Page', () => {
     }) => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(sessions.valid.id);
+      await previewEmailTemplatePage.loadPage(templates.valid.id);
 
       await previewEmailTemplatePage.editRadioOption.click();
 
       await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-email-template/${sessions.valid.id}`
+        `${baseURL}/templates/edit-email-template/${templates.valid.id}`
       );
     });
 
@@ -121,39 +129,39 @@ test.describe('Preview Email message template Page', () => {
     }) => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(sessions.valid.id);
+      await previewEmailTemplatePage.loadPage(templates.valid.id);
 
       await previewEmailTemplatePage.submitRadioOption.click();
 
       await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-email-template/${sessions.valid.id}`
+        `${baseURL}/templates/submit-email-template/${templates.valid.id}`
       );
     });
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with missing data, then an invalid session error is displayed', async ({
+    test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(sessions.empty.id);
+      await previewEmailTemplatePage.loadPage(templates.empty.id);
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage('/fake-session-id');
+      await previewEmailTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when user submits page with no data, then an error is displayed', async ({
@@ -163,7 +171,7 @@ test.describe('Preview Email message template Page', () => {
 
       const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
 
-      await previewEmailTemplatePage.loadPage(sessions.valid.id);
+      await previewEmailTemplatePage.loadPage(templates.valid.id);
 
       await previewEmailTemplatePage.clickContinueButton();
 

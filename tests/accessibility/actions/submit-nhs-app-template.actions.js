@@ -2,8 +2,6 @@ const {
   pageActions: goToPreviewNHSAppTemplateActions,
 } = require('./preview-nhs-app-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToPreviewNHSAppTemplateActions,
   'wait for #reviewNHSAppTemplateAction-nhsapp-submit to be visible',
@@ -13,9 +11,9 @@ const pageActions = [
   'wait for element #submit-template-button to be visible',
 ];
 
-const submitNHSAppTemplatePage = (baseUrl) => ({
+const submitNHSAppTemplatePage = (url) => ({
   name: 'preview-nhs-app-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 
