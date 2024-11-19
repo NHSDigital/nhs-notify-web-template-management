@@ -1,0 +1,1707 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders page 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link"
+    >
+      <a
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-nhs-app-template"
+        />
+        <h1
+          class="nhsuk-heading-xl"
+          data-testid="page-heading"
+        >
+          Create NHS App message template
+        </h1>
+        <div>
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="nhsAppTemplateName"
+              name="nhsAppTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateMessage"
+            id="nhsAppTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="nhsAppTemplateMessage"
+            maxlength="5000"
+            name="nhsAppTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <p
+          id="character-count"
+          style=""
+        >
+          16 of 5000 characters
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-nhs-app-template-submit-button"
+          type="submit"
+        >
+          Save and preview
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="lines-breaks-and-paragraphs-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="lines-breaks-and-paragraphs-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Line breaks and paragraphs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="lines-breaks-and-paragraphs-text"
+        >
+          <p>
+            To add a line break, use 2 spaces at the end of your text, for example:
+          </p>
+          <code>
+            <span
+              class="inlineText"
+            >
+              line 1
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 2
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 3
+            </span>
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To add a paragraph, use a blank line between each paragraph, for example:
+          </p>
+          <code
+            class="codeLine"
+          >
+            <p>
+              line 1
+            </p>
+            <p>
+              line 2
+            </p>
+            <p>
+              line 3
+            </p>
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="headings-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="headings-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Headings
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="headings-text"
+        >
+          <p>
+            Use one hash symbol followed by a space for a heading, for example:
+          </p>
+          <code>
+            # This is a heading
+          </code>
+          <p>
+            To add a subheading, use 2 hash symbols:
+          </p>
+          <code>
+            ## This is a subheading
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="bold-text-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="bold-text-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Bold text
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="bold-text-text"
+        >
+          <p>
+            Use two asterisk symbols on either side of the words you want to be bold, for example:
+          </p>
+          <code>
+            **this is bold text**
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            [Read more](https://www.nhs.uk/)
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders page one error 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link"
+    >
+      <a
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#nhsAppTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#nhsAppTemplateMessage"
+            />
+          </li>
+        </ul>
+      </div>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-nhs-app-template"
+        />
+        <h1
+          class="nhsuk-heading-xl"
+          data-testid="page-heading"
+        >
+          Create NHS App message template
+        </h1>
+        <div
+          class="nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <span
+              class="nhsuk-error-message"
+              id="nhsAppTemplateName-error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template name error
+            </span>
+            <input
+              aria-describedby="nhsAppTemplateName--error-message"
+              class="nhsuk-input nhsuk-input--error"
+              id="nhsAppTemplateName"
+              name="nhsAppTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateMessage"
+            id="nhsAppTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="nhsAppTemplateMessage"
+            maxlength="5000"
+            name="nhsAppTemplateMessage"
+            rows="10"
+          />
+        </div>
+        <p
+          id="character-count"
+          style=""
+        >
+          0 of 5000 characters
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-nhs-app-template-submit-button"
+          type="submit"
+        >
+          Save and preview
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="lines-breaks-and-paragraphs-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="lines-breaks-and-paragraphs-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Line breaks and paragraphs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="lines-breaks-and-paragraphs-text"
+        >
+          <p>
+            To add a line break, use 2 spaces at the end of your text, for example:
+          </p>
+          <code>
+            <span
+              class="inlineText"
+            >
+              line 1
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 2
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 3
+            </span>
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To add a paragraph, use a blank line between each paragraph, for example:
+          </p>
+          <code
+            class="codeLine"
+          >
+            <p>
+              line 1
+            </p>
+            <p>
+              line 2
+            </p>
+            <p>
+              line 3
+            </p>
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="headings-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="headings-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Headings
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="headings-text"
+        >
+          <p>
+            Use one hash symbol followed by a space for a heading, for example:
+          </p>
+          <code>
+            # This is a heading
+          </code>
+          <p>
+            To add a subheading, use 2 hash symbols:
+          </p>
+          <code>
+            ## This is a subheading
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="bold-text-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="bold-text-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Bold text
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="bold-text-text"
+        >
+          <p>
+            Use two asterisk symbols on either side of the words you want to be bold, for example:
+          </p>
+          <code>
+            **this is bold text**
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            [Read more](https://www.nhs.uk/)
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders page with multiple errors 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link"
+    >
+      <a
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#nhsAppTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#nhsAppTemplateMessage"
+            >
+              Template message error
+            </a>
+          </li>
+        </ul>
+      </div>
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-nhs-app-template"
+        />
+        <h1
+          class="nhsuk-heading-xl"
+          data-testid="page-heading"
+        >
+          Create NHS App message template
+        </h1>
+        <div
+          class="nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <span
+              class="nhsuk-error-message"
+              id="nhsAppTemplateName-error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template name error
+            </span>
+            <input
+              aria-describedby="nhsAppTemplateName--error-message"
+              class="nhsuk-input nhsuk-input--error"
+              id="nhsAppTemplateName"
+              name="nhsAppTemplateName"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group nhsuk-form-group--error"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateMessage"
+            id="nhsAppTemplateMessage--label"
+          >
+            Message
+          </label>
+          <span
+            class="nhsuk-error-message"
+            id="nhsAppTemplateMessage-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Template message error
+          </span>
+          <textarea
+            aria-describedby="nhsAppTemplateMessage--error-message"
+            class="nhsuk-textarea nhsuk-textarea--error"
+            id="nhsAppTemplateMessage"
+            maxlength="5000"
+            name="nhsAppTemplateMessage"
+            rows="10"
+          />
+        </div>
+        <p
+          id="character-count"
+          style=""
+        >
+          0 of 5000 characters
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-nhs-app-template-submit-button"
+          type="submit"
+        >
+          Save and preview
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="lines-breaks-and-paragraphs-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="lines-breaks-and-paragraphs-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Line breaks and paragraphs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="lines-breaks-and-paragraphs-text"
+        >
+          <p>
+            To add a line break, use 2 spaces at the end of your text, for example:
+          </p>
+          <code>
+            <span
+              class="inlineText"
+            >
+              line 1
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 2
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 3
+            </span>
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To add a paragraph, use a blank line between each paragraph, for example:
+          </p>
+          <code
+            class="codeLine"
+          >
+            <p>
+              line 1
+            </p>
+            <p>
+              line 2
+            </p>
+            <p>
+              line 3
+            </p>
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="headings-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="headings-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Headings
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="headings-text"
+        >
+          <p>
+            Use one hash symbol followed by a space for a heading, for example:
+          </p>
+          <code>
+            # This is a heading
+          </code>
+          <p>
+            To add a subheading, use 2 hash symbols:
+          </p>
+          <code>
+            ## This is a subheading
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="bold-text-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="bold-text-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Bold text
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="bold-text-text"
+        >
+          <p>
+            Use two asterisk symbols on either side of the words you want to be bold, for example:
+          </p>
+          <code>
+            **this is bold text**
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            [Read more](https://www.nhs.uk/)
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders page with preloaded field values 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-back-link"
+    >
+      <a
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
+      >
+        <svg
+          aria-hidden="true"
+          class="nhsuk-icon nhsuk-icon__chevron-left"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+          />
+        </svg>
+        Go back
+      </a>
+    </div>
+    <div
+      class="nhsuk-grid-column-two-thirds"
+    >
+      <form
+        action="/action"
+      >
+        <input
+          name="form-id"
+          readonly=""
+          type="hidden"
+          value="create-nhs-app-template"
+        />
+        <h1
+          class="nhsuk-heading-xl"
+          data-testid="page-heading"
+        >
+          Create NHS App message template
+        </h1>
+        <div>
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateName"
+          >
+            Template name
+          </label>
+          <div
+            class="nhsuk-hint"
+          >
+            This will not be visible to recipients.
+          </div>
+          <details
+            class="nhsuk-details"
+            data-testid="how-to-name-your-template"
+          >
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                Naming your templates
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                You should name your templates in a way that works best for your service or organisation.
+              </p>
+              <p>
+                Common template names include the:
+              </p>
+              <ul>
+                <li>
+                  message channel it uses
+                </li>
+                <li>
+                  subject or reason for the message
+                </li>
+                <li>
+                  intended audience for the template
+                </li>
+                <li>
+                  version number of the template
+                </li>
+              </ul>
+              <p
+                data-testid="template-name-example"
+              >
+                For example, 'NHS App - covid19 2023 - over 65s - version 3'
+              </p>
+            </div>
+          </details>
+          <div
+            class="nhsuk-form-group"
+          >
+            <input
+              class="nhsuk-input"
+              id="nhsAppTemplateName"
+              name="nhsAppTemplateName"
+              type="text"
+              value="template-name"
+            />
+          </div>
+        </div>
+        <div
+          class="nhsuk-form-group"
+        >
+          <label
+            class="nhsuk-label nhsuk-label--s"
+            for="nhsAppTemplateMessage"
+            id="nhsAppTemplateMessage--label"
+          >
+            Message
+          </label>
+          <textarea
+            class="nhsuk-textarea"
+            id="nhsAppTemplateMessage"
+            maxlength="5000"
+            name="nhsAppTemplateMessage"
+            rows="10"
+          >
+            template-message
+          </textarea>
+        </div>
+        <p
+          id="character-count"
+          style=""
+        >
+          16 of 5000 characters
+        </p>
+        <button
+          aria-disabled="false"
+          class="nhsuk-button"
+          id="create-nhs-app-template-submit-button"
+          type="submit"
+        >
+          Save and preview
+        </button>
+      </form>
+    </div>
+    <div
+      class="nhsuk-grid-column-one-third"
+    >
+      <h2
+        class="nhsuk-heading-m"
+        data-testid="personalisation-header"
+      >
+        Personalisation
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="personalisation-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="personalisation-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Personalisation fields
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="personalisation-text"
+        >
+          <p>
+            Use double brackets to add a personalisation field to your content. For example:
+          </p>
+          <code>
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            NHS Notify gets data from PDS to populate personalisation fields.
+          </p>
+          <p>
+            You can use:
+          </p>
+          <ul>
+            <li>
+              ((fullName))
+            </li>
+            <li>
+              ((firstName))
+            </li>
+            <li>
+              ((middleNames))
+            </li>
+            <li>
+              ((lastName))
+            </li>
+            <li>
+              ((nhsNumber))
+            </li>
+            <li>
+              ((namePrefix))
+            </li>
+            <li>
+              ((nameSuffix))
+            </li>
+            <li>
+              ((address_line_1))
+            </li>
+            <li>
+              ((address_line_2))
+            </li>
+            <li>
+              ((address_line_3))
+            </li>
+            <li>
+              ((address_line_4))
+            </li>
+            <li>
+              ((address_line_5))
+            </li>
+            <li>
+              ((address_line_6))
+            </li>
+            <li>
+              ((address_line_7))
+            </li>
+          </ul>
+        </div>
+      </details>
+      <h2
+        class="nhsuk-heading-m nhsuk-u-margin-top-4"
+        data-testid="personalisation-header"
+      >
+        Message formatting
+      </h2>
+      <details
+        class="nhsuk-details"
+        data-testid="lines-breaks-and-paragraphs-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="lines-breaks-and-paragraphs-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Line breaks and paragraphs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="lines-breaks-and-paragraphs-text"
+        >
+          <p>
+            To add a line break, use 2 spaces at the end of your text, for example:
+          </p>
+          <code>
+            <span
+              class="inlineText"
+            >
+              line 1
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 2
+            </span>
+            <span
+              class="inlineText"
+            >
+              line 3
+            </span>
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To add a paragraph, use a blank line between each paragraph, for example:
+          </p>
+          <code
+            class="codeLine"
+          >
+            <p>
+              line 1
+            </p>
+            <p>
+              line 2
+            </p>
+            <p>
+              line 3
+            </p>
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="headings-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="headings-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Headings
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="headings-text"
+        >
+          <p>
+            Use one hash symbol followed by a space for a heading, for example:
+          </p>
+          <code>
+            # This is a heading
+          </code>
+          <p>
+            To add a subheading, use 2 hash symbols:
+          </p>
+          <code>
+            ## This is a subheading
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="bold-text-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="bold-text-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Bold text
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="bold-text-text"
+        >
+          <p>
+            Use two asterisk symbols on either side of the words you want to be bold, for example:
+          </p>
+          <code>
+            **this is bold text**
+          </code>
+        </div>
+      </details>
+      <details
+        class="nhsuk-details"
+        data-testid="link-and-url-details"
+      >
+        <summary
+          class="nhsuk-details__summary"
+          data-testid="link-and-url-summary"
+        >
+          <span
+            class="nhsuk-details__summary-text"
+          >
+            Links and URLs
+          </span>
+        </summary>
+        <div
+          class="nhsuk-details__text"
+          data-testid="link-and-url-text"
+        >
+          <p>
+            If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            https://www.nhs.uk/example
+          </code>
+          <p
+            class="nhsuk-u-margin-top-4"
+          >
+            To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+          </p>
+          <p>
+            For example:
+          </p>
+          <code>
+            [Read more](https://www.nhs.uk/)
+          </code>
+        </div>
+      </details>
+    </div>
+  </div>
+</DocumentFragment>
+`;

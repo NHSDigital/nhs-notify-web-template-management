@@ -1,5 +1,5 @@
 import { MarkdownItWrapper } from '@utils/markdownit';
-import { TemplateFormState } from '@utils/types';
+import { EmailTemplate, TemplateFormState } from '@utils/types';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
 
@@ -21,7 +21,7 @@ export function renderMarkdown(
 }
 
 export async function reviewEmailTemplateAction(
-  formState: TemplateFormState,
+  formState: TemplateFormState<EmailTemplate>,
   formData: FormData
 ) {
   const form = Object.fromEntries(formData.entries());
@@ -36,10 +36,7 @@ export async function reviewEmailTemplateAction(
   }
 
   if (data.reviewEmailTemplateAction === 'email-edit') {
-    return redirect(
-      `/create-email-template/${formState.id}`,
-      RedirectType.push
-    );
+    return redirect(`/edit-email-template/${formState.id}`, RedirectType.push);
   }
 
   if (data.reviewEmailTemplateAction === 'email-submit') {

@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../helpers/session-storage-helper';
-import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-page';
-import { SessionFactory } from '../helpers/session-factory';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-page';
+import { TemplateFactory } from '../helpers/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -10,99 +9,115 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-
-const templateIds = new Set<string>();
-
-const getAndStoreTemplateId = (url: string) => {
-  const id = String(url.split('/').pop());
-  templateIds.add(id);
-  return id;
-};
+import { Template, TemplateType, TemplateStatus } from '../helpers/types';
 
 const emailFields = {
-  emailTemplateName: 'test-template-name',
-  emailTemplateSubjectLine: 'test-template-subject-line',
-  emailTemplateMessage: 'test-template-message',
+  name: 'test-template-name',
+  subject: 'test-template-subject-line',
+  message: 'test-template-message',
 };
 
 const smsFields = {
-  smsTemplateName: 'test-template-name',
-  smsTemplateMessage: 'test-template-message',
+  name: 'test-template-name',
+  message: 'test-template-message',
 };
 
 const nhsAppFields = {
-  nhsAppTemplateName: 'test-template-name',
-  nhsAppTemplateMessage: 'test-template-message',
+  name: 'test-template-name',
+  message: 'test-template-message',
 };
 
-const sessions = {
+const templates = {
   email: {
-    empty: SessionFactory.createEmailSession('empty-email-submit-session'),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-email-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    } as Template,
     submit: {
-      ...SessionFactory.createEmailSession('submit-email-submit-session'),
+      ...TemplateFactory.createEmailTemplate('submit-email-submit-template'),
       ...emailFields,
     },
     submitAndReturn: {
-      ...SessionFactory.createEmailSession('submit-and-return-email-session'),
+      ...TemplateFactory.createEmailTemplate(
+        'submit-and-return-email-template'
+      ),
       ...emailFields,
     },
     valid: {
-      ...SessionFactory.createEmailSession('valid-email-submit-session'),
+      ...TemplateFactory.createEmailTemplate('valid-email-submit-template'),
       ...emailFields,
     },
   },
   'text-message': {
-    empty: SessionFactory.createSmsSession('empty-sms-submit-session'),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-sms-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    } as Template,
     submit: {
-      ...SessionFactory.createSmsSession('submit-sms-submit-session'),
+      ...TemplateFactory.createSmsTemplate('submit-sms-submit-template'),
       ...smsFields,
     },
     submitAndReturn: {
-      ...SessionFactory.createSmsSession('submit-and-return-sms-session'),
+      ...TemplateFactory.createSmsTemplate('submit-and-return-sms-template'),
       ...smsFields,
     },
     valid: {
-      ...SessionFactory.createSmsSession('valid-sms-submit-session'),
+      ...TemplateFactory.createSmsTemplate('valid-sms-submit-template'),
       ...smsFields,
     },
   },
   'nhs-app': {
-    empty: SessionFactory.createNhsAppSession('empty-nhs-app-submit-session'),
+    empty: {
+      __typename: 'TemplateStorage',
+      id: 'submit-page-invalid-nhs-app-template',
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    } as Template,
     submit: {
-      ...SessionFactory.createNhsAppSession('submit-nhs-app-submit-session'),
+      ...TemplateFactory.createNhsAppTemplate('submit-nhs-app-submit-template'),
       ...nhsAppFields,
     },
     submitAndReturn: {
-      ...SessionFactory.createNhsAppSession(
-        'submit-and-return-nhs-app-session'
+      ...TemplateFactory.createNhsAppTemplate(
+        'submit-and-return-nhs-app-template'
       ),
       ...nhsAppFields,
     },
     valid: {
-      ...SessionFactory.createNhsAppSession('valid-nhs-app-submit-session'),
+      ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-submit-template'),
       ...nhsAppFields,
     },
   },
 };
 
-const sessionsList = [
-  ...Object.values(sessions.email),
-  ...Object.values(sessions['text-message']),
-  ...Object.values(sessions['nhs-app']),
+const templatesList = [
+  ...Object.values(templates.email),
+  ...Object.values(templates['text-message']),
+  ...Object.values(templates['nhs-app']),
 ];
 
 test.describe('Submit template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper(sessionsList);
-
-  const templateStorageHelper = new TemplateStorageHelper([]);
+  const templateStorageHelper = new TemplateStorageHelper(templatesList);
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
-    await templateStorageHelper.deleteTemplates([...templateIds.values()]);
+    await templateStorageHelper.deleteTemplateData();
   });
 
   for (const { channelName, channelIdentifier } of [
@@ -119,10 +134,10 @@ test.describe('Submit template Page', () => {
         channelIdentifier
       );
 
-      await submitTemplatePage.loadPage(sessions[channelIdentifier].valid.id);
+      await submitTemplatePage.loadPage(templates[channelIdentifier].valid.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-${channelIdentifier}-template/${sessions[channelIdentifier].valid.id}`
+        `${baseURL}/templates/submit-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`
       );
 
       await expect(submitTemplatePage.pageHeader).toHaveText(
@@ -134,7 +149,7 @@ test.describe('Submit template Page', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
           page: new TemplateMgmtSubmitPage(page, channelIdentifier),
-          id: sessions[channelIdentifier].valid.id,
+          id: templates[channelIdentifier].valid.id,
           baseURL,
         };
 
@@ -144,7 +159,7 @@ test.describe('Submit template Page', () => {
         await assertFooterLinks(props);
         await assertGoBackLink({
           ...props,
-          expectedUrl: `templates/preview-${channelIdentifier}-template/${sessions[channelIdentifier].valid.id}`,
+          expectedUrl: `templates/preview-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`,
         });
       });
 
@@ -157,7 +172,7 @@ test.describe('Submit template Page', () => {
         );
 
         await submitTemplatePage.loadPage(
-          sessions[channelIdentifier].submit.id
+          templates[channelIdentifier].submit.id
         );
 
         await submitTemplatePage.clickSubmitTemplateButton();
@@ -165,45 +180,11 @@ test.describe('Submit template Page', () => {
         await expect(page).toHaveURL(
           new RegExp(`/templates/${channelIdentifier}-template-submitted/(.*)`) // eslint-disable-line security/detect-non-literal-regexp
         );
-
-        const templateId = getAndStoreTemplateId(page.url());
-
-        const template = await templateStorageHelper.getTemplate(templateId!);
-
-        expect(template).toBeTruthy();
       });
     });
 
     test.describe('Error handling', () => {
-      test(`when user visits ${channelName} page with missing data, then an invalid session error is displayed`, async ({
-        baseURL,
-        page,
-      }) => {
-        const submitTemplatePage = new TemplateMgmtSubmitPage(
-          page,
-          channelIdentifier
-        );
-
-        await submitTemplatePage.loadPage(sessions[channelIdentifier].empty.id);
-
-        await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
-      });
-
-      test(`when user visits ${channelName} page with a fake session, then an invalid session error is displayed`, async ({
-        baseURL,
-        page,
-      }) => {
-        const submitTemplatePage = new TemplateMgmtSubmitPage(
-          page,
-          channelIdentifier
-        );
-
-        await submitTemplatePage.loadPage('/fake-session-id');
-
-        await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
-      });
-
-      test(`when user submits ${channelName} form and returns, then an invalid session error is displayed`, async ({
+      test(`when user visits ${channelName} page with missing data, then an invalid template error is displayed`, async ({
         baseURL,
         page,
       }) => {
@@ -213,26 +194,24 @@ test.describe('Submit template Page', () => {
         );
 
         await submitTemplatePage.loadPage(
-          sessions[channelIdentifier].submitAndReturn.id
+          templates[channelIdentifier].empty.id
         );
 
-        await submitTemplatePage.clickSubmitTemplateButton();
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      });
 
-        getAndStoreTemplateId(page.url());
+      test(`when user visits ${channelName} page with a fake template, then an invalid template error is displayed`, async ({
+        baseURL,
+        page,
+      }) => {
+        const submitTemplatePage = new TemplateMgmtSubmitPage(
+          page,
+          channelIdentifier
+        );
 
-        await expect
-          .poll(
-            async () => {
-              await submitTemplatePage.loadPage(
-                sessions[channelIdentifier].submitAndReturn.id
-              );
-              return page.url();
-            },
-            {
-              intervals: [1000, 2000, 3000],
-            }
-          )
-          .toBe(`${baseURL}/templates/invalid-session`);
+        await submitTemplatePage.loadPage('/fake-template-id');
+
+        await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
       });
     });
   }

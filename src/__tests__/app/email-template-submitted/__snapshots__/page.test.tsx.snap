@@ -39,7 +39,7 @@ exports[`EmailTemplateSubmitted 1`] = `
         template-id
       </p>
       <a
-        href="/create-template"
+        href="/choose-a-template-type"
         id="create-another-template"
       >
         Create another template

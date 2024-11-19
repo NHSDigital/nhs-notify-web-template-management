@@ -2,8 +2,6 @@ const {
   pageActions: goToCreateEmailTemplateActions,
 } = require('./create-email-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToCreateEmailTemplateActions,
   'set field #emailTemplateName to example-template-1',
@@ -13,15 +11,15 @@ const pageActions = [
   'wait for #review-email-template-submit-button to be visible',
 ];
 
-const reviewEmailTemplatePage = (baseUrl) => ({
+const reviewEmailTemplatePage = (url) => ({
   name: 'preview-email-app-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 
-const reviewEmailTemplateErrorPage = (baseUrl) => ({
+const reviewEmailTemplateErrorPage = (url) => ({
   name: 'preview-email-template-error',
-  url: url(baseUrl),
+  url,
   actions: [
     ...pageActions,
     'click element #review-email-template-submit-button',

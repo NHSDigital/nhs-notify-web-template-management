@@ -1,5 +1,3 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   'wait for element #templateType-EMAIL to be visible',
   'click element #templateType-EMAIL',
@@ -7,15 +5,15 @@ const pageActions = [
   'wait for element #create-email-template-submit-button to be visible',
 ];
 
-const createEmailTemplatePage = (baseUrl) => ({
+const createEmailTemplatePage = (url) => ({
   name: 'create-email-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 
-const createEmailTemplateErrorPage = (baseUrl) => ({
+const createEmailTemplateErrorPage = (url) => ({
   name: 'create-email-template-error',
-  url: url(baseUrl),
+  url,
   actions: [
     ...pageActions,
     'click element #create-email-template-submit-button',

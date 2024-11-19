@@ -1,5 +1,5 @@
 import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
-import { Template } from '@domain/templates';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('@utils/logger');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
@@ -15,15 +16,13 @@ describe('TextMessageTemplateSubmittedPage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    const template: Template = {
+    const template = {
       id: 'template-id',
-      name: 'template-name',
-      type: 'SMS',
+      templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.SUBMITTED,
       version: 1,
-      fields: {
-        content: 'example',
-        subjectLine: null,
-      },
+      name: 'template-name',
+      message: 'example',
     };
 
     getTemplateMock.mockResolvedValueOnce(template);

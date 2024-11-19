@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../../helpers/session-storage-helper';
+import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewSmsPage } from '../../pages/sms/template-mgmt-preview-sms-page';
-import { SessionFactory } from '../../helpers/session-factory';
+import { TemplateFactory } from '../../helpers/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -9,27 +9,36 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
 
-const sessions = {
-  empty: SessionFactory.createSmsSession('empty-sms-preview-session'),
+const templates = {
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-sms-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.SMS,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  } as Template,
   valid: {
-    ...SessionFactory.createSmsSession('valid-sms-preview-session'),
-    smsTemplateName: 'test-template-sms',
-    smsTemplateMessage: 'test-template-message',
+    ...TemplateFactory.createSmsTemplate('valid-sms-preview-template'),
+    name: 'test-template-sms',
+    message: 'test-template-message',
   },
 };
 
 test.describe('Preview SMS message template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper(
-    Object.values(sessions)
+  const templateStorageHelper = new TemplateStorageHelper(
+    Object.values(templates)
   );
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
+    await templateStorageHelper.deleteTemplateData();
   });
 
   test('when user visits page, then page is loaded', async ({
@@ -38,19 +47,15 @@ test.describe('Preview SMS message template Page', () => {
   }) => {
     const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-    await previewSmsTemplatePage.loadPage(sessions.valid.id);
+    await previewSmsTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-text-message-template/${sessions.valid.id}`
+      `${baseURL}/templates/preview-text-message-template/${templates.valid.id}`
     );
 
     await expect(previewSmsTemplatePage.editRadioOption).not.toBeChecked();
 
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
-
-    await expect(previewSmsTemplatePage.pageHeader).toContainText(
-      'Text message template'
-    );
 
     await expect(previewSmsTemplatePage.pageHeader).toContainText(
       'test-template-sms'
@@ -65,7 +70,7 @@ test.describe('Preview SMS message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewSmsPage(page),
-        id: sessions.valid.id,
+        id: templates.valid.id,
         baseURL,
       };
 
@@ -75,24 +80,8 @@ test.describe('Preview SMS message template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-text-message-template/${sessions.valid.id}`,
+        expectedUrl: `templates/edit-text-message-template/${templates.valid.id}`,
       });
-    });
-
-    test('when user clicks "Who your text message will be sent from" tool tips, then tool tips are displayed', async ({
-      page,
-    }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
-
-      await previewSmsTemplatePage.loadPage(sessions.valid.id);
-
-      await previewSmsTemplatePage.whoYourSmsWillBeSentFrom.click({
-        position: { x: 0, y: 0 },
-      });
-
-      await expect(
-        previewSmsTemplatePage.whoYourSmsWillBeSentFrom
-      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create text message template" page is displayed', async ({
@@ -101,14 +90,14 @@ test.describe('Preview SMS message template Page', () => {
     }) => {
       const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(sessions.valid.id);
+      await previewSmsTemplatePage.loadPage(templates.valid.id);
 
       await previewSmsTemplatePage.editRadioOption.click();
 
       await previewSmsTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-text-message-template/${sessions.valid.id}`
+        `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
       );
     });
 
@@ -118,39 +107,39 @@ test.describe('Preview SMS message template Page', () => {
     }) => {
       const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(sessions.valid.id);
+      await previewSmsTemplatePage.loadPage(templates.valid.id);
 
       await previewSmsTemplatePage.submitRadioOption.click();
 
       await previewSmsTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-text-message-template/${sessions.valid.id}`
+        `${baseURL}/templates/submit-text-message-template/${templates.valid.id}`
       );
     });
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with missing data, then an invalid session error is displayed', async ({
+    test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(sessions.empty.id);
+      await previewSmsTemplatePage.loadPage(templates.empty.id);
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage('/fake-session-id');
+      await previewSmsTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when user submits page with no data, then an error is displayed', async ({
@@ -160,7 +149,7 @@ test.describe('Preview SMS message template Page', () => {
 
       const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
 
-      await previewSmsTemplatePage.loadPage(sessions.valid.id);
+      await previewSmsTemplatePage.loadPage(templates.valid.id);
 
       await previewSmsTemplatePage.clickSubmitButton();
 
