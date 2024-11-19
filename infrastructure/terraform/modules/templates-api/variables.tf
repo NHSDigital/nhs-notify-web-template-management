@@ -52,3 +52,11 @@ variable "log_retention_in_days" {
   description = "The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite"
   default     = 0
 }
+
+variable "cognito_config" {
+  type = object({
+    user_pool_id: string,
+    user_pool_client_id: string
+  })
+  description = "Cognito config"
+}
