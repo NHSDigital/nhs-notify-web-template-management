@@ -10,7 +10,6 @@ import {
 import { TemplateFactory } from '../helpers/template-factory';
 import { TemplateType } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
-import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 
 const templates = {
   email: TemplateFactory.create({
