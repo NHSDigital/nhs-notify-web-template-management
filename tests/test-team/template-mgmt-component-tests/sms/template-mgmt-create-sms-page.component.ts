@@ -183,6 +183,7 @@ test.describe('Create SMS message template Page', () => {
     });
 
     test('when user submits form with valid data and returns, then form fields retain previous data', async ({
+      baseURL,
       page,
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
@@ -197,6 +198,10 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.messageTextArea.fill(templateMessage);
 
       await createSmsTemplatePage.clickSubmitButton();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-text-message-template/${templates.submitAndReturn.id}`
+      );
 
       await page
         .locator('.nhsuk-back-link__link')

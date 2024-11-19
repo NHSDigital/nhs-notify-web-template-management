@@ -172,6 +172,7 @@ test.describe('Create Email message template Page', () => {
     });
 
     test('when user submits form with valid data and returns, then form fields retain previous data', async ({
+      baseURL,
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
@@ -189,6 +190,10 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.messageTextArea.fill(templateMessage);
 
       await createEmailTemplatePage.clickSubmitButton();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-email-template/${templates.submitAndReturn.id}`
+      );
 
       await page
         .locator('.nhsuk-back-link__link')
