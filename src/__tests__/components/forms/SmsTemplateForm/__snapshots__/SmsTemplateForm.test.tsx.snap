@@ -6,18 +6,18 @@ exports[`CreateSmsTemplate component renders page 1`] = `
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+      class="nhsuk-back-link"
     >
       <a
-        class="nhsuk-back-link__link"
-        href="/choose-a-template-type"
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
       >
         <svg
           aria-hidden="true"
           class="nhsuk-icon nhsuk-icon__chevron-left"
-          height="34"
+          height="24"
           viewBox="0 0 24 24"
-          width="34"
+          width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -298,18 +298,18 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+      class="nhsuk-back-link"
     >
       <a
-        class="nhsuk-back-link__link"
-        href="/choose-a-template-type"
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
       >
         <svg
           aria-hidden="true"
           class="nhsuk-icon nhsuk-icon__chevron-left"
-          height="34"
+          height="24"
           viewBox="0 0 24 24"
-          width="34"
+          width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -634,18 +634,18 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+      class="nhsuk-back-link"
     >
       <a
-        class="nhsuk-back-link__link"
-        href="/choose-a-template-type"
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
       >
         <svg
           aria-hidden="true"
           class="nhsuk-icon nhsuk-icon__chevron-left"
-          height="34"
+          height="24"
           viewBox="0 0 24 24"
-          width="34"
+          width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -984,18 +984,18 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
     class="nhsuk-grid-row"
   >
     <div
-      class="nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3"
+      class="nhsuk-back-link"
     >
       <a
-        class="nhsuk-back-link__link"
-        href="/choose-a-template-type"
+        class="nhsuk-back-link__link nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3"
+        href="/templates/choose-a-template-type"
       >
         <svg
           aria-hidden="true"
           class="nhsuk-icon nhsuk-icon__chevron-left"
-          height="34"
+          height="24"
           viewBox="0 0 24 24"
-          width="34"
+          width="24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path

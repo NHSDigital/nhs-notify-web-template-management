@@ -2,7 +2,7 @@ import SubmitEmailTemplatePage from '@app/submit-email-template/[templateId]/pag
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -20,6 +20,7 @@ describe('SubmitEmailTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -103,6 +104,7 @@ describe('SubmitEmailTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         version: 1,
         ...value,
       });

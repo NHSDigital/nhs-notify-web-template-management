@@ -6,6 +6,7 @@ exports[`CreateNHSAppTemplatePage should render CreateNHSAppTemplatePage 1`] = `
     {
       "message": "",
       "name": "",
+      "templateStatus": "NOT_YET_SUBMITTED",
       "templateType": "NHS_APP",
       "version": 1,
     }

@@ -1,7 +1,7 @@
 import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
 import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
 import { EmailTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 
@@ -21,6 +21,7 @@ describe('PreviewEmailTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -95,6 +96,7 @@ describe('PreviewEmailTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         version: 1,
         ...value,
       });

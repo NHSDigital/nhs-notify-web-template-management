@@ -9,7 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template } from '../../helpers/types';
+import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
@@ -19,6 +19,7 @@ const templates = {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     templateType: TemplateType.EMAIL,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   } as Template,
   valid: {
     ...TemplateFactory.createEmailTemplate('valid-email-preview-template'),
@@ -53,12 +54,6 @@ test.describe('Preview Email message template Page', () => {
       `${baseURL}/templates/preview-email-template/${templates.valid.id}`
     );
 
-    // Note; I've broken this check into 2 pieces otherwise it's an unreadable mess of;
-    // `Email templatetest-template-email`
-    await expect(previewEmailTemplatePage.pageHeader).toContainText(
-      'Email template'
-    );
-
     await expect(previewEmailTemplatePage.pageHeader).toContainText(
       'test-template-email'
     );
@@ -88,22 +83,6 @@ test.describe('Preview Email message template Page', () => {
         ...props,
         expectedUrl: `templates/edit-email-template/${templates.valid.id}`,
       });
-    });
-
-    test('when user clicks "Who your email will be sent from" tool tips, then tool tips are displayed', async ({
-      page,
-    }) => {
-      const previewEmailTemplatePage = new TemplateMgmtPreviewEmailPage(page);
-
-      await previewEmailTemplatePage.loadPage(templates.valid.id);
-
-      await previewEmailTemplatePage.whoYourEmailWillBeSentFrom.click({
-        position: { x: 0, y: 0 },
-      });
-
-      await expect(
-        previewEmailTemplatePage.whoYourEmailWillBeSentFrom
-      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({

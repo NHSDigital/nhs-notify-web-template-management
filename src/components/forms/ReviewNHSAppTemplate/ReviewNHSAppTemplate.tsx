@@ -17,13 +17,13 @@ export function ReviewNHSAppTemplate({
     initialState
   );
 
-  const { name, message } = state;
+  const { message } = state;
 
   const html = renderMarkdown(message);
 
   const {
     components: {
-      reviewNHSAppTemplateContent: { sectionHeading, details, form },
+      reviewNHSAppTemplateContent: { sectionHeading, form },
     },
   } = content;
 
@@ -31,25 +31,22 @@ export function ReviewNHSAppTemplate({
     <div className='nhsuk-grid-row'>
       <BackLink
         href={`${getBasePath()}/edit-nhs-app-template/${initialState.id}`}
-        className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
+        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
       >
         Go back
       </BackLink>
-      <div className='nhsuk-grid-column-two-thirds'>
-        <ReviewTemplate
-          templateName={name}
-          sectionHeading={sectionHeading}
-          details={details}
-          form={{
-            ...form,
-            state,
-            action,
-            formId: 'preview-nhs-app-template',
-            radiosId: 'reviewNHSAppTemplateAction',
-          }}
-          PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
-        />
-      </div>
+      <ReviewTemplate
+        template={initialState}
+        sectionHeading={sectionHeading}
+        form={{
+          ...form,
+          state,
+          action,
+          formId: 'preview-nhs-app-template',
+          radiosId: 'reviewNHSAppTemplateAction',
+        }}
+        PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
+      />
     </div>
   );
 }

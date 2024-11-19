@@ -4,7 +4,7 @@
 import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { EmailTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateStatus, TemplateType } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 
@@ -19,6 +19,7 @@ const initialState: EmailTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.EMAIL,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   subject: 'subject',
   message: 'message',

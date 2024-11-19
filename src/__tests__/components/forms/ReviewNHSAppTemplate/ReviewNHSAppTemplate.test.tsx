@@ -31,6 +31,7 @@ describe('Preview nhs app form renders', () => {
       <ReviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
           validationError: undefined,
+          id: 'template-id',
           name: 'test-template-nhs app',
           message: 'message',
         })}
@@ -50,6 +51,7 @@ describe('Preview nhs app form renders', () => {
               reviewNHSAppTemplateAction: ['Select an option'],
             },
           },
+          id: 'template-id',
           name: 'test-template-nhs app',
           message: 'message',
         })}
@@ -64,6 +66,7 @@ describe('Preview nhs app form renders', () => {
       <ReviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
           validationError: undefined,
+          id: 'template-id',
           name: 'test-template-nhs app',
           message: 'message',
         })}
@@ -92,6 +95,7 @@ describe('Preview nhs app form renders', () => {
       <ReviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
           validationError: undefined,
+          id: 'template-id',
           name: 'test-template-nhs app',
           message,
         })}

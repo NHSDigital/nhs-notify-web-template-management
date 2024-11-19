@@ -5,6 +5,7 @@ import {
   $SMSTemplate,
   $NHSAppTemplate,
   $ChannelTemplate,
+  $SubmittedChannelTemplate,
 } from '@utils/zod-validators';
 
 export type FormId =
@@ -32,6 +33,10 @@ export type SMSTemplate = z.infer<typeof $SMSTemplate>;
 export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
 export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
+
+export type SubmittedChannelTemplate = z.infer<
+  typeof $SubmittedChannelTemplate
+>;
 
 export type Draft<T> = Omit<T, 'id'>;
 

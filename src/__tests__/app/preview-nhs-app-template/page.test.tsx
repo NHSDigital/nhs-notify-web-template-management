@@ -1,7 +1,7 @@
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
 import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
 import { NHSAppTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 
@@ -21,6 +21,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
     };
@@ -82,6 +83,7 @@ describe('PreviewNhsAppTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         version: 1,
         ...value,
       });

@@ -3,7 +3,7 @@ import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import { Template } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -19,6 +19,7 @@ const sendEmailMock = jest.mocked(sendEmail);
 
 const mockNhsAppTemplate = {
   templateType: TemplateType.NHS_APP,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   version: 1,
   name: 'name',
   message: 'body',
@@ -102,6 +103,7 @@ describe('submitTemplate', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       subject: 'subjectLine',
       message: 'body',

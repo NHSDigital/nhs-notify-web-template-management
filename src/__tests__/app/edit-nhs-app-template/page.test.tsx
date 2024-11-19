@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { redirect } from 'next/navigation';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
@@ -23,6 +23,7 @@ describe('EditNhsAppTemplatePage', () => {
       id: 'template-id',
       version: 1,
       templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
     };
@@ -61,6 +62,7 @@ describe('EditNhsAppTemplatePage', () => {
         id: 'template-id',
         version: 1,
         templateType,
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         name: 'name',
         message: 'message',
       });

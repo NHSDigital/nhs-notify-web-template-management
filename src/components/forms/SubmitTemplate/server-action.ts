@@ -5,6 +5,7 @@ import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import { logger } from '@utils/logger';
 import { z } from 'zod';
 import { validateChannelTemplate } from '@utils/validate-template';
+import { TemplateStatus } from '@utils/enum';
 
 const $TemplateIdSchema = z.string();
 
@@ -28,6 +29,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   try {
     await saveTemplate({
       ...validatedTemplate,
+      templateStatus: TemplateStatus.SUBMITTED,
     });
 
     const { name, subject, message } = { subject: null, ...validatedTemplate };

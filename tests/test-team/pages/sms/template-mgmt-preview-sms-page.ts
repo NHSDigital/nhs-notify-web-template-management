@@ -10,8 +10,6 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtBasePage {
 
   public readonly messageText: Locator;
 
-  public readonly whoYourSmsWillBeSentFrom: Locator;
-
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -22,9 +20,6 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtBasePage {
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');
-    this.whoYourSmsWillBeSentFrom = page.locator(
-      '[data-testid="preview-message-details"]'
-    );
   }
 
   async loadPage(templateId: string) {

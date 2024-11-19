@@ -9,7 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template } from '../../helpers/types';
+import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
@@ -19,6 +19,7 @@ const templates = {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     templateType: TemplateType.SMS,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   } as Template,
   valid: {
     ...TemplateFactory.createSmsTemplate('valid-sms-preview-template'),
@@ -57,10 +58,6 @@ test.describe('Preview SMS message template Page', () => {
     await expect(previewSmsTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewSmsTemplatePage.pageHeader).toContainText(
-      'Text message template'
-    );
-
-    await expect(previewSmsTemplatePage.pageHeader).toContainText(
       'test-template-sms'
     );
 
@@ -85,22 +82,6 @@ test.describe('Preview SMS message template Page', () => {
         ...props,
         expectedUrl: `templates/edit-text-message-template/${templates.valid.id}`,
       });
-    });
-
-    test('when user clicks "Who your text message will be sent from" tool tips, then tool tips are displayed', async ({
-      page,
-    }) => {
-      const previewSmsTemplatePage = new TemplateMgmtPreviewSmsPage(page);
-
-      await previewSmsTemplatePage.loadPage(templates.valid.id);
-
-      await previewSmsTemplatePage.whoYourSmsWillBeSentFrom.click({
-        position: { x: 0, y: 0 },
-      });
-
-      await expect(
-        previewSmsTemplatePage.whoYourSmsWillBeSentFrom
-      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create text message template" page is displayed', async ({

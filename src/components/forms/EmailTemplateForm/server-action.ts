@@ -34,6 +34,8 @@ export async function processFormActions(
     };
   }
 
+  delete formState.validationError;
+
   const { emailTemplateName, emailTemplateSubjectLine, emailTemplateMessage } =
     parsedForm.data;
 

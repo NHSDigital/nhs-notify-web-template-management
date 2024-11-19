@@ -4,7 +4,7 @@
 import EditSmsTemplatePage from '@app/edit-text-message-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { SMSTemplate } from '@utils/types';
-import { TemplateType } from '@utils/enum';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 
@@ -19,6 +19,7 @@ const initialState: SMSTemplate = {
   id: 'template-id',
   version: 1,
   templateType: TemplateType.SMS,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: '',
   message: '',
 };

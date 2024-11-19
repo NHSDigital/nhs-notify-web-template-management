@@ -2,7 +2,7 @@ import nav from 'next/navigation';
 import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
 import { render } from '@testing-library/react';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateType } from '@utils/enum';
+import { TemplateStatus, TemplateType } from '@utils/enum';
 
 jest.mock('@utils/form-actions', () => ({
   getTemplate: jest.fn().mockImplementation((templateId: string) => {
@@ -11,6 +11,7 @@ jest.mock('@utils/form-actions', () => ({
         id: 'template-id',
         version: 1,
         templateType: TemplateType.NHS_APP,
+        templateStatus: TemplateStatus.SUBMITTED,
         name: 'template-name',
         message: 'template-message',
       };
