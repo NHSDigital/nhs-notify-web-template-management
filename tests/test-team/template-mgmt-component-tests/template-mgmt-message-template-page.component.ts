@@ -112,11 +112,9 @@ test.describe('Message templates page', () => {
   });
 
   // test placeholders:
-  test('Template item has correct status if it has been has been Unsubmitted', async ({}) => {});
+  test('Template name link navigation - navigates to preview page', async () => {});
 
-  test('Template name link navigation - navigates to preview page', async ({}) => {});
+  test('Copy link navigation - Navigates user to duplicate template type page ', async () => {});
 
-  test('Copy link navigation - Navigates user to duplicate template type page ', async ({}) => {});
-
-  test('Delete link navigation - Navigates user to delete template page ', async ({}) => {});
+  test('Delete link navigation - Navigates user to delete template page ', async () => {});
 });
