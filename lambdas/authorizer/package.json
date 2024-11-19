@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "tsc --outDir ./.build",
+    "build2": "esbuild src/index.ts --bundle --outdir=.build --format=cjs",
     "test:unit": "jest",
     "typecheck": "tsc --listFiles --noEmit"
   },
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.693.0",
+    "esbuild": "^0.24.0",
     "jwt-decode": "^4.0.0",
     "zod": "^3.23.8"
   }
