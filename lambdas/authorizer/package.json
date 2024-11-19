@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "tsc --outDir ./.build src/index.ts",
+    "build": "tsc --outDir ./.build",
     "test:unit": "jest",
     "typecheck": "tsc --listFiles --noEmit"
   },
