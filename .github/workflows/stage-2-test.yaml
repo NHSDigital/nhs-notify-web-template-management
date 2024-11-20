@@ -51,6 +51,7 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
+          (cd lambas/authorizer && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -80,6 +81,7 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
+          (cd lambas/authorizer && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -97,7 +99,7 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
-          npm ci lambdas/authorizer
+          (cd lambas/authorizer && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
