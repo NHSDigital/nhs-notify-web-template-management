@@ -33,7 +33,7 @@ const config: Config = {
   coverageDirectory: './.reports/unit/coverage',
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8',
+  coverageProvider: 'babel',
 
   coverageThreshold: {
     global: {
