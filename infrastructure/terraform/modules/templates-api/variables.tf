@@ -55,8 +55,8 @@ variable "log_retention_in_days" {
 
 variable "cognito_config" {
   type = object({
-    user_pool_id: string,
-    user_pool_client_id: string
+    USER_POOL_ID: string,
+    USER_POOL_CLIENT_ID: string
   })
   description = "Cognito config"
 }
