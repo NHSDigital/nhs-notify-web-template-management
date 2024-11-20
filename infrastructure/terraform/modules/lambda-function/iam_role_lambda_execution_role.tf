@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_execution_role" {
-  name               = "${var.function_name}-execution-role"
+  name               = var.function_name
   description        = "IAM Role for Lambda function ${var.function_name}"
   assume_role_policy = data.aws_iam_policy_document.lambda_service_trust_policy.json
 }
