@@ -56,7 +56,7 @@ export const SmsTemplateForm: FC<
         <h1 data-testid='page-heading'>{content.pageHeading}</h1>
         <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
           <div className={templateNameError && 'nhsuk-form-group--error'}>
-            <Label htmlFor='smsTemplateName'>
+            <Label htmlFor='smsTemplateName' size='s'>
               {content.templateNameLabelText}
             </Label>
             <HintText>{content.templateNameHintText}</HintText>
@@ -72,6 +72,7 @@ export const SmsTemplateForm: FC<
           <Textarea
             id='smsTemplateMessage'
             label={content.templateMessageLabelText}
+            labelProps={{ size: 's' }}
             defaultValue={smsTemplateMessage}
             onChange={smsTemplateMessageHandler}
             maxLength={MAX_SMS_CHARACTER_LENGTH}
@@ -94,7 +95,7 @@ export const SmsTemplateForm: FC<
               href={content.smsPricingLink}
               data-testid='sms-pricing-link'
               target='_blank'
-              rel='noreferrer'
+              rel='noopener noreferrer'
             >
               {content.smsPricingText}
             </a>

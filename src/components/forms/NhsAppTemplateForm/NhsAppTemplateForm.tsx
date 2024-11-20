@@ -65,7 +65,9 @@ export const NhsAppTemplateForm: FC<
             {pageHeading}
           </h1>
           <div className={templateNameError && 'nhsuk-form-group--error'}>
-            <Label htmlFor='nhsAppTemplateName'>{templateNameLabelText}</Label>
+            <Label htmlFor='nhsAppTemplateName' size='s'>
+              {templateNameLabelText}
+            </Label>
             <HintText>{templateNameHintText}</HintText>
             <TemplateNameGuidance template={TemplateType.NHS_APP} />
             <TextInput
@@ -78,6 +80,7 @@ export const NhsAppTemplateForm: FC<
           </div>
           <Textarea
             label={templateMessageLabelText}
+            labelProps={{ size: 's' }}
             id='nhsAppTemplateMessage'
             maxLength={5000}
             rows={10}
