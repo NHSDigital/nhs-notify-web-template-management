@@ -21,7 +21,11 @@ export function MessageTemplates({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
-        <Table caption={manageTemplatesContent.listOfTemplates} responsive>
+        <Table
+          caption={manageTemplatesContent.listOfTemplates}
+          data-testid='manage-template-table'
+          responsive
+        >
           <Table.Head role='rowgroup'>
             <Table.Row>
               <Table.Cell>

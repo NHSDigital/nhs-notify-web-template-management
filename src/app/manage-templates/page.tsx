@@ -1,3 +1,5 @@
+'use server';
+
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
@@ -7,7 +9,8 @@ import { getTemplates } from '@utils/form-actions';
 const manageTemplatesContent = content.pages.manageTemplates;
 
 export default async function ManageTemplatesPage() {
-  const availableTemplateList: Template[] | undefined = await getTemplates();
+  const availableTemplateList: Template[] | [] = await getTemplates();
+
   return (
     <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
       <div className='nhsuk-grid-column-full'>
@@ -22,7 +25,9 @@ export default async function ManageTemplatesPage() {
         {availableTemplateList && availableTemplateList.length > 0 ? (
           <MessageTemplates availableTemplateList={availableTemplateList} />
         ) : (
-          <p>{manageTemplatesContent.emptyTemplates}</p>
+          <p data-testid='no-templates-available'>
+            {manageTemplatesContent.emptyTemplates}
+          </p>
         )}
       </div>
     </div>
