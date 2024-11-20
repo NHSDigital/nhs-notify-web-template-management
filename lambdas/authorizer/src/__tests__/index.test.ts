@@ -41,11 +41,18 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
 });
 const warnMock = jest.spyOn(logger, 'warn');
 const errorMock = jest.spyOn(logger, 'error');
-jest.mock('jwks-rsa', () => () => ({
-    getSigningKey: () => ({
-      getPublicKey: () => 'key'
-    })
-}));
+
+jest.mock('jwks-rsa', () => {
+  const getPublicKey = () => 'key';
+
+  const getSigningKey = () => ({
+    getPublicKey,
+  });
+
+  const jwksClient = { getSigningKey };
+
+  return () => jwksClient;
+});
 
 const allowPolicy = {
   principalId: 'api-caller',
@@ -118,7 +125,8 @@ test('returns Deny policy on malformed token', async () => {
   expect(res).toEqual(denyPolicy);
   expect(errorMock).toHaveBeenCalledWith(
     expect.objectContaining({
-      message: 'Invalid token specified: invalid base64 for part #1 (base64 string is not of the correct length)',
+      message:
+        'Invalid token specified: invalid base64 for part #1 (base64 string is not of the correct length)',
     })
   );
 });
@@ -130,7 +138,7 @@ test('returns Deny policy on token with missing kid', async () => {
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
     },
-    'key',
+    'key'
   );
 
   const res = await handler(
@@ -144,9 +152,7 @@ test('returns Deny policy on token with missing kid', async () => {
   );
 
   expect(res).toEqual(denyPolicy);
-  expect(warnMock).toHaveBeenCalledWith(
-    'Authorization token missing kid'
-  );
+  expect(warnMock).toHaveBeenCalledWith('Authorization token missing kid');
 });
 
 test('returns Deny policy on token with incorrect client_id claim', async () => {
@@ -159,7 +165,7 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(
@@ -188,7 +194,7 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(
@@ -204,7 +210,8 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
   expect(res).toEqual(denyPolicy);
   expect(errorMock).toHaveBeenCalledWith(
     expect.objectContaining({
-      message: 'jwt issuer invalid. expected: https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      message:
+        'jwt issuer invalid. expected: https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
     })
   );
 });
@@ -219,7 +226,7 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(
@@ -250,7 +257,7 @@ test('returns Deny policy on Cognito not validating the token', async () => {
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(
@@ -281,7 +288,7 @@ test('returns Allow policy on valid token', async () => {
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(
@@ -305,12 +312,12 @@ test('returns Deny policy on expired token', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-      exp: 1640995200,
+      exp: 1_640_995_200,
     },
     'key',
     {
       keyid: 'key-id',
-    },
+    }
   );
 
   const res = await handler(

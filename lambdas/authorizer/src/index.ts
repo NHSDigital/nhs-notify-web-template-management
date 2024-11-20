@@ -7,9 +7,9 @@ import {
   GetUserCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { jwtDecode } from 'jwt-decode';
-import { verify,  } from 'jsonwebtoken';
-import { logger } from './logger';
+import { verify } from 'jsonwebtoken';
 import getJwksClient from 'jwks-rsa';
+import { logger } from './logger';
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: 'eu-west-2',
@@ -53,12 +53,12 @@ export const handler: APIGatewayTokenAuthorizerHandler = async ({
     const issuer = `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`;
 
     const jwksClient = getJwksClient({
-      jwksUri: `${issuer}/.well-known/jwks.json`
+      jwksUri: `${issuer}/.well-known/jwks.json`,
     });
 
     const decodedToken = jwtDecode(authorizationToken, { header: true });
 
-    const kid = decodedToken.kid;
+    const { kid } = decodedToken;
 
     if (!kid) {
       logger.warn('Authorization token missing kid');
@@ -71,10 +71,8 @@ export const handler: APIGatewayTokenAuthorizerHandler = async ({
       issuer,
     });
 
-    const {
-      client_id: clientId,
-      token_use: tokenUse,
-    } = $AccessToken.parse(verifiedToken);
+    const { client_id: clientId, token_use: tokenUse } =
+      $AccessToken.parse(verifiedToken);
 
     // client_id claim
     if (clientId !== userPoolClientId) {
