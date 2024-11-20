@@ -15,7 +15,7 @@ export const LineBreaksAndParagraphs = () => (
       <code>
         {lineBreaksAndParagraphs.codeBlockText.map(({ id, item }) => (
           <span className={styles.inlineText} key={id}>
-            {item}
+            {item}&nbsp;&nbsp;
           </span>
         ))}
       </code>

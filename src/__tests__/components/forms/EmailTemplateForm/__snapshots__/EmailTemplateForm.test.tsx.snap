@@ -78,7 +78,7 @@ exports[`renders page one error 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create Email message template
+          Create email template
         </h1>
         <div
           class="border"
@@ -336,17 +336,17 @@ exports[`renders page one error 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
@@ -644,7 +644,7 @@ exports[`renders page with multiple errors 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create Email message template
+          Create email template
         </h1>
         <div
           class="border"
@@ -928,17 +928,17 @@ exports[`renders page with multiple errors 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
@@ -1197,7 +1197,7 @@ exports[`renders page with preloaded field values 1`] = `
           class="nhsuk-heading-xl"
           data-testid="page-heading"
         >
-          Create Email message template
+          Create email template
         </h1>
         <div
           class="border"
@@ -1443,17 +1443,17 @@ exports[`renders page with preloaded field values 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
