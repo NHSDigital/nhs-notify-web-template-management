@@ -1,7 +1,13 @@
+// eslint-disable no-console
+
 import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
 import { z } from 'zod';
-import { CognitoIdentityProviderClient, GetUserCommand, GetUserCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
+import {
+  CognitoIdentityProviderClient,
+  GetUserCommand,
+} from '@aws-sdk/client-cognito-identity-provider';
 import { jwtDecode } from 'jwt-decode';
+import { logger } from './logger';
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: 'eu-west-2',
@@ -27,47 +33,63 @@ const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
   },
 });
 
-export const handler: APIGatewayTokenAuthorizerHandler = async ({ methodArn, authorizationToken }) => {
+const getEnvironmentVariable = (envName: string) => process.env[envName];
 
+export const handler: APIGatewayTokenAuthorizerHandler = async ({
+  methodArn,
+  authorizationToken,
+}) => {
   try {
-    const userPoolId = process.env.USER_POOL_ID;
-    const userPoolClientId = process.env.USER_POOL_CLIENT_ID;
+    const userPoolId = getEnvironmentVariable('USER_POOL_ID');
+    const userPoolClientId = getEnvironmentVariable('USER_POOL_CLIENT_ID');
 
     if (!userPoolId || !userPoolClientId) {
-      console.error('Lambda misconfiguration');
+      logger.error('Lambda misconfiguration');
       return generatePolicy(methodArn, 'Deny');
     }
 
     const decodedToken = jwtDecode(authorizationToken);
 
-    const { client_id, iss, token_use } = $AccessToken.parse(decodedToken);
+    const {
+      client_id: clientId,
+      iss,
+      token_use: tokenUse,
+    } = $AccessToken.parse(decodedToken);
 
     // client_id claim
-    if (client_id !== userPoolClientId) {
-      console.warn(`Token has invalid client ID, expected ${userPoolClientId} but received ${client_id}`);
+    if (clientId !== userPoolClientId) {
+      logger.warn(
+        `Token has invalid client ID, expected ${userPoolClientId} but received ${clientId}`
+      );
       return generatePolicy(methodArn, 'Deny');
     }
 
     // iss claim
     if (iss !== `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`) {
-      console.warn(`Token has invalid issuer, expected ${userPoolId} but received ${iss}`);
+      logger.warn(
+        `Token has invalid issuer, expected https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId} but received ${iss}`
+      );
       return generatePolicy(methodArn, 'Deny');
     }
 
     // token_use claim
-    if (token_use !== 'access') {
-      console.warn(`Token has invalid token_use, expected access but received ${token_use}`);
+    if (tokenUse !== 'access') {
+      logger.warn(
+        `Token has invalid token_use, expected access but received ${tokenUse}`
+      );
       return generatePolicy(methodArn, 'Deny');
     }
 
     // cognito SDK call
-    await cognitoClient.send(new GetUserCommand({
-      AccessToken: authorizationToken,
-    }));
+    await cognitoClient.send(
+      new GetUserCommand({
+        AccessToken: authorizationToken,
+      })
+    );
 
     return generatePolicy(methodArn, 'Allow');
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    logger.error(error);
     return generatePolicy(methodArn, 'Deny');
   }
 };

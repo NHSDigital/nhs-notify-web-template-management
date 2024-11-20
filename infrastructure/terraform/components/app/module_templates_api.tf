@@ -9,5 +9,5 @@ module "templates_api" {
   csi                   = local.csi
   log_retention_in_days = var.log_retention_in_days
 
-  cognito_config        = jsondecode(aws_ssm_parameter.cognito_config.value)
+  cognito_config        = jsondecode(data.aws_ssm_parameter.cognito_config.value)
 }
