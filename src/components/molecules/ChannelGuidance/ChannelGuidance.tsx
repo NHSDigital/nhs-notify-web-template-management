@@ -1,6 +1,5 @@
 import { TemplateType } from '@utils/enum';
 import { channelGuidanceContent } from '@content/content';
-import Link from 'next/link';
 
 export type TemplateTypeNoLetters = Exclude<TemplateType, TemplateType.LETTER>;
 
