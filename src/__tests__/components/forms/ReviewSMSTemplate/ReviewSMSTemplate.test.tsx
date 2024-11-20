@@ -3,7 +3,7 @@
 import { render, screen } from '@testing-library/react';
 import { ReviewSMSTemplate, renderMarkdown } from '@forms/ReviewSMSTemplate';
 import { mockDeep } from 'jest-mock-extended';
-import { TemplateFormState } from '@utils/types';
+import { SMSTemplate, TemplateFormState } from '@utils/types';
 
 jest.mock('@forms/ReviewSMSTemplate/server-actions');
 
@@ -26,11 +26,11 @@ describe('Preview sms form renders', () => {
   it('matches snapshot', () => {
     const container = render(
       <ReviewSMSTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          smsTemplateName: 'test-template-sms',
-          smsTemplateMessage: 'message',
-          id: 'session-id',
+          name: 'test-template-sms',
+          message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -41,16 +41,16 @@ describe('Preview sms form renders', () => {
   it('matches error snapshot', () => {
     const container = render(
       <ReviewSMSTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
               reviewSMSTemplateAction: ['Select an option'],
             },
           },
-          smsTemplateName: 'test-template-sms',
-          smsTemplateMessage: 'message',
-          id: 'session-id',
+          name: 'test-template-sms',
+          message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -61,11 +61,11 @@ describe('Preview sms form renders', () => {
   it('renders component correctly', () => {
     render(
       <ReviewSMSTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          smsTemplateName: 'test-template-sms',
-          smsTemplateMessage: 'message',
-          id: 'session-id',
+          name: 'test-template-sms',
+          message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -90,11 +90,11 @@ describe('Preview sms form renders', () => {
 
     render(
       <ReviewSMSTemplate
-        initialState={mockDeep<TemplateFormState>({
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          smsTemplateName: 'test-template-sms',
-          smsTemplateMessage: message,
-          id: 'session-id',
+          name: 'test-template-sms',
+          message,
+          id: 'template-id',
         })}
       />
     );

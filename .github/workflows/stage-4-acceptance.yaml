@@ -150,6 +150,7 @@ jobs:
           path: "tests/test-team/playwright-report"
   environment-tear-down:
     name: "Environment tear down"
+    if: success() || failure()
     runs-on: ubuntu-latest
     needs: [test-accessibility, test-ui-component]
     environment: dev

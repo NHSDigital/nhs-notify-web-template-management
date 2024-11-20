@@ -3,60 +3,50 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
-import { PageComponentProps } from '@utils/types';
+import { EmailTemplate, PageComponentProps } from '@utils/types';
 import { useFormState } from 'react-dom';
-import Link from 'next/link';
-import { ChevronLeftIcon } from 'nhsuk-react-components';
+import { getBasePath } from '@utils/get-base-path';
+import { BackLink } from 'nhsuk-react-components';
 import { renderMarkdown, reviewEmailTemplateAction } from './server-actions';
 
 export function ReviewEmailTemplate({
   initialState,
-}: Readonly<PageComponentProps>) {
+}: Readonly<PageComponentProps<EmailTemplate>>) {
   const {
     components: {
-      reviewEmailTemplateContent: { sectionHeading, details, form },
+      reviewEmailTemplateContent: { sectionHeading, form },
     },
   } = content;
 
   const [state, action] = useFormState(reviewEmailTemplateAction, initialState);
 
-  const templateName = initialState.emailTemplateName!;
-  const templateSubjectLine = initialState.emailTemplateSubjectLine!;
-  const templateMessage = initialState.emailTemplateMessage!;
+  const templateSubjectLine = initialState.subject;
+  const templateMessage = initialState.message;
 
   const html = renderMarkdown(templateMessage);
 
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-back-link nhsuk-u-margin-bottom-6 nhsuk-u-margin-left-3'>
-        <Link
-          href={`/create-email-template/${initialState.id}`}
-          className='nhsuk-back-link__link'
-        >
-          <ChevronLeftIcon />
-          Go back
-        </Link>
-      </div>
-      <div className='nhsuk-grid-column-two-thirds'>
-        <ReviewTemplate
-          templateName={templateName}
-          sectionHeading={sectionHeading}
-          details={details}
-          form={{
-            ...form,
-            state,
-            action,
-            formId: 'review-email-template',
-            radiosId: 'reviewEmailTemplateAction',
-          }}
-          PreviewComponent={
-            <PreviewTemplate.Email
-              subject={templateSubjectLine}
-              message={html}
-            />
-          }
-        />
-      </div>
+      <BackLink
+        href={`${getBasePath()}/edit-email-template/${initialState.id}`}
+        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
+      >
+        Go back
+      </BackLink>
+      <ReviewTemplate
+        template={initialState}
+        sectionHeading={sectionHeading}
+        form={{
+          ...form,
+          state,
+          action,
+          formId: 'review-email-template',
+          radiosId: 'reviewEmailTemplateAction',
+        }}
+        PreviewComponent={
+          <PreviewTemplate.Email subject={templateSubjectLine} message={html} />
+        }
+      />
     </div>
   );
 }

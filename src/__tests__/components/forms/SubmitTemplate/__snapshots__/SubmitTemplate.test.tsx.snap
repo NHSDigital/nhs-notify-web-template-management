@@ -10,7 +10,7 @@ exports[`SubmitTemplate component should render 1`] = `
     >
       <a
         class="nhsuk-back-link__link nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3"
-        href="/templates/example/session-id"
+        href="/templates/example/template-id"
       >
         <svg
           aria-hidden="true"
@@ -87,10 +87,10 @@ exports[`SubmitTemplate component should render 1`] = `
           value="submit-template-form"
         />
         <input
-          name="sessionId"
+          name="templateId"
           readonly=""
           type="hidden"
-          value="session-id"
+          value="template-id"
         />
         <button
           aria-disabled="false"

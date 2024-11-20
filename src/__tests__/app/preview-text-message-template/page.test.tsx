@@ -1,99 +1,100 @@
-import PreviewSMSTemplatePage from '@app/preview-text-message-template/[sessionId]/page';
+import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
 import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
-import { TemplateType } from '@utils/types';
+import { SMSTemplate } from '@utils/types';
+import { TemplateType, TemplateStatus } from '@utils/enum';
 import { redirect } from 'next/navigation';
-import { getSession } from '@utils/form-actions';
+import { getTemplate } from '@utils/form-actions';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/ReviewSMSTemplate');
+jest.mock('@utils/logger');
 
 const redirectMock = jest.mocked(redirect);
-const getSessionMock = jest.mocked(getSession);
+const getTemplateMock = jest.mocked(getTemplate);
 
 describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const state = {
-      id: 'session-id',
+    const state: SMSTemplate = {
+      id: 'template-id',
+      version: 1,
       templateType: TemplateType.SMS,
-      smsTemplateName: 'template-name',
-      smsTemplateMessage: 'template-message',
-      nhsAppTemplateMessage: '',
-      nhsAppTemplateName: '',
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'template-name',
+      message: 'template-message',
     };
 
-    getSessionMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce(state);
 
     const page = await PreviewSMSTemplatePage({
       params: {
-        sessionId: 'session-id',
+        templateId: 'template-id',
       },
     });
 
     expect(page).toEqual(<ReviewSMSTemplate initialState={state} />);
   });
 
-  it('should redirect to invalid-session when no session is found', async () => {
+  it('should redirect to invalid-template when no template is found', async () => {
     await PreviewSMSTemplatePage({
       params: {
-        sessionId: 'session-id',
+        templateId: 'template-id',
       },
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test.each([
     {
       templateType: TemplateType.LETTER,
-      smsTemplateName: 'valid-name',
-      smsTemplateMessage: 'valid-message',
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.EMAIL,
-      smsTemplateName: 'valid-name',
-      smsTemplateMessage: 'valid-message',
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.NHS_APP,
-      smsTemplateName: 'valid-name',
-      smsTemplateMessage: 'valid-message',
+      name: 'template-name',
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      smsTemplateName: 'name-1',
-      smsTemplateMessage: undefined,
+      name: 'template-name',
+      message: undefined as unknown as string,
     },
     {
       templateType: TemplateType.SMS,
-      smsTemplateName: undefined,
-      smsTemplateMessage: 'message-1',
+      name: undefined as unknown as string,
+      message: 'template-message',
     },
     {
       templateType: TemplateType.SMS,
-      // Note: We have need this casting because Session type does not have a null typing
-      smsTemplateName: null as unknown as string,
-      smsTemplateMessage: null as unknown as string,
+      name: null as unknown as string,
+      message: null as unknown as string,
     },
   ])(
-    'should redirect to invalid-session when session template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
+    'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
     async (value) => {
-      getSessionMock.mockResolvedValueOnce({
-        id: 'session-id',
-        nhsAppTemplateMessage: '',
-        nhsAppTemplateName: '',
+      getTemplateMock.mockResolvedValueOnce({
+        id: 'template-id',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        version: 1,
         ...value,
       });
 
       await PreviewSMSTemplatePage({
         params: {
-          sessionId: 'session-id',
+          templateId: 'template-id',
         },
       });
 
-      expect(redirectMock).toHaveBeenCalledWith('/invalid-session', 'replace');
+      expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
 });

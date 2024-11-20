@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import SessionStorageHelper from '../../helpers/session-storage-helper';
+import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewNhsAppPage } from '../../pages/nhs-app/template-mgmt-preview-nhs-app-page';
-import { SessionFactory } from '../../helpers/session-factory';
+import { TemplateFactory } from '../../helpers/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -9,27 +9,36 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
+import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
 
-const sessions = {
-  empty: SessionFactory.createNhsAppSession('empty-nhs-app-preview-session'),
+const templates = {
+  empty: {
+    __typename: 'TemplateStorage',
+    id: 'preview-page-invalid-nhs-app-template',
+    version: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  } as Template,
   valid: {
-    ...SessionFactory.createNhsAppSession('valid-nhs-app-preview-session'),
-    nhsAppTemplateName: 'test-template-nhs-app',
-    nhsAppTemplateMessage: 'test-template-message',
+    ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-preview-template'),
+    name: 'test-template-nhs-app',
+    message: 'test-template-message',
   },
 };
 
 test.describe('Preview NHS App template Page', () => {
-  const sessionStorageHelper = new SessionStorageHelper(
-    Object.values(sessions)
+  const templateStorageHelper = new TemplateStorageHelper(
+    Object.values(templates)
   );
 
   test.beforeAll(async () => {
-    await sessionStorageHelper.seedSessionData();
+    await templateStorageHelper.seedTemplateData();
   });
 
   test.afterAll(async () => {
-    await sessionStorageHelper.deleteSessionData();
+    await templateStorageHelper.deleteTemplateData();
   });
 
   test('when user visits page, then page is loaded', async ({
@@ -38,19 +47,15 @@ test.describe('Preview NHS App template Page', () => {
   }) => {
     const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-    await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
+    await previewNhsAppTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-nhs-app-template/${sessions.valid.id}`
+      `${baseURL}/templates/preview-nhs-app-template/${templates.valid.id}`
     );
 
     await expect(previewNhsAppTemplatePage.editRadioOption).not.toBeChecked();
 
     await expect(previewNhsAppTemplatePage.submitRadioOption).not.toBeChecked();
-
-    await expect(previewNhsAppTemplatePage.pageHeader).toContainText(
-      'NHS App message template'
-    );
 
     await expect(previewNhsAppTemplatePage.pageHeader).toContainText(
       'test-template-nhs-app'
@@ -65,7 +70,7 @@ test.describe('Preview NHS App template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewNhsAppPage(page),
-        id: sessions.valid.id,
+        id: templates.valid.id,
         baseURL,
       };
 
@@ -75,26 +80,8 @@ test.describe('Preview NHS App template Page', () => {
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
-        expectedUrl: `templates/create-nhs-app-template/${sessions.valid.id}`,
+        expectedUrl: `templates/edit-nhs-app-template/${templates.valid.id}`,
       });
-    });
-
-    test('when user clicks "Who your NHS App notification will be sent from" tool tips, then tool tips are displayed', async ({
-      page,
-    }) => {
-      const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
-
-      await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
-
-      await previewNhsAppTemplatePage.whoYourNhsAppNotificationWillBeSentFrom.click(
-        {
-          position: { x: 0, y: 0 },
-        }
-      );
-
-      await expect(
-        previewNhsAppTemplatePage.whoYourNhsAppNotificationWillBeSentFrom
-      ).toHaveAttribute('open');
     });
 
     test('when user submits form with "Edit" data, then the "Create NHS App message template" page is displayed', async ({
@@ -103,14 +90,14 @@ test.describe('Preview NHS App template Page', () => {
     }) => {
       const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-      await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
+      await previewNhsAppTemplatePage.loadPage(templates.valid.id);
 
       await previewNhsAppTemplatePage.editRadioOption.click();
 
       await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/create-nhs-app-template/${sessions.valid.id}`
+        `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
       );
     });
 
@@ -120,39 +107,39 @@ test.describe('Preview NHS App template Page', () => {
     }) => {
       const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-      await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
+      await previewNhsAppTemplatePage.loadPage(templates.valid.id);
 
       await previewNhsAppTemplatePage.submitRadioOption.click();
 
       await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-nhs-app-template/${sessions.valid.id}`
+        `${baseURL}/templates/submit-nhs-app-template/${templates.valid.id}`
       );
     });
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with missing data, then an invalid session error is displayed', async ({
+    test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-      await previewNhsAppTemplatePage.loadPage(sessions.empty.id);
+      await previewNhsAppTemplatePage.loadPage(templates.empty.id);
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
-    test('when user visits page with a fake session, then an invalid session error is displayed', async ({
+    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
       baseURL,
       page,
     }) => {
       const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-      await previewNhsAppTemplatePage.loadPage('/fake-session-id');
+      await previewNhsAppTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-session`);
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when user submits page with no data, then an error is displayed', async ({
@@ -162,7 +149,7 @@ test.describe('Preview NHS App template Page', () => {
 
       const previewNhsAppTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
 
-      await previewNhsAppTemplatePage.loadPage(sessions.valid.id);
+      await previewNhsAppTemplatePage.loadPage(templates.valid.id);
 
       await previewNhsAppTemplatePage.clickContinueButton();
 
