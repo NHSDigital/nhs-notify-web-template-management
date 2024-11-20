@@ -287,6 +287,45 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about text messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Text message length and pricing (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/delivery-times"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -623,6 +662,45 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about text messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Text message length and pricing (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/delivery-times"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -973,6 +1051,45 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about text messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Text message length and pricing (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/delivery-times"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -1265,6 +1382,45 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about text messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/pricing/text-messages"
+            target="_blank"
+          >
+            Text message length and pricing (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="https://notify.nhs.uk/using-nhs-notify/delivery-times"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>

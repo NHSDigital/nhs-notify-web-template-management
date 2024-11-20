@@ -22,6 +22,7 @@ import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createSmsTemplatePageContent as content } from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
+import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
@@ -106,6 +107,7 @@ export const SmsTemplateForm: FC<
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
         <MessageFormatting template={TemplateType.SMS} />
+        <ChannelGuidance template={TemplateType.SMS} />
       </div>
     </div>
   );

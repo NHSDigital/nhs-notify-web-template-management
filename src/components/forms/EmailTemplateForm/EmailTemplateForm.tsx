@@ -24,6 +24,7 @@ import { TemplateType } from '@utils/enum';
 import { createEmailTemplatePageContent } from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
+import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
@@ -125,6 +126,7 @@ export const EmailTemplateForm: FC<
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
         <MessageFormatting template={TemplateType.EMAIL} />
+        <ChannelGuidance template={TemplateType.EMAIL} />
       </div>
     </div>
   );
