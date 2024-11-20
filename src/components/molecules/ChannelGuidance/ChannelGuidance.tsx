@@ -18,9 +18,13 @@ export function ChannelGuidance({ template }: ChannelGuidanceType) {
       <ul style={{ listStyleType: 'none', padding: 0 }}>
         {channelGuidanceContent[template].guidanceLinks.map((guidanceLink) => (
           <li className='nhsuk-u-margin-bottom-3' key={guidanceLink.text}>
-            <Link href={guidanceLink.link} target='_blank'>
+            <a
+              href={guidanceLink.link}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
               {guidanceLink.text}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

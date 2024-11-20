@@ -360,15 +360,15 @@ export const channelGuidanceContent = {
     guidanceLinks: [
       {
         text: 'NHS App messages (opens in a new tab)',
-        link: 'https://notify.nhs.uk/features/nhs-app-messages',
+        link: '/features/nhs-app-messages',
       },
       {
         text: 'Sender IDs (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
       },
       {
         text: 'Delivery times (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/delivery-times',
+        link: '/using-nhs-notify/delivery-times',
       },
     ],
   },
@@ -377,15 +377,15 @@ export const channelGuidanceContent = {
     guidanceLinks: [
       {
         text: 'Email messages (opens in a new tab)',
-        link: 'https://notify.nhs.uk/features/emails',
+        link: '/features/emails',
       },
       {
         text: 'From and reply-to addresses (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
       },
       {
         text: 'Delivery times (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/delivery-times',
+        link: '/using-nhs-notify/delivery-times',
       },
     ],
   },
@@ -394,15 +394,15 @@ export const channelGuidanceContent = {
     guidanceLinks: [
       {
         text: 'Text message length and pricing (opens in a new tab)',
-        link: 'https://notify.nhs.uk/pricing/text-messages',
+        link: '/pricing/text-messages',
       },
       {
         text: 'Sender IDs (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
       },
       {
         text: 'Delivery times (opens in a new tab)',
-        link: 'https://notify.nhs.uk/using-nhs-notify/delivery-times',
+        link: '/using-nhs-notify/delivery-times',
       },
     ],
   },
