@@ -94,7 +94,7 @@ export const SmsTemplateForm: FC<
               href={content.smsPricingLink}
               data-testid='sms-pricing-link'
               target='_blank'
-              rel='noreferrer'
+              rel='noopener noreferrer'
             >
               {content.smsPricingText}
             </a>

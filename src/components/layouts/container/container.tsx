@@ -5,11 +5,7 @@ export async function NHSNotifyContainer({
 }) {
   return (
     <div className='nhsuk-width-container'>
-      <main
-        className='nhsuk-main-wrapper nhsuk-u-padding-top-4'
-        id='maincontent'
-        role='main'
-      >
+      <main className='nhsuk-main-wrapper' id='maincontent' role='main'>
         {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? (
           <h1>Coming soon</h1>
         ) : (
