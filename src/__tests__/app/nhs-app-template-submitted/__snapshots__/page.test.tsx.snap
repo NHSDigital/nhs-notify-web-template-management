@@ -66,6 +66,7 @@ exports[`NhsAppTemplateSubmittedPage 1`] = `
         <a
           href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
           id="servicenow-link"
+          rel="noopener noreferrer"
           target="_blank"
         >
           raise a request with the service desk (opens in a new tab).

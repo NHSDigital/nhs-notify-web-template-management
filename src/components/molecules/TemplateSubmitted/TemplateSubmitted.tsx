@@ -57,6 +57,7 @@ export const TemplateSubmitted = ({
             id='servicenow-link'
             href='https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5'
             target='_blank'
+            rel='noopener noreferrer'
           >
             {liveLinkText}
           </Link>
