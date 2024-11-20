@@ -361,7 +361,7 @@ export const createNhsAppTemplatePageContent = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const createEmailTemplatePageContent = {
@@ -371,7 +371,7 @@ export const createEmailTemplatePageContent = {
   templateSubjectLineLabelText: 'Subject line',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const templateSubmittedPageContent = {
@@ -401,7 +401,7 @@ export const createSmsTemplatePageContent = {
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 const content = {

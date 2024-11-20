@@ -164,7 +164,7 @@ test.describe('Create Email message template Page', () => {
         'This is an email message'
       );
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-email-template/${templates.submit.id}`
@@ -172,6 +172,7 @@ test.describe('Create Email message template Page', () => {
     });
 
     test('when user submits form with valid data and returns, then form fields retain previous data', async ({
+      baseURL,
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
@@ -188,9 +189,16 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill(templateMessage);
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/preview-email-template/${templates.submitAndReturn.id}`
+      );
+
+      await page
+        .locator('.nhsuk-back-link__link')
+        .and(page.getByText('Go back'))
+        .click();
 
       await expect(createEmailTemplatePage.nameInput).toHaveValue(templateName);
 
@@ -234,7 +242,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage(templates.empty.id);
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       await expect(createEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -276,7 +284,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailNameErrorLink = createEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -302,7 +310,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailSubjectLineErrorLink =
         createEmailTemplatePage.errorSummary.locator(
@@ -331,7 +339,7 @@ test.describe('Create Email message template Page', () => {
         'template-subject-line'
       );
 
-      await createEmailTemplatePage.clickContinueButton();
+      await createEmailTemplatePage.clickSubmitButton();
 
       const emailMessageErrorLink =
         createEmailTemplatePage.errorSummary.locator(
