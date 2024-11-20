@@ -97,6 +97,7 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
+          npm ci lambdas/authorizer
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
