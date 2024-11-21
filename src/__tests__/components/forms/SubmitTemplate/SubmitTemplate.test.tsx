@@ -15,7 +15,7 @@ describe('SubmitTemplate component', () => {
   it('should render', () => {
     const container = render(
       <SubmitTemplate
-        sessionId='session-id'
+        templateId='template-id'
         templateName='template-name'
         goBackPath='example'
         submitPath='example-submit'

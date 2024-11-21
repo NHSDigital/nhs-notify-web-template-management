@@ -3,6 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
+import { TemplateStatus, TemplateType } from '@utils/enum';
 import { renderMarkdown } from './server-actions';
 
 export type ReviewLetterTemplateProps = {
@@ -12,13 +13,12 @@ export type ReviewLetterTemplateProps = {
 };
 
 export function ReviewLetterTemplate({
-  templateName,
   heading,
   bodyText,
 }: Readonly<ReviewLetterTemplateProps>) {
   const {
     components: {
-      reviewLetterTemplateContent: { sectionHeading, details, form },
+      reviewLetterTemplateContent: { sectionHeading, form },
     },
   } = content;
 
@@ -26,9 +26,15 @@ export function ReviewLetterTemplate({
 
   return (
     <ReviewTemplate
-      templateName={templateName}
+      template={{
+        templateType: TemplateType.LETTER,
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        version: 1,
+        id: 'id',
+        name: 'name',
+        message: 'message',
+      }}
       sectionHeading={sectionHeading}
-      details={details}
       form={{
         ...form,
         action: '',

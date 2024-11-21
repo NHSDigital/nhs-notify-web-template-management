@@ -1,21 +1,11 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/[sessionId]/page';
+import ChooseATemplateTypePage from '@app/choose-a-template-type/page';
 import { TemplateFormState } from '@utils/types';
-import nav from 'next/navigation';
-
-const mockSessionSupplier = {
-  mockSession: {} as unknown,
-};
-
-jest.mock('@utils/form-actions', () => ({
-  getSession: () => Promise.resolve(mockSessionSupplier.mockSession),
-}));
 
 jest.mock('next/navigation', () => ({
   redirect: () => {
     throw new Error('Simulated redirect');
   },
-  useRouter: () => {},
 
   RedirectType: {
     push: 'push',
@@ -39,35 +29,9 @@ jest.mock('react-dom', () => {
 });
 
 test('ChooseATemplateTypePage', async () => {
-  mockSessionSupplier.mockSession = {
-    id: 'session-id',
-    templateType: 'UNKNOWN',
-    nhsAppTemplateName: '',
-    nhsAppTemplateMessage: '',
-  };
-
-  const page = await ChooseATemplateTypePage({
-    params: {
-      sessionId: 'session-id',
-    },
-  });
+  const page = await ChooseATemplateTypePage();
 
   const container = render(page);
 
   expect(container.asFragment()).toMatchSnapshot();
-});
-
-test('ChooseATemplateTypePage - should handle invalid session', async () => {
-  mockSessionSupplier.mockSession = undefined;
-  const redirectSpy = jest.spyOn(nav, 'redirect');
-
-  await expect(
-    ChooseATemplateTypePage({
-      params: {
-        sessionId: 'session-id',
-      },
-    })
-  ).rejects.toThrow('Simulated redirect');
-
-  expect(redirectSpy).toHaveBeenCalledWith('/invalid-session', 'replace');
 });

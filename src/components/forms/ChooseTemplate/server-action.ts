@@ -1,44 +1,43 @@
-import { zodValidationServerAction } from '@utils/zod-validation-server-action';
-import { TemplateFormState, TemplateType } from '@utils/types';
+import { redirect, RedirectType } from 'next/navigation';
+import { FormState } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { z } from 'zod';
-import { saveSession } from '@utils/form-actions';
 
 const templateTypeToPageMap: Record<TemplateType, string> = {
-  SMS: 'create-text-message-template',
-  EMAIL: 'create-email-template',
-  LETTER: 'create-letter-template',
-  NHS_APP: 'create-nhs-app-template',
+  SMS: '/create-text-message-template',
+  EMAIL: '/create-email-template',
+  LETTER: '/create-letter-template',
+  NHS_APP: '/create-nhs-app-template',
 };
 
+const $ChooseTemplate = z.object({
+  templateType: z.enum(
+    [
+      TemplateType.SMS,
+      TemplateType.EMAIL,
+      TemplateType.NHS_APP,
+      TemplateType.LETTER,
+    ],
+    { message: 'Select a template type' }
+  ),
+});
+
 export async function chooseTemplateAction(
-  formState: TemplateFormState,
+  _: FormState,
   formData: FormData
-): Promise<TemplateFormState> {
-  const response = zodValidationServerAction(
-    formState,
-    formData,
-    z.object({
-      templateType: z.enum(
-        [
-          TemplateType.SMS,
-          TemplateType.EMAIL,
-          TemplateType.NHS_APP,
-          TemplateType.LETTER,
-        ],
-        { message: 'Select a template type' }
-      ),
-    })
+): Promise<FormState> {
+  const parsedForm = $ChooseTemplate.safeParse(
+    Object.fromEntries(formData.entries())
   );
 
-  if (!response.validationError) {
-    await saveSession(response);
-
-    const page = templateTypeToPageMap[response.templateType];
+  if (!parsedForm.success) {
     return {
-      ...response,
-      redirect: `/${page}/${formState.id}`,
+      validationError: parsedForm.error.flatten(),
     };
   }
 
-  return response;
+  redirect(
+    templateTypeToPageMap[parsedForm.data.templateType],
+    RedirectType.push
+  );
 }

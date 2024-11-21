@@ -14,9 +14,9 @@ export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
       .and(page.getByRole('button'));
   }
 
-  async loadPage(sessionId: string) {
+  async loadPage(templateId: string) {
     await this.navigateTo(
-      `/templates/submit-${this.channelIdentifier}-template/${sessionId}`
+      `/templates/submit-${this.channelIdentifier}-template/${templateId}`
     );
   }
 

@@ -16,6 +16,7 @@
 
 # dependencies
 node_modules
+.node-version
 */node_modules
 /.pnp
 .pnp.js
@@ -47,6 +48,7 @@ npm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.swc
 
 # reports
 reports

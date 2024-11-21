@@ -2,10 +2,6 @@
 
 set -euo pipefail
 
-#!/bin/bash
-
-set -euo pipefail
-
 echo "Creating sandbox"
 
 if [[ ! -f amplify_outputs.json ]]; then
@@ -40,5 +36,6 @@ done
 
 
 cat ~/.pm2/logs/npx-out.log
+
 echo "Amplify outputs file not found after ${wait_seconds} seconds. Failing job"
 exit 1

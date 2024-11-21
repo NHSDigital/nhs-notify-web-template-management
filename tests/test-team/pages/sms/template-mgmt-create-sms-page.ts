@@ -35,9 +35,11 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage(sessionId: string) {
+  async loadPage(templateId: string) {
     await this.navigateTo(
-      `/templates/create-text-message-template/${sessionId}`
+      templateId
+        ? `/templates/edit-text-message-template/${templateId}`
+        : '/templates/create-text-message-template'
     );
   }
 }

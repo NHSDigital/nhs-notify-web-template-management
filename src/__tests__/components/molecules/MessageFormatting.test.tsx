@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 const componentProps = {
   template: TemplateType.SMS,

@@ -2,8 +2,6 @@ const {
   pageActions: goToPreviewTextMessageTemplateActions,
 } = require('./preview-text-message-template.actions');
 
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   ...goToPreviewTextMessageTemplateActions,
   'click element #reviewSMSTemplateAction-sms-submit',
@@ -11,9 +9,9 @@ const pageActions = [
   'wait for element #submit-template-button to be visible',
 ];
 
-const submitTextMessageTemplatePage = (baseUrl) => ({
+const submitTextMessageTemplatePage = (url) => ({
   name: 'submit-text-message-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 

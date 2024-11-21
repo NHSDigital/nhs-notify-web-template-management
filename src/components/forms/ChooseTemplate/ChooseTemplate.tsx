@@ -2,30 +2,20 @@
 
 // we need this to be a client component because nhsuk-react-components uses client-only react features
 
-import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
-import { PageComponentProps } from '@utils/types';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { chooseTemplatePageContent } from '@content/content';
-import { useRouter } from 'next/navigation';
+import { FormState } from '@utils/types';
 
-export const ChooseTemplate: FC<PageComponentProps> = ({ initialState }) => {
+export const ChooseTemplate = () => {
+  const initialState: FormState = {};
   const [state, action] = useFormState(chooseTemplateAction, initialState);
-  const router = useRouter();
-
-  if (state.redirect) {
-    router.push(state.redirect);
-  }
 
   const { pageHeading, errorHeading, options, buttonText, hint } =
     chooseTemplatePageContent;
 
-  const optionState = options.map((option) => ({
-    ...option,
-    checked: state.templateType === option.id,
-  }));
   return (
     <>
       <ZodErrorSummary errorHeading={errorHeading} state={state} />
@@ -35,7 +25,7 @@ export const ChooseTemplate: FC<PageComponentProps> = ({ initialState }) => {
         action={action}
         state={state}
         pageHeading={pageHeading}
-        options={optionState}
+        options={options}
         buttonText={buttonText}
         hint={hint}
       />

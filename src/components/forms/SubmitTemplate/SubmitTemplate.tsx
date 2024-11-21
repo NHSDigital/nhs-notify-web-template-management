@@ -3,14 +3,14 @@
 import { FC } from 'react';
 import { WarningCallout, Button, BackLink } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from '@utils/types';
-import { submitNhsAppTemplateContent } from '@content/content';
+import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
-  sessionId,
+  templateId,
   goBackPath,
   submitPath,
 }) => {
@@ -23,13 +23,14 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     submitChecklistIntroduction,
     submitChecklistItems,
     submitChecklistParagraphs,
+    goBackButtonText,
     buttonText,
-  } = submitNhsAppTemplateContent;
+  } = submitTemplateContent;
 
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/${goBackPath}/${sessionId}`}
+        href={`${getBasePath()}/${goBackPath}/${templateId}`}
         className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
       >
         {backLinkText}
@@ -58,7 +59,15 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           formId='submit-template-form'
           action={submitTemplate.bind(null, submitPath)}
         >
-          <input type='hidden' name='sessionId' value={sessionId} readOnly />
+          <input type='hidden' name='templateId' value={templateId} readOnly />
+          <Button
+            secondary
+            id='go-back-button'
+            className='nhsuk-u-margin-right-3'
+            href={`${getBasePath()}/${goBackPath}/${templateId}`}
+          >
+            {goBackButtonText}
+          </Button>
           <Button id='submit-template-button'>{buttonText}</Button>
         </NHSNotifyFormWrapper>
       </div>

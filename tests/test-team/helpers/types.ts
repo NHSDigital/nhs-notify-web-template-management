@@ -5,29 +5,20 @@ export enum TemplateType {
   LETTER = 'LETTER',
 }
 
-export type Session = {
-  id: string;
-  __typename: 'SessionStorage';
-  createdAt: string;
-  updatedAt: string;
-  templateType: TemplateType | 'UNKNOWN';
-  nhsAppTemplateName: string;
-  nhsAppTemplateMessage: string;
-  emailTemplateName?: string;
-  emailTemplateSubjectLine?: string;
-  emailTemplateMessage?: string;
-};
+export enum TemplateStatus {
+  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
+  SUBMITTED = 'SUBMITTED',
+}
 
 export type Template = {
-  id: string;
-  __typename: 'TemplateStorage';
-  name: string;
-  type: TemplateType;
-  version: number;
-  fields: {
-    subjectLine?: string;
-    content: string;
-  };
+  __typename: string;
   createdAt: string;
   updatedAt: string;
+  id: string;
+  version: number;
+  name: string;
+  message: string;
+  subject?: string;
+  templateType: TemplateType;
+  templateStatus: TemplateStatus;
 };

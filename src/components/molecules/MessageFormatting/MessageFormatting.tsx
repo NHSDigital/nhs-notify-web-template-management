@@ -1,4 +1,4 @@
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import content from '@content/content';
 import {
   BoldText,

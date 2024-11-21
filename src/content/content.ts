@@ -1,5 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 
 const headerComponent = {
   serviceName: 'Notify',
@@ -228,31 +228,18 @@ const manageTemplates = {
   },
   createTemplateButton: {
     text: 'Create template',
-    url: `${getBasePath()}/create-template`,
+    url: `${getBasePath()}/choose-a-template-type`,
   },
 };
 
 const reviewEmailTemplateContent = {
-  sectionHeading: 'Email template',
-  details: {
-    heading: 'Who your email will be sent from',
-    text: [
-      {
-        id: 'email-text-1',
-        text: 'Set your reply-to and from email addresses during onboarding.',
-      },
-      {
-        id: 'email-text-2',
-        text: 'If you need to set up a different reply-to or from address for other messages, contact our onboarding team.',
-      },
-    ],
-  },
+  sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'email-edit', text: 'Edit' },
-      { id: 'email-submit', text: 'Submit' },
+      { id: 'email-edit', text: 'Edit template' },
+      { id: 'email-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },
@@ -260,19 +247,6 @@ const reviewEmailTemplateContent = {
 
 const reviewLetterTemplateContent = {
   sectionHeading: 'Letter template',
-  details: {
-    heading: 'Who your letter will be sent from',
-    text: [
-      {
-        id: 'letter-text-1',
-        text: `The return address is set by NHS Notify's suppliers and is printed on each letter's envelope.`,
-      },
-      {
-        id: 'letter-text-2',
-        text: 'If you want recipients to reply to you by letter, add your address in the content of your letter. Letter templates do not have a section for a reply address.',
-      },
-    ],
-  },
   form: {
     errorHeading: 'There is a problem',
     pageHeading: 'What would you like to do next with this template?',
@@ -286,33 +260,20 @@ const reviewLetterTemplateContent = {
 };
 
 const reviewNHSAppTemplateContent = {
-  sectionHeading: 'NHS App message template',
-  details: {
-    heading: 'Who your NHS App message will be sent from',
-    text: [
-      {
-        id: 'nhsapp-text-1',
-        text: 'Set your NHS App message sender name during onboarding.',
-      },
-      {
-        id: 'nhsapp-text-2',
-        text: 'If you need to set up a different NHS App message sender name for other messages, contact our onboarding team.',
-      },
-    ],
-  },
+  sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'nhsapp-edit', text: 'Edit' },
-      { id: 'nhsapp-submit', text: 'Submit' },
+      { id: 'nhsapp-edit', text: 'Edit template' },
+      { id: 'nhsapp-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },
 };
 
 const reviewSMSTemplateContent = {
-  sectionHeading: 'Text message template',
+  sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
     text: [
@@ -328,10 +289,10 @@ const reviewSMSTemplateContent = {
   },
   form: {
     errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
+    pageHeading: 'What would you like to do next?',
     options: [
-      { id: 'sms-edit', text: 'Edit' },
-      { id: 'sms-submit', text: 'Submit' },
+      { id: 'sms-edit', text: 'Edit template' },
+      { id: 'sms-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
   },
@@ -352,7 +313,7 @@ const error404PageContent = {
   },
 };
 
-export const submitNhsAppTemplateContent = {
+export const submitTemplateContent = {
   backLinkText: 'Go back',
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
@@ -369,6 +330,7 @@ export const submitNhsAppTemplateContent = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
+  goBackButtonText: 'Go back',
   buttonText: 'Submit template',
 };
 
@@ -420,17 +382,17 @@ export const createNhsAppTemplatePageContent = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const createEmailTemplatePageContent = {
-  pageHeading: 'Create Email message template',
+  pageHeading: 'Create email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const templateSubmittedPageContent = {
@@ -445,8 +407,8 @@ export const templateSubmittedPageContent = {
   notLiveText:
     "Tell your onboarding manager once you've submitted all your templates.",
   liveHeading: "If you've already onboarded",
-  liveLinkText: 'Raise a request with the service desk',
-  liveText: "once you've submitted all your templates.",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
 };
 
 export const createSmsTemplatePageContent = {
@@ -460,7 +422,7 @@ export const createSmsTemplatePageContent = {
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 const content = {

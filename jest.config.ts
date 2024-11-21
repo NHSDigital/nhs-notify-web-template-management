@@ -33,7 +33,7 @@ const config: Config = {
   coverageDirectory: './.reports/unit/coverage',
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8',
+  coverageProvider: 'babel',
 
   coverageThreshold: {
     global: {
@@ -44,7 +44,7 @@ const config: Config = {
     },
   },
 
-  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*'],
+  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*', 'lambdas/**/*.ts'],
 
   coveragePathIgnorePatterns: [
     '.types.ts',
@@ -53,7 +53,8 @@ const config: Config = {
     '.snap',
     'resource.ts',
     'backend.ts',
-    'generate-dependencies.ts'
+    'generate-dependencies.ts',
+    'jest.config.ts',
   ],
 
   // Use this configuration option to add custom reporters to Jest
@@ -72,7 +73,12 @@ const config: Config = {
   // The test environment that will be used for testing
   testEnvironment: 'jsdom',
 
-  testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts', '/tests/test-team/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    'fixture',
+    'helpers.ts',
+    '/tests/test-team/',
+  ],
 
   // Set the absolute path for imports
   moduleNameMapper: {

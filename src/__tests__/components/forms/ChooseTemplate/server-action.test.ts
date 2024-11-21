@@ -1,27 +1,23 @@
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
-import { TemplateFormState, TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
+import { redirect, RedirectType } from 'next/navigation';
+
+jest.mock('next/navigation');
 
 jest.mock('@utils/amplify-utils', () => ({
   getAmplifyBackendClient: () => ({
     models: {
-      SessionStorage: {
+      TemplateStorage: {
         update: () => ({ data: {} }),
       },
     },
   }),
 }));
 
-const initialState: TemplateFormState = {
-  id: 'session-id',
-  templateType: 'UNKNOWN',
-  nhsAppTemplateName: '',
-  nhsAppTemplateMessage: '',
-};
-
 test('submit form - validation error', async () => {
   const response = await chooseTemplateAction(
-    initialState,
+    {},
     getMockFormData({
       'form-id': 'create-nhs-app-template',
       templateType: 'lemons',
@@ -29,7 +25,6 @@ test('submit form - validation error', async () => {
   );
 
   expect(response).toEqual({
-    ...initialState,
     validationError: {
       formErrors: [],
       fieldErrors: {
@@ -40,16 +35,17 @@ test('submit form - validation error', async () => {
 });
 
 test('submit form - no validation error', async () => {
-  const response = await chooseTemplateAction(
-    initialState,
+  const mockRedirect = jest.mocked(redirect);
+
+  await chooseTemplateAction(
+    {},
     getMockFormData({
       templateType: TemplateType.NHS_APP,
     })
   );
 
-  expect(response).toEqual({
-    ...initialState,
-    templateType: TemplateType.NHS_APP,
-    redirect: '/create-nhs-app-template/session-id',
-  });
+  expect(mockRedirect).toHaveBeenCalledWith(
+    '/create-nhs-app-template',
+    RedirectType.push
+  );
 });

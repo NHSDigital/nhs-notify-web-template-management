@@ -17,7 +17,7 @@
     "destroy-sandbox": "npx ampx sandbox delete --y",
     "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
     "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
-    "typecheck": "tsc --project ./tsconfig.json"
+    "typecheck": "tsc --listFiles --project ./tsconfig.json"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.23",

@@ -6,8 +6,6 @@ async function globalSetup(config: FullConfig) {
 
   process.env.TEMPLATE_STORAGE_TABLE_NAME =
     await tableNameHelper.getTemplateStorageTableName();
-  process.env.SESSION_STORAGE_TABLE_NAME =
-    await tableNameHelper.getSessionStorageTableName();
 
   return config;
 }

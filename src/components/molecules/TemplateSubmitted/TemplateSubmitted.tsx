@@ -43,7 +43,7 @@ export const TemplateSubmitted = ({
           {templateIdHeading}
         </h2>
         <p id='template-id'>{templateId}</p>
-        <Link id='create-another-template' href='/create-template'>
+        <Link id='create-another-template' href='/choose-a-template-type'>
           {newTemplateText}
         </Link>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
@@ -52,13 +52,15 @@ export const TemplateSubmitted = ({
         <p>{notLiveText}</p>
         <h3>{liveHeading}</h3>
         <p>
+          {liveText}{' '}
           <Link
             id='servicenow-link'
             href='https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             {liveLinkText}
-          </Link>{' '}
-          {liveText}
+          </Link>
         </p>
       </div>
     </div>

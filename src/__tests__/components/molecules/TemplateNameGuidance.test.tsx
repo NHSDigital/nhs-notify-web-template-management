@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
-import { TemplateType } from '@utils/types';
+import { TemplateType } from '@utils/enum';
 import { nameYourTemplateContent } from '@content/content';
 
 describe('TemplateNameGuidance component', () => {

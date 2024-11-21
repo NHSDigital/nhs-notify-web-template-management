@@ -55,12 +55,6 @@ export class DatabaseTableNameHelper {
     return this._appApiId;
   }
 
-  public async getSessionStorageTableName() {
-    const appApiId = await this.getApiId();
-
-    return `SessionStorage-${appApiId}-NONE`;
-  }
-
   public async getTemplateStorageTableName() {
     const appApiId = await this.getApiId();
 
