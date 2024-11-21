@@ -17,7 +17,7 @@ export class TemplateMgmtBasePage {
 
   readonly errorSummaryList: Locator;
 
-  readonly continueButton: Locator;
+  readonly submitButton: Locator;
 
   readonly skipLink: Locator;
 
@@ -48,10 +48,7 @@ export class TemplateMgmtBasePage {
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
 
-    this.continueButton = page
-      .locator('[class="nhsuk-button"]')
-      .and(page.getByRole('button'))
-      .and(page.getByText('Continue'));
+    this.submitButton = page.locator('button.nhsuk-button[type="submit"]');
 
     this.skipLink = page
       .locator('[id="skip-link"]')
@@ -70,8 +67,8 @@ export class TemplateMgmtBasePage {
     await this.loginLink.click();
   }
 
-  async clickContinueButton() {
-    await this.continueButton.click();
+  async clickSubmitButton() {
+    await this.submitButton.click();
   }
 
   async loadPage(_: string) {
