@@ -9,6 +9,10 @@ module "endpoint_lambda" {
   handler          = "index.handler"
 
   log_retention_in_days = var.log_retention_in_days
+
+  environment_variables = {
+    TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
+  }
 }
 
 
@@ -19,3 +23,36 @@ module "endpoint_build" {
   entrypoint      = "src/index.ts"
 }
 
+data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {
+  statement {
+    sid    = "AllowDynamoAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:Query"
+    ]
+
+    resources = [
+      aws_dynamodb_table.templates.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowKMSAccess"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+    ]
+
+    resources = [
+      aws_kms_key.dynamo.arn
+    ]
+  }
+}
