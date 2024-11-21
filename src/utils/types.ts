@@ -68,20 +68,3 @@ export type SubmitTemplatePageComponentProps = {
   goBackPath: string;
   submitPath: string;
 };
-
-export enum TemplateStatus {
-  Submitted = 'Submitted',
-  NotSubmitted = 'NotSubmitted',
-}
-
-export enum TemplateStatusText {
-  Submitted = 'Submitted',
-  NotSubmitted = 'Not yet submitted',
-}
-
-export enum TemplateTypeText {
-  NHS_APP = 'NHS App',
-  SMS = 'SMS',
-  EMAIL = 'Email',
-  LETTER = 'Letter',
-}

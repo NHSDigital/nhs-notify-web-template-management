@@ -9,6 +9,7 @@ export const $Template = z.object({
   name: z.string(),
   message: z.string(),
   subject: z.string().nullable().optional(),
+  createdAt: z.string().optional(),
 });
 
 export const $EmailTemplate = $Template.extend({

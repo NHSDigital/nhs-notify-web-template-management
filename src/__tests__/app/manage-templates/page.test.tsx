@@ -3,20 +3,20 @@ import { render, screen } from '@testing-library/react';
 import ManageTemplatesPage from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
-import { Template } from '@domain/templates';
+import { Template } from '@utils/types';
+import { TemplateStatus, TemplateType } from '@utils/enum';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
 const mockTemplates: Template[] = [
   {
     id: '1',
-    name: 'Template 1',
-    type: 'NHS_APP',
     version: 1,
-    fields: {
-      subjectLine: 'Subject Line',
-      content: 'Content',
-    },
+    templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'Template 1',
+    message: 'Message',
+    subject: 'Subject Line',
     createdAt: '2021-01-01T00:00:00.000Z',
   },
 ];

@@ -3,7 +3,7 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
-import { Template } from '@domain/templates';
+import { Template } from '@utils/types';
 import { getTemplates } from '@utils/form-actions';
 
 const manageTemplatesContent = content.pages.manageTemplates;
@@ -18,12 +18,15 @@ export default async function ManageTemplatesPage() {
           {manageTemplatesContent.pageHeading}
         </h1>
 
-        <NHSNotifyButton href={manageTemplatesContent.createTemplateButton.url}>
+        <NHSNotifyButton
+          id='create-template-button'
+          href={manageTemplatesContent.createTemplateButton.url}
+        >
           {manageTemplatesContent.createTemplateButton.text}
         </NHSNotifyButton>
 
         {availableTemplateList && availableTemplateList.length > 0 ? (
-          <MessageTemplates availableTemplateList={availableTemplateList} />
+          <MessageTemplates templateList={availableTemplateList} />
         ) : (
           <p data-testid='no-templates-available'>
             {manageTemplatesContent.emptyTemplates}

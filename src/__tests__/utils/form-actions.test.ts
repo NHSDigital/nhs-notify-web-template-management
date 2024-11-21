@@ -8,6 +8,7 @@ import {
   saveTemplate,
   getTemplate,
   sendEmail,
+  getTemplates,
 } from '@utils/form-actions';
 import { logger } from '@utils/logger';
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
@@ -241,4 +242,40 @@ test('sendEmail - errors', async () => {
       errors: ['email error'],
     },
   });
+});
+
+test('getTemplates', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        list: jest.fn().mockReturnValue({ data: [mockResponseData] }),
+      },
+    },
+  });
+
+  const response = await getTemplates();
+
+  expect(response).toEqual([mockResponseData]);
+});
+
+test('getTemplates - returns empty array if there are no templates', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        list: jest.fn().mockReturnValue({
+          errors: [
+            {
+              message: 'test-error-message',
+              errorType: 'test-error-type',
+              errorInfo: { error: 'test-error' },
+            },
+          ],
+        }),
+      },
+    },
+  });
+
+  const response = await getTemplates();
+
+  expect(response).toEqual([]);
 });
