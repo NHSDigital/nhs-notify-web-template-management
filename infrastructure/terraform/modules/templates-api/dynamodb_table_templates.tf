@@ -21,6 +21,6 @@ resource "aws_dynamodb_table" "templates" {
 
     server_side_encryption {
         enabled     = true
-        kms_key_arn = aws_key_key.dynamo.arn
+        kms_key_arn = aws_kms_key.dynamo.arn
     }
 }
