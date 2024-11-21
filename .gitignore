@@ -64,6 +64,7 @@ terraform.tfstate.backup
 terraform/*_output.txt
 terraform/*_output.json
 group_target-env.tfvars
+*tf_outputs.json
 
 .amplify/
 amplify_outputs.json

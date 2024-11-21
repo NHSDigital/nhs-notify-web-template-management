@@ -70,6 +70,10 @@ jobs:
       - name: "Create Backend sandbox"
         run: |
           ./scripts/create_backend_sandbox.sh wf-${GITHUB_RUN_ID}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sandbox_tf_outputs.json
+          path: sandbox_tf_outputs.json
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
@@ -178,3 +182,9 @@ jobs:
       - name: "Destroy sandbox"
         run: |
           npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
+      - name: "Destroy Backend sandbox"
+        run: |
+          ./scripts/destroy_backend_sandbox.sh wf-${GITHUB_RUN_ID}
+      - name: "Destroy Backend sandbox temp"
+        run: |
+          ./scripts/destroy_backend_sandbox.sh wf-11954418532
