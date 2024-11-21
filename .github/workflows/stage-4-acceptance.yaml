@@ -185,6 +185,3 @@ jobs:
       - name: "Destroy Backend sandbox"
         run: |
           ./scripts/destroy_backend_sandbox.sh wf-${GITHUB_RUN_ID}
-      - name: "Destroy Backend sandbox temp"
-        run: |
-          ./scripts/destroy_backend_sandbox.sh wf-11954418532
