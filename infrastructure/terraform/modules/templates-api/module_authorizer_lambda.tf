@@ -17,4 +17,3 @@ module "authorizer_build" {
   source_code_dir = "${local.lambdas_source_code_dir}/authorizer"
   entrypoint      = "src/index.ts"
 }
-
