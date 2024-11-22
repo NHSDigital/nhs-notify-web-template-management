@@ -309,7 +309,6 @@ export const submitTemplateContent = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
-  goBackButtonText: 'Go back',
   buttonText: 'Submit template',
 };
 

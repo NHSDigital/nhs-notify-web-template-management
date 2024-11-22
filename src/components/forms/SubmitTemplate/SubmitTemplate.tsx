@@ -23,7 +23,6 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     submitChecklistIntroduction,
     submitChecklistItems,
     submitChecklistParagraphs,
-    goBackButtonText,
     buttonText,
   } = submitTemplateContent;
 
@@ -60,14 +59,6 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           action={submitTemplate.bind(null, submitPath)}
         >
           <input type='hidden' name='templateId' value={templateId} readOnly />
-          <Button
-            secondary
-            id='go-back-button'
-            className='nhsuk-u-margin-right-3'
-            href={`${getBasePath()}/${goBackPath}/${templateId}`}
-          >
-            {goBackButtonText}
-          </Button>
           <Button id='submit-template-button'>{buttonText}</Button>
         </NHSNotifyFormWrapper>
       </div>
