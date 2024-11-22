@@ -67,6 +67,5 @@ echo -e "${backend_config}" > backend_tfscaffold.tf
 # clean up the file on exit
 trap "rm -f $(pwd)/backend_tfscaffold.tf" EXIT;
 
-terraform init -upgrade
-
+# create the outputs file
 terraform output -json > ${root_dir}/sandbox_tf_outputs.json
