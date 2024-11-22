@@ -84,7 +84,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: "Create Backend sandbox"
         run: |
-          ./scripts/create_backend_sandbox.sh wf-${GITHUB_RUN_ID}
+          npm run create-backend-sandbox wf-${GITHUB_RUN_ID}
       - uses: actions/upload-artifact@v4
         with:
           name: sandbox_tf_outputs.json
@@ -211,4 +211,4 @@ jobs:
           aws-region: eu-west-2
       - name: "Destroy Backend sandbox"
         run: |
-          ./scripts/destroy_backend_sandbox.sh wf-${GITHUB_RUN_ID}
+          npm run destroy-backend-sandbox wf-${GITHUB_RUN_ID}
