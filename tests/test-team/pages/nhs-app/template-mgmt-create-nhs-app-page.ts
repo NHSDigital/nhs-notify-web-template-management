@@ -32,7 +32,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage(templateId: string) {
+  async loadPage(templateId?: string) {
     await this.navigateTo(
       templateId
         ? `/templates/edit-nhs-app-template/${templateId}`
