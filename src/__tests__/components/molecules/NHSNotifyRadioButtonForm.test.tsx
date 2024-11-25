@@ -96,3 +96,82 @@ test('Renders NHSNotifyRadioButtonForm - renders without validation error field'
 
   expect(container.asFragment()).toMatchSnapshot();
 });
+
+test('Renders NHSNotifyRadioButtonForm with learn more link', () => {
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        validationError: {
+          fieldErrors: {},
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        { id: 'option-2', text: 'option 2' },
+      ]}
+      buttonText='Continue'
+      hint='Example hint'
+      learnMoreLink='/features'
+      learnMoreText='learn more'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLink is not provided', () => {
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        validationError: {
+          fieldErrors: {},
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        { id: 'option-2', text: 'option 2' },
+      ]}
+      buttonText='Continue'
+      hint='Example hint'
+      learnMoreText='learn more'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreText is not provided', () => {
+  const container = render(
+    <NHSNotifyRadioButtonForm
+      formId='form-id'
+      radiosId='radios-id'
+      action='/action'
+      state={{
+        validationError: {
+          fieldErrors: {},
+          formErrors: [],
+        },
+      }}
+      pageHeading='Page heading'
+      options={[
+        { id: 'option-1', text: 'option 1' },
+        { id: 'option-2', text: 'option 2' },
+      ]}
+      buttonText='Continue'
+      hint='Example hint'
+      learnMoreLink='/features'
+    />
+  );
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
