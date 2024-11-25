@@ -1,4 +1,3 @@
-import { chooseTemplatePageContent } from '@content/content';
 import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
@@ -10,7 +9,9 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
-    this.learnMoreLink = page.getByText(chooseTemplatePageContent.learnMoreText);
+    this.learnMoreLink = page.getByText(
+      'Learn more about message channels (opens in a new tab)'
+    );
   }
 
   async loadPage(_: string) {

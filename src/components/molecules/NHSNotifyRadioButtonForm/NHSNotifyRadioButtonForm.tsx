@@ -47,11 +47,7 @@ export const NHSNotifyRadioButtonForm = ({
       </Fieldset.Legend>
       {learnMoreLink && learnMoreText && (
         <p>
-          <a
-            href={learnMoreLink}
-            target='_blank'
-            rel='noopener noreferrer'
-          >
+          <a href={learnMoreLink} target='_blank' rel='noopener noreferrer'>
             {learnMoreText}
           </a>
         </p>
