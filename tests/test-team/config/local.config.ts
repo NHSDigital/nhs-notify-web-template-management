@@ -4,6 +4,8 @@ import baseConfig from './playwright.config';
 export default defineConfig({
   ...baseConfig,
 
+  globalSetup: './global.setup.ts',
+
   timeout: 10_000,
 
   projects: [
@@ -19,10 +21,12 @@ export default defineConfig({
     },
     {
       name: 'e2e-local',
-      testMatch: '*.e2e.spec.ts',
+      testMatch: '*.e2e.ts',
       use: {
+        screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
+        headless: true,
       },
     },
   ],

@@ -67,6 +67,10 @@ export class TemplateMgmtBasePage {
     await this.loginLink.click();
   }
 
+  async clickButtonByName(buttonName: string) {
+    await this.page.getByRole('button', { name: buttonName }).click();
+  }
+
   async clickSubmitButton() {
     await this.submitButton.click();
   }
@@ -77,5 +81,15 @@ export class TemplateMgmtBasePage {
 
   async clickBackLink() {
     await this.goBackLink.click();
+  }
+
+  async fillTextBox(textBoxName: string, textBoxContent: string) {
+    await this.page
+      .getByRole('textbox', { name: textBoxName })
+      .fill(textBoxContent);
+  }
+
+  async checkRadio(radioName: string) {
+    await this.page.getByRole('radio', { name: radioName }).check();
   }
 }

@@ -24,11 +24,7 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
     'letters',
   ];
 
-  async navigateToStartPage() {
+  async loadPage() {
     await this.navigateTo('/templates/create-and-submit-templates');
-  }
-
-  async clickStartButton() {
-    await this.startButton.click();
   }
 }
