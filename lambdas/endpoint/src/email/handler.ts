@@ -66,7 +66,7 @@ const getOwner = async (
   };
 };
 
-const getTemplate = async (owner: string, templateId: string) => {
+const getTemplate = async (owner: string, id: string) => {
   const client = DynamoDBDocumentClient.from(
     new DynamoDBClient({ region: 'eu-west-2' })
   );
@@ -76,7 +76,7 @@ const getTemplate = async (owner: string, templateId: string) => {
       TableName: process.env.TEMPLATES_TABLE_NAME ?? '',
       Key: {
         owner,
-        templateId,
+        id,
       },
     })
   );
