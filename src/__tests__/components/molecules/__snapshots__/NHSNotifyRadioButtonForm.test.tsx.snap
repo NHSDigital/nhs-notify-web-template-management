@@ -404,7 +404,6 @@ exports[`Renders NHSNotifyRadioButtonForm with learn more link 1`] = `
         </legend>
         <p>
           <a
-            data-testid="radios-id-learn-more-link"
             href="/features"
             rel="noopener noreferrer"
             target="_blank"

@@ -29,7 +29,6 @@ exports[`ChooseATemplateTypePage 1`] = `
         </legend>
         <p>
           <a
-            data-testid="templateType-learn-more-link"
             href="/features"
             rel="noopener noreferrer"
             target="_blank"

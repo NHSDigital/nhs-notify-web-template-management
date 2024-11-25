@@ -54,7 +54,6 @@ exports[`Choose template page renders error component 1`] = `
         </legend>
         <p>
           <a
-            data-testid="templateType-learn-more-link"
             href="/features"
             rel="noopener noreferrer"
             target="_blank"
@@ -198,7 +197,6 @@ exports[`Choose template page selects one radio button at a time 1`] = `
         </legend>
         <p>
           <a
-            data-testid="templateType-learn-more-link"
             href="/features"
             rel="noopener noreferrer"
             target="_blank"

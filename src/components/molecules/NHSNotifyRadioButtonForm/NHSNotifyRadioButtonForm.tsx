@@ -49,7 +49,6 @@ export const NHSNotifyRadioButtonForm = ({
         <p>
           <a
             href={learnMoreLink}
-            data-testid={`${radiosId}-learn-more-link`}
             target='_blank'
             rel='noopener noreferrer'
           >
