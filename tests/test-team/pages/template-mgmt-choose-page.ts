@@ -9,7 +9,9 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
-    this.learnMoreLink = page.locator('[data-testid="templateType-learn-more-link"]');
+    this.learnMoreLink = page.locator(
+      '[data-testid="templateType-learn-more-link"]'
+    );
   }
 
   async loadPage(_: string) {
