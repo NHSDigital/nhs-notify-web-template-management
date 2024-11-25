@@ -9,6 +9,8 @@ module "authorizer_lambda" {
   handler          = "index.handler"
 
   log_retention_in_days = var.log_retention_in_days
+
+  environment_variables = var.cognito_config
 }
 
 module "authorizer_build" {
