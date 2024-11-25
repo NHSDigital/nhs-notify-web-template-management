@@ -4,9 +4,12 @@ import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
   readonly radioButtons: Locator;
 
+  readonly learnMoreLink: Locator;
+
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
+    this.learnMoreLink = page.locator('[data-testid="templateType-learn-more-link"]');
   }
 
   async loadPage(_: string) {

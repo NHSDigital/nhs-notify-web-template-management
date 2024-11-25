@@ -27,6 +27,16 @@ exports[`ChooseATemplateTypePage 1`] = `
             Choose a template type to create
           </h1>
         </legend>
+        <p>
+          <a
+            data-testid="templateType-learn-more-link"
+            href="/features"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more about message channels (opens in a new tab)
+          </a>
+        </p>
         <div
           class="nhsuk-form-group"
         >

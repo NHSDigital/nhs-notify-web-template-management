@@ -324,6 +324,8 @@ export const chooseTemplatePageContent = {
   ],
   buttonText: 'Continue',
   hint: 'Select one option',
+  learnMoreLink: '/features',
+  learnMoreText: 'Learn more about message channels (opens in a new tab)',
 };
 
 export const nameYourTemplateContent = {
