@@ -118,7 +118,7 @@ const update = async (
     if (error instanceof ConditionalCheckFailedException) {
       return failure(
         ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-        'Can not update template due to status not being NOT_YET_SUBMITTED',
+        'Can not update template due to status being NOT_YET_SUBMITTED',
         error
       );
     }

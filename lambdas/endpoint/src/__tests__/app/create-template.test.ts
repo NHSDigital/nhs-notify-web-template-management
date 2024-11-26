@@ -13,6 +13,10 @@ import {
 } from '../../domain/template';
 import { createTemplate } from '../../app/create-template';
 
+jest.mock('../../domain/user');
+jest.mock('../../domain/template');
+jest.mock('../../utils/validate');
+
 const getUserMock = jest.mocked(userRepository.getUser);
 const createMock = jest.mocked(templateRepository.create);
 const validateMock = jest.mocked(validate);
@@ -50,7 +54,7 @@ describe('createTemplate', () => {
     validateMock.mockReturnValueOnce({
       error: {
         code: 400,
-        message: 'Bad Request',
+        message: 'Bad request',
       },
     });
 

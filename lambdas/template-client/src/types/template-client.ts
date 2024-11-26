@@ -3,7 +3,7 @@ import {
   CreateTemplateInput,
   UpdateTemplateInput,
 } from './template';
-import { Result } from '../result';
+import { Result } from './result';
 
 export interface ITemplateClient {
   createTemplate(

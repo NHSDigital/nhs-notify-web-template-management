@@ -9,26 +9,31 @@ import { schemaFor } from '../../utils/schema-for';
 
 const $Template = schemaFor<CreateTemplateInput>()(
   z.object({
-    type: z.nativeEnum(TemplateType),
+    type: z.enum([
+      TemplateType.LETTER,
+      TemplateType.SMS,
+      TemplateType.NHS_APP,
+    ]),
     name: z.string(),
     message: z.string(),
   })
 );
 
-const $LetterTemplate = schemaFor<CreateTemplateInput>()(
+const $EmailTemplate = schemaFor<CreateTemplateInput>()(
   $Template.extend({
     subject: z.string(),
+    type: z.literal(TemplateType.EMAIL),
   })
 );
 
 export const $CreateTemplateSchema = z.discriminatedUnion('type', [
-  $LetterTemplate,
+  $EmailTemplate,
   $Template,
 ]);
 
 export const $UpdateTemplateSchema = z.discriminatedUnion('type', [
   schemaFor<UpdateTemplateInput>()(
-    $LetterTemplate.extend({
+    $EmailTemplate.extend({
       id: z.string(),
       status: z.nativeEnum(TemplateStatus),
     })
