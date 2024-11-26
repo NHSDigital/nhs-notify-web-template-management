@@ -8,4 +8,3 @@ resource "null_resource" "typescript_build" {
     command     = "npm ci && npm run build"
   }
 }
-
