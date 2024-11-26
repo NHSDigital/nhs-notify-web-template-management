@@ -17,6 +17,16 @@ const messageTemplatesProps = {
       subject: 'Subject Line',
       createdAt: '2021-01-01T00:00:00.000Z',
     },
+    {
+      id: '2',
+      version: 1,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.SUBMITTED,
+      name: 'Template 2',
+      message: 'Message',
+      subject: 'Subject Line',
+      createdAt: '2021-02-01T00:00:00.000Z',
+    },
   ],
 };
 

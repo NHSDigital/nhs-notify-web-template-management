@@ -149,6 +149,81 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               </a>
             </td>
           </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="#"
+              >
+                Template 2
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              NHS App
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--grey"
+              >
+                Submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <a
+                href="#"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  Copy
+                </p>
+              </a>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -275,6 +350,81 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 Date created 
               </span>
               1st Jan 2021
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+              <a
+                href="#"
+              >
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  Copy
+                </p>
+              </a>
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="#"
+              >
+                Template 2
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              NHS App
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--grey"
+              >
+                Submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
             </td>
             <td
               class="nhsuk-table__cell"
