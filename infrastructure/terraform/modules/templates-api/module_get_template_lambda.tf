@@ -17,7 +17,6 @@ module "get_template_lambda" {
   execution_role_policy_document = data.aws_iam_policy_document.endpoint_lambda_dynamo_access.json
 }
 
-
 module "get_template_build" {
   source = "../typescript-build-zip"
 

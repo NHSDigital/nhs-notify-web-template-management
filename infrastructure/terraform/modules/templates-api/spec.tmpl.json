@@ -132,7 +132,7 @@
         "x-amazon-apigateway-integration": {
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
           "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "GET",
+          "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations",
           "responses": {
@@ -197,7 +197,7 @@
         "x-amazon-apigateway-integration": {
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
           "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "GET",
+          "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations",
           "responses": {
