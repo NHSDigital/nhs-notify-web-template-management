@@ -1,10 +1,14 @@
-import { TemplateDTO, CreateTemplateInput, UpdateTemplateInput } from './template';
+import {
+  TemplateDTO,
+  CreateTemplateInput,
+  UpdateTemplateInput,
+} from './template';
 import { Result } from '../result';
 
 export interface ITemplateClient {
   createTemplate(
     template: CreateTemplateInput,
-    token: string,
+    token: string
   ): Promise<Result<TemplateDTO>>;
 
   updateTemplate(

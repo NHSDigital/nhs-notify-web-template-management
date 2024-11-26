@@ -6,11 +6,7 @@ import {
   success,
   TemplateDTO,
 } from 'nhs-notify-templates-client';
-import {
-  templateRepository,
-  Template,
-  $CreateTemplateSchema,
-} from '../domain/template';
+import { templateRepository, $CreateTemplateSchema } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { validate, logger } from '../utils';
 
@@ -49,7 +45,7 @@ export async function createTemplate(
     userResult.data.id
   );
 
-  if (createResult.error){
+  if (createResult.error) {
     log.error('Failed to save template to the database', {
       createResult,
     });
@@ -58,7 +54,9 @@ export async function createTemplate(
   }
 
   if (!createResult.data) {
-    log.error('Database returned undefined template but did not throw an error');
+    log.error(
+      'Database returned undefined template but did not throw an error'
+    );
 
     return failure(ErrorCase.TEMPLATE_NOT_CREATED, 'Template not created');
   }

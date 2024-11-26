@@ -5,10 +5,7 @@ import {
   success,
   TemplateDTO,
 } from 'nhs-notify-templates-client';
-import {
-  templateRepository,
-  Template,
-} from '../domain/template';
+import { templateRepository } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { logger } from '../utils';
 
@@ -32,7 +29,10 @@ export async function getTemplate(
     user: userResult.data,
   });
 
-  const getResult = await templateRepository.get(templateId, userResult.data.id);
+  const getResult = await templateRepository.get(
+    templateId,
+    userResult.data.id
+  );
 
   if (getResult.error) {
     log.error('Failed to get template', { getResult });

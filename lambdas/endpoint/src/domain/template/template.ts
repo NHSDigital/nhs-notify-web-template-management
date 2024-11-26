@@ -11,4 +11,4 @@ export type Template = {
   subject?: string;
   createdAt: string;
   updatedAt: string;
-}
+};

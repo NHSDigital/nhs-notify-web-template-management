@@ -1,24 +1,23 @@
-import { validate } from "../../utils/validate";
-import { userRepository } from "../../domain/user";
-import {
-  $CreateTemplateSchema,
-  Template,
-  templateRepository
-} from '../../domain/template';
 import {
   CreateTemplateInput,
   TemplateDTO,
   TemplateStatus,
-  TemplateType
-} from "nhs-notify-templates-client";
-import { createTemplate } from "../../app/create-template";
+  TemplateType,
+} from 'nhs-notify-templates-client';
+import { validate } from '../../utils/validate';
+import { userRepository } from '../../domain/user';
+import {
+  $CreateTemplateSchema,
+  Template,
+  templateRepository,
+} from '../../domain/template';
+import { createTemplate } from '../../app/create-template';
 
 const getUserMock = jest.mocked(userRepository.getUser);
 const createMock = jest.mocked(templateRepository.create);
 const validateMock = jest.mocked(validate);
 
 describe('createTemplate', () => {
-
   beforeEach(jest.resetAllMocks);
 
   test('should return a failure result, when user token is invalid', async () => {
@@ -26,7 +25,7 @@ describe('createTemplate', () => {
       error: {
         code: 401,
         message: 'Unauthorized',
-      }
+      },
     });
 
     const result = await createTemplate({} as TemplateDTO, 'token');
@@ -37,22 +36,22 @@ describe('createTemplate', () => {
       error: {
         code: 401,
         message: 'Unauthorized',
-      }
+      },
     });
   });
 
   test('should return a failure result, when template data is invalid', async () => {
     getUserMock.mockResolvedValueOnce({
       data: {
-        id: 'pickles'
-      }
+        id: 'pickles',
+      },
     });
 
     validateMock.mockReturnValueOnce({
       error: {
         code: 400,
         message: 'Bad Request',
-      }
+      },
     });
 
     const dto: CreateTemplateInput = {
@@ -69,7 +68,7 @@ describe('createTemplate', () => {
       error: {
         code: 400,
         message: 'Bad request',
-      }
+      },
     });
   });
 
@@ -82,19 +81,19 @@ describe('createTemplate', () => {
 
     getUserMock.mockResolvedValueOnce({
       data: {
-        id: 'pickles'
-      }
+        id: 'pickles',
+      },
     });
 
     validateMock.mockReturnValueOnce({
-      data
+      data,
     });
 
     createMock.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
-      }
+      },
     });
 
     const result = await createTemplate(data, 'token');
@@ -105,7 +104,7 @@ describe('createTemplate', () => {
       error: {
         code: 500,
         message: 'Internal server error',
-      }
+      },
     });
   });
 
@@ -118,16 +117,16 @@ describe('createTemplate', () => {
 
     getUserMock.mockResolvedValueOnce({
       data: {
-        id: 'pickles'
-      }
+        id: 'pickles',
+      },
     });
 
     validateMock.mockReturnValueOnce({
-      data
+      data,
     });
 
     createMock.mockResolvedValueOnce({
-      data: undefined
+      data: undefined,
     });
 
     const result = await createTemplate(data, 'token');
@@ -138,7 +137,7 @@ describe('createTemplate', () => {
       error: {
         code: 500,
         message: 'Template not created',
-      }
+      },
     });
   });
 
@@ -161,16 +160,16 @@ describe('createTemplate', () => {
 
     getUserMock.mockResolvedValueOnce({
       data: {
-        id: 'token'
-      }
+        id: 'token',
+      },
     });
 
     validateMock.mockReturnValueOnce({
-      data: dto
+      data: dto,
     });
 
     createMock.mockResolvedValueOnce({
-      data: template
+      data: template,
     });
 
     const result = await createTemplate(dto, 'token');
@@ -178,7 +177,7 @@ describe('createTemplate', () => {
     expect(createMock).toHaveBeenCalledWith(dto, 'token');
 
     expect(result).toEqual({
-      data: template
+      data: template,
     });
   });
 });

@@ -5,17 +5,13 @@ import {
   success,
   TemplateDTO,
 } from 'nhs-notify-templates-client';
-import {
-  templateRepository,
-  Template,
-  $UpdateTemplateSchema,
-} from '../domain/template';
+import { templateRepository, $UpdateTemplateSchema } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { validate, logger } from '../utils';
 
 export async function updateTemplate(
   dto: TemplateDTO,
-  token: string,
+  token: string
 ): Promise<Result<TemplateDTO>> {
   const userResult = await userRepository.getUser(token);
 
@@ -40,7 +36,10 @@ export async function updateTemplate(
     return validationResult;
   }
 
-  const updateResult = await templateRepository.update(validationResult.data, userResult.data.id);
+  const updateResult = await templateRepository.update(
+    validationResult.data,
+    userResult.data.id
+  );
 
   if (updateResult.error) {
     log.error('Failed to update template', { updateResult });

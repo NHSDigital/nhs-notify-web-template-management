@@ -3,7 +3,6 @@ import {
   TemplateDTO,
   CreateTemplateInput,
   UpdateTemplateInput,
-  TemplateType,
 } from './types/template';
 import { ITemplateClient } from './types/template-client';
 import { Result } from './result';
@@ -24,7 +23,7 @@ const createTemplate = async (template: CreateTemplateInput, token: string) => {
   );
 
   return response.data;
-}
+};
 
 const updateTemplate = async (template: UpdateTemplateInput, token: string) => {
   const response = await client.post<Result<TemplateDTO>>(
@@ -38,7 +37,7 @@ const updateTemplate = async (template: UpdateTemplateInput, token: string) => {
   );
 
   return response.data;
-}
+};
 
 const getTemplate = async (templateId: string, token: string) => {
   const response = await client.get<Result<TemplateDTO>>(
@@ -51,11 +50,10 @@ const getTemplate = async (templateId: string, token: string) => {
   );
 
   return response.data;
-}
-
+};
 
 export const templateClient: ITemplateClient = {
   createTemplate,
   updateTemplate,
-  getTemplate
-}
+  getTemplate,
+};

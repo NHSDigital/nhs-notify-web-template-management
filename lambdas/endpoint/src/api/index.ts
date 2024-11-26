@@ -38,7 +38,10 @@ export const get: APIGatewayProxyHandler = async (event) => {
     failure(400, 'Invalid request');
   }
 
-  const templateResult = await app.getTemplate(String(templateId), String(token));
+  const templateResult = await app.getTemplate(
+    String(templateId),
+    String(token)
+  );
 
   if (templateResult.error) {
     return failure(templateResult.error.code, templateResult.error.message);

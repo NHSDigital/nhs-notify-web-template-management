@@ -14,12 +14,10 @@ type NotifyJwtPayload = JwtPayload & {
 };
 
 const getUser = async (token: string): Promise<Result<User>> => {
-
   let payload: NotifyJwtPayload | null;
   try {
-     payload = decode(token) as NotifyJwtPayload | null;
-  }
-  catch (error) {
+    payload = decode(token) as NotifyJwtPayload | null;
+  } catch (error) {
     return failure(
       ErrorCase.UNAUTHORIZED,
       'Failed to decode user token',

@@ -7,7 +7,11 @@ import {
   TemplateStatus,
   UpdateTemplateInput,
 } from 'nhs-notify-templates-client';
-import { ConditionalCheckFailedException, DynamoDBClient, ResourceNotFoundException } from '@aws-sdk/client-dynamodb';
+import {
+  ConditionalCheckFailedException,
+  DynamoDBClient,
+  ResourceNotFoundException,
+} from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -42,11 +46,7 @@ const get = async (
 
     return success(response.Item as Template | undefined);
   } catch (error) {
-    return failure(
-      ErrorCase.DATABASE_FAILURE,
-      'Failed to get template',
-      error
-    );
+    return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }
 };
 
@@ -120,15 +120,11 @@ const update = async (
         ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
         'Can not update template due to status not being NOT_YET_SUBMITTED',
         error
-      )
+      );
     }
 
     if (error instanceof ResourceNotFoundException) {
-      return failure(
-        ErrorCase.TEMPLATE_NOT_FOUND,
-        'Template not found',
-        error
-      );
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found', error);
     }
 
     return failure(
