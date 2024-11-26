@@ -1,10 +1,12 @@
 module "update_template_lambda" {
+  depends_on  = [module.build_template_lambda]
+
   source      = "../lambda-function"
   description = "Update template API endpoint"
 
   function_name    = "${local.csi}-update-template"
-  filename         = module.update_lambda_build.output_path
-  source_code_hash = module.update_lambda_build.base64sha256
+  filename         = module.build_template_lambda.output_path
+  source_code_hash = module.build_template_lambda.base64sha256
   runtime          = "nodejs20.x"
   handler          = "index.update"
 
@@ -15,13 +17,6 @@ module "update_template_lambda" {
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.update_template_lambda_policy.json
-}
-
-module "update_lambda_build" {
-  source = "../typescript-build-zip"
-
-  source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
-  entrypoint      = "src/index.ts"
 }
 
 data "aws_iam_policy_document" "update_template_lambda_policy" {

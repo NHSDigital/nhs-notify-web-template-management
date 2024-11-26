@@ -1,10 +1,12 @@
 module "get_template_lambda" {
+  depends_on  = [module.build_template_lambda]
+
   source      = "../lambda-function"
   description = "Get template API endpoint"
 
   function_name    = "${local.csi}-get-template"
-  filename         = module.get_template_build.output_path
-  source_code_hash = module.get_template_build.base64sha256
+  filename         = module.build_template_lambda.output_path
+  source_code_hash = module.build_template_lambda.base64sha256
   runtime          = "nodejs20.x"
   handler          = "index.get"
 
@@ -15,13 +17,6 @@ module "get_template_lambda" {
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.get_template_lambda_policy.json
-}
-
-module "get_template_build" {
-  source = "../typescript-build-zip"
-
-  source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
-  entrypoint      = "src/index.ts"
 }
 
 data "aws_iam_policy_document" "get_template_lambda_policy" {
