@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 'use client';
 
 import { Table, Tag } from 'nhsuk-react-components';

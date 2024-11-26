@@ -1,8 +1,6 @@
 import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
 
 export const handler: APIGatewayTokenAuthorizerHandler = async (event) => {
-  console.log(event);
-
   const { methodArn } = event;
 
   return {
