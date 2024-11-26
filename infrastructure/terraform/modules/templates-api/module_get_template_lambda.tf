@@ -14,7 +14,7 @@ module "get_template_lambda" {
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
   }
 
-  execution_role_policy_document = data.aws_iam_policy_document.get_template_lambda_dynamo_access.json
+  execution_role_policy_document = data.aws_iam_policy_document.get_template_lambda_policy.json
 }
 
 module "get_template_build" {
@@ -24,7 +24,7 @@ module "get_template_build" {
   entrypoint      = "src/index.ts"
 }
 
-data "aws_iam_policy_document" "get_template_lambda_dynamo_access" {
+data "aws_iam_policy_document" "get_template_lambda_policy" {
   statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"

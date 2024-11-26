@@ -15,7 +15,7 @@ const failure = (statusCode: number, technicalMessage: string) => ({
 export const create: APIGatewayProxyHandler = async (event) => {
   const token = event.headers.Authorization;
   const body = event.body || '{}';
-  const dto = JSON.parse(body) as TemplateDTO;
+  const dto = JSON.parse(body);
 
   if (!token || !dto) {
     failure(400, 'Invalid request');
