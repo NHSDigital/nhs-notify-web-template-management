@@ -12,7 +12,7 @@ module "email_lambda" {
 
   environment_variables = {
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
-    NOTIFY_DOMAIN_NAME = var.email_domain_name
+    SENDER_EMAIL = "no-reply@${var.email_domain_name}"
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.endpoint_lambda_dynamo_access.json
