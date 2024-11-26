@@ -7,6 +7,8 @@ locals {
     AWS_REGION              = var.region
     APIG_EXECUTION_ROLE_ARN = aws_iam_role.api_gateway_execution_role.arn
     AUTHORIZER_LAMBDA_ARN   = module.authorizer_lambda.function_arn
-    ENDPOINT_LAMBDA_ARN     = module.endpoint_lambda.function_arn
+    CREATE_LAMBDA_ARN       = module.create_template_lambda.function_arn
+    UPDATE_LAMBDA_ARN       = module.update_template_lambda.function_arn
+    GET_LAMBDA_ARN          = module.get_template_lambda.function_arn
   })
 }

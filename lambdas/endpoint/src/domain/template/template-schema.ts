@@ -9,11 +9,7 @@ import { schemaFor } from '../../utils/schema-for';
 
 const $Template = schemaFor<CreateTemplateInput>()(
   z.object({
-    type: z.enum([
-      TemplateType.LETTER,
-      TemplateType.SMS,
-      TemplateType.NHS_APP,
-    ]),
+    type: z.enum([TemplateType.LETTER, TemplateType.SMS, TemplateType.NHS_APP]),
     name: z.string(),
     message: z.string(),
   })

@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { TemplateDTO } from 'nhs-notify-templates-client';
-import { app } from '../app';
+import { app } from './app';
 
 const success = (statusCode: number, template: TemplateDTO) => ({
   statusCode,

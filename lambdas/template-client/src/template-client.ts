@@ -5,7 +5,7 @@ import {
   UpdateTemplateInput,
 } from './types/template';
 import { ITemplateClient } from './types/template-client';
-import { Result } from './result';
+import { Result } from './types/result';
 
 const client: AxiosInstance = axios.create({
   baseURL: process.env.TEMPLATE_API_URL,

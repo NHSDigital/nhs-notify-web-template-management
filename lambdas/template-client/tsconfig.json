@@ -1,7 +1,6 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
-  "moduleResolution": "node",
+  "extends": "../../tsconfig.json",
   "include": [
-    "src/**/*"
+    "src/**/*",
   ]
 }

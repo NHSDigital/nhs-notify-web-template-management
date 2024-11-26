@@ -1,4 +1,4 @@
-import { ErrorCase } from './error-cases';
+import { ErrorCase } from '../error-cases';
 
 type TemplateError = {
   code: ErrorCase;

@@ -1,12 +1,12 @@
-module "endpoint_lambda" {
+module "update_template_lambda" {
   source      = "../lambda-function"
-  description = "templates api endpoint"
+  description = "Update template API endpoint"
 
-  function_name    = "${local.csi}-endpoint"
-  filename         = module.endpoint_build.output_path
-  source_code_hash = module.endpoint_build.base64sha256
+  function_name    = "${local.csi}-update-template"
+  filename         = module.update_lambda_build.output_path
+  source_code_hash = module.update_lambda_build.base64sha256
   runtime          = "nodejs20.x"
-  handler          = "index.handler"
+  handler          = "index.update"
 
   log_retention_in_days = var.log_retention_in_days
 
@@ -18,7 +18,7 @@ module "endpoint_lambda" {
 }
 
 
-module "endpoint_build" {
+module "update_lambda_build" {
   source = "../typescript-build-zip"
 
   source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
@@ -31,9 +31,7 @@ data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:Query"
+      "dynamodb:UpdateItem",
     ]
 
     resources = [
