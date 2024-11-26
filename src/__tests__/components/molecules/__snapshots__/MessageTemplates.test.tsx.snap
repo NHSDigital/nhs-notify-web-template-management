@@ -11,6 +11,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
       <table
         class="nhsuk-table-responsive"
         data-testid="manage-template-table"
+        id="manage-template-table"
       >
         <caption
           class="nhsuk-table__caption"
@@ -166,6 +167,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
       <table
         class="nhsuk-table-responsive"
         data-testid="manage-template-table"
+        id="manage-template-table"
       >
         <caption
           class="nhsuk-table__caption"
