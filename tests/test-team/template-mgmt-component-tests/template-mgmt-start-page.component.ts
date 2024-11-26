@@ -68,7 +68,7 @@ test.describe('Start Page', () => {
     await expect(startPage.goBackLink).toBeHidden();
   });
 
-  test('should navigate to "choose template" page when start button clicked', async ({
+  test('should navigate to "manage template" page when start button clicked', async ({
     page,
     baseURL,
   }) => {
@@ -77,7 +77,7 @@ test.describe('Start Page', () => {
     await startPage.navigateToStartPage();
     await startPage.clickStartButton();
 
-    expect(page.url()).toContain(`${baseURL}/templates/choose-a-template-type`);
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
   });
 });
 
