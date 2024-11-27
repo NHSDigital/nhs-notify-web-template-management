@@ -1,7 +1,5 @@
 import {
   CreateTemplateInput,
-  ErrorCase,
-  failure,
   Result,
   success,
   TemplateDTO,
@@ -51,14 +49,6 @@ export async function createTemplate(
     });
 
     return createResult;
-  }
-
-  if (!createResult.data) {
-    log.error(
-      'Database returned undefined template but did not throw an error'
-    );
-
-    return failure(ErrorCase.TEMPLATE_NOT_CREATED, 'Template not created');
   }
 
   return success(createResult.data);

@@ -1,10 +1,4 @@
-import {
-  ErrorCase,
-  failure,
-  Result,
-  success,
-  TemplateDTO,
-} from 'nhs-notify-templates-client';
+import { Result, success, TemplateDTO } from 'nhs-notify-templates-client';
 import { templateRepository } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { logger } from '../utils';
@@ -38,12 +32,6 @@ export async function getTemplate(
     log.error('Failed to get template', { getResult });
 
     return getResult;
-  }
-
-  if (!getResult.data) {
-    log.error('Template not found');
-
-    return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
   }
 
   return success(getResult.data);

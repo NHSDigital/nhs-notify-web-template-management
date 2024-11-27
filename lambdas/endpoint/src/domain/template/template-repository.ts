@@ -32,7 +32,7 @@ const client = DynamoDBDocumentClient.from(
 const get = async (
   templateId: string,
   owner: string
-): Promise<Result<Template | undefined>> => {
+): Promise<Result<Template>> => {
   try {
     const response = await client.send(
       new GetCommand({
@@ -44,8 +44,12 @@ const get = async (
       })
     );
 
-    return success(response.Item as Template | undefined);
+    return success(response.Item as Template);
   } catch (error) {
+    if (error instanceof ResourceNotFoundException) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found', error);
+    }
+
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }
 };
@@ -53,7 +57,7 @@ const get = async (
 const create = async (
   template: CreateTemplateInput,
   owner: string
-): Promise<Result<Template | undefined>> => {
+): Promise<Result<Template>> => {
   const entity: Template = {
     ...template,
     id: uuidv4(),
@@ -65,15 +69,15 @@ const create = async (
   };
 
   try {
-    const response = await client.send(
+    await client.send(
       new PutCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Item: entity,
         ReturnValues: 'ALL_NEW',
-      }),
+      })
     );
 
-    return success(response.Attributes as Template | undefined);
+    return success(entity);
   } catch (error) {
     return failure(
       ErrorCase.DATABASE_FAILURE,
@@ -86,7 +90,7 @@ const create = async (
 const update = async (
   template: UpdateTemplateInput,
   owner: string
-): Promise<Result<Template | undefined>> => {
+): Promise<Result<Template>> => {
   const input: UpdateCommandInput = {
     TableName: process.env.TEMPLATES_TABLE_NAME,
     Key: {
@@ -115,7 +119,7 @@ const update = async (
   try {
     const response = await client.send(new UpdateCommand(input));
 
-    return success(response.Attributes as Template | undefined);
+    return success(response.Attributes as Template);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
       return failure(

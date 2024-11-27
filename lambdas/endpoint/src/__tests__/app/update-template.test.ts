@@ -1,15 +1,15 @@
 import {
-  CreateTemplateInput,
+  UpdateTemplateInput,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-templates-client';
 import {
-  $CreateTemplateSchema,
+  $UpdateTemplateSchema,
   Template,
   templateRepository,
 } from '../../domain/template';
 import { userRepository } from '../../domain/user';
-import { createTemplate } from '../../app/create-template';
+import { updateTemplate } from '../../app/update-template';
 import { validate } from '../../utils/validate';
 
 jest.mock('../../domain/user');
@@ -17,10 +17,10 @@ jest.mock('../../domain/template');
 jest.mock('../../utils/validate');
 
 const getUserMock = jest.mocked(userRepository.getUser);
-const createMock = jest.mocked(templateRepository.create);
+const updateMock = jest.mocked(templateRepository.update);
 const validateMock = jest.mocked(validate);
 
-describe('createTemplate', () => {
+describe('updateTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return a failure result, when user token is invalid', async () => {
@@ -31,7 +31,7 @@ describe('createTemplate', () => {
       },
     });
 
-    const result = await createTemplate({} as CreateTemplateInput, 'token');
+    const result = await updateTemplate({} as UpdateTemplateInput, 'token');
 
     expect(getUserMock).toHaveBeenCalledWith('token');
 
@@ -46,7 +46,7 @@ describe('createTemplate', () => {
   test('should return a failure result, when template data is invalid', async () => {
     getUserMock.mockResolvedValueOnce({
       data: {
-        id: 'pickles',
+        id: 'token',
       },
     });
 
@@ -57,15 +57,16 @@ describe('createTemplate', () => {
       },
     });
 
-    const dto: CreateTemplateInput = {
-      type: TemplateType.EMAIL,
+    const data: UpdateTemplateInput = {
+      id: 'id',
       name: 'name',
       message: 'message',
+      status: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
-    const result = await createTemplate(dto, 'token');
+    const result = await updateTemplate(data, 'token');
 
-    expect(validateMock).toHaveBeenCalledWith($CreateTemplateSchema, dto);
+    expect(validateMock).toHaveBeenCalledWith($UpdateTemplateSchema, data);
 
     expect(result).toEqual({
       error: {
@@ -76,55 +77,10 @@ describe('createTemplate', () => {
   });
 
   test('should return a failure result, when saving to the database unexpectedly fails', async () => {
-    const data: CreateTemplateInput = {
-      type: TemplateType.EMAIL,
-      name: 'name',
-      message: 'message',
-    };
-
-    getUserMock.mockResolvedValueOnce({
-      data: {
-        id: 'pickles',
-      },
-    });
-
-    validateMock.mockReturnValueOnce({
-      data,
-    });
-
-    createMock.mockResolvedValueOnce({
-      error: {
-        code: 500,
-        message: 'Internal server error',
-      },
-    });
-
-    const result = await createTemplate(data, 'token');
-
-    expect(createMock).toHaveBeenCalledWith(data, 'pickles');
-
-    expect(result).toEqual({
-      error: {
-        code: 500,
-        message: 'Internal server error',
-      },
-    });
-  });
-
-  test('should return created template', async () => {
-    const dto: CreateTemplateInput = {
-      type: TemplateType.EMAIL,
-      name: 'name',
-      message: 'message',
-    };
-
-    const template: Template = {
-      ...dto,
+    const data: UpdateTemplateInput = {
       id: 'id',
-      owner: 'token',
-      version: 1,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      name: 'name',
+      message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
@@ -135,16 +91,63 @@ describe('createTemplate', () => {
     });
 
     validateMock.mockReturnValueOnce({
-      data: dto,
+      data,
     });
 
-    createMock.mockResolvedValueOnce({
+    updateMock.mockResolvedValueOnce({
+      error: {
+        code: 500,
+        message: 'Internal server error',
+      },
+    });
+
+    const result = await updateTemplate(data, 'token');
+
+    expect(updateMock).toHaveBeenCalledWith(data, 'token');
+
+    expect(result).toEqual({
+      error: {
+        code: 500,
+        message: 'Internal server error',
+      },
+    });
+  });
+
+  test('should return updated template', async () => {
+    const data: UpdateTemplateInput = {
+      id: 'id',
+      name: 'name',
+      message: 'message',
+      status: TemplateStatus.NOT_YET_SUBMITTED,
+    };
+
+    const template: Template = {
+      ...data,
+      id: 'id',
+      owner: 'token',
+      version: 1,
+      type: TemplateType.SMS,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    getUserMock.mockResolvedValueOnce({
+      data: {
+        id: 'token',
+      },
+    });
+
+    validateMock.mockReturnValueOnce({
+      data,
+    });
+
+    updateMock.mockResolvedValueOnce({
       data: template,
     });
 
-    const result = await createTemplate(dto, 'token');
+    const result = await updateTemplate(data, 'token');
 
-    expect(createMock).toHaveBeenCalledWith(dto, 'token');
+    expect(updateMock).toHaveBeenCalledWith(data, 'token');
 
     expect(result).toEqual({
       data: template,

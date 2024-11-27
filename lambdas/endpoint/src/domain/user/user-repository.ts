@@ -4,26 +4,13 @@ import {
   ErrorCase,
   success,
 } from 'nhs-notify-templates-client';
-import { decode, JwtPayload } from 'jsonwebtoken';
+import { decode } from 'jsonwebtoken';
 import { User } from './user';
 import { validate } from '../../utils';
 import { $User } from './user-schema';
 
-type NotifyJwtPayload = JwtPayload & {
-  client_id?: string;
-};
-
 const getUser = async (token: string): Promise<Result<User>> => {
-  let payload: NotifyJwtPayload | null;
-  try {
-    payload = decode(token) as NotifyJwtPayload | null;
-  } catch (error) {
-    return failure(
-      ErrorCase.UNAUTHORIZED,
-      'Failed to decode user token',
-      error
-    );
-  }
+  const payload = decode(token);
 
   const { data, error } = validate($User, payload);
 
@@ -31,7 +18,7 @@ const getUser = async (token: string): Promise<Result<User>> => {
     return failure(
       ErrorCase.UNAUTHORIZED,
       'User token is either null or does not contain a valid client_id',
-      error
+      error.actualError
     );
   }
 

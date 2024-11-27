@@ -1,22 +1,23 @@
 import {
-  ErrorCase,
-  failure,
+  ITemplateClient,
   Result,
   success,
   TemplateDTO,
+  UpdateTemplateInput,
 } from 'nhs-notify-templates-client';
 import { templateRepository, $UpdateTemplateSchema } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { validate, logger } from '../utils';
 
-export async function updateTemplate(
-  dto: TemplateDTO,
+export const updateTemplate: ITemplateClient['updateTemplate'] = async (
+  dto: UpdateTemplateInput,
   token: string
-): Promise<Result<TemplateDTO>> {
+): Promise<Result<TemplateDTO>> => {
   const userResult = await userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {
+      dto,
       userResult,
     });
 
@@ -47,11 +48,5 @@ export async function updateTemplate(
     return updateResult;
   }
 
-  if (!updateResult.data) {
-    log.error('Database returned undefined but no errors');
-
-    return failure(ErrorCase.TEMPLATE_NOT_UPDATED, 'Template not updated');
-  }
-
   return success(updateResult.data);
-}
+};

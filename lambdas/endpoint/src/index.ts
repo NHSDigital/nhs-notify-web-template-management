@@ -13,15 +13,14 @@ const failure = (statusCode: number, technicalMessage: string) => ({
 });
 
 export const create: APIGatewayProxyHandler = async (event) => {
-  const token = event.headers.Authorization;
-  const body = event.body || '{}';
-  const dto = JSON.parse(body);
+  const token = String(event.headers.Authorization);
+  const dto = JSON.parse(event.body || '{}');
 
   if (!token || !dto) {
     failure(400, 'Invalid request');
   }
 
-  const templateResult = await app.createTemplate(dto, String(token));
+  const templateResult = await app.createTemplate(dto, token);
 
   if (templateResult.error) {
     return failure(templateResult.error.code, templateResult.error.message);
@@ -52,7 +51,7 @@ export const get: APIGatewayProxyHandler = async (event) => {
 
 export const update: APIGatewayProxyHandler = async (event) => {
   const token = event.headers.Authorization;
-  const dto = JSON.parse(String(event.body)) as TemplateDTO;
+  const dto = JSON.parse(String(event.body));
 
   if (!token || !dto) {
     failure(400, 'Invalid request');
