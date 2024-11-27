@@ -3,8 +3,11 @@ import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewEmailPage } from '../../pages/email/template-mgmt-preview-email-page';
 import { TemplateFactory } from '../../helpers/template-factory';
 import {
+  assertBackToAllTemplatesBottomLink,
+  assertBackToAllTemplatesTopLink,
+} from '../template-mgmt-preview-common.steps';
+import {
   assertFooterLinks,
-  assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -79,10 +82,8 @@ test.describe('Preview Email message template Page', () => {
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLink({
-        ...props,
-        expectedUrl: `templates/edit-email-template/${templates.valid.id}`,
-      });
+      await assertBackToAllTemplatesTopLink(props);
+      await assertBackToAllTemplatesBottomLink(props);
     });
 
     test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({

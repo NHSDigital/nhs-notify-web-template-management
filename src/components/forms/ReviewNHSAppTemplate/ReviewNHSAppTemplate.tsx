@@ -30,10 +30,10 @@ export function ReviewNHSAppTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/edit-nhs-app-template/${initialState.id}`}
+        href={`${getBasePath()}/manage-templates`}
         className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
       >
-        Go back
+        Back to all templates
       </BackLink>
       <ReviewTemplate
         template={initialState}
@@ -47,6 +47,9 @@ export function ReviewNHSAppTemplate({
         }}
         PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
       />
+      <p>
+        <a href={`${getBasePath()}/manage-templates`}>Back to all templates</a>
+      </p>
     </div>
   );
 }

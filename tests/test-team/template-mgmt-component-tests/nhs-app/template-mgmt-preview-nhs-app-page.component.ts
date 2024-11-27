@@ -3,8 +3,11 @@ import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewNhsAppPage } from '../../pages/nhs-app/template-mgmt-preview-nhs-app-page';
 import { TemplateFactory } from '../../helpers/template-factory';
 import {
+  assertBackToAllTemplatesBottomLink,
+  assertBackToAllTemplatesTopLink,
+} from '../template-mgmt-preview-common.steps';
+import {
   assertFooterLinks,
-  assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -78,10 +81,8 @@ test.describe('Preview NHS App template Page', () => {
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLink({
-        ...props,
-        expectedUrl: `templates/edit-nhs-app-template/${templates.valid.id}`,
-      });
+      await assertBackToAllTemplatesTopLink(props);
+      await assertBackToAllTemplatesBottomLink(props);
     });
 
     test('when user submits form with "Edit" data, then the "Create NHS App message template" page is displayed', async ({
