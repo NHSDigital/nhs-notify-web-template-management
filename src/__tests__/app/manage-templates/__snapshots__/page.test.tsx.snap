@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageTemplatesPage 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+    data-testid="page-content-wrapper"
+  >
+    <h1
+      class="nhsuk-heading-xl"
+      data-testid="page-heading"
+    >
+      **Temporary Placeholder Page**
+    </h1>
+  </div>
+</DocumentFragment>
+`;
