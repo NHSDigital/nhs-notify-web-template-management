@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { TemplateType, TemplateStatus } from '@utils/enum';
-import { Template } from './types';
 
 export const $Template = z.object({
   id: z.string(),
@@ -60,5 +59,6 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
   $SubmittedLetterTemplate,
 ]);
 
-export const isTemplateValid = (input: unknown): input is Template =>
-  $Template.safeParse(input).success;
+export const isTemplateValid = (
+  input: unknown
+): input is z.infer<typeof $Template> => $Template.safeParse(input).success;
