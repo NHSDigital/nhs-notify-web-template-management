@@ -46,7 +46,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
         />
         <div>
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateName"
           >
             Template name
@@ -115,7 +115,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateMessage"
             id="smsTemplateMessage--label"
           >
@@ -149,7 +149,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           <a
             data-testid="sms-pricing-link"
             href="/pricing/text-messages"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -161,7 +161,7 @@ exports[`CreateSmsTemplate component renders page 1`] = `
           id="create-sms-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -370,7 +370,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           class="nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateName"
           >
             Template name
@@ -451,7 +451,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateMessage"
             id="smsTemplateMessage--label"
           >
@@ -485,7 +485,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           <a
             data-testid="sms-pricing-link"
             href="/pricing/text-messages"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -497,7 +497,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           id="create-sms-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -708,7 +708,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           class="nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateName"
           >
             Template name
@@ -789,7 +789,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           class="nhsuk-form-group nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateMessage"
             id="smsTemplateMessage--label"
           >
@@ -835,7 +835,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           <a
             data-testid="sms-pricing-link"
             href="/pricing/text-messages"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -847,7 +847,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           id="create-sms-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -1024,7 +1024,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
         />
         <div>
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateName"
           >
             Template name
@@ -1093,7 +1093,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="smsTemplateMessage"
             id="smsTemplateMessage--label"
           >
@@ -1127,7 +1127,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           <a
             data-testid="sms-pricing-link"
             href="/pricing/text-messages"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Learn more about character counts and text messaging pricing (opens in a new tab)
@@ -1139,7 +1139,7 @@ exports[`CreateSmsTemplate component renders page with preloaded field values 1`
           id="create-sms-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>

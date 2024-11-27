@@ -23,7 +23,7 @@ export function NHSNotifyFooter() {
                   href={footerContent.links.accessibilityStatement.url}
                   data-testid='accessibility-statement-link'
                   target='_blank'
-                  rel='noreferrer'
+                  rel='noopener noreferrer'
                 >
                   {footerContent.links.accessibilityStatement.text}
                 </a>

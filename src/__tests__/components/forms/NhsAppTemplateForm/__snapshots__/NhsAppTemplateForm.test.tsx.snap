@@ -47,7 +47,7 @@ exports[`renders page 1`] = `
         </h1>
         <div>
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateName"
           >
             Template name
@@ -116,7 +116,7 @@ exports[`renders page 1`] = `
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateMessage"
             id="nhsAppTemplateMessage--label"
           >
@@ -144,7 +144,7 @@ exports[`renders page 1`] = `
           id="create-nhs-app-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -266,17 +266,17 @@ exports[`renders page 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
@@ -481,7 +481,7 @@ exports[`renders page one error 1`] = `
           class="nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateName"
           >
             Template name
@@ -562,7 +562,7 @@ exports[`renders page one error 1`] = `
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateMessage"
             id="nhsAppTemplateMessage--label"
           >
@@ -588,7 +588,7 @@ exports[`renders page one error 1`] = `
           id="create-nhs-app-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -710,17 +710,17 @@ exports[`renders page one error 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
@@ -927,7 +927,7 @@ exports[`renders page with multiple errors 1`] = `
           class="nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateName"
           >
             Template name
@@ -1008,7 +1008,7 @@ exports[`renders page with multiple errors 1`] = `
           class="nhsuk-form-group nhsuk-form-group--error"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateMessage"
             id="nhsAppTemplateMessage--label"
           >
@@ -1046,7 +1046,7 @@ exports[`renders page with multiple errors 1`] = `
           id="create-nhs-app-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -1168,17 +1168,17 @@ exports[`renders page with multiple errors 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p
@@ -1351,7 +1351,7 @@ exports[`renders page with preloaded field values 1`] = `
         </h1>
         <div>
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateName"
           >
             Template name
@@ -1420,7 +1420,7 @@ exports[`renders page with preloaded field values 1`] = `
           class="nhsuk-form-group"
         >
           <label
-            class="nhsuk-label"
+            class="nhsuk-label nhsuk-label--s"
             for="nhsAppTemplateMessage"
             id="nhsAppTemplateMessage--label"
           >
@@ -1448,7 +1448,7 @@ exports[`renders page with preloaded field values 1`] = `
           id="create-nhs-app-template-submit-button"
           type="submit"
         >
-          Continue
+          Save and preview
         </button>
       </form>
     </div>
@@ -1570,17 +1570,17 @@ exports[`renders page with preloaded field values 1`] = `
             <span
               class="inlineText"
             >
-              line 1
+              line 1  
             </span>
             <span
               class="inlineText"
             >
-              line 2
+              line 2  
             </span>
             <span
               class="inlineText"
             >
-              line 3
+              line 3  
             </span>
           </code>
           <p

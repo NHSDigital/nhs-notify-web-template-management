@@ -292,7 +292,7 @@ const error404PageContent = {
   },
 };
 
-export const submitNhsAppTemplateContent = {
+export const submitTemplateContent = {
   backLinkText: 'Go back',
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
@@ -309,6 +309,7 @@ export const submitNhsAppTemplateContent = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
+  goBackButtonText: 'Go back',
   buttonText: 'Submit template',
 };
 
@@ -360,17 +361,17 @@ export const createNhsAppTemplatePageContent = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const createEmailTemplatePageContent = {
-  pageHeading: 'Create Email message template',
+  pageHeading: 'Create email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 export const templateSubmittedPageContent = {
@@ -385,8 +386,8 @@ export const templateSubmittedPageContent = {
   notLiveText:
     "Tell your onboarding manager once you've submitted all your templates.",
   liveHeading: "If you've already onboarded",
-  liveLinkText: 'Raise a request with the service desk',
-  liveText: "once you've submitted all your templates.",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
 };
 
 export const createSmsTemplatePageContent = {
@@ -400,7 +401,7 @@ export const createSmsTemplatePageContent = {
   smsPricingLink: '/pricing/text-messages',
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
-  buttonText: 'Continue',
+  buttonText: 'Save and preview',
 };
 
 const content = {

@@ -3,7 +3,7 @@
 import { FC } from 'react';
 import { WarningCallout, Button, BackLink } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from '@utils/types';
-import { submitNhsAppTemplateContent } from '@content/content';
+import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
@@ -23,8 +23,9 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     submitChecklistIntroduction,
     submitChecklistItems,
     submitChecklistParagraphs,
+    goBackButtonText,
     buttonText,
-  } = submitNhsAppTemplateContent;
+  } = submitTemplateContent;
 
   return (
     <div className='nhsuk-grid-row'>
@@ -59,6 +60,14 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           action={submitTemplate.bind(null, submitPath)}
         >
           <input type='hidden' name='templateId' value={templateId} readOnly />
+          <Button
+            secondary
+            id='go-back-button'
+            className='nhsuk-u-margin-right-3'
+            href={`${getBasePath()}/${goBackPath}/${templateId}`}
+          >
+            {goBackButtonText}
+          </Button>
           <Button id='submit-template-button'>{buttonText}</Button>
         </NHSNotifyFormWrapper>
       </div>
