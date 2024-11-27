@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "test:unit": "jest",
     "typecheck": "tsc --listFiles --noEmit"
   },

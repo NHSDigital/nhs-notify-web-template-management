@@ -1,5 +1,3 @@
 locals {
-  entrypoint_stem = trimsuffix(basename(var.entrypoint), ".ts")
-
-  output_path = "${var.source_code_dir}/.build/${local.entrypoint_stem}.zip"
+  entrypoint_stem_map = { for entrypoint in var.entrypoints : entrypoint => trimsuffix(basename(entrypoint), ".ts") }
 }

@@ -5,6 +5,6 @@ resource "null_resource" "typescript_build" {
 
   provisioner "local-exec" {
     working_dir = var.source_code_dir
-    command     = "npm ci && npm run build"
+    command     = "npm ci && npx esbuild --bundle --minify ${var.include_sourcemaps ? "--sourcemap=inline" : ""} --target=es2020 --platform=node --outdir=${var.output_dir} ${join(" ", var.entrypoints)}"
   }
 }

@@ -1,7 +1,8 @@
-output "output_path" {
-  value = data.archive_file.zip.output_path
-}
-
-output "base64sha256" {
-  value = data.archive_file.zip.output_base64sha256
+output "zips" {
+  value = {
+    for k, v in data.archive_file.zip : k => {
+      path         = v.output_path,
+      base64sha256 = v.output_base64sha256
+    }
+  }
 }

@@ -55,8 +55,14 @@ variable "log_retention_in_days" {
 
 variable "cognito_config" {
   type = object({
-    USER_POOL_ID: string,
-    USER_POOL_CLIENT_ID: string
+    USER_POOL_ID : string,
+    USER_POOL_CLIENT_ID : string
   })
   description = "Cognito config"
+}
+
+variable "enable_sourcemaps" {
+  type        = bool
+  description = "Include sourcemaps in build"
+  default     = false
 }
