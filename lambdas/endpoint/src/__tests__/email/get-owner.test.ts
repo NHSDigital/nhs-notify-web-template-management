@@ -3,7 +3,7 @@ import {
   GetUserCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { mockDeep } from 'jest-mock-extended';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import type { APIGatewayProxyEvent } from 'aws-lambda';
 import { getOwner } from '../../email/get-owner';
 
 jest.mock('@aws-sdk/client-cognito-identity-provider', () => {

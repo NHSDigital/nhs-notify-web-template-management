@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import type { APIGatewayProxyEvent } from 'aws-lambda';
 import { ErrorWithStatusCode } from '../error-with-status-code';
 
 export const getTemplateId = (event: APIGatewayProxyEvent): string => {

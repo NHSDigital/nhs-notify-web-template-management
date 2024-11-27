@@ -1,5 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import type { APIGatewayProxyEvent } from 'aws-lambda';
 import { getTemplateId } from '../../email/get-template-id';
 
 test('missing event body', () => {

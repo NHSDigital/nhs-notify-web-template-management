@@ -15,5 +15,46 @@ module "email_lambda" {
     SENDER_EMAIL = "no-reply@${var.email_domain_name}"
   }
 
-  execution_role_policy_document = data.aws_iam_policy_document.endpoint_lambda_dynamo_access.json
+  execution_role_policy_document = data.aws_iam_policy_document.email_lambda.json
+}
+
+data "aws_iam_policy_document" "email_lambda" {
+  statement {
+    sid    = "AllowDynamoAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:GetItem"
+    ]
+
+    resources = [
+      aws_dynamodb_table.templates.arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowKMSAccess"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+    ]
+
+    resources = [
+      aws_kms_key.dynamo.arn
+    ]
+  }
+
+  statement {
+    sid  = "AllowSESAccess"
+    effect = "Allow"
+
+    actions = ["ses:SendRawEmail"]
+
+    resources = ["arn:aws:ses:eu-west-2:${var.aws_account_id}:identity/*"]
+  }
 }

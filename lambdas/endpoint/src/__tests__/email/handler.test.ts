@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda';
+import type { APIGatewayProxyEvent, Callback, Context } from 'aws-lambda';
 import { mockDeep } from 'jest-mock-extended';
 import { SendRawEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
 import { ResourceNotFoundException } from '@aws-sdk/client-dynamodb';

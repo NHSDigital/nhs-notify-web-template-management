@@ -1,7 +1,7 @@
 import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { ResourceNotFoundException } from '@aws-sdk/client-dynamodb';
-import { APIGatewayProxyHandler } from 'aws-lambda';
+import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { logger } from '../logger';
 import { emailTemplate } from './email-template';
 import { ErrorWithStatusCode } from '../error-with-status-code';
