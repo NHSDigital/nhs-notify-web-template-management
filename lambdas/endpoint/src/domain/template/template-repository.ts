@@ -36,7 +36,7 @@ const get = async (
   try {
     const response = await client.send(
       new GetCommand({
-        TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
+        TableName: process.env.TEMPLATES_TABLE_NAME,
         Key: {
           id: templateId,
           owner,
@@ -67,9 +67,10 @@ const create = async (
   try {
     const response = await client.send(
       new PutCommand({
-        TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
+        TableName: process.env.TEMPLATES_TABLE_NAME,
         Item: entity,
-      })
+        ReturnValues: 'ALL_NEW',
+      }),
     );
 
     return success(response.Attributes as Template | undefined);
@@ -87,7 +88,7 @@ const update = async (
   owner: string
 ): Promise<Result<Template | undefined>> => {
   const input: UpdateCommandInput = {
-    TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
+    TableName: process.env.TEMPLATES_TABLE_NAME,
     Key: {
       id: template.id,
       owner,
@@ -108,6 +109,7 @@ const update = async (
       ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
     },
     ConditionExpression: 'status = :not_yet_submitted',
+    ReturnValues: 'ALL_NEW',
   };
 
   try {
