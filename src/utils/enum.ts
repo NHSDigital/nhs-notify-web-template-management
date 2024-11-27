@@ -10,14 +10,16 @@ export enum TemplateStatus {
   SUBMITTED = 'SUBMITTED',
 }
 
-export enum TemplateStatusText {
-  NOT_YET_SUBMITTED = 'Not yet submitted',
-  SUBMITTED = 'Submitted',
-}
+export const templateTypeDisplayMappings = (type: TemplateType) =>
+  ({
+    [TemplateType.NHS_APP]: 'NHS App',
+    [TemplateType.SMS]: 'Text message (SMS)',
+    [TemplateType.EMAIL]: 'Email',
+    [TemplateType.LETTER]: 'Letter',
+  })[type];
 
-export enum TemplateTypeText {
-  NHS_APP = 'NHS App',
-  SMS = 'SMS',
-  EMAIL = 'Email',
-  LETTER = 'Letter',
-}
+export const templateStatustoDisplayMappings = (status: TemplateStatus) =>
+  ({
+    [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
+    [TemplateStatus.SUBMITTED]: 'Submitted',
+  })[status];

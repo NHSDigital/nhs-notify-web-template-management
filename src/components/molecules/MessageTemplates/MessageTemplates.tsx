@@ -9,8 +9,8 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   TemplateStatus,
-  TemplateStatusText,
-  TemplateTypeText,
+  templateStatustoDisplayMappings,
+  templateTypeDisplayMappings,
 } from '@utils/enum';
 
 const manageTemplatesContent = content.pages.manageTemplates;
@@ -55,11 +55,7 @@ export function MessageTemplates({
                   <Link href='#'>{template.name}</Link>
                 </Table.Cell>
                 <Table.Cell>
-                  {
-                    TemplateTypeText[
-                      template.templateType as keyof typeof TemplateTypeText
-                    ]
-                  }
+                  {templateTypeDisplayMappings(template.templateType)}
                 </Table.Cell>
                 <Table.Cell>
                   <Tag
@@ -69,11 +65,7 @@ export function MessageTemplates({
                         : undefined
                     }
                   >
-                    {
-                      TemplateStatusText[
-                        template.templateStatus as keyof typeof TemplateStatusText
-                      ]
-                    }
+                    {templateStatustoDisplayMappings(template.templateStatus)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>
