@@ -251,7 +251,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
     </form>
     <p>
       <a
-        href="/templates/manage-templates"
+        href="/manage-templates"
       >
         Back to all templates
       </a>
@@ -474,7 +474,7 @@ exports[`Preview nhs app form renders matches snapshot 1`] = `
     </form>
     <p>
       <a
-        href="/templates/manage-templates"
+        href="/manage-templates"
       >
         Back to all templates
       </a>

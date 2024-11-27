@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import { NHSAppTemplate, PageComponentProps } from '@utils/types';
@@ -48,7 +49,7 @@ export function ReviewNHSAppTemplate({
         PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
       />
       <p>
-        <a href={`${getBasePath()}/manage-templates`}>Back to all templates</a>
+        <Link href='/manage-templates'>Back to all templates</Link>
       </p>
     </div>
   );
