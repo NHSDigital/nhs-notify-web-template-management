@@ -1,7 +1,10 @@
 import { ITemplateClient, success } from 'nhs-notify-templates-client';
-import { templateRepository, $UpdateTemplateSchema } from '@templates/domain/template';
-import { userRepository } from '@templates/domain/user';
-import { validate, logger } from '@utils/index';
+import {
+  templateRepository,
+  $UpdateTemplateSchema,
+} from '@backend-api/templates/domain/template';
+import { userRepository } from '@backend-api/templates/domain/user';
+import { validate, logger } from '@backend-api/utils/index';
 
 export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   dto,

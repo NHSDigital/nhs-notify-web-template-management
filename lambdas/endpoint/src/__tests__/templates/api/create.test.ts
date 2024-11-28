@@ -6,10 +6,10 @@ import {
   TemplateType,
   CreateTemplateInput,
 } from 'nhs-notify-templates-client';
-import { handler } from '@templates/api/create';
-import { createTemplate } from '@templates/app/create-template';
+import { handler } from '@backend-api/templates/api/create';
+import { createTemplate } from '@backend-api/templates/app/create-template';
 
-jest.mock('@templates/app/create-template');
+jest.mock('@backend-api/templates/app/create-template');
 
 const createTemplateMock = jest.mocked(createTemplate);
 
@@ -40,8 +40,8 @@ describe('Template API - Create', () => {
       error: {
         code: 400,
         message: 'Missing required fields',
-      }
-    })
+      },
+    });
 
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },

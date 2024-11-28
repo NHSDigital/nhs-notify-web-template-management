@@ -6,10 +6,10 @@ import {
   TemplateType,
   UpdateTemplateInput,
 } from 'nhs-notify-templates-client';
-import { handler } from '@templates/api/update';
-import { updateTemplate } from '@templates/app/update-template';
+import { handler } from '@backend-api/templates/api/update';
+import { updateTemplate } from '@backend-api/templates/app/update-template';
 
-jest.mock('@templates/app/update-template');
+jest.mock('@backend-api/templates/app/update-template');
 
 const updateTemplateMock = jest.mocked(updateTemplate);
 
@@ -40,8 +40,8 @@ describe('Template API - Update', () => {
       error: {
         code: 400,
         message: 'Missing required fields',
-      }
-    })
+      },
+    });
 
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },

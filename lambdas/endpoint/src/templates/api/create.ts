@@ -1,6 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
+import { createTemplate } from '@backend-api/templates/app/create-template';
 import { failure, success } from './responses';
-import { createTemplate } from '@templates/app/create-template';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   const token = event.headers.Authorization;

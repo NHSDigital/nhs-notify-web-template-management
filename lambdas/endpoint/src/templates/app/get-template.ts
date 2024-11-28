@@ -1,7 +1,7 @@
 import { ITemplateClient, success } from 'nhs-notify-templates-client';
-import { templateRepository } from '@templates/domain/template';
-import { userRepository } from '@templates/domain/user';
-import { logger } from '@utils/logger';
+import { templateRepository } from '@backend-api/templates/domain/template';
+import { userRepository } from '@backend-api/templates/domain/user';
+import { logger } from '@backend-api/utils/logger';
 
 export const getTemplate: ITemplateClient['getTemplate'] = async (
   templateId,

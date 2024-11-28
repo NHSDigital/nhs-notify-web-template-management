@@ -1,5 +1,9 @@
-import {success, failure } from '@templates/api/responses';
-import { TemplateDTO, TemplateStatus, TemplateType } from 'nhs-notify-templates-client';
+import { success, failure } from '@backend-api/templates/api/responses';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-templates-client';
 
 describe('responses', () => {
   it('should return success response', () => {
@@ -11,7 +15,7 @@ describe('responses', () => {
       type: TemplateType.EMAIL,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    }
+    };
     expect(success(200, dto)).toEqual({
       statusCode: 200,
       body: JSON.stringify({ statusCode: 200, template: dto }),

@@ -7,14 +7,14 @@ import {
   $UpdateTemplateSchema,
   Template,
   templateRepository,
-} from '@templates/domain/template';
-import { userRepository } from '@templates/domain/user';
-import { updateTemplate } from '@templates/app/update-template';
-import { validate } from '@utils/validate';
+} from '@backend-api/templates/domain/template';
+import { userRepository } from '@backend-api/templates/domain/user';
+import { updateTemplate } from '@backend-api/templates/app/update-template';
+import { validate } from '@backend-api/utils/validate';
 
-jest.mock('@templates/domain/user');
-jest.mock('@templates/domain/template');
-jest.mock('@utils/validate');
+jest.mock('@backend-api/templates/domain/user');
+jest.mock('@backend-api/templates/domain/template');
+jest.mock('@backend-api/utils/validate');
 
 const getUserMock = jest.mocked(userRepository.getUser);
 const updateMock = jest.mocked(templateRepository.update);

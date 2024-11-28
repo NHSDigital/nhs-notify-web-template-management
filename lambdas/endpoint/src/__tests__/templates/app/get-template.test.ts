@@ -1,10 +1,13 @@
 import { TemplateStatus, TemplateType } from 'nhs-notify-templates-client';
-import { userRepository } from '@templates/domain/user';
-import { Template, templateRepository } from '@templates/domain/template';
-import { getTemplate } from '@templates/app/get-template';
+import { userRepository } from '@backend-api/templates/domain/user';
+import {
+  Template,
+  templateRepository,
+} from '@backend-api/templates/domain/template';
+import { getTemplate } from '@backend-api/templates/app/get-template';
 
-jest.mock('@templates/domain/user');
-jest.mock('@templates/domain/template');
+jest.mock('@backend-api/templates/domain/user');
+jest.mock('@backend-api/templates/domain/template');
 
 const getUserMock = jest.mocked(userRepository.getUser);
 const getMock = jest.mocked(templateRepository.get);

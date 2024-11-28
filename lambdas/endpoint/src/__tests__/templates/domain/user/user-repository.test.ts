@@ -1,9 +1,9 @@
 import { decode } from 'jsonwebtoken';
-import { userRepository, $User } from '@templates/domain/user';
-import { validate } from '@utils/validate';
+import { userRepository, $User } from '@backend-api/templates/domain/user';
+import { validate } from '@backend-api/utils/validate';
 
 jest.mock('jsonwebtoken');
-jest.mock('@utils/validate');
+jest.mock('@backend-api/utils/validate');
 
 const decodeMock = jest.mocked(decode);
 const validateMock = jest.mocked(validate);

@@ -15,7 +15,10 @@ import {
   ConditionalCheckFailedException,
   ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
-import { Template, templateRepository } from '../../../../templates/domain/template';
+import {
+  Template,
+  templateRepository,
+} from '@backend-api/templates/domain/template';
 
 jest.mock('uuid');
 

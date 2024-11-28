@@ -10,10 +10,10 @@
     "skipLibCheck": true,
     "moduleResolution": "node16",
     "paths": {
-      "@templates/*": [
+      "@backend-api/templates/*": [
         "./src/templates/*"
       ],
-      "@utils/*": [
+      "@backend-api/utils/*": [
         "./src/utils/*"
       ],
     }

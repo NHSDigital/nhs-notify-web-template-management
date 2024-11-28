@@ -3,11 +3,11 @@ import {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-templates-client';
-import { validate } from '../../../../utils/validate';
+import { validate } from '@backend-api/utils/validate';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-} from '../../../../templates/domain/template';
+} from '@backend-api/templates/domain/template';
 
 describe('templateSchema - $CreateTemplateSchema', () => {
   const commonFields = {

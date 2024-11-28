@@ -5,10 +5,10 @@ import {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-templates-client';
-import { handler } from '@templates/api/get';
-import { getTemplate } from '@templates/app/get-template';
+import { handler } from '@backend-api/templates/api/get';
+import { getTemplate } from '@backend-api/templates/app/get-template';
 
-jest.mock('@templates/app/get-template');
+jest.mock('@backend-api/templates/app/get-template');
 
 const getTemplateMock = jest.mocked(getTemplate);
 

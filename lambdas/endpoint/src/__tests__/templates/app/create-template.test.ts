@@ -7,14 +7,14 @@ import {
   $CreateTemplateSchema,
   Template,
   templateRepository,
-} from '@templates/domain/template';
-import { userRepository } from '@templates/domain/user';
-import { createTemplate } from '@templates/app/create-template';
-import { validate } from '@utils/validate';
+} from '@backend-api/templates/domain/template';
+import { userRepository } from '@backend-api/templates/domain/user';
+import { createTemplate } from '@backend-api/templates/app/create-template';
+import { validate } from '@backend-api/utils/validate';
 
-jest.mock('@templates/domain/template/template-repository');
-jest.mock('@templates/domain/user');
-jest.mock('@utils/validate');
+jest.mock('@backend-api/templates/domain/template/template-repository');
+jest.mock('@backend-api/templates/domain/user');
+jest.mock('@backend-api/utils/validate');
 
 const getUserMock = jest.mocked(userRepository.getUser);
 const createMock = jest.mocked(templateRepository.create);
