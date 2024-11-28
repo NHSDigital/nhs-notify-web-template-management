@@ -9,7 +9,7 @@ import { User } from './user';
 import { validate } from '../../utils';
 import { $User } from './user-schema';
 
-const getUser = async (token: string): Promise<Result<User>> => {
+const getUser = (token: string): Result<User> => {
   const payload = decode(token);
 
   const { data, error } = validate($User, payload);

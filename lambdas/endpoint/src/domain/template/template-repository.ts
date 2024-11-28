@@ -32,7 +32,7 @@ const client = DynamoDBDocumentClient.from(
 const get = async (
   templateId: string,
   owner: string
-): Promise<Result<Template>> => {
+): Promise<Result<Template | undefined>> => {
   try {
     const response = await client.send(
       new GetCommand({
@@ -44,12 +44,8 @@ const get = async (
       })
     );
 
-    return success(response.Item as Template);
+    return success(response?.Item as Template | undefined);
   } catch (error) {
-    if (error instanceof ResourceNotFoundException) {
-      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found', error);
-    }
-
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }
 };
@@ -69,13 +65,24 @@ const create = async (
   };
 
   try {
-    await client.send(
+    const response = await client.send(
       new PutCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Item: entity,
-        ReturnValues: 'ALL_NEW',
+        ReturnConsumedCapacity: 'TOTAL',
       })
     );
+
+    const consumedUnits = response?.ConsumedCapacity?.CapacityUnits || 0;
+
+    // Note: This is a bit strange, PutCommand does not return the any data when creating
+    // a new item. So we can only infer the success by checking the WriteCapacityUnits
+    // Or do a GetItem - which is expensive.
+    if (consumedUnits === 0) {
+      throw new Error('Expected DynamoDB CapacityUnits to be greater than 0', {
+        cause: response,
+      });
+    }
 
     return success(entity);
   } catch (error) {
