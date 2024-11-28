@@ -54,7 +54,9 @@ test.describe('Start Page', () => {
       await startPage.navigateToStartPage();
       await startPage.clickLoginLink();
 
-      await expect(page).toHaveURL(`${baseURL}/templates`);
+      await expect(page).toHaveURL(
+        `${baseURL}/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates`
+      );
 
       expect(await page.locator('h1').textContent()).toBe('404');
     }
