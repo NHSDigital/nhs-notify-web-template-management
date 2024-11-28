@@ -4,7 +4,12 @@ import { TemplateType } from '@utils/enum';
 const headerComponent = {
   serviceName: 'Notify',
   links: {
-    logIn: 'Log in',
+    logIn: {
+      text: 'Log in',
+      href: `/auth?redirect=${encodeURIComponent(
+        `${getBasePath()}/create-and-submit-templates`
+      )}`,
+    },
     logOut: 'Log out',
   },
 };
