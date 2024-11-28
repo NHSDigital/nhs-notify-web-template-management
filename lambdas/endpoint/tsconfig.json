@@ -8,9 +8,17 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "paths": {
+      "@templates/*": [
+        "./src/templates/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+    }
   },
   "include": [
     "src/**/*"
-  ]
+  ],
 }

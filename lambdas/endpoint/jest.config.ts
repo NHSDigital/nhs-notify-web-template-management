@@ -11,4 +11,8 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['src/**/*.ts*'],
+  moduleNameMapper: {
+    '^@templates(.*)$': '<rootDir>/src/templates/$1',
+    '^@utils(.*)$': '<rootDir>/src/utils/$1',
+  },
 };
