@@ -35,7 +35,7 @@ if [[ "$get_user_command_exit_code" -ne 0 ]]; then
   echo "Attempting to create user"
 
   temp_password=$(gen_temp_password)
-  echo $temp_password
+
   aws cognito-idp admin-create-user \
     --user-pool-id "${cognito_user_pool_id}" \
     --username "${email}" \
