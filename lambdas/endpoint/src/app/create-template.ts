@@ -1,18 +1,13 @@
-import {
-  CreateTemplateInput,
-  Result,
-  success,
-  TemplateDTO,
-} from 'nhs-notify-templates-client';
+import { ITemplateClient, success } from 'nhs-notify-templates-client';
 import { templateRepository, $CreateTemplateSchema } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { validate, logger } from '../utils';
 
-export async function createTemplate(
-  dto: CreateTemplateInput,
-  token: string
-): Promise<Result<TemplateDTO>> {
-  const userResult = await userRepository.getUser(token);
+export const createTemplate: ITemplateClient['createTemplate'] = async (
+  dto,
+  token
+) => {
+  const userResult = userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {
@@ -52,4 +47,4 @@ export async function createTemplate(
   }
 
   return success(createResult.data);
-}
+};

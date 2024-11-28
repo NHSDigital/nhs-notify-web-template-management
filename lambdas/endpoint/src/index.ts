@@ -1,67 +1,27 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { TemplateDTO } from 'nhs-notify-templates-client';
-import { app } from './app';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
-const success = (statusCode: number, template: TemplateDTO) => ({
-  statusCode,
-  body: JSON.stringify({ statusCode, template }),
-});
+const client = DynamoDBDocumentClient.from(
+  new DynamoDBClient({ region: 'eu-west-2' })
+);
 
-const failure = (statusCode: number, technicalMessage: string) => ({
-  statusCode,
-  body: JSON.stringify({ statusCode, technicalMessage }),
-});
-
-export const create: APIGatewayProxyHandler = async (event) => {
-  const token = String(event.headers.Authorization);
-  const dto = JSON.parse(event.body || '{}');
-
-  if (!token || !dto) {
-    failure(400, 'Invalid request');
-  }
-
-  const templateResult = await app.createTemplate(dto, token);
-
-  if (templateResult.error) {
-    return failure(templateResult.error.code, templateResult.error.message);
-  }
-
-  return success(201, templateResult.data);
-};
-
-export const get: APIGatewayProxyHandler = async (event) => {
-  const token = event.headers.Authorization;
-  const templateId = event.pathParameters?.templateId;
-
-  if (!token || !templateId) {
-    failure(400, 'Invalid request');
-  }
-
-  const templateResult = await app.getTemplate(
-    String(templateId),
-    String(token)
+export const handler: APIGatewayProxyHandler = async (event) => {
+  await client.send(
+    new PutCommand({
+      TableName: process.env.TEMPLATES_TABLE_NAME ?? '',
+      Item: {
+        owner: 'test',
+        id: 'test',
+        content: 'content',
+      },
+    })
   );
 
-  if (templateResult.error) {
-    return failure(templateResult.error.code, templateResult.error.message);
-  }
+  console.log(event);
 
-  return success(200, templateResult.data);
-};
-
-export const update: APIGatewayProxyHandler = async (event) => {
-  const token = event.headers.Authorization;
-  const dto = JSON.parse(String(event.body));
-
-  if (!token || !dto) {
-    failure(400, 'Invalid request');
-  }
-
-  const templateResult = await app.updateTemplate(dto, String(token));
-
-  if (templateResult.error) {
-    return failure(templateResult.error.code, templateResult.error.message);
-  }
-
-  return success(200, templateResult.data);
+  return {
+    statusCode: 200,
+    body: JSON.stringify({}),
+  };
 };

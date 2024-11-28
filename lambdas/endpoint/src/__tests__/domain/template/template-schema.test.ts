@@ -1,6 +1,13 @@
+import {
+  CreateTemplateInput,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-templates-client';
 import { validate } from '../../../utils/validate';
-import { $CreateTemplateSchema, $UpdateTemplateSchema } from '../../../domain/template';
-import { CreateTemplateInput, TemplateStatus, TemplateType } from 'nhs-notify-templates-client';
+import {
+  $CreateTemplateSchema,
+  $UpdateTemplateSchema,
+} from '../../../domain/template';
 
 describe('templateSchema - $CreateTemplateSchema', () => {
   const commonFields = {
@@ -25,12 +32,12 @@ describe('templateSchema - $CreateTemplateSchema', () => {
     {
       ...commonFields,
       type: TemplateType.NHS_APP,
-    }
+    },
   ])('should pass validation %p', (template) => {
     const result = validate($CreateTemplateSchema, template);
 
     expect(result).toEqual({
-      data: template
+      data: template,
     });
   });
 
@@ -49,11 +56,11 @@ describe('templateSchema - $CreateTemplateSchema', () => {
         message: 'Request failed validation',
         actualError: {
           fieldErrors: {
-            subject: ['Required']
+            subject: ['Required'],
           },
-          formErrors: []
+          formErrors: [],
         },
-      }
+      },
     });
   });
 });
@@ -83,12 +90,12 @@ describe('templateSchema - $UpdateTemplateSchema', () => {
     {
       ...commonFields,
       type: TemplateType.NHS_APP,
-    }
+    },
   ])('should pass validation %p', (template) => {
     const result = validate($UpdateTemplateSchema, template);
 
     expect(result).toEqual({
-      data: template
+      data: template,
     });
   });
 });

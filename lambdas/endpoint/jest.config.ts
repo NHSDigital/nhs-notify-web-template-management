@@ -11,5 +11,4 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['src/**/*.ts*'],
-  collectCoverage: true
 };

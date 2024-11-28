@@ -1,10 +1,3 @@
-import { ITemplateClient } from 'nhs-notify-templates-client';
-import { createTemplate } from './create-template';
-import { updateTemplate } from './update-template';
-import { getTemplate } from './get-template';
-
-export const app: ITemplateClient = {
-  createTemplate,
-  updateTemplate,
-  getTemplate,
-};
+export { createTemplate } from './create-template';
+export { updateTemplate } from './update-template';
+export { getTemplate } from './get-template';

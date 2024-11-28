@@ -5,10 +5,17 @@ import {
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
-import { TemplateStatus, TemplateType, UpdateTemplateInput } from 'nhs-notify-templates-client';
-import { Template, templateRepository } from '../../../domain/template';
+import {
+  TemplateStatus,
+  TemplateType,
+  UpdateTemplateInput,
+} from 'nhs-notify-templates-client';
 import { v4 as uuidv4 } from 'uuid';
-import { ConditionalCheckFailedException, ResourceNotFoundException } from '@aws-sdk/client-dynamodb';
+import {
+  ConditionalCheckFailedException,
+  ResourceNotFoundException,
+} from '@aws-sdk/client-dynamodb';
+import { Template, templateRepository } from '../../../domain/template';
 
 jest.mock('uuid');
 
@@ -74,9 +81,7 @@ describe('templateRepository', () => {
     );
 
     test('should error when unexpected error occurs', async () => {
-      ddbMock
-        .on(GetCommand)
-        .rejects(new Error('InternalServerError'));
+      ddbMock.on(GetCommand).rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.get('real-id', 'real-owner');
 
@@ -111,9 +116,7 @@ describe('templateRepository', () => {
     test('should return error when, unexpected error occurs', async () => {
       uuidMock.mockReturnValue('real-id');
 
-      ddbMock
-        .on(PutCommand)
-        .rejects(new Error('InternalServerError'));
+      ddbMock.on(PutCommand).rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.create(
         {
@@ -144,8 +147,8 @@ describe('templateRepository', () => {
         })
         .resolves({
           ConsumedCapacity: {
-            CapacityUnits: 0
-          }
+            CapacityUnits: 0,
+          },
         });
 
       const response = await templateRepository.create(
@@ -162,7 +165,9 @@ describe('templateRepository', () => {
         error: {
           code: 500,
           message: 'Failed to create template',
-          actualError: new Error('Expected DynamoDB CapacityUnits to be greater than 0'),
+          actualError: new Error(
+            'Expected DynamoDB CapacityUnits to be greater than 0'
+          ),
         },
       });
     });
@@ -177,19 +182,19 @@ describe('templateRepository', () => {
         })
         .resolves({
           ConsumedCapacity: {
-            CapacityUnits: 1
-          }
+            CapacityUnits: 1,
+          },
         });
 
-        const response = await templateRepository.create(
-          {
-            type: TemplateType.EMAIL,
-            name: 'name',
-            message: 'message',
-            subject: 'pickles',
-          },
-          'real-owner'
-        );
+      const response = await templateRepository.create(
+        {
+          type: TemplateType.EMAIL,
+          name: 'name',
+          message: 'message',
+          subject: 'pickles',
+        },
+        'real-owner'
+      );
 
       expect(response).toEqual({
         data: template,
@@ -204,9 +209,7 @@ describe('templateRepository', () => {
         $metadata: { httpStatusCode: 400 },
       });
 
-      ddbMock
-        .on(UpdateCommand)
-        .rejects(error);
+      ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
         {
@@ -222,7 +225,8 @@ describe('templateRepository', () => {
       expect(response).toEqual({
         error: {
           code: 400,
-          message: 'Can not update template due to status being NOT_YET_SUBMITTED',
+          message:
+            'Can not update template due to status being NOT_YET_SUBMITTED',
           actualError: error,
         },
       });
@@ -234,9 +238,7 @@ describe('templateRepository', () => {
         $metadata: { httpStatusCode: 400 },
       });
 
-      ddbMock
-        .on(UpdateCommand)
-        .rejects(error);
+      ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
         {
@@ -265,7 +267,7 @@ describe('templateRepository', () => {
         message: 'updated-message',
         subject: 'updated-subject',
         status: TemplateStatus.SUBMITTED,
-      }
+      };
 
       ddbMock
         .on(UpdateCommand, {
@@ -292,18 +294,21 @@ describe('templateRepository', () => {
         .resolves({
           Attributes: {
             ...template,
-            ...updatedTemplate
+            ...updatedTemplate,
           },
         });
 
-      const response = await templateRepository.update(updatedTemplate, 'real-owner');
+      const response = await templateRepository.update(
+        updatedTemplate,
+        'real-owner'
+      );
 
       expect(response).toEqual({
         data: {
           ...template,
-          ...updatedTemplate
+          ...updatedTemplate,
         },
       });
     });
-  })
+  });
 });

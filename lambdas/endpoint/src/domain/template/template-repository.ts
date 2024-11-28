@@ -32,7 +32,7 @@ const client = DynamoDBDocumentClient.from(
 const get = async (
   templateId: string,
   owner: string
-): Promise<Result<Template | undefined>> => {
+): Promise<Result<Template>> => {
   try {
     const response = await client.send(
       new GetCommand({
@@ -44,7 +44,11 @@ const get = async (
       })
     );
 
-    return success(response?.Item as Template | undefined);
+    if (!response.Item) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+    }
+
+    return success(response?.Item as Template);
   } catch (error) {
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }

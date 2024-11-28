@@ -1,5 +1,5 @@
-import { userRepository, $User } from '../../../domain/user';
 import { decode } from 'jsonwebtoken';
+import { userRepository, $User } from '../../../domain/user';
 import { validate } from '../../../utils/validate';
 
 jest.mock('jsonwebtoken');
@@ -17,7 +17,7 @@ describe('userRepository', () => {
     validateMock.mockReturnValueOnce({
       error: {
         code: 400,
-        message: 'Object is null'
+        message: 'Object is null',
       },
     });
 
@@ -26,7 +26,8 @@ describe('userRepository', () => {
     expect(response).toEqual({
       error: {
         code: 401,
-        message: 'User token is either null or does not contain a valid client_id',
+        message:
+          'User token is either null or does not contain a valid client_id',
       },
     });
   });
@@ -37,12 +38,14 @@ describe('userRepository', () => {
     validateMock.mockReturnValueOnce({
       data: {
         client_id: 'client-id',
-      }
+      },
     });
 
     const response = userRepository.getUser('token');
 
-    expect(validateMock).toHaveBeenCalledWith($User, { client_id: 'client-id' });
+    expect(validateMock).toHaveBeenCalledWith($User, {
+      client_id: 'client-id',
+    });
 
     expect(response).toEqual({
       data: {

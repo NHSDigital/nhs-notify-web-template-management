@@ -1,19 +1,13 @@
-import {
-  ITemplateClient,
-  Result,
-  success,
-  TemplateDTO,
-  UpdateTemplateInput,
-} from 'nhs-notify-templates-client';
+import { ITemplateClient, success } from 'nhs-notify-templates-client';
 import { templateRepository, $UpdateTemplateSchema } from '../domain/template';
 import { userRepository } from '../domain/user';
 import { validate, logger } from '../utils';
 
 export const updateTemplate: ITemplateClient['updateTemplate'] = async (
-  dto: UpdateTemplateInput,
-  token: string
-): Promise<Result<TemplateDTO>> => {
-  const userResult = await userRepository.getUser(token);
+  dto,
+  token
+) => {
+  const userResult = userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {

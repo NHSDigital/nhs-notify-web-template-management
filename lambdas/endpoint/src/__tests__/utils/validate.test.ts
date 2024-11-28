@@ -3,9 +3,12 @@ import { validate } from '../../utils';
 
 describe('validate', () => {
   test('should return error when schema is invalid', () => {
-    const result = validate(z.object({
-      id: z.string(),
-    }), { notId: 'notId' });
+    const result = validate(
+      z.object({
+        id: z.string(),
+      }),
+      { notId: 'notId' }
+    );
 
     expect(result).toEqual({
       error: {
@@ -13,23 +16,26 @@ describe('validate', () => {
         message: 'Request failed validation',
         actualError: {
           fieldErrors: {
-            id: ['Required']
+            id: ['Required'],
           },
-          formErrors: []
+          formErrors: [],
         },
-      }
-    })
+      },
+    });
   });
 
   test('should return data', () => {
-    const result = validate(z.object({
-      id: z.string(),
-    }), { id: 'real-id' });
+    const result = validate(
+      z.object({
+        id: z.string(),
+      }),
+      { id: 'real-id' }
+    );
 
     expect(result).toEqual({
       data: {
         id: 'real-id',
-      }
-    })
+      },
+    });
   });
 });
