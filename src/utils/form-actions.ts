@@ -6,7 +6,7 @@ import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
 import { Template, Draft } from './types';
 import { logger } from './logger';
-import { $Template, isTemplateValid } from './zod-validators';
+import { isTemplateValid } from './zod-validators';
 
 export async function createTemplate(
   template: Draft<Template>
@@ -96,11 +96,7 @@ export async function getTemplates(): Promise<Template[] | []> {
   }
 
   const parsedData: Template[] = data
-    .map((template) => {
-      if (isTemplateValid(template)) {
-        return $Template.parse(template);
-      }
-    })
+    .map((template) => isTemplateValid(template))
     .filter((template): template is Template => template !== undefined);
 
   return parsedData;

@@ -61,4 +61,4 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
 
 export const isTemplateValid = (
   input: unknown
-): input is z.infer<typeof $Template> => $Template.safeParse(input).success;
+): z.infer<typeof $Template> | undefined => $Template.safeParse(input).data;
