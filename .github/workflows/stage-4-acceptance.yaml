@@ -67,6 +67,7 @@ jobs:
         with:
           name: amplify_outputs.json
           path: amplify_outputs.json
+
   sandbox-set-up:
     name: "Sandbox set up"
     runs-on: ubuntu-latest
@@ -75,20 +76,23 @@ jobs:
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
           role-session-name: deployInfra
           aws-region: ${{ env.AWS_REGION }}
+      - name: "Get normalized branch name"
+        id: normalize_branch_name
+        uses: ./github/actions/normalize-branch-name
       - name: "Create Backend sandbox"
         run: |
-          npm run create-backend-sandbox wf-${GITHUB_RUN_ID}
+          npm run create-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
       - uses: actions/upload-artifact@v4
         with:
           name: sandbox_tf_outputs.json
           path: sandbox_tf_outputs.json
+
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
@@ -214,6 +218,9 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
           role-session-name: deployInfra
           aws-region: eu-west-2
+      - name: "Get normalized branch name"
+        id: normalize_branch_name
+        uses: ./github/actions/normalize-branch-name
       - name: "Destroy Backend sandbox"
         run: |
-          npm run destroy-backend-sandbox wf-${GITHUB_RUN_ID}
+          npm run destroy-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
