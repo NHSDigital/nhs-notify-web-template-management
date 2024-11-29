@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --outDir ./.build src/index.ts",
     "test:unit": "jest --coverage",
-    "typecheck": "tsc --listFiles --noEmit"
+    "typecheck": "tsc --listFiles --noEmit",
+    "generate-schema": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/templates-api/spec.tmpl.json --output ./src/types/generated"
   },
   "files": [
     "src/index.ts"

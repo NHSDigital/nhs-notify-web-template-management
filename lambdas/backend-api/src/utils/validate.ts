@@ -1,9 +1,4 @@
-import {
-  ErrorCase,
-  failure,
-  Result,
-  success,
-} from 'nhs-notify-backend-client';
+import { ErrorCase, failure, Result, success } from 'nhs-notify-backend-client';
 import { z } from 'zod';
 
 export const validate = <T extends z.Schema>(

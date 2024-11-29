@@ -1,5 +1,5 @@
 import {
-  CreateTemplateInput,
+  CreateTemplate,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -42,7 +42,7 @@ describe('templateSchema - $CreateTemplateSchema', () => {
   });
 
   test('should fail validation, when no subject line for EMAIL', () => {
-    const template: CreateTemplateInput = {
+    const template: CreateTemplate = {
       name: 'Test Template',
       message: 'This is a test template',
       type: TemplateType.EMAIL,

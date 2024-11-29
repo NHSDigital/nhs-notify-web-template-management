@@ -8,7 +8,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import {
   TemplateStatus,
   TemplateType,
-  UpdateTemplateInput,
+  UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -292,7 +292,7 @@ describe('templateRepository', () => {
     });
 
     test('should update template', async () => {
-      const updatedTemplate: UpdateTemplateInput = {
+      const updatedTemplate: UpdateTemplate = {
         id: 'real-id',
         name: 'updated-name',
         message: 'updated-message',

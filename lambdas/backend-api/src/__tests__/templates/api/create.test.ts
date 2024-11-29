@@ -4,7 +4,7 @@ import {
   TemplateDTO,
   TemplateStatus,
   TemplateType,
-  CreateTemplateInput,
+  CreateTemplate,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/create';
 import { createTemplate } from '@backend-api/templates/app/create-template';
@@ -88,7 +88,7 @@ describe('Template API - Create', () => {
   });
 
   test('should return template', async () => {
-    const create: CreateTemplateInput = {
+    const create: CreateTemplate = {
       name: 'updated-name',
       message: 'message',
       type: TemplateType.SMS,

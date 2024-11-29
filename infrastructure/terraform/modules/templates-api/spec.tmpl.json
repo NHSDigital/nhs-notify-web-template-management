@@ -226,8 +226,17 @@
       }
     },
     "schemas": {
-      "Template": {
+      "TemplateDTO": {
         "type": "object",
+        "required": [
+          "id",
+          "type",
+          "status",
+          "name",
+          "message",
+          "createdAt",
+          "updatedAt"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -254,7 +263,7 @@
           },
           "subject": {
             "type": "string",
-            "nullable": true
+            "optional": true
           }
         }
       },
@@ -276,6 +285,11 @@
       },
       "CreateTemplate": {
         "type": "object",
+        "required": [
+          "type",
+          "name",
+          "message"
+        ],
         "properties": {
           "type": {
             "$ref": "#/components/schemas/TemplateType"
@@ -288,18 +302,29 @@
           },
           "subject": {
             "type": "string",
-            "nullable": true
+            "optional": true
           }
         }
       },
       "UpdateTemplate": {
         "type": "object",
+        "required": [
+          "id",
+          "status",
+          "name",
+          "message",
+          "type"
+        ],
         "properties": {
           "id": {
             "type": "string"
           },
           "status": {
             "$ref": "#/components/schemas/TemplateStatus"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TemplateType",
+            "readOnly": true
           },
           "name": {
             "type": "string"
@@ -309,15 +334,19 @@
           },
           "subject": {
             "type": "string",
-            "nullable": true
+            "optional": true
           }
         }
       },
       "Success": {
         "type": "object",
+        "required": [
+          "template",
+          "statusCode"
+        ],
         "properties": {
           "template": {
-            "$ref": "#/components/schemas/Template"
+            "$ref": "#/components/schemas/TemplateDTO"
           },
           "statusCode": {
             "type": "integer"
@@ -326,6 +355,10 @@
       },
       "Failure": {
         "type": "object",
+        "required": [
+          "technicalMessage",
+          "statusCode"
+        ],
         "properties": {
           "technicalMessage": {
             "type": "string"

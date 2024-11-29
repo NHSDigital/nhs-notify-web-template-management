@@ -1,11 +1,11 @@
 import {
-  CreateTemplateInput,
+  CreateTemplate,
   ErrorCase,
   failure,
   Result,
   success,
   TemplateStatus,
-  UpdateTemplateInput,
+  UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
   ConditionalCheckFailedException,
@@ -55,7 +55,7 @@ const get = async (
 };
 
 const create = async (
-  template: CreateTemplateInput,
+  template: CreateTemplate,
   owner: string
 ): Promise<Result<Template>> => {
   const entity: Template = {
@@ -99,7 +99,7 @@ const create = async (
 };
 
 const update = async (
-  template: UpdateTemplateInput,
+  template: UpdateTemplate,
   owner: string
 ): Promise<Result<Template>> => {
   const input: UpdateCommandInput = {

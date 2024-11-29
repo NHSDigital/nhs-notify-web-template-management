@@ -55,7 +55,7 @@ test('createTemplate', async () => {
     },
   });
 
-  const createTemplateInput: Draft<NHSAppTemplate> = {
+  const CreateTemplate: Draft<NHSAppTemplate> = {
     version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -63,9 +63,9 @@ test('createTemplate', async () => {
     message: 'message',
   };
 
-  const response = await createTemplate(createTemplateInput);
+  const response = await createTemplate(CreateTemplate);
 
-  expect(mockCreateTemplate).toHaveBeenCalledWith(createTemplateInput);
+  expect(mockCreateTemplate).toHaveBeenCalledWith(CreateTemplate);
   expect(response).toEqual(mockResponseData);
 });
 

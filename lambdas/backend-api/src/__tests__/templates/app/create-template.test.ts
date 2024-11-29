@@ -1,5 +1,5 @@
 import {
-  CreateTemplateInput,
+  CreateTemplate,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -31,7 +31,7 @@ describe('createTemplate', () => {
       },
     });
 
-    const result = await createTemplate({} as CreateTemplateInput, 'token');
+    const result = await createTemplate({} as CreateTemplate, 'token');
 
     expect(getUserMock).toHaveBeenCalledWith('token');
 
@@ -57,7 +57,7 @@ describe('createTemplate', () => {
       },
     });
 
-    const dto: CreateTemplateInput = {
+    const dto: CreateTemplate = {
       type: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
@@ -76,7 +76,7 @@ describe('createTemplate', () => {
   });
 
   test('should return a failure result, when saving to the database unexpectedly fails', async () => {
-    const data: CreateTemplateInput = {
+    const data: CreateTemplate = {
       type: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
@@ -112,7 +112,7 @@ describe('createTemplate', () => {
   });
 
   test('should return created template', async () => {
-    const dto: CreateTemplateInput = {
+    const dto: CreateTemplate = {
       type: TemplateType.EMAIL,
       name: 'name',
       message: 'message',

@@ -4,7 +4,7 @@ import {
   TemplateDTO,
   TemplateStatus,
   TemplateType,
-  UpdateTemplateInput,
+  UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/update';
 import { updateTemplate } from '@backend-api/templates/app/update-template';
@@ -88,7 +88,7 @@ describe('Template API - Update', () => {
   });
 
   test('should return template', async () => {
-    const update: UpdateTemplateInput = {
+    const update: UpdateTemplate = {
       id: 'id',
       name: 'updated-name',
       message: 'message',

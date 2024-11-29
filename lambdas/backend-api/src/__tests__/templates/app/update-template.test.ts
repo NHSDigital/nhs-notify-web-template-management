@@ -1,5 +1,5 @@
 import {
-  UpdateTemplateInput,
+  UpdateTemplate,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
@@ -31,7 +31,7 @@ describe('updateTemplate', () => {
       },
     });
 
-    const result = await updateTemplate({} as UpdateTemplateInput, 'token');
+    const result = await updateTemplate({} as UpdateTemplate, 'token');
 
     expect(getUserMock).toHaveBeenCalledWith('token');
 
@@ -57,7 +57,7 @@ describe('updateTemplate', () => {
       },
     });
 
-    const data: UpdateTemplateInput = {
+    const data: UpdateTemplate = {
       id: 'id',
       name: 'name',
       message: 'message',
@@ -77,7 +77,7 @@ describe('updateTemplate', () => {
   });
 
   test('should return a failure result, when saving to the database unexpectedly fails', async () => {
-    const data: UpdateTemplateInput = {
+    const data: UpdateTemplate = {
       id: 'id',
       name: 'name',
       message: 'message',
@@ -114,7 +114,7 @@ describe('updateTemplate', () => {
   });
 
   test('should return updated template', async () => {
-    const data: UpdateTemplateInput = {
+    const data: UpdateTemplate = {
       id: 'id',
       name: 'name',
       message: 'message',
