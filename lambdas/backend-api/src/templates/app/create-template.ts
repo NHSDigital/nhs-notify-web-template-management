@@ -1,4 +1,4 @@
-import { ITemplateClient, success } from 'nhs-notify-templates-client';
+import { ITemplateClient, success } from 'nhs-notify-backend-client';
 import {
   templateRepository,
   $CreateTemplateSchema,

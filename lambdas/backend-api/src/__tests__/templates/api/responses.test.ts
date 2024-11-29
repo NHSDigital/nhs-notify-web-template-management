@@ -3,7 +3,7 @@ import {
   TemplateDTO,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 
 describe('responses', () => {
   it('should return success response', () => {

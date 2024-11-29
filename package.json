@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint --dir .",
     "lint:fix": "next lint  --dir . --fix",
-    "test:unit": "jest",
+    "test:unit": "jest && npm run test:unit:backend-api && npm run test:unit:authorizer && npm run test:unit:backend-client",
     "test:accessibility": "npm run copy-files-for-testing && pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
@@ -17,7 +17,13 @@
     "destroy-sandbox": "npx ampx sandbox delete --y",
     "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
     "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
-    "typecheck": "tsc --listFiles --project ./tsconfig.json"
+    "typecheck": "tsc --listFiles --project ./tsconfig.json && npm run typecheck:backend-api && npm run typecheck:authorizer",
+    "test:unit:backend-api": "npm run test:unit --prefix lambdas/backend-api",
+    "test:unit:backend-client": "npm run test:unit --prefix lambdas/backend-client",
+    "test:unit:authorizer": "npm run test:unit --prefix lambdas/authorizer",
+    "typecheck:backend-api": "npm run typecheck --prefix lambdas/backend-api",
+    "typecheck:backend-client": "npm run typecheck --prefix lambdas/backend-client",
+    "typecheck:authorizer": "npm run typecheck --prefix lambdas/authorizer"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.23",
@@ -35,6 +41,8 @@
   },
   "devDependencies": {
     "@aws-amplify/backend-cli": "^1.2.5",
+    "@swc/core": "^1.9.3",
+    "@swc/jest": "^0.2.37",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
@@ -64,6 +72,7 @@
     "jest-html-reporter": "^3.10.2",
     "jest-mock-extended": "^3.0.7",
     "mochawesome": "^7.1.3",
+    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team",
     "pa11y": "^8.0.0",
     "pa11y-ci": "^3.1.0",
     "pa11y-ci-reporter-html": "^7.0.0",
@@ -75,8 +84,7 @@
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
     "wait-on": "^8.0.0",
-    "whatwg-fetch": "^3.6.20",
-    "nhs-notify-web-template-management-ui-tests": "file:tests/test-team"
+    "whatwg-fetch": "^3.6.20"
   },
   "overrides": {
     "pa11y-ci": {

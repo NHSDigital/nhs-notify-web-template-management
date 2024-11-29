@@ -1,4 +1,4 @@
-import { TemplateStatus, TemplateType } from 'nhs-notify-templates-client';
+import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
 export type Template = {
   id: string;

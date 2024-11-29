@@ -5,7 +5,7 @@ import {
   TemplateStatus,
   TemplateType,
   UpdateTemplateInput,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/update';
 import { updateTemplate } from '@backend-api/templates/app/update-template';
 

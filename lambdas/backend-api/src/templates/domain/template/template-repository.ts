@@ -6,7 +6,7 @@ import {
   success,
   TemplateStatus,
   UpdateTemplateInput,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import {
   ConditionalCheckFailedException,
   DynamoDBClient,

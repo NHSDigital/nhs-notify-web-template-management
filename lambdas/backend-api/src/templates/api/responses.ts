@@ -1,4 +1,4 @@
-import { TemplateDTO } from 'nhs-notify-templates-client';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 export const success = (statusCode: number, template: TemplateDTO) => ({
   statusCode,

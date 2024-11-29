@@ -3,7 +3,7 @@ import {
   failure,
   Result,
   success,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { z } from 'zod';
 
 export const validate = <T extends z.Schema>(

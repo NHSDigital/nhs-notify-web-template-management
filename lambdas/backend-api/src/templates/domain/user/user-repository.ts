@@ -4,7 +4,7 @@ import {
   failure,
   ErrorCase,
   success,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { validate } from '@backend-api/utils/validate';
 import { User } from './user';
 import { $User } from './user-schema';

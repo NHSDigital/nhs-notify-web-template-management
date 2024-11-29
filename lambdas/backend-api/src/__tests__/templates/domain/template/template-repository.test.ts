@@ -9,7 +9,7 @@ import {
   TemplateStatus,
   TemplateType,
   UpdateTemplateInput,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { v4 as uuidv4 } from 'uuid';
 import {
   ConditionalCheckFailedException,

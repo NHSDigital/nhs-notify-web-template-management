@@ -2,7 +2,7 @@ import {
   UpdateTemplateInput,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import {
   $UpdateTemplateSchema,
   Template,

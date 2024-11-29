@@ -1,4 +1,4 @@
-import { TemplateStatus, TemplateType } from 'nhs-notify-templates-client';
+import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import { userRepository } from '@backend-api/templates/domain/user';
 import {
   Template,

@@ -21,7 +21,9 @@ const moduleNameMapperDefaults = pathsToModuleNameMapper(
 );
 
 const config: Config = {
-  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(t|j)sx?$': '@swc/jest',
+  },
 
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
@@ -44,7 +46,7 @@ const config: Config = {
     },
   },
 
-  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*', 'lambdas/**/*.ts'],
+  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*'],
 
   coveragePathIgnorePatterns: [
     '.types.ts',
@@ -79,6 +81,7 @@ const config: Config = {
     'helpers.ts',
     '/tests/test-team/',
     '.build',
+    '/lambdas/'
   ],
 
   // Set the absolute path for imports

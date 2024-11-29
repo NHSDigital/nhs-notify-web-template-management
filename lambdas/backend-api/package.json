@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
-    "test:unit": "jest",
+    "test:unit": "jest --coverage",
     "typecheck": "tsc --listFiles --noEmit"
   },
   "dependencies": {
@@ -12,7 +12,7 @@
     "@aws-sdk/lib-dynamodb": "^3.698.0",
     "esbuild": "^0.24.0",
     "jsonwebtoken": "^9.0.2",
-    "nhs-notify-templates-client": "file:../template-client",
+    "nhs-notify-backend-client": "file:../backend-client",
     "winston": "^3.17.0",
     "zod": "^3.23.8"
   },

@@ -33,10 +33,8 @@
       "@utils/*": ["./src/utils/*"],
       "@domain/*": ["./src/domain/*"],
       "@hooks/*": ["./src/hooks/*"],
-      // Without adding this here it causes npm run lint:fix to fail because I has not reference
-      // This should probably be sorted once we have some form of workspace.
-      "@backend-api/templates/*": ["./lambdas/endpoint/src/templates/*"],
-      "@backend-api/utils/*": ["./lambdas/endpoint/src/utils/*"],
+      "@backend-api/templates/*": ["./lambdas/backend-api/src/templates/*"],
+      "@backend-api/utils/*": ["./lambdas/backend-api/src/utils/*"]
     }
   },
   "include": [

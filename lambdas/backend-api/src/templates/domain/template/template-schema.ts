@@ -4,7 +4,7 @@ import {
   TemplateStatus,
   TemplateType,
   UpdateTemplateInput,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { schemaFor } from '@backend-api/utils/schema-for';
 
 const $Template = schemaFor<CreateTemplateInput>()(

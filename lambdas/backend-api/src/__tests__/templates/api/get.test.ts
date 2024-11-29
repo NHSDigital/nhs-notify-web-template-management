@@ -4,7 +4,7 @@ import {
   TemplateDTO,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-templates-client';
+} from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/get';
 import { getTemplate } from '@backend-api/templates/app/get-template';
 
