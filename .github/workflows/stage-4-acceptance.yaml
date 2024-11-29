@@ -84,7 +84,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: "Get normalized branch name"
         id: normalize_branch_name
-        uses: ./github/actions/normalize-branch-name
+        uses: ./.github/actions/normalize-branch-name
       - name: "Create Backend sandbox"
         run: |
           npm run create-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
@@ -220,7 +220,7 @@ jobs:
           aws-region: eu-west-2
       - name: "Get normalized branch name"
         id: normalize_branch_name
-        uses: ./github/actions/normalize-branch-name
+        uses: ./.github/actions/normalize-branch-name
       - name: "Destroy Backend sandbox"
         run: |
           npm run destroy-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
