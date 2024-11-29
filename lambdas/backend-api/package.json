@@ -10,6 +10,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.696.0",
     "@aws-sdk/lib-dynamodb": "^3.698.0",
+    "axios": "^1.7.8",
     "esbuild": "^0.24.0",
     "jsonwebtoken": "^9.0.2",
     "nhs-notify-backend-client": "file:../backend-client",
