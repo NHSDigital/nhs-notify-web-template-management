@@ -18,9 +18,3 @@ variable "output_dir" {
   description = "Name of the build output directory (relative to source_code_dir)"
   default     = "dist"
 }
-
-variable "include_sourcemaps" {
-  type        = bool
-  description = "Include sourcemaps in build"
-  default     = false
-}

@@ -61,8 +61,3 @@ variable "cognito_config" {
   description = "Cognito config"
 }
 
-variable "enable_sourcemaps" {
-  type        = bool
-  description = "Include sourcemaps in build"
-  default     = false
-}

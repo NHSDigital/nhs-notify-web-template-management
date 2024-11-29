@@ -15,7 +15,7 @@ module "endpoint_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    NODE_OPTIONS         = var.enable_sourcemaps ? "--enable-source-maps" : "",
+    NODE_OPTIONS         = "--enable-source-maps"
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
   }
 
@@ -26,9 +26,8 @@ module "endpoint_lambda" {
 module "endpoint_build" {
   source = "../typescript-build-zip"
 
-  source_code_dir    = "${local.lambdas_source_code_dir}/endpoint"
-  entrypoints        = [local.endpoint_entrypoint]
-  include_sourcemaps = var.enable_sourcemaps
+  source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
+  entrypoints     = [local.endpoint_entrypoint]
 }
 
 data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {

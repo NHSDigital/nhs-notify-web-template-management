@@ -15,7 +15,7 @@ module "authorizer_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    NODE_OPTIONS        = var.enable_sourcemaps ? "--enable-source-maps" : "",
+    NODE_OPTIONS        = "--enable-source-maps",
     USER_POOL_ID        = var.cognito_config["USER_POOL_ID"],
     USER_POOL_CLIENT_ID = var.cognito_config["USER_POOL_CLIENT_ID"],
   }
@@ -24,7 +24,6 @@ module "authorizer_lambda" {
 module "authorizer_build" {
   source = "../typescript-build-zip"
 
-  source_code_dir    = "${local.lambdas_source_code_dir}/authorizer"
-  entrypoints        = [local.authorizer_entrypoint]
-  include_sourcemaps = var.enable_sourcemaps
+  source_code_dir = "${local.lambdas_source_code_dir}/authorizer"
+  entrypoints     = [local.authorizer_entrypoint]
 }

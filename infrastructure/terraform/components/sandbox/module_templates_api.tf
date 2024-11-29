@@ -12,5 +12,4 @@ module "templates_api" {
     USER_POOL_ID        = aws_cognito_user_pool.sandbox.id
     USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.sandbox.id
   }
-  enable_sourcemaps = true
 }
