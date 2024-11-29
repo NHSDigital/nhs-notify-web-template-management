@@ -28,7 +28,7 @@ export default async function ManageTemplatesPage() {
         {availableTemplateList && availableTemplateList.length > 0 ? (
           <MessageTemplates templateList={availableTemplateList} />
         ) : (
-          <p data-testid='no-templates-available'>
+          <p id='no-templates-available' data-testid='no-templates-available'>
             {manageTemplatesContent.emptyTemplates}
           </p>
         )}

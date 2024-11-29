@@ -88,7 +88,8 @@
     {
       "files": ["*.test.{ts,tsx}"],
       "rules": {
-        "unicorn/no-useless-undefined": "off"
+        "unicorn/no-useless-undefined": "off",
+        "unicorn/consistent-function-scoping": "off"
       }
     }
   ]

@@ -57,9 +57,12 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
           {/* I am currently testing the link wrapper, this will change later when we implement auth as the link will change based on auth state */}
           {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? null : (
             <div className='nhsuk-account__login' data-testid='login-link'>
-              <Link className='nhsuk-account__login--link' href='/'>
-                {content.components.headerComponent.links.logIn}
-              </Link>
+              <a
+                className='nhsuk-account__login--link'
+                href={content.components.headerComponent.links.logIn.href}
+              >
+                {content.components.headerComponent.links.logIn.text}
+              </a>
             </div>
           )}
         </div>

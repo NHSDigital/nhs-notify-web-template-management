@@ -40,3 +40,9 @@ variable "log_retention_in_days" {
   description = "Specifies the number of days you want to retain log events in the log group for this Lambda"
   default     = 0
 }
+
+variable "environment_variables" {
+  type        = map(string)
+  description = "Lambda environment variables"
+  default     = {}
+}

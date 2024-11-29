@@ -1,9 +1,12 @@
+/* eslint-disable array-callback-return */
+
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
 import { Template, Draft } from './types';
 import { logger } from './logger';
+import { isTemplateValid } from './zod-validators';
 
 export async function createTemplate(
   template: Draft<Template>
@@ -92,5 +95,9 @@ export async function getTemplates(): Promise<Template[] | []> {
     return [];
   }
 
-  return data;
+  const parsedData: Template[] = data
+    .map((template) => isTemplateValid(template))
+    .filter((template): template is Template => template !== undefined);
+
+  return parsedData;
 }

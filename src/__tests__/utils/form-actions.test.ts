@@ -28,6 +28,19 @@ const mockResponseData = {
   message: 'template-message',
 };
 
+const mockTemplates: Template[] = [
+  {
+    id: '1',
+    version: 1,
+    templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'Template 1',
+    message: 'Message',
+    subject: 'Subject Line',
+    createdAt: '2021-01-01T00:00:00.000Z',
+  },
+];
+
 jest.mock('@utils/amplify-utils');
 
 beforeEach(() => {
@@ -248,17 +261,56 @@ test('getTemplates', async () => {
   setup({
     models: {
       TemplateStorage: {
-        list: jest.fn().mockReturnValue({ data: [mockResponseData] }),
+        list: jest.fn().mockReturnValue({ data: mockTemplates }),
+      },
+    },
+  });
+  const response = await getTemplates();
+
+  expect(response).toEqual(mockTemplates);
+});
+
+test('getTemplates - remove invalid templates from response', async () => {
+  const templatesWithInvalidData = [
+    ...mockTemplates,
+    {
+      id: '1',
+      version: 1,
+      templateType: 'invalidType',
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'Template 1',
+      message: 'Message',
+      subject: 'Subject Line',
+      createdAt: '2021-01-01T00:00:00.000Z',
+    },
+  ];
+  setup({
+    models: {
+      TemplateStorage: {
+        list: jest.fn().mockReturnValue({ data: templatesWithInvalidData }),
+      },
+    },
+  });
+  const response = await getTemplates();
+
+  expect(response).toEqual(mockTemplates);
+});
+
+test('getTemplates - returns empty array if there are no templates/data returned', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        list: jest.fn().mockReturnValue({ data: [] }),
       },
     },
   });
 
   const response = await getTemplates();
 
-  expect(response).toEqual([mockResponseData]);
+  expect(response).toEqual([]);
 });
 
-test('getTemplates - returns empty array if there are no templates', async () => {
+test('getTemplates - errors', async () => {
   setup({
     models: {
       TemplateStorage: {
@@ -275,7 +327,16 @@ test('getTemplates - returns empty array if there are no templates', async () =>
     },
   });
 
+  const mockLogger = jest.mocked(logger);
   const response = await getTemplates();
+
+  expect(mockLogger.error).toHaveBeenCalledWith('Failed to get templates', [
+    {
+      errorInfo: { error: 'test-error' },
+      errorType: 'test-error-type',
+      message: 'test-error-message',
+    },
+  ]);
 
   expect(response).toEqual([]);
 });

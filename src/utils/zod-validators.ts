@@ -58,3 +58,7 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
   $SubmittedSMSTemplate,
   $SubmittedLetterTemplate,
 ]);
+
+export const isTemplateValid = (
+  input: unknown
+): z.infer<typeof $Template> | undefined => $Template.safeParse(input).data;

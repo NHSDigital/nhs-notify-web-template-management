@@ -78,6 +78,7 @@ const config: Config = {
     'fixture',
     'helpers.ts',
     '/tests/test-team/',
+    '.build',
   ],
 
   // Set the absolute path for imports
