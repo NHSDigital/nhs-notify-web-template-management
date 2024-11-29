@@ -7,9 +7,12 @@ import type { TemplateType } from './TemplateType';
 export type UpdateTemplate = {
     id: string;
     status: TemplateStatus;
-    readonly type: TemplateType;
     name: string;
     message: string;
     subject?: string;
+    /**
+     * The API will never update this value on an update
+     */
+    readonly type: TemplateType;
 };
 

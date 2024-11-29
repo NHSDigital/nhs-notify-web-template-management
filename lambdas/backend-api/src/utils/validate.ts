@@ -1,10 +1,11 @@
-import { ErrorCase, failure, Result, success } from 'nhs-notify-backend-client';
+import { ErrorCase } from 'nhs-notify-backend-client';
 import { z } from 'zod';
+import { ApplicationResult, failure, success } from './result';
 
 export const validate = <T extends z.Schema>(
   $schema: T,
   dto: unknown
-): Result<z.infer<T>> => {
+): ApplicationResult<z.infer<T>> => {
   const { error, data } = $schema.safeParse(dto);
 
   if (error) {

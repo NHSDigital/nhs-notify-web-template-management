@@ -93,10 +93,10 @@ describe('Template API - Update', () => {
       name: 'updated-name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
+      type: TemplateType.EMAIL,
     };
     const response: TemplateDTO = {
       ...update,
-      type: TemplateType.EMAIL,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -1,4 +1,4 @@
-import { success, failure } from '@backend-api/templates/api/responses';
+import { apiSuccess, apiFailure } from '@backend-api/templates/api/responses';
 import {
   TemplateDTO,
   TemplateStatus,
@@ -16,14 +16,14 @@ describe('responses', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    expect(success(200, dto)).toEqual({
+    expect(apiSuccess(200, dto)).toEqual({
       statusCode: 200,
       body: JSON.stringify({ statusCode: 200, template: dto }),
     });
   });
 
   it('should return failure response', () => {
-    expect(failure(400, 'error')).toEqual({
+    expect(apiFailure(400, 'error')).toEqual({
       statusCode: 400,
       body: JSON.stringify({ statusCode: 400, technicalMessage: 'error' }),
     });

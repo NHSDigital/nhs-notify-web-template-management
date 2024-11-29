@@ -262,8 +262,7 @@
             "format": "date-time"
           },
           "subject": {
-            "type": "string",
-            "optional": true
+            "type": "string"
           }
         }
       },
@@ -301,8 +300,7 @@
             "type": "string"
           },
           "subject": {
-            "type": "string",
-            "optional": true
+            "type": "string"
           }
         }
       },
@@ -322,10 +320,6 @@
           "status": {
             "$ref": "#/components/schemas/TemplateStatus"
           },
-          "type": {
-            "$ref": "#/components/schemas/TemplateType",
-            "readOnly": true
-          },
           "name": {
             "type": "string"
           },
@@ -333,8 +327,12 @@
             "type": "string"
           },
           "subject": {
-            "type": "string",
-            "optional": true
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TemplateType",
+            "readOnly": true,
+            "description": "The API will never update this value on an update"
           }
         }
       },

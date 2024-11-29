@@ -224,6 +224,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
+          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -253,6 +254,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
+          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -278,6 +280,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
+          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -298,6 +301,7 @@ describe('templateRepository', () => {
         message: 'updated-message',
         subject: 'updated-subject',
         status: TemplateStatus.SUBMITTED,
+        type: TemplateType.EMAIL,
       };
 
       ddbMock

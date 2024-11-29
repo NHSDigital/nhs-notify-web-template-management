@@ -62,6 +62,7 @@ describe('updateTemplate', () => {
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
+      type: TemplateType.SMS,
     };
 
     const result = await updateTemplate(data, 'token');
@@ -82,6 +83,7 @@ describe('updateTemplate', () => {
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
+      type: TemplateType.SMS,
     };
 
     getUserMock.mockReturnValueOnce({
@@ -119,6 +121,7 @@ describe('updateTemplate', () => {
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
+      type: TemplateType.SMS,
     };
 
     const template: Template = {

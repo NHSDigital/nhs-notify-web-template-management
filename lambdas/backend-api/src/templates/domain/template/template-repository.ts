@@ -1,9 +1,6 @@
 import {
   CreateTemplate,
   ErrorCase,
-  failure,
-  Result,
-  success,
   TemplateStatus,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
@@ -20,6 +17,7 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { v4 as uuidv4 } from 'uuid';
+import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 import { Template } from './template';
 
 const client = DynamoDBDocumentClient.from(
@@ -32,7 +30,7 @@ const client = DynamoDBDocumentClient.from(
 const get = async (
   templateId: string,
   owner: string
-): Promise<Result<Template>> => {
+): Promise<ApplicationResult<Template>> => {
   try {
     const response = await client.send(
       new GetCommand({
@@ -57,7 +55,7 @@ const get = async (
 const create = async (
   template: CreateTemplate,
   owner: string
-): Promise<Result<Template>> => {
+): Promise<ApplicationResult<Template>> => {
   const entity: Template = {
     ...template,
     id: uuidv4(),
@@ -101,7 +99,7 @@ const create = async (
 const update = async (
   template: UpdateTemplate,
   owner: string
-): Promise<Result<Template>> => {
+): Promise<ApplicationResult<Template>> => {
   const input: UpdateCommandInput = {
     TableName: process.env.TEMPLATES_TABLE_NAME,
     Key: {

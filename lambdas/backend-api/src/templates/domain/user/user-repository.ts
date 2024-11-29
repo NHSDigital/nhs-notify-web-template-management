@@ -1,10 +1,15 @@
 import { decode } from 'jsonwebtoken';
-import { Result, failure, ErrorCase, success } from 'nhs-notify-backend-client';
-import { validate } from '@backend-api/utils/validate';
+import { ErrorCase } from 'nhs-notify-backend-client';
+import {
+  validate,
+  failure,
+  success,
+  ApplicationResult,
+} from '@backend-api/utils/index';
 import { User } from './user';
 import { $User } from './user-schema';
 
-const getUser = (token: string): Result<User> => {
+const getUser = (token: string): ApplicationResult<User> => {
   const payload = decode(token);
 
   const { data, error } = validate($User, payload);
