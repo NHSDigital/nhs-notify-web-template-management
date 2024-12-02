@@ -10,8 +10,8 @@ import {
   MAX_SMS_CHARACTER_LENGTH,
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,
-  NHS_APP_DISALLOWED_CHARACTERS,
   MAX_LETTER_CHARACTER_LENGTH,
+  NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
 
 const $Template = schemaFor<CreateTemplate>()(
@@ -23,17 +23,15 @@ const $Template = schemaFor<CreateTemplate>()(
   })
 );
 
-const $SMSTemplate = schemaFor<CreateTemplate>()(
+export const $SMSTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    status: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
     type: z.literal(TemplateType.SMS),
     message: z.string().max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
-const $NhsAppTemplate = schemaFor<CreateTemplate>()(
+export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    status: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
     type: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
@@ -44,7 +42,7 @@ const $NhsAppTemplate = schemaFor<CreateTemplate>()(
   })
 );
 
-const $EmailTemplate = schemaFor<CreateTemplate>()(
+export const $EmailTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     subject: z.string(),
     type: z.literal(TemplateType.EMAIL),
@@ -52,13 +50,16 @@ const $EmailTemplate = schemaFor<CreateTemplate>()(
   })
 );
 
-const $LetterTemplate = schemaFor<CreateTemplate>()(
+export const $LetterTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    subject: z.string(),
     type: z.literal(TemplateType.LETTER),
     message: z.string().max(MAX_LETTER_CHARACTER_LENGTH),
   })
 );
+
+const $UpdateFields = {
+  status: z.nativeEnum(TemplateStatus),
+};
 
 export const $CreateTemplateSchema = z.discriminatedUnion('type', [
   $SMSTemplate,
@@ -66,11 +67,6 @@ export const $CreateTemplateSchema = z.discriminatedUnion('type', [
   $EmailTemplate,
   $LetterTemplate,
 ]);
-
-const $UpdateFields = {
-  status: z.nativeEnum(TemplateStatus),
-  type: z.nativeEnum(TemplateType).readonly(),
-};
 
 export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
   z.discriminatedUnion('type', [

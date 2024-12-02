@@ -2,7 +2,6 @@ import {
   CreateTemplate,
   ErrorCase,
   TemplateStatus,
-  TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {

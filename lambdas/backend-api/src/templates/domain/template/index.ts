@@ -1,3 +1,6 @@
 export * from './template';
 export * from './template-repository';
-export * from './template-schema';
+export {
+  $UpdateTemplateSchema,
+  $CreateTemplateSchema,
+} from './template-schema';

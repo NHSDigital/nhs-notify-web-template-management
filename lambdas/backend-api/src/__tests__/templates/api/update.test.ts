@@ -111,6 +111,7 @@ describe('Template API - Update', () => {
       name: 'updated-name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
+      type: TemplateType.LETTER,
     };
     const response: TemplateDTO = {
       ...update,
