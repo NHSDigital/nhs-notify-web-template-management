@@ -16,7 +16,7 @@ import {
 
 const $Template = schemaFor<CreateTemplate>()(
   z.object({
-    type: z.nativeEnum(TemplateType),
+    templateType: z.nativeEnum(TemplateType),
     name: z.string(),
     message: z.string(),
     subject: z.string().optional(),
@@ -25,14 +25,14 @@ const $Template = schemaFor<CreateTemplate>()(
 
 export const $SMSTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    type: z.literal(TemplateType.SMS),
+    templateType: z.literal(TemplateType.SMS),
     message: z.string().max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
 export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    type: z.literal(TemplateType.NHS_APP),
+    templateType: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
       .max(MAX_NHS_APP_CHARACTER_LENGTH)
@@ -45,23 +45,23 @@ export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
 export const $EmailTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     subject: z.string(),
-    type: z.literal(TemplateType.EMAIL),
+    templateType: z.literal(TemplateType.EMAIL),
     message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH),
   })
 );
 
 export const $LetterTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    type: z.literal(TemplateType.LETTER),
+    templateType: z.literal(TemplateType.LETTER),
     message: z.string().max(MAX_LETTER_CHARACTER_LENGTH),
   })
 );
 
 const $UpdateFields = {
-  status: z.nativeEnum(TemplateStatus),
+  templateStatus: z.nativeEnum(TemplateStatus),
 };
 
-export const $CreateTemplateSchema = z.discriminatedUnion('type', [
+export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
   $SMSTemplate,
   $NhsAppTemplate,
   $EmailTemplate,
@@ -69,7 +69,7 @@ export const $CreateTemplateSchema = z.discriminatedUnion('type', [
 ]);
 
 export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
-  z.discriminatedUnion('type', [
+  z.discriminatedUnion('templateType', [
     $SMSTemplate.extend($UpdateFields),
     $NhsAppTemplate.extend($UpdateFields),
     $EmailTemplate.extend($UpdateFields),

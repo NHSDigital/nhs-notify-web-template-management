@@ -66,12 +66,12 @@ describe('getTemplate', () => {
       id: 'id',
       owner: 'token',
       version: 1,
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      status: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
     getUserMock.mockReturnValueOnce({

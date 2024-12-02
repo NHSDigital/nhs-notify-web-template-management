@@ -14,14 +14,14 @@ describe('Template schemas', () => {
     const result = validate($LetterTemplate, {
       name: 'Test Template',
       message: 'This is a test template',
-      type: TemplateType.LETTER,
+      templateType: TemplateType.LETTER,
     });
 
     expect(result).toEqual({
       data: {
         name: 'Test Template',
         message: 'This is a test template',
-        type: TemplateType.LETTER,
+        templateType: TemplateType.LETTER,
       },
     });
   });
@@ -30,7 +30,7 @@ describe('Template schemas', () => {
     const result = validate($LetterTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(15_001),
-      type: TemplateType.LETTER,
+      templateType: TemplateType.LETTER,
     });
 
     expect(result).toEqual({
@@ -51,14 +51,14 @@ describe('Template schemas', () => {
     const result = validate($SMSTemplate, {
       name: 'Test Template',
       message: 'This is a test template',
-      type: TemplateType.SMS,
+      templateType: TemplateType.SMS,
     });
 
     expect(result).toEqual({
       data: {
         name: 'Test Template',
         message: 'This is a test template',
-        type: TemplateType.SMS,
+        templateType: TemplateType.SMS,
       },
     });
   });
@@ -67,7 +67,7 @@ describe('Template schemas', () => {
     const result = validate($SMSTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(919),
-      type: TemplateType.SMS,
+      templateType: TemplateType.SMS,
     });
 
     expect(result).toEqual({
@@ -89,7 +89,7 @@ describe('Template schemas', () => {
       name: 'Test Template',
       message: 'This is a test template',
       subject: 'Test Subject',
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
     });
 
     expect(result).toEqual({
@@ -97,7 +97,7 @@ describe('Template schemas', () => {
         name: 'Test Template',
         subject: 'Test Subject',
         message: 'This is a test template',
-        type: TemplateType.EMAIL,
+        templateType: TemplateType.EMAIL,
       },
     });
   });
@@ -107,7 +107,7 @@ describe('Template schemas', () => {
       name: 'Test Template',
       message: 'a'.repeat(100_001),
       subject: 'Test Subject',
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
     });
 
     expect(result).toEqual({
@@ -128,7 +128,7 @@ describe('Template schemas', () => {
     const result = validate($EmailTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(100_000),
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
     });
 
     expect(result).toEqual({
@@ -149,14 +149,14 @@ describe('Template schemas', () => {
     const result = validate($NhsAppTemplate, {
       name: 'Test Template',
       message: '\n hello world!!',
-      type: TemplateType.NHS_APP,
+      templateType: TemplateType.NHS_APP,
     });
 
     expect(result).toEqual({
       data: {
         name: 'Test Template',
         message: '\n hello world!!',
-        type: TemplateType.NHS_APP,
+        templateType: TemplateType.NHS_APP,
       },
     });
   });
@@ -165,8 +165,8 @@ describe('Template schemas', () => {
     const result = validate($NhsAppTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(5001),
-      type: TemplateType.NHS_APP,
-      status: TemplateStatus.SUBMITTED,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.SUBMITTED,
     });
 
     expect(result).toEqual({
@@ -193,7 +193,7 @@ describe('Template schemas', () => {
       const result = validate($NhsAppTemplate, {
         name: 'Test Template',
         message,
-        type: TemplateType.NHS_APP,
+        templateType: TemplateType.NHS_APP,
       });
 
       expect(result).toEqual({
@@ -223,19 +223,19 @@ describe('Template schemas', () => {
       {
         ...commonFields,
         subject: 'Test Subject',
-        type: TemplateType.EMAIL,
+        templateType: TemplateType.EMAIL,
       },
       {
         ...commonFields,
-        type: TemplateType.LETTER,
+        templateType: TemplateType.LETTER,
       },
       {
         ...commonFields,
-        type: TemplateType.SMS,
+        templateType: TemplateType.SMS,
       },
       {
         ...commonFields,
-        type: TemplateType.NHS_APP,
+        templateType: TemplateType.NHS_APP,
       },
     ])('should pass validation %p', (template) => {
       const result = validate($CreateTemplateSchema, template);
@@ -250,26 +250,26 @@ describe('Template schemas', () => {
     const commonFields = {
       name: 'Test Template',
       message: 'This is a test template',
-      status: TemplateStatus.SUBMITTED,
+      templateStatus: TemplateStatus.SUBMITTED,
     };
 
     test.each([
       {
         ...commonFields,
         subject: 'Test Subject',
-        type: TemplateType.EMAIL,
+        templateType: TemplateType.EMAIL,
       },
       {
         ...commonFields,
-        type: TemplateType.LETTER,
+        templateType: TemplateType.LETTER,
       },
       {
         ...commonFields,
-        type: TemplateType.SMS,
+        templateType: TemplateType.SMS,
       },
       {
         ...commonFields,
-        type: TemplateType.NHS_APP,
+        templateType: TemplateType.NHS_APP,
       },
     ])('should pass validation %p', (template) => {
       const result = validate($UpdateTemplateSchema, template);

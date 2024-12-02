@@ -28,11 +28,11 @@ const template: Template = {
   name: 'name',
   message: 'message',
   subject: 'pickles',
-  type: TemplateType.EMAIL,
+  templateType: TemplateType.EMAIL,
   version: 1,
   createdAt: '2024-12-27T00:00:00.000Z',
   updatedAt: '2024-12-27T00:00:00.000Z',
-  status: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
 };
 
 describe('templateRepository', () => {
@@ -123,7 +123,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         {
-          type: TemplateType.EMAIL,
+          templateType: TemplateType.EMAIL,
           name: 'name',
           message: 'message',
           subject: 'pickles',
@@ -156,7 +156,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         {
-          type: TemplateType.EMAIL,
+          templateType: TemplateType.EMAIL,
           name: 'name',
           message: 'message',
           subject: 'pickles',
@@ -191,7 +191,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         {
-          type: TemplateType.EMAIL,
+          templateType: TemplateType.EMAIL,
           name: 'name',
           message: 'message',
           subject: 'pickles',
@@ -214,19 +214,21 @@ describe('templateRepository', () => {
       },
       {
         Item: {
-          type: { S: TemplateType.LETTER },
-          status: { S: TemplateStatus.NOT_YET_SUBMITTED },
+          templateType: { S: TemplateType.LETTER },
+          templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
         },
         code: 400,
-        message: 'Can not change template type. Expected LETTER but got EMAIL',
+        message:
+          'Can not change template templateType. Expected LETTER but got EMAIL',
       },
       {
         Item: {
-          type: { S: TemplateType.EMAIL },
-          status: { S: TemplateStatus.SUBMITTED },
+          templateType: { S: TemplateType.EMAIL },
+          templateStatus: { S: TemplateStatus.SUBMITTED },
         },
         code: 400,
-        message: 'Can not update template due to status being SUBMITTED',
+        message:
+          'Can not update template due to templateStatus being SUBMITTED',
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
@@ -245,8 +247,8 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            status: TemplateStatus.NOT_YET_SUBMITTED,
-            type: TemplateType.EMAIL,
+            templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+            templateType: TemplateType.EMAIL,
           },
           'real-owner'
         );
@@ -272,8 +274,8 @@ describe('templateRepository', () => {
           name: 'name',
           message: 'message',
           subject: 'subject',
-          status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateType: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -292,8 +294,8 @@ describe('templateRepository', () => {
         name: 'updated-name',
         message: 'updated-message',
         subject: 'updated-subject',
-        status: TemplateStatus.SUBMITTED,
-        type: TemplateType.EMAIL,
+        templateStatus: TemplateStatus.SUBMITTED,
+        templateType: TemplateType.EMAIL,
       };
 
       ddbMock

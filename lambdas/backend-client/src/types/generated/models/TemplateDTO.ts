@@ -6,8 +6,8 @@ import type { TemplateStatus } from './TemplateStatus';
 import type { TemplateType } from './TemplateType';
 export type TemplateDTO = {
     id: string;
-    type: TemplateType;
-    status: TemplateStatus;
+    templateType: TemplateType;
+    templateStatus: TemplateStatus;
     name: string;
     message: string;
     createdAt: string;

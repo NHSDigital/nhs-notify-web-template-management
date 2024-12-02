@@ -4,8 +4,8 @@ export type Template = {
   id: string;
   owner: string;
   version: number;
-  type: TemplateType;
-  status: TemplateStatus;
+  templateType: TemplateType;
+  templateStatus: TemplateStatus;
   name: string;
   message: string;
   subject?: string;

@@ -60,7 +60,7 @@ const create = async (
     id: uuidv4(),
     owner,
     version: 1,
-    status: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -104,20 +104,20 @@ const update = async (
     '#name = :name',
     '#message = :message',
     '#updatedAt = :updateAt',
-    '#status = :status',
+    '#templateStatus = :templateStatus',
   ];
 
   let expressionAttributeNames: Record<string, string> = {
     '#name': 'name',
     '#message': 'message',
-    '#status': 'status',
+    '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
   };
 
   let expressionAttributeValues: Record<string, string> = {
     ':name': template.name,
     ':message': template.message,
-    ':status': template.status,
+    ':templateStatus': template.templateStatus,
     ':updateAt': new Date().toISOString(),
     ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
   };
@@ -144,7 +144,7 @@ const update = async (
     ExpressionAttributeNames: expressionAttributeNames,
     ExpressionAttributeValues: expressionAttributeValues,
     ConditionExpression:
-      'attribute_exists(id) AND #status = :not_yet_submitted AND #type = :type',
+      'attribute_exists(id) AND #templateStatus = :not_yet_submitted AND #type = :type',
     ReturnValues: 'ALL_NEW',
     ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
   };
@@ -163,18 +163,18 @@ const update = async (
         );
       }
 
-      if (error.Item.status.S !== TemplateStatus.NOT_YET_SUBMITTED) {
+      if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          `Can not update template due to status being ${error.Item.status.S}`,
+          `Can not update template due to templateStatus being ${error.Item.templateStatus.S}`,
           error
         );
       }
 
-      if (error.Item.type.S !== template.type) {
+      if (error.Item.templateType.S !== template.templateType) {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
-          `Can not change template type. Expected ${error.Item.type.S} but got ${template.type}`,
+          `Can not change template templateType. Expected ${error.Item.templateType.S} but got ${template.templateType}`,
           error
         );
       }

@@ -58,7 +58,7 @@ describe('createTemplate', () => {
     });
 
     const dto: CreateTemplate = {
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
     };
@@ -77,7 +77,7 @@ describe('createTemplate', () => {
 
   test('should return a failure result, when saving to the database unexpectedly fails', async () => {
     const data: CreateTemplate = {
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
     };
@@ -113,7 +113,7 @@ describe('createTemplate', () => {
 
   test('should return created template', async () => {
     const dto: CreateTemplate = {
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
     };
@@ -125,7 +125,7 @@ describe('createTemplate', () => {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      status: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
     getUserMock.mockReturnValueOnce({

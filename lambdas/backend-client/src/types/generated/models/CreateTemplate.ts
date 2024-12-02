@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { TemplateType } from './TemplateType';
 export type CreateTemplate = {
-    type: TemplateType;
+    templateType: TemplateType;
     name: string;
     message: string;
     subject?: string;

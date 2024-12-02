@@ -80,12 +80,12 @@ describe('Template API - Get', () => {
   test('should return template', async () => {
     const template: TemplateDTO = {
       id: 'id',
-      type: TemplateType.EMAIL,
+      templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      status: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
     getTemplateMock.mockResolvedValueOnce({

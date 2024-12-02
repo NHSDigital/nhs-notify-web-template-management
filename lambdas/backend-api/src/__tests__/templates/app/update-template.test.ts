@@ -60,8 +60,8 @@ describe('updateTemplate', () => {
     const data: UpdateTemplate = {
       name: 'name',
       message: 'message',
-      status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: TemplateType.SMS,
     };
 
     const result = await updateTemplate('id', data, 'token');
@@ -80,8 +80,8 @@ describe('updateTemplate', () => {
     const data: UpdateTemplate = {
       name: 'name',
       message: 'message',
-      status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: TemplateType.SMS,
     };
 
     getUserMock.mockReturnValueOnce({
@@ -117,8 +117,8 @@ describe('updateTemplate', () => {
     const data: UpdateTemplate = {
       name: 'name',
       message: 'message',
-      status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: TemplateType.SMS,
     };
 
     const template: Template = {
@@ -126,7 +126,7 @@ describe('updateTemplate', () => {
       id: 'id',
       owner: 'token',
       version: 1,
-      type: TemplateType.SMS,
+      templateType: TemplateType.SMS,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

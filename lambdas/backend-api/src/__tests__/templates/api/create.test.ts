@@ -91,12 +91,12 @@ describe('Template API - Create', () => {
     const create: CreateTemplate = {
       name: 'updated-name',
       message: 'message',
-      type: TemplateType.SMS,
+      templateType: TemplateType.SMS,
     };
     const response: TemplateDTO = {
       ...create,
       id: 'id',
-      status: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -231,8 +231,8 @@
         "type": "object",
         "required": [
           "id",
-          "type",
-          "status",
+          "templateType",
+          "templateStatus",
           "name",
           "message",
           "createdAt",
@@ -242,10 +242,10 @@
           "id": {
             "type": "string"
           },
-          "type": {
+          "templateType": {
             "$ref": "#/components/schemas/TemplateType"
           },
-          "status": {
+          "templateStatus": {
             "$ref": "#/components/schemas/TemplateStatus"
           },
           "name": {
@@ -286,12 +286,12 @@
       "CreateTemplate": {
         "type": "object",
         "required": [
-          "type",
+          "templateType",
           "name",
           "message"
         ],
         "properties": {
-          "type": {
+          "templateType": {
             "$ref": "#/components/schemas/TemplateType"
           },
           "name": {
@@ -308,13 +308,13 @@
       "UpdateTemplate": {
         "type": "object",
         "required": [
-          "status",
+          "templateStatus",
           "name",
           "message",
-          "type"
+          "templateType"
         ],
         "properties": {
-          "status": {
+          "templateStatus": {
             "$ref": "#/components/schemas/TemplateStatus"
           },
           "name": {
@@ -326,7 +326,7 @@
           "subject": {
             "type": "string"
           },
-          "type": {
+          "templateType": {
             "type": "#/components/schemas/TemplateType",
             "readOnly": true,
             "description": "This value will never be updated. It is used to determine the type of template being validated."
