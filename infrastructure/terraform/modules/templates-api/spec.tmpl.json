@@ -328,7 +328,7 @@
             "type": "string"
           },
           "templateType": {
-            "type": "#/components/schemas/TemplateType",
+            "$ref": "#/components/schemas/TemplateType",
             "readOnly": true,
             "description": "This value will never be updated. It is used to determine the type of template being validated."
           }
