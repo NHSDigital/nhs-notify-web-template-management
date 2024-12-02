@@ -159,6 +159,40 @@ test.describe('Create SMS message template Page', () => {
       );
     });
 
+    const moreInfoLinks = [
+      {
+        name: 'Text message length and pricing (opens in a new tab)',
+        url: 'pricing/text-messages',
+      },
+      {
+        name: 'Sender IDs (opens in a new tab)',
+        url: 'using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        name: 'Delivery times (opens in a new tab)',
+        url: 'using-nhs-notify/delivery-times',
+      },
+    ];
+
+    for (const { name, url } of moreInfoLinks) {
+      test(`more info link: ${name}, navigates to correct page in new tab`, async ({
+        page,
+        baseURL,
+      }) => {
+        const createTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+        await createTemplatePage.loadPage();
+
+        const newTabPromise = page.waitForEvent('popup');
+
+        await page.getByRole('link', { name }).click();
+
+        const newTab = await newTabPromise;
+
+        await expect(newTab).toHaveURL(`${baseURL}/${url}`);
+      });
+    }
+
     test('when user submits form with valid data, then the next page is displayed', async ({
       baseURL,
       page,

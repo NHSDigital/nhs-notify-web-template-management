@@ -359,6 +359,60 @@ export const nameYourTemplateContent = {
   },
 };
 
+export const channelGuidanceContent = {
+  [TemplateType.NHS_APP]: {
+    heading: 'More about NHS App messages',
+    guidanceLinks: [
+      {
+        text: 'NHS App messages (opens in a new tab)',
+        link: '/features/nhs-app-messages',
+      },
+      {
+        text: 'Sender IDs (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
+  },
+  [TemplateType.EMAIL]: {
+    heading: 'More about emails',
+    guidanceLinks: [
+      {
+        text: 'Email messages (opens in a new tab)',
+        link: '/features/emails',
+      },
+      {
+        text: 'From and reply-to addresses (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
+  },
+  [TemplateType.SMS]: {
+    heading: 'More about text messages',
+    guidanceLinks: [
+      {
+        text: 'Text message length and pricing (opens in a new tab)',
+        link: '/pricing/text-messages',
+      },
+      {
+        text: 'Sender IDs (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
+  },
+};
+
 export const createNhsAppTemplatePageContent = {
   pageHeading: 'Create NHS App message template',
   errorHeading: 'There is a problem',

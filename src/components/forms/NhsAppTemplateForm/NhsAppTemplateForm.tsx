@@ -22,6 +22,7 @@ import { TemplateType } from '@utils/enum';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
+import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
@@ -100,6 +101,7 @@ export const NhsAppTemplateForm: FC<
       <div className='nhsuk-grid-column-one-third'>
         <Personalisation />
         <MessageFormatting template={TemplateType.NHS_APP} />
+        <ChannelGuidance template={TemplateType.NHS_APP} />
       </div>
     </div>
   );
