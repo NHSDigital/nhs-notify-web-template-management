@@ -310,7 +310,8 @@
         "required": [
           "status",
           "name",
-          "message"
+          "message",
+          "type"
         ],
         "properties": {
           "status": {
@@ -324,6 +325,11 @@
           },
           "subject": {
             "type": "string"
+          },
+          "type": {
+            "type": "#/components/schemas/TemplateType",
+            "readOnly": true,
+            "description": "This value will never be updated. It is used to determine the type of template being validated."
           }
         }
       },

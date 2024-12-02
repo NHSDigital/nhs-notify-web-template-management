@@ -15,6 +15,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
 
   if (userResult.error) {
     logger.error('User not found', {
+      templateId,
       dto,
       userResult,
     });
@@ -23,6 +24,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   }
 
   const log = logger.child({
+    templateId,
     dto,
     user: userResult.data,
   });

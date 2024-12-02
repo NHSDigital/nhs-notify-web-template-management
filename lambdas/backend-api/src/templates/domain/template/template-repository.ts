@@ -2,6 +2,7 @@ import {
   CreateTemplate,
   ErrorCase,
   TemplateStatus,
+  TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
@@ -143,9 +144,10 @@ const update = async (
     UpdateExpression: `SET ${updateExpression.join(', ')}`,
     ExpressionAttributeNames: expressionAttributeNames,
     ExpressionAttributeValues: expressionAttributeValues,
-    ConditionExpression: '#status = :not_yet_submitted AND attribute_exists(id)',
+    ConditionExpression:
+      'attribute_exists(id) AND #status = :not_yet_submitted AND #type = :type',
     ReturnValues: 'ALL_NEW',
-    ReturnValuesOnConditionCheckFailure: "ALL_OLD"
+    ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
   };
 
   try {
@@ -155,7 +157,6 @@ const update = async (
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item) {
-
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
           `Template not found`,
@@ -167,6 +168,14 @@ const update = async (
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
           `Can not update template due to status being ${error.Item.status}`,
+          error
+        );
+      }
+
+      if (error.Item.type.S !== template.type) {
+        return failure(
+          ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
+          `Can not change template type. Expected ${error.Item.type.S} but got ${template.type} `,
           error
         );
       }

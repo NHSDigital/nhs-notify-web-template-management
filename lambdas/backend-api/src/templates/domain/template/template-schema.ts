@@ -6,40 +6,77 @@ import {
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { schemaFor } from '@backend-api/utils/schema-for';
+import {
+  MAX_SMS_CHARACTER_LENGTH,
+  MAX_EMAIL_CHARACTER_LENGTH,
+  MAX_NHS_APP_CHARACTER_LENGTH,
+  NHS_APP_DISALLOWED_CHARACTERS,
+  MAX_LETTER_CHARACTER_LENGTH,
+} from './constants';
 
 const $Template = schemaFor<CreateTemplate>()(
   z.object({
-    type: z.enum([TemplateType.LETTER, TemplateType.SMS, TemplateType.NHS_APP]),
+    type: z.nativeEnum(TemplateType),
     name: z.string(),
     message: z.string(),
+    subject: z.string().optional(),
   })
-).strict();
+);
+
+const $SMSTemplate = schemaFor<CreateTemplate>()(
+  $Template.extend({
+    status: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+    type: z.literal(TemplateType.SMS),
+    message: z.string().max(MAX_SMS_CHARACTER_LENGTH),
+  })
+);
+
+const $NhsAppTemplate = schemaFor<CreateTemplate>()(
+  $Template.extend({
+    status: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+    type: z.literal(TemplateType.NHS_APP),
+    message: z
+      .string()
+      .max(MAX_NHS_APP_CHARACTER_LENGTH)
+      .refine((s) => !NHS_APP_DISALLOWED_CHARACTERS.test(s), {
+        message: `NHS App template message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
+      }),
+  })
+);
 
 const $EmailTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     subject: z.string(),
     type: z.literal(TemplateType.EMAIL),
+    message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH),
   })
-).strict();
-
-export const $CreateTemplateSchema = z.discriminatedUnion('type', [
-  $EmailTemplate,
-  $Template,
-]);
-
-export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
-  z
-    .object({
-      status: z.nativeEnum(TemplateStatus),
-      name: z.string(),
-      message: z.string(),
-      subject: z.string().optional(),
-    })
-    .strict()
 );
 
-// TODO: fix dynamoDB calls
-// TODO: figure out API gateway only allowing 1 lambda being allowed to invoke!?
-// TODO: rename type and status to templateType and templateStatus
-// TODO: add base line validation I.E> only 9000 characters
-// TODO: add cause for failure
+const $LetterTemplate = schemaFor<CreateTemplate>()(
+  $Template.extend({
+    subject: z.string(),
+    type: z.literal(TemplateType.LETTER),
+    message: z.string().max(MAX_LETTER_CHARACTER_LENGTH),
+  })
+);
+
+export const $CreateTemplateSchema = z.discriminatedUnion('type', [
+  $SMSTemplate,
+  $NhsAppTemplate,
+  $EmailTemplate,
+  $LetterTemplate,
+]);
+
+const $UpdateFields = {
+  status: z.nativeEnum(TemplateStatus),
+  type: z.nativeEnum(TemplateType).readonly(),
+};
+
+export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
+  z.discriminatedUnion('type', [
+    $SMSTemplate.extend($UpdateFields),
+    $NhsAppTemplate.extend($UpdateFields),
+    $EmailTemplate.extend($UpdateFields),
+    $LetterTemplate.extend($UpdateFields),
+  ])
+);
