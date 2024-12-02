@@ -1,6 +1,6 @@
 import { encode } from 'html-entities';
 import Handlebars from 'handlebars';
-import data from './email-template.json';
+import * as data from './email-template.json';
 
 const htmlTemplate = Handlebars.compile(data.htmlContent);
 const encoder = (rawText: string) => encode(rawText).replaceAll('\n', '<br />');
