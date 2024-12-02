@@ -7,6 +7,7 @@ import { userRepository } from '@backend-api/templates/domain/user';
 import { validate, logger, success } from '@backend-api/utils/index';
 
 export const updateTemplate: ITemplateClient['updateTemplate'] = async (
+  templateId,
   dto,
   token
 ) => {
@@ -35,6 +36,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   }
 
   const updateResult = await templateRepository.update(
+    templateId,
     validationResult.data,
     userResult.data.id
   );

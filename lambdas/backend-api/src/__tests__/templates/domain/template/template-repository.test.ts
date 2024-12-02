@@ -218,13 +218,12 @@ describe('templateRepository', () => {
       ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
+        'real-id',
         {
-          id: 'real-id',
           name: 'name',
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -248,13 +247,12 @@ describe('templateRepository', () => {
       ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
+        'real-id',
         {
-          id: 'real-id',
           name: 'name',
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -274,13 +272,12 @@ describe('templateRepository', () => {
       ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
+        'real-id',
         {
-          id: 'real-id',
           name: 'name',
           message: 'message',
           subject: 'subject',
           status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
         },
         'real-owner'
       );
@@ -294,14 +291,12 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update template', async () => {
+    test('should update template with subject', async () => {
       const updatedTemplate: UpdateTemplate = {
-        id: 'real-id',
         name: 'updated-name',
         message: 'updated-message',
         subject: 'updated-subject',
         status: TemplateStatus.SUBMITTED,
-        type: TemplateType.EMAIL,
       };
 
       ddbMock
@@ -309,11 +304,11 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'real-id', owner: 'real-owner' },
           UpdateExpression: `set ${[
-            `name = :name`,
-            'message = :message',
-            'subject = :subject',
-            'updatedAt = :updateAt',
-            'status = :status',
+            '#name = :name',
+            '#message = :message',
+            '#subject = :subject',
+            '#updatedAt = :updateAt',
+            '#status = :status',
           ].join(', ')}`,
           ExpressionAttributeValues: {
             ':name': updatedTemplate.name,
@@ -322,6 +317,13 @@ describe('templateRepository', () => {
             ':status': updatedTemplate.status,
             ':updateAt': '2024-12-27T00:00:00.000Z',
             ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
+          },
+          ExpressionAttributeNames: {
+            '#name': 'name',
+            '#message': 'message',
+            '#status': 'status',
+            '#updatedAt': 'updatedAt',
+            '#subject': 'subject',
           },
           ConditionExpression: 'status = :not_yet_submitted',
           ReturnValues: 'ALL_NEW',
@@ -334,6 +336,7 @@ describe('templateRepository', () => {
         });
 
       const response = await templateRepository.update(
+        'real-id',
         updatedTemplate,
         'real-owner'
       );

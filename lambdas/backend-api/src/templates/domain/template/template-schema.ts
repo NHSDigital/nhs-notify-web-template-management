@@ -13,31 +13,33 @@ const $Template = schemaFor<CreateTemplate>()(
     name: z.string(),
     message: z.string(),
   })
-);
+).strict();
 
 const $EmailTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     subject: z.string(),
     type: z.literal(TemplateType.EMAIL),
   })
-);
+).strict();
 
 export const $CreateTemplateSchema = z.discriminatedUnion('type', [
   $EmailTemplate,
   $Template,
 ]);
 
-export const $UpdateTemplateSchema = z.discriminatedUnion('type', [
-  schemaFor<UpdateTemplate>()(
-    $EmailTemplate.extend({
-      id: z.string(),
+export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
+  z
+    .object({
       status: z.nativeEnum(TemplateStatus),
+      name: z.string(),
+      message: z.string(),
+      subject: z.string().optional(),
     })
-  ),
-  schemaFor<UpdateTemplate>()(
-    $Template.extend({
-      id: z.string(),
-      status: z.nativeEnum(TemplateStatus),
-    })
-  ),
-]);
+    .strict()
+);
+
+// TODO: fix dynamoDB calls
+// TODO: figure out API gateway only allowing 1 lambda being allowed to invoke!?
+// TODO: rename type and status to templateType and templateStatus
+// TODO: add base line validation I.E> only 9000 characters
+// TODO: add cause for failure

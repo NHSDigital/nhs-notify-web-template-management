@@ -8,6 +8,7 @@ export interface ITemplateClient {
   ): Promise<Result<TemplateDTO>>;
 
   updateTemplate(
+    templateId: string,
     template: UpdateTemplate,
     token: string
   ): Promise<Result<TemplateDTO>>;

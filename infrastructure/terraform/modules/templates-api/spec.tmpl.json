@@ -58,7 +58,7 @@
         "x-amazon-apigateway-integration": {
           "credentials": "${APIG_EXECUTION_ROLE_ARN}",
           "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "GET",
+          "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations",
           "responses": {
@@ -221,7 +221,8 @@
         "x-amazon-apigateway-authorizer": {
           "type": "token",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
-          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}"
+          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "authorizerResultTtlInSeconds": 300
         }
       }
     },
@@ -307,16 +308,11 @@
       "UpdateTemplate": {
         "type": "object",
         "required": [
-          "id",
           "status",
           "name",
-          "message",
-          "type"
+          "message"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "status": {
             "$ref": "#/components/schemas/TemplateStatus"
           },
@@ -328,11 +324,6 @@
           },
           "subject": {
             "type": "string"
-          },
-          "type": {
-            "$ref": "#/components/schemas/TemplateType",
-            "readOnly": true,
-            "description": "The API will never update this value on an update"
           }
         }
       },

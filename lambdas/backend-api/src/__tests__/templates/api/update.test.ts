@@ -19,7 +19,8 @@ describe('Template API - Update', () => {
   test('should return 400 - Invalid request when, no Authorization token', async () => {
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: undefined },
-      body: JSON.stringify({ id: 1 }),
+      body: JSON.stringify({ name: 'test' }),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -36,13 +37,6 @@ describe('Template API - Update', () => {
   });
 
   test('should return 400 - Invalid request when, no body', async () => {
-    updateTemplateMock.mockResolvedValueOnce({
-      error: {
-        code: 400,
-        message: 'Missing required fields',
-      },
-    });
-
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },
       body: undefined,
@@ -54,11 +48,31 @@ describe('Template API - Update', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Missing required fields',
+        technicalMessage: 'Invalid request',
       }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith({}, 'token');
+    expect(updateTemplateMock).not.toHaveBeenCalled();
+  });
+
+  test('should return 400 - Invalid request when, no templateId', async () => {
+    const event = mock<APIGatewayProxyEvent>({
+      headers: { Authorization: 'token' },
+      body: JSON.stringify({ name: 'test' }),
+      pathParameters: { templateId: undefined },
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 400,
+      body: JSON.stringify({
+        statusCode: 400,
+        technicalMessage: 'Invalid request',
+      }),
+    });
+
+    expect(updateTemplateMock).not.toHaveBeenCalled();
   });
 
   test('should return error when updating template fails', async () => {
@@ -71,7 +85,8 @@ describe('Template API - Update', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },
-      body: JSON.stringify({ id: 1 }),
+      body: JSON.stringify({ name: 'name' }),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -84,19 +99,23 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith({ id: 1 }, 'token');
+    expect(updateTemplateMock).toHaveBeenCalledWith(
+      '1-2-3',
+      { name: 'name' },
+      'token'
+    );
   });
 
   test('should return template', async () => {
     const update: UpdateTemplate = {
-      id: 'id',
       name: 'updated-name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.EMAIL,
     };
     const response: TemplateDTO = {
       ...update,
+      id: '1-2-3',
+      type: TemplateType.LETTER,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -108,6 +127,7 @@ describe('Template API - Update', () => {
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },
       body: JSON.stringify(update),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -117,6 +137,6 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith(update, 'token');
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update, 'token');
   });
 });

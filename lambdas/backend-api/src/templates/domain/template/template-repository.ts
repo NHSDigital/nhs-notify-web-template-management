@@ -7,7 +7,6 @@ import {
 import {
   ConditionalCheckFailedException,
   DynamoDBClient,
-  ResourceNotFoundException,
 } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
@@ -97,36 +96,63 @@ const create = async (
 };
 
 const update = async (
+  templateId: string,
   template: UpdateTemplate,
   owner: string
 ): Promise<ApplicationResult<Template>> => {
+  const updateExpression = [
+    '#name = :name',
+    '#message = :message',
+    '#updatedAt = :updateAt',
+    '#status = :status',
+  ];
+
+  let expressionAttributeNames: Record<string, string> = {
+    '#name': 'name',
+    '#message': 'message',
+    '#status': 'status',
+    '#updatedAt': 'updatedAt',
+  };
+
+  let expressionAttributeValues: Record<string, string> = {
+    ':name': template.name,
+    ':message': template.message,
+    ':status': template.status,
+    ':updateAt': new Date().toISOString(),
+    ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
+  };
+
+  if (template.subject) {
+    updateExpression.push('#subject = :subject');
+    expressionAttributeNames = {
+      ...expressionAttributeNames,
+      '#subject': 'subject',
+    };
+    expressionAttributeValues = {
+      ...expressionAttributeValues,
+      ':subject': template.subject,
+    };
+  }
+
   const input: UpdateCommandInput = {
     TableName: process.env.TEMPLATES_TABLE_NAME,
     Key: {
-      id: template.id,
+      id: templateId,
       owner,
     },
-    UpdateExpression: `set ${[
-      `name = :name`,
-      'message = :message',
-      'subject = :subject',
-      'updatedAt = :updateAt',
-      'status = :status',
-    ].join(', ')}`,
-    ExpressionAttributeValues: {
-      ':name': template.name,
-      ':message': template.message,
-      ':subject': template.subject,
-      ':status': template.status,
-      ':updateAt': new Date().toISOString(),
-      ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
-    },
-    ConditionExpression: 'status = :not_yet_submitted',
+    UpdateExpression: `SET ${updateExpression.join(', ')}`,
+    ExpressionAttributeNames: expressionAttributeNames,
+    ExpressionAttributeValues: expressionAttributeValues,
+    ConditionExpression: '#status = :not_yet_submitted',
     ReturnValues: 'ALL_NEW',
   };
 
   try {
     const response = await client.send(new UpdateCommand(input));
+
+    if (!response?.Attributes) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+    }
 
     return success(response.Attributes as Template);
   } catch (error) {
@@ -136,10 +162,6 @@ const update = async (
         'Can not update template due to status being NOT_YET_SUBMITTED',
         error
       );
-    }
-
-    if (error instanceof ResourceNotFoundException) {
-      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found', error);
     }
 
     return failure(

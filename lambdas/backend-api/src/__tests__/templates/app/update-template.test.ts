@@ -31,7 +31,7 @@ describe('updateTemplate', () => {
       },
     });
 
-    const result = await updateTemplate({} as UpdateTemplate, 'token');
+    const result = await updateTemplate('id', {} as UpdateTemplate, 'token');
 
     expect(getUserMock).toHaveBeenCalledWith('token');
 
@@ -58,14 +58,12 @@ describe('updateTemplate', () => {
     });
 
     const data: UpdateTemplate = {
-      id: 'id',
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
     };
 
-    const result = await updateTemplate(data, 'token');
+    const result = await updateTemplate('id', data, 'token');
 
     expect(validateMock).toHaveBeenCalledWith($UpdateTemplateSchema, data);
 
@@ -79,11 +77,9 @@ describe('updateTemplate', () => {
 
   test('should return a failure result, when saving to the database unexpectedly fails', async () => {
     const data: UpdateTemplate = {
-      id: 'id',
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
     };
 
     getUserMock.mockReturnValueOnce({
@@ -103,9 +99,9 @@ describe('updateTemplate', () => {
       },
     });
 
-    const result = await updateTemplate(data, 'token');
+    const result = await updateTemplate('id', data, 'token');
 
-    expect(updateMock).toHaveBeenCalledWith(data, 'token');
+    expect(updateMock).toHaveBeenCalledWith('id', data, 'token');
 
     expect(result).toEqual({
       error: {
@@ -117,11 +113,9 @@ describe('updateTemplate', () => {
 
   test('should return updated template', async () => {
     const data: UpdateTemplate = {
-      id: 'id',
       name: 'name',
       message: 'message',
       status: TemplateStatus.NOT_YET_SUBMITTED,
-      type: TemplateType.SMS,
     };
 
     const template: Template = {
@@ -148,9 +142,9 @@ describe('updateTemplate', () => {
       data: template,
     });
 
-    const result = await updateTemplate(data, 'token');
+    const result = await updateTemplate('id', data, 'token');
 
-    expect(updateMock).toHaveBeenCalledWith(data, 'token');
+    expect(updateMock).toHaveBeenCalledWith('id', data, 'token');
 
     expect(result).toEqual({
       data: template,

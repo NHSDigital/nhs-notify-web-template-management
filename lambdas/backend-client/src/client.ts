@@ -44,12 +44,20 @@ export const templateClient: ITemplateClient = {
     });
     return map(201, response.data);
   },
-  updateTemplate: async (template: UpdateTemplate, token: string) => {
-    const response = await client.post<ApiResponse>('/v1/templates', template, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  updateTemplate: async (
+    templateId: string,
+    template: UpdateTemplate,
+    token: string
+  ) => {
+    const response = await client.post<ApiResponse>(
+      `/v1/template/${templateId}`,
+      template,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return map(200, response.data);
   },
   getTemplate: async (templateId: string, token: string) => {
