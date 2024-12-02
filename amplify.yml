@@ -12,6 +12,7 @@ frontend:
   phases:
     build:
       commands:
+        - rm -rf lambdas
         - npm run build
   artifacts:
     baseDirectory: .next
