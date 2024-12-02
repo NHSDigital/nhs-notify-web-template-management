@@ -39,7 +39,7 @@ export const templateClient: ITemplateClient = {
   createTemplate: async (template: CreateTemplate, token: string) => {
     const response = await client.post<ApiResponse>('/v1/template', template, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
       },
     });
     return map(201, response.data);
@@ -54,7 +54,7 @@ export const templateClient: ITemplateClient = {
       template,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       }
     );
@@ -65,7 +65,7 @@ export const templateClient: ITemplateClient = {
       `/v1/template/${templateId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       }
     );

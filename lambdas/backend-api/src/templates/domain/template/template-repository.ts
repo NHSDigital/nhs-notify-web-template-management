@@ -143,25 +143,33 @@ const update = async (
     UpdateExpression: `SET ${updateExpression.join(', ')}`,
     ExpressionAttributeNames: expressionAttributeNames,
     ExpressionAttributeValues: expressionAttributeValues,
-    ConditionExpression: '#status = :not_yet_submitted',
+    ConditionExpression: '#status = :not_yet_submitted AND attribute_exists(id)',
     ReturnValues: 'ALL_NEW',
+    ReturnValuesOnConditionCheckFailure: "ALL_OLD"
   };
 
   try {
     const response = await client.send(new UpdateCommand(input));
 
-    if (!response?.Attributes) {
-      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
-    }
-
     return success(response.Attributes as Template);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
-      return failure(
-        ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-        'Can not update template due to status being NOT_YET_SUBMITTED',
-        error
-      );
+      if (!error.Item) {
+
+        return failure(
+          ErrorCase.TEMPLATE_NOT_FOUND,
+          `Template not found`,
+          error
+        );
+      }
+
+      if (error.Item.status.S !== TemplateStatus.NOT_YET_SUBMITTED) {
+        return failure(
+          ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
+          `Can not update template due to status being ${error.Item.status}`,
+          error
+        );
+      }
     }
 
     return failure(
