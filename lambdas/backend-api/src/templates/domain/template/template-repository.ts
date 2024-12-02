@@ -112,6 +112,7 @@ const update = async (
     '#message': 'message',
     '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
+    '#templateType': 'templateType',
   };
 
   let expressionAttributeValues: Record<string, string> = {
@@ -120,6 +121,7 @@ const update = async (
     ':templateStatus': template.templateStatus,
     ':updateAt': new Date().toISOString(),
     ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
+    ':templateType': template.templateType,
   };
 
   if (template.subject) {
@@ -144,7 +146,7 @@ const update = async (
     ExpressionAttributeNames: expressionAttributeNames,
     ExpressionAttributeValues: expressionAttributeValues,
     ConditionExpression:
-      'attribute_exists(id) AND #templateStatus = :not_yet_submitted AND #type = :type',
+      'attribute_exists(id) AND #templateStatus = :not_yet_submitted AND #templateType = :templateType',
     ReturnValues: 'ALL_NEW',
     ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
   };

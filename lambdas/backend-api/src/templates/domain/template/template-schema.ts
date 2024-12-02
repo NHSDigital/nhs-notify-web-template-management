@@ -17,16 +17,15 @@ import {
 const $Template = schemaFor<CreateTemplate>()(
   z.object({
     templateType: z.nativeEnum(TemplateType),
-    name: z.string(),
+    name: z.string().min(1),
     message: z.string(),
-    subject: z.string().optional(),
   })
 );
 
 export const $SMSTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     templateType: z.literal(TemplateType.SMS),
-    message: z.string().max(MAX_SMS_CHARACTER_LENGTH),
+    message: z.string().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
@@ -35,6 +34,7 @@ export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
     templateType: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
+      .min(1)
       .max(MAX_NHS_APP_CHARACTER_LENGTH)
       .refine((s) => !NHS_APP_DISALLOWED_CHARACTERS.test(s), {
         message: `NHS App template message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
@@ -44,16 +44,16 @@ export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
 
 export const $EmailTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
-    subject: z.string(),
+    subject: z.string().min(1),
     templateType: z.literal(TemplateType.EMAIL),
-    message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH),
+    message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH).min(1),
   })
 );
 
 export const $LetterTemplate = schemaFor<CreateTemplate>()(
   $Template.extend({
     templateType: z.literal(TemplateType.LETTER),
-    message: z.string().max(MAX_LETTER_CHARACTER_LENGTH),
+    message: z.string().max(MAX_LETTER_CHARACTER_LENGTH).min(1),
   })
 );
 

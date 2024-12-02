@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import type { APIGatewayRequestAuthorizerEvent, APIGatewayRequestAuthorizerHandler, Context } from 'aws-lambda';
+import type { APIGatewayRequestAuthorizerEvent, Context } from 'aws-lambda';
 import { sign } from 'jsonwebtoken';
 import { mock } from 'jest-mock-extended';
 import {
@@ -97,15 +97,12 @@ afterEach(() => {
 test('returns Deny policy on lambda misconfiguration', async () => {
   process.env.USER_POOL_ID = '';
 
-
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: '123'},
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: '123' },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -116,13 +113,11 @@ test('returns Deny policy on lambda misconfiguration', async () => {
 
 test('returns Deny policy on malformed token', async () => {
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: 'lemon'},
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: 'lemon' },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -147,13 +142,11 @@ test('returns Deny policy on token with missing kid', async () => {
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -176,13 +169,11 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -207,13 +198,11 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -241,13 +230,11 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -274,13 +261,11 @@ test('returns Deny policy on Cognito not validating the token', async () => {
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -307,13 +292,11 @@ test('returns Allow policy on valid token', async () => {
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -338,13 +321,11 @@ test('returns Deny policy on expired token', async () => {
   );
 
   const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>(
-      {
-        methodArn,
-        headers: { Authorization: jwt },
-        type: 'REQUEST',
-      }
-    ),
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
