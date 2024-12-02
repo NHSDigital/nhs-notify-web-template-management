@@ -1,6 +1,4 @@
-// eslint-disable no-console
-
-import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
+import type { APIGatewayRequestAuthorizerHandler } from 'aws-lambda';
 import { z } from 'zod';
 import {
   CognitoIdentityProviderClient,
@@ -37,13 +35,18 @@ const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
 
 const getEnvironmentVariable = (envName: string) => process.env[envName];
 
-export const handler: APIGatewayTokenAuthorizerHandler = async ({
+export const handler: APIGatewayRequestAuthorizerHandler = async ({
   methodArn,
-  authorizationToken,
+  headers,
 }) => {
   try {
+    if (!headers?.Authorization) {
+      return generatePolicy(methodArn, 'Deny');
+    }
+
     const userPoolId = getEnvironmentVariable('USER_POOL_ID');
     const userPoolClientId = getEnvironmentVariable('USER_POOL_CLIENT_ID');
+    const authorizationToken = headers.Authorization;
 
     if (!userPoolId || !userPoolClientId) {
       logger.error('Lambda misconfiguration');

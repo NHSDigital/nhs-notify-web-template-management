@@ -219,10 +219,11 @@
         "in": "header",
         "x-amazon-apigateway-authtype": "custom",
         "x-amazon-apigateway-authorizer": {
-          "type": "token",
+          "type": "request",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
           "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "authorizerResultTtlInSeconds": 0
+          "identitySource" : "method.request.header.authorization,context.resourceId,context.httpMethod",
+          "authorizerResultTtlInSeconds": 300
         }
       }
     },
