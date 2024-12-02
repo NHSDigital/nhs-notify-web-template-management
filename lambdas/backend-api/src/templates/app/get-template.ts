@@ -7,7 +7,7 @@ export const getTemplate: ITemplateClient['getTemplate'] = async (
   templateId,
   token
 ) => {
-  const userResult = userRepository.getUser(token);
+  const userResult = await userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {

@@ -11,7 +11,7 @@ export const createTemplate: ITemplateClient['createTemplate'] = async (
   dto,
   token
 ) => {
-  const userResult = userRepository.getUser(token);
+  const userResult = await userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {
@@ -26,7 +26,7 @@ export const createTemplate: ITemplateClient['createTemplate'] = async (
     user: userResult.data,
   });
 
-  const validationResult = validate($CreateTemplateSchema, dto);
+  const validationResult = await validate($CreateTemplateSchema, dto);
 
   if (validationResult.error) {
     log.error('Request failed validation', {

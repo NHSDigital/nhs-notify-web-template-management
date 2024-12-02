@@ -361,6 +361,9 @@
           },
           "statusCode": {
             "type": "integer"
+          },
+          "details": {
+            "type": "object"
           }
         }
       }

@@ -16,11 +16,12 @@ describe('getTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return a failure result, when user token is invalid', async () => {
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       error: {
-        code: 401,
+        code: 403,
         message: 'Unauthorized',
       },
+      data: undefined,
     });
 
     const result = await getTemplate('id', 'token');
@@ -29,14 +30,14 @@ describe('getTemplate', () => {
 
     expect(result).toEqual({
       error: {
-        code: 401,
+        code: 403,
         message: 'Unauthorized',
       },
     });
   });
 
   test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       data: {
         id: 'token',
       },
@@ -74,7 +75,7 @@ describe('getTemplate', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       data: {
         id: 'token',
       },

@@ -15,12 +15,14 @@ export type ApplicationResult<T> = SuccessResult<T> | FailureResultWithError;
 export const failure = (
   code: ErrorCase,
   message: string,
-  actualError?: unknown
+  actualError?: unknown,
+  details?: Record<string, string>
 ): FailureResultWithError => ({
   error: {
     code,
     message,
     actualError,
+    details,
   },
 });
 

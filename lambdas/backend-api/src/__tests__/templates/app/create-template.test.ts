@@ -24,11 +24,12 @@ describe('createTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return a failure result, when user token is invalid', async () => {
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       error: {
-        code: 401,
+        code: 403,
         message: 'Unauthorized',
       },
+      data: undefined,
     });
 
     const result = await createTemplate({} as CreateTemplate, 'token');
@@ -37,20 +38,20 @@ describe('createTemplate', () => {
 
     expect(result).toEqual({
       error: {
-        code: 401,
+        code: 403,
         message: 'Unauthorized',
       },
     });
   });
 
   test('should return a failure result, when template data is invalid', async () => {
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       data: {
         id: 'pickles',
       },
     });
 
-    validateMock.mockReturnValueOnce({
+    validateMock.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Bad request',
@@ -82,13 +83,13 @@ describe('createTemplate', () => {
       message: 'message',
     };
 
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       data: {
         id: 'token',
       },
     });
 
-    validateMock.mockReturnValueOnce({
+    validateMock.mockResolvedValueOnce({
       data,
     });
 
@@ -128,13 +129,13 @@ describe('createTemplate', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
-    getUserMock.mockReturnValueOnce({
+    getUserMock.mockResolvedValueOnce({
       data: {
         id: 'token',
       },
     });
 
-    validateMock.mockReturnValueOnce({
+    validateMock.mockResolvedValueOnce({
       data: dto,
     });
 

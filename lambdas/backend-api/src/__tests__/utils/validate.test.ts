@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { validate } from '../../utils';
 
 describe('validate', () => {
-  test('should return error when schema is invalid', () => {
-    const result = validate(
+  test('should return error when schema is invalid', async () => {
+    const result = await validate(
       z.object({
         id: z.string(),
       }),
@@ -20,12 +20,15 @@ describe('validate', () => {
           },
           formErrors: [],
         },
+        details: {
+          id: 'Required',
+        },
       },
     });
   });
 
-  test('should return data', () => {
-    const result = validate(
+  test('should return data', async () => {
+    const result = await validate(
       z.object({
         id: z.string(),
       }),

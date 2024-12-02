@@ -11,37 +11,37 @@ const validateMock = jest.mocked(validate);
 describe('userRepository', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return error when, token cannot be decoded', () => {
+  test('should return error when, token cannot be decoded', async () => {
     decodeMock.mockReturnValueOnce(null);
 
-    validateMock.mockReturnValueOnce({
+    validateMock.mockResolvedValue({
       error: {
         code: 400,
         message: 'Object is null',
       },
     });
 
-    const response = userRepository.getUser('token');
+    const response = await userRepository.getUser('token');
 
     expect(response).toEqual({
       error: {
-        code: 401,
+        code: 403,
         message:
           'User token is either null or does not contain a valid client_id',
       },
     });
   });
 
-  test('should return user', () => {
+  test('should return user', async () => {
     decodeMock.mockReturnValueOnce({ client_id: 'client-id' });
 
-    validateMock.mockReturnValueOnce({
+    validateMock.mockResolvedValue({
       data: {
         client_id: 'client-id',
       },
     });
 
-    const response = userRepository.getUser('token');
+    const response = await userRepository.getUser('token');
 
     expect(validateMock).toHaveBeenCalledWith($User, {
       client_id: 'client-id',

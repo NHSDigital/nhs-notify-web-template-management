@@ -10,176 +10,114 @@ import {
 } from '@backend-api/templates/domain/template/template-schema';
 
 describe('Template schemas', () => {
-  test('$LetterTemplate - should pass validation', () => {
-    const result = validate($LetterTemplate, {
-      name: 'Test Template',
-      message: 'This is a test template',
-      templateType: TemplateType.LETTER,
-    });
-
-    expect(result).toEqual({
+  test.each([
+    {
+      schema: $LetterTemplate,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
         templateType: TemplateType.LETTER,
       },
-    });
-  });
-
-  test('$LetterTemplate - should fail validation, when max character length exceeded', () => {
-    const result = validate($LetterTemplate, {
-      name: 'Test Template',
-      message: 'a'.repeat(15_001),
-      templateType: TemplateType.LETTER,
-    });
-
-    expect(result).toEqual({
-      error: {
-        code: 400,
-        message: `Request failed validation`,
-        actualError: {
-          fieldErrors: {
-            message: [`String must contain at most 15000 character(s)`],
-          },
-          formErrors: [],
-        },
+    },
+    {
+      schema: $EmailTemplate,
+      data: {
+        name: 'Test Template',
+        message: 'This is a test template',
+        subject: 'Test Subject',
+        templateType: TemplateType.EMAIL,
       },
-    });
-  });
-
-  test('$SMSTemplate - should pass validation', () => {
-    const result = validate($SMSTemplate, {
-      name: 'Test Template',
-      message: 'This is a test template',
-      templateType: TemplateType.SMS,
-    });
-
-    expect(result).toEqual({
+    },
+    {
+      schema: $SMSTemplate,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
         templateType: TemplateType.SMS,
       },
-    });
-  });
-
-  test('$SMSTemplate - should fail validation, when max character length exceeded', () => {
-    const result = validate($SMSTemplate, {
-      name: 'Test Template',
-      message: 'a'.repeat(919),
-      templateType: TemplateType.SMS,
-    });
-
-    expect(result).toEqual({
-      error: {
-        code: 400,
-        message: `Request failed validation`,
-        actualError: {
-          fieldErrors: {
-            message: [`String must contain at most 918 character(s)`],
-          },
-          formErrors: [],
-        },
-      },
-    });
-  });
-
-  test('$EmailTemplate - should pass validation', () => {
-    const result = validate($EmailTemplate, {
-      name: 'Test Template',
-      message: 'This is a test template',
-      subject: 'Test Subject',
-      templateType: TemplateType.EMAIL,
-    });
-
-    expect(result).toEqual({
+    },
+    {
+      schema: $NhsAppTemplate,
       data: {
         name: 'Test Template',
-        subject: 'Test Subject',
         message: 'This is a test template',
-        templateType: TemplateType.EMAIL,
+        templateType: TemplateType.NHS_APP,
       },
-    });
-  });
-
-  test('$EmailTemplate - should fail validation, when max character length exceeded', () => {
-    const result = validate($EmailTemplate, {
-      name: 'Test Template',
-      message: 'a'.repeat(100_001),
-      subject: 'Test Subject',
-      templateType: TemplateType.EMAIL,
-    });
+    },
+  ])('%p.templateType - should pass validation', async ({ schema, data }) => {
+    const result = await validate(schema, data);
 
     expect(result).toEqual({
-      error: {
-        code: 400,
-        message: `Request failed validation`,
-        actualError: {
-          fieldErrors: {
-            message: [`String must contain at most 100000 character(s)`],
-          },
-          formErrors: [],
-        },
-      },
+      data,
     });
   });
 
-  test('$EmailTemplate - should fail validation, when no subject', () => {
-    const result = validate($EmailTemplate, {
+  test.each([
+    {
+      schema: $LetterTemplate,
+      data: {
+        name: 'Test Template',
+        message: 'a'.repeat(15_001),
+        templateType: TemplateType.LETTER,
+      },
+    },
+    {
+      schema: $EmailTemplate,
+      data: {
+        name: 'Test Template',
+        message: 'a'.repeat(100_001),
+        subject: 'Test Subject',
+        templateType: TemplateType.EMAIL,
+      },
+    },
+    {
+      schema: $SMSTemplate,
+      data: {
+        name: 'Test Template',
+        message: 'a'.repeat(919),
+        templateType: TemplateType.SMS,
+      },
+    },
+    {
+      schema: $NhsAppTemplate,
+      data: {
+        name: 'Test Template',
+        message: 'a'.repeat(5001),
+        templateType: TemplateType.NHS_APP,
+      },
+    },
+  ])(
+    '%p.templateType - should fail validation, when max character length exceeded',
+    async ({ schema, data }) => {
+      const result = await validate(schema, data);
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: `Request failed validation`,
+          details: {
+            message: `String must contain at most ${data.message.length - 1} character(s)`,
+          },
+        }),
+      });
+    }
+  );
+
+  test('$EmailTemplate - should fail validation, when no subject', async () => {
+    const result = await validate($EmailTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(100_000),
       templateType: TemplateType.EMAIL,
     });
 
     expect(result).toEqual({
-      error: {
+      error: expect.objectContaining({
         code: 400,
         message: `Request failed validation`,
-        actualError: {
-          fieldErrors: {
-            subject: [`Required`],
-          },
-          formErrors: [],
+        details: {
+          subject: `Required`,
         },
-      },
-    });
-  });
-
-  test('$NhsAppTemplate - should pass validation', () => {
-    const result = validate($NhsAppTemplate, {
-      name: 'Test Template',
-      message: '\n hello world!!',
-      templateType: TemplateType.NHS_APP,
-    });
-
-    expect(result).toEqual({
-      data: {
-        name: 'Test Template',
-        message: '\n hello world!!',
-        templateType: TemplateType.NHS_APP,
-      },
-    });
-  });
-
-  test('$NhsAppTemplate - should fail validation, when max character length exceeded', () => {
-    const result = validate($NhsAppTemplate, {
-      name: 'Test Template',
-      message: 'a'.repeat(5001),
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
-    });
-
-    expect(result).toEqual({
-      error: {
-        code: 400,
-        message: `Request failed validation`,
-        actualError: {
-          fieldErrors: {
-            message: [`String must contain at most 5000 character(s)`],
-          },
-          formErrors: [],
-        },
-      },
+      }),
     });
   });
 
@@ -189,26 +127,21 @@ describe('Template schemas', () => {
     '<element attribute="failed">failed</element>',
   ])(
     '$NhsAppTemplate - should fail validation, when invalid characters are present %p',
-    (message) => {
-      const result = validate($NhsAppTemplate, {
+    async (message) => {
+      const result = await validate($NhsAppTemplate, {
         name: 'Test Template',
         message,
         templateType: TemplateType.NHS_APP,
       });
 
       expect(result).toEqual({
-        error: {
+        error: expect.objectContaining({
           code: 400,
           message: `Request failed validation`,
-          actualError: {
-            fieldErrors: {
-              message: [
-                String.raw`NHS App template message contains disallowed characters. Disallowed characters: /<(.|\n)*?>/gi`,
-              ],
-            },
-            formErrors: [],
+          details: {
+            message: String.raw`NHS App template message contains disallowed characters. Disallowed characters: /<(.|\n)*?>/gi`,
           },
-        },
+        }),
       });
     }
   );
@@ -237,8 +170,8 @@ describe('Template schemas', () => {
         ...commonFields,
         templateType: TemplateType.NHS_APP,
       },
-    ])('should pass validation %p', (template) => {
-      const result = validate($CreateTemplateSchema, template);
+    ])('should pass validation %p', async (template) => {
+      const result = await validate($CreateTemplateSchema, template);
 
       expect(result).toEqual({
         data: template,
@@ -271,8 +204,8 @@ describe('Template schemas', () => {
         ...commonFields,
         templateType: TemplateType.NHS_APP,
       },
-    ])('should pass validation %p', (template) => {
-      const result = validate($UpdateTemplateSchema, template);
+    ])('should pass validation %p', async (template) => {
+      const result = await validate($UpdateTemplateSchema, template);
 
       expect(result).toEqual({
         data: template,

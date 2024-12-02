@@ -9,10 +9,10 @@ import {
 import { User } from './user';
 import { $User } from './user-schema';
 
-const getUser = (token: string): ApplicationResult<User> => {
+const getUser = async (token: string): Promise<ApplicationResult<User>> => {
   const payload = decode(token);
 
-  const { data, error } = validate($User, payload);
+  const { data, error } = await validate($User, payload);
 
   if (error) {
     return failure(

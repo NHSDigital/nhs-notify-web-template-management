@@ -11,7 +11,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   dto,
   token
 ) => {
-  const userResult = userRepository.getUser(token);
+  const userResult = await userRepository.getUser(token);
 
   if (userResult.error) {
     logger.error('User not found', {
@@ -29,7 +29,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
     user: userResult.data,
   });
 
-  const validationResult = validate($UpdateTemplateSchema, dto);
+  const validationResult = await validate($UpdateTemplateSchema, dto);
 
   if (validationResult.error) {
     log.error('Invalid template', { validationResult });

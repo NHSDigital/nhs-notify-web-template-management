@@ -37,8 +37,20 @@ describe('Template API - Update', () => {
   });
 
   test('should return 400 - Invalid request when, no body', async () => {
+    updateTemplateMock.mockResolvedValueOnce({
+      error: {
+        code: 400,
+        message: 'Validation failed',
+        details: {
+          templateType: 'Required',
+        },
+      },
+      data: undefined,
+    });
+
     const event = mock<APIGatewayProxyEvent>({
       headers: { Authorization: 'token' },
+      pathParameters: { templateId: '1-2-3' },
       body: undefined,
     });
 
@@ -48,11 +60,14 @@ describe('Template API - Update', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
+        technicalMessage: 'Validation failed',
+        details: {
+          templateType: 'Required',
+        },
       }),
     });
 
-    expect(updateTemplateMock).not.toHaveBeenCalled();
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {}, 'token');
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {

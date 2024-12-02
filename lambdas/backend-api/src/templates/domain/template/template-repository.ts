@@ -77,7 +77,7 @@ const create = async (
     const consumedUnits = response?.ConsumedCapacity?.CapacityUnits || 0;
 
     // Note: This is a bit strange, PutCommand does not return the any data when creating
-    // a new item. So we can only infer the success by checking the WriteCapacityUnits
+    // a new item. So we can only infer the success by checking the CapacityUnits
     // Or do a GetItem - which is expensive.
     if (consumedUnits === 0) {
       throw new Error('Expected DynamoDB CapacityUnits to be greater than 0', {

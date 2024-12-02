@@ -11,11 +11,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return apiFailure(400, 'Invalid request');
   }
 
-  const templateResult = await getTemplate(templateId, token);
+  const { data, error } = await getTemplate(templateId, token);
 
-  if (templateResult.error) {
-    return apiFailure(templateResult.error.code, templateResult.error.message);
+  if (error) {
+    return apiFailure(error.code, error.message, error.details);
   }
 
-  return apiSuccess(200, templateResult.data);
+  return apiSuccess(200, data);
 };

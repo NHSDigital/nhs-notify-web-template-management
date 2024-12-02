@@ -39,8 +39,12 @@ describe('Template API - Create', () => {
     createTemplateMock.mockResolvedValueOnce({
       error: {
         code: 400,
-        message: 'Missing required fields',
+        message: 'Validation failed',
+        details: {
+          templateType: 'Required',
+        },
       },
+      data: undefined,
     });
 
     const event = mock<APIGatewayProxyEvent>({
@@ -54,7 +58,10 @@ describe('Template API - Create', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Missing required fields',
+        technicalMessage: 'Validation failed',
+        details: {
+          templateType: 'Required',
+        },
       }),
     });
 

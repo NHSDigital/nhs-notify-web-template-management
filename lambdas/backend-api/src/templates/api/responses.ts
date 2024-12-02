@@ -1,11 +1,19 @@
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Failure, Success, TemplateDTO } from 'nhs-notify-backend-client';
 
 export const apiSuccess = (statusCode: number, template: TemplateDTO) => ({
   statusCode,
-  body: JSON.stringify({ statusCode, template }),
+  body: JSON.stringify({ statusCode, template } satisfies Success),
 });
 
-export const apiFailure = (statusCode: number, technicalMessage: string) => ({
+export const apiFailure = (
+  statusCode: number,
+  technicalMessage: string,
+  details?: Record<string, string>
+) => ({
   statusCode,
-  body: JSON.stringify({ statusCode, technicalMessage }),
+  body: JSON.stringify({
+    statusCode,
+    technicalMessage,
+    details,
+  } satisfies Failure),
 });
