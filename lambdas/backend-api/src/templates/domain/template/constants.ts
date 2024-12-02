@@ -9,4 +9,3 @@ export const MAX_NHS_APP_CHARACTER_LENGTH = 5000 as const;
 export const MAX_SMS_CHARACTER_LENGTH = 918 as const;
 export const MAX_EMAIL_CHARACTER_LENGTH = 100_000 as const;
 export const MAX_LETTER_CHARACTER_LENGTH = 15_000 as const;
-

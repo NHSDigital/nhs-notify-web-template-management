@@ -11,7 +11,7 @@ export const validate = <T extends z.Schema>(
   if (error) {
     return failure(
       ErrorCase.VALIDATION_FAILED,
-      `Request failed validation: ${error.issues.map((issue) => issue.message).join(', ')}`,
+      'Request failed validation',
       error.flatten()
     );
   }

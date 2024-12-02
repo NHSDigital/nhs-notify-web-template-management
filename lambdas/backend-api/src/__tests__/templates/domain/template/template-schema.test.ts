@@ -36,7 +36,7 @@ describe('Template schemas', () => {
     expect(result).toEqual({
       error: {
         code: 400,
-        message: `Request failed validation: String must contain at most 15000 character(s)`,
+        message: `Request failed validation`,
         actualError: {
           fieldErrors: {
             message: [`String must contain at most 15000 character(s)`],
@@ -73,7 +73,7 @@ describe('Template schemas', () => {
     expect(result).toEqual({
       error: {
         code: 400,
-        message: `Request failed validation: String must contain at most 918 character(s)`,
+        message: `Request failed validation`,
         actualError: {
           fieldErrors: {
             message: [`String must contain at most 918 character(s)`],
@@ -113,7 +113,7 @@ describe('Template schemas', () => {
     expect(result).toEqual({
       error: {
         code: 400,
-        message: `Request failed validation: String must contain at most 100000 character(s)`,
+        message: `Request failed validation`,
         actualError: {
           fieldErrors: {
             message: [`String must contain at most 100000 character(s)`],
@@ -134,7 +134,7 @@ describe('Template schemas', () => {
     expect(result).toEqual({
       error: {
         code: 400,
-        message: `Request failed validation: Required`,
+        message: `Request failed validation`,
         actualError: {
           fieldErrors: {
             subject: [`Required`],
@@ -172,7 +172,7 @@ describe('Template schemas', () => {
     expect(result).toEqual({
       error: {
         code: 400,
-        message: `Request failed validation: String must contain at most 5000 character(s)`,
+        message: `Request failed validation`,
         actualError: {
           fieldErrors: {
             message: [`String must contain at most 5000 character(s)`],
@@ -199,7 +199,7 @@ describe('Template schemas', () => {
       expect(result).toEqual({
         error: {
           code: 400,
-          message: `Request failed validation: NHS App template message contains disallowed characters. Disallowed characters: /<(.|\\n)*?>/gi`,
+          message: `Request failed validation`,
           actualError: {
             fieldErrors: {
               message: [

@@ -11,10 +11,7 @@ import {
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  ConditionalCheckFailedException,
-  ResourceNotFoundException,
-} from '@aws-sdk/client-dynamodb';
+import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   Template,
   templateRepository,
@@ -209,64 +206,60 @@ describe('templateRepository', () => {
   });
 
   describe('update', () => {
-    test('should return error when, ConditionalCheckException occurs', async () => {
-      const error = new ConditionalCheckFailedException({
-        message: 'mocked',
-        $metadata: { httpStatusCode: 400 },
-      });
-
-      ddbMock.on(UpdateCommand).rejects(error);
-
-      const response = await templateRepository.update(
-        'real-id',
-        {
-          name: 'name',
-          message: 'message',
-          subject: 'subject',
-          status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
+    test.each([
+      {
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+      },
+      {
+        Item: {
+          type: { S: TemplateType.LETTER },
+          status: { S: TemplateStatus.NOT_YET_SUBMITTED },
         },
-        'real-owner'
-      );
-
-      expect(response).toEqual({
-        error: {
-          code: 400,
-          message:
-            'Can not update template due to status being NOT_YET_SUBMITTED',
-          actualError: error,
+        code: 400,
+        message: 'Can not change template type. Expected LETTER but got EMAIL',
+      },
+      {
+        Item: {
+          type: { S: TemplateType.EMAIL },
+          status: { S: TemplateStatus.SUBMITTED },
         },
-      });
-    });
+        code: 400,
+        message: 'Can not update template due to status being SUBMITTED',
+      },
+    ])(
+      'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
+      async ({ Item, code, message }) => {
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
 
-    test('should return error when, ResourceNotFoundException occurs', async () => {
-      const error = new ResourceNotFoundException({
-        message: 'mocked',
-        $metadata: { httpStatusCode: 400 },
-      });
+        ddbMock.on(UpdateCommand).rejects(error);
 
-      ddbMock.on(UpdateCommand).rejects(error);
+        const response = await templateRepository.update(
+          'real-id',
+          {
+            name: 'name',
+            message: 'message',
+            subject: 'subject',
+            status: TemplateStatus.NOT_YET_SUBMITTED,
+            type: TemplateType.EMAIL,
+          },
+          'real-owner'
+        );
 
-      const response = await templateRepository.update(
-        'real-id',
-        {
-          name: 'name',
-          message: 'message',
-          subject: 'subject',
-          status: TemplateStatus.NOT_YET_SUBMITTED,
-          type: TemplateType.EMAIL,
-        },
-        'real-owner'
-      );
-
-      expect(response).toEqual({
-        error: {
-          code: 404,
-          message: 'Template not found',
-          actualError: error,
-        },
-      });
-    });
+        expect(response).toEqual({
+          error: {
+            code,
+            message,
+            actualError: error,
+          },
+        });
+      }
+    );
 
     test('should return error when, an unexpected error occurs', async () => {
       const error = new Error('mocked');
@@ -307,30 +300,6 @@ describe('templateRepository', () => {
         .on(UpdateCommand, {
           TableName: 'templates',
           Key: { id: 'real-id', owner: 'real-owner' },
-          UpdateExpression: `set ${[
-            '#name = :name',
-            '#message = :message',
-            '#subject = :subject',
-            '#updatedAt = :updateAt',
-            '#status = :status',
-          ].join(', ')}`,
-          ExpressionAttributeValues: {
-            ':name': updatedTemplate.name,
-            ':message': updatedTemplate.message,
-            ':subject': updatedTemplate.subject,
-            ':status': updatedTemplate.status,
-            ':updateAt': '2024-12-27T00:00:00.000Z',
-            ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
-          },
-          ExpressionAttributeNames: {
-            '#name': 'name',
-            '#message': 'message',
-            '#status': 'status',
-            '#updatedAt': 'updatedAt',
-            '#subject': 'subject',
-          },
-          ConditionExpression: 'status = :not_yet_submitted',
-          ReturnValues: 'ALL_NEW',
         })
         .resolves({
           Attributes: {

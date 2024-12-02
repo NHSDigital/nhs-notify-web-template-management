@@ -166,7 +166,7 @@ const update = async (
       if (error.Item.status.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          `Can not update template due to status being ${error.Item.status}`,
+          `Can not update template due to status being ${error.Item.status.S}`,
           error
         );
       }
@@ -174,7 +174,7 @@ const update = async (
       if (error.Item.type.S !== template.type) {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
-          `Can not change template type. Expected ${error.Item.type.S} but got ${template.type} `,
+          `Can not change template type. Expected ${error.Item.type.S} but got ${template.type}`,
           error
         );
       }
