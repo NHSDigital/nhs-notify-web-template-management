@@ -31,6 +31,7 @@ function map(
     error: {
       code: failure.statusCode,
       message: failure.technicalMessage,
+      details: failure.details,
     },
   };
 }
