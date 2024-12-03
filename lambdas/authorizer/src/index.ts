@@ -17,9 +17,14 @@ const $AccessToken = z.object({
   client_id: z.string(),
   iss: z.string(),
   token_use: z.string(),
+  username: z.string(),
 });
 
-const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
+const generatePolicy = (
+  Resource: string,
+  Effect: 'Allow' | 'Deny',
+  context?: { username: string }
+) => ({
   principalId: 'api-caller',
   policyDocument: {
     Version: '2012-10-17',
@@ -31,6 +36,7 @@ const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
       },
     ],
   },
+  context,
 });
 
 const getEnvironmentVariable = (envName: string) => process.env[envName];
@@ -74,8 +80,11 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
       issuer,
     });
 
-    const { client_id: clientId, token_use: tokenUse } =
-      $AccessToken.parse(verifiedToken);
+    const {
+      client_id: clientId,
+      token_use: tokenUse,
+      username,
+    } = $AccessToken.parse(verifiedToken);
 
     // client_id claim
     if (clientId !== userPoolClientId) {
@@ -100,7 +109,9 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
       })
     );
 
-    return generatePolicy(methodArn, 'Allow');
+    return generatePolicy(methodArn, 'Allow', {
+      username,
+    });
   } catch (error) {
     logger.error(error);
     return generatePolicy(methodArn, 'Deny');

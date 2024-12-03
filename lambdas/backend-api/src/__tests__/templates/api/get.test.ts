@@ -13,9 +13,11 @@ jest.mock('@backend-api/templates/app/get-template');
 const getTemplateMock = jest.mocked(getTemplate);
 
 describe('Template API - Get', () => {
-  test('should return 400 - Invalid request when, no Authorization token', async () => {
+  beforeEach(jest.resetAllMocks);
+
+  test('should return 400 - Invalid request when, no username in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: undefined },
+      requestContext: { authorizer: { username: undefined } },
       pathParameters: { templateId: '1' },
     });
 
@@ -34,7 +36,7 @@ describe('Template API - Get', () => {
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       pathParameters: { templateId: undefined },
     });
 
@@ -60,7 +62,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -74,7 +76,7 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(getTemplateMock).toHaveBeenCalledWith('1', 'token');
+    expect(getTemplateMock).toHaveBeenCalledWith('1', 'username');
   });
 
   test('should return template', async () => {
@@ -93,7 +95,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -104,6 +106,6 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(getTemplateMock).toHaveBeenCalledWith('1', 'token');
+    expect(getTemplateMock).toHaveBeenCalledWith('1', 'username');
   });
 });

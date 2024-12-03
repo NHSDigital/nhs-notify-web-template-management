@@ -16,9 +16,9 @@ const updateTemplateMock = jest.mocked(updateTemplate);
 describe('Template API - Update', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no Authorization token', async () => {
+  test('should return 400 - Invalid request when, no username in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: undefined },
+      requestContext: { authorizer: { username: undefined } },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -49,7 +49,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       pathParameters: { templateId: '1-2-3' },
       body: undefined,
     });
@@ -67,12 +67,12 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {}, 'token');
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {}, 'username');
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
     });
@@ -99,7 +99,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: JSON.stringify({ name: 'name' }),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -117,7 +117,7 @@ describe('Template API - Update', () => {
     expect(updateTemplateMock).toHaveBeenCalledWith(
       '1-2-3',
       { name: 'name' },
-      'token'
+      'username'
     );
   });
 
@@ -141,7 +141,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: JSON.stringify(update),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -153,6 +153,10 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update, 'token');
+    expect(updateTemplateMock).toHaveBeenCalledWith(
+      '1-2-3',
+      update,
+      'username'
+    );
   });
 });

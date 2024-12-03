@@ -3,7 +3,6 @@ import {
   templateRepository,
   $UpdateTemplateSchema,
 } from '@backend-api/templates/domain/template';
-import { userRepository } from '@backend-api/templates/domain/user';
 import { validate, logger, success } from '@backend-api/utils/index';
 
 export const updateTemplate: ITemplateClient['updateTemplate'] = async (
@@ -11,22 +10,9 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   dto,
   token
 ) => {
-  const userResult = await userRepository.getUser(token);
-
-  if (userResult.error) {
-    logger.error('User not found', {
-      templateId,
-      dto,
-      userResult,
-    });
-
-    return userResult;
-  }
-
   const log = logger.child({
     templateId,
     dto,
-    user: userResult.data,
   });
 
   const validationResult = await validate($UpdateTemplateSchema, dto);
@@ -40,7 +26,7 @@ export const updateTemplate: ITemplateClient['updateTemplate'] = async (
   const updateResult = await templateRepository.update(
     templateId,
     validationResult.data,
-    userResult.data.id
+    token
   );
 
   if (updateResult.error) {

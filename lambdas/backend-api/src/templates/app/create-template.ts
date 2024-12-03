@@ -3,7 +3,6 @@ import {
   templateRepository,
   $CreateTemplateSchema,
 } from '@backend-api/templates/domain/template';
-import { userRepository } from '@backend-api/templates/domain/user';
 import { validate, logger } from '@backend-api/utils/index';
 import { success } from '@backend-api/utils/result';
 
@@ -11,19 +10,8 @@ export const createTemplate: ITemplateClient['createTemplate'] = async (
   dto,
   token
 ) => {
-  const userResult = await userRepository.getUser(token);
-
-  if (userResult.error) {
-    logger.error('User not found', {
-      userResult,
-    });
-
-    return userResult;
-  }
-
   const log = logger.child({
     dto,
-    user: userResult.data,
   });
 
   const validationResult = await validate($CreateTemplateSchema, dto);
@@ -39,7 +27,7 @@ export const createTemplate: ITemplateClient['createTemplate'] = async (
 
   const createResult = await templateRepository.create(
     validationResult.data,
-    userResult.data.id
+    token
   );
 
   if (createResult.error) {

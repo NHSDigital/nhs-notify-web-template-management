@@ -8,49 +8,19 @@ import {
   Template,
   templateRepository,
 } from '@backend-api/templates/domain/template';
-import { userRepository } from '@backend-api/templates/domain/user';
 import { createTemplate } from '@backend-api/templates/app/create-template';
 import { validate } from '@backend-api/utils/validate';
 
 jest.mock('@backend-api/templates/domain/template/template-repository');
-jest.mock('@backend-api/templates/domain/user');
 jest.mock('@backend-api/utils/validate');
 
-const getUserMock = jest.mocked(userRepository.getUser);
 const createMock = jest.mocked(templateRepository.create);
 const validateMock = jest.mocked(validate);
 
 describe('createTemplate', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return a failure result, when user token is invalid', async () => {
-    getUserMock.mockResolvedValueOnce({
-      error: {
-        code: 401,
-        message: 'Unauthorized',
-      },
-      data: undefined,
-    });
-
-    const result = await createTemplate({} as CreateTemplate, 'token');
-
-    expect(getUserMock).toHaveBeenCalledWith('token');
-
-    expect(result).toEqual({
-      error: {
-        code: 401,
-        message: 'Unauthorized',
-      },
-    });
-  });
-
   test('should return a failure result, when template data is invalid', async () => {
-    getUserMock.mockResolvedValueOnce({
-      data: {
-        id: 'pickles',
-      },
-    });
-
     validateMock.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -82,12 +52,6 @@ describe('createTemplate', () => {
       name: 'name',
       message: 'message',
     };
-
-    getUserMock.mockResolvedValueOnce({
-      data: {
-        id: 'token',
-      },
-    });
 
     validateMock.mockResolvedValueOnce({
       data,
@@ -128,12 +92,6 @@ describe('createTemplate', () => {
       updatedAt: new Date().toISOString(),
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
-
-    getUserMock.mockResolvedValueOnce({
-      data: {
-        id: 'token',
-      },
-    });
 
     validateMock.mockResolvedValueOnce({
       data: dto,

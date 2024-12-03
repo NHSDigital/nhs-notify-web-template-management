@@ -16,9 +16,9 @@ const createTemplateMock = jest.mocked(createTemplate);
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no Authorization token', async () => {
+  test('should return 400 - Invalid request when, no username in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: undefined },
+      requestContext: { authorizer: { username: undefined } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -48,7 +48,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: undefined,
     });
 
@@ -65,7 +65,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith({}, 'token');
+    expect(createTemplateMock).toHaveBeenCalledWith({}, 'username');
   });
 
   test('should return error when creating template fails', async () => {
@@ -77,7 +77,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -91,7 +91,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith({ id: 1 }, 'token');
+    expect(createTemplateMock).toHaveBeenCalledWith({ id: 1 }, 'username');
   });
 
   test('should return template', async () => {
@@ -113,7 +113,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      headers: { Authorization: 'token' },
+      requestContext: { authorizer: { username: 'username' } },
       body: JSON.stringify(create),
     });
 
@@ -124,6 +124,6 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith(create, 'token');
+    expect(createTemplateMock).toHaveBeenCalledWith(create, 'username');
   });
 });
