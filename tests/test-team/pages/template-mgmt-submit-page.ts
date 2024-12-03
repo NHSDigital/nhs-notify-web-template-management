@@ -4,6 +4,8 @@ import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
   public readonly submitButton: Locator;
 
+  public readonly goBackButton: Locator;
+
   constructor(
     page: Page,
     private readonly channelIdentifier: string
@@ -11,6 +13,9 @@ export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
     super(page);
     this.submitButton = page
       .locator('[id="submit-template-button"]')
+      .and(page.getByRole('button'));
+    this.goBackButton = page
+      .locator('[id="go-back-button"]')
       .and(page.getByRole('button'));
   }
 
@@ -22,5 +27,9 @@ export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
 
   async clickSubmitTemplateButton() {
     await this.submitButton.click();
+  }
+
+  async clickGoBackButton() {
+    await this.goBackButton.click();
   }
 }

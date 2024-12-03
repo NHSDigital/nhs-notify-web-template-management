@@ -298,7 +298,6 @@ const error404PageContent = {
 };
 
 export const submitTemplateContent = {
-  backLinkText: 'Go back',
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
   warningCalloutText:
