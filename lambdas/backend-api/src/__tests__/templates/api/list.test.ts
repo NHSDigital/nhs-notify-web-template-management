@@ -6,13 +6,15 @@ import {
   TemplateType,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/list';
-import { listTemplates } from '@backend-api/templates/app/list-templates';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
-jest.mock('@backend-api/templates/app/list-templates');
+jest.mock('@backend-api/templates/app/template-client');
 
-const listTemplatesMock = jest.mocked(listTemplates);
+const listTemplatesMock = jest.spyOn(TemplateClient.prototype, 'listTemplates');
 
 describe('Template API - List', () => {
+  beforeEach(jest.resetAllMocks);
+
   test('should return 400 - Invalid request when, no username in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { username: undefined } },
@@ -54,7 +56,9 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(listTemplatesMock).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(listTemplatesMock).toHaveBeenCalled();
   });
 
   test('should return template', async () => {
@@ -83,6 +87,8 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, items: [template] }),
     });
 
-    expect(listTemplatesMock).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(listTemplatesMock).toHaveBeenCalled();
   });
 });

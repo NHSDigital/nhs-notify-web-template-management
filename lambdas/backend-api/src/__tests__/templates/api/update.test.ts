@@ -7,11 +7,14 @@ import {
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/update';
-import { updateTemplate } from '@backend-api/templates/app/update-template';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
-jest.mock('@backend-api/templates/app/update-template');
+jest.mock('@backend-api/templates/app/template-client');
 
-const updateTemplateMock = jest.mocked(updateTemplate);
+const updateTemplateMock = jest.spyOn(
+  TemplateClient.prototype,
+  'updateTemplate'
+);
 
 describe('Template API - Update', () => {
   beforeEach(jest.resetAllMocks);
@@ -67,7 +70,9 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {}, 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {});
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {
@@ -114,11 +119,9 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith(
-      '1-2-3',
-      { name: 'name' },
-      'username'
-    );
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', { name: 'name' });
   });
 
   test('should return template', async () => {
@@ -153,10 +156,8 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(updateTemplateMock).toHaveBeenCalledWith(
-      '1-2-3',
-      update,
-      'username'
-    );
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update);
   });
 });

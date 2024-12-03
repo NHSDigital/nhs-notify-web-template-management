@@ -11,20 +11,20 @@ import {
   TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as uuidv4 } from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   Template,
   templateRepository,
 } from '@backend-api/templates/domain/template';
 
-jest.mock('uuid');
+jest.mock('node:crypto');
 
 const uuidMock = jest.mocked(uuidv4);
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
 const template: Template = {
-  id: 'real-id',
+  id: 'abc-def-ghi-jkl-123',
   owner: 'real-owner',
   name: 'name',
   message: 'message',
@@ -59,7 +59,7 @@ describe('templateRepository', () => {
 
   describe('get', () => {
     test.each([
-      { id: 'real-id', owner: 'fake-owner' },
+      { id: 'abc-def-ghi-jkl-123', owner: 'fake-owner' },
       { id: 'fake-id', owner: 'real-owner' },
     ])(
       'should return undefined when, templateId and owner does not match database record',
@@ -67,10 +67,10 @@ describe('templateRepository', () => {
         ddbMock
           .on(GetCommand, {
             TableName: 'templates',
-            Key: { id: 'real-id', owner: 'real-owner' },
+            Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
           })
           .resolves({
-            Item: { id: 'real-id', owner: 'real-owner' },
+            Item: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
           });
 
         const response = await templateRepository.get(id, owner);
@@ -87,7 +87,10 @@ describe('templateRepository', () => {
     test('should error when unexpected error occurs', async () => {
       ddbMock.on(GetCommand).rejects(new Error('InternalServerError'));
 
-      const response = await templateRepository.get('real-id', 'real-owner');
+      const response = await templateRepository.get(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
 
       expect(response).toEqual({
         error: {
@@ -102,13 +105,16 @@ describe('templateRepository', () => {
       ddbMock
         .on(GetCommand, {
           TableName: 'templates',
-          Key: { id: 'real-id', owner: 'real-owner' },
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
           Item: template,
         });
 
-      const response = await templateRepository.get('real-id', 'real-owner');
+      const response = await templateRepository.get(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
 
       expect(response).toEqual({
         data: template,
@@ -180,7 +186,7 @@ describe('templateRepository', () => {
 
   describe('create', () => {
     test('should return error when, unexpected error occurs', async () => {
-      uuidMock.mockReturnValue('real-id');
+      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
       ddbMock.on(PutCommand).rejects(new Error('InternalServerError'));
 
@@ -204,7 +210,7 @@ describe('templateRepository', () => {
     });
 
     test('should return error when, ConsumedCapacity is 0', async () => {
-      uuidMock.mockReturnValue('real-id');
+      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
       ddbMock
         .on(PutCommand, {
@@ -239,7 +245,7 @@ describe('templateRepository', () => {
     });
 
     test('should create template', async () => {
-      uuidMock.mockReturnValue('real-id');
+      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
       ddbMock
         .on(PutCommand, {
@@ -313,7 +319,7 @@ describe('templateRepository', () => {
         ddbMock.on(UpdateCommand).rejects(error);
 
         const response = await templateRepository.update(
-          'real-id',
+          'abc-def-ghi-jkl-123',
           {
             name: 'name',
             message: 'message',
@@ -341,7 +347,7 @@ describe('templateRepository', () => {
       ddbMock.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
-        'real-id',
+        'abc-def-ghi-jkl-123',
         {
           name: 'name',
           message: 'message',
@@ -373,7 +379,7 @@ describe('templateRepository', () => {
       ddbMock
         .on(UpdateCommand, {
           TableName: 'templates',
-          Key: { id: 'real-id', owner: 'real-owner' },
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
           Attributes: {
@@ -383,7 +389,7 @@ describe('templateRepository', () => {
         });
 
       const response = await templateRepository.update(
-        'real-id',
+        'abc-def-ghi-jkl-123',
         updatedTemplate,
         'real-owner'
       );

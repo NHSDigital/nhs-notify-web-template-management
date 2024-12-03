@@ -6,11 +6,11 @@ import {
   TemplateType,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/get';
-import { getTemplate } from '@backend-api/templates/app/get-template';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
-jest.mock('@backend-api/templates/app/get-template');
+jest.mock('@backend-api/templates/app/template-client');
 
-const getTemplateMock = jest.mocked(getTemplate);
+const getTemplateMock = jest.spyOn(TemplateClient.prototype, 'getTemplate');
 
 describe('Template API - Get', () => {
   beforeEach(jest.resetAllMocks);
@@ -76,7 +76,8 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(getTemplateMock).toHaveBeenCalledWith('1', 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 
   test('should return template', async () => {
@@ -106,6 +107,7 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(getTemplateMock).toHaveBeenCalledWith('1', 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 });

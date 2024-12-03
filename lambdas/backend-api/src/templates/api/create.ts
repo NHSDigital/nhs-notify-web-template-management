@@ -1,5 +1,5 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { createTemplate } from '@backend-api/templates/app/create-template';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { apiFailure, apiSuccess } from './responses';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
@@ -11,7 +11,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return apiFailure(400, 'Invalid request');
   }
 
-  const { data, error } = await createTemplate(dto, username);
+  const client = new TemplateClient(username);
+
+  const { data, error } = await client.createTemplate(dto);
 
   if (error) {
     return apiFailure(error.code, error.message, error.details);

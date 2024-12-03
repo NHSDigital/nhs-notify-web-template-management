@@ -16,7 +16,7 @@ import {
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as uuidv4 } from 'node:crypto';
 import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 import { Template } from './template';
 

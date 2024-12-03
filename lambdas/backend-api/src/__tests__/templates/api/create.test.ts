@@ -7,11 +7,11 @@ import {
   CreateTemplate,
 } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/create';
-import { createTemplate } from '@backend-api/templates/app/create-template';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
-jest.mock('@backend-api/templates/app/create-template');
+jest.mock('@backend-api/templates/app/template-client');
 
-const createTemplateMock = jest.mocked(createTemplate);
+const createMock = jest.spyOn(TemplateClient.prototype, 'createTemplate');
 
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
@@ -32,11 +32,11 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createTemplateMock).not.toHaveBeenCalled();
+    expect(createMock).not.toHaveBeenCalled();
   });
 
   test('should return 400 - Invalid request when, no body', async () => {
-    createTemplateMock.mockResolvedValueOnce({
+    createMock.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Validation failed',
@@ -65,11 +65,13 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith({}, 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(createMock).toHaveBeenCalledWith({});
   });
 
   test('should return error when creating template fails', async () => {
-    createTemplateMock.mockResolvedValueOnce({
+    createMock.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -91,7 +93,9 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith({ id: 1 }, 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(createMock).toHaveBeenCalledWith({ id: 1 });
   });
 
   test('should return template', async () => {
@@ -108,7 +112,7 @@ describe('Template API - Create', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    createTemplateMock.mockResolvedValueOnce({
+    createMock.mockResolvedValueOnce({
       data: response,
     });
 
@@ -124,6 +128,8 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(createTemplateMock).toHaveBeenCalledWith(create, 'username');
+    expect(TemplateClient).toHaveBeenCalledWith('username');
+
+    expect(createMock).toHaveBeenCalledWith(create);
   });
 });

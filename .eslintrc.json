@@ -74,7 +74,8 @@
     "prefer-regex-literals": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+    "no-empty-constructor": "off",
+    "no-empty-function": "off"
   },
   "overrides": [
     {

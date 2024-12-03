@@ -66,6 +66,9 @@ const allowPolicy = {
       },
     ],
   },
+  context: {
+    username: 'username',
+  },
 };
 
 const denyPolicy = {
@@ -175,6 +178,7 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
       token_use: 'access',
       client_id: 'user-pool-client-id-2',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      username: 'username',
     },
     'key',
     {
@@ -204,6 +208,7 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-2',
+      username: 'username',
     },
     'key',
     {
@@ -236,6 +241,7 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
       token_use: 'id',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      username: 'username',
     },
     'key',
     {
@@ -267,6 +273,7 @@ test('returns Deny policy on Cognito not validating the token', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-error',
+      username: 'username',
     },
     'key',
     {
@@ -298,6 +305,7 @@ test('returns Allow policy on valid token', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      username: 'username',
     },
     'key',
     {
@@ -327,6 +335,7 @@ test('returns Deny policy on expired token', async () => {
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
       exp: 1_640_995_200,
+      username: 'username',
     },
     'key',
     {
