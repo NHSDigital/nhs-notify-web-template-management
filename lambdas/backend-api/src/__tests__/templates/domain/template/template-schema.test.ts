@@ -139,7 +139,8 @@ describe('Template schemas', () => {
           code: 400,
           message: `Request failed validation`,
           details: {
-            message: String.raw`NHS App template message contains disallowed characters. Disallowed characters: /<(.|\n)*?>/gi`,
+            message:
+              'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
           },
         }),
       });

@@ -5,10 +5,10 @@ module "get_template_lambda" {
   description = "Get template API endpoint"
 
   function_name    = "${local.csi}-get-template"
-  filename         = module.build_template_lambda.output_path
-  source_code_hash = module.build_template_lambda.base64sha256
+  filename         = module.build_template_lambda.zips[var.template_api_entrypoints.get_template].path
+  source_code_hash = module.build_template_lambda.zips[var.template_api_entrypoints.get_template].base64sha256
   runtime          = "nodejs20.x"
-  handler          = "index.get"
+  handler          = "get.handler"
 
   log_retention_in_days = var.log_retention_in_days
 

@@ -61,3 +61,18 @@ variable "cognito_config" {
   description = "Cognito config"
 }
 
+variable "template_api_entrypoints" {
+  type = object({
+    create_template = string
+    get_template = string
+    update_template = string
+    template_client = string
+  })
+  description = "Entrypoint filenames (relative to source_code_dir)"
+  default = {
+    create_template  = "src/templates/api/create.ts"
+    get_template     = "src/templates/api/get.ts"
+    update_template  = "src/templates/api/update.ts"
+    template_client  = "src/index.ts"
+  }
+}

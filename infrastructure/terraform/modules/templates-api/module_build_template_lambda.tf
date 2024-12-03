@@ -3,9 +3,9 @@ module "build_template_lambda" {
 
   source_code_dir = "${local.lambdas_source_code_dir}/backend-api"
   entrypoints     = [
-    "src/templates/api/create.ts",
-    "src/templates/api/get.ts",
-    "src/templates/api/update.ts"
+    var.template_api_entrypoints.create_template,
+    var.template_api_entrypoints.get_template,
+    var.template_api_entrypoints.update_template
   ]
 }
 
@@ -13,5 +13,5 @@ module "build_template_client" {
   source = "../typescript-build-zip"
 
   source_code_dir = "${local.lambdas_source_code_dir}/backend-client"
-  entrypoints      = ["src/index.ts"]
+  entrypoints      = [var.template_api_entrypoints.template_client]
 }

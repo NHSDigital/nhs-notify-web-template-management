@@ -36,8 +36,9 @@ export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
       .string()
       .min(1)
       .max(MAX_NHS_APP_CHARACTER_LENGTH)
-      .refine((s) => !NHS_APP_DISALLOWED_CHARACTERS.test(s), {
-        message: `NHS App template message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      .refine((s) => !new RegExp(NHS_APP_DISALLOWED_CHARACTERS, 'gi').test(s), {
+        message: `Message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
       }),
   })
 );
