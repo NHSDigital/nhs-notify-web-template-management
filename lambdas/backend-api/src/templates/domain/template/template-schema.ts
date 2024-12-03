@@ -10,7 +10,6 @@ import {
   MAX_SMS_CHARACTER_LENGTH,
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,
-  MAX_LETTER_CHARACTER_LENGTH,
   NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
 
@@ -51,13 +50,6 @@ export const $EmailTemplate = schemaFor<CreateTemplate>()(
   })
 );
 
-export const $LetterTemplate = schemaFor<CreateTemplate>()(
-  $Template.extend({
-    templateType: z.literal(TemplateType.LETTER),
-    message: z.string().max(MAX_LETTER_CHARACTER_LENGTH).min(1),
-  })
-);
-
 const $UpdateFields = {
   templateStatus: z.nativeEnum(TemplateStatus),
 };
@@ -66,7 +58,6 @@ export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
   $SMSTemplate,
   $NhsAppTemplate,
   $EmailTemplate,
-  $LetterTemplate,
 ]);
 
 export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
@@ -74,6 +65,5 @@ export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
     $SMSTemplate.extend($UpdateFields),
     $NhsAppTemplate.extend($UpdateFields),
     $EmailTemplate.extend($UpdateFields),
-    $LetterTemplate.extend($UpdateFields),
   ])
 );

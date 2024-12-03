@@ -277,15 +277,15 @@ describe('templateRepository', () => {
       },
       {
         testName:
-          'Fails when user tries to change templateType from LETTER to EMAIL',
+          'Fails when user tries to change templateType from SMS to EMAIL',
         Item: {
-          templateType: { S: TemplateType.LETTER },
+          templateType: { S: TemplateType.SMS },
           templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
         },
         code: 400,
         message: 'Can not change template templateType',
         details: {
-          templateType: 'Expected LETTER but got EMAIL',
+          templateType: 'Expected SMS but got EMAIL',
         },
       },
       {

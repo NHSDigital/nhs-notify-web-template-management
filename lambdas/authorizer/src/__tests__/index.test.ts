@@ -111,6 +111,20 @@ test('returns Deny policy on lambda misconfiguration', async () => {
   expect(errorMock).toHaveBeenCalledWith('Lambda misconfiguration');
 });
 
+test('returns Deny policy if no Authorization token in header', async () => {
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: undefined },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});
+
 test('returns Deny policy on malformed token', async () => {
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({

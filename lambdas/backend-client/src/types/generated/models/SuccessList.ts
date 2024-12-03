@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { TemplateDTO } from './TemplateDTO';
 export type SuccessList = {
-  items: Array<TemplateDTO>;
-  statusCode: number;
+    items: Array<TemplateDTO>;
+    statusCode: number;
 };
+

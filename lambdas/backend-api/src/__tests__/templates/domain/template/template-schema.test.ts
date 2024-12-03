@@ -3,7 +3,6 @@ import { validate } from '@backend-api/utils/validate';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  $LetterTemplate,
   $EmailTemplate,
   $SMSTemplate,
   $NhsAppTemplate,
@@ -11,14 +10,6 @@ import {
 
 describe('Template schemas', () => {
   test.each([
-    {
-      schema: $LetterTemplate,
-      data: {
-        name: 'Test Template',
-        message: 'This is a test template',
-        templateType: TemplateType.LETTER,
-      },
-    },
     {
       schema: $EmailTemplate,
       data: {
@@ -53,14 +44,6 @@ describe('Template schemas', () => {
   });
 
   test.each([
-    {
-      schema: $LetterTemplate,
-      data: {
-        name: 'Test Template',
-        message: 'a'.repeat(15_001),
-        templateType: TemplateType.LETTER,
-      },
-    },
     {
       schema: $EmailTemplate,
       data: {
@@ -161,10 +144,6 @@ describe('Template schemas', () => {
       },
       {
         ...commonFields,
-        templateType: TemplateType.LETTER,
-      },
-      {
-        ...commonFields,
         templateType: TemplateType.SMS,
       },
       {
@@ -192,10 +171,6 @@ describe('Template schemas', () => {
         ...commonFields,
         subject: 'Test Subject',
         templateType: TemplateType.EMAIL,
-      },
-      {
-        ...commonFields,
-        templateType: TemplateType.LETTER,
       },
       {
         ...commonFields,
