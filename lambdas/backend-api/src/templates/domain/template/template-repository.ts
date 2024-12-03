@@ -168,16 +168,22 @@ const update = async (
       if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          `Can not update template due to templateStatus being ${error.Item.templateStatus.S}`,
-          error
+          'Can not update template',
+          error,
+          {
+            templateStatus: `Expected ${TemplateStatus.NOT_YET_SUBMITTED} but got ${error.Item.templateStatus.S}`,
+          }
         );
       }
 
       if (error.Item.templateType.S !== template.templateType) {
         return failure(
           ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
-          `Can not change template templateType. Expected ${error.Item.templateType.S} but got ${template.templateType}`,
-          error
+          'Can not change template templateType',
+          error,
+          {
+            templateType: `Expected ${error.Item.templateType.S} but got ${template.templateType}`,
+          }
         );
       }
     }

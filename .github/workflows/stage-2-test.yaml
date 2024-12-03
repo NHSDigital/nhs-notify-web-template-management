@@ -52,6 +52,8 @@ jobs:
         run: |
           npm ci
           (cd lambdas/authorizer && npm ci)
+          (cd lambdas/backend-client && npm ci)
+          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -82,6 +84,8 @@ jobs:
           npm ci
           npm ci tests/test-team
           (cd lambdas/authorizer && npm ci)
+          (cd lambdas/backend-client && npm ci)
+          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies
@@ -100,6 +104,8 @@ jobs:
           npm ci
           npm ci tests/test-team
           (cd lambdas/authorizer && npm ci)
+          (cd lambdas/backend-client && npm ci)
+          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies

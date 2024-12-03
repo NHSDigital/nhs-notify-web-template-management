@@ -213,26 +213,34 @@ describe('templateRepository', () => {
         message: 'Template not found',
       },
       {
+        testName:
+          'Fails when user tries to change templateType from LETTER to EMAIL',
         Item: {
           templateType: { S: TemplateType.LETTER },
           templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
         },
         code: 400,
-        message:
-          'Can not change template templateType. Expected LETTER but got EMAIL',
+        message: 'Can not change template templateType',
+        details: {
+          templateType: 'Expected LETTER but got EMAIL',
+        },
       },
       {
+        testName:
+          'Fails when user tries to update template when templateStatus is SUBMITTED',
         Item: {
           templateType: { S: TemplateType.EMAIL },
           templateStatus: { S: TemplateStatus.SUBMITTED },
         },
         code: 400,
-        message:
-          'Can not update template due to templateStatus being SUBMITTED',
+        message: 'Can not update template',
+        details: {
+          templateStatus: 'Expected NOT_YET_SUBMITTED but got SUBMITTED',
+        },
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
-      async ({ Item, code, message }) => {
+      async ({ Item, code, message, details }) => {
         const error = new ConditionalCheckFailedException({
           message: 'mocked',
           $metadata: { httpStatusCode: 400 },
@@ -247,7 +255,7 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+            templateStatus: TemplateStatus.SUBMITTED,
             templateType: TemplateType.EMAIL,
           },
           'real-owner'
@@ -258,6 +266,7 @@ describe('templateRepository', () => {
             code,
             message,
             actualError: error,
+            details,
           },
         });
       }
