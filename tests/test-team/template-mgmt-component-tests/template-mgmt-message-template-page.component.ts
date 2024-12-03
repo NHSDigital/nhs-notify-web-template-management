@@ -8,33 +8,32 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/template-factory';
-import { TemplateType } from '../helpers/types';
+import { TemplateStatus, TemplateType } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 
 const templates = {
   email: TemplateFactory.create({
-    type: TemplateType.EMAIL,
     id: 'valid-email-template',
+    version: 1,
     name: 'test-template-cat-email',
-    fields: {
-      content: 'test example content',
-    },
+    message: 'test example message',
+    subject: 'test example subject',
+    templateType: TemplateType.EMAIL,
+    templateStatus: TemplateStatus.SUBMITTED,
   }),
   'text-message': TemplateFactory.create({
-    type: TemplateType.SMS,
     id: 'valid-sms-template',
     name: 'test-template-mat-sms',
-    fields: {
-      content: 'test example content',
-    },
+    message: 'test example message',
+    templateType: TemplateType.SMS,
+    templateStatus: TemplateStatus.SUBMITTED,
   }),
   'nhs-app': TemplateFactory.create({
-    type: TemplateType.NHS_APP,
     id: 'valid-nhs-app-template',
     name: 'test-template-hat-nhs-app',
-    fields: {
-      content: 'test example content',
-    },
+    message: 'test example message',
+    templateType: TemplateType.NHS_APP,
+    templateStatus: TemplateStatus.SUBMITTED,
   }),
 };
 
@@ -51,18 +50,6 @@ test.describe('Message templates page', () => {
     await templateStorageHelper.deleteTemplateData();
   });
 
-  test('should navigate to the Message templates page', async ({
-    page,
-    baseURL,
-  }) => {
-    const messageTemplatePage = new MessageTemplatePage(page);
-    await messageTemplatePage.loadPage();
-    await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    expect(await messageTemplatePage.pageHeader.textContent()).toBe(
-      'Message templates'
-    );
-  });
-
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new MessageTemplatePage(page),
@@ -76,20 +63,19 @@ test.describe('Message templates page', () => {
     await assertGoBackLinkNotPresent(props);
   });
 
-  test('should navigate to "choose template" page when create template button is clicked', async ({
+  test('should navigate to the Message templates page', async ({
     page,
     baseURL,
   }) => {
     const messageTemplatePage = new MessageTemplatePage(page);
     await messageTemplatePage.loadPage();
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    await messageTemplatePage.clickContinueButton();
-    const chooseTemplatePage = await page.waitForSelector('h1');
-    const headerText = await chooseTemplatePage.textContent();
-    await expect(headerText).toContain('Choose a template type to create');
+    await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
+    expect(await messageTemplatePage.pageHeader.textContent()).toBe(
+      'Message templates'
+    );
+    expect(await messageTemplatePage.createTemplateButton).toBeVisible();
   });
 
-  // to be updated:
   test('Template item has correct status if it has been has been submitted', async ({
     page,
     baseURL,
@@ -109,6 +95,23 @@ test.describe('Message templates page', () => {
       'tr:has-text("test-template-hat-nhs-app")'
     );
     await expect(await nhsapp.getByText('Submitted')).toBeVisible();
+  });
+
+  test('should navigate to "choose template" page when create template button is clicked', async ({
+    page,
+    baseURL,
+  }) => {
+    const messageTemplatePage = new MessageTemplatePage(page);
+    await messageTemplatePage.loadPage();
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(await messageTemplatePage.pageHeader.textContent()).toBe(
+      'Message templates'
+    );
+    expect(await messageTemplatePage.createTemplateButton).toBeVisible();
+    await messageTemplatePage.clickCreateTemplateButton();
+    const chooseTemplatePage = await page.waitForSelector('h1');
+    const headerText = await chooseTemplatePage.textContent();
+    await expect(headerText).toContain('Choose a template type to create');
   });
 
   // test placeholders:
