@@ -18,7 +18,8 @@ data "aws_iam_policy_document" "github_deploy" {
       "amplify:*",
       "cloudformation:*",
       "ses:*",
-      "appsync:*"
+      "appsync:*",
+      "cognito-idp:*"
     ]
     resources = ["*"]
   }

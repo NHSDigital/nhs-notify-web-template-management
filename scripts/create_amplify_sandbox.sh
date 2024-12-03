@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-echo "Creating sandbox"
+echo "Creating Amplify sandbox"
 
 if [[ ! -f amplify_outputs.json ]]; then
     echo "{}" >> amplify_outputs.json
