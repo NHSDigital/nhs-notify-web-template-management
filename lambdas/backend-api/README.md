@@ -62,4 +62,3 @@ curl --location 'https://<apig_id>.execute-api.eu-west-2.amazonaws.com/main/v1/t
   "subject": "<string>"
 }'
 ```
-
