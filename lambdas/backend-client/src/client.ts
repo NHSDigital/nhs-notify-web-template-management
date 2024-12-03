@@ -4,37 +4,23 @@ import {
   CreateTemplate,
   Failure,
   Success,
-  TemplateDTO,
+  SuccessList,
   UpdateTemplate,
 } from './types/generated';
-import { Result } from './types/result';
 
-type ApiResponse = Failure | Success;
+type ApiResponse = Failure | Success | SuccessList;
 
 const client = axios.create({
   baseURL: process.env.TEMPLATE_API_URL,
 });
 
-function map(
-  successCode: 200 | 201,
-  response: ApiResponse
-): Result<TemplateDTO> {
-  if (response.statusCode === successCode) {
-    const success = response as Success;
-    return {
-      data: success.template,
-    };
-  }
-
-  const failure = response as Failure;
-  return {
-    error: {
-      code: failure.statusCode,
-      message: failure.technicalMessage,
-      details: failure.details,
-    },
-  };
-}
+const failure = (data: Failure) => ({
+  error: {
+    code: data.statusCode,
+    message: data.technicalMessage,
+    details: data.details,
+  },
+});
 
 export const templateClient: ITemplateClient = {
   createTemplate: async (template: CreateTemplate, token: string) => {
@@ -43,7 +29,15 @@ export const templateClient: ITemplateClient = {
         Authorization: token,
       },
     });
-    return map(201, response.data);
+
+    if (response.data.statusCode !== 201) {
+      return failure(response.data as Failure);
+    }
+
+    return {
+      statusCode: response.data.statusCode,
+      data: (response.data as Success).template,
+    };
   },
   updateTemplate: async (
     templateId: string,
@@ -59,7 +53,15 @@ export const templateClient: ITemplateClient = {
         },
       }
     );
-    return map(200, response.data);
+
+    if (response.data.statusCode !== 200) {
+      return failure(response.data as Failure);
+    }
+
+    return {
+      statusCode: response.data.statusCode,
+      data: (response.data as Success).template,
+    };
   },
   getTemplate: async (templateId: string, token: string) => {
     const response = await client.get<ApiResponse>(
@@ -70,6 +72,30 @@ export const templateClient: ITemplateClient = {
         },
       }
     );
-    return map(200, response.data);
+
+    if (response.data.statusCode !== 200) {
+      return failure(response.data as Failure);
+    }
+
+    return {
+      statusCode: response.data.statusCode,
+      data: (response.data as Success).template,
+    };
+  },
+  listTemplates: async (token: string) => {
+    const response = await client.get<ApiResponse>('/v1/templates', {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (response.data.statusCode !== 200) {
+      return failure(response.data as Failure);
+    }
+
+    return {
+      statusCode: response.data.statusCode,
+      data: (response.data as SuccessList).items,
+    };
   },
 };
