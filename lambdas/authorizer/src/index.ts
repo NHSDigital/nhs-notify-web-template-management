@@ -1,5 +1,3 @@
-// eslint-disable no-console
-
 import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
 import { z } from 'zod';
 import {

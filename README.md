@@ -56,17 +56,31 @@
    npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
    ```
 
-4. Then in a separate terminal, run the app locally:
+4. To create a Terraform backend sandbox, run:
+
+   ```shell
+   npm run create-backend-sandbox <environment-name>
+   ```
+
+5. Then in a separate terminal, run the app locally:
 
    ```shell
    npm run dev
    ```
 
-5. Open your browser and go to `localhost:3000` to view the app.
+6. Open your browser and go to `localhost:3000` to view the app.
 
-### Running Team and IAM Web Auth projects locally
+7. To destroy an Amplify sandbox, run:
 
-Read more in the [README.md](./local/README.md).
+   ```shell
+   npm run destroy-sandbox -- --profile <the name of the AWS config profile for the account you are authenticated with>
+   ```
+
+8. To destroy a Terraform backend sandbox, run:
+
+   ```shell
+   npm run destroy-backend-sandbox <environment-name>
+   ```
 
 ### Other commands
 
@@ -74,6 +88,10 @@ Read more in the [README.md](./local/README.md).
 - Accessibility test `npm run test:accessibility`
 
 You can find more commands in the `package.json` file
+
+### Running Team and IAM Web Auth projects locally
+
+Read more in the [README.md](./local/README.md).
 
 ### Project structure
 
