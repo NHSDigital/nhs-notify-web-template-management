@@ -18,7 +18,7 @@ describe('getTemplate', () => {
   test('should return a failure result, when user token is invalid', async () => {
     getUserMock.mockResolvedValueOnce({
       error: {
-        code: 403,
+        code: 401,
         message: 'Unauthorized',
       },
       data: undefined,
@@ -30,7 +30,7 @@ describe('getTemplate', () => {
 
     expect(result).toEqual({
       error: {
-        code: 403,
+        code: 401,
         message: 'Unauthorized',
       },
     });

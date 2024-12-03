@@ -25,31 +25,31 @@ describe('userRepository', () => {
 
     expect(response).toEqual({
       error: {
-        code: 403,
+        code: 401,
         message:
-          'User token is either null or does not contain a valid client_id',
+          'User token is either null or does not contain a valid username',
       },
     });
   });
 
   test('should return user', async () => {
-    decodeMock.mockReturnValueOnce({ client_id: 'client-id' });
+    decodeMock.mockReturnValueOnce({ username: 'username' });
 
     validateMock.mockResolvedValue({
       data: {
-        client_id: 'client-id',
+        username: 'username',
       },
     });
 
     const response = await userRepository.getUser('token');
 
     expect(validateMock).toHaveBeenCalledWith($User, {
-      client_id: 'client-id',
+      username: 'username',
     });
 
     expect(response).toEqual({
       data: {
-        id: 'client-id',
+        id: 'username',
       },
     });
   });

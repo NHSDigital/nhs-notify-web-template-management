@@ -17,12 +17,12 @@ const getUser = async (token: string): Promise<ApplicationResult<User>> => {
   if (error) {
     return failure(
       ErrorCase.UNAUTHORIZED,
-      'User token is either null or does not contain a valid client_id',
+      'User token is either null or does not contain a valid username',
       error.actualError
     );
   }
 
-  return success({ id: data.client_id });
+  return success({ id: data.username });
 };
 
 export const userRepository = {
