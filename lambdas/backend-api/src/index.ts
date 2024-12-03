@@ -26,8 +26,3 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     body: JSON.stringify({}),
   };
 };
-
-// Remove this after CCM-7409
-export { handler as get } from '@backend-api/templates/api/get';
-export { handler as update } from '@backend-api/templates/api/update';
-export { handler as create } from '@backend-api/templates/api/create';
