@@ -35,7 +35,7 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage(templateId: string) {
+  async loadPage(templateId?: string) {
     await this.navigateTo(
       templateId
         ? `/templates/edit-text-message-template/${templateId}`

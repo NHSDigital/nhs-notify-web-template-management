@@ -224,7 +224,7 @@ test.describe('Create NHS App Template Page', () => {
   ];
 
   for (const section of detailsSections) {
-    test(`personalisation mark expanding fields for ${section}`, async ({
+    test(`when user clicks ${section} tool tip, then tool tip is displayed ${section}`, async ({
       page,
       baseURL,
     }) => {
@@ -241,6 +241,40 @@ test.describe('Create NHS App Template Page', () => {
       await page.locator(`${section} > summary`).click();
       await expect(page.locator(section)).not.toHaveAttribute('open');
       await expect(page.locator(`${section} > div`)).toBeHidden();
+    });
+  }
+
+  const moreInfoLinks = [
+    {
+      name: 'NHS App messages (opens in a new tab)',
+      url: 'features/nhs-app-messages',
+    },
+    {
+      name: 'Delivery times (opens in a new tab)',
+      url: 'using-nhs-notify/delivery-times',
+    },
+    {
+      name: 'Sender IDs (opens in a new tab)',
+      url: 'using-nhs-notify/tell-recipients-who-your-messages-are-from',
+    },
+  ];
+
+  for (const { name, url } of moreInfoLinks) {
+    test(`more info link: ${name}, navigates to correct page in new tab`, async ({
+      page,
+      baseURL,
+    }) => {
+      const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
+
+      await createTemplatePage.loadPage();
+
+      const newTabPromise = page.waitForEvent('popup');
+
+      await page.getByRole('link', { name }).click();
+
+      const newTab = await newTabPromise;
+
+      await expect(newTab).toHaveURL(`${baseURL}/${url}`);
     });
   }
 

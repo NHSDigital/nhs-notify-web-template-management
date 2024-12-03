@@ -397,6 +397,48 @@ exports[`renders page 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about NHS App messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/features/nhs-app-messages"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS App messages (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/delivery-times"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -841,6 +883,48 @@ exports[`renders page one error 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about NHS App messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/features/nhs-app-messages"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS App messages (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/delivery-times"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -1299,6 +1383,48 @@ exports[`renders page with multiple errors 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about NHS App messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/features/nhs-app-messages"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS App messages (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/delivery-times"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>
@@ -1701,6 +1827,48 @@ exports[`renders page with preloaded field values 1`] = `
           </code>
         </div>
       </details>
+      <h2
+        class="nhsuk-heading-m"
+      >
+        More about NHS App messages
+      </h2>
+      <ul
+        style="list-style-type: none; padding: 0px;"
+      >
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/features/nhs-app-messages"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            NHS App messages (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Sender IDs (opens in a new tab)
+          </a>
+        </li>
+        <li
+          class="nhsuk-u-margin-bottom-3"
+        >
+          <a
+            href="/using-nhs-notify/delivery-times"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Delivery times (opens in a new tab)
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </DocumentFragment>

@@ -13,8 +13,15 @@ export const ChooseTemplate = () => {
   const initialState: FormState = {};
   const [state, action] = useFormState(chooseTemplateAction, initialState);
 
-  const { pageHeading, errorHeading, options, buttonText, hint } =
-    chooseTemplatePageContent;
+  const {
+    pageHeading,
+    errorHeading,
+    options,
+    buttonText,
+    hint,
+    learnMoreLink,
+    learnMoreText,
+  } = chooseTemplatePageContent;
 
   return (
     <>
@@ -28,6 +35,8 @@ export const ChooseTemplate = () => {
         options={options}
         buttonText={buttonText}
         hint={hint}
+        learnMoreLink={learnMoreLink}
+        learnMoreText={learnMoreText}
       />
     </>
   );
