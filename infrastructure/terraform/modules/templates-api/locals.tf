@@ -10,5 +10,6 @@ locals {
     CREATE_LAMBDA_ARN       = module.create_template_lambda.function_arn
     UPDATE_LAMBDA_ARN       = module.update_template_lambda.function_arn
     GET_LAMBDA_ARN          = module.get_template_lambda.function_arn
+    LIST_LAMBDA_ARN         = module.list_template_lambda.function_arn
   })
 }

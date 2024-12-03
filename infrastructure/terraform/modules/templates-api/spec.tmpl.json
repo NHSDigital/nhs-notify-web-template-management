@@ -209,6 +209,60 @@
           "type": "AWS_PROXY"
         }
       }
+    },
+    "/v1/templates": {
+      "get": {
+        "summary": "List all templates",
+        "description": "List all templates",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
     }
   },
   "components": {
@@ -222,7 +276,7 @@
           "type": "request",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
           "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "identitySource" : "method.request.header.authorization,context.resourceId,context.httpMethod",
+          "identitySource": "method.request.header.authorization,context.resourceId,context.httpMethod",
           "authorizerResultTtlInSeconds": 300
         }
       }
@@ -343,6 +397,24 @@
         "properties": {
           "template": {
             "$ref": "#/components/schemas/TemplateDTO"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        }
+      },
+      "SuccessList": {
+        "type": "object",
+        "required": [
+          "items",
+          "statusCode"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateDTO"
+            }
           },
           "statusCode": {
             "type": "integer"

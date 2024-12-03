@@ -2,6 +2,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  QueryCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
@@ -111,6 +112,68 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         data: template,
+      });
+    });
+  });
+
+  describe('list', () => {
+    test('should return undefined when, owner does not match database record', async () => {
+      ddbMock
+        .on(QueryCommand, {
+          TableName: 'templates',
+          KeyConditionExpression: '#owner = :owner',
+          ExpressionAttributeNames: {
+            '#owner': 'owner',
+          },
+          ExpressionAttributeValues: {
+            ':owner': 'real-owner',
+          },
+        })
+        .resolves({
+          Items: [{ owner: 'real-owner' }],
+        });
+
+      const response = await templateRepository.list('fake-owner');
+
+      expect(response).toEqual({
+        data: [],
+      });
+    });
+
+    test('should error when unexpected error occurs', async () => {
+      ddbMock.on(QueryCommand).rejects(new Error('InternalServerError'));
+
+      const response = await templateRepository.list('real-owner');
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to list templates',
+          actualError: new Error('InternalServerError'),
+        },
+      });
+    });
+
+    test('should return templates', async () => {
+      ddbMock
+        .on(QueryCommand, {
+          TableName: 'templates',
+          KeyConditionExpression: '#owner = :owner',
+          ExpressionAttributeNames: {
+            '#owner': 'owner',
+          },
+          ExpressionAttributeValues: {
+            ':owner': 'real-owner',
+          },
+        })
+        .resolves({
+          Items: [template],
+        });
+
+      const response = await templateRepository.list('real-owner');
+
+      expect(response).toEqual({
+        data: [template],
       });
     });
   });

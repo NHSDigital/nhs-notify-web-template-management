@@ -14,4 +14,6 @@ export interface ITemplateClient {
   ): Promise<Result<TemplateDTO>>;
 
   getTemplate(templateId: string, token: string): Promise<Result<TemplateDTO>>;
+
+  listTemplates(token: string): Promise<Result<TemplateDTO[]>>;
 }

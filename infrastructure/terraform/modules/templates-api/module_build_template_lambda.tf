@@ -5,7 +5,8 @@ module "build_template_lambda" {
   entrypoints     = [
     var.template_api_entrypoints.create_template,
     var.template_api_entrypoints.get_template,
-    var.template_api_entrypoints.update_template
+    var.template_api_entrypoints.update_template,
+    var.template_api_entrypoints.list_template,
   ]
 }
 

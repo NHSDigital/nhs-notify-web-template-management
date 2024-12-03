@@ -12,6 +12,7 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
+  QueryCommand,
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
@@ -196,8 +197,35 @@ const update = async (
   }
 };
 
+const list = async (owner: string): Promise<ApplicationResult<Template[]>> => {
+  try {
+    const response = await client.send(
+      new QueryCommand({
+        TableName: process.env.TEMPLATES_TABLE_NAME,
+        KeyConditionExpression: '#owner = :owner',
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+        },
+        ExpressionAttributeValues: {
+          ':owner': owner,
+        },
+        Limit: 50,
+      })
+    );
+    const items = (response?.Items as Template[]) || [];
+
+    return success(items);
+  } catch (error) {
+    return failure(
+      ErrorCase.DATABASE_FAILURE,
+      'Failed to list templates',
+      error
+    );
+  }
+};
 export const templateRepository = {
   get,
   create,
   update,
+  list,
 };

@@ -6,6 +6,7 @@
 export type { CreateTemplate } from './models/CreateTemplate';
 export type { Failure } from './models/Failure';
 export type { Success } from './models/Success';
+export type { SuccessList } from './models/SuccessList';
 export type { TemplateDTO } from './models/TemplateDTO';
 export { TemplateStatus } from './models/TemplateStatus';
 export { TemplateType } from './models/TemplateType';
