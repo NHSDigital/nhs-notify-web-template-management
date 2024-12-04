@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-page';
 import { TemplateFactory } from '../helpers/template-factory';
+import { Template, TemplateType, TemplateStatus } from '../helpers/types';
 import {
   assertFooterLinks,
-  assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-import { Template, TemplateType, TemplateStatus } from '../helpers/types';
+import { assertGoBackButton } from './template-mgmt-submit-common.steps';
 
 const emailFields = {
   name: 'test-template-name',
@@ -157,7 +157,7 @@ test.describe('Submit template Page', () => {
         await assertNotifyBannerLink(props);
         await assertLoginLink(props);
         await assertFooterLinks(props);
-        await assertGoBackLink({
+        await assertGoBackButton({
           ...props,
           expectedUrl: `templates/preview-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`,
         });
