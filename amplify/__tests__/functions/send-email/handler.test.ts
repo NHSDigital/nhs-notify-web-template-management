@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { mockDeep } from 'jest-mock-extended';
 import { SendRawEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
 import { handler, emailTemplate } from '../../../functions/send-email';
