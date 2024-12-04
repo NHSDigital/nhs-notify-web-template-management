@@ -10,7 +10,7 @@
     ],
     "scripts": {
         "create-sandbox": "pm2 start npx -- ampx sandbox",
-        "destroy-sandbox": "npx ampx sandbox delete --y", 
+        "destroy-sandbox": "npx ampx sandbox delete --y",
         "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
         "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh"
     },
