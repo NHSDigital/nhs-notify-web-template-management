@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { MessageTemplatePage } from '../pages/template-mgmt-message-template-page';
+import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
@@ -52,7 +52,7 @@ test.describe('Message templates page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new MessageTemplatePage(page),
+      page: new ManageTemplatesPage(page),
       baseURL,
     };
 
@@ -67,21 +67,21 @@ test.describe('Message templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatePage = new MessageTemplatePage(page);
-    await messageTemplatePage.loadPage();
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    expect(await messageTemplatePage.pageHeader.textContent()).toBe(
+    expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
       'Message templates'
     );
-    expect(await messageTemplatePage.createTemplateButton).toBeVisible();
+    expect(await manageTemplatesPage.createTemplateButton).toBeVisible();
   });
 
   test('Template item has correct status if it has been has been submitted', async ({
     page,
     baseURL,
   }) => {
-    const messageTemplatePage = new MessageTemplatePage(page);
-    await messageTemplatePage.loadPage();
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -101,14 +101,14 @@ test.describe('Message templates page', () => {
     page,
     baseURL,
   }) => {
-    const messageTemplatePage = new MessageTemplatePage(page);
-    await messageTemplatePage.loadPage();
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    expect(await messageTemplatePage.pageHeader.textContent()).toBe(
+    expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
       'Message templates'
     );
-    expect(await messageTemplatePage.createTemplateButton).toBeVisible();
-    await messageTemplatePage.clickCreateTemplateButton();
+    expect(await manageTemplatesPage.createTemplateButton).toBeVisible();
+    await manageTemplatesPage.clickCreateTemplateButton();
     const chooseTemplatePage = await page.waitForSelector('h1');
     const headerText = await chooseTemplatePage.textContent();
     await expect(headerText).toContain('Choose a template type to create');
