@@ -7,7 +7,14 @@ jest.mock('@aws-sdk/client-ses', () => ({
   ...jest.requireActual('@aws-sdk/client-ses'),
   SESClient: jest.fn(),
 }));
-jest.mock('../../../../src/utils/logger');
+jest.mock('nhs-notify-web-template-management-utils', () => ({
+  ...jest.requireActual('nhs-notify-web-template-management-utils'),
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+}));
 
 type HandlerEventType = Parameters<Schema['sendEmail']['functionHandler']>[0];
 type HandlerContextType = Parameters<Schema['sendEmail']['functionHandler']>[1];

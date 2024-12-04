@@ -1,17 +1,9 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import {
+  TemplateType,
+  TemplateStatus,
+} from 'nhs-notify-web-template-management-utils';
 import { sendEmail } from '../functions/send-email/resource';
-
-enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-}
-
-enum TemplateStatus {
-  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
-  SUBMITTED = 'SUBMITTED',
-}
 
 const templateTypes = [
   TemplateType.NHS_APP,

@@ -6,7 +6,9 @@
     "build": "npm run generate-dependencies && esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "generate-dependencies": "tsx scripts/generate-dependencies.ts",
     "test:unit": "jest",
-    "typecheck": "tsc --listFiles --noEmit"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@swc/core": "^1.9.2",
@@ -28,6 +30,7 @@
     "handlebars": "^4.7.8",
     "html-entities": "^2.5.2",
     "mimetext": "^3.0.24",
+    "nhs-notify-web-template-management-utils": "*",
     "winston": "^3.17.0"
   }
 }
