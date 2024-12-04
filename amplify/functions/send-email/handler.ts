@@ -1,6 +1,6 @@
 import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
-import { logger } from 'nhs-notify-web-template-management-utils';
+import { logger } from './logger';
 import type { Schema } from '../../data/resource';
 import { emailTemplate } from './email-template';
 
