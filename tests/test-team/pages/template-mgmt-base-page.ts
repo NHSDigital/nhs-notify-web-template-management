@@ -71,7 +71,7 @@ export class TemplateMgmtBasePage {
     await this.submitButton.click();
   }
 
-  async loadPage(_: string) {
+  async loadPage(_?: string) {
     throw new Error('Not implemented');
   }
 
