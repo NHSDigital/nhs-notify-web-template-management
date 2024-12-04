@@ -55,7 +55,7 @@ export function assertGoBackLink({
   baseURL,
   expectedUrl,
 }: CommonStepsProps & { expectedUrl: string }) {
-  return test.step('when user clicks "Go back", then user is redirect to previous page', async () => {
+  return test.step('when user clicks "Go back", then user is redirected to previous page', async () => {
     await page.loadPage(id);
 
     await page.goBackLink.click();

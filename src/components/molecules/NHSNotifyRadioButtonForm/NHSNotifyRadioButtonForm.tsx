@@ -19,6 +19,8 @@ export type NHSNotifyRadioButtonFormProps = {
     isPgeHeading: boolean;
     size: 'l' | 'm' | 's';
   };
+  learnMoreLink?: string;
+  learnMoreText?: string;
 };
 
 export const NHSNotifyRadioButtonForm = ({
@@ -31,6 +33,8 @@ export const NHSNotifyRadioButtonForm = ({
   buttonText,
   legend = { isPgeHeading: true, size: 'l' },
   hint = '',
+  learnMoreLink = '',
+  learnMoreText = '',
 }: NHSNotifyRadioButtonFormProps) => (
   <NHSNotifyFormWrapper action={action} formId={formId}>
     <Fieldset>
@@ -41,6 +45,13 @@ export const NHSNotifyRadioButtonForm = ({
       >
         {pageHeading}
       </Fieldset.Legend>
+      {learnMoreLink && learnMoreText && (
+        <p>
+          <a href={learnMoreLink} target='_blank' rel='noopener noreferrer'>
+            {learnMoreText}
+          </a>
+        </p>
+      )}
       <Radios
         id={radiosId}
         hint={hint}

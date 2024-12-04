@@ -52,6 +52,15 @@ exports[`Choose template page renders error component 1`] = `
             Choose a template type to create
           </h1>
         </legend>
+        <p>
+          <a
+            href="/features"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more about message channels (opens in a new tab)
+          </a>
+        </p>
         <div
           class="nhsuk-form-group"
         >
@@ -186,6 +195,15 @@ exports[`Choose template page selects one radio button at a time 1`] = `
             Choose a template type to create
           </h1>
         </legend>
+        <p>
+          <a
+            href="/features"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more about message channels (opens in a new tab)
+          </a>
+        </p>
         <div
           class="nhsuk-form-group"
         >

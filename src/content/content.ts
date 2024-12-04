@@ -319,7 +319,6 @@ const error404PageContent = {
 };
 
 export const submitTemplateContent = {
-  backLinkText: 'Go back',
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
   warningCalloutText:
@@ -350,6 +349,8 @@ export const chooseTemplatePageContent = {
   ],
   buttonText: 'Continue',
   hint: 'Select one option',
+  learnMoreLink: '/features',
+  learnMoreText: 'Learn more about message channels (opens in a new tab)',
 };
 
 export const nameYourTemplateContent = {
@@ -377,6 +378,60 @@ export const nameYourTemplateContent = {
     [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
     [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
     [TemplateType.LETTER]: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
+  },
+};
+
+export const channelGuidanceContent = {
+  [TemplateType.NHS_APP]: {
+    heading: 'More about NHS App messages',
+    guidanceLinks: [
+      {
+        text: 'NHS App messages (opens in a new tab)',
+        link: '/features/nhs-app-messages',
+      },
+      {
+        text: 'Sender IDs (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
+  },
+  [TemplateType.EMAIL]: {
+    heading: 'More about emails',
+    guidanceLinks: [
+      {
+        text: 'Email messages (opens in a new tab)',
+        link: '/features/emails',
+      },
+      {
+        text: 'From and reply-to addresses (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
+  },
+  [TemplateType.SMS]: {
+    heading: 'More about text messages',
+    guidanceLinks: [
+      {
+        text: 'Text message length and pricing (opens in a new tab)',
+        link: '/pricing/text-messages',
+      },
+      {
+        text: 'Sender IDs (opens in a new tab)',
+        link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        text: 'Delivery times (opens in a new tab)',
+        link: '/using-nhs-notify/delivery-times',
+      },
+    ],
   },
 };
 

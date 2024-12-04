@@ -15,6 +15,8 @@
     "app:stop": "pm2 kill",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
     "destroy-sandbox": "npx ampx sandbox delete --y",
+    "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
+    "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
     "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
     "typecheck": "tsc --listFiles --project ./tsconfig.json"

@@ -1,16 +1,21 @@
+locals {
+  endpoint_entrypoint = "src/index.ts"
+}
+
 module "endpoint_lambda" {
   source      = "../lambda-function"
   description = "templates api endpoint"
 
   function_name    = "${local.csi}-endpoint"
-  filename         = module.endpoint_build.output_path
-  source_code_hash = module.endpoint_build.base64sha256
+  filename         = module.endpoint_build.zips[local.endpoint_entrypoint].path
+  source_code_hash = module.endpoint_build.zips[local.endpoint_entrypoint].base64sha256
   runtime          = "nodejs20.x"
   handler          = "index.handler"
 
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
+    NODE_OPTIONS         = "--enable-source-maps"
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
   }
 
@@ -22,7 +27,7 @@ module "endpoint_build" {
   source = "../typescript-build-zip"
 
   source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
-  entrypoint      = "src/index.ts"
+  entrypoints     = [local.endpoint_entrypoint]
 }
 
 data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {

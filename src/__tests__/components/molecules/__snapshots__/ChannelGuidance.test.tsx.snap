@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChannelGuidance component should correctly render the component for templateType EMAIL 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-m"
+  >
+    More about emails
+  </h2>
+  <ul
+    style="list-style-type: none; padding: 0px;"
+  >
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/features/emails"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Email messages (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        From and reply-to addresses (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/delivery-times"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Delivery times (opens in a new tab)
+      </a>
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`ChannelGuidance component should correctly render the component for templateType NHS_APP 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-m"
+  >
+    More about NHS App messages
+  </h2>
+  <ul
+    style="list-style-type: none; padding: 0px;"
+  >
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/features/nhs-app-messages"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        NHS App messages (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Sender IDs (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/delivery-times"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Delivery times (opens in a new tab)
+      </a>
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`ChannelGuidance component should correctly render the component for templateType SMS 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-m"
+  >
+    More about text messages
+  </h2>
+  <ul
+    style="list-style-type: none; padding: 0px;"
+  >
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/pricing/text-messages"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Text message length and pricing (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/tell-recipients-who-your-messages-are-from"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Sender IDs (opens in a new tab)
+      </a>
+    </li>
+    <li
+      class="nhsuk-u-margin-bottom-3"
+    >
+      <a
+        href="/using-nhs-notify/delivery-times"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Delivery times (opens in a new tab)
+      </a>
+    </li>
+  </ul>
+</DocumentFragment>
+`;

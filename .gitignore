@@ -64,6 +64,7 @@ terraform.tfstate.backup
 terraform/*_output.txt
 terraform/*_output.json
 group_target-env.tfvars
+*tf_outputs.json
 
 .amplify/
 amplify_outputs.json
@@ -76,3 +77,5 @@ tests/test-team/test-results/
 tests/test-team/playwright-report/
 tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
+
+sandbox_cognito_auth_token.json
