@@ -87,7 +87,7 @@ export class TemplateClient implements ITemplateClient {
     const getResult = await templateRepository.get(templateId, this._owner);
 
     if (getResult.error) {
-      log.error('Failed to get template', getResult);
+      log.error('Failed to get template', { getResult });
 
       return getResult;
     }
@@ -99,7 +99,7 @@ export class TemplateClient implements ITemplateClient {
     const listResult = await templateRepository.list(this._owner);
 
     if (listResult.error) {
-      logger.error('Failed to list templates', listResult);
+      logger.error('Failed to list templates', { listResult });
 
       return listResult;
     }
