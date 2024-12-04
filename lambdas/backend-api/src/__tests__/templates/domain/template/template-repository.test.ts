@@ -1,3 +1,4 @@
+import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -11,7 +12,6 @@ import {
   TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
-import { randomUUID as uuidv4 } from 'node:crypto';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   Template,
@@ -209,41 +209,6 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should return error when, ConsumedCapacity is 0', async () => {
-      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
-
-      ddbMock
-        .on(PutCommand, {
-          TableName: 'templates',
-          Item: template,
-        })
-        .resolves({
-          ConsumedCapacity: {
-            CapacityUnits: 0,
-          },
-        });
-
-      const response = await templateRepository.create(
-        {
-          templateType: TemplateType.EMAIL,
-          name: 'name',
-          message: 'message',
-          subject: 'pickles',
-        },
-        'real-owner'
-      );
-
-      expect(response).toEqual({
-        error: {
-          code: 500,
-          message: 'Failed to create template',
-          actualError: new Error(
-            'Expected DynamoDB CapacityUnits to be greater than 0'
-          ),
-        },
-      });
-    });
-
     test('should create template', async () => {
       uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
@@ -252,11 +217,7 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Item: template,
         })
-        .resolves({
-          ConsumedCapacity: {
-            CapacityUnits: 1,
-          },
-        });
+        .resolves({});
 
       const response = await templateRepository.create(
         {

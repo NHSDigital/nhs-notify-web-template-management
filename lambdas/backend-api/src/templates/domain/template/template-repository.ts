@@ -67,24 +67,12 @@ const create = async (
   };
 
   try {
-    const response = await client.send(
+    await client.send(
       new PutCommand({
         TableName: process.env.TEMPLATES_TABLE_NAME,
         Item: entity,
-        ReturnConsumedCapacity: 'TOTAL',
       })
     );
-
-    const consumedUnits = response?.ConsumedCapacity?.CapacityUnits || 0;
-
-    // Note: This is a bit strange, PutCommand does not return the any data when creating
-    // a new item. So we can only infer the success by checking the CapacityUnits
-    // Or do a GetItem - which is expensive.
-    if (consumedUnits === 0) {
-      throw new Error('Expected DynamoDB CapacityUnits to be greater than 0', {
-        cause: response,
-      });
-    }
 
     return success(entity);
   } catch (error) {
