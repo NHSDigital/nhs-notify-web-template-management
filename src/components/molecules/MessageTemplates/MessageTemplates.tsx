@@ -72,18 +72,18 @@ export function MessageTemplates({
                   {format(`${template.createdAt}`, 'do MMM yyyy')}
                 </Table.Cell>
                 <Table.Cell>
-                  <Link href='#'>
-                    <p className='nhsuk-u-margin-bottom-2'>
-                      {manageTemplatesContent.tableHeadings.action.copy}
-                    </p>
-                  </Link>
-                  {template.templateStatus ===
-                  TemplateStatus.NOT_YET_SUBMITTED ? (
+                  <p className='nhsuk-u-margin-bottom-2'>
                     <Link href='#'>
-                      <p className='nhsuk-u-margin-bottom-2'>
-                        {manageTemplatesContent.tableHeadings.action.delete}
-                      </p>
+                      {manageTemplatesContent.tableHeadings.action.copy}
                     </Link>
+                  </p>
+                  {template.templateStatus ===
+                    TemplateStatus.NOT_YET_SUBMITTED ? (
+                    <p className='nhsuk-u-margin-bottom-2'>
+                      <Link href='#'>
+                        {manageTemplatesContent.tableHeadings.action.delete}
+                      </Link>
+                    </p>
                   ) : null}
                 </Table.Cell>
               </Table.Row>

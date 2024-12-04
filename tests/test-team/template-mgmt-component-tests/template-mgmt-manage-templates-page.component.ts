@@ -97,7 +97,7 @@ test.describe('Manage templates page', () => {
     expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
       'Message templates'
     );
-    expect(await manageTemplatesPage.createTemplateButton).toBeVisible();
+    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
   });
 
   test('Submitted template items have correct status indicator', async ({
@@ -109,14 +109,14 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const emailSubmitted = await page.locator('tr:has-text("email-submitted_manage-templates-page")');
-    await expect(await emailSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
+    const emailSubmitted = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    await expect(emailSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
 
-    const smsSubmitted = await page.locator('tr:has-text("sms-submitted_manage-templates-page")');
-    await expect(await smsSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
+    const smsSubmitted = page.locator('tr:has-text("sms-submitted_manage-templates-page")');
+    await expect(smsSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
 
-    const nhsapp = await page.locator('tr:has-text("nhs-app-submitted_manage-templates-page")');
-    await expect(await nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
+    const nhsapp = page.locator('tr:has-text("nhs-app-submitted_manage-templates-page")');
+    await expect(nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
   });
 
   test('Not Yet Submitted template items have correct status indicator', async ({
@@ -128,14 +128,14 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const email = await page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
-    await expect(await email.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const email = page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
+    await expect(email.getByText('Not yet submitted', { exact: true })).toBeVisible();
 
-    const sms = await page.locator('tr:has-text("sms-not-yet-submitted_manage-templates-page")');
-    await expect(await sms.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const sms = page.locator('tr:has-text("sms-not-yet-submitted_manage-templates-page")');
+    await expect(sms.getByText('Not yet submitted', { exact: true })).toBeVisible();
 
-    const nhsapp = await page.locator('tr:has-text("nhs-app-not-yet-submitted_manage-templates-page")');
-    await expect(await nhsapp.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const nhsapp = page.locator('tr:has-text("nhs-app-not-yet-submitted_manage-templates-page")');
+    await expect(nhsapp.getByText('Not yet submitted', { exact: true })).toBeVisible();
   });
 
   test('should navigate to "choose template" page when create template button is clicked', async ({
@@ -148,17 +148,77 @@ test.describe('Manage templates page', () => {
     expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
       'Message templates'
     );
-    expect(await manageTemplatesPage.createTemplateButton).toBeVisible();
+    expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
     const chooseTemplatePage = await page.waitForSelector('h1');
     const headerText = await chooseTemplatePage.textContent();
-    await expect(headerText).toContain('Choose a template type to create');
+    expect(headerText).toContain('Choose a template type to create');
   });
 
-  // test placeholders:
-  test('Template name link navigation - navigates to preview page', async () => { });
+  test('Name link navigation - navigates to preview page', async ({
+    page,
+    baseURL,
+  }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
 
-  test('Copy link navigation - Navigates user to duplicate template type page ', async () => { });
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-  test('Delete link navigation - Navigates user to delete template page ', async () => { });
+    const templatePreviewLink = page.getByText('email-not-yet-submitted_manage-templates-page');
+    
+    // This will break and need updating during CCM-7649
+    expect(templatePreviewLink).toHaveAttribute('href', '#');
+    await templatePreviewLink.click();
+    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+  });
+
+  test('Copy link navigation - navigates user to duplicate template type page', async ({
+    page,
+    baseURL,
+  }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
+
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+
+    const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    const templateCopyLink = templateRow.getByText('Copy', { exact: true });
+    
+    // This will break and need updating during CCM-5539
+    expect(templateCopyLink).toHaveAttribute('href', '#');
+    await templateCopyLink.click();
+    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+  });
+
+  test('Delete link navigation - navigates user to delete template page', async ({
+    page,
+    baseURL,
+  }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
+
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+
+    const templateRow = page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
+    const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
+    
+    // This will break and need updating during CCM-7572
+    expect(templateDeleteLink).toHaveAttribute('href', '#');
+    await templateDeleteLink.click();
+    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+  });
+
+  test('Delete link not present for submitted templates', async ({
+    page,
+    baseURL,
+  }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
+
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+
+    const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
+    await expect(templateDeleteLink).toBeHidden();
+  });
 });

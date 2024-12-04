@@ -129,24 +129,24 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
-              <a
-                href="#"
+                </a>
+              </p>
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Delete
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -213,15 +213,15 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
         </tbody>
@@ -360,15 +360,15 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -435,15 +435,15 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
         </tbody>
