@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
+import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import { TemplateStatus, TemplateType } from '@utils/enum';
 import content from '@content/content';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const messageTemplatesProps = {
+const manageTemplatesProps = {
   templateList: [
     {
       id: '1',
@@ -30,21 +30,21 @@ const messageTemplatesProps = {
   ],
 };
 
-describe('MessageTemplates component', () => {
+describe('ManageTemplates component', () => {
   it('matches snapshot with not submitted status', () => {
-    const container = render(<MessageTemplates {...messageTemplatesProps} />);
+    const container = render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('matches snapshot with submitted status', () => {
-    messageTemplatesProps.templateList[0].templateStatus =
+    manageTemplatesProps.templateList[0].templateStatus =
       TemplateStatus.SUBMITTED;
-    const container = render(<MessageTemplates {...messageTemplatesProps} />);
+    const container = render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('renders component correctly', () => {
-    render(<MessageTemplates {...messageTemplatesProps} />);
+    render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(screen.getByTestId('manage-template-table')).toBeInTheDocument();
     expect(

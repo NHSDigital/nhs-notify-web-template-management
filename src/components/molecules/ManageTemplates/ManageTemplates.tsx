@@ -15,7 +15,7 @@ import {
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-export function MessageTemplates({
+export function ManageTemplates({
   templateList,
 }: {
   templateList: Template[];
