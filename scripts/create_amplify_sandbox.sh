@@ -8,7 +8,7 @@ if [[ ! -f amplify_outputs.json ]]; then
     echo "{}" >> amplify_outputs.json
 fi
 
-(cd frontend && npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}")
+npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
 
 # wait for Amplify outputs file to be available
 wait_seconds=0
