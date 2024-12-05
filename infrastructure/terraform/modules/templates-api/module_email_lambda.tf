@@ -3,8 +3,8 @@ module "email_lambda" {
   description = "templates api endpoint"
 
   function_name    = "${local.csi}-email"
-  filename         = module.endpoint_build.output_path
-  source_code_hash = module.endpoint_build.base64sha256
+  filename         = module.endpoint_build.zips[local.endpoint_entrypoint].path
+  source_code_hash = module.endpoint_build.zips[local.endpoint_entrypoint].base64sha256
   runtime          = "nodejs20.x"
   handler          = "index.emailHandler"
 
