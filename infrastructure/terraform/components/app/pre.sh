@@ -1,0 +1,2 @@
+
+npm run generate-dependencies
