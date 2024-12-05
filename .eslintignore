@@ -2,3 +2,4 @@ public
 dist
 **/jest.config.ts
 **/jest.setup.ts
+lambdas/endpoint/dist
