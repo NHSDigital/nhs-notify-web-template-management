@@ -21,6 +21,7 @@ const templates = {
     subject: 'test example subject',
     templateType: TemplateType.EMAIL,
     templateStatus: TemplateStatus.SUBMITTED,
+    createdAt: '2010-10-11T11:11:11.111Z',
   }),
   emailNotYetSubmitted: TemplateFactory.create({
     id: uuid(),
@@ -30,6 +31,7 @@ const templates = {
     subject: 'test example subject',
     templateType: TemplateType.EMAIL,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    createdAt: '2010-10-11T10:10:10.100Z',
   }),
   smsSubmitted: TemplateFactory.create({
     id: uuid(),
@@ -37,6 +39,7 @@ const templates = {
     message: 'test example message',
     templateType: TemplateType.SMS,
     templateStatus: TemplateStatus.SUBMITTED,
+    createdAt: '2010-10-10T11:11:11.111Z',
   }),
   smsNotYetSubmitted: TemplateFactory.create({
     id: uuid(),
@@ -44,6 +47,7 @@ const templates = {
     message: 'test example message',
     templateType: TemplateType.SMS,
     templateStatus: TemplateStatus.SUBMITTED,
+    createdAt: '2010-10-10T10:10:10.100Z',
   }),
   nhsAppSubmitted: TemplateFactory.create({
     id: uuid(),
@@ -51,6 +55,7 @@ const templates = {
     message: 'test example message',
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.SUBMITTED,
+    createdAt: '2010-10-09T11:11:11.111Z',
   }),
   nhsAppNotYetSubmitted: TemplateFactory.create({
     id: uuid(),
@@ -58,6 +63,7 @@ const templates = {
     message: 'test example message',
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    createdAt: '2010-10-09T10:10:10.100Z',
   }),
 };
 
@@ -109,11 +115,11 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const emailSubmitted = page.locator('tr:has-text("email-submitted_manage-templates-page")');
-    await expect(emailSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
+    const email = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    await expect(email.getByText('Submitted', { exact: true })).toBeVisible();
 
-    const smsSubmitted = page.locator('tr:has-text("sms-submitted_manage-templates-page")');
-    await expect(smsSubmitted.getByText('Submitted', { exact: true })).toBeVisible();
+    const sms = page.locator('tr:has-text("sms-submitted_manage-templates-page")');
+    await expect(sms.getByText('Submitted', { exact: true })).toBeVisible();
 
     const nhsapp = page.locator('tr:has-text("nhs-app-submitted_manage-templates-page")');
     await expect(nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
@@ -165,7 +171,7 @@ test.describe('Manage templates page', () => {
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
     const templatePreviewLink = page.getByText('email-not-yet-submitted_manage-templates-page');
-    
+
     // This will break and need updating during CCM-7649
     expect(templatePreviewLink).toHaveAttribute('href', '#');
     await templatePreviewLink.click();
@@ -183,7 +189,7 @@ test.describe('Manage templates page', () => {
 
     const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
     const templateCopyLink = templateRow.getByText('Copy', { exact: true });
-    
+
     // This will break and need updating during CCM-5539
     expect(templateCopyLink).toHaveAttribute('href', '#');
     await templateCopyLink.click();
@@ -201,7 +207,7 @@ test.describe('Manage templates page', () => {
 
     const templateRow = page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
-    
+
     // This will break and need updating during CCM-7572
     expect(templateDeleteLink).toHaveAttribute('href', '#');
     await templateDeleteLink.click();
@@ -220,5 +226,39 @@ test.describe('Manage templates page', () => {
     const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
     await expect(templateDeleteLink).toBeHidden();
+  });
+
+  test('templates are ordered by createdAt descending', async ({ page, baseURL }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
+
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+
+    const expectedOrder = [
+      'email-submitted_manage-templates-page',
+      'email-not-yet-submitted_manage-templates-page',
+      'sms-submitted_manage-templates-page',
+      'sms-not-yet-submitted_manage-templates-page',
+      'nhs-app-submitted_manage-templates-page',
+      'nhs-app-not-yet-submitted_manage-templates-page',
+    ];
+
+    const rows = page.locator('tr');
+    const rowCount = await rows.count();
+
+    const actualOrder = [];
+    for (let i = 0; i < rowCount; i += 1) {
+      const anchorLocator = rows.nth(i).locator('td:first-child a');
+      const anchorCount = await anchorLocator.count();
+
+      if (anchorCount > 0) {
+        const anchorText = await anchorLocator.textContent();
+        if (anchorText && expectedOrder.some(expected => anchorText.includes(expected))) {
+          actualOrder.push(anchorText.trim());
+        }
+      }
+    }
+
+    expect(actualOrder).toEqual(expectedOrder);
   });
 });
