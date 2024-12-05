@@ -78,7 +78,7 @@ export function MessageTemplates({
                     </Link>
                   </p>
                   {template.templateStatus ===
-                    TemplateStatus.NOT_YET_SUBMITTED ? (
+                  TemplateStatus.NOT_YET_SUBMITTED ? (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link href='#'>
                         {manageTemplatesContent.tableHeadings.action.delete}

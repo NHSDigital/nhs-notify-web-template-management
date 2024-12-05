@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { v4 as uuid } from 'uuid';
 import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
 import {
   assertFooterLinks,
@@ -10,7 +11,6 @@ import {
 import { TemplateFactory } from '../helpers/template-factory';
 import { TemplateStatus, TemplateType } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
-import { v4 as uuid } from 'uuid';
 
 const templates = {
   emailSubmitted: TemplateFactory.create({
@@ -115,13 +115,19 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const email = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    const email = page.locator(
+      'tr:has-text("email-submitted_manage-templates-page")'
+    );
     await expect(email.getByText('Submitted', { exact: true })).toBeVisible();
 
-    const sms = page.locator('tr:has-text("sms-submitted_manage-templates-page")');
+    const sms = page.locator(
+      'tr:has-text("sms-submitted_manage-templates-page")'
+    );
     await expect(sms.getByText('Submitted', { exact: true })).toBeVisible();
 
-    const nhsapp = page.locator('tr:has-text("nhs-app-submitted_manage-templates-page")');
+    const nhsapp = page.locator(
+      'tr:has-text("nhs-app-submitted_manage-templates-page")'
+    );
     await expect(nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
   });
 
@@ -134,14 +140,26 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const email = page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
-    await expect(email.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const email = page.locator(
+      'tr:has-text("email-not-yet-submitted_manage-templates-page")'
+    );
+    await expect(
+      email.getByText('Not yet submitted', { exact: true })
+    ).toBeVisible();
 
-    const sms = page.locator('tr:has-text("sms-not-yet-submitted_manage-templates-page")');
-    await expect(sms.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const sms = page.locator(
+      'tr:has-text("sms-not-yet-submitted_manage-templates-page")'
+    );
+    await expect(
+      sms.getByText('Not yet submitted', { exact: true })
+    ).toBeVisible();
 
-    const nhsapp = page.locator('tr:has-text("nhs-app-not-yet-submitted_manage-templates-page")');
-    await expect(nhsapp.getByText('Not yet submitted', { exact: true })).toBeVisible();
+    const nhsapp = page.locator(
+      'tr:has-text("nhs-app-not-yet-submitted_manage-templates-page")'
+    );
+    await expect(
+      nhsapp.getByText('Not yet submitted', { exact: true })
+    ).toBeVisible();
   });
 
   test('should navigate to "choose template" page when create template button is clicked', async ({
@@ -170,7 +188,9 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const templatePreviewLink = page.getByText('email-not-yet-submitted_manage-templates-page');
+    const templatePreviewLink = page.getByText(
+      'email-not-yet-submitted_manage-templates-page'
+    );
 
     // This will break and need updating during CCM-7649
     expect(templatePreviewLink).toHaveAttribute('href', '#');
@@ -187,7 +207,9 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    const templateRow = page.locator(
+      'tr:has-text("email-submitted_manage-templates-page")'
+    );
     const templateCopyLink = templateRow.getByText('Copy', { exact: true });
 
     // This will break and need updating during CCM-5539
@@ -205,7 +227,9 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const templateRow = page.locator('tr:has-text("email-not-yet-submitted_manage-templates-page")');
+    const templateRow = page.locator(
+      'tr:has-text("email-not-yet-submitted_manage-templates-page")'
+    );
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
 
     // This will break and need updating during CCM-7572
@@ -223,12 +247,17 @@ test.describe('Manage templates page', () => {
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
-    const templateRow = page.locator('tr:has-text("email-submitted_manage-templates-page")');
+    const templateRow = page.locator(
+      'tr:has-text("email-submitted_manage-templates-page")'
+    );
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
     await expect(templateDeleteLink).toBeHidden();
   });
 
-  test('templates are ordered by createdAt descending', async ({ page, baseURL }) => {
+  test('templates are ordered by createdAt descending', async ({
+    page,
+    baseURL,
+  }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
     await manageTemplatesPage.loadPage();
 
@@ -246,19 +275,24 @@ test.describe('Manage templates page', () => {
     const rows = page.locator('tr');
     const rowCount = await rows.count();
 
-    const actualOrder = [];
-    for (let i = 0; i < rowCount; i += 1) {
-      const anchorLocator = rows.nth(i).locator('td:first-child a');
-      const anchorCount = await anchorLocator.count();
+    const actualOrder = await Promise.all(
+      Array.from({ length: rowCount }, async (_, i) => {
+        const anchorLocator = rows.nth(i).locator('td:first-child a');
+        const anchorCount = await anchorLocator.count();
 
-      if (anchorCount > 0) {
-        const anchorText = await anchorLocator.textContent();
-        if (anchorText && expectedOrder.some(expected => anchorText.includes(expected))) {
-          actualOrder.push(anchorText.trim());
+        if (anchorCount > 0) {
+          const anchorText = await anchorLocator.textContent();
+          if (
+            anchorText &&
+            expectedOrder.some((expected) => anchorText.includes(expected))
+          ) {
+            return anchorText.trim();
+          }
         }
-      }
-    }
+        return null;
+      })
+    );
 
-    expect(actualOrder).toEqual(expectedOrder);
+    expect(actualOrder.filter(Boolean)).toEqual(expectedOrder);
   });
 });
