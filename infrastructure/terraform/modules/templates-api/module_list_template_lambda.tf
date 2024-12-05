@@ -5,8 +5,8 @@ module "list_template_lambda" {
   description = "List template API endpoint"
 
   function_name    = "${local.csi}-list-template"
-  filename         = module.build_template_lambda.zips[var.template_api_entrypoints.list_template].path
-  source_code_hash = module.build_template_lambda.zips[var.template_api_entrypoints.list_template].base64sha256
+  filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.list_template].path
+  source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.list_template].base64sha256
   runtime          = "nodejs20.x"
   handler          = "list.handler"
 

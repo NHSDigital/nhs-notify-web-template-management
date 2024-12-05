@@ -12,4 +12,12 @@ locals {
     GET_LAMBDA_ARN          = module.get_template_lambda.function_arn
     LIST_LAMBDA_ARN         = module.list_template_lambda.function_arn
   })
+
+  backend_lambda_entrypoints = {
+    create_template  = "src/templates/api/create.ts"
+    get_template     = "src/templates/api/get.ts"
+    update_template  = "src/templates/api/update.ts"
+    list_template    = "src/templates/api/list.ts"
+    template_client  = "src/index.ts"
+  }
 }

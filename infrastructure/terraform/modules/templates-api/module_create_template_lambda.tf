@@ -5,8 +5,8 @@ module "create_template_lambda" {
   description = "Create template API endpoint"
 
   function_name    = "${local.csi}-create-template"
-  filename         = module.build_template_lambda.zips[var.template_api_entrypoints.create_template].path
-  source_code_hash = module.build_template_lambda.zips[var.template_api_entrypoints.create_template].base64sha256
+  filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_template].path
+  source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_template].base64sha256
   runtime          = "nodejs20.x"
   handler          = "create.handler"
 
