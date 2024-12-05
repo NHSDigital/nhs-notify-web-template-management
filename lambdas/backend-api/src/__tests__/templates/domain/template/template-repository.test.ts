@@ -123,23 +123,12 @@ describe('templateRepository', () => {
   });
 
   describe('list', () => {
-    test('should return undefined when, owner does not match database record', async () => {
-      ddbMock
-        .on(QueryCommand, {
-          TableName: 'templates',
-          KeyConditionExpression: '#owner = :owner',
-          ExpressionAttributeNames: {
-            '#owner': 'owner',
-          },
-          ExpressionAttributeValues: {
-            ':owner': 'real-owner',
-          },
-        })
-        .resolves({
-          Items: [{ owner: 'real-owner' }],
-        });
+    test('should return an empty array when no items', async () => {
+      ddbMock.on(QueryCommand).resolves({
+        Items: undefined,
+      });
 
-      const response = await templateRepository.list('fake-owner');
+      const response = await templateRepository.list('real-owner');
 
       expect(response).toEqual({
         data: [],

@@ -84,7 +84,7 @@ describe('Template API - List', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ statusCode: 200, items: [template] }),
+      body: JSON.stringify({ statusCode: 200, templates: [template] }),
     });
 
     expect(TemplateClient).toHaveBeenCalledWith('username');

@@ -405,11 +405,11 @@
       "SuccessList": {
         "type": "object",
         "required": [
-          "items",
+          "templates",
           "statusCode"
         ],
         "properties": {
-          "items": {
+          "templates": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TemplateDTO"

@@ -13,6 +13,7 @@ import {
   GetCommand,
   PutCommand,
   QueryCommand,
+  QueryCommandInput,
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
@@ -187,20 +188,29 @@ const update = async (
 
 const list = async (owner: string): Promise<ApplicationResult<Template[]>> => {
   try {
-    const response = await client.send(
-      new QueryCommand({
-        TableName: process.env.TEMPLATES_TABLE_NAME,
-        KeyConditionExpression: '#owner = :owner',
-        ExpressionAttributeNames: {
-          '#owner': 'owner',
-        },
-        ExpressionAttributeValues: {
-          ':owner': owner,
-        },
-        Limit: 50,
-      })
-    );
-    const items = (response?.Items as Template[]) || [];
+    const input: QueryCommandInput = {
+      TableName: process.env.TEMPLATES_TABLE_NAME,
+      KeyConditionExpression: '#owner = :owner',
+      ExpressionAttributeNames: {
+        '#owner': 'owner',
+      },
+      ExpressionAttributeValues: {
+        ':owner': owner,
+      },
+    };
+
+    const items: Template[] = [];
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      const { Items = [], LastEvaluatedKey } = await client.send(
+        new QueryCommand(input)
+      );
+
+      input.ExclusiveStartKey = LastEvaluatedKey;
+
+      items.push(...(Items as Template[]));
+    } while (input.ExclusiveStartKey);
 
     return success(items);
   } catch (error) {

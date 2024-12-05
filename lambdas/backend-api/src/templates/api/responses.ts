@@ -5,8 +5,6 @@ import {
   TemplateDTO,
 } from 'nhs-notify-backend-client';
 
-type SuccessResponse = Success | SuccessList;
-
 export const apiSuccess = (
   statusCode: number,
   result: TemplateDTO | TemplateDTO[]
@@ -16,7 +14,7 @@ export const apiSuccess = (
       statusCode,
       body: JSON.stringify({
         statusCode,
-        items: result,
+        templates: result,
       } satisfies SuccessList),
     };
   }
@@ -26,7 +24,7 @@ export const apiSuccess = (
     body: JSON.stringify({
       statusCode,
       template: result,
-    } satisfies SuccessResponse),
+    } satisfies Success),
   };
 };
 

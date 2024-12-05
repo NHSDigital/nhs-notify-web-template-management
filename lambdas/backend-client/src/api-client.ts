@@ -10,8 +10,6 @@ import {
 } from './types/generated';
 import { Result } from './types/result';
 
-type ApiResponse = Failure | Success | SuccessList;
-
 export class TemplateApiClient implements ITemplateClient {
   private readonly _client: axios.AxiosInstance;
 
@@ -25,17 +23,17 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
-    const response = await this._client.post<ApiResponse>(
+    const response = await this._client.post<Failure | Success>(
       '/v1/template',
       template
     );
 
-    if (response.data.statusCode !== 201) {
-      return this.failure(response.data as Failure);
+    if (this.isFailure(response.data)) {
+      return this.failure(response.data);
     }
 
     return {
-      data: (response.data as Success).template,
+      data: response.data.template,
     };
   }
 
@@ -43,44 +41,52 @@ export class TemplateApiClient implements ITemplateClient {
     templateId: string,
     template: UpdateTemplate
   ): Promise<Result<TemplateDTO>> {
-    const response = await this._client.post<ApiResponse>(
+    const response = await this._client.post<Failure | Success>(
       `/v1/template/${templateId}`,
       template
     );
 
-    if (response.data.statusCode !== 200) {
-      return this.failure(response.data as Failure);
+    if (this.isFailure(response.data)) {
+      return this.failure(response.data);
     }
 
     return {
-      data: (response.data as Success).template,
+      data: response.data.template,
     };
   }
 
   async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
-    const response = await this._client.get<ApiResponse>(
+    const response = await this._client.get<Failure | Success>(
       `/v1/template/${templateId}`
     );
 
-    if (response.data.statusCode !== 200) {
-      return this.failure(response.data as Failure);
+    if (this.isFailure(response.data)) {
+      return this.failure(response.data);
     }
 
     return {
-      data: (response.data as Success).template,
+      data: response.data.template,
     };
   }
 
   async listTemplates(): Promise<Result<TemplateDTO[]>> {
-    const response = await this._client.get<ApiResponse>('/v1/templates');
+    const response = await this._client.get<Failure | SuccessList>(
+      '/v1/templates'
+    );
 
-    if (response.data.statusCode !== 200) {
-      return this.failure(response.data as Failure);
+    if (this.isFailure(response.data)) {
+      return this.failure(response.data);
     }
 
     return {
-      data: (response.data as SuccessList).items,
+      data: response.data.templates,
     };
+  }
+
+  private isFailure(
+    response: Failure | Success | SuccessList
+  ): response is Failure {
+    return ![200, 201].includes(response.statusCode);
   }
 
   private failure(data: Failure) {
