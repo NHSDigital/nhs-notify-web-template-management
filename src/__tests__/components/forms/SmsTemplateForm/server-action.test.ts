@@ -100,7 +100,7 @@ describe('CreateSmsTemplate server actions', () => {
   });
 
   test('should create the template and redirect', async () => {
-    const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/no-unused-vars
+    const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/sonar-no-unused-vars
 
     createTemplateMock.mockResolvedValue({
       ...initialDraftState,
