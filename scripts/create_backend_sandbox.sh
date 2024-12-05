@@ -19,8 +19,6 @@ root_dir=$(git rev-parse --show-toplevel)
 terraform_dir=$root_dir/infrastructure/terraform
 component_dir=$terraform_dir/components/$COMPONENT
 
-npm ci
-
 echo "Creating backend sandbox \"$ENVIRONMENT\""
 
 cd $terraform_dir
