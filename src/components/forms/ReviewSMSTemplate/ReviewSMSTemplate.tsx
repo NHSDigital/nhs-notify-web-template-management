@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
@@ -27,10 +28,10 @@ export function ReviewSMSTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <BackLink
-        href={`${getBasePath()}/edit-text-message-template/${initialState.id}`}
+        href={`${getBasePath()}/manage-templates`}
         className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
       >
-        Go back
+        Back to all templates
       </BackLink>
       <ReviewTemplate
         template={initialState}
@@ -44,6 +45,9 @@ export function ReviewSMSTemplate({
         }}
         PreviewComponent={<PreviewTemplate.Sms message={html} />}
       />
+      <p>
+        <Link href='/manage-templates'>Back to all templates</Link>
+      </p>
     </div>
   );
 }

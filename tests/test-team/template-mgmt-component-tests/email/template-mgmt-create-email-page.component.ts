@@ -201,46 +201,6 @@ test.describe('Create Email message template Page', () => {
         `${baseURL}/templates/preview-email-template/${templates.submit.id}`
       );
     });
-
-    test('when user submits form with valid data and returns, then form fields retain previous data', async ({
-      baseURL,
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(templates.submitAndReturn.id);
-
-      const templateName = 'This is an email template name';
-      const templateSubjectLine = 'This is an email template subject line';
-      const templateMessage = 'This is an email message';
-
-      await createEmailTemplatePage.nameInput.fill(templateName);
-
-      await createEmailTemplatePage.subjectLineInput.fill(templateSubjectLine);
-
-      await createEmailTemplatePage.messageTextArea.fill(templateMessage);
-
-      await createEmailTemplatePage.clickSubmitButton();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${templates.submitAndReturn.id}`
-      );
-
-      await page
-        .locator('.nhsuk-back-link__link')
-        .and(page.getByText('Go back'))
-        .click();
-
-      await expect(createEmailTemplatePage.nameInput).toHaveValue(templateName);
-
-      await expect(createEmailTemplatePage.subjectLineInput).toHaveValue(
-        templateSubjectLine
-      );
-
-      await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
-        templateMessage
-      );
-    });
   });
 
   test.describe('Error handling', () => {

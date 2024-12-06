@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
+import { TemplateMgmtPreviewPage } from '../template-mgmt-preview-page';
 
-export class TemplateMgmtPreviewEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewPage {
   public readonly editRadioOption: Locator;
 
   public readonly submitRadioOption: Locator;
