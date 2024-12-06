@@ -32,7 +32,9 @@
       "@testhelpers": ["./src/__tests__/helpers"],
       "@utils/*": ["./src/utils/*"],
       "@domain/*": ["./src/domain/*"],
-      "@hooks/*": ["./src/hooks/*"]
+      "@hooks/*": ["./src/hooks/*"],
+      "@backend-api/templates/*": ["./lambdas/backend-api/src/templates/*"],
+      "@backend-api/utils/*": ["./lambdas/backend-api/src/utils/*"]
     }
   },
   "include": [
