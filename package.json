@@ -17,7 +17,7 @@
     "destroy-sandbox": "npx ampx sandbox delete --y",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
-    "copy-files-for-testing": "mkdir -p public/testing && cp lambdas/endpoint/src/email/email-template.html public/testing/email-template.html",
+    "copy-files-for-testing": "mkdir -p public/testing && cp lambdas/backend-api/src/email/email-template.html public/testing/email-template.html",
     "generate-dependencies": "(cd amplify && npm ci && npm run generate-dependencies) && (cd lambdas/backend-api && npm ci && npm run generate-dependencies)",
     "typecheck": "tsc --listFiles --project ./tsconfig.json && npm run typecheck:backend-api && npm run typecheck:authorizer",
     "test:unit:backend-api": "npm run test:unit --prefix lambdas/backend-api",
