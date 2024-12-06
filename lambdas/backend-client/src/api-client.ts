@@ -11,7 +11,7 @@ import {
 import { Result } from './types/result';
 
 export class TemplateApiClient implements ITemplateClient {
-  private readonly _client: axios.AxiosInstance;
+  private readonly _client;
 
   constructor(token: string) {
     this._client = axios.create({

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "test:unit": "jest --coverage",
-    "typecheck": "tsc --listFiles --noEmit --skipLibCheck",
+    "typecheck": "tsc --listFiles --noEmit",
     "generate-schema": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/templates-api/spec.tmpl.json --output ./src/types/generated"
   },
   "files": [
@@ -14,16 +14,17 @@
   ],
   "types": "src/index.ts",
   "dependencies": {
-    "axios": "^1.7.8"
+    "axios": "^1.7.9"
   },
   "devDependencies": {
     "@swc/core": "^1.9.2",
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.4",
+    "@types/axios": "^0.9.36",
     "@types/jest": "^29.5.14",
     "axios-mock-adapter": "^2.1.0",
-    "jest": "^29.7.0",
     "esbuild": "^0.24.0",
+    "jest": "^29.7.0",
     "jest-mock-extended": "^3.0.7",
     "typescript": "^5.5.4"
   }
