@@ -1,4 +1,4 @@
 
 npm ci
 
-npm run generate-dependencies --workspaces
+npm run generate-dependencies --workspaces --if-present
