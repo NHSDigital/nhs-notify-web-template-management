@@ -7,7 +7,7 @@
     "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "test:unit": "jest --coverage",
     "typecheck": "tsc --listFiles --noEmit",
-    "generate-schema": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/templates-api/spec.tmpl.json --output ./src/types/generated"
+    "generate-dependencies": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/templates-api/spec.tmpl.json --output ./src/types/generated"
   },
   "files": [
     "src/index.ts"

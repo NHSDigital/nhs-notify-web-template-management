@@ -13,5 +13,5 @@ The intention here is to use a single source of truth for our type definitions a
 Run the following command to generate new types:
 
 ```bash
-npm run generate-schema
+npm run generate-dependencies
 ```
