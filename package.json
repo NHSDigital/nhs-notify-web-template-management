@@ -18,7 +18,7 @@
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "copy-files-for-testing": "mkdir -p public/testing && cp lambdas/backend-api/src/email/email-template.html public/testing/email-template.html",
-    "generate-dependencies": "npm run generate-deps:amplify && npm run generate-deps:backend-client && npm run generate-deps:backend-api",
+    "generate-dependencies": "npm run generate-deps:amplify && npm run generate-deps:backend-api",
     "typecheck": "tsc --listFiles --project ./tsconfig.json && npm run typecheck:backend-client && npm run typecheck:backend-api && npm run typecheck:authorizer",
     "test:unit:backend-api": "npm run test:unit --prefix lambdas/backend-api",
     "test:unit:backend-client": "npm run test:unit --prefix lambdas/backend-client",
@@ -27,14 +27,12 @@
     "typecheck:backend-client": "npm run typecheck --prefix lambdas/backend-client",
     "typecheck:authorizer": "npm run typecheck --prefix lambdas/authorizer",
     "generate-deps:amplify": "npm run generate-dependencies --prefix amplify",
-    "generate-deps:backend-client": "npm run generate-dependencies --prefix lambdas/backend-client",
     "generate-deps:backend-api": "npm run generate-dependencies --prefix lambdas/backend-api"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.23",
     "@aws-amplify/backend": "^1.2.0",
     "@aws-sdk/client-ses": "^3.637.0",
-    "axios": "^1.7.9",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "14.2.13",
@@ -42,7 +40,6 @@
     "nhsuk-react-components": "^4.1.1",
     "react": "^18",
     "react-dom": "^18",
-    "types": "^0.1.1",
     "winston": "^3.14.2",
     "zod": "^3.23.8"
   },
