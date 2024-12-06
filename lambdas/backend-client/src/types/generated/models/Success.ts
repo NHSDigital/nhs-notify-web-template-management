@@ -6,5 +6,6 @@ import type { TemplateDTO } from './TemplateDTO';
 export type Success = {
     template: TemplateDTO;
     statusCode: number;
+    newFields: string;
 };
 
