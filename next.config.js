@@ -28,6 +28,7 @@ const nextConfig = (phase) => ({
     ];
   },
 
+  // pages with e.g. .dev.tsx extension are only included when running locally
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'].flatMap((extension) => {
     const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
     return isDevServer ? [`dev.${extension}`, extension] : [extension];
