@@ -79,5 +79,3 @@ fi
 echo $authentication_result > $root_dir/sandbox_cognito_auth_token.json
 
 echo "Credentials written to $root_dir/sandbox_cognito_auth_token.json"
-
-

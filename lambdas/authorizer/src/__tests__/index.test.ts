@@ -82,7 +82,7 @@ const denyPolicy = {
   },
 };
 
-const originalEnv = process.env;
+const originalEnv = { ...process.env };
 
 beforeEach(() => {
   jest.resetAllMocks();
