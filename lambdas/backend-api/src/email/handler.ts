@@ -27,22 +27,15 @@ const config = () => {
   };
 };
 
-const getOwner = (authorizer?: Record<string, string> | null) => ({
-  username: authorizer?.username,
-  emailAddress: authorizer?.email,
-});
-
 export const emailHandler: APIGatewayProxyHandler = async (event) => {
   try {
     const { senderEmail, tableName } = config();
 
     const templateId = getTemplateId(event);
 
-    const { username, emailAddress } = getOwner(
-      event.requestContext.authorizer
-    );
+    const { username, email } = event.requestContext?.authorizer || {};
 
-    if (!username || !emailAddress) {
+    if (!username || !email) {
       throw new ErrorWithStatusCode(
         'Missing username or email from authorization context',
         403
@@ -59,7 +52,7 @@ export const emailHandler: APIGatewayProxyHandler = async (event) => {
 
     const msg = createMimeMessage();
     msg.setSender({ name: 'NHS Notify', addr: senderEmail });
-    msg.setTo([{ addr: emailAddress }]);
+    msg.setTo([{ addr: email }]);
     msg.setSubject(`Template submitted - ${name}`);
     msg.addMessage({
       contentType: 'text/html',
