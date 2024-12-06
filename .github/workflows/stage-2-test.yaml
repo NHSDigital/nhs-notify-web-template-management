@@ -41,6 +41,23 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
+
+    name: "Check generated dependencies"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+      - name: "Repo setup"
+        run: |
+          npm ci
+          (cd lambdas/authorizer && npm ci)
+          (cd lambdas/backend-client && npm ci)
+          (cd lambdas/backend-api && npm ci)
+      - name: "Generate dependencies"
+        run: |
+          npm run generate-dependencies
+          git diff --exit-code
   test-unit:
     name: "Unit tests"
     runs-on: ubuntu-latest
