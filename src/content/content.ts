@@ -212,6 +212,27 @@ const homePage = {
     'You can access this tool by signing in with your NHSmail account or Care Identity.',
   linkButton: {
     text: 'Start now',
+    url: `${getBasePath()}/manage-templates`,
+  },
+};
+
+const manageTemplates = {
+  pageHeading: 'Message templates',
+  emptyTemplates: 'You do not have any templates yet.',
+  listOfTemplates: 'List of templates',
+  tableHeadings: {
+    name: 'Name',
+    type: 'Type',
+    status: 'Status',
+    dateCreated: 'Date created',
+    action: {
+      text: 'Action',
+      copy: 'Copy',
+      delete: 'Delete',
+    },
+  },
+  createTemplateButton: {
+    text: 'Create template',
     url: `${getBasePath()}/choose-a-template-type`,
   },
 };
@@ -481,6 +502,7 @@ const content = {
   pages: {
     homePage,
     error404PageContent,
+    manageTemplates,
   },
 };
 
