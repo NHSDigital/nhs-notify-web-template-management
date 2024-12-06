@@ -41,7 +41,7 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-
+  check-generated-dependencies:
     name: "Check generated dependencies"
     runs-on: ubuntu-latest
     timeout-minutes: 5
