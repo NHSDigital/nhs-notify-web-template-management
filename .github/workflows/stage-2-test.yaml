@@ -61,13 +61,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unit-tests
-          path: ".reports/unit"
+          path: "**/.reports/unit"
+          include-hidden-files: true
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
-          path: ".reports/unit/coverage/lcov.info"
+          path: ".reports/lcov.info"
         if: always()
   test-lint:
     name: "Linting"
