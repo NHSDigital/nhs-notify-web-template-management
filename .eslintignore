@@ -1,4 +1,5 @@
 public
-jest.config.ts
-jest.setup.ts
 dist
+**/jest.config.ts
+**/jest.setup.ts
+lambdas/endpoint/dist

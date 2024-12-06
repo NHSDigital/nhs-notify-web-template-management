@@ -1,11 +1,15 @@
 {
   "name": "nhs-notify-web-template-management-ui-tests",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "test:start-local-app": "npm run build --prefix ../../ && npm run start --prefix ../../",
     "test:local-ui": "playwright test --project component -c config/local.config.ts",
-    "test:local-ui-e2e": "playwright test --project e2e-local -c config/local.config.ts"
+    "test:local-ui-e2e": "playwright test --project e2e-local -c config/local.config.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@aws-sdk/client-appsync": "^3.650.0",

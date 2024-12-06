@@ -18,7 +18,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     })
   );
 
-  console.log(event);
+  console.log(event); // eslint-disable-line no-console
 
   return {
     statusCode: 200,

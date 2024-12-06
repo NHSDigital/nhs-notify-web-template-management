@@ -1,14 +1,14 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { sendEmail } from '../functions/send-email/resource';
 
-enum TemplateType {
+export enum TemplateType {
   NHS_APP = 'NHS_APP',
   SMS = 'SMS',
   EMAIL = 'EMAIL',
   LETTER = 'LETTER',
 }
 
-enum TemplateStatus {
+export enum TemplateStatus {
   NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
   SUBMITTED = 'SUBMITTED',
 }
