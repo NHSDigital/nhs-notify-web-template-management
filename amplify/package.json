@@ -11,5 +11,8 @@
   },
   "scripts": {
     "generate-dependencies": "tsx functions/send-email/generate-dependencies.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
   }
 }
