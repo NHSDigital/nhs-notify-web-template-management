@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
+
+const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
 
-const nextConfig = {
+const nextConfig = (phase) => ({
   basePath,
   env: {
     basePath,
@@ -24,6 +27,12 @@ const nextConfig = {
       },
     ];
   },
-};
+
+  // pages with e.g. .dev.tsx extension are only included when running locally
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx'].flatMap((extension) => {
+    const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
+    return isDevServer ? [`dev.${extension}`, extension] : [extension];
+  }),
+});
 
 module.exports = nextConfig;
