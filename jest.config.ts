@@ -21,9 +21,7 @@ const moduleNameMapperDefaults = pathsToModuleNameMapper(
 );
 
 const config: Config = {
-  transform: {
-    '^.+\\.(t|j)sx?$': '@swc/jest',
-  },
+  preset: 'ts-jest',
 
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
