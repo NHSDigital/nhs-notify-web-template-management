@@ -10,12 +10,20 @@ export const baseJestConfig: Config = {
   collectCoverage: true,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: '../.reports/unit/coverage',
+  coverageDirectory: './.reports/unit/coverage',
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'babel',
 
-  collectCoverageFrom: ['src/**/*.ts*', 'amplify/**/*.ts*', 'lambdas/**/*.ts'],
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: -10,
+    },
+  },
+
   transform: { '\\.ts$': '@swc/jest' },
   testPathIgnorePatterns: ['.build'],
 
