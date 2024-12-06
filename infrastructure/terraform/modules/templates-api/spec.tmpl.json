@@ -6,8 +6,8 @@
     "version": "v1"
   },
   "paths": {
-    "/v1/endpoint": {
-      "get": {
+    "/v1/email": {
+      "post": {
         "security": [
           {
             "authorizer": []
@@ -38,7 +38,7 @@
           "contentHandling": "CONVERT_TO_TEXT",
           "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${ENDPOINT_LAMBDA_ARN}/invocations",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${EMAIL_LAMBDA_ARN}/invocations",
           "responses": {
             ".*": {
               "statusCode": "200"

@@ -1,44 +1,30 @@
-locals {
-  endpoint_entrypoint = "src/index.ts"
-}
-
-module "endpoint_lambda" {
+module "email_lambda" {
   source      = "../lambda-function"
   description = "templates api endpoint"
 
-  function_name    = "${local.csi}-endpoint"
+  function_name    = "${local.csi}-email"
   filename         = module.endpoint_build.zips[local.endpoint_entrypoint].path
   source_code_hash = module.endpoint_build.zips[local.endpoint_entrypoint].base64sha256
   runtime          = "nodejs20.x"
-  handler          = "index.handler"
+  handler          = "index.emailHandler"
 
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    NODE_OPTIONS         = "--enable-source-maps"
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
+    SENDER_EMAIL = "no-reply@${var.email_domain_name}"
   }
 
-  execution_role_policy_document = data.aws_iam_policy_document.endpoint_lambda_dynamo_access.json
+  execution_role_policy_document = data.aws_iam_policy_document.email_lambda.json
 }
 
-
-module "endpoint_build" {
-  source = "../typescript-build-zip"
-
-  source_code_dir = "${local.lambdas_source_code_dir}/endpoint"
-  entrypoints     = [local.endpoint_entrypoint]
-}
-
-data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {
+data "aws_iam_policy_document" "email_lambda" {
   statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"
 
     actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:Query"
+      "dynamodb:GetItem"
     ]
 
     resources = [
@@ -61,5 +47,14 @@ data "aws_iam_policy_document" "endpoint_lambda_dynamo_access" {
     resources = [
       aws_kms_key.dynamo.arn
     ]
+  }
+
+  statement {
+    sid  = "AllowSESAccess"
+    effect = "Allow"
+
+    actions = ["ses:SendRawEmail"]
+
+    resources = ["arn:aws:ses:eu-west-2:${var.aws_account_id}:identity/*"]
   }
 }

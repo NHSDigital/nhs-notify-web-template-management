@@ -17,8 +17,8 @@
     "destroy-sandbox": "npx ampx sandbox delete --y",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
-    "copy-files-for-testing": "mkdir -p public/testing && cp amplify/functions/send-email/email-template.html public/testing/email-template.html",
-    "generate-dependencies": "cd amplify && npm ci && npm run generate-dependencies && cd ..",
+    "copy-files-for-testing": "mkdir -p public/testing && cp lambdas/endpoint/src/email/email-template.html public/testing/email-template.html",
+    "generate-dependencies": "(cd amplify && npm ci && npm run generate-dependencies) && (cd lambdas/endpoint && npm ci && npm run generate-dependencies)",
     "typecheck": "tsc --listFiles --project ./tsconfig.json"
   },
   "dependencies": {
