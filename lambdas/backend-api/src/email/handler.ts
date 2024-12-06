@@ -7,7 +7,6 @@ import { emailTemplate } from './email-template';
 import { ErrorWithStatusCode } from '../error-with-status-code';
 import { getTemplate } from './get-template';
 import { getTemplateId } from './get-template-id';
-import { getOwner } from './get-owner';
 
 const config = () => {
   const senderEmail = process.env.SENDER_EMAIL;
@@ -28,12 +27,27 @@ const config = () => {
   };
 };
 
+const getOwner = (authorizer?: Record<string, string> | null) => ({
+  username: authorizer?.username,
+  emailAddress: authorizer?.email,
+});
+
 export const emailHandler: APIGatewayProxyHandler = async (event) => {
   try {
     const { senderEmail, tableName } = config();
 
     const templateId = getTemplateId(event);
-    const { username, emailAddress } = await getOwner(event);
+
+    const { username, emailAddress } = getOwner(
+      event.requestContext.authorizer
+    );
+
+    if (!username || !emailAddress) {
+      throw new ErrorWithStatusCode(
+        'Missing username or email from authorization context',
+        403
+      );
+    }
 
     const { name, message, subject } = await getTemplate(
       tableName,

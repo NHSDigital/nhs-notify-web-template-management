@@ -3,17 +3,17 @@ import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { apiFailure, apiSuccess } from './responses';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-  const username = event.requestContext.authorizer?.username;
+  const email = event.requestContext.authorizer?.email;
 
   const templateId = event.pathParameters?.templateId;
 
   const dto = JSON.parse(event.body || '{}');
 
-  if (!username || !templateId) {
+  if (!email || !templateId) {
     return apiFailure(400, 'Invalid request');
   }
 
-  const client = new TemplateClient(username);
+  const client = new TemplateClient(email);
 
   const { data, error } = await client.updateTemplate(templateId, dto);
 

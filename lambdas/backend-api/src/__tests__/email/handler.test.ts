@@ -14,12 +14,6 @@ jest.mock('../../email/get-template-id', () => ({
   getTemplateId: () => 'template-id',
 }));
 jest.mock('../../email/get-template');
-jest.mock('../../email/get-owner', () => ({
-  getOwner: () => ({
-    username: 'username',
-    emailAddress: 'recipient-email',
-  }),
-}));
 
 jest.mock('@aws-sdk/client-ses', () => ({
   ...jest.requireActual('@aws-sdk/client-ses'),
@@ -125,6 +119,32 @@ describe('email handler', () => {
     });
   });
 
+  test.each([
+    { email: undefined, username: 'username' },
+    { email: 'email', username: undefined },
+  ])(
+    'handles no user information from authorizer context %p',
+    async (context) => {
+      const res = await emailHandler(
+        mockDeep<APIGatewayProxyEvent>({
+          requestContext: {
+            authorizer: context,
+          },
+        }),
+        mockDeep<Context>(),
+        mockDeep<Callback>()
+      );
+
+      expect(res).toEqual({
+        statusCode: 403,
+        body: JSON.stringify({
+          technicalMessage:
+            'Missing username or email from authorization context',
+        }),
+      });
+    }
+  );
+
   test('valid email sent', async () => {
     jest.mocked(getTemplate).mockResolvedValue({
       name: 'name',
@@ -146,6 +166,12 @@ describe('email handler', () => {
         }),
         headers: {
           Authorization: 'auth-header',
+        },
+        requestContext: {
+          authorizer: {
+            email: 'recipient-email',
+            username: 'username',
+          },
         },
       }),
       mockDeep<Context>(),

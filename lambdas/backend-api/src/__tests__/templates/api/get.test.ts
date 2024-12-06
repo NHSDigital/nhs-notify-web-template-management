@@ -15,9 +15,9 @@ const getTemplateMock = jest.spyOn(TemplateClient.prototype, 'getTemplate');
 describe('Template API - Get', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no username in requestContext', async () => {
+  test('should return 400 - Invalid request when, no email in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: undefined } },
+      requestContext: { authorizer: { email: undefined } },
       pathParameters: { templateId: '1' },
     });
 
@@ -36,7 +36,7 @@ describe('Template API - Get', () => {
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       pathParameters: { templateId: undefined },
     });
 
@@ -62,7 +62,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -76,7 +76,7 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('email');
     expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 
@@ -96,7 +96,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -107,7 +107,7 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('email');
     expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 });

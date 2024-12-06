@@ -16,9 +16,9 @@ const createMock = jest.spyOn(TemplateClient.prototype, 'createTemplate');
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no username in requestContext', async () => {
+  test('should return 400 - Invalid request when, no email in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: undefined } },
+      requestContext: { authorizer: { email: undefined } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -48,7 +48,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       body: undefined,
     });
 
@@ -65,7 +65,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('email');
 
     expect(createMock).toHaveBeenCalledWith({});
   });
@@ -79,7 +79,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -93,7 +93,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('email');
 
     expect(createMock).toHaveBeenCalledWith({ id: 1 });
   });
@@ -117,7 +117,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { username: 'username' } },
+      requestContext: { authorizer: { email: 'email' } },
       body: JSON.stringify(create),
     });
 
@@ -128,7 +128,7 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('username');
+    expect(TemplateClient).toHaveBeenCalledWith('email');
 
     expect(createMock).toHaveBeenCalledWith(create);
   });

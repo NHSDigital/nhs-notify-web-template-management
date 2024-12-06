@@ -26,7 +26,40 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
         throw new Error('Cognito error');
       }
 
-      return {};
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-username'
+      ) {
+        return {
+          Username: undefined,
+          UserAttributes: [{ Name: 'email', Value: 'email' }],
+        };
+      }
+
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-userattributes'
+      ) {
+        return {
+          Username: 'username',
+          UserAttributes: undefined,
+        };
+      }
+
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email'
+      ) {
+        return {
+          Username: 'username',
+          UserAttributes: [{ Name: 'NOT-EMAIL', Value: 'not-email' }],
+        };
+      }
+
+      return {
+        Username: 'username',
+        UserAttributes: [{ Name: 'email', Value: 'email' }],
+      };
     }
   }
 
@@ -68,6 +101,7 @@ const allowPolicy = {
   },
   context: {
     username: 'username',
+    email: 'email',
   },
 };
 
@@ -178,7 +212,6 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
       token_use: 'access',
       client_id: 'user-pool-client-id-2',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-      username: 'username',
     },
     'key',
     {
@@ -208,7 +241,6 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-2',
-      username: 'username',
     },
     'key',
     {
@@ -241,7 +273,6 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
       token_use: 'id',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-      username: 'username',
     },
     'key',
     {
@@ -273,7 +304,6 @@ test('returns Deny policy on Cognito not validating the token', async () => {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-error',
-      username: 'username',
     },
     'key',
     {
@@ -299,13 +329,73 @@ test('returns Deny policy on Cognito not validating the token', async () => {
   );
 });
 
+test.each([
+  'user-pool-id-cognito-no-username',
+  'user-pool-id-cognito-no-userattributes',
+])('returns Deny policy, when no Username on Cognito %p', async (iss) => {
+  process.env.USER_POOL_ID = iss;
+
+  const jwt = sign(
+    {
+      token_use: 'access',
+      client_id: 'user-pool-client-id',
+      iss: `https://cognito-idp.eu-west-2.amazonaws.com/${iss}`,
+    },
+    'key',
+    {
+      keyid: 'key-id',
+    }
+  );
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+  expect(warnMock).toHaveBeenCalledWith('Missing user');
+});
+
+test('returns Deny policy, when no email on Cognito UserAttributes', async () => {
+  process.env.USER_POOL_ID = 'user-pool-id-cognito-no-email';
+
+  const jwt = sign(
+    {
+      token_use: 'access',
+      client_id: 'user-pool-client-id',
+      iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email',
+    },
+    'key',
+    {
+      keyid: 'key-id',
+    }
+  );
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+  expect(warnMock).toHaveBeenCalledWith('Missing user email address');
+});
+
 test('returns Allow policy on valid token', async () => {
   const jwt = sign(
     {
       token_use: 'access',
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-      username: 'username',
     },
     'key',
     {
@@ -335,7 +425,6 @@ test('returns Deny policy on expired token', async () => {
       client_id: 'user-pool-client-id',
       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
       exp: 1_640_995_200,
-      username: 'username',
     },
     'key',
     {

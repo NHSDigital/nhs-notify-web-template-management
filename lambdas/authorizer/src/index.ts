@@ -17,13 +17,12 @@ const $AccessToken = z.object({
   client_id: z.string(),
   iss: z.string(),
   token_use: z.string(),
-  username: z.string(),
 });
 
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
-  context?: { username: string }
+  context?: { username: string; email: string }
 ) => ({
   principalId: 'api-caller',
   policyDocument: {
@@ -80,11 +79,8 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
       issuer,
     });
 
-    const {
-      client_id: clientId,
-      token_use: tokenUse,
-      username,
-    } = $AccessToken.parse(verifiedToken);
+    const { client_id: clientId, token_use: tokenUse } =
+      $AccessToken.parse(verifiedToken);
 
     // client_id claim
     if (clientId !== userPoolClientId) {
@@ -103,14 +99,29 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
     }
 
     // cognito SDK call - this will error if the user has been deleted
-    await cognitoClient.send(
+    const { Username, UserAttributes } = await cognitoClient.send(
       new GetUserCommand({
         AccessToken: authorizationToken,
       })
     );
 
+    if (!Username || !UserAttributes) {
+      logger.warn('Missing user');
+      return generatePolicy(methodArn, 'Deny');
+    }
+
+    const emailAddress = UserAttributes.find(
+      ({ Name }) => Name === 'email'
+    )?.Value;
+
+    if (!emailAddress) {
+      logger.warn('Missing user email address');
+      return generatePolicy(methodArn, 'Deny');
+    }
+
     return generatePolicy(methodArn, 'Allow', {
-      username,
+      username: Username,
+      email: emailAddress,
     });
   } catch (error) {
     logger.error(error);
