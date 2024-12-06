@@ -122,7 +122,7 @@ describe('email handler', () => {
   test.each([
     { email: undefined, username: 'username' },
     { email: 'email', username: undefined },
-    undefined
+    undefined,
   ])(
     'handles no user information from authorizer context %p',
     async (context) => {
