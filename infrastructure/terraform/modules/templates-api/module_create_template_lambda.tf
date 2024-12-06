@@ -13,7 +13,6 @@ module "create_template_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    NODE_OPTIONS         = "--enable-source-maps"
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
   }
 

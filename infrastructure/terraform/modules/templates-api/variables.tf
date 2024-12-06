@@ -60,3 +60,8 @@ variable "cognito_config" {
   })
   description = "Cognito config"
 }
+
+variable "email_domain_name" {
+  type        = string
+  description = "Email domain name"
+}

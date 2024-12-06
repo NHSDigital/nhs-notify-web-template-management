@@ -26,3 +26,5 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     body: JSON.stringify({}),
   };
 };
+
+export { emailHandler } from './email/handler';

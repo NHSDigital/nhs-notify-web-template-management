@@ -3,6 +3,6 @@ jest.config.ts
 jest.setup.ts
 lambdas/backend-client/src/types/generated
 **/*/coverage/*
-dist
 .build
 node_modules
+dist
