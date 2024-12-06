@@ -20,7 +20,6 @@
     "@swc/core": "^1.9.2",
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.4",
-    "@types/axios": "^0.9.36",
     "@types/jest": "^29.5.14",
     "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.24.0",
