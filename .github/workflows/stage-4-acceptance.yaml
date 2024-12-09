@@ -119,7 +119,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
-          path: frontend/amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
@@ -151,7 +151,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
-          path: frontend/amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
@@ -187,7 +187,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
-          path: frontend/amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
