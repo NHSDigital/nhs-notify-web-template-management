@@ -33,6 +33,7 @@
     "@aws-amplify/adapter-nextjs": "^1.2.23",
     "@aws-amplify/backend": "^1.2.0",
     "@aws-sdk/client-ses": "^3.637.0",
+    "date-fns": "^4.1.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "14.2.13",
