@@ -3,12 +3,14 @@
 set -euo pipefail
 
 echo "Creating Amplify sandbox"
+outputs_dir="./frontend/"
+outputs_path="${outputs_dir}amplify_outputs.json"
 
-if [[ ! -f amplify_outputs.json ]]; then
-    echo "{}" >> amplify_outputs.json
+if [[ ! -f $outputs_path ]]; then
+    echo "{}" >> $outputs_path
 fi
 
-npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}" --outputs-out-dir ./frontend
+npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}" --outputs-out-dir $outputs_dir
 
 # wait for Amplify outputs file to be available
 wait_seconds=0
@@ -16,7 +18,7 @@ max_wait_seconds=600
 wait_interval=1
 expected_version=1.3
 while [ $wait_seconds -le $max_wait_seconds ]; do
-    amplify_outputs_version=$( jq -r ".version" frontend/amplify_outputs.json )
+    amplify_outputs_version=$( jq -r ".version" $outputs_path )
 
     if [[ $amplify_outputs_version == $expected_version  ]]; then
         echo "Amplify outputs file created"
