@@ -13,7 +13,7 @@
         "app:start": "npm run app:start --workspace frontend",
         "app:wait": "npm run app:wait --workspace frontend",
         "build": "npm run build --workspace frontend",
-        "copy-files-for-testing": "mkdir -p public/testing && cp ./amplify/functions/send-email/email-template.html ./frontend/public/testing/email-template.html",
+        "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./amplify/functions/send-email/email-template.html ./frontend/public/testing/email-template.html",
         "create-sandbox": "pm2 start npx -- ampx sandbox",
         "destroy-sandbox": "npx ampx sandbox delete --y",
         "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
