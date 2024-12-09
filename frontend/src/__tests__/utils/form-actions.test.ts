@@ -21,7 +21,6 @@ import type { Template } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@aws-amplify/adapter-nextjs/data');
 jest.mock('node:crypto');
-jest.mock('nhs-notify-web-template-management-utils');
 
 const mockResponseData = {
   id: 'id',
@@ -232,10 +231,10 @@ test('sendEmail - no errors', async () => {
     },
   });
 
-  const mockLogger = jest.mocked(logger);
+  const mockErrorLogger = jest.spyOn(logger, 'error');
   await sendEmail('template-id', 'template-name', 'template-message', null);
 
-  expect(mockLogger.error).not.toHaveBeenCalled();
+  expect(mockErrorLogger).not.toHaveBeenCalled();
 });
 
 test('sendEmail - errors', async () => {
@@ -245,7 +244,7 @@ test('sendEmail - errors', async () => {
     },
   });
 
-  const mockLogger = jest.mocked(logger);
+  const mockErrorLogger = jest.spyOn(logger, 'error');
   await sendEmail(
     'template-id-error',
     'template-name',
@@ -253,7 +252,7 @@ test('sendEmail - errors', async () => {
     null
   );
 
-  expect(mockLogger.error).toHaveBeenCalledWith({
+  expect(mockErrorLogger).toHaveBeenCalledWith({
     description: 'Error sending email',
     res: {
       errors: ['email error'],
@@ -331,10 +330,10 @@ test('getTemplates - errors', async () => {
     },
   });
 
-  const mockLogger = jest.mocked(logger);
+  const mockErrorLogger = jest.spyOn(logger, 'error');
   const response = await getTemplates();
 
-  expect(mockLogger.error).toHaveBeenCalledWith('Failed to get templates', [
+  expect(mockErrorLogger).toHaveBeenCalledWith('Failed to get templates', [
     {
       errorInfo: { error: 'test-error' },
       errorType: 'test-error-type',
