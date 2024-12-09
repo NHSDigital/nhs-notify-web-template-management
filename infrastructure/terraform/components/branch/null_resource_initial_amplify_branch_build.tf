@@ -8,6 +8,6 @@ resource "null_resource" "initial_amplify_branch_build" {
 
   provisioner "local-exec" {
     when    = destroy
-    command = "aws amplify start-deployment --app-id ${self.triggers.amplify_app_id} --branch-name ${self.triggers.amplify_branch_name}"
+    command = "aws amplify start-job --app-id ${self.triggers.amplify_app_id} --branch-name ${self.triggers.amplify_branch_name} --job-type 'RELEASE'"
   }
 }
