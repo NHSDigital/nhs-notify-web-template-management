@@ -37,7 +37,7 @@ export class DatabaseTableNameHelper {
     }
 
     const amplifyOutput = JSON.parse(
-      fs.readFileSync('../../amplify_outputs.json', 'utf8')
+      fs.readFileSync('../../frontend/amplify_outputs.json', 'utf8')
     );
 
     Amplify.configure(amplifyOutput);
