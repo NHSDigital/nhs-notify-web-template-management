@@ -129,6 +129,37 @@ test.describe('Create Email message template Page', () => {
       ]);
     });
 
+    const moreInfoLinks = [
+      { name: 'Email messages (opens in a new tab)', url: 'features/emails' },
+      {
+        name: 'From and reply-to addresses (opens in a new tab)',
+        url: 'using-nhs-notify/tell-recipients-who-your-messages-are-from',
+      },
+      {
+        name: 'Delivery times (opens in a new tab)',
+        url: 'using-nhs-notify/delivery-times',
+      },
+    ];
+
+    for (const { name, url } of moreInfoLinks) {
+      test(`more info link: ${name}, navigates to correct page in new tab`, async ({
+        page,
+        baseURL,
+      }) => {
+        const createTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+        await createTemplatePage.loadPage();
+
+        const newTabPromise = page.waitForEvent('popup');
+
+        await page.getByRole('link', { name }).click();
+
+        const newTab = await newTabPromise;
+
+        await expect(newTab).toHaveURL(`${baseURL}/${url}`);
+      });
+    }
+
     test('when user clicks "Naming your templates" tool tips, then tool tips are displayed', async ({
       page,
     }) => {

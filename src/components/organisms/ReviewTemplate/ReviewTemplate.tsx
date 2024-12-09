@@ -3,24 +3,13 @@
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { Container, Row, Col, Tag } from 'nhsuk-react-components';
-import { TemplateType, TemplateStatus } from '@utils/enum';
 import concatClassNames from '@utils/concat-class-names';
+import {
+  templateStatustoDisplayMappings,
+  templateTypeDisplayMappings,
+} from '@utils/enum';
 import styles from './ReviewTemplate.module.scss';
 import { ReviewTemplateProps } from './review-template.types';
-
-const templateTypeDisplayMappings = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'NHS App',
-    [TemplateType.SMS]: 'Text message (SMS)',
-    [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: 'Letter',
-  })[type];
-
-const templateStatustoDisplayMappings = (status: TemplateStatus) =>
-  ({
-    [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
-    [TemplateStatus.SUBMITTED]: 'Submitted',
-  })[status];
 
 export function ReviewTemplate({
   form,

@@ -1,5 +1,5 @@
 resource "aws_iam_role" "api_gateway_execution_role" {
-  name               = "${local.csi}-apig-execution-role"
+  name               = "${local.csi}-apig"
   description        = "Allows API Gateway service to invoke Lambda functions"
   assume_role_policy = data.aws_iam_policy_document.api_gateway_service_trust_policy.json
 }
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
     ]
 
     resources = [
-      module.endpoint_lambda.function_arn,
+      module.email_lambda.function_arn,
       module.authorizer_lambda.function_arn
     ]
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { WarningCallout, Button, BackLink } from 'nhsuk-react-components';
+import { WarningCallout, Button } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from '@utils/types';
 import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -15,7 +15,6 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   submitPath,
 }) => {
   const {
-    backLinkText,
     pageHeading,
     warningCalloutLabel,
     warningCalloutText,
@@ -29,12 +28,6 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
 
   return (
     <div className='nhsuk-grid-row'>
-      <BackLink
-        href={`${getBasePath()}/${goBackPath}/${templateId}`}
-        className='nhsuk-u-margin-bottom-7 nhsuk-u-margin-left-3'
-      >
-        {backLinkText}
-      </BackLink>
       <div className='nhsuk-grid-column-two-thirds'>
         <h1>
           {pageHeading} {`'${templateName}'`}

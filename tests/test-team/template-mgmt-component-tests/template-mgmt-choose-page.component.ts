@@ -21,6 +21,11 @@ test.describe('Choose Template Type Page', () => {
     await expect(chooseTemplatePage.pageHeader).toHaveText(
       'Choose a template type to create'
     );
+
+    await expect(chooseTemplatePage.learnMoreLink).toHaveAttribute(
+      'href',
+      '/features'
+    );
   });
 
   test('common page tests', async ({ page, baseURL }) => {

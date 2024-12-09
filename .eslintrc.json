@@ -89,7 +89,8 @@
       "files": ["*.test.{ts,tsx}"],
       "rules": {
         "unicorn/no-useless-undefined": "off",
-        "unicorn/consistent-function-scoping": "off"
+        "unicorn/consistent-function-scoping": "off",
+        "max-classes-per-file": "off"
       }
     }
   ]

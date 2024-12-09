@@ -35,7 +35,7 @@ variable "group" {
 variable "component" {
   type        = string
   description = "The variable encapsulating the name of this component"
-  default     = "templates-api"
+  default     = "api"
 }
 
 ##
@@ -55,8 +55,13 @@ variable "log_retention_in_days" {
 
 variable "cognito_config" {
   type = object({
-    USER_POOL_ID: string,
-    USER_POOL_CLIENT_ID: string
+    USER_POOL_ID : string,
+    USER_POOL_CLIENT_ID : string
   })
   description = "Cognito config"
+}
+
+variable "email_domain_name" {
+  type        = string
+  description = "Email domain name"
 }

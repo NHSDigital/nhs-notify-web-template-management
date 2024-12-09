@@ -18,6 +18,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     })
   );
 
+  // eslint-disable-next-line no-console
   console.log(event);
 
   return {
@@ -25,3 +26,5 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     body: JSON.stringify({}),
   };
 };
+
+export { emailHandler } from './email/handler';
