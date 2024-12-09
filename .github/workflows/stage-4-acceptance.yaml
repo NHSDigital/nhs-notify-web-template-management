@@ -52,7 +52,6 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
-          (cd amplify && npm ci)
           (cd lambdas/authorizer && npm ci)
           (cd lambdas/backend-client && npm ci)
           (cd lambdas/backend-api && npm ci)
@@ -128,7 +127,6 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
-          (cd amplify && npm ci)
           (cd lambdas/authorizer && npm ci)
           (cd lambdas/backend-client && npm ci)
           (cd lambdas/backend-api && npm ci)
@@ -164,7 +162,6 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
-          (cd amplify && npm ci)
           (cd lambdas/authorizer && npm ci)
           (cd lambdas/backend-client && npm ci)
           (cd lambdas/backend-api && npm ci)
@@ -204,7 +201,6 @@ jobs:
         run: |
           npm ci
           npm ci tests/test-team
-          (cd amplify && npm ci)
           (cd lambdas/authorizer && npm ci)
           (cd lambdas/backend-client && npm ci)
           (cd lambdas/backend-api && npm ci)
