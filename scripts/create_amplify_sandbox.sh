@@ -14,7 +14,7 @@ npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
 wait_seconds=0
 max_wait_seconds=600
 wait_interval=1
-expected_version=1
+expected_version=1.1
 while [ $wait_seconds -le $max_wait_seconds ]; do
     amplify_outputs_version=$( jq -r ".version" amplify_outputs.json )
 
@@ -30,14 +30,14 @@ while [ $wait_seconds -le $max_wait_seconds ]; do
 
     echo "Amplify outputs file not found after ${wait_seconds} seconds. Waiting ${wait_interval} seconds and polling again"
 
-    cat ~/.pm2/logs/npx-out.log
-
     sleep $wait_interval
     wait_seconds=$(($wait_seconds + $wait_interval))
+
+    npx pm2 logs npx all --nostream
 done
 
 
-cat ~/.pm2/logs/npx-out.log
+npx pm2 logs npx all --nostream
 
 echo "Amplify outputs file not found after ${wait_seconds} seconds. Failing job"
 exit 1
