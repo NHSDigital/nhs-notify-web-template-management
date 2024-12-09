@@ -12,6 +12,7 @@
     "@aws-sdk/client-dynamodb": "^3.654.0",
     "@aws-sdk/lib-dynamodb": "^3.654.0",
     "@playwright/test": "^1.45.1",
+    "@types/uuid": "^10.0.0",
     "aws-amplify": "^6.6.0"
   }
 }
