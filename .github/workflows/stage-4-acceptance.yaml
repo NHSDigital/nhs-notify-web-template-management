@@ -66,7 +66,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: amplify_outputs.json
-          path: amplify_outputs.json
+          path: frontend/amplify_outputs.json
 
   sandbox-set-up:
     name: "Sandbox set up"
@@ -119,6 +119,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/amplify_outputs.json
       - name: "Repo setup"
         run: |
           npm ci
@@ -150,6 +151,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/amplify_outputs.json
       - name: "Repo setup"
         run: |
           npm ci
@@ -185,6 +187,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/amplify_outputs.json
       - name: "Repo setup"
         run: |
           npm ci
