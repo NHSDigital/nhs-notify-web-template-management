@@ -34,8 +34,7 @@ while [ $wait_seconds -le $max_wait_seconds ]; do
     wait_seconds=$(($wait_seconds + $wait_interval))
 done
 
-
-cat ~/.pm2/logs/npx-out.log
+npx pm2 logs npx --lines all --nostream
 
 echo "Amplify outputs file not found after ${wait_seconds} seconds. Failing job"
 exit 1
