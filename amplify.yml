@@ -9,6 +9,7 @@ backend:
         - npm run generate-dependencies --workspaces --if-present
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-out-dir frontend
 frontend:
+  buildpath: frontend
   phases:
     build:
       commands:
