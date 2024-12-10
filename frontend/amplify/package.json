@@ -17,7 +17,7 @@
   },
   "scripts": {
     "generate-dependencies": "tsx functions/send-email/generate-dependencies.ts",
-    "lint": "eslint .",
+    "lint": "eslint . -c .eslintrc.json",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
     "typecheck": "tsc --noEmit",

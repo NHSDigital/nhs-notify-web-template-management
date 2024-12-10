@@ -5,7 +5,7 @@
         "lambdas/backend-api",
         "lambdas/backend-client",
         "frontend",
-        "amplify",
+        "frontend/amplify",
         "tests/test-team",
         "utils"
     ],
