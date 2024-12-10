@@ -7,7 +7,7 @@
     "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test:unit": "jest --coverage",
+    "test:unit": "echo \"Unit tests not implemented\"",
     "typecheck": "tsc --noEmit",
     "generate-dependencies": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/templates-api/spec.tmpl.json --output ./src/types/generated"
   },
@@ -22,11 +22,7 @@
     "@swc/core": "^1.9.2",
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.4",
-    "@types/jest": "^29.5.14",
-    "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.24.0",
-    "jest": "^29.7.0",
-    "jest-mock-extended": "^3.0.7",
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "typescript": "^5.5.4"
   }

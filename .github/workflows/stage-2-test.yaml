@@ -57,7 +57,7 @@ jobs:
           (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
           git diff --exit-code
   test-unit:
     name: "Unit tests"
