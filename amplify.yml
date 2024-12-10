@@ -18,11 +18,11 @@ applications:
           commands:
             - npm run build
       artifacts:
-        baseDirectory: .next
+        baseDirectory: frontend/.next
         files:
           - '**/*'
       cache:
         paths:
-          - .next/cache/**/*
+          - frontend/.next/cache/**/*
           - .npm/**/*
           - node_modules/**/*
