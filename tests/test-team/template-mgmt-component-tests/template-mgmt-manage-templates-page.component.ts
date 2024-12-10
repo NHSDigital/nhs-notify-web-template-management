@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'node:crypto'
 import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
 import {
   assertFooterLinks,
@@ -14,7 +14,7 @@ import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 
 const templates = {
   emailSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     version: 1,
     name: 'email-submitted_manage-templates-page',
     message: 'test example message',
@@ -24,7 +24,7 @@ const templates = {
     createdAt: '2010-10-11T11:11:11.111Z',
   }),
   emailNotYetSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     version: 1,
     name: 'email-not-yet-submitted_manage-templates-page',
     message: 'test example message',
@@ -34,7 +34,7 @@ const templates = {
     createdAt: '2010-10-11T10:10:10.100Z',
   }),
   smsSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     name: 'sms-submitted_manage-templates-page',
     message: 'test example message',
     templateType: TemplateType.SMS,
@@ -42,7 +42,7 @@ const templates = {
     createdAt: '2010-10-10T11:11:11.111Z',
   }),
   smsNotYetSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     name: 'sms-not-yet-submitted_manage-templates-page',
     message: 'test example message',
     templateType: TemplateType.SMS,
@@ -50,7 +50,7 @@ const templates = {
     createdAt: '2010-10-10T10:10:10.100Z',
   }),
   nhsAppSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     name: 'nhs-app-submitted_manage-templates-page',
     message: 'test example message',
     templateType: TemplateType.NHS_APP,
@@ -58,7 +58,7 @@ const templates = {
     createdAt: '2010-10-09T11:11:11.111Z',
   }),
   nhsAppNotYetSubmitted: TemplateFactory.create({
-    id: uuid(),
+    id: randomUUID(),
     name: 'nhs-app-not-yet-submitted_manage-templates-page',
     message: 'test example message',
     templateType: TemplateType.NHS_APP,
