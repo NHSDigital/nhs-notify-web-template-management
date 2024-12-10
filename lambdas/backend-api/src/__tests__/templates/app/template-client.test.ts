@@ -8,11 +8,10 @@ import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
   Template,
-  //templateRepository,
+  templateRepository,
 } from '@backend-api/templates/domain/template';
 import { validate } from '@backend-api/utils/validate';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
-import { templateRepository } from '@backend-api/templates/domain/template/template-repository';
 
 jest.mock('@backend-api/templates/domain/template/template-repository');
 jest.mock('@backend-api/utils/validate');
