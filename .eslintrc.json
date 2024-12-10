@@ -73,7 +73,9 @@
     "unicorn/no-null": "off",
     "prefer-regex-literals": "off",
     "class-methods-use-this": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-empty-constructor": "off",
+    "no-empty-function": "off"
   },
   "overrides": [
     {
@@ -89,7 +91,8 @@
       "files": ["*.test.{ts,tsx}"],
       "rules": {
         "unicorn/no-useless-undefined": "off",
-        "unicorn/consistent-function-scoping": "off"
+        "unicorn/consistent-function-scoping": "off",
+        "max-classes-per-file": "off"
       }
     }
   ]

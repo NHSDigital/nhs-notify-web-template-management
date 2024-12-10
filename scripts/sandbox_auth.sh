@@ -76,8 +76,6 @@ else
   authentication_result=$(jq -r .AuthenticationResult <<< $auth_response)
 fi
 
-echo $authentication_result > $root_dir/sandbox_cognito_auth_token.json
+echo $authentication_result | jq '.' > $root_dir/sandbox_cognito_auth_token.json
 
 echo "Credentials written to $root_dir/sandbox_cognito_auth_token.json"
-
-

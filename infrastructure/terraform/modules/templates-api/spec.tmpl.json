@@ -6,13 +6,284 @@
     "version": "v1"
   },
   "paths": {
-    "/v1/endpoint": {
+    "/v1/template/{templateId}": {
       "get": {
+        "summary": "Get a template",
+        "description": "Get a template template by Id",
         "security": [
           {
             "authorizer": []
           }
         ],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID of template to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      },
+      "post": {
+        "summary": "Update a template",
+        "description": "Update a template template by Id",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID of template to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Template to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTemplate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
+    "/v1/template": {
+      "post": {
+        "summary": "Create a template",
+        "description": "Create a template",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Template to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
+    "/v1/templates": {
+      "get": {
+        "summary": "List all templates",
+        "description": "List all templates",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessList"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
+    "/v1/email": {
+      "post": {
+        "summary": "Send an email to the user",
+        "description": "Send an email to the user",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Id of template to send to user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmail"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "200 response",
@@ -38,7 +309,7 @@
           "contentHandling": "CONVERT_TO_TEXT",
           "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${ENDPOINT_LAMBDA_ARN}/invocations",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${EMAIL_LAMBDA_ARN}/invocations",
           "responses": {
             ".*": {
               "statusCode": "200"
@@ -58,9 +329,180 @@
         "in": "header",
         "x-amazon-apigateway-authtype": "custom",
         "x-amazon-apigateway-authorizer": {
-          "type": "token",
+          "type": "request",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
-          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}"
+          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "identitySource": "method.request.header.authorization,context.resourceId,context.httpMethod",
+          "authorizerResultTtlInSeconds": 300
+        }
+      }
+    },
+    "schemas": {
+      "TemplateDTO": {
+        "type": "object",
+        "required": [
+          "id",
+          "templateType",
+          "templateStatus",
+          "name",
+          "message",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
+          },
+          "templateStatus": {
+            "$ref": "#/components/schemas/TemplateStatus"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      },
+      "TemplateType": {
+        "type": "string",
+        "enum": [
+          "NHS_APP",
+          "SMS",
+          "EMAIL"
+        ]
+      },
+      "TemplateStatus": {
+        "type": "string",
+        "enum": [
+          "NOT_YET_SUBMITTED",
+          "SUBMITTED"
+        ]
+      },
+      "CreateTemplate": {
+        "type": "object",
+        "required": [
+          "templateType",
+          "name",
+          "message"
+        ],
+        "properties": {
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateTemplate": {
+        "type": "object",
+        "required": [
+          "templateStatus",
+          "name",
+          "message",
+          "templateType"
+        ],
+        "properties": {
+          "templateStatus": {
+            "$ref": "#/components/schemas/TemplateStatus"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType",
+            "readOnly": true,
+            "description": "This value will never be updated. It is used to determine the type of template being validated."
+          }
+        }
+      },
+      "Success": {
+        "type": "object",
+        "required": [
+          "template",
+          "statusCode"
+        ],
+        "properties": {
+          "template": {
+            "$ref": "#/components/schemas/TemplateDTO"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        }
+      },
+      "SuccessList": {
+        "type": "object",
+        "required": [
+          "templates",
+          "statusCode"
+        ],
+        "properties": {
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateDTO"
+            }
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        }
+      },
+      "Failure": {
+        "type": "object",
+        "required": [
+          "technicalMessage",
+          "statusCode"
+        ],
+        "properties": {
+          "technicalMessage": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "integer"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      },
+      "SendEmail": {
+        "type": "object",
+        "required": [
+          "templateId"
+        ],
+        "properties": {
+          "templateId": {
+            "type": "string"
+          }
         }
       }
     }

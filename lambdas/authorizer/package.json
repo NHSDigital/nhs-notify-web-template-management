@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test:unit": "jest",
+    "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
+    "test:unit": "jest --coverage",
     "typecheck": "tsc --listFiles --noEmit"
   },
   "devDependencies": {

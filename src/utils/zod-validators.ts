@@ -9,6 +9,7 @@ export const $Template = z.object({
   name: z.string(),
   message: z.string(),
   subject: z.string().nullable().optional(),
+  createdAt: z.string().optional(),
 });
 
 export const $EmailTemplate = $Template.extend({
@@ -57,3 +58,7 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
   $SubmittedSMSTemplate,
   $SubmittedLetterTemplate,
 ]);
+
+export const isTemplateValid = (
+  input: unknown
+): z.infer<typeof $Template> | undefined => $Template.safeParse(input).data;

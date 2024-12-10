@@ -1,4 +1,4 @@
-import type { APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
+import type { APIGatewayRequestAuthorizerHandler } from 'aws-lambda';
 import { z } from 'zod';
 import {
   CognitoIdentityProviderClient,
@@ -19,7 +19,11 @@ const $AccessToken = z.object({
   token_use: z.string(),
 });
 
-const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
+const generatePolicy = (
+  Resource: string,
+  Effect: 'Allow' | 'Deny',
+  context?: { username: string; email: string }
+) => ({
   principalId: 'api-caller',
   policyDocument: {
     Version: '2012-10-17',
@@ -31,17 +35,23 @@ const generatePolicy = (Resource: string, Effect: 'Allow' | 'Deny') => ({
       },
     ],
   },
+  context,
 });
 
 const getEnvironmentVariable = (envName: string) => process.env[envName];
 
-export const handler: APIGatewayTokenAuthorizerHandler = async ({
+export const handler: APIGatewayRequestAuthorizerHandler = async ({
   methodArn,
-  authorizationToken,
+  headers,
 }) => {
   try {
+    if (!headers?.Authorization) {
+      return generatePolicy(methodArn, 'Deny');
+    }
+
     const userPoolId = getEnvironmentVariable('USER_POOL_ID');
     const userPoolClientId = getEnvironmentVariable('USER_POOL_CLIENT_ID');
+    const authorizationToken = headers.Authorization;
 
     if (!userPoolId || !userPoolClientId) {
       logger.error('Lambda misconfiguration');
@@ -89,13 +99,30 @@ export const handler: APIGatewayTokenAuthorizerHandler = async ({
     }
 
     // cognito SDK call - this will error if the user has been deleted
-    await cognitoClient.send(
+    const { Username, UserAttributes } = await cognitoClient.send(
       new GetUserCommand({
         AccessToken: authorizationToken,
       })
     );
 
-    return generatePolicy(methodArn, 'Allow');
+    if (!Username || !UserAttributes) {
+      logger.warn('Missing user');
+      return generatePolicy(methodArn, 'Deny');
+    }
+
+    const emailAddress = UserAttributes.find(
+      ({ Name }) => Name === 'email'
+    )?.Value;
+
+    if (!emailAddress) {
+      logger.warn('Missing user email address');
+      return generatePolicy(methodArn, 'Deny');
+    }
+
+    return generatePolicy(methodArn, 'Allow', {
+      username: Username,
+      email: emailAddress,
+    });
   } catch (error) {
     logger.error(error);
     return generatePolicy(methodArn, 'Deny');

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import type { Context } from 'aws-lambda';
+import type { APIGatewayRequestAuthorizerEvent, Context } from 'aws-lambda';
 import { sign } from 'jsonwebtoken';
 import { mock } from 'jest-mock-extended';
 import {
@@ -26,7 +26,40 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
         throw new Error('Cognito error');
       }
 
-      return {};
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-username'
+      ) {
+        return {
+          Username: undefined,
+          UserAttributes: [{ Name: 'email', Value: 'email' }],
+        };
+      }
+
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-userattributes'
+      ) {
+        return {
+          Username: 'username',
+          UserAttributes: undefined,
+        };
+      }
+
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email'
+      ) {
+        return {
+          Username: 'username',
+          UserAttributes: [{ Name: 'NOT-EMAIL', Value: 'not-email' }],
+        };
+      }
+
+      return {
+        Username: 'username',
+        UserAttributes: [{ Name: 'email', Value: 'email' }],
+      };
     }
   }
 
@@ -66,6 +99,10 @@ const allowPolicy = {
       },
     ],
   },
+  context: {
+    username: 'username',
+    email: 'email',
+  },
 };
 
 const denyPolicy = {
@@ -82,7 +119,7 @@ const denyPolicy = {
   },
 };
 
-const originalEnv = process.env;
+const originalEnv = { ...process.env };
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -98,11 +135,11 @@ test('returns Deny policy on lambda misconfiguration', async () => {
   process.env.USER_POOL_ID = '';
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: '123',
-      type: 'TOKEN',
-    },
+      headers: { Authorization: '123' },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -111,13 +148,27 @@ test('returns Deny policy on lambda misconfiguration', async () => {
   expect(errorMock).toHaveBeenCalledWith('Lambda misconfiguration');
 });
 
+test('returns Deny policy if no Authorization token in header', async () => {
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: undefined },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});
+
 test('returns Deny policy on malformed token', async () => {
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: 'lemon',
-      type: 'TOKEN',
-    },
+      headers: { Authorization: 'lemon' },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -142,11 +193,11 @@ test('returns Deny policy on token with missing kid', async () => {
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -169,11 +220,11 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -198,11 +249,11 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -230,11 +281,11 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -261,11 +312,11 @@ test('returns Deny policy on Cognito not validating the token', async () => {
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -276,6 +327,67 @@ test('returns Deny policy on Cognito not validating the token', async () => {
       message: 'Cognito error',
     })
   );
+});
+
+test.each([
+  'user-pool-id-cognito-no-username',
+  'user-pool-id-cognito-no-userattributes',
+])('returns Deny policy, when no Username on Cognito %p', async (iss) => {
+  process.env.USER_POOL_ID = iss;
+
+  const jwt = sign(
+    {
+      token_use: 'access',
+      client_id: 'user-pool-client-id',
+      iss: `https://cognito-idp.eu-west-2.amazonaws.com/${iss}`,
+    },
+    'key',
+    {
+      keyid: 'key-id',
+    }
+  );
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+  expect(warnMock).toHaveBeenCalledWith('Missing user');
+});
+
+test('returns Deny policy, when no email on Cognito UserAttributes', async () => {
+  process.env.USER_POOL_ID = 'user-pool-id-cognito-no-email';
+
+  const jwt = sign(
+    {
+      token_use: 'access',
+      client_id: 'user-pool-client-id',
+      iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email',
+    },
+    'key',
+    {
+      keyid: 'key-id',
+    }
+  );
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+  expect(warnMock).toHaveBeenCalledWith('Missing user email address');
 });
 
 test('returns Allow policy on valid token', async () => {
@@ -292,11 +404,11 @@ test('returns Allow policy on valid token', async () => {
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );
@@ -321,11 +433,11 @@ test('returns Deny policy on expired token', async () => {
   );
 
   const res = await handler(
-    {
+    mock<APIGatewayRequestAuthorizerEvent>({
       methodArn,
-      authorizationToken: jwt,
-      type: 'TOKEN',
-    },
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
     mock<Context>(),
     jest.fn()
   );

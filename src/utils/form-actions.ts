@@ -1,9 +1,12 @@
+/* eslint-disable array-callback-return */
+
 'use server';
 
 import { getAmplifyBackendClient } from '@utils/amplify-utils';
 import { DbOperationError } from '@domain/errors';
 import { Template, Draft } from './types';
 import { logger } from './logger';
+import { isTemplateValid } from './zod-validators';
 
 export async function createTemplate(
   template: Draft<Template>
@@ -77,4 +80,24 @@ export async function sendEmail(
       res,
     });
   }
+}
+
+export async function getTemplates(): Promise<Template[] | []> {
+  const { data, errors } =
+    await getAmplifyBackendClient().models.TemplateStorage.list();
+
+  if (errors) {
+    logger.error('Failed to get templates', errors);
+  }
+
+  if (!data) {
+    logger.warn(`Failed to retrieve templates`);
+    return [];
+  }
+
+  const parsedData: Template[] = data
+    .map((template) => isTemplateValid(template))
+    .filter((template): template is Template => template !== undefined);
+
+  return parsedData;
 }
