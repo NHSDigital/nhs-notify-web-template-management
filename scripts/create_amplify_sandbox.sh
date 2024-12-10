@@ -2,15 +2,16 @@
 
 set -euo pipefail
 
+cd frontend
+
 echo "Creating Amplify sandbox"
-outputs_dir="./frontend/"
-outputs_path="${outputs_dir}amplify_outputs.json"
+outputs_path="amplify_outputs.json"
 
 if [[ ! -f $outputs_path ]]; then
     echo "{}" >> $outputs_path
 fi
 
-npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}" --outputs-out-dir $outputs_dir
+npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
 
 # wait for Amplify outputs file to be available
 wait_seconds=0
