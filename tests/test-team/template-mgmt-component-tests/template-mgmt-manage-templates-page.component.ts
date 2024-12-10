@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto';
 import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
 import {
   assertFooterLinks,
@@ -100,7 +100,9 @@ test.describe('Manage templates page', () => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
     await manageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    await expect(manageTemplatesPage.pageHeader).toHaveText('Message templates')
+    await expect(manageTemplatesPage.pageHeader).toHaveText(
+      'Message templates'
+    );
     await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
   });
 
@@ -167,7 +169,9 @@ test.describe('Manage templates page', () => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
     await manageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    await expect(manageTemplatesPage.pageHeader).toHaveText('Message templates')
+    await expect(manageTemplatesPage.pageHeader).toHaveText(
+      'Message templates'
+    );
     expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
     await expect(page).toHaveURL('/templates/choose-a-template-type');
