@@ -69,7 +69,7 @@ group_target-env.tfvars
 
 .amplify/
 amplify_outputs.json
-amplify/functions/send-email/email-template.json
+frontend/amplify/email-template.json
 
 # playwright
 test-results/
