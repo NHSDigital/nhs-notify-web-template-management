@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import { mockDeep } from 'jest-mock-extended';
 import { SendRawEmailCommandInput, SESClient } from '@aws-sdk/client-ses';
 import { handler, emailTemplate } from '../../../functions/send-email';
@@ -9,14 +6,6 @@ import type { Schema } from '../../../data/resource';
 jest.mock('@aws-sdk/client-ses', () => ({
   ...jest.requireActual('@aws-sdk/client-ses'),
   SESClient: jest.fn(),
-}));
-jest.mock('nhs-notify-web-template-management-utils', () => ({
-  ...jest.requireActual('nhs-notify-web-template-management-utils'),
-  logger: {
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-  },
 }));
 
 type HandlerEventType = Parameters<Schema['sendEmail']['functionHandler']>[0];

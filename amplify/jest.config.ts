@@ -1,1 +1,8 @@
-export { baseJestConfig as default } from 'nhs-notify-web-template-management-utils'; // eslint-disable-line no-restricted-exports
+import { baseJestConfig } from 'nhs-notify-web-template-management-utils';
+
+const jestConfig = {
+  ...baseJestConfig,
+  testEnvironment: 'node',
+};
+
+export default jestConfig;
