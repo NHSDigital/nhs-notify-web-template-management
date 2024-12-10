@@ -32,7 +32,13 @@ const config: Config = {
     'jest.config.ts',
   ],
 
-  testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts', '.build', 'amplify/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    'fixture',
+    'helpers.ts',
+    '.build',
+    'amplify/',
+  ],
 
   // Set the absolute path for imports
   moduleNameMapper: {
