@@ -27,9 +27,9 @@ jobs:
     uses: ./.github/workflows/reusable_internal_repo_build.yaml
     secrets: inherit
     with:
-      release_version: main
-      target_workflow: "dispatch-deploy-static-notify-web-template-management-env.yaml"
-      tf_environment: "main"
-      tf_group: "nhs-notify-template-management-dev"
-      tf_component: ${{ matrix.component }}
-      tf_action: "apply"
+      releaseVersion: main
+      targetWorkflow: "dispatch-deploy-static-notify-web-template-management-env.yaml"
+      targetEnvironment: "main"
+      targetAccountGroup: "nhs-notify-template-management-dev"
+      targetComponent: ${{ matrix.component }}
+      terraformAction: "apply"
