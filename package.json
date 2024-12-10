@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint --dir .",
     "lint:fix": "next lint  --dir . --fix",
-    "test:unit": "jest && npm run test:unit:backend-api && npm run test:unit:authorizer",
+    "test:unit": "jest && npm run test:unit:backend-api && npm run test:unit:backend-client && npm run test:unit:authorizer",
     "test:accessibility": "npm run copy-files-for-testing && pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",

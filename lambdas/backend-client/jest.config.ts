@@ -10,4 +10,5 @@ module.exports = {
     },
   },
   collectCoverageFrom: ['src/**/*.ts*'],
+  coveragePathIgnorePatterns: ['error-cases.ts'],
 };

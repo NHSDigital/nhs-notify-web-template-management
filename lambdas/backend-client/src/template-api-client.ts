@@ -15,10 +15,11 @@ export class TemplateApiClient implements ITemplateClient {
 
   constructor(token: string) {
     this._client = axios.create({
-      baseURL: process.env.TEMPLATE_API_URL,
+      baseURL: process.env.BACKEND_API_URL,
       headers: {
         Authorization: token,
       },
+      validateStatus: (_: number) => true, // Note: We don't want axios to throw an error when status code is not 2xx
     });
   }
 
