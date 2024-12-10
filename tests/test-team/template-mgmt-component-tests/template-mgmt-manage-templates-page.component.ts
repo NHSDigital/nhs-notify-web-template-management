@@ -170,9 +170,7 @@ test.describe('Manage templates page', () => {
     await expect(manageTemplatesPage.pageHeader).toHaveText('Message templates')
     expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
-    const chooseTemplatePage = await page.waitForSelector('h1');
-    const headerText = await chooseTemplatePage.textContent();
-    expect(headerText).toContain('Choose a template type to create');
+    await expect(page).toHaveURL('/templates/choose-a-template-type');
   });
 
   test('Name link navigation - navigates to preview page', async ({
