@@ -8,15 +8,15 @@ if [[ ! -f amplify_outputs.json ]]; then
     echo "{}" >> amplify_outputs.json
 fi
 
-npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
+npm run create-sandbox -- --identifier "wf-${GITHUB_RUN_ID}" --outputs-out-dir ./frontend
 
 # wait for Amplify outputs file to be available
 wait_seconds=0
 max_wait_seconds=600
 wait_interval=1
-expected_version=1.1
+expected_version=1.3
 while [ $wait_seconds -le $max_wait_seconds ]; do
-    amplify_outputs_version=$( jq -r ".version" amplify_outputs.json )
+    amplify_outputs_version=$( jq -r ".version" frontend/amplify_outputs.json )
 
     if [[ $amplify_outputs_version == $expected_version  ]]; then
         echo "Amplify outputs file created"

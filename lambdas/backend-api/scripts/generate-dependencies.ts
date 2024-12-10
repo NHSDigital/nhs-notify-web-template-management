@@ -7,8 +7,4 @@ const htmlContent = readFileSync(
 
 const encodedHtmlContent = JSON.stringify({ htmlContent });
 
-writeFileSync(
-  './src/email/email-template.json',
-  encodedHtmlContent,
-  'utf8'
-);
+writeFileSync('./src/email/email-template.json', encodedHtmlContent, 'utf8');

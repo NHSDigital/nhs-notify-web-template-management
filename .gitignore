@@ -26,6 +26,7 @@ node_modules
 
 # next.js
 /.next/
+*/.next
 /out/
 
 # production
@@ -68,7 +69,6 @@ group_target-env.tfvars
 
 .amplify/
 amplify_outputs.json
-public/testing
 amplify/functions/send-email/email-template.json
 
 # playwright
@@ -79,3 +79,5 @@ tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
 
 sandbox_cognito_auth_token.json
+
+frontend/public/testing
