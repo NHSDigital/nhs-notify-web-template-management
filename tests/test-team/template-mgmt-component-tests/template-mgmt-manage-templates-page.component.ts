@@ -100,9 +100,7 @@ test.describe('Manage templates page', () => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
     await manageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
-      'Message templates'
-    );
+    await expect(manageTemplatesPage.pageHeader).toHaveText('Message templates')
     await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
   });
 
@@ -169,9 +167,7 @@ test.describe('Manage templates page', () => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
     await manageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    expect(await manageTemplatesPage.pageHeader.textContent()).toBe(
-      'Message templates'
-    );
+    await expect(manageTemplatesPage.pageHeader).toHaveText('Message templates')
     expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
     const chooseTemplatePage = await page.waitForSelector('h1');
