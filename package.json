@@ -14,8 +14,6 @@
         "app:wait": "npm run app:wait --workspace frontend",
         "build": "npm run build --workspace frontend",
         "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./amplify/functions/send-email/email-template.html ./frontend/public/testing/email-template.html",
-        "create-sandbox": "pm2 start npx -- ampx sandbox",
-        "destroy-sandbox": "npx ampx sandbox delete --y",
         "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
         "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
         "start": "npm run start --workspace frontend",
@@ -44,7 +42,6 @@
         "jest-environment-jsdom": "^29.7.0",
         "jest-html-reporter": "^3.10.2",
         "jest-mock-extended": "^3.0.7",
-        "pm2": "^5.4.2",
         "ts-node": "^10.9.2"
     },
     "dependencies": {
