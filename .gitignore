@@ -67,9 +67,9 @@ terraform/*_output.json
 group_target-env.tfvars
 *tf_outputs.json
 
-.amplify/
+\.amplify/
 amplify_outputs.json
-frontend/amplify/email-template.json
+frontend/amplify/functions/send-email/email-template.json
 
 # playwright
 test-results/
