@@ -202,7 +202,7 @@ jobs:
           aws-region: eu-west-2
       - name: "Destroy Amplify sandbox"
         run: |
-          npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
+          (cd frontend && npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}")
   sandbox-tear-down:
     name: "Sandbox tear down"
     if: success() || failure()
