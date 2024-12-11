@@ -7,8 +7,6 @@
   "extends": [
     "airbnb",
     "eslint:recommended",
-    "next",
-    "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:jest/recommended",
     "plugin:jsx-a11y/recommended",
@@ -74,7 +72,16 @@
     "prefer-regex-literals": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
-    "no-empty-constructor": "off",
+    "import/no-extraneous-dependencies":[
+      "error",
+      {
+        "devDependencies":[
+            "jest.config.ts",
+            "jest.setup.ts",
+            "src/__tests__/**"
+        ]
+      }
+    ],
     "no-empty-function": "off"
   },
   "overrides": [

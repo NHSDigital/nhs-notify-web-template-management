@@ -8,8 +8,8 @@ import {
   GetUserCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { jwtDecode } from 'jwt-decode';
+import { logger } from 'nhs-notify-web-template-management-utils';
 import { handler } from '../index';
-import { logger } from '../logger';
 
 const methodArn =
   'arn:aws:execute-api:eu-west-2:000000000000:api-id/stage/GET/v1/example-endpoint';

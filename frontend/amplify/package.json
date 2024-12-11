@@ -1,0 +1,31 @@
+{
+  "name": "nhs-notify-web-template-management-amplify",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@aws-amplify/backend": "^1.8.0",
+    "@aws-sdk/client-ses": "^3.637.0",
+    "@tsconfig/node20": "^20.1.4",
+    "aws-cdk-lib": "^2.154.1",
+    "handlebars": "^4.7.8",
+    "html-entities": "^2.5.2",
+    "jest-mock-extended": "^3.0.7",
+    "mimetext": "^3.0.24",
+    "winston": "^3.17.0"
+  },
+  "scripts": {
+    "generate-dependencies": "tsx functions/send-email/generate-dependencies.ts",
+    "lint": "eslint . -c .eslintrc.json",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit",
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.1",
+    "nhs-notify-web-template-management-utils": "*"
+  }
+}
