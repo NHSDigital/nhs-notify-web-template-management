@@ -18,6 +18,5 @@ module "amplify_branch" {
   environment_variables = {
     NOTIFY_SUBDOMAIN      = var.environment
     NEXT_PUBLIC_BASE_PATH = "/templates"
-    BACKEND_API_URL       = module.backend_api.api_base_url
   }
 }
