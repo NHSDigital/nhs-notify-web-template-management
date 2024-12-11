@@ -10,12 +10,16 @@
         "utils"
     ],
     "scripts": {
-        "build": "npm run build --workspace frontend",
+        "build": "npm run build --workspace frontend --if-present",
         "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./frontend/amplify/functions/send-email/email-template.html ./frontend/public/testing/email-template.html",
         "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
         "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
         "start": "npm run start --workspace frontend",
-        "test:accessibility": "npm run copy-files-for-testing && pa11y-ci -c ./tests/accessibility/.pa11y-ci.js"
+        "test:accessibility": "npm run copy-files-for-testing && pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
+        "test:unit": "npm run test:unit --workspaces",
+        "typecheck": "npm run typecheck --workspaces",
+        "lint": "npm run lint --workspaces",
+        "dev": "npm run dev --workspace frontend --if-present"
     },
     "devDependencies": {
         "@tsconfig/node20": "^20.1.4",
