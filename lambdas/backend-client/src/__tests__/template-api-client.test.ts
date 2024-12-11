@@ -6,6 +6,10 @@ import { TemplateStatus, TemplateType } from '../types/generated';
 const axiosMock = new MockAdapter(axios);
 
 describe('TemplateAPIClient', () => {
+  beforeEach(() => {
+    axiosMock.reset();
+  });
+
   test('createTemplate - should return error', async () => {
     axiosMock.onPost('/v1/template').reply(400, {
       statusCode: 400,
@@ -32,6 +36,8 @@ describe('TemplateAPIClient', () => {
     });
 
     expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(1);
   });
 
   test('createTemplate - should return template', async () => {
@@ -90,6 +96,8 @@ describe('TemplateAPIClient', () => {
     });
 
     expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(1);
   });
 
   test('updateTemplate - should return template', async () => {
@@ -142,6 +150,8 @@ describe('TemplateAPIClient', () => {
     });
 
     expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.get.length).toBe(1);
   });
 
   test('getTemplate - should return template', async () => {
@@ -183,6 +193,8 @@ describe('TemplateAPIClient', () => {
     });
 
     expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.get.length).toBe(4);
   });
 
   test('listTemplates - should return templates', async () => {

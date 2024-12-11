@@ -1,35 +1,33 @@
-import axios from 'axios';
 import { IFunctionsClient } from './types/functions-client';
 import { Result } from './types/result';
+import {
+  AxiosRetryClient,
+  catchAxiosError,
+  createAxiosClient,
+} from './axios-client';
 
 type Failure = { technicalMessage: string };
 
 export class FunctionsApiClient implements IFunctionsClient {
-  private readonly _client;
+  private readonly _client: AxiosRetryClient;
 
   constructor(token: string) {
-    this._client = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      headers: {
-        Authorization: token,
-      },
-      validateStatus: (_: number) => true, // Note: We don't want axios to throw an error when status code is not 2xx
-    });
+    this._client = createAxiosClient(token);
   }
 
   async sendEmail(templateId: string): Promise<Result<void>> {
-    const response = await this._client.post<Failure>('/v1/email', {
-      templateId,
-    });
+    const response = await catchAxiosError(
+      this._client.post<Failure>('/v1/email', {
+        templateId,
+      })
+    );
 
-    if (response.status !== 200) {
+    if (response.error) {
       return {
-        error: {
-          code: response.status,
-          message: response.data.technicalMessage,
-        },
+        error: response.error,
       };
     }
+
     return {
       data: undefined,
     };

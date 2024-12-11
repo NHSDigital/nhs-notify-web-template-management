@@ -1,36 +1,34 @@
-import axios from 'axios';
 import { ITemplateClient } from './types/template-client';
 import {
   CreateTemplate,
-  Failure,
   Success,
   SuccessList,
   TemplateDTO,
   UpdateTemplate,
 } from './types/generated';
 import { Result } from './types/result';
+import {
+  AxiosRetryClient,
+  catchAxiosError,
+  createAxiosClient,
+} from './axios-client';
 
 export class TemplateApiClient implements ITemplateClient {
-  private readonly _client;
+  private readonly _client: AxiosRetryClient;
 
   constructor(token: string) {
-    this._client = axios.create({
-      baseURL: process.env.BACKEND_API_URL,
-      headers: {
-        Authorization: token,
-      },
-      validateStatus: (_: number) => true, // Note: We don't want axios to throw an error when status code is not 2xx
-    });
+    this._client = createAxiosClient(token);
   }
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
-    const response = await this._client.post<Failure | Success>(
-      '/v1/template',
-      template
+    const response = await catchAxiosError(
+      this._client.post<Success>('/v1/template', template)
     );
 
-    if (this.isFailure(response.data)) {
-      return this.failure(response.data);
+    if (response.error) {
+      return {
+        error: response.error,
+      };
     }
 
     return {
@@ -42,13 +40,14 @@ export class TemplateApiClient implements ITemplateClient {
     templateId: string,
     template: UpdateTemplate
   ): Promise<Result<TemplateDTO>> {
-    const response = await this._client.post<Failure | Success>(
-      `/v1/template/${templateId}`,
-      template
+    const response = await catchAxiosError(
+      this._client.post<Success>(`/v1/template/${templateId}`, template)
     );
 
-    if (this.isFailure(response.data)) {
-      return this.failure(response.data);
+    if (response.error) {
+      return {
+        error: response.error,
+      };
     }
 
     return {
@@ -57,12 +56,14 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
-    const response = await this._client.get<Failure | Success>(
-      `/v1/template/${templateId}`
+    const response = await catchAxiosError(
+      this._client.get<Success>(`/v1/template/${templateId}`)
     );
 
-    if (this.isFailure(response.data)) {
-      return this.failure(response.data);
+    if (response.error) {
+      return {
+        error: response.error,
+      };
     }
 
     return {
@@ -71,32 +72,18 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async listTemplates(): Promise<Result<TemplateDTO[]>> {
-    const response = await this._client.get<Failure | SuccessList>(
-      '/v1/templates'
+    const response = await catchAxiosError(
+      this._client.get<SuccessList>('/v1/templates')
     );
 
-    if (this.isFailure(response.data)) {
-      return this.failure(response.data);
+    if (response.error) {
+      return {
+        error: response.error,
+      };
     }
 
     return {
       data: response.data.templates,
-    };
-  }
-
-  private isFailure(
-    response: Failure | Success | SuccessList
-  ): response is Failure {
-    return ![200, 201].includes(response.statusCode);
-  }
-
-  private failure(data: Failure) {
-    return {
-      error: {
-        code: data.statusCode,
-        message: data.technicalMessage,
-        details: data.details,
-      },
     };
   }
 }

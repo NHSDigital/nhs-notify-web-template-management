@@ -21,6 +21,8 @@ describe('FunctionsAPIClient', () => {
     });
 
     expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(4);
   });
 
   test('sendEmail - should return success', async () => {
