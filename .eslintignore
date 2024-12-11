@@ -1,8 +1,6 @@
-public
-jest.config.ts
-jest.setup.ts
-lambdas/backend-client/src/types/generated
 **/*/coverage/*
 .build
 node_modules
 dist
+**/jest.config.ts
+**/jest.setup.ts

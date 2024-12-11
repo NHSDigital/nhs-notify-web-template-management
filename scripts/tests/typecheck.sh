@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-npm run typecheck
+npm run typecheck --workspaces

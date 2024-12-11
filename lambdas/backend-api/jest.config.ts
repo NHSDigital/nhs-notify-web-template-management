@@ -1,18 +1,18 @@
-module.exports = {
-  transform: { '\\.ts$': '@swc/jest' },
-  testPathIgnorePatterns: ['logger.ts', 'schema-for.ts', '.snap'],
-  coverageProvider: 'babel',
-  coverageThreshold: {
-    global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: -10,
-    },
-  },
-  collectCoverageFrom: ['src/**/*.ts'],
-  moduleNameMapper: {
-    '^@backend-api/templates(.*)$': '<rootDir>/src/templates/$1',
-    '^@backend-api/utils(.*)$': '<rootDir>/src/utils/$1',
-  },
+import { baseJestConfig } from 'nhs-notify-web-template-management-utils';
+import { pathsToModuleNameMapper } from 'ts-jest';
+import { compilerOptions } from './tsconfig.json';
+
+const moduleNameMapperDefaults = pathsToModuleNameMapper(
+  compilerOptions.paths,
+  {
+    prefix: '<rootDir>/',
+  }
+);
+
+const jestConfig = {
+  ...baseJestConfig,
+  moduleNameMapper: moduleNameMapperDefaults,
+  testEnvironment: 'node',
 };
+
+export default jestConfig;

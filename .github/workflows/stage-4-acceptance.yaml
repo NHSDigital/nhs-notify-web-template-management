@@ -51,14 +51,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -71,7 +66,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: amplify_outputs.json
-          path: amplify_outputs.json
+          path: frontend/amplify_outputs.json
 
   sandbox-set-up:
     name: "Sandbox set up"
@@ -124,17 +119,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -160,17 +151,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Configure AWS credentials
@@ -200,17 +187,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: amplify_outputs.json
+          path: frontend/
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -219,7 +202,7 @@ jobs:
           aws-region: eu-west-2
       - name: "Destroy Amplify sandbox"
         run: |
-          npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}"
+          (cd frontend && npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}")
   sandbox-tear-down:
     name: "Sandbox tear down"
     if: success() || failure()

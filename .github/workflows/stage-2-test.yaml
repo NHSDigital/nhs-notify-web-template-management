@@ -51,13 +51,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
           git diff --exit-code
   test-unit:
     name: "Unit tests"
@@ -69,13 +65,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: "Run unit test suite"
         run: |
           make test-unit
@@ -83,13 +75,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unit-tests
-          path: ".reports/unit"
+          path: "**/.reports/unit"
+          include-hidden-files: true
         if: always()
       - name: "Save the result of code coverage"
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
-          path: ".reports/unit/coverage/lcov.info"
+          path: ".reports/lcov.info"
         if: always()
   test-lint:
     name: "Linting"
@@ -101,14 +94,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: "Run linting"
         run: |
           make test-lint
@@ -122,14 +110,9 @@ jobs:
       - name: "Repo setup"
         run: |
           npm ci
-          npm ci tests/test-team
-          (cd amplify && npm ci)
-          (cd lambdas/authorizer && npm ci)
-          (cd lambdas/backend-client && npm ci)
-          (cd lambdas/backend-api && npm ci)
       - name: "Generate dependencies"
         run: |
-          npm run generate-dependencies
+          npm run generate-dependencies --workspaces --if-present
       - name: "Run typecheck"
         run: |
           make test-typecheck

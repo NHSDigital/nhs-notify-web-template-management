@@ -1,15 +1,1 @@
-module.exports = {
-  transform: { '\\.ts$': '@swc/jest' },
-  testPathIgnorePatterns: ['.build' ],
-  coverageDirectory: './.reports/unit/coverage',
-  collectCoverageFrom: ['src/**/*.ts*'],
-  coverageProvider: 'babel',
-  coverageThreshold: {
-    global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: -10,
-    },
-  },
-};
+export { baseJestConfig as default } from 'nhs-notify-web-template-management-utils'; // eslint-disable-line no-restricted-exports
