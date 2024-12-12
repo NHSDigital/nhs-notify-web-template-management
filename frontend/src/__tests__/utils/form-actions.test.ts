@@ -343,3 +343,59 @@ test('getTemplates - errors', async () => {
 
   expect(response).toEqual([]);
 });
+
+test('getTemplates - order by createdAt and then id', async () => {
+  const baseTemplate = {
+    version: 1,
+    templateType: 'SMS',
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'Template',
+    message: 'Message',
+  };
+
+  const templates = [
+    { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '09' },
+    { ...baseTemplate, id: '10' },
+    { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '07' },
+    { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
+    { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+  ];
+
+  // 06 is the newest, 08 is the oldest.
+  // Templates without a createdAt, 07, 09 and 10, go at the end.
+  // 01 - 05 all have the same createdAt.
+  const expectedOrder = [
+    '06',
+    '01',
+    '02',
+    '03',
+    '04',
+    '05',
+    '08',
+    '07',
+    '09',
+    '10',
+  ];
+
+  setup({
+    models: {
+      TemplateStorage: {
+        list: jest.fn().mockReturnValue({ data: templates }),
+      },
+    },
+  });
+
+  const response = await getTemplates();
+
+  const actualOrder = [];
+  for (const template of response) {
+    actualOrder.push(template.id);
+  }
+
+  expect(actualOrder).toEqual(expectedOrder);
+});

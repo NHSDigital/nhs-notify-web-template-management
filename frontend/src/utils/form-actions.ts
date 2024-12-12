@@ -100,7 +100,16 @@ export async function getTemplates(): Promise<Template[] | []> {
 
   const parsedData: Template[] = data
     .map((template) => isTemplateValid(template))
-    .filter((template): template is Template => template !== undefined);
+    .filter((template): template is Template => template !== undefined)
+    .sort((a, b) => {
+      const aCreatedAt = a.createdAt ?? '';
+      const bCreatedAt = b.createdAt ?? '';
+
+      if (aCreatedAt === bCreatedAt) {
+        return a.id.localeCompare(b.id);
+      }
+      return aCreatedAt < bCreatedAt ? 1 : -1;
+    });
 
   return parsedData;
 }

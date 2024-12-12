@@ -70,20 +70,22 @@ export function ManageTemplates({
                 </Table.Cell>
                 <Table.Cell>
                   {format(`${template.createdAt}`, 'do MMM yyyy')}
+                  <br />
+                  {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  <Link href='#'>
-                    <p className='nhsuk-u-margin-bottom-2'>
+                  <p className='nhsuk-u-margin-bottom-2'>
+                    <Link href='#'>
                       {manageTemplatesContent.tableHeadings.action.copy}
-                    </p>
-                  </Link>
+                    </Link>
+                  </p>
                   {template.templateStatus ===
                   TemplateStatus.NOT_YET_SUBMITTED ? (
-                    <Link href='#'>
-                      <p className='nhsuk-u-margin-bottom-2'>
+                    <p className='nhsuk-u-margin-bottom-2'>
+                      <Link href='#'>
                         {manageTemplatesContent.tableHeadings.action.delete}
-                      </p>
-                    </Link>
+                      </Link>
+                    </p>
                   ) : null}
                 </Table.Cell>
               </Table.Row>
