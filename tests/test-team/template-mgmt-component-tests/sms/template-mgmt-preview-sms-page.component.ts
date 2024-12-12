@@ -3,8 +3,11 @@ import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import { TemplateMgmtPreviewSmsPage } from '../../pages/sms/template-mgmt-preview-sms-page';
 import { TemplateFactory } from '../../helpers/template-factory';
 import {
+  assertBackToAllTemplatesBottomLink,
+  assertBackToAllTemplatesTopLink,
+} from '../template-mgmt-preview-common.steps';
+import {
   assertFooterLinks,
-  assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -78,10 +81,8 @@ test.describe('Preview SMS message template Page', () => {
       await assertNotifyBannerLink(props);
       await assertLoginLink(props);
       await assertFooterLinks(props);
-      await assertGoBackLink({
-        ...props,
-        expectedUrl: `templates/edit-text-message-template/${templates.valid.id}`,
-      });
+      await assertBackToAllTemplatesTopLink(props);
+      await assertBackToAllTemplatesBottomLink(props);
     });
 
     test('when user submits form with "Edit" data, then the "Create text message template" page is displayed', async ({

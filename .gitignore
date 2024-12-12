@@ -26,6 +26,7 @@ node_modules
 
 # next.js
 /.next/
+*/.next
 /out/
 
 # production
@@ -66,10 +67,9 @@ terraform/*_output.json
 group_target-env.tfvars
 *tf_outputs.json
 
-.amplify/
+\.amplify/
 amplify_outputs.json
-public/testing
-amplify/functions/send-email/email-template.json
+frontend/amplify/functions/send-email/email-template.json
 
 # playwright
 test-results/
@@ -79,3 +79,5 @@ tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
 
 sandbox_cognito_auth_token.json
+
+frontend/public/testing

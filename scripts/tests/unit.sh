@@ -17,4 +17,9 @@ cd "$(git rev-parse --show-toplevel)"
 # tests from here. If you want to run other test suites, see the predefined
 # tasks in scripts/test.mk.
 
-npm run test:unit
+# run tests
+npm run test:unit --workspaces
+
+# merge coverage reports
+mkdir -p .reports
+TMPDIR="./.reports" ./node_modules/.bin/lcov-result-merger "**/.reports/unit/coverage/lcov.info" ".reports/lcov.info" --ignore "node_modules" --prepend-source-files --prepend-path-fix "../../.."

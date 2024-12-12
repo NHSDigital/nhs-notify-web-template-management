@@ -32,7 +32,6 @@ export class TemplateMgmtBasePage {
       .locator('[class="nhsuk-account__login--link"]')
       .and(page.getByText('Log in'));
 
-    // Note: doing [class="nhsuk-back-link__link"] will not find the element if it has other class names
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Go back'));
@@ -71,7 +70,7 @@ export class TemplateMgmtBasePage {
     await this.submitButton.click();
   }
 
-  async loadPage(_: string) {
+  async loadPage(_?: string) {
     throw new Error('Not implemented');
   }
 

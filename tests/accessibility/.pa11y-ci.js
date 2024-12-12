@@ -20,16 +20,23 @@ const {
   submitEmailTemplatePage,
   emailTemplateSubmittedPage,
   NhsAppTemplateSubmittedPage,
+  manageTemplatesPage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
 const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
+const manageTemplatesUrl = `${baseUrl}/manage-templates`;
 
 module.exports = {
   urls: [
     performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
     performCheck({ url: startUrl, name: 'landing-page' }),
+
+    //My Messages Templates
+    performCheck(manageTemplatesPage(manageTemplatesUrl)),
+
+    // Choose a template journey
     performCheck(chooseATemplatePage(chooseTemplateUrl)),
     performCheck(chooseATemplatePageError(chooseTemplateUrl)),
 
