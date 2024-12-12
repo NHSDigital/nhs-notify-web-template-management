@@ -35,33 +35,32 @@ export function ReviewEmailTemplate({
 
   return (
     <div className='nhsuk-grid-row'>
-      <BackLink
-        href={`${getBasePath()}/manage-templates`}
-        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
-      >
-        Back to all templates
-      </BackLink>
-      <ReviewTemplate
-        template={initialState}
-        sectionHeading={isFromEditPage ? sectionHeading : undefined}
-        form={{
-          ...form,
-          state,
-          action,
-          formId: 'review-email-template',
-          radiosId: 'reviewEmailTemplateAction',
-        }}
-        PreviewComponent={
-          <PreviewTemplate.Email
-            template={initialState}
-            subject={templateSubjectLine}
-            message={html}
-          />
-        }
-      />
-      <p>
-        <Link href='/manage-templates'>Back to all templates</Link>
-      </p>
+      <div className='nhsuk-grid-column-full'>
+        <BackLink href={`${getBasePath()}/manage-templates`}>
+          Back to all templates
+        </BackLink>
+        <ReviewTemplate
+          template={initialState}
+          sectionHeading={isFromEditPage ? sectionHeading : undefined}
+          form={{
+            ...form,
+            state,
+            action,
+            formId: 'review-email-template',
+            radiosId: 'reviewEmailTemplateAction',
+          }}
+          PreviewComponent={
+            <PreviewTemplate.Email
+              template={initialState}
+              subject={templateSubjectLine}
+              message={html}
+            />
+          }
+        />
+        <p>
+          <Link href='/manage-templates'>Back to all templates</Link>
+        </p>
+      </div>
     </div>
   );
 }
