@@ -44,7 +44,7 @@ describe('Preview letter form renders', () => {
     );
   });
 
-  it('should should render message with markdown', () => {
+  it('should render message with markdown', () => {
     const renderMock = jest.mocked(renderMarkdown);
 
     renderMock.mockReturnValue('Rendered via MD');

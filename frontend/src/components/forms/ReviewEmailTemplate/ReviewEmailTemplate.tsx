@@ -10,12 +10,16 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { useFormState } from 'react-dom';
 import { getBasePath } from '@utils/get-base-path';
+import { renderEmailMarkdown } from '@utils/markdownit';
+import { useSearchParams } from 'next/navigation';
 import { BackLink } from 'nhsuk-react-components';
-import { renderMarkdown, reviewEmailTemplateAction } from './server-actions';
+import { reviewEmailTemplateAction } from './server-actions';
 
 export function ReviewEmailTemplate({
   initialState,
 }: Readonly<PageComponentProps<EmailTemplate>>) {
+  const searchParams = useSearchParams();
+
   const {
     components: {
       reviewEmailTemplateContent: { sectionHeading, form },
@@ -26,8 +30,8 @@ export function ReviewEmailTemplate({
 
   const templateSubjectLine = initialState.subject;
   const templateMessage = initialState.message;
-
-  const html = renderMarkdown(templateMessage);
+  const html = renderEmailMarkdown(templateMessage);
+  const isFromEditPage = searchParams.get('from') === 'edit';
 
   return (
     <div className='nhsuk-grid-row'>
@@ -39,7 +43,7 @@ export function ReviewEmailTemplate({
       </BackLink>
       <ReviewTemplate
         template={initialState}
-        sectionHeading={sectionHeading}
+        sectionHeading={isFromEditPage ? sectionHeading : undefined}
         form={{
           ...form,
           state,
@@ -48,7 +52,11 @@ export function ReviewEmailTemplate({
           radiosId: 'reviewEmailTemplateAction',
         }}
         PreviewComponent={
-          <PreviewTemplate.Email subject={templateSubjectLine} message={html} />
+          <PreviewTemplate.Email
+            template={initialState}
+            subject={templateSubjectLine}
+            message={html}
+          />
         }
       />
       <p>

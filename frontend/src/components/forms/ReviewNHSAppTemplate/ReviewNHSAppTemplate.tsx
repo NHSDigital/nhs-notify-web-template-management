@@ -9,21 +9,25 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
+import { renderNHSAppMarkdown } from '@utils/markdownit';
+import { useSearchParams } from 'next/navigation';
 import { useFormState } from 'react-dom';
 import { BackLink } from 'nhsuk-react-components';
-import { reviewNhsAppTemplateAction, renderMarkdown } from './server-action';
+import { reviewNhsAppTemplateAction } from './server-action';
 
 export function ReviewNHSAppTemplate({
   initialState,
 }: Readonly<PageComponentProps<NHSAppTemplate>>) {
+  const searchParams = useSearchParams();
+
   const [state, action] = useFormState(
     reviewNhsAppTemplateAction,
     initialState
   );
 
   const { message } = state;
-
-  const html = renderMarkdown(message);
+  const html = renderNHSAppMarkdown(message);
+  const isFromEditPage = searchParams.get('from') === 'edit';
 
   const {
     components: {
@@ -41,7 +45,7 @@ export function ReviewNHSAppTemplate({
       </BackLink>
       <ReviewTemplate
         template={initialState}
-        sectionHeading={sectionHeading}
+        sectionHeading={isFromEditPage ? sectionHeading : undefined}
         form={{
           ...form,
           state,
@@ -49,7 +53,9 @@ export function ReviewNHSAppTemplate({
           formId: 'preview-nhs-app-template',
           radiosId: 'reviewNHSAppTemplateAction',
         }}
-        PreviewComponent={<PreviewTemplate.NHSApp message={html} />}
+        PreviewComponent={
+          <PreviewTemplate.NHSApp template={initialState} message={html} />
+        }
       />
       <p>
         <Link href='/manage-templates'>Back to all templates</Link>

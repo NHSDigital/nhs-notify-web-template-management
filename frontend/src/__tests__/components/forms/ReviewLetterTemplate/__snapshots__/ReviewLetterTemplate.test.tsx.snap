@@ -14,7 +14,7 @@ exports[`Preview letter form renders matches snapshot 1`] = `
     name
   </h1>
   <div
-    class="nhsuk-width-container nhsuk-u-margin-bottom-4 nhsuk-body-m"
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <div
       class="preview"
@@ -78,12 +78,8 @@ exports[`Preview letter form renders matches snapshot 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-  >
     <div
-      class="preview"
+      class="nhsuk-u-margin-top-4 preview"
     >
       <div
         class="nhsuk-grid-row preview__row"

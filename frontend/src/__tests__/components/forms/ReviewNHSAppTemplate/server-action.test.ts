@@ -1,10 +1,5 @@
-import { mockDeep } from 'jest-mock-extended';
 import { redirect } from 'next/navigation';
-import {
-  renderMarkdown,
-  reviewNhsAppTemplateAction,
-} from '@forms/ReviewNHSAppTemplate';
-import { MarkdownItWrapper } from '@utils/markdownit';
+import { reviewNhsAppTemplateAction } from '@forms/ReviewNHSAppTemplate';
 import { getMockFormData } from '@testhelpers';
 import {
   NHSAppTemplate,
@@ -12,35 +7,10 @@ import {
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
-import { markdown } from '../fixtures';
 
 jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
-
-describe('Markdown rendering', () => {
-  it('should enable nhs app markdown rules', () => {
-    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
-
-    markdownItWrapperMock.enableLineBreak.mockReturnValue(
-      markdownItWrapperMock
-    );
-
-    renderMarkdown('example', markdownItWrapperMock);
-
-    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
-    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
-      'heading',
-      'link',
-      'list',
-      'emphasis',
-    ]);
-  });
-
-  it('should only process nhs app markdown rules', () => {
-    expect(renderMarkdown(markdown)).toMatchSnapshot();
-  });
-});
 
 describe('reviewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {

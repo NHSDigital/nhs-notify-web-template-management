@@ -2,13 +2,6 @@
 
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { Container, Row, Col, Tag } from 'nhsuk-react-components';
-import {
-  templateStatustoDisplayMappings,
-  templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils/src/enum';
-import concatClassNames from '@utils/concat-class-names';
-import styles from './ReviewTemplate.module.scss';
 import { ReviewTemplateProps } from './review-template.types';
 
 export function ReviewTemplate({
@@ -17,48 +10,12 @@ export function ReviewTemplate({
 }: Readonly<ReviewTemplateProps>) {
   return (
     <>
-      <div className='notify-confirmation-panel nhsuk-heading-l'>
-        {props.sectionHeading}
-      </div>
-      <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
-      <h1
-        data-testid='preview-message__heading'
-        className={styles.review__heading}
-      >
-        {props.template.name}
-      </h1>
-      <Container
-        className={concatClassNames('nhsuk-u-margin-bottom-4', 'nhsuk-body-m')}
-      >
-        <div className={styles.preview}>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Template ID</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
-              {props.template.id}
-            </Col>
-          </Row>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Type</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
-              {templateTypeDisplayMappings(props.template.templateType)}
-            </Col>
-          </Row>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Status</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
-              <Tag>
-                {templateStatustoDisplayMappings(props.template.templateStatus)}
-              </Tag>
-            </Col>
-          </Row>
+      {props.sectionHeading && (
+        <div className='notify-confirmation-panel nhsuk-heading-l'>
+          {props.sectionHeading}
         </div>
-      </Container>
+      )}
+      <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
       {props.PreviewComponent}
       <NHSNotifyRadioButtonForm
         formId={form.formId}

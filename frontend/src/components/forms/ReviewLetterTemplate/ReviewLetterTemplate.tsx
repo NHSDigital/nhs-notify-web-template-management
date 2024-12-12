@@ -4,6 +4,7 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
 import {
+  ChannelTemplate,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
@@ -27,16 +28,18 @@ export function ReviewLetterTemplate({
 
   const html = renderMarkdown(bodyText);
 
+  const template: ChannelTemplate = {
+    templateType: TemplateType.LETTER,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    version: 1,
+    id: 'id',
+    name: 'name',
+    message: 'message',
+  };
+
   return (
     <ReviewTemplate
-      template={{
-        templateType: TemplateType.LETTER,
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        version: 1,
-        id: 'id',
-        name: 'name',
-        message: 'message',
-      }}
+      template={template}
       sectionHeading={sectionHeading}
       form={{
         ...form,
@@ -48,7 +51,11 @@ export function ReviewLetterTemplate({
         radiosId: 'reviewLetterTemplateAction',
       }}
       PreviewComponent={
-        <PreviewTemplate.Letter heading={heading} bodyText={html} />
+        <PreviewTemplate.Letter
+          template={template}
+          heading={heading}
+          bodyText={html}
+        />
       }
     />
   );

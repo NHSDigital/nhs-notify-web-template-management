@@ -1,19 +1,9 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
-import { MarkdownItWrapper } from '@utils/markdownit';
 import {
   NHSAppTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-
-export function renderMarkdown(
-  value: string,
-  markdown = new MarkdownItWrapper()
-) {
-  markdown.enableLineBreak().enable(['heading', 'link', 'list', 'emphasis']);
-
-  return markdown.render(value);
-}
 
 const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
   {

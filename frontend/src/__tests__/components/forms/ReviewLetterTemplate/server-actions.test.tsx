@@ -11,14 +11,9 @@ describe('PreviewLetterActions', () => {
       markdownItWrapperMock
     );
 
-    markdownItWrapperMock.enablePageBreak.mockReturnValue(
-      markdownItWrapperMock
-    );
-
     renderMarkdown('message', markdownItWrapperMock);
 
     expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
-    expect(markdownItWrapperMock.enablePageBreak).toHaveBeenCalled();
     expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
       'heading',
       'list',

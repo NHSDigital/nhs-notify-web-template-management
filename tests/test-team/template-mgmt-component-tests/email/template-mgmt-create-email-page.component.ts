@@ -198,7 +198,7 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${templates.submit.id}`
+        `${baseURL}/templates/preview-email-template/${templates.submit.id}?from=edit`
       );
     });
   });
@@ -223,7 +223,9 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/invalid-template?from=edit`
+      );
     });
 
     test('when user submits form with no data, then errors are displayed', async ({

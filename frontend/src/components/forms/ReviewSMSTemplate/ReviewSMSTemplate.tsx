@@ -11,11 +11,15 @@ import {
 import { useFormState } from 'react-dom';
 import { BackLink } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
-import { renderMarkdown, reviewSmsTemplateAction } from './server-actions';
+import { renderSMSMarkdown } from '@utils/markdownit';
+import { useSearchParams } from 'next/navigation';
+import { reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
   initialState,
 }: Readonly<PageComponentProps<SMSTemplate>>) {
+  const searchParams = useSearchParams();
+
   const {
     components: {
       reviewSMSTemplateContent: { sectionHeading, form },
@@ -23,10 +27,9 @@ export function ReviewSMSTemplate({
   } = content;
 
   const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
-
   const templateMessage = initialState.message;
-
-  const html = renderMarkdown(templateMessage);
+  const html = renderSMSMarkdown(templateMessage);
+  const isFromEditPage = searchParams.get('from') === 'edit';
 
   return (
     <div className='nhsuk-grid-row'>
@@ -38,7 +41,7 @@ export function ReviewSMSTemplate({
       </BackLink>
       <ReviewTemplate
         template={initialState}
-        sectionHeading={sectionHeading}
+        sectionHeading={isFromEditPage ? sectionHeading : undefined}
         form={{
           ...form,
           state,
@@ -46,7 +49,9 @@ export function ReviewSMSTemplate({
           formId: 'review-sms-template',
           radiosId: 'reviewSMSTemplateAction',
         }}
-        PreviewComponent={<PreviewTemplate.Sms message={html} />}
+        PreviewComponent={
+          <PreviewTemplate.Sms template={initialState} message={html} />
+        }
       />
       <p>
         <Link href='/manage-templates'>Back to all templates</Link>

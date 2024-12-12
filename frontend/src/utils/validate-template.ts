@@ -5,11 +5,17 @@ import {
   SMSTemplate,
   ChannelTemplate,
   Template,
+  SubmittedEmailTemplate,
+  SubmittedSMSTemplate,
+  SubmittedNHSAppTemplate,
   logger,
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
   $ChannelTemplate,
+  $SubmittedEmailTemplate,
+  $SubmittedSMSTemplate,
+  $SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
 export const validateNHSAppTemplate = (
@@ -39,6 +45,39 @@ export const validateEmailTemplate = (
 ): EmailTemplate | undefined => {
   try {
     return $EmailTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedEmailTemplate = (
+  template: Template | undefined
+): SubmittedEmailTemplate | undefined => {
+  try {
+    return $SubmittedEmailTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedSMSTemplate = (
+  template: Template | undefined
+): SubmittedSMSTemplate | undefined => {
+  try {
+    return $SubmittedSMSTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedNHSAppTemplate = (
+  template: Template | undefined
+): SubmittedNHSAppTemplate | undefined => {
+  try {
+    return $SubmittedNHSAppTemplate.parse(template);
   } catch (error) {
     logger.error(error);
     return undefined;

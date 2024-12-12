@@ -1,25 +1,81 @@
-import { MarkdownItWrapper } from '@utils/markdownit';
-import { lineBreak } from '@utils/markdownit/plugins/line-break';
-import { pageBreak } from '@utils/markdownit/plugins/page-break';
+import {
+  MarkdownItWrapper,
+  renderEmailMarkdown,
+  renderNHSAppMarkdown,
+  renderSMSMarkdown,
+} from '@utils/markdownit';
+import { mockDeep } from 'jest-mock-extended';
+import { markdown } from '../../components/forms/fixtures';
 
-jest.mock('@utils/markdownit/plugins/line-break');
-jest.mock('@utils/markdownit/plugins/page-break');
-
-const pageBreakMock = jest.mocked(pageBreak);
-const lineBreakMock = jest.mocked(lineBreak);
-
-describe('MarkdownItWrapper', () => {
+describe('renderEmailMarkdown', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('should use page breaks when option is enabled', () => {
-    new MarkdownItWrapper().enablePageBreak();
+  it('should enable email markdown rules', () => {
+    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
 
-    expect(pageBreakMock).toHaveBeenCalled();
+    markdownItWrapperMock.enableLineBreak.mockReturnValue(
+      markdownItWrapperMock
+    );
+
+    renderEmailMarkdown('message', markdownItWrapperMock);
+
+    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
+    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
+      'heading',
+      'link',
+      'list',
+      'emphasis',
+      'hr',
+    ]);
   });
 
-  it('should enable line breaks when option is enabled', () => {
-    new MarkdownItWrapper().enableLineBreak();
+  it('should only process email markdown rules', () => {
+    expect(renderEmailMarkdown(markdown)).toMatchSnapshot();
+  });
+});
 
-    expect(lineBreakMock).toHaveBeenCalled();
+describe('renderNHSAppMarkdown', () => {
+  it('should enable nhs app markdown rules', () => {
+    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
+
+    markdownItWrapperMock.enableLineBreak.mockReturnValue(
+      markdownItWrapperMock
+    );
+
+    renderNHSAppMarkdown('example', markdownItWrapperMock);
+
+    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
+    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
+      'heading',
+      'link',
+      'list',
+      'emphasis',
+    ]);
+  });
+
+  it('should only process nhs app markdown rules', () => {
+    expect(renderNHSAppMarkdown(markdown)).toMatchSnapshot();
+  });
+});
+
+describe('renderSMSMarkdown', () => {
+  beforeEach(jest.resetAllMocks);
+
+  it('should enable text message markdown rules', () => {
+    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
+
+    markdownItWrapperMock.enableLineBreak.mockReturnValue(
+      markdownItWrapperMock
+    );
+
+    renderSMSMarkdown('message', markdownItWrapperMock);
+
+    expect(markdownItWrapperMock.enableLineBreak).not.toHaveBeenCalled();
+
+    expect(markdownItWrapperMock.enable).not.toHaveBeenCalled();
+  });
+
+  it('should only process text message markdown rules', () => {
+    expect(renderSMSMarkdown(markdown)).toMatchSnapshot();
   });
 });

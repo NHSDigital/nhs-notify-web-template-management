@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreateNhsAppPage } from '../../pages/nhs-app/template-mgmt-create-nhs-app-page';
-import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
+import { TemplateFactory } from '../../helpers/template-factory';
 import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
 import {
   assertFooterLinks,
@@ -10,35 +10,20 @@ import {
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 
-export const emptyTemplateData: Template = {
-  __typename: 'TemplateStorage',
-  id: '3d98b0c4-6666-0000-1111-95eb27590000',
-  version: 1,
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.NHS_APP,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  name: '',
-  message: '',
-};
-
-export const emptyTemplateForTemplateCreation: Template = {
-  __typename: 'TemplateStorage',
-  id: '4d98b0c4-7777-0000-1111-95eb27590011',
-  version: 1,
-  createdAt: '2024-09-19T23:36:20.815Z',
-  updatedAt: '2024-09-19T23:36:20.815Z',
-  templateType: TemplateType.NHS_APP,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  name: '',
-  message: '',
+const templates = {
+  emptyTemplateData: TemplateFactory.createNhsAppTemplate(
+    'empty-nhs-app-template'
+  ),
+  submit: TemplateFactory.createNhsAppTemplate('submit-nhs-app-template'),
+  submitAndReturn: TemplateFactory.createNhsAppTemplate(
+    'submit-and-return-nhs-app-template'
+  ),
 };
 
 test.describe('Create NHS App Template Page', () => {
-  const templateStorageHelper = new TemplateStorageHelper([
-    emptyTemplateData,
-    emptyTemplateForTemplateCreation,
-  ]);
+  const templateStorageHelper = new TemplateStorageHelper(
+    Object.values(templates)
+  );
 
   test.beforeAll(async () => {
     await templateStorageHelper.seedTemplateData();
@@ -54,10 +39,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateData.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -67,7 +52,7 @@ test.describe('Create NHS App Template Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new TemplateMgmtCreateNhsAppPage(page),
-      id: emptyTemplateData.id,
+      id: templates.emptyTemplateData.id,
       baseURL,
     };
 
@@ -87,10 +72,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateData.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -103,24 +88,50 @@ test.describe('Create NHS App Template Page', () => {
     ).toHaveText(['Enter a template name', 'Enter a template message']);
   });
 
-  test('NHS App Message template populated and continued to the preview screen displayed', async ({
+  test('when user submits form with valid data, then the next page is displayed', async ({
     page,
     baseURL,
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateForTemplateCreation.id);
-
+    await createTemplatePage.loadPage(templates.submit.id);
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateForTemplateCreation.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.submit.id}`
     );
-    const templateName = 'NHS Testing 123';
-    await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    const templateMessage = 'Test Message box';
-    await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
+    await page
+      .locator('[id="nhsAppTemplateName"]')
+      .fill('This is an NHS App template name');
+    await page
+      .locator('[id="nhsAppTemplateMessage"]')
+      .fill('This is an NHS App message');
     await createTemplatePage.clickSubmitButton();
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'NHS Testing 123'
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/preview-nhs-app-template/${templates.submit.id}?from=edit`
+    );
+  });
+
+  test('when user submits form with valid data and returns, then form fields retain previous data', async ({
+    baseURL,
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
+    const templateName = 'This is an NHS App template name';
+    const templateMessage = 'This is an NHS App message';
+
+    await createTemplatePage.loadPage(templates.submitAndReturn.id);
+    await createTemplatePage.nameInput.fill(templateName);
+    await createTemplatePage.messageTextArea.fill(templateMessage);
+    await createTemplatePage.clickSubmitButton();
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/preview-nhs-app-template/${templates.submitAndReturn.id}?from=edit`
+    );
+    await page
+      .locator('.nhsuk-back-link__link')
+      .and(page.getByText('Go back'))
+      .click();
+    await expect(createTemplatePage.nameInput).toHaveValue(templateName);
+    await expect(createTemplatePage.messageTextArea).toHaveValue(
+      templateMessage
     );
   });
 
@@ -130,10 +141,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateData.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -153,10 +164,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateData.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
@@ -177,10 +188,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateForTemplateCreation.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateForTemplateCreation.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
     await page
@@ -195,10 +206,10 @@ test.describe('Create NHS App Template Page', () => {
   }) => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
-    await createTemplatePage.loadPage(emptyTemplateForTemplateCreation.id);
+    await createTemplatePage.loadPage(templates.emptyTemplateData.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateForTemplateCreation.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
 
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
@@ -229,9 +240,9 @@ test.describe('Create NHS App Template Page', () => {
       baseURL,
     }) => {
       const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
-      await createTemplatePage.loadPage(emptyTemplateData.id);
+      await createTemplatePage.loadPage(templates.emptyTemplateData.id);
       await expect(page).toHaveURL(
-        `${baseURL}/templates/edit-nhs-app-template/${emptyTemplateData.id}`
+        `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
       );
 
       await page.locator(`${section} > summary`).click();

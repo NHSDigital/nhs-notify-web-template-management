@@ -97,7 +97,7 @@ describe('CreateSmsTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-text-message-template/template-id',
+      '/preview-text-message-template/template-id?from=edit',
       'push'
     );
   });
@@ -127,7 +127,7 @@ describe('CreateSmsTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-text-message-template/new-template-id',
+      '/preview-text-message-template/new-template-id?from=edit',
       'push'
     );
   });

@@ -15,7 +15,7 @@ exports[`PreviewLetterActions should only process letter markdown rules 1`] = `
 <p>[Read more](https://www.nhs.uk/example)</p>
 <p>https://www.nhs.uk/example</p>
 <p>Before page break
-<div class="pagebreak" data-testid="page-break"><div class="pagebreak__divider"></div><span class="pagebreak__text" data-testid="page-break__content">Page Break</span><div class="pagebreak__divider"></div></div>
+***
 After page break</p>
 <p>Start of line break<br>end of line break</p>
 <p>Before horizontal line
