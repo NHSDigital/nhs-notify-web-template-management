@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import {

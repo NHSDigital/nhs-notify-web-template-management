@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import ViewSubmittedEmailTemplatePage from '@app/view-submitted-email-template/[templateId]/page';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import {
