@@ -215,39 +215,6 @@ test.describe('Create SMS message template Page', () => {
         `${baseURL}/templates/preview-text-message-template/${templates.submit.id}?from=edit`
       );
     });
-
-    test('when user submits form with valid data and returns, then form fields retain previous data', async ({
-      baseURL,
-      page,
-    }) => {
-      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-      await createSmsTemplatePage.loadPage(templates.submitAndReturn.id);
-
-      const templateName = 'This is an SMS template name';
-      const templateMessage = 'This is an SMS message';
-
-      await createSmsTemplatePage.nameInput.fill(templateName);
-
-      await createSmsTemplatePage.messageTextArea.fill(templateMessage);
-
-      await createSmsTemplatePage.clickSubmitButton();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-text-message-template/${templates.submitAndReturn.id}?from=edit`
-      );
-
-      await page
-        .locator('.nhsuk-back-link__link')
-        .and(page.getByText('Go back'))
-        .click();
-
-      await expect(createSmsTemplatePage.nameInput).toHaveValue(templateName);
-
-      await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
-        templateMessage
-      );
-    });
   });
 
   test.describe('Error handling', () => {

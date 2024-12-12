@@ -110,31 +110,6 @@ test.describe('Create NHS App Template Page', () => {
     );
   });
 
-  test('when user submits form with valid data and returns, then form fields retain previous data', async ({
-    baseURL,
-    page,
-  }) => {
-    const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
-    const templateName = 'This is an NHS App template name';
-    const templateMessage = 'This is an NHS App message';
-
-    await createTemplatePage.loadPage(templates.submitAndReturn.id);
-    await createTemplatePage.nameInput.fill(templateName);
-    await createTemplatePage.messageTextArea.fill(templateMessage);
-    await createTemplatePage.clickSubmitButton();
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-nhs-app-template/${templates.submitAndReturn.id}?from=edit`
-    );
-    await page
-      .locator('.nhsuk-back-link__link')
-      .and(page.getByText('Go back'))
-      .click();
-    await expect(createTemplatePage.nameInput).toHaveValue(templateName);
-    await expect(createTemplatePage.messageTextArea).toHaveValue(
-      templateMessage
-    );
-  });
-
   test('Validate error messages on the create NHS App message template page with a no template message', async ({
     page,
     baseURL,

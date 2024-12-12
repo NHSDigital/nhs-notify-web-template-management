@@ -223,9 +223,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage('/fake-template-id');
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/invalid-template?from=edit`
-      );
+      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
 
     test('when user submits form with no data, then errors are displayed', async ({

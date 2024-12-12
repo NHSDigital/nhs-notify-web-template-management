@@ -190,10 +190,14 @@ test.describe('Manage templates page', () => {
       'email-not-yet-submitted_manage-templates-page'
     );
 
-    // This will break and need updating during CCM-7649
-    expect(templatePreviewLink).toHaveAttribute('href', '#');
+    expect(templatePreviewLink).toHaveAttribute(
+      'href',
+      `/templates/preview-email-template/${templates.emailNotYetSubmitted.id}`
+    );
     await templatePreviewLink.click();
-    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+    await expect(page).toHaveURL(
+      new RegExp('/templates/preview-email-template/')
+    );
   });
 
   test('Copy link navigation - navigates user to duplicate template type page', async ({

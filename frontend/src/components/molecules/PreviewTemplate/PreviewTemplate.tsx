@@ -5,9 +5,7 @@ import {
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils/src/enum';
-import {
-  Template
-} from 'nhs-notify-web-template-management-utils/src/types';
+import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import styles from './PreviewTemplate.module.scss';
 import { PreviewTemplateProps } from './preview-template.types';
 
