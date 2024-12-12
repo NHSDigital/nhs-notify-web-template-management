@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "test:unit": "jest",
-    "typecheck": "tsc --listFiles --noEmit"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@swc/core": "^1.9.2",
@@ -23,7 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "jwt-decode": "^4.0.0",
-    "winston": "^3.17.0",
+    "nhs-notify-web-template-management-utils": "*",
     "zod": "^3.23.8"
   }
 }

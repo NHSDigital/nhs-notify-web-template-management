@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@backend-api/templates/*": [
+        "./src/templates/*"
+      ],
+      "@backend-api/utils/*": [
+        "./src/utils/*"
+      ]
+    },
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src/**/*",
+    "scripts/generate-dependencies.ts"
+  ]
+}

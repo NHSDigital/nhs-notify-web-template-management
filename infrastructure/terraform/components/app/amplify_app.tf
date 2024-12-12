@@ -32,5 +32,6 @@ resource "aws_amplify_app" "main" {
     NOTIFY_DOMAIN_NAME          = local.root_domain_name
     ACCOUNT_ID                  = var.aws_account_id
     NEXT_PUBLIC_DISABLE_CONTENT = var.disable_content
+    AMPLIFY_MONOREPO_APP_ROOT   = "frontend"
   }
 }

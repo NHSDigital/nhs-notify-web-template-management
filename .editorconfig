@@ -14,6 +14,9 @@ indent_size = unset
 [*.snap]
 trim_trailing_whitespace = false
 
+[/lambdas/backend-client/src/types/generated/models/*]
+trim_trailing_whitespace = unset
+
 [{*.min.js,*.min.css}]
 insert_final_newline = false
 

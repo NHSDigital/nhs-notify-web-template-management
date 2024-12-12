@@ -1,12 +1,14 @@
 module "email_lambda" {
+  depends_on  = [module.build_template_lambda, module.build_template_client]
+
   source      = "../lambda-function"
-  description = "templates api endpoint"
+  description = "Send an email to the recipient"
 
   function_name    = "${local.csi}-email"
-  filename         = module.endpoint_build.zips[local.endpoint_entrypoint].path
-  source_code_hash = module.endpoint_build.zips[local.endpoint_entrypoint].base64sha256
+  filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.send_email].path
+  source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.send_email].base64sha256
   runtime          = "nodejs20.x"
-  handler          = "index.emailHandler"
+  handler          = "handler.emailHandler"
 
   log_retention_in_days = var.log_retention_in_days
 
