@@ -5,6 +5,6 @@
 export type Failure = {
     technicalMessage: string;
     statusCode: number;
-    details?: Record<string, any>;
+    details?: any;
 };
 

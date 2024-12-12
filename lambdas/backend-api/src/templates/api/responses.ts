@@ -31,7 +31,7 @@ export const apiSuccess = (
 export const apiFailure = (
   statusCode: number,
   technicalMessage: string,
-  details?: Record<string, string>
+  details?: unknown
 ) => ({
   statusCode,
   body: JSON.stringify({

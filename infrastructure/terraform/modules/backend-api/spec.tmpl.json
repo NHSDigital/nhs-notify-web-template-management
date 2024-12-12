@@ -489,9 +489,7 @@
           "statusCode": {
             "type": "integer"
           },
-          "details": {
-            "type": "object"
-          }
+          "details": {}
         }
       },
       "SendEmail": {
