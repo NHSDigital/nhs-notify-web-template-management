@@ -20,7 +20,8 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   Draft,
   NHSAppTemplate,
-  PageComponentProps,TemplateType,
+  PageComponentProps,
+  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';

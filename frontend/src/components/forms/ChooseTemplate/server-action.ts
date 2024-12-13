@@ -1,5 +1,8 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { FormState, TemplateType } from 'nhs-notify-web-template-management-utils';
+import {
+  FormState,
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 
 const templateTypeToPageMap: Record<TemplateType, string> = {
