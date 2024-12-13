@@ -8,7 +8,6 @@ import {
   SubmittedEmailTemplate,
   SubmittedSMSTemplate,
   SubmittedNHSAppTemplate,
-  logger,
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
@@ -17,6 +16,7 @@ import {
   $SubmittedSMSTemplate,
   $SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export const validateNHSAppTemplate = (
   template: Template | undefined

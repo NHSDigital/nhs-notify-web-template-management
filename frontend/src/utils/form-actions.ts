@@ -7,9 +7,9 @@ import { DbOperationError } from '@domain/errors';
 import {
   Template,
   Draft,
-  logger,
   isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
   template: Draft<Template>

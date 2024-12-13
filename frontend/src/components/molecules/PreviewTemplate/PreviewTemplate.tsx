@@ -1,11 +1,11 @@
 import { Container, Row, Col, Tag } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
+  Template,
   TemplateStatus,
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils/src/enum';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
+} from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplate.module.scss';
 import { PreviewTemplateProps } from './preview-template.types';
 

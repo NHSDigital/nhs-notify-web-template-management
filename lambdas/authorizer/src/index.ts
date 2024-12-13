@@ -7,7 +7,9 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { verify } from 'jsonwebtoken';
 import getJwksClient from 'jwks-rsa';
-import { logger } from 'nhs-notify-web-template-management-utils';
+import {
+  logger,
+} from 'nhs-notify-web-template-management-utils/logger';
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: 'eu-west-2',
