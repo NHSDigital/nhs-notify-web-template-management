@@ -73,7 +73,6 @@ test.describe('Choose Template Type Page', () => {
     { label: 'NHS App message', path: 'nhs-app' },
     { label: 'Email', path: 'email' },
     { label: 'Text message (SMS)', path: 'text-message' },
-    { label: 'Letter', path: 'letter' },
   ])
     test(`should navigate to the ${label} template creation page when radio button selected and continue button clicked`, async ({
       page,

@@ -5,7 +5,6 @@ enum TemplateType {
   NHS_APP = 'NHS_APP',
   SMS = 'SMS',
   EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
 }
 
 enum TemplateStatus {
@@ -17,7 +16,6 @@ const templateTypes = [
   TemplateType.NHS_APP,
   TemplateType.SMS,
   TemplateType.EMAIL,
-  TemplateType.LETTER,
 ] as const;
 
 const templateStatuses = [
