@@ -12,13 +12,14 @@ import {
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils/src/enum';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
 export function ManageTemplates({
   templateList,
 }: {
-  templateList: Template[];
+  templateList: Template[] | TemplateDTO[];
 }) {
   return (
     <div className='nhsuk-grid-row'>
