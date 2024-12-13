@@ -18,11 +18,10 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  NHSAppTemplate,
-  PageComponentProps,
   Draft,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+  NHSAppTemplate,
+  PageComponentProps,TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';

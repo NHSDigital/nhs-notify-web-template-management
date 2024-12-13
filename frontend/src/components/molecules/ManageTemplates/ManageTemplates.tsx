@@ -4,16 +4,16 @@
 
 import { Table, Tag } from 'nhsuk-react-components';
 import content from '@content/content';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   previewTemplatePages,
+  Template,
   TemplateStatus,
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 

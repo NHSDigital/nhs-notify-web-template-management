@@ -1,5 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const headerComponent = {
   serviceName: 'Notify',

@@ -7,7 +7,7 @@ import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { chooseTemplatePageContent } from '@content/content';
-import { FormState } from 'nhs-notify-web-template-management-utils/src/types';
+import { FormState } from 'nhs-notify-web-template-management-utils';
 
 export const ChooseTemplate = () => {
   const initialState: FormState = {};
