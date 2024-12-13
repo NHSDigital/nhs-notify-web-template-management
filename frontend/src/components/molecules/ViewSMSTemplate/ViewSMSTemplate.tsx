@@ -6,9 +6,10 @@ import {
   SubmittedSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
-import { BackLink } from 'nhsuk-react-components';
-import Link from 'next/link';
 import { renderSMSMarkdown } from '@utils/markdownit';
+import { BackLink } from 'nhsuk-react-components';
+import { viewSubmittedTemplatePageContent as content } from '@content/content';
+import Link from 'next/link';
 
 export function ViewSMSTemplate({
   initialState,
@@ -24,11 +25,8 @@ export function ViewSMSTemplate({
           Back to all templates
         </BackLink>
         <PreviewTemplate.Sms template={initialState} message={html} />
-        <p>This template cannot be edited because it has been submitted.</p>
-        <p>
-          If you want to change a submitted or live template, you must create a
-          new template to replace it.
-        </p>
+        <p>{content.cannotEdit}</p>
+        <p>{content.createNewTemplate}</p>
         <p>
           <Link href='/manage-templates'>Back to all templates</Link>
         </p>

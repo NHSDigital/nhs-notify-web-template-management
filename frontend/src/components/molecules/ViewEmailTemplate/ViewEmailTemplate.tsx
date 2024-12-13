@@ -8,6 +8,7 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { BackLink } from 'nhsuk-react-components';
+import { viewSubmittedTemplatePageContent as content } from '@content/content';
 import Link from 'next/link';
 
 export function ViewEmailTemplate({
@@ -29,11 +30,8 @@ export function ViewEmailTemplate({
           subject={templateSubjectLine}
           message={html}
         />
-        <p>This template cannot be edited because it has been submitted.</p>
-        <p>
-          If you want to change a submitted or live template, you must create a
-          new template to replace it.
-        </p>
+        <p>{content.cannotEdit}</p>
+        <p>{content.createNewTemplate}</p>
         <p>
           <Link href='/manage-templates'>Back to all templates</Link>
         </p>
