@@ -11,9 +11,12 @@ import {
   $EmailTemplate,
   $ChannelTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
+
+type TemplateUnion = Template | TemplateDTO | undefined;
 
 export const validateNHSAppTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): NHSAppTemplate | undefined => {
   try {
     return $NHSAppTemplate.parse(template);
@@ -24,7 +27,7 @@ export const validateNHSAppTemplate = (
 };
 
 export const validateSMSTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SMSTemplate | undefined => {
   try {
     return $SMSTemplate.parse(template);
@@ -35,7 +38,7 @@ export const validateSMSTemplate = (
 };
 
 export const validateEmailTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): EmailTemplate | undefined => {
   try {
     return $EmailTemplate.parse(template);
@@ -46,7 +49,7 @@ export const validateEmailTemplate = (
 };
 
 export const validateChannelTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): ChannelTemplate | undefined => {
   try {
     return $ChannelTemplate.parse(template);

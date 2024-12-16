@@ -3,13 +3,12 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import { getTemplates } from '@utils/form-actions';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
 export default async function ManageTemplatesPage() {
-  const availableTemplateList: Template[] | [] = await getTemplates();
+  const availableTemplateList = await getTemplates();
 
   return (
     <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>

@@ -383,7 +383,8 @@
         "enum": [
           "NHS_APP",
           "SMS",
-          "EMAIL"
+          "EMAIL",
+          "LETTER"
         ]
       },
       "TemplateStatus": {

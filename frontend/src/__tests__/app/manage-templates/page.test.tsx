@@ -19,7 +19,6 @@ const mockTemplates: Template[] = [
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Template 1',
     message: 'Message',
-    subject: 'Subject Line',
     createdAt: '2021-01-01T00:00:00.000Z',
   },
 ];
