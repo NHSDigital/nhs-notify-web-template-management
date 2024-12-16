@@ -3,20 +3,27 @@
 // we need this to be a client component because nhsuk-react-components uses client-only react features
 
 import { useFormState } from 'react-dom';
-import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { chooseTemplatePageContent } from '@content/content';
-import { FormState } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateType,
+  templateTypeDisplayMappings,
+} from 'nhs-notify-web-template-management-utils/src/enum';
+import { chooseTemplateAction } from './server-action';
 
 export const ChooseTemplate = () => {
-  const initialState: FormState = {};
-  const [state, action] = useFormState(chooseTemplateAction, initialState);
+  const [state, action] = useFormState(chooseTemplateAction, {});
+
+  const templateTypes = Object.values(TemplateType);
+  const options = templateTypes.map((templateType) => ({
+    id: templateType,
+    text: templateTypeDisplayMappings(templateType),
+  }));
 
   const {
     pageHeading,
     errorHeading,
-    options,
     buttonText,
     hint,
     learnMoreLink,

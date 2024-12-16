@@ -1,7 +1,8 @@
 export enum TemplateType {
   NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
   EMAIL = 'EMAIL',
+  SMS = 'SMS',
+  LETTER = 'LETTER',
 }
 
 export enum TemplateStatus {
@@ -11,9 +12,10 @@ export enum TemplateStatus {
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'NHS App',
+    [TemplateType.NHS_APP]: 'NHS App message',
     [TemplateType.SMS]: 'Text message (SMS)',
     [TemplateType.EMAIL]: 'Email',
+    [TemplateType.LETTER]: 'Letter',
   })[type];
 
 export const templateStatustoDisplayMappings = (status: TemplateStatus) =>
@@ -22,16 +24,10 @@ export const templateStatustoDisplayMappings = (status: TemplateStatus) =>
     [TemplateStatus.SUBMITTED]: 'Submitted',
   })[status];
 
-export const previewTemplatePages = (type: TemplateType) =>
+export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'preview-nhs-app-template',
-    [TemplateType.SMS]: 'preview-text-message-template',
-    [TemplateType.EMAIL]: 'preview-email-template',
-  })[type];
-
-export const viewSubmittedTemplatePages = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'view-submitted-nhs-app-template',
-    [TemplateType.SMS]: 'view-submitted-text-message-template',
-    [TemplateType.EMAIL]: 'view-submitted-email-template',
+    [TemplateType.NHS_APP]: 'nhs-app',
+    [TemplateType.SMS]: 'text-message',
+    [TemplateType.EMAIL]: 'email',
+    [TemplateType.LETTER]: 'letter',
   })[type];

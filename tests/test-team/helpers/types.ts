@@ -4,6 +4,14 @@ export enum TemplateType {
   EMAIL = 'EMAIL',
 }
 
+export const templateTypeDisplayMappings = (type: TemplateType) =>
+  ({
+    [TemplateType.NHS_APP]: 'NHS App message',
+    [TemplateType.SMS]: 'Text message (SMS)',
+    [TemplateType.EMAIL]: 'Email',
+    [TemplateType.LETTER]: 'Letter',
+  })[type];
+
 export enum TemplateStatus {
   NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
   SUBMITTED = 'SUBMITTED',
