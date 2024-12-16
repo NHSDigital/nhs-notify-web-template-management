@@ -581,7 +581,7 @@ exports[`renders page one error 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="nhsAppTemplateName-error-message"
+              id="nhsAppTemplateName--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -1069,7 +1069,7 @@ exports[`renders page with multiple errors 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="nhsAppTemplateName-error-message"
+              id="nhsAppTemplateName--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -1100,7 +1100,7 @@ exports[`renders page with multiple errors 1`] = `
           </label>
           <span
             class="nhsuk-error-message"
-            id="nhsAppTemplateMessage-error-message"
+            id="nhsAppTemplateMessage--error-message"
           >
             <span
               class="nhsuk-u-visually-hidden"

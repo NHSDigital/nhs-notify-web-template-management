@@ -183,7 +183,7 @@ exports[`Preview sms form renders matches error snapshot 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="reviewSMSTemplateAction-error-message"
+              id="reviewSMSTemplateAction--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"

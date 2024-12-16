@@ -183,7 +183,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="reviewNHSAppTemplateAction-error-message"
+              id="reviewNHSAppTemplateAction--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"

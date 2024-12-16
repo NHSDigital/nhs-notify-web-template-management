@@ -209,7 +209,7 @@ exports[`Preview email form renders matches error snapshot 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="reviewEmailTemplateAction-error-message"
+              id="reviewEmailTemplateAction--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"

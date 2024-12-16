@@ -70,7 +70,7 @@ export const SmsTemplateForm: FC<
               defaultValue={smsTemplateName}
               onChange={smsTemplateNameHandler}
               error={templateNameError}
-              errorProps={{ id: 'smsTemplateName-error-message' }}
+              errorProps={{ id: 'smsTemplateName--error-message' }}
             />
           </div>
           <Textarea
@@ -82,7 +82,7 @@ export const SmsTemplateForm: FC<
             maxLength={MAX_SMS_CHARACTER_LENGTH}
             rows={10}
             error={templateMessageError}
-            errorProps={{ id: 'smsTemplateMessage-error-message' }}
+            errorProps={{ id: 'smsTemplateMessage--error-message' }}
           />
           <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
             <p className='nhsuk-u-margin-bottom-0' id='character-count'>
