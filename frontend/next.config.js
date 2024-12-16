@@ -35,8 +35,14 @@ const nextConfig = (phase) => {
       if (isDevServer) {
         return [
           {
+            source: '/auth/signout',
+            destination: `http://${domain}${basePath}/auth/signout`,
+            basePath: false,
+          },
+          {
             source: '/auth',
-            destination: `${basePath}/auth`,
+            destination: `http://${domain}${basePath}/auth`,
+            basePath: false,
           },
         ];
       }

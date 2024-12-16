@@ -10,7 +10,10 @@ const headerComponent = {
         `${getBasePath()}/create-and-submit-templates`
       )}`,
     },
-    logOut: 'Log out',
+    logOut: {
+      text: 'Log out',
+      href: '/auth/signout',
+    },
   },
 };
 
