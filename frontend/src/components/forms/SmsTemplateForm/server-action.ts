@@ -48,7 +48,7 @@ export async function processFormActions(
     : createTemplate(updatedTemplate));
 
   return redirect(
-    `/preview-text-message-template/${savedTemplate.id}`,
+    `/preview-text-message-template/${savedTemplate.id}?from=edit`,
     RedirectType.push
   );
 }

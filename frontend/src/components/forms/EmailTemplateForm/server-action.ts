@@ -55,7 +55,7 @@ export async function processFormActions(
     : createTemplate(updatedTemplate));
 
   return redirect(
-    `/preview-email-template/${savedTemplate.id}`,
+    `/preview-email-template/${savedTemplate.id}?from=edit`,
     RedirectType.push
   );
 }

@@ -21,6 +21,12 @@ const {
   emailTemplateSubmittedPage,
   NhsAppTemplateSubmittedPage,
   manageTemplatesPage,
+  viewNotYetSubmittedEmailTemplatePage,
+  viewNotYetSubmittedNHSAppTemplatePage,
+  viewNotYetSubmittedTextMessageTemplatePage,
+  viewSubmittedEmailTemplatePage,
+  viewSubmittedNHSAppTemplatePage,
+  viewSubmittedTextMessageTemplatePage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -45,24 +51,30 @@ module.exports = {
     performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(reviewNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(reviewNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
+    performCheck(viewSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
 
     // Text message journey
     performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
+    performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
 
     // Email journey
     performCheck(createEmailTemplatePage(chooseTemplateUrl)),
     performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
     performCheck(reviewEmailTemplatePage(chooseTemplateUrl)),
     performCheck(reviewEmailTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
     performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
+    performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
     performCheck({ url: `${baseUrl}/invalid-template`, name: 'invalid-template'}),
     performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})

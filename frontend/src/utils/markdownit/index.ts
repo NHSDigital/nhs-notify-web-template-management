@@ -16,3 +16,30 @@ export class MarkdownItWrapper extends MarkdownIt {
     return this;
   }
 }
+
+export function renderSMSMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  return markdown.render(value);
+}
+
+export function renderNHSAppMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  markdown.enableLineBreak().enable(['heading', 'link', 'list', 'emphasis']);
+
+  return markdown.render(value);
+}
+
+export function renderEmailMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  markdown
+    .enableLineBreak()
+    .enable(['heading', 'link', 'list', 'emphasis', 'hr']);
+
+  return markdown.render(value);
+}

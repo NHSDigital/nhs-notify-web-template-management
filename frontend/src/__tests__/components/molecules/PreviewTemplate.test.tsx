@@ -1,10 +1,44 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import {
+  Template,
+  TemplateStatus,
+} from 'nhs-notify-web-template-management-utils';
 
 describe('PreviewTemplate component', () => {
-  it('matches snapshot', () => {
+  it('matches not yet submitted snapshot', () => {
     const container = render(
       <PreviewTemplate
+        template={
+          {
+            id: 'template-id',
+            name: 'Example template',
+            templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          } as Template
+        }
+        preview={[
+          {
+            heading: 'Heading',
+            id: 'heading',
+            value: 'Test value-1',
+          },
+        ]}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches submitted snapshot', () => {
+    const container = render(
+      <PreviewTemplate
+        template={
+          {
+            id: 'template-id',
+            name: 'Example template',
+            templateStatus: TemplateStatus.SUBMITTED,
+          } as Template
+        }
         preview={[
           {
             heading: 'Heading',
@@ -21,6 +55,12 @@ describe('PreviewTemplate component', () => {
   it('renders component correctly', () => {
     render(
       <PreviewTemplate
+        template={
+          {
+            id: 'template-id',
+            name: 'Example template',
+          } as Template
+        }
         preview={[
           {
             heading: 'Subject',
@@ -45,27 +85,28 @@ describe('PreviewTemplate component', () => {
         ]}
       />
     );
+
+    expect(screen.getByTestId('preview-message__heading')).toHaveTextContent(
+      'Example template'
+    );
     expect(screen.getByTestId('preview__heading-0')).toHaveTextContent(
       'Subject'
     );
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Subject value'
     );
-
     expect(screen.getByTestId('preview__heading-1')).toHaveTextContent(
       'Heading'
     );
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Heading value'
     );
-
     expect(screen.getByTestId('preview__heading-2')).toHaveTextContent(
       'Body text'
     );
     expect(screen.getByTestId('preview__content-2')).toHaveTextContent(
       'Body text value'
     );
-
     expect(screen.getByTestId('preview__heading-3')).toHaveTextContent(
       'Message'
     );

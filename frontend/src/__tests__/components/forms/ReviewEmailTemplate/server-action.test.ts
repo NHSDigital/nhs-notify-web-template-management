@@ -1,10 +1,7 @@
-import { mockDeep } from 'jest-mock-extended';
 import {
-  renderMarkdown,
   reviewEmailTemplateAction,
   $FormSchema,
 } from '@forms/ReviewEmailTemplate';
-import { MarkdownItWrapper } from '@utils/markdownit';
 import { redirect } from 'next/navigation';
 import {
   EmailTemplate,
@@ -12,7 +9,6 @@ import {
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
-import { markdown } from '../fixtures';
 
 jest.mock('next/navigation');
 
@@ -27,33 +23,6 @@ const initialState: EmailTemplate = {
   subject: 'template-subject',
   message: 'template-message',
 };
-
-describe('PreviewEmailActions', () => {
-  beforeEach(jest.resetAllMocks);
-
-  it('should enable email markdown rules', () => {
-    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
-
-    markdownItWrapperMock.enableLineBreak.mockReturnValue(
-      markdownItWrapperMock
-    );
-
-    renderMarkdown('message', markdownItWrapperMock);
-
-    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
-    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith([
-      'heading',
-      'link',
-      'list',
-      'emphasis',
-      'hr',
-    ]);
-  });
-
-  it('should only process email markdown rules', () => {
-    expect(renderMarkdown(markdown)).toMatchSnapshot();
-  });
-});
 
 describe('reviewEmailTemplateAction server action', () => {
   beforeEach(jest.resetAllMocks);

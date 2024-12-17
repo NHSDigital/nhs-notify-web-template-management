@@ -212,7 +212,7 @@ test.describe('Create SMS message template Page', () => {
       await createSmsTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-text-message-template/${templates.submit.id}`
+        `${baseURL}/templates/preview-text-message-template/${templates.submit.id}?from=edit`
       );
     });
   });

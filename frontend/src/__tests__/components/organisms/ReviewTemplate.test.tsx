@@ -99,10 +99,6 @@ describe('ReviewTemplate component', () => {
       />
     );
 
-    expect(screen.getByTestId('preview-message__heading')).toHaveTextContent(
-      'Example template'
-    );
-
     expect(
       screen.getByTestId('preview-example-form__legend')
     ).toHaveTextContent('Example heading');
