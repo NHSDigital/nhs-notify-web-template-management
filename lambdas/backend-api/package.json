@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "generate-dependencies": "tsx scripts/generate-dependencies.ts",
-    "test:unit": "npm run generate-dependencies && jest",
+    "test:unit": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit"
