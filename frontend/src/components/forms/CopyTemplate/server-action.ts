@@ -4,11 +4,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import {
   FormState,
   Template,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import {
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';

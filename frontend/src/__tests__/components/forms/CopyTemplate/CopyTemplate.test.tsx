@@ -41,7 +41,6 @@ describe('Choose template page', () => {
       screen.getByTestId('EMAIL-radio'),
       screen.getByTestId('NHS_APP-radio'),
       screen.getByTestId('SMS-radio'),
-      screen.getByTestId('LETTER-radio'),
     ];
     const submitButton = screen.getByTestId('submit-button');
 

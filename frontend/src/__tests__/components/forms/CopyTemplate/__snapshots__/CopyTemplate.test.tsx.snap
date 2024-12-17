@@ -153,25 +153,6 @@ exports[`Choose template page renders error component 1`] = `
                     Text message (SMS)
                   </label>
                 </div>
-                <div
-                  class="nhsuk-radios__item"
-                >
-                  <input
-                    class="nhsuk-radios__input"
-                    data-testid="LETTER-radio"
-                    id="templateType-LETTER"
-                    name="templateType"
-                    type="radio"
-                    value="LETTER"
-                  />
-                  <label
-                    class="nhsuk-label nhsuk-radios__label"
-                    for="templateType-LETTER"
-                    id="templateType-LETTER--label"
-                  >
-                    Letter
-                  </label>
-                </div>
               </div>
             </div>
           </fieldset>
@@ -317,25 +298,6 @@ exports[`Choose template page selects one radio button at a time 1`] = `
                     id="templateType-SMS--label"
                   >
                     Text message (SMS)
-                  </label>
-                </div>
-                <div
-                  class="nhsuk-radios__item"
-                >
-                  <input
-                    class="nhsuk-radios__input"
-                    data-testid="LETTER-radio"
-                    id="templateType-LETTER"
-                    name="templateType"
-                    type="radio"
-                    value="LETTER"
-                  />
-                  <label
-                    class="nhsuk-label nhsuk-radios__label"
-                    for="templateType-LETTER"
-                    id="templateType-LETTER--label"
-                  >
-                    Letter
                   </label>
                 </div>
               </div>

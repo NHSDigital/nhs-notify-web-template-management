@@ -9,7 +9,7 @@ import { chooseTemplatePageContent } from '@content/content';
 import {
   TemplateType,
   templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 import { chooseTemplateAction } from './server-action';
 
 export const ChooseTemplate = () => {

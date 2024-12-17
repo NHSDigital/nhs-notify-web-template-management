@@ -7,11 +7,11 @@ import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { copyTemplatePageContent } from '@content/content';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import {
+  Template,
   TemplateType,
   templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { copyTemplateAction } from './server-action';
 
