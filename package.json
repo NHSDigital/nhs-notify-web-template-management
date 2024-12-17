@@ -44,9 +44,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-html-reporter": "^3.10.2",
     "jest-mock-extended": "^3.0.7",
+    "lcov-result-merger": "^5.0.1",
     "ts-node": "^10.9.2"
-  },
-  "dependencies": {
-    "lcov-result-merger": "^5.0.1"
   }
 }
