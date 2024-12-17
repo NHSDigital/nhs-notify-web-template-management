@@ -9,20 +9,28 @@ import {
 } from './template-mgmt-common.steps';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import { TemplateFactory } from '../helpers/template-factory';
-import { TemplateType, templateTypeDisplayMappings } from '../helpers/types';
+import {
+  TemplateType,
+  templateTypeDisplayMappings,
+  templateTypeToUrlTextMappings,
+} from '../helpers/types';
 
 const templates = {
   email: {
     ...TemplateFactory.createEmailTemplate('email-template-copy-page'),
-    name: 'email-template-copy-page',
+    name: 'email-template-copy-page-name',
+    message: 'email-template-copy-page-message',
+    subject: 'template-subject',
   },
   sms: {
     ...TemplateFactory.createSmsTemplate('sms-template-copy-page'),
-    name: 'sms-template-copy-page',
+    name: 'sms-template-copy-page-name',
+    message: 'sms-template-copy-page-message',
   },
   nhsApp: {
     ...TemplateFactory.createNhsAppTemplate('app-template-copy-page'),
-    name: 'app-template-copy-page',
+    name: 'app-template-copy-page-name',
+    message: 'app-template-copy-page-message',
   },
 };
 
@@ -151,6 +159,17 @@ test.describe('Copy Template Page', () => {
         }
 
         extraTemplateIds.push(newTemplateId);
+
+        await copyTemplatePage.navigateTo(
+          `/templates/preview-${templateTypeToUrlTextMappings(targetTemplateType)}-template/${newTemplateId}`
+        );
+
+        expect(page.getByText(template.message)).toBeVisible();
+
+        if (targetTemplateType === TemplateType.EMAIL) {
+          const expectedSubject = template.subject ?? 'Enter a subject line';
+          expect(page.getByText(expectedSubject)).toBeVisible();
+        }
       });
     }
   }

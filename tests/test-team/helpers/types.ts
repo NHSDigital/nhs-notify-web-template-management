@@ -12,6 +12,14 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     [TemplateType.LETTER]: 'Letter',
   })[type];
 
+export const templateTypeToUrlTextMappings = (type: TemplateType) =>
+  ({
+    [TemplateType.NHS_APP]: 'nhs-app',
+    [TemplateType.SMS]: 'text-message',
+    [TemplateType.EMAIL]: 'email',
+    [TemplateType.LETTER]: 'letter',
+  })[type];
+
 export enum TemplateStatus {
   NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
   SUBMITTED = 'SUBMITTED',
