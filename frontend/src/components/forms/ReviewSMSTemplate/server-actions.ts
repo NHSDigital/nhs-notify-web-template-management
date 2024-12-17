@@ -1,4 +1,3 @@
-import { MarkdownItWrapper } from '@utils/markdownit';
 import {
   SMSTemplate,
   TemplateFormState,
@@ -11,13 +10,6 @@ export const $FormSchema = z.object({
     message: 'Select an option',
   }),
 });
-
-export function renderMarkdown(
-  value: string,
-  markdown = new MarkdownItWrapper()
-) {
-  return markdown.render(value);
-}
 
 export async function reviewSmsTemplateAction(
   formState: TemplateFormState<SMSTemplate>,

@@ -54,11 +54,6 @@ describe('PreviewNhsAppTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.LETTER,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
       templateType: TemplateType.EMAIL,
       name: 'template-name',
       message: 'template-message',

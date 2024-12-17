@@ -3,7 +3,7 @@ import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import {
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
 const manageTemplatesContent = content.pages.manageTemplates;

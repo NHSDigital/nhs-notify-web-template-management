@@ -6,13 +6,15 @@ import {
   $NHSAppTemplate,
   $ChannelTemplate,
   $SubmittedChannelTemplate,
+  $SubmittedEmailTemplate,
+  $SubmittedSMSTemplate,
+  $SubmittedNHSAppTemplate,
 } from './zod-validators';
 
 export type FormId =
   | 'choose-a-template-type'
   | 'create-nhs-app-template'
   | 'create-email-template'
-  | 'create-letter-template'
   | 'create-text-message-template'
   | 'preview-nhs-app-template'
   | 'submit-template'
@@ -28,9 +30,15 @@ export type Template = z.infer<typeof $Template>;
 
 export type EmailTemplate = z.infer<typeof $EmailTemplate>;
 
+export type SubmittedEmailTemplate = z.infer<typeof $SubmittedEmailTemplate>;
+
 export type SMSTemplate = z.infer<typeof $SMSTemplate>;
 
+export type SubmittedSMSTemplate = z.infer<typeof $SubmittedSMSTemplate>;
+
 export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
+
+export type SubmittedNHSAppTemplate = z.infer<typeof $SubmittedNHSAppTemplate>;
 
 export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
 

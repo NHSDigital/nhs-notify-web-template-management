@@ -1,5 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const headerComponent = {
   serviceName: 'Notify',
@@ -62,7 +62,6 @@ const personalisationComponent = {
 
 const messageFormattingComponent = {
   header: 'Message formatting',
-  letterHeader: 'Body text formatting',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
@@ -139,42 +138,6 @@ const messageFormattingComponent = {
       },
     ],
   },
-  signatures: {
-    title: 'Signatures',
-    text: `If you upload a signature image, use 2 curly brackets on either side of 'signature' to insert your signature image in the body text. For example:`,
-    codeBlockText: '{{signature}}',
-  },
-  pageBreaks: {
-    title: 'Page breaks',
-    text: 'To add a page break, put 3 asterisks, for example:',
-    codeBlockText: [
-      {
-        id: 'item-one',
-        item: 'Content on one page',
-      },
-      {
-        id: 'item-two',
-        item: '***',
-      },
-      {
-        id: 'item-three',
-        item: 'Content on another page',
-      },
-    ],
-  },
-  contentBlocks: {
-    title: 'Content blocks',
-    text1:
-      'Content blocks are blocks of text that cannot be split onto different pages.',
-    text2:
-      'Use {{startBlock}} before your block of content, and {{endBlock}} after your block of content.',
-    text3: 'For example:',
-    codeBlockText: [
-      { id: 'start-block', item: '{{startBlock}}' },
-      { id: 'content', item: 'Here is my unbreakable block of content.' },
-      { id: 'end-block', item: '{{endBlock}}' },
-    ],
-  },
   horizontalLine: {
     title: 'Horizontal lines',
     text: 'To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:',
@@ -201,7 +164,6 @@ const homePage = {
     { key: 'template-1', item: 'NHS App messages' },
     { key: 'template-2', item: 'emails' },
     { key: 'template-3', item: 'text messages (SMS)' },
-    { key: 'template-4', item: 'letters' },
   ],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
@@ -248,20 +210,6 @@ const reviewEmailTemplateContent = {
     options: [
       { id: 'email-edit', text: 'Edit template' },
       { id: 'email-submit', text: 'Submit template' },
-    ],
-    buttonText: 'Continue',
-  },
-};
-
-const reviewLetterTemplateContent = {
-  sectionHeading: 'Letter template',
-  form: {
-    errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next with this template?',
-    options: [
-      { id: 'letter-edit', text: 'Edit' },
-      { id: 'letter-preview', text: 'Preview (PDF)' },
-      { id: 'letter-submit', text: 'Submit' },
     ],
     buttonText: 'Continue',
   },
@@ -348,7 +296,6 @@ export const chooseTemplatePageContent = {
     { id: TemplateType.NHS_APP, text: 'NHS App message' },
     { id: TemplateType.EMAIL, text: 'Email' },
     { id: TemplateType.SMS, text: 'Text message (SMS)' },
-    { id: TemplateType.LETTER, text: 'Letter' },
   ],
   buttonText: 'Continue',
   hint: 'Select one option',
@@ -380,7 +327,6 @@ export const nameYourTemplateContent = {
     [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
     [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
     [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.LETTER]: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
   },
 };
 
@@ -488,6 +434,12 @@ export const createSmsTemplatePageContent = {
   buttonText: 'Save and preview',
 };
 
+export const viewSubmittedTemplatePageContent = {
+  cannotEdit: 'This template cannot be edited because it has been submitted.',
+  createNewTemplate:
+    'If you want to change a submitted or live template, you must create a new template to replace it.',
+};
+
 const content = {
   global: {
     mainLayout,
@@ -497,7 +449,6 @@ const content = {
     footerComponent,
     personalisationComponent,
     reviewEmailTemplateContent,
-    reviewLetterTemplateContent,
     reviewNHSAppTemplateContent,
     reviewSMSTemplateContent,
     messageFormattingComponent,

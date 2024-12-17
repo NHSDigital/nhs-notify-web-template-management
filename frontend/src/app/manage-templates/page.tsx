@@ -3,7 +3,7 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
+import { Template } from 'nhs-notify-web-template-management-utils';
 import { getTemplates } from '@utils/form-actions';
 
 const manageTemplatesContent = content.pages.manageTemplates;

@@ -3,7 +3,7 @@ import { ErrorCase } from './error-cases';
 type ErrorResponse = {
   code: ErrorCase;
   message: string;
-  details?: Record<string, string>;
+  details?: unknown;
 };
 
 export type SuccessResult<T> = { error?: never } & { data: T };
