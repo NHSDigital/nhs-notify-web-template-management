@@ -405,7 +405,6 @@ export const templateSubmittedPageContent = {
   pageHeading: 'Template submitted',
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
-  newTemplateText: 'Create another template',
   doNextHeading: 'What you need to do next',
   doNextText:
     "You'll receive a confirmation email, which contains the template name and ID.",
