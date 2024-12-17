@@ -12,9 +12,10 @@
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
     "app:stop": "pm2 kill",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run mock-amplify-outputs && tsc --noEmit",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
-    "destroy-sandbox": "npx ampx sandbox delete --y"
+    "destroy-sandbox": "npx ampx sandbox delete --y",
+    "mock-amplify-outputs": "if [ ! -f ./amplify_outputs.json ]; then echo \"{}\" > ./amplify_outputs.json ; fi"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.23",
