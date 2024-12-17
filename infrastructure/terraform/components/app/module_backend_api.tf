@@ -1,5 +1,5 @@
-module "templates_api" {
-  source = "../../modules/templates-api"
+module "backend_api" {
+  source = "../../modules/backend-api"
 
   project               = var.project
   environment           = var.environment
