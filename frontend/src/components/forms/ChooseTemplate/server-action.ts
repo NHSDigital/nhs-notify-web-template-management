@@ -6,18 +6,12 @@ import { z } from 'zod';
 const templateTypeToPageMap: Record<TemplateType, string> = {
   SMS: '/create-text-message-template',
   EMAIL: '/create-email-template',
-  LETTER: '/create-letter-template',
   NHS_APP: '/create-nhs-app-template',
 };
 
 const $ChooseTemplate = z.object({
   templateType: z.enum(
-    [
-      TemplateType.SMS,
-      TemplateType.EMAIL,
-      TemplateType.NHS_APP,
-      TemplateType.LETTER,
-    ],
+    [TemplateType.SMS, TemplateType.EMAIL, TemplateType.NHS_APP],
     { message: 'Select a template type' }
   ),
 });

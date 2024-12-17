@@ -2,7 +2,6 @@ export enum TemplateType {
   NHS_APP = 'NHS_APP',
   SMS = 'SMS',
   EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
 }
 
 export enum TemplateStatus {
@@ -15,7 +14,6 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     [TemplateType.NHS_APP]: 'NHS App',
     [TemplateType.SMS]: 'Text message (SMS)',
     [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: 'Letter',
   })[type];
 
 export const templateStatustoDisplayMappings = (status: TemplateStatus) =>

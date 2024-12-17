@@ -1,10 +1,8 @@
 import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import { channelGuidanceContent } from '@content/content';
 
-export type TemplateTypeNoLetters = Exclude<TemplateType, TemplateType.LETTER>;
-
 export type ChannelGuidanceType = {
-  template: TemplateTypeNoLetters;
+  template: TemplateType;
 };
 
 export function ChannelGuidance({ template }: ChannelGuidanceType) {
