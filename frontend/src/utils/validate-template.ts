@@ -5,13 +5,19 @@ import {
   SMSTemplate,
   ChannelTemplate,
   Template,
-  logger,
+  SubmittedEmailTemplate,
+  SubmittedSMSTemplate,
+  SubmittedNHSAppTemplate,
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
   $ChannelTemplate,
+  $SubmittedEmailTemplate,
+  $SubmittedSMSTemplate,
+  $SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDTO } from 'nhs-notify-backend-client';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 type TemplateUnion = Template | TemplateDTO | undefined;
 
@@ -42,6 +48,39 @@ export const validateEmailTemplate = (
 ): EmailTemplate | undefined => {
   try {
     return $EmailTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedEmailTemplate = (
+  template: Template | undefined
+): SubmittedEmailTemplate | undefined => {
+  try {
+    return $SubmittedEmailTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedSMSTemplate = (
+  template: Template | undefined
+): SubmittedSMSTemplate | undefined => {
+  try {
+    return $SubmittedSMSTemplate.parse(template);
+  } catch (error) {
+    logger.error(error);
+    return undefined;
+  }
+};
+
+export const validateSubmittedNHSAppTemplate = (
+  template: Template | undefined
+): SubmittedNHSAppTemplate | undefined => {
+  try {
+    return $SubmittedNHSAppTemplate.parse(template);
   } catch (error) {
     logger.error(error);
     return undefined;

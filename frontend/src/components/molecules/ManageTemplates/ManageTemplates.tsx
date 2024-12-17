@@ -4,17 +4,27 @@
 
 import { Table, Tag } from 'nhsuk-react-components';
 import content from '@content/content';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import {
+  previewTemplatePages,
+  Template,
   TemplateStatus,
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils/src/enum';
 import { TemplateDTO } from 'nhs-notify-backend-client';
+import { viewSubmittedTemplatePages } from 'nhs-notify-web-template-management-utils';
 
 const manageTemplatesContent = content.pages.manageTemplates;
+
+const generateViewTemplateLink = (template: Template): string => {
+  if (template.templateStatus === TemplateStatus.SUBMITTED) {
+    return `/${viewSubmittedTemplatePages(template.templateType)}/${template.id}`;
+  }
+
+  return `/${previewTemplatePages(template.templateType)}/${template.id}`;
+};
 
 export function ManageTemplates({
   templateList,
@@ -53,7 +63,9 @@ export function ManageTemplates({
             {templateList.map((template) => (
               <Table.Row key={template.id}>
                 <Table.Cell>
-                  <Link href='#'>{template.name}</Link>
+                  <Link href={generateViewTemplateLink(template)}>
+                    {template.name}
+                  </Link>
                 </Table.Cell>
                 <Table.Cell>
                   {templateTypeDisplayMappings(template.templateType)}
@@ -71,20 +83,22 @@ export function ManageTemplates({
                 </Table.Cell>
                 <Table.Cell>
                   {format(`${template.createdAt}`, 'do MMM yyyy')}
+                  <br />
+                  {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  <Link href='#'>
-                    <p className='nhsuk-u-margin-bottom-2'>
+                  <p className='nhsuk-u-margin-bottom-2'>
+                    <Link href='#'>
                       {manageTemplatesContent.tableHeadings.action.copy}
-                    </p>
-                  </Link>
+                    </Link>
+                  </p>
                   {template.templateStatus ===
                   TemplateStatus.NOT_YET_SUBMITTED ? (
-                    <Link href='#'>
-                      <p className='nhsuk-u-margin-bottom-2'>
+                    <p className='nhsuk-u-margin-bottom-2'>
+                      <Link href='#'>
                         {manageTemplatesContent.tableHeadings.action.delete}
-                      </p>
-                    </Link>
+                      </Link>
+                    </p>
                   ) : null}
                 </Table.Cell>
               </Table.Row>

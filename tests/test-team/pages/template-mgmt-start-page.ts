@@ -21,7 +21,6 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
     'NHS App messages',
     'emails',
     'text messages (SMS)',
-    'letters',
   ];
 
   async navigateToStartPage() {

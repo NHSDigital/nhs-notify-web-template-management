@@ -78,7 +78,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Name 
               </span>
               <a
-                href="#"
+                href="/preview-nhs-app-template/1"
               >
                 Template 1
               </a>
@@ -119,6 +119,8 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Date created 
               </span>
               1st Jan 2021
+              <br />
+              00:00
             </td>
             <td
               class="nhsuk-table__cell"
@@ -129,24 +131,24 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
-              <a
-                href="#"
+                </a>
+              </p>
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Delete
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -162,7 +164,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Name 
               </span>
               <a
-                href="#"
+                href="/view-submitted-nhs-app-template/2"
               >
                 Template 2
               </a>
@@ -203,6 +205,8 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Date created 
               </span>
               1st Feb 2021
+              <br />
+              00:00
             </td>
             <td
               class="nhsuk-table__cell"
@@ -213,15 +217,15 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
         </tbody>
@@ -309,7 +313,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="#"
+                href="/view-submitted-nhs-app-template/1"
               >
                 Template 1
               </a>
@@ -350,6 +354,8 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Date created 
               </span>
               1st Jan 2021
+              <br />
+              00:00
             </td>
             <td
               class="nhsuk-table__cell"
@@ -360,15 +366,15 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -384,7 +390,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="#"
+                href="/view-submitted-nhs-app-template/2"
               >
                 Template 2
               </a>
@@ -425,6 +431,8 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Date created 
               </span>
               1st Feb 2021
+              <br />
+              00:00
             </td>
             <td
               class="nhsuk-table__cell"
@@ -435,15 +443,15 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <a
-                href="#"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="#"
                 >
                   Copy
-                </p>
-              </a>
+                </a>
+              </p>
             </td>
           </tr>
         </tbody>

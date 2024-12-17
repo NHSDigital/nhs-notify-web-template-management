@@ -97,7 +97,7 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      `/preview-nhs-app-template/template-id`,
+      `/preview-nhs-app-template/template-id?from=edit`,
       'push'
     );
   });
@@ -127,7 +127,7 @@ describe('CreateNHSAppTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-nhs-app-template/new-template-id',
+      '/preview-nhs-app-template/new-template-id?from=edit',
       'push'
     );
   });

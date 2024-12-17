@@ -4,9 +4,10 @@ import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
   Template,
   Draft,
-  logger,
+  isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
 import { BackendClient, TemplateDTO } from 'nhs-notify-backend-client';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
   template: Draft<Template>
@@ -90,5 +91,16 @@ export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
     return [];
   }
 
-  return data;
+  // TODO: update isValidTemplate
+  const sortedData = data.sort((a, b) => {
+    const aCreatedAt = a.createdAt ?? '';
+    const bCreatedAt = b.createdAt ?? '';
+
+    if (aCreatedAt === bCreatedAt) {
+      return a.id.localeCompare(b.id);
+    }
+    return aCreatedAt < bCreatedAt ? 1 : -1;
+  });
+
+  return sortedData;
 }
