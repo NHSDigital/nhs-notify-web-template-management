@@ -11,11 +11,9 @@ function performCheck(options) {
     throw new Error('options.url is required');
   }
 
-  console.log('running');
-
   return {
     ...defaultOptions,
-    url: `${defaultOptions.url}`,
+    url: `${defaultOptions.url}?pageName=${defaultOptions.name}`,
     screenCapture: `./.reports/accessibility/${defaultOptions.name}.png`,
   };
 }
