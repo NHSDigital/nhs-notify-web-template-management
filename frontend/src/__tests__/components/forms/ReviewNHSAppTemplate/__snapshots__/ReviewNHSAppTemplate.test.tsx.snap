@@ -14,6 +14,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"
@@ -274,6 +275,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"
@@ -497,6 +499,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"
