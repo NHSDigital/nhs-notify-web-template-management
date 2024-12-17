@@ -9,8 +9,7 @@
     "lint": "eslint . -c .eslintrc.json",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
-    "typecheck": "tsc --noEmit",
-    "typescript": "^5.5.4"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-amplify/backend": "^1.8.0",
@@ -27,6 +26,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.1",
     "nhs-notify-web-template-management-utils": "*",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.4"
   }
 }
