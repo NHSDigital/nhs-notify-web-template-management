@@ -55,12 +55,6 @@ describe('PreviewEmailTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.LETTER,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-    },
-    {
       templateType: TemplateType.SMS,
       name: 'template-name',
       subject: 'template-subject-line',

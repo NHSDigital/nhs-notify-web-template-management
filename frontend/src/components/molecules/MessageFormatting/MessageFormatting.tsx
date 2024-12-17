@@ -3,15 +3,12 @@ import content from '@content/content';
 import {
   BoldText,
   BulletList,
-  ContentBlock,
   Headings,
   HorizontalRule,
   LineBreaksAndParagraphs,
   LinksAndUrlsMarkdown,
   LinksAndUrlsNoMarkdown,
   NumberedList,
-  PageBreak,
-  Signature,
 } from './formats';
 
 const messageFormattingContent = content.components.messageFormattingComponent;
@@ -31,16 +28,6 @@ const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
     HorizontalRule(),
     LinksAndUrlsMarkdown(),
   ],
-  [TemplateType.LETTER]: [
-    LineBreaksAndParagraphs(),
-    Headings(),
-    BoldText(),
-    BulletList(),
-    NumberedList(),
-    Signature(),
-    PageBreak(),
-    ContentBlock(),
-  ],
   [TemplateType.SMS]: [LinksAndUrlsNoMarkdown()],
 };
 
@@ -51,9 +38,7 @@ export function MessageFormatting({ template }: { template: TemplateType }) {
         className='nhsuk-heading-m nhsuk-u-margin-top-4'
         data-testid='personalisation-header'
       >
-        {template === TemplateType.LETTER
-          ? messageFormattingContent.letterHeader
-          : messageFormattingContent.header}
+        {messageFormattingContent.header}
       </h2>
       {...messageFormattingMap[template]}
     </>

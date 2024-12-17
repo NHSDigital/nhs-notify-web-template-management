@@ -106,24 +106,6 @@ PreviewTemplate.Email = ({
   />
 );
 
-PreviewTemplate.Letter = ({
-  template,
-  heading,
-  bodyText,
-}: {
-  template: Template;
-  heading: string;
-  bodyText: string;
-}) => (
-  <PreviewTemplate
-    template={template}
-    preview={[
-      { heading: 'Heading', id: 'heading', value: heading },
-      { heading: 'Body text', id: 'body-text', value: bodyText },
-    ]}
-  />
-);
-
 PreviewTemplate.NHSApp = ({
   template,
   message,

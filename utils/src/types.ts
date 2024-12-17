@@ -15,7 +15,6 @@ export type FormId =
   | 'choose-a-template-type'
   | 'create-nhs-app-template'
   | 'create-email-template'
-  | 'create-letter-template'
   | 'create-text-message-template'
   | 'preview-nhs-app-template'
   | 'submit-template'

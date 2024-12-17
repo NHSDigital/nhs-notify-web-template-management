@@ -4,9 +4,19 @@ Template UI backend APIs
 
 ## Template APIs
 
-The openapi3 spec can found in the `terraform` module in [spec.tmpl.json](../../infrastructure/terraform/modules/templates-api/spec.tmpl.json).
+The openapi3 spec can found in the `terraform` module in [spec.tmpl.json](../../infrastructure/terraform/modules/backend-api/spec.tmpl.json).
 
 If you have postman installed you can import the `spec` file and make request via postman.
+
+## Get an Access token
+
+Setup an authenticated AWS terminal and run
+
+```bash
+./scripts/auth_sandbox.sh <email> <password>
+```
+
+Grab the `AccessToken` from `sandbox_cognito_auth_token.json`
 
 ### GET - /v1/template/:templateId - Get a single template by id
 

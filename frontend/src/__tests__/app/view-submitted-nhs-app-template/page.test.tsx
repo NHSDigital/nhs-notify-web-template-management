@@ -53,12 +53,6 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.LETTER,
-      name: 'template-name',
-      message: 'template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
-    },
-    {
       templateType: TemplateType.EMAIL,
       name: 'template-name',
       message: 'template-message',

@@ -55,7 +55,6 @@ describe('EditNhsAppTemplatePage', () => {
   const invalidTemplateTypes: TemplateType[] = [
     TemplateType.EMAIL,
     TemplateType.SMS,
-    TemplateType.LETTER,
   ];
 
   test.each(invalidTemplateTypes)(
