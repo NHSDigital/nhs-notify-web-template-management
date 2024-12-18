@@ -19,9 +19,9 @@ const updateTemplateMock = jest.spyOn(
 describe('Template API - Update', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no email in requestContext', async () => {
+  test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: undefined } },
+      requestContext: { authorizer: { user: undefined } },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -52,7 +52,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: '1-2-3' },
       body: undefined,
     });
@@ -70,14 +70,14 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {});
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
     });
@@ -104,7 +104,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify({ name: 'name' }),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -119,7 +119,7 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', { name: 'name' });
   });
@@ -144,7 +144,7 @@ describe('Template API - Update', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify(update),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -156,7 +156,7 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update);
   });
