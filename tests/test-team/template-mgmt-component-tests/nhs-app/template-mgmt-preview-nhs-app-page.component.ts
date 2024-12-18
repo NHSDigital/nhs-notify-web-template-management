@@ -12,18 +12,15 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
+import { TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
-    __typename: 'TemplateStorage',
-    id: 'preview-page-invalid-nhs-app-template',
-    version: 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    templateType: TemplateType.NHS_APP,
+    ...TemplateFactory.createNhsAppTemplate(
+      'preview-page-invalid-nhs-app-template'
+    ),
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  } as Template,
+  },
   valid: {
     ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-preview-template'),
     name: 'test-template-nhs-app',

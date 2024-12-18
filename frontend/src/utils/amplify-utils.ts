@@ -7,7 +7,7 @@ import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/da
 import { Schema } from 'nhs-notify-web-template-management-amplify';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { logger } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const config = require('@/amplify_outputs.json');
 

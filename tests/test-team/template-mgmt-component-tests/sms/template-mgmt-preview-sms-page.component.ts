@@ -12,18 +12,13 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
-    __typename: 'TemplateStorage',
-    id: 'preview-page-invalid-sms-template',
-    version: 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    templateType: TemplateType.SMS,
+    ...TemplateFactory.createSmsTemplate('preview-page-invalid-sms-template'),
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  } as Template,
+  },
   valid: {
     ...TemplateFactory.createSmsTemplate('valid-sms-preview-template'),
     name: 'test-template-sms',
@@ -31,7 +26,7 @@ const templates = {
   },
 };
 
-test.describe('Preview SMS message template Page', () => {
+test.describe.only('Preview SMS message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper(
     Object.values(templates)
   );

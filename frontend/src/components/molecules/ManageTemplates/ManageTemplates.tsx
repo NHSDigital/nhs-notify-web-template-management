@@ -12,9 +12,9 @@ import {
   TemplateStatus,
   templateStatustoDisplayMappings,
   templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+  viewSubmittedTemplatePages,
+} from 'nhs-notify-web-template-management-utils';
 import { TemplateDTO } from 'nhs-notify-backend-client';
-import { viewSubmittedTemplatePages } from 'nhs-notify-web-template-management-utils';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
