@@ -6,8 +6,8 @@ import {
   Draft,
   TemplateType,
   TemplateStatus,
-  logger,
 } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
   createTemplate,
   saveTemplate,

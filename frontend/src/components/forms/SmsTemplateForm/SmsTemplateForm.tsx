@@ -16,11 +16,11 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import { useFormState } from 'react-dom';
 import {
+  Draft,
   PageComponentProps,
   SMSTemplate,
-  Draft,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';

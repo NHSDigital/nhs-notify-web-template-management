@@ -1,5 +1,5 @@
 output "api_base_url" {
-  value = module.templates_api.api_base_url
+  value = module.backend_api.api_base_url
 }
 
 output "cognito_user_pool_id" {

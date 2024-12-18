@@ -1,6 +1,5 @@
 import MarkdownIt from 'markdown-it';
 import { lineBreak } from './plugins/line-break';
-import { pageBreak } from './plugins/page-break';
 
 export class MarkdownItWrapper extends MarkdownIt {
   constructor() {
@@ -16,14 +15,31 @@ export class MarkdownItWrapper extends MarkdownIt {
     this.use(lineBreak);
     return this;
   }
+}
 
-  /**
-   * Enables the page break feature
-   *
-   * @return {this} Returns the instance of the MarkdownItWrapper class for method chaining.
-   */
-  enablePageBreak() {
-    this.use(pageBreak);
-    return this;
-  }
+export function renderSMSMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  return markdown.render(value);
+}
+
+export function renderNHSAppMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  markdown.enableLineBreak().enable(['heading', 'link', 'list', 'emphasis']);
+
+  return markdown.render(value);
+}
+
+export function renderEmailMarkdown(
+  value: string,
+  markdown = new MarkdownItWrapper()
+) {
+  markdown
+    .enableLineBreak()
+    .enable(['heading', 'link', 'list', 'emphasis', 'hr']);
+
+  return markdown.render(value);
 }

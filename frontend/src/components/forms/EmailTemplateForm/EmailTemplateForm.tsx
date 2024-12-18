@@ -20,11 +20,11 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  PageComponentProps,
-  EmailTemplate,
   Draft,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+  EmailTemplate,
+  PageComponentProps,
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { createEmailTemplatePageContent } from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';

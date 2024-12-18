@@ -18,7 +18,3 @@ output "deployment" {
     commit_id      = var.commit_id
   }
 }
-
-output "api_base_url" {
-  value = module.templates_api.api_base_url
-}

@@ -198,7 +198,7 @@ test.describe('Create Email message template Page', () => {
       await createEmailTemplatePage.clickSubmitButton();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${templates.submit.id}`
+        `${baseURL}/templates/preview-email-template/${templates.submit.id}?from=edit`
       );
     });
   });

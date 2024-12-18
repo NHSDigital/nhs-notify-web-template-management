@@ -4,10 +4,8 @@ import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import { z } from 'zod';
 import { validateChannelTemplate } from '@utils/validate-template';
-import {
-  TemplateStatus,
-  logger,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateStatus } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const $TemplateIdSchema = z.string();
 
