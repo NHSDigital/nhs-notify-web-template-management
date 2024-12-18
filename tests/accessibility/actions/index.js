@@ -19,4 +19,5 @@ module.exports = {
   ...require('./view-submitted-email-template.actions'),
   ...require('./view-submitted-nhs-app-template.actions'),
   ...require('./view-submitted-text-message-template.actions'),
+  ...require('./copy-template.actions'),
 };

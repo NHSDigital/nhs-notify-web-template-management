@@ -27,6 +27,7 @@ const {
   viewSubmittedEmailTemplatePage,
   viewSubmittedNHSAppTemplatePage,
   viewSubmittedTextMessageTemplatePage,
+  copyTemplatePage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -41,6 +42,7 @@ module.exports = {
 
     //My Messages Templates
     performCheck(manageTemplatesPage(manageTemplatesUrl)),
+    performCheck(copyTemplatePage(chooseTemplateUrl)),
 
     // Choose a template journey
     performCheck(chooseATemplatePage(chooseTemplateUrl)),

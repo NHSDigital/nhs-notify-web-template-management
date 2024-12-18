@@ -36,7 +36,7 @@ export function ReviewEmailTemplate({
   return (
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
-        <BackLink href={`${getBasePath()}/manage-templates`}>
+        <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
           Back to all templates
         </BackLink>
         <ReviewTemplate

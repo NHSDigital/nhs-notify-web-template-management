@@ -67,6 +67,7 @@
     "react/require-default-props": "off",
     "no-useless-constructor": "off",
     "sonarjs/no-small-switch": "off",
+    "sonarjs/no-unused-vars": "off",
     "react/jsx-no-bind": "off",
     "unicorn/no-null": "off",
     "prefer-regex-literals": "off",

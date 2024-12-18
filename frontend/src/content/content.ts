@@ -286,14 +286,18 @@ export const submitTemplateContent = {
   buttonText: 'Submit template',
 };
 
+export const copyTemplatePageContent = {
+  pageHeading: 'Copy',
+  radiosLabel: 'Choose a template type',
+  errorHeading: 'There is a problem',
+  buttonText: 'Continue',
+  hint: 'Select one option',
+  backLinkText: 'Back to all templates',
+};
+
 export const chooseTemplatePageContent = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
-  options: [
-    { id: TemplateType.NHS_APP, text: 'NHS App message' },
-    { id: TemplateType.EMAIL, text: 'Email' },
-    { id: TemplateType.SMS, text: 'Text message (SMS)' },
-  ],
   buttonText: 'Continue',
   hint: 'Select one option',
   learnMoreLink: '/features',

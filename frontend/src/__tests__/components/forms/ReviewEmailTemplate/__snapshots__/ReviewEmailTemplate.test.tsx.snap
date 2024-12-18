@@ -14,6 +14,7 @@ exports[`Review email form renders matches error snapshot 1`] = `
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"
@@ -300,6 +301,7 @@ exports[`Review email form renders matches snapshot when navigating from edit sc
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"
@@ -549,6 +551,7 @@ exports[`Review email form renders matches snapshot when navigating from manage 
         <a
           class="nhsuk-back-link__link"
           href="/templates/manage-templates"
+          id="back-link"
         >
           <svg
             aria-hidden="true"

@@ -18,7 +18,7 @@ export async function createTemplate(
     await getAmplifyBackendClient().models.TemplateStorage.create(template);
 
   if (errors || !data) {
-    logger.error('Failed to create template', errors);
+    logger.error('Failed to create template', errors, template);
     throw new Error('Failed to create new template');
   }
   return data;

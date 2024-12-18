@@ -235,12 +235,16 @@ test.describe('Manage templates page', () => {
     const templateRow = page.locator(
       'tr:has-text("email-submitted_manage-templates-page")'
     );
-    const templateCopyLink = templateRow.getByText('Copy', { exact: true });
+    const templateCopyLink = templateRow.getByText('Copy');
 
-    // This will break and need updating during CCM-5539
-    expect(templateCopyLink).toHaveAttribute('href', '#');
+    expect(templateCopyLink).toHaveAttribute(
+      'href',
+      `/templates/copy-template/${templates.emailSubmitted.id}`
+    );
     await templateCopyLink.click();
-    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+    await expect(page).toHaveURL(
+      new RegExp(`/templates/copy-template/${templates.emailSubmitted.id}`) // eslint-disable-line security/detect-non-literal-regexp
+    );
   });
 
   test('Delete link navigation - navigates user to delete template page', async ({
