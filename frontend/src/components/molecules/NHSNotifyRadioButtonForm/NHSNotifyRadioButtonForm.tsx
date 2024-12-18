@@ -56,7 +56,7 @@ export const NHSNotifyRadioButtonForm = ({
         id={radiosId}
         hint={hint}
         error={state.validationError?.fieldErrors[radiosId]?.join(', ')}
-        errorProps={{ id: `${radiosId}-error-message` }}
+        errorProps={{ id: `${radiosId}--error-message` }}
       >
         {options.map(({ id, text, checked }) => (
           <Radios.Radio

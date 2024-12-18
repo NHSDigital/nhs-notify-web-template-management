@@ -145,7 +145,7 @@ exports[`renders page one error 1`] = `
             >
               <span
                 class="nhsuk-error-message"
-                id="emailTemplateName-error-message"
+                id="emailTemplateName--error-message"
               >
                 <span
                   class="nhsuk-u-visually-hidden"
@@ -753,7 +753,7 @@ exports[`renders page with multiple errors 1`] = `
             >
               <span
                 class="nhsuk-error-message"
-                id="emailTemplateName-error-message"
+                id="emailTemplateName--error-message"
               >
                 <span
                   class="nhsuk-u-visually-hidden"
@@ -791,7 +791,7 @@ exports[`renders page with multiple errors 1`] = `
             >
               <span
                 class="nhsuk-error-message"
-                id="emailTemplateSubjectLine-error-message"
+                id="emailTemplateSubjectLine--error-message"
               >
                 <span
                   class="nhsuk-u-visually-hidden"
@@ -823,7 +823,7 @@ exports[`renders page with multiple errors 1`] = `
             </label>
             <span
               class="nhsuk-error-message"
-              id="emailTemplateMessage-error-message"
+              id="emailTemplateMessage--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
