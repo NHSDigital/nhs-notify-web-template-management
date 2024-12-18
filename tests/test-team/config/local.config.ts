@@ -21,12 +21,15 @@ export default defineConfig({
     },
     {
       name: 'e2e-local',
-      testMatch: '*.e2e.ts',
+      testMatch: '*-e2e.ts',
       use: {
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
-        headless: true,
+        headless: false,
+        launchOptions: {
+          slowMo: 0,
+        },
       },
     },
   ],
