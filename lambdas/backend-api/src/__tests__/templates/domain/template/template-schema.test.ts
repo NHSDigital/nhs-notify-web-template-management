@@ -1,16 +1,17 @@
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import { validate } from '@backend-api/utils/validate';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  $EmailTemplateFields,
-  $SMSTemplateFields,
-  $NHSAppTemplateFields,
-} from '../../schemas';
+  $EmailTemplate,
+  $SMSTemplate,
+  $NhsAppTemplate,
+} from '@backend-api/templates/domain/template/template-schema';
 
 describe('Template schemas', () => {
   test.each([
     {
-      schema: $EmailTemplateFields,
+      schema: $EmailTemplate,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -19,7 +20,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $SMSTemplateFields,
+      schema: $SMSTemplate,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -27,7 +28,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $NHSAppTemplateFields,
+      schema: $NhsAppTemplate,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -35,14 +36,16 @@ describe('Template schemas', () => {
       },
     },
   ])('%p.templateType - should pass validation', async ({ schema, data }) => {
-    const result = schema.safeParse(data);
+    const result = await validate(schema, data);
 
-    expect(result.data).toEqual(data);
+    expect(result).toEqual({
+      data,
+    });
   });
 
   test.each([
     {
-      schema: $EmailTemplateFields,
+      schema: $EmailTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(100_001),
@@ -51,7 +54,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $SMSTemplateFields,
+      schema: $SMSTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(919),
@@ -59,7 +62,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $NHSAppTemplateFields,
+      schema: $NhsAppTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(5001),
@@ -69,34 +72,36 @@ describe('Template schemas', () => {
   ])(
     '%p.templateType - should fail validation, when max character length exceeded',
     async ({ schema, data }) => {
-      const result = schema.safeParse(data);
+      const result = await validate(schema, data);
 
-      expect(result.error?.flatten()).toEqual(
-        expect.objectContaining({
-          fieldErrors: {
-            message: [
-              `String must contain at most ${data.message.length - 1} character(s)`,
-            ],
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: `Request failed validation`,
+          details: {
+            message: `String must contain at most ${data.message.length - 1} character(s)`,
           },
-        })
-      );
+        }),
+      });
     }
   );
 
   test('$EmailTemplate - should fail validation, when no subject', async () => {
-    const result = $EmailTemplateFields.safeParse({
+    const result = await validate($EmailTemplate, {
       name: 'Test Template',
       message: 'a'.repeat(100_000),
       templateType: TemplateType.EMAIL,
     });
 
-    expect(result.error?.flatten()).toEqual(
-      expect.objectContaining({
-        fieldErrors: {
-          subject: ['Required'],
+    expect(result).toEqual({
+      error: expect.objectContaining({
+        code: 400,
+        message: `Request failed validation`,
+        details: {
+          subject: `Required`,
         },
-      })
-    );
+      }),
+    });
   });
 
   test.each([
@@ -106,21 +111,22 @@ describe('Template schemas', () => {
   ])(
     '$NhsAppTemplate - should fail validation, when invalid characters are present %p',
     async (message) => {
-      const result = $NHSAppTemplateFields.safeParse({
+      const result = await validate($NhsAppTemplate, {
         name: 'Test Template',
         message,
         templateType: TemplateType.NHS_APP,
       });
 
-      expect(result.error?.flatten()).toEqual(
-        expect.objectContaining({
-          fieldErrors: {
-            message: [
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: `Request failed validation`,
+          details: {
+            message:
               'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
-            ],
           },
-        })
-      );
+        }),
+      });
     }
   );
 
@@ -145,9 +151,11 @@ describe('Template schemas', () => {
         templateType: TemplateType.NHS_APP,
       },
     ])('should pass validation %p', async (template) => {
-      const result = $CreateTemplateSchema.safeParse(template);
+      const result = await validate($CreateTemplateSchema, template);
 
-      expect(result.data).toEqual(template);
+      expect(result).toEqual({
+        data: template,
+      });
     });
   });
 
@@ -173,9 +181,11 @@ describe('Template schemas', () => {
         templateType: TemplateType.NHS_APP,
       },
     ])('should pass validation %p', async (template) => {
-      const result = $UpdateTemplateSchema.safeParse(template);
+      const result = await validate($UpdateTemplateSchema, template);
 
-      expect(result.data).toEqual(template);
+      expect(result).toEqual({
+        data: template,
+      });
     });
   });
 });

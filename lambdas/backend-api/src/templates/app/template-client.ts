@@ -5,10 +5,12 @@ import {
   Result,
   TemplateDTO,
   UpdateTemplate,
+} from 'nhs-notify-backend-client';
+import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-} from 'nhs-notify-backend-client';
-import { templateRepository } from '@backend-api/templates/infra';
+  templateRepository,
+} from '@backend-api/templates/domain/template';
 
 export class TemplateClient implements ITemplateClient {
   constructor(private readonly _owner: string) {}
