@@ -15,9 +15,9 @@ const listTemplatesMock = jest.spyOn(TemplateClient.prototype, 'listTemplates');
 describe('Template API - List', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no email in requestContext', async () => {
+  test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: undefined } },
+      requestContext: { authorizer: { user: undefined } },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -42,7 +42,7 @@ describe('Template API - List', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -56,7 +56,7 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(listTemplatesMock).toHaveBeenCalled();
   });
@@ -77,7 +77,7 @@ describe('Template API - List', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -87,7 +87,7 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, templates: [template] }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(listTemplatesMock).toHaveBeenCalled();
   });
