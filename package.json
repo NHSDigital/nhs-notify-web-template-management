@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspace frontend --if-present",
-    "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./frontend/amplify/functions/send-email/email-template.html ./frontend/public/testing/email-template.html",
+    "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./lambdas/backend-api/src/email/email-template.html ./frontend/public/testing/email-template.html",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "start": "npm run start --workspace frontend",
