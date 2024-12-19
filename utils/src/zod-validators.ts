@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TemplateType, TemplateStatus } from './enum';
+import { TemplateType, TemplateStatus } from 'nhs-notify-backend-client';
 
 export const $Template = z.object({
   id: z.string(),
@@ -8,7 +8,6 @@ export const $Template = z.object({
   templateStatus: z.nativeEnum(TemplateStatus),
   name: z.string(),
   message: z.string(),
-  subject: z.string().nullable().optional(),
   createdAt: z.string().optional(),
 });
 

@@ -12,18 +12,15 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
-    __typename: 'TemplateStorage',
-    id: 'preview-page-invalid-email-template',
-    version: 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    templateType: TemplateType.EMAIL,
+    ...TemplateFactory.createEmailTemplate(
+      'preview-page-invalid-email-template'
+    ),
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  } as Template,
+  },
   valid: {
     ...TemplateFactory.createEmailTemplate('valid-email-preview-template'),
     name: 'test-template-email',

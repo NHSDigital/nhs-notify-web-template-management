@@ -16,10 +16,13 @@ import {
   $SubmittedSMSTemplate,
   $SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
+type TemplateUnion = Template | TemplateDTO | undefined;
+
 export const validateNHSAppTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): NHSAppTemplate | undefined => {
   try {
     return $NHSAppTemplate.parse(template);
@@ -30,7 +33,7 @@ export const validateNHSAppTemplate = (
 };
 
 export const validateSMSTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SMSTemplate | undefined => {
   try {
     return $SMSTemplate.parse(template);
@@ -41,7 +44,7 @@ export const validateSMSTemplate = (
 };
 
 export const validateEmailTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): EmailTemplate | undefined => {
   try {
     return $EmailTemplate.parse(template);
@@ -52,7 +55,7 @@ export const validateEmailTemplate = (
 };
 
 export const validateSubmittedEmailTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedEmailTemplate | undefined => {
   try {
     return $SubmittedEmailTemplate.parse(template);
@@ -63,7 +66,7 @@ export const validateSubmittedEmailTemplate = (
 };
 
 export const validateSubmittedSMSTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedSMSTemplate | undefined => {
   try {
     return $SubmittedSMSTemplate.parse(template);
@@ -74,7 +77,7 @@ export const validateSubmittedSMSTemplate = (
 };
 
 export const validateSubmittedNHSAppTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedNHSAppTemplate | undefined => {
   try {
     return $SubmittedNHSAppTemplate.parse(template);
@@ -85,7 +88,7 @@ export const validateSubmittedNHSAppTemplate = (
 };
 
 export const validateChannelTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): ChannelTemplate | undefined => {
   try {
     return $ChannelTemplate.parse(template);
