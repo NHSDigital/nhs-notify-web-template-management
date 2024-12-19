@@ -94,7 +94,7 @@ export function ManageTemplates({
                   {template.templateStatus ===
                   TemplateStatus.NOT_YET_SUBMITTED ? (
                     <p className='nhsuk-u-margin-bottom-2'>
-                      <Link href='#'>
+                      <Link href={`/delete-template/${template.id}`}>
                         {manageTemplatesContent.tableHeadings.action.delete}
                       </Link>
                     </p>
