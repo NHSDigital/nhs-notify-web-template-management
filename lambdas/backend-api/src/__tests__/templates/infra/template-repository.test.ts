@@ -13,10 +13,7 @@ import {
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import {
-  Template,
-  templateRepository,
-} from '@backend-api/templates/domain/template';
+import { Template, templateRepository } from '@backend-api/templates/infra';
 
 jest.mock('node:crypto');
 
