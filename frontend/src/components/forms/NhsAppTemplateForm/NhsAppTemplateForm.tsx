@@ -18,11 +18,11 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
+  Draft,
   NHSAppTemplate,
   PageComponentProps,
-  Draft,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
@@ -79,7 +79,7 @@ export const NhsAppTemplateForm: FC<
               defaultValue={nhsAppTemplateName}
               onChange={nhsAppTemplateNameHandler}
               error={templateNameError}
-              errorProps={{ id: 'nhsAppTemplateName-error-message' }}
+              errorProps={{ id: 'nhsAppTemplateName--error-message' }}
             />
           </div>
           <Textarea
@@ -91,7 +91,7 @@ export const NhsAppTemplateForm: FC<
             onChange={nhsAppMessageHandler}
             defaultValue={nhsAppTemplateMessage}
             error={templateMessageError}
-            errorProps={{ id: 'nhsAppTemplateMessage-error-message' }}
+            errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
           />
           <p style={useJsEnabledStyle()} id='character-count'>
             {nhsAppTemplateMessage.length}

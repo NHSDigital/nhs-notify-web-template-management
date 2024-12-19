@@ -16,11 +16,11 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import { useFormState } from 'react-dom';
 import {
+  Draft,
   PageComponentProps,
   SMSTemplate,
-  Draft,
-} from 'nhs-notify-web-template-management-utils/src/types';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 import { FC } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -70,7 +70,7 @@ export const SmsTemplateForm: FC<
               defaultValue={smsTemplateName}
               onChange={smsTemplateNameHandler}
               error={templateNameError}
-              errorProps={{ id: 'smsTemplateName-error-message' }}
+              errorProps={{ id: 'smsTemplateName--error-message' }}
             />
           </div>
           <Textarea
@@ -82,7 +82,7 @@ export const SmsTemplateForm: FC<
             maxLength={MAX_SMS_CHARACTER_LENGTH}
             rows={10}
             error={templateMessageError}
-            errorProps={{ id: 'smsTemplateMessage-error-message' }}
+            errorProps={{ id: 'smsTemplateMessage--error-message' }}
           />
           <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
             <p className='nhsuk-u-margin-bottom-0' id='character-count'>

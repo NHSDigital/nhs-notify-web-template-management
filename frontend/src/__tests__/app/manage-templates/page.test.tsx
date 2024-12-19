@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import ManageTemplatesPage from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
-import { Template } from 'nhs-notify-web-template-management-utils/src/types';
 import {
+  Template,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-web-template-management-utils/src/enum';
+} from 'nhs-notify-web-template-management-utils';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 

@@ -1,10 +1,4 @@
-import { mockDeep } from 'jest-mock-extended';
-import {
-  renderMarkdown,
-  reviewSmsTemplateAction,
-  $FormSchema,
-} from '@forms/ReviewSMSTemplate';
-import { MarkdownItWrapper } from '@utils/markdownit';
+import { reviewSmsTemplateAction, $FormSchema } from '@forms/ReviewSMSTemplate';
 import { redirect } from 'next/navigation';
 import {
   SMSTemplate,
@@ -12,7 +6,6 @@ import {
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
-import { markdown } from '../fixtures';
 
 jest.mock('next/navigation');
 
@@ -26,28 +19,6 @@ const initialState: SMSTemplate = {
   name: 'template-name',
   message: 'template-message',
 };
-
-describe('PreviewTextMessageActions', () => {
-  beforeEach(jest.resetAllMocks);
-
-  it('should enable text message markdown rules', () => {
-    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
-
-    markdownItWrapperMock.enableLineBreak.mockReturnValue(
-      markdownItWrapperMock
-    );
-
-    renderMarkdown('message', markdownItWrapperMock);
-
-    expect(markdownItWrapperMock.enableLineBreak).not.toHaveBeenCalled();
-
-    expect(markdownItWrapperMock.enable).not.toHaveBeenCalled();
-  });
-
-  it('should only process text message markdown rules', () => {
-    expect(renderMarkdown(markdown)).toMatchSnapshot();
-  });
-});
 
 describe('reviewSmsTemplateAction server action', () => {
   beforeEach(jest.resetAllMocks);

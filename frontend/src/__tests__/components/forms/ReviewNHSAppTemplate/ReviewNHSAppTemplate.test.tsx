@@ -1,17 +1,17 @@
 'use client';
 
 import { render, screen } from '@testing-library/react';
-import {
-  ReviewNHSAppTemplate,
-  renderMarkdown,
-} from '@forms/ReviewNHSAppTemplate';
-import { mockDeep } from 'jest-mock-extended';
+import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate';
 import {
   NHSAppTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
+import { renderNHSAppMarkdown } from '@utils/markdownit';
+import { mockDeep } from 'jest-mock-extended';
+import { useSearchParams } from 'next/navigation';
 
 jest.mock('@forms/ReviewNHSAppTemplate/server-action');
+jest.mock('@utils/markdownit');
 
 jest.mock('react-dom', () => {
   const originalModule = jest.requireActual('react-dom');
@@ -28,8 +28,34 @@ jest.mock('react-dom', () => {
   };
 });
 
-describe('Preview nhs app form renders', () => {
-  it('matches snapshot', () => {
+jest.mock('next/navigation', () => ({
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(() => undefined),
+  })),
+}));
+
+describe('Review nhs app form renders', () => {
+  it('matches snapshot when navigating from manage templates screen', () => {
+    const container = render(
+      <ReviewNHSAppTemplate
+        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+          validationError: undefined,
+          id: 'template-id',
+          name: 'test-template-nhs app',
+          message: 'message',
+        })}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when navigating from edit screen', () => {
+    const mockSearchParams = new Map([['from', 'edit']]);
+    (useSearchParams as jest.Mock).mockImplementation(() => ({
+      get: (key: string) => mockSearchParams.get(key),
+    }));
+
     const container = render(
       <ReviewNHSAppTemplate
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
@@ -87,8 +113,8 @@ describe('Preview nhs app form renders', () => {
     );
   });
 
-  it('should should render message with markdown', () => {
-    const renderMock = jest.mocked(renderMarkdown);
+  it('should render message with markdown', () => {
+    const renderMock = jest.mocked(renderNHSAppMarkdown);
 
     renderMock.mockReturnValue('Rendered via MD');
 

@@ -1,4 +1,3 @@
-import { MarkdownItWrapper } from '@utils/markdownit';
 import {
   EmailTemplate,
   TemplateFormState,
@@ -11,17 +10,6 @@ export const $FormSchema = z.object({
     message: 'Select an option',
   }),
 });
-
-export function renderMarkdown(
-  value: string,
-  markdown = new MarkdownItWrapper()
-) {
-  markdown
-    .enableLineBreak()
-    .enable(['heading', 'link', 'list', 'emphasis', 'hr']);
-
-  return markdown.render(value);
-}
 
 export async function reviewEmailTemplateAction(
   formState: TemplateFormState<EmailTemplate>,

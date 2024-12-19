@@ -1,4 +1,4 @@
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
   BoldText,

@@ -30,6 +30,7 @@ const config: Config = {
     'backend.ts',
     'generate-dependencies.ts',
     'jest.config.ts',
+    '.dev.tsx',
   ],
 
   testPathIgnorePatterns: [

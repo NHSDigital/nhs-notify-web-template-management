@@ -177,7 +177,7 @@ test.describe('Manage templates page', () => {
     await expect(page).toHaveURL('/templates/choose-a-template-type');
   });
 
-  test('Name link navigation - navigates to preview page', async ({
+  test('Name link - not-yet-submitted template navigates to preview page', async ({
     page,
     baseURL,
   }) => {
@@ -190,10 +190,37 @@ test.describe('Manage templates page', () => {
       'email-not-yet-submitted_manage-templates-page'
     );
 
-    // This will break and need updating during CCM-7649
-    expect(templatePreviewLink).toHaveAttribute('href', '#');
+    expect(templatePreviewLink).toHaveAttribute(
+      'href',
+      `/templates/preview-email-template/${templates.emailNotYetSubmitted.id}`
+    );
     await templatePreviewLink.click();
-    await expect(page).toHaveURL(new RegExp('/templates/manage-templates'));
+    await expect(page).toHaveURL(
+      new RegExp('/templates/preview-email-template/')
+    );
+  });
+
+  test('Name link - submitted template navigates to view submitted page', async ({
+    page,
+    baseURL,
+  }) => {
+    const manageTemplatesPage = new ManageTemplatesPage(page);
+    await manageTemplatesPage.loadPage();
+
+    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+
+    const templatePreviewLink = page.getByText(
+      'email-submitted_manage-templates-page'
+    );
+
+    expect(templatePreviewLink).toHaveAttribute(
+      'href',
+      `/templates/view-submitted-email-template/${templates.emailSubmitted.id}`
+    );
+    await templatePreviewLink.click();
+    await expect(page).toHaveURL(
+      new RegExp('/templates/view-submitted-email-template/')
+    );
   });
 
   test('Copy link navigation - navigates user to duplicate template type page', async ({

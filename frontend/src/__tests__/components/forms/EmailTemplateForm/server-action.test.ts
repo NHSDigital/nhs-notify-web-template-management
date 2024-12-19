@@ -104,7 +104,7 @@ describe('CreateEmailTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-email-template/template-id',
+      '/preview-email-template/template-id?from=edit',
       'push'
     );
   });
@@ -137,7 +137,7 @@ describe('CreateEmailTemplate server actions', () => {
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-email-template/new-template-id',
+      '/preview-email-template/new-template-id?from=edit',
       'push'
     );
   });

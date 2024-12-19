@@ -8,7 +8,7 @@ import {
   GetUserCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { jwtDecode } from 'jwt-decode';
-import { logger } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { handler } from '../index';
 
 const methodArn =

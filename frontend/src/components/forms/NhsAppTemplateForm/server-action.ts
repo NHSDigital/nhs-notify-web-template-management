@@ -47,7 +47,7 @@ export async function processFormActions(
     : createTemplate(updatedTemplate));
 
   return redirect(
-    `/preview-nhs-app-template/${savedTemplate.id}`,
+    `/preview-nhs-app-template/${savedTemplate.id}?from=edit`,
     RedirectType.push
   );
 }

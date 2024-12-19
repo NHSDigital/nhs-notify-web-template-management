@@ -13,4 +13,10 @@ module.exports = {
   ...require('./submit-email-template.actions'),
   ...require('./email-template-submitted.actions'),
   ...require('./manage-templates.actions'),
+  ...require('./view-not-yet-submitted-email-template.actions'),
+  ...require('./view-not-yet-submitted-nhs-app-template.actions'),
+  ...require('./view-not-yet-submitted-text-message-template.actions'),
+  ...require('./view-submitted-email-template.actions'),
+  ...require('./view-submitted-nhs-app-template.actions'),
+  ...require('./view-submitted-text-message-template.actions'),
 };

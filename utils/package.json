@@ -2,6 +2,10 @@
     "name": "nhs-notify-web-template-management-utils",
     "version": "0.0.1",
     "main": "src/index.ts",
+    "exports": {
+        ".": "./src/index.ts",
+        "./logger": "./src/logger.ts"
+    },
     "scripts": {
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",

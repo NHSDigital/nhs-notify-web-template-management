@@ -3,7 +3,7 @@ import { NHSNotifyRadioButtonFormProps } from '@molecules/NHSNotifyRadioButtonFo
 import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
 
 export type ReviewTemplateProps = {
-  sectionHeading: string;
+  sectionHeading: string | undefined;
   template: ChannelTemplate;
   form: {
     errorHeading: string;

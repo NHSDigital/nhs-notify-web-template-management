@@ -1,5 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils/src/enum';
+import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const headerComponent = {
   serviceName: 'Notify',
@@ -10,7 +10,10 @@ const headerComponent = {
         `${getBasePath()}/create-and-submit-templates`
       )}`,
     },
-    logOut: 'Log out',
+    logOut: {
+      text: 'Log out',
+      href: '/auth/signout',
+    },
   },
 };
 
@@ -429,6 +432,12 @@ export const createSmsTemplatePageContent = {
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Save and preview',
+};
+
+export const viewSubmittedTemplatePageContent = {
+  cannotEdit: 'This template cannot be edited because it has been submitted.',
+  createNewTemplate:
+    'If you want to change a submitted or live template, you must create a new template to replace it.',
 };
 
 const content = {
