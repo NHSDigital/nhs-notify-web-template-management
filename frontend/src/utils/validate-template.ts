@@ -55,7 +55,7 @@ export const validateEmailTemplate = (
 };
 
 export const validateSubmittedEmailTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedEmailTemplate | undefined => {
   try {
     return $SubmittedEmailTemplate.parse(template);
@@ -66,7 +66,7 @@ export const validateSubmittedEmailTemplate = (
 };
 
 export const validateSubmittedSMSTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedSMSTemplate | undefined => {
   try {
     return $SubmittedSMSTemplate.parse(template);
@@ -77,7 +77,7 @@ export const validateSubmittedSMSTemplate = (
 };
 
 export const validateSubmittedNHSAppTemplate = (
-  template: Template | undefined
+  template: TemplateUnion
 ): SubmittedNHSAppTemplate | undefined => {
   try {
     return $SubmittedNHSAppTemplate.parse(template);

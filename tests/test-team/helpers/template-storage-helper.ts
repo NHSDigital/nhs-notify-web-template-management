@@ -5,6 +5,7 @@ import {
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from './types';
+import { sleep } from './sleep';
 
 export class TemplateStorageHelper {
   private readonly ddbDocClient: DynamoDBDocumentClient;
@@ -25,6 +26,9 @@ export class TemplateStorageHelper {
     );
 
     await Promise.all(promises);
+
+    // Note: sleeping to allow DynamoDB some time to settle...
+    await sleep(2);
   }
 
   async deleteTemplateData() {

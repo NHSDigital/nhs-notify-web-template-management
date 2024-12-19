@@ -26,7 +26,7 @@ const templates = {
   },
 };
 
-test.describe.only('Preview SMS message template Page', () => {
+test.describe('Preview SMS message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper(
     Object.values(templates)
   );

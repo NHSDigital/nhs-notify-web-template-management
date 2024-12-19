@@ -13,6 +13,7 @@ export default defineConfig({
       use: {
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
+        headless: true,
       },
     },
     {

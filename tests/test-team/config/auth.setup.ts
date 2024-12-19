@@ -12,7 +12,7 @@ setup('authenticate setup', async ({ page }) => {
 
   await loginPage.cognitoSignIn(process.env.USER_EMAIL);
 
-  await page.waitForEvent('load');
+  await page.waitForURL('/templates/create-and-submit-templates');
 
   await page.context().storageState({ path: 'auth/user.json' });
 });
