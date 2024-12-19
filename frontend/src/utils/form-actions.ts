@@ -8,6 +8,7 @@ import {
   Template,
   Draft,
   isTemplateValid,
+  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
@@ -24,9 +25,15 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(template: Template): Promise<Template> {
+export async function saveTemplate(
+  template: Template,
+  ttl?: number // remove ttl after we get rid of Amplify backend, our own API will handle the TTLs without input from the client
+): Promise<Template> {
   const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.update(template);
+    await getAmplifyBackendClient().models.TemplateStorage.update({
+      ...template,
+      ...(ttl && { ttl }),
+    });
 
   if (errors) {
     logger.error('Failed to save template', errors);
@@ -100,7 +107,11 @@ export async function getTemplates(): Promise<Template[] | []> {
 
   const parsedData: Template[] = data
     .map((template) => isTemplateValid(template))
-    .filter((template): template is Template => template !== undefined)
+    .filter(
+      (template): template is Template =>
+        template !== undefined &&
+        template.templateStatus !== TemplateStatus.DELETED
+    )
     .sort((a, b) => {
       const aCreatedAt = a.createdAt ?? '';
       const bCreatedAt = b.createdAt ?? '';

@@ -145,7 +145,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/delete-template/1"
                 >
                   Delete
                 </a>

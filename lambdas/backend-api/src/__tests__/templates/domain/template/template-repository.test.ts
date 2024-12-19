@@ -351,5 +351,39 @@ describe('templateRepository', () => {
         },
       });
     });
+
+    test('should update template to deleted state', async () => {
+      const updatedTemplate: UpdateTemplate = {
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: TemplateStatus.DELETED,
+        templateType: TemplateType.NHS_APP,
+      };
+
+      ddbMock
+        .on(UpdateCommand, {
+          TableName: 'templates',
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+        })
+        .resolves({
+          Attributes: {
+            ...template,
+            ...updatedTemplate,
+          },
+        });
+
+      const response = await templateRepository.update(
+        'abc-def-ghi-jkl-123',
+        updatedTemplate,
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        data: {
+          ...template,
+          ...updatedTemplate,
+        },
+      });
+    });
   });
 });

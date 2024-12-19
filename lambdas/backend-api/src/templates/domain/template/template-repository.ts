@@ -19,6 +19,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { randomUUID as uuidv4 } from 'node:crypto';
 import { ApplicationResult, failure, success } from '@backend-api/utils/result';
+import { calculateTTL } from '@backend-api/utils/calculate-ttl';
 import { Template } from './template';
 
 const client = DynamoDBDocumentClient.from(
@@ -105,7 +106,7 @@ const update = async (
     '#templateType': 'templateType',
   };
 
-  let expressionAttributeValues: Record<string, string> = {
+  let expressionAttributeValues: Record<string, string | number> = {
     ':name': template.name,
     ':message': template.message,
     ':templateStatus': template.templateStatus,
@@ -123,6 +124,13 @@ const update = async (
     expressionAttributeValues = {
       ...expressionAttributeValues,
       ':subject': template.subject,
+    };
+  }
+
+  if (template.templateStatus === TemplateStatus.DELETED) {
+    expressionAttributeValues = {
+      ...expressionAttributeValues,
+      ttl: calculateTTL(),
     };
   }
 

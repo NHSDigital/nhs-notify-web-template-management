@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders component correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-grid-row"
+  >
+    <div
+      class="nhsuk-grid-column-full"
+    >
+      <h1>
+        Are you sure you want to delete the template 'template-name'?
+      </h1>
+      <p>
+        The template will be removed and you won't be able to recover it
+      </p>
+      <form
+        action="/templates/manage-templates"
+        class="nhsuk-u-margin-right-3"
+        style="display: inline;"
+      >
+        <button
+          aria-disabled="false"
+          class="nhsuk-button nhsuk-button--secondary"
+          type="submit"
+        >
+          No, go back
+        </button>
+      </form>
+      <form
+        action="/action"
+        style="display: inline;"
+      >
+        <button
+          aria-disabled="false"
+          class="nhsuk-button nhsuk-button--warning"
+          type="submit"
+        >
+          Yes, delete template
+        </button>
+      </form>
+    </div>
+  </div>
+</DocumentFragment>
+`;

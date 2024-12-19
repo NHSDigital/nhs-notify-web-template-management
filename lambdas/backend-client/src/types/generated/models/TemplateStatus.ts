@@ -5,4 +5,5 @@
 export enum TemplateStatus {
     NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
     SUBMITTED = 'SUBMITTED',
+    DELETED = 'DELETED',
 }

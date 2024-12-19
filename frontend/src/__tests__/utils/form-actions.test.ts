@@ -133,6 +133,30 @@ test('saveTemplate', async () => {
   expect(response).toEqual(mockResponseData);
 });
 
+test('saveTemplate - includes TTL', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        update: jest.fn().mockReturnValue({ data: mockResponseData }),
+      },
+    },
+  });
+
+  const response = await saveTemplate(
+    {
+      id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+      version: 1,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'template-name',
+      message: 'template-message',
+    },
+    10
+  );
+
+  expect(response).toEqual(mockResponseData);
+});
+
 test('saveTemplate - error handling', async () => {
   setup({
     models: {
