@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import concatClassNames from '@utils/concat-class-names';
 import content from '@content/content';
+import { AuthLink } from '@molecules/AuthLink/AuthLink';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
 
@@ -54,16 +55,8 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
           )}
           id='content-header'
         >
-          {/* I am currently testing the link wrapper, this will change later when we implement auth as the link will change based on auth state */}
           {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? null : (
-            <div className='nhsuk-account__login' data-testid='login-link'>
-              <a
-                className='nhsuk-account__login--link'
-                href={content.components.headerComponent.links.logIn.href}
-              >
-                {content.components.headerComponent.links.logIn.text}
-              </a>
-            </div>
+            <AuthLink />
           )}
         </div>
       </div>

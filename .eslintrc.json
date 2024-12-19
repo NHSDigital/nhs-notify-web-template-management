@@ -40,14 +40,21 @@
       "error",
       {
         "case": "kebabCase",
-        "ignore": [".tsx"]
+        "ignore": [
+          ".tsx"
+        ]
       }
     ],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "react/function-component-definition": "off",
-    "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }],
+    "react/jsx-no-useless-fragment": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
     "import/prefer-default-export": "off",
     "import/extensions": "off",
     "no-shadow": "off",
@@ -72,13 +79,13 @@
     "prefer-regex-literals": "off",
     "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
-    "import/no-extraneous-dependencies":[
+    "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies":[
-            "jest.config.ts",
-            "jest.setup.ts",
-            "src/__tests__/**"
+        "devDependencies": [
+          "jest.config.ts",
+          "jest.setup.ts",
+          "src/__tests__/**"
         ]
       }
     ],
@@ -86,7 +93,9 @@
   },
   "overrides": [
     {
-      "files": ["*.js"],
+      "files": [
+        "*.js"
+      ],
       "rules": {
         "@typescript-eslint/no-var-requires": "off",
         "@typescript-eslint/no-require-imports": "off",
@@ -95,7 +104,9 @@
       }
     },
     {
-      "files": ["*.test.{ts,tsx}"],
+      "files": [
+        "*.test.{ts,tsx}"
+      ],
       "rules": {
         "unicorn/no-useless-undefined": "off",
         "unicorn/consistent-function-scoping": "off",
