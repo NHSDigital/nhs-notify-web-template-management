@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import '@styles/app.scss';
+import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
-import { NHSNotifyHeader } from '@molecules/Header/Header';
-import { NHSNotifyContainer } from '@layouts/container/container';
-import { NHSNotifyFooter } from '@molecules/Footer/Footer';
-import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { getBasePath } from '@utils/get-base-path';
 
 export const metadata: Metadata = {
@@ -69,10 +66,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <NHSNotifySkipLink />
-        <NHSNotifyHeader />
-        <NHSNotifyContainer>{children}</NHSNotifyContainer>
-        <NHSNotifyFooter />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

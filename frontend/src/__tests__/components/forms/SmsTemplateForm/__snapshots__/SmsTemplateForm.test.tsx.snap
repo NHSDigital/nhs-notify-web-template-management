@@ -470,7 +470,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="smsTemplateName-error-message"
+              id="smsTemplateName--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -850,7 +850,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           >
             <span
               class="nhsuk-error-message"
-              id="smsTemplateName-error-message"
+              id="smsTemplateName--error-message"
             >
               <span
                 class="nhsuk-u-visually-hidden"
@@ -881,7 +881,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </label>
           <span
             class="nhsuk-error-message"
-            id="smsTemplateMessage-error-message"
+            id="smsTemplateMessage--error-message"
           >
             <span
               class="nhsuk-u-visually-hidden"

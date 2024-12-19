@@ -12,15 +12,17 @@
     "app:start": "pm2 start npm -- start",
     "app:wait": "wait-on -l http://localhost:3000/templates/create-and-submit-templates",
     "app:stop": "pm2 kill",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run mock-amplify-outputs && tsc --noEmit",
     "create-sandbox": "pm2 start npx -- ampx sandbox",
-    "destroy-sandbox": "npx ampx sandbox delete --y"
+    "destroy-sandbox": "npx ampx sandbox delete --y",
+    "mock-amplify-outputs": "if [ ! -f ./amplify_outputs.json ]; then echo \"{}\" > ./amplify_outputs.json ; fi"
   },
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.2.23",
     "@aws-amplify/backend": "^1.2.0",
+    "@aws-amplify/ui-react": "^6.3.1",
     "@aws-sdk/client-ses": "^3.637.0",
-    "aws-amplify": "^6.10.3",
+    "aws-amplify": "^6.6.0",
     "date-fns": "^4.1.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
@@ -30,6 +32,7 @@
     "nhs-notify-web-template-management-utils": "*",
     "nhsuk-frontend": "^8.3.0",
     "nhsuk-react-components": "^4.1.1",
+    "path": "^0.12.7",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.23.8"

@@ -90,7 +90,7 @@ export const EmailTemplateForm: FC<
                 onChange={emailTemplateNameHandler}
                 value={emailTemplateName}
                 error={templateNameError}
-                errorProps={{ id: 'emailTemplateName-error-message' }}
+                errorProps={{ id: 'emailTemplateName--error-message' }}
                 data-testid='emailTemplateName-input'
               />
             </div>
@@ -108,7 +108,7 @@ export const EmailTemplateForm: FC<
                 onChange={emailTemplateSubjectLineHandler}
                 value={emailTemplateSubjectLine}
                 error={templateSubjectLineError}
-                errorProps={{ id: 'emailTemplateSubjectLine-error-message' }}
+                errorProps={{ id: 'emailTemplateSubjectLine--error-message' }}
                 data-testid='emailTemplateSubjectLine-input'
               />
             </div>
@@ -121,7 +121,7 @@ export const EmailTemplateForm: FC<
               onChange={emailTemplateMessageHandler}
               value={emailTemplateMessage}
               error={templateMessageError}
-              errorProps={{ id: 'emailTemplateMessage-error-message' }}
+              errorProps={{ id: 'emailTemplateMessage--error-message' }}
               data-testid='emailTemplateMessage-input'
             />
           </FormSection>
