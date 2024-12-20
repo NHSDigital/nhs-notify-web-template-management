@@ -97,7 +97,6 @@ variable "enable_amplify_basic_auth" {
 variable "AMPLIFY_BASIC_AUTH_SECRET" {
   type        = string
   description = "Secret key/password to use for Amplify Basic Auth - This is entended to be read from CI variables and not commited to any codebase"
-  sensitive   = true
   default     = "unset"
 }
 
