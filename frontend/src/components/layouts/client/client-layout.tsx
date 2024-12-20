@@ -6,10 +6,17 @@ import { NHSNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
-// eslint-disable-next-line import/no-unresolved
-import amplifyConfig from '@/amplify_outputs.json';
 
-Amplify.configure(amplifyConfig, { ssr: true });
+Amplify.configure(
+  {
+    auth: {
+      aws_region: 'eu-west-2',
+      user_pool_id: process.env.COGNITO_USER_POOL_ID,
+      user_pool_client_id: process.env.COGNITO_USER_POOL_CLIENT_ID,
+    },
+  },
+  { ssr: true }
+);
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
