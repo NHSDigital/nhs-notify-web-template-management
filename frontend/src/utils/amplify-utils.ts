@@ -11,12 +11,12 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 
 export const { runWithAmplifyServerContext } = createServerRunner({
-  config: AMPLIFY_OUTPUTS,
+  config: AMPLIFY_OUTPUTS(),
 });
 
 export const getAmplifyBackendClient = () =>
   generateServerClientUsingCookies<Schema>({
-    config: AMPLIFY_OUTPUTS,
+    config: AMPLIFY_OUTPUTS(),
     cookies,
     authMode: 'iam',
   });

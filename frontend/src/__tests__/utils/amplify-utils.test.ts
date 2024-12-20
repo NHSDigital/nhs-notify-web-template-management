@@ -11,36 +11,53 @@ import nextHeaders from 'next/headers';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
-jest.mock('@/amplify_outputs.json', () => ({
-  name: 'mockConfig',
-}));
 jest.mock('next/headers', () => ({
   cookies: () => {},
 }));
 
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
-test('getAmplifyBackendClient', () => {
-  // arrange
-  const generateServerClientUsingCookiesMock = jest.mocked(
-    generateServerClientUsingCookies
-  );
-  const cookiesSpy = jest.spyOn(nextHeaders, 'cookies');
+const OLD_ENV = process.env;
 
-  // act
-  getAmplifyBackendClient();
-
-  // assert
-  expect(generateServerClientUsingCookiesMock).toHaveBeenCalledTimes(1);
-  expect(generateServerClientUsingCookiesMock).toHaveBeenCalledWith({
-    config: { name: 'mockConfig' },
-    cookies: cookiesSpy,
-    authMode: 'iam',
+describe('amplify-utils', () => {
+  beforeAll(() => {
+    process.env = {
+      ...OLD_ENV,
+      COGNITO_USER_POOL_ID: 'mockUserPoolId',
+      COGNITO_USER_POOL_CLIENT_ID: 'mockUserPoolClientId',
+    };
   });
-});
 
-describe('getAccessTokenServer', () => {
-  test('should return the auth token', async () => {
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
+
+  test('getAmplifyBackendClient', () => {
+    // arrange
+    const generateServerClientUsingCookiesMock = jest.mocked(
+      generateServerClientUsingCookies
+    );
+    const cookiesSpy = jest.spyOn(nextHeaders, 'cookies');
+
+    // act
+    getAmplifyBackendClient();
+
+    // assert
+    expect(generateServerClientUsingCookiesMock).toHaveBeenCalledTimes(1);
+    expect(generateServerClientUsingCookiesMock).toHaveBeenCalledWith({
+      config: {
+        auth: {
+          aws_region: 'eu-west-2',
+          user_pool_id: 'mockUserPoolId',
+          user_pool_client_id: 'mockUserPoolClientId',
+        },
+      },
+      cookies: cookiesSpy,
+      authMode: 'iam',
+    });
+  });
+
+  test('getAccessTokenServer - should return the auth token', async () => {
     fetchAuthSessionMock.mockResolvedValue({
       tokens: {
         accessToken: {
@@ -57,7 +74,7 @@ describe('getAccessTokenServer', () => {
     expect(result).toEqual('mockSub');
   });
 
-  test('should return undefined when no auth session', async () => {
+  test('getAccessTokenServer -should return undefined when no auth session', async () => {
     fetchAuthSessionMock.mockResolvedValue({});
 
     const result = await getAccessTokenServer();
@@ -65,7 +82,7 @@ describe('getAccessTokenServer', () => {
     expect(result).toBeUndefined();
   });
 
-  test('should return undefined an error occurs', async () => {
+  test('getAccessTokenServer - should return undefined an error occurs', async () => {
     fetchAuthSessionMock.mockImplementationOnce(() => {
       throw new Error('JWT Expired');
     });
