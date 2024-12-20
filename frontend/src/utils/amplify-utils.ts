@@ -7,7 +7,6 @@ import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/da
 import { Schema } from 'nhs-notify-web-template-management-amplify';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 
 export const { runWithAmplifyServerContext } = createServerRunner({
@@ -29,7 +28,7 @@ export async function getAccessTokenServer(): Promise<string | undefined> {
     });
 
     return tokens?.accessToken?.toString();
-  } catch (error) {
-    logger.error('Failed to fetch auth token:', error);
+  } catch {
+    // no-op
   }
 }
