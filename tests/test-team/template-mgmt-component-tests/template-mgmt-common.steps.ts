@@ -49,6 +49,16 @@ export function assertLoginLink({ page, id }: CommonStepsProps) {
   });
 }
 
+export function assertLogoutLink({ page, id }: CommonStepsProps) {
+  return test.step('"Log out", should direct user to logout', async () => {
+    await page.loadPage(id);
+
+    const link = await page.logoutLink.getAttribute('href');
+
+    expect(link).toBe('/auth/signout');
+  });
+}
+
 export function assertGoBackLink({
   page,
   id,
