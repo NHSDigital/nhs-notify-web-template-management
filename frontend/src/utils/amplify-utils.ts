@@ -8,16 +8,15 @@ import { Schema } from 'nhs-notify-web-template-management-amplify';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-
-const config = require('@/amplify_outputs.json');
+import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 
 export const { runWithAmplifyServerContext } = createServerRunner({
-  config,
+  config: AMPLIFY_OUTPUTS,
 });
 
 export const getAmplifyBackendClient = () =>
   generateServerClientUsingCookies<Schema>({
-    config,
+    config: AMPLIFY_OUTPUTS,
     cookies,
     authMode: 'iam',
   });
