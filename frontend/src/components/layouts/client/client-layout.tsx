@@ -8,7 +8,7 @@ import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 
-Amplify.configure(AMPLIFY_OUTPUTS, { ssr: true });
+Amplify.configure(AMPLIFY_OUTPUTS(), { ssr: true });
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
