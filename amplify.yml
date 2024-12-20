@@ -11,7 +11,7 @@ applications:
             - npm ci --cache .npm --prefer-offline
             - npm run generate-dependencies --workspaces --if-present
             - cd frontend
-            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            # - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       phases:
         build:

@@ -34,6 +34,7 @@ export class TemplateStorageHelper {
           TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
           Key: {
             id: template.id,
+            owner: process.env.USER_ID,
           },
         })
       )

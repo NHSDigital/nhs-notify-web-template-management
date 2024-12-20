@@ -4,7 +4,7 @@ import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-pag
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
-  assertLoginLink,
+  assertLogoutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -88,7 +88,7 @@ test.describe('Manage templates page', () => {
 
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
-    await assertLoginLink(props);
+    await assertLogoutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLinkNotPresent(props);
   });

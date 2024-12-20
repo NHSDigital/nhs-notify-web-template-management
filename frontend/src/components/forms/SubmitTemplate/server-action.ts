@@ -32,8 +32,7 @@ export async function submitTemplate(route: string, formData: FormData) {
       templateStatus: TemplateStatus.SUBMITTED,
     });
 
-    const { name, subject, message } = { subject: null, ...validatedTemplate };
-    await sendEmail(templateId, name, message, subject);
+    await sendEmail(templateId);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,

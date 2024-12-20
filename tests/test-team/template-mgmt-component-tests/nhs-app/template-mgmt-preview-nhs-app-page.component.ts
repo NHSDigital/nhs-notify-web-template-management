@@ -8,7 +8,7 @@ import {
 } from '../template-mgmt-preview-common.steps';
 import {
   assertFooterLinks,
-  assertLoginLink,
+  assertLogoutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
@@ -16,13 +16,13 @@ import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
-    __typename: 'TemplateStorage',
     id: 'preview-page-invalid-nhs-app-template',
     version: 1,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    owner: process.env.USER_ID,
   } as Template,
   valid: {
     ...TemplateFactory.createNhsAppTemplate('valid-nhs-app-preview-template'),
@@ -79,7 +79,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLoginLink(props);
+      await assertLogoutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
       await assertBackToAllTemplatesBottomLink(props);

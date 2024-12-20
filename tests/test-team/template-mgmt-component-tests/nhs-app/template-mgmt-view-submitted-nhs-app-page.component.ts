@@ -5,7 +5,7 @@ import { TemplateFactory } from '../../helpers/template-factory';
 import { TemplateStatus } from '../../helpers/types';
 import {
   assertFooterLinks,
-  assertLoginLink,
+  assertLogoutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
@@ -78,7 +78,7 @@ test.describe('View submitted NHS App message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLoginLink(props);
+      await assertLogoutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
       await assertBackToAllTemplatesBottomLink(props);

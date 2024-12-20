@@ -7,6 +7,8 @@ export class TemplateMgmtBasePage {
 
   readonly loginLink: Locator;
 
+  readonly logoutLink: Locator;
+
   readonly goBackLink: Locator;
 
   readonly pageHeader: Locator;
@@ -31,6 +33,10 @@ export class TemplateMgmtBasePage {
     this.loginLink = page
       .locator('[class="nhsuk-account__login--link"]')
       .and(page.getByText('Log in'));
+
+    this.logoutLink = page
+      .locator('[class="nhsuk-account__login--link"]')
+      .and(page.getByText('Log out'));
 
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')

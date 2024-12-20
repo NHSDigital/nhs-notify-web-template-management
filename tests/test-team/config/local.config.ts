@@ -8,6 +8,15 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'auth-setup',
+      testMatch: 'auth.setup.ts',
+      use: {
+        baseURL: 'http://localhost:3000',
+        ...devices['Desktop Chrome'],
+        headless: true,
+      },
+    },
+    {
       name: 'component',
       testMatch: '*.component.ts',
       use: {
@@ -15,7 +24,10 @@ export default defineConfig({
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
+        storageState: './auth/user.json',
       },
+      dependencies: ['auth-setup'],
+      teardown: 'auth-teardown',
     },
     {
       name: 'e2e-local',
@@ -24,6 +36,10 @@ export default defineConfig({
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
       },
+    },
+    {
+      name: 'auth-teardown',
+      testMatch: 'auth.teardown.ts',
     },
   ],
   /* Run your local dev server before starting the tests */

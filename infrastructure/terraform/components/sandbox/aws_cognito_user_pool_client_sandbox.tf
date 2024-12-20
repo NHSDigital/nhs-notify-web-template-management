@@ -4,6 +4,6 @@ resource "aws_cognito_user_pool_client" "sandbox" {
 
   explicit_auth_flows = [
     "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH"
+    "ALLOW_REFRESH_TOKEN_AUTH",
   ]
 }

@@ -1,13 +1,7 @@
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-}
+import { TemplateType, TemplateStatus } from 'nhs-notify-backend-client';
 
-export enum TemplateStatus {
-  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
-  SUBMITTED = 'SUBMITTED',
-}
+// eslint-disable-next-line unicorn/prefer-export-from
+export { TemplateType, TemplateStatus };
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
