@@ -90,7 +90,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: sandbox_tf_outputs.json
-          path: /
+          path: ./
       - name: "Repo setup"
         run: |
           npm ci
@@ -124,7 +124,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: sandbox_tf_outputs.json
-          path: /
+          path: ./
       - name: "Repo setup"
         run: |
           npm ci
@@ -160,7 +160,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: sandbox_tf_outputs.json
-          path: /
+          path: ./
       - name: "Repo setup"
         run: |
           npm ci
