@@ -12,7 +12,9 @@ import nextHeaders from 'next/headers';
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
 jest.mock('next/headers', () => ({
-  cookies: () => {},
+  cookies: () => ({
+    getAll: jest.fn(),
+  }),
 }));
 
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
@@ -51,6 +53,7 @@ describe('amplify-utils', () => {
           user_pool_id: 'mockUserPoolId',
           user_pool_client_id: 'mockUserPoolClientId',
         },
+        version: '1.1',
       },
       cookies: cookiesSpy,
       authMode: 'iam',
@@ -74,7 +77,7 @@ describe('amplify-utils', () => {
     expect(result).toEqual('mockSub');
   });
 
-  test('getAccessTokenServer -should return undefined when no auth session', async () => {
+  test('getAccessTokenServer - should return undefined when no auth session', async () => {
     fetchAuthSessionMock.mockResolvedValue({});
 
     const result = await getAccessTokenServer();
