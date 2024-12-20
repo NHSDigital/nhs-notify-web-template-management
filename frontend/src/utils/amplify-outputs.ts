@@ -4,4 +4,5 @@ export const AMPLIFY_OUTPUTS = () => ({
     user_pool_id: process.env.COGNITO_USER_POOL_ID,
     user_pool_client_id: process.env.COGNITO_USER_POOL_CLIENT_ID,
   },
+  version: '1.1',
 });

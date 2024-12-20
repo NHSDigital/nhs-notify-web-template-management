@@ -7,7 +7,7 @@ function isExcludedPath(path: string, excludedPaths: string[]): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-  const excludedPaths = ['/create-and-submit-templates', '/login'];
+  const excludedPaths = ['/create-and-submit-templates', '/auth'];
 
   if (isExcludedPath(request.nextUrl.pathname, excludedPaths)) {
     return NextResponse.next();
