@@ -1,4 +1,3 @@
-import { removeUndefinedFromObject } from '@backend-api/utils/remove-undefined';
 import {
   Failure,
   Success,
@@ -15,7 +14,7 @@ export const apiSuccess = (
       statusCode,
       body: JSON.stringify({
         statusCode,
-        templates: result.map((item) => removeUndefinedFromObject(item)),
+        templates: result,
       } satisfies SuccessList),
     };
   }
@@ -24,7 +23,7 @@ export const apiSuccess = (
     statusCode,
     body: JSON.stringify({
       statusCode,
-      template: removeUndefinedFromObject(result),
+      template: result,
     } satisfies Success),
   };
 };

@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-null */
-import { removeUndefinedFromObject } from '@backend-api/utils/remove-undefined';
+import { removeUndefinedFromObject } from '@utils/remove-undefined';
 
 type TestType = {
   param1: string;
