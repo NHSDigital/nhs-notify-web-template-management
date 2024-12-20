@@ -11,7 +11,14 @@ async function globalSetup(config: FullConfig) {
   process.env.TEMPLATE_STORAGE_TABLE_NAME =
     outputsHelper.getTemplateStorageTableName();
 
-  process.env.COGNITO_USER_POOL_ID = outputsHelper.getCognitoUserPoolId();
+  if (!process.env.COGNITO_USER_POOL_ID) {
+    process.env.COGNITO_USER_POOL_ID = outputsHelper.getCognitoUserPoolId();
+  }
+
+  if (!process.env.COGNITO_USER_POOL_CLIENT_ID) {
+    process.env.COGNITO_USER_POOL_CLIENT_ID =
+      outputsHelper.getCognitoUserPoolClientId();
+  }
 
   const cognitoUserHelper = new CognitoUserHelper();
 
