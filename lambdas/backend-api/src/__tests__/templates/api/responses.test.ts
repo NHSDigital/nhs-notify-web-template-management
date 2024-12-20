@@ -9,6 +9,7 @@ describe('responses', () => {
   it('should return success response', () => {
     const dto: TemplateDTO = {
       id: '1',
+      version: 1,
       name: 'name',
       message: 'message',
       templateStatus: TemplateStatus.SUBMITTED,

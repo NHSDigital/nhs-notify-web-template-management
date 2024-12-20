@@ -93,12 +93,7 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(sendEmailMock).toHaveBeenCalledWith(
-      mockNhsAppTemplate.id,
-      mockNhsAppTemplate.name,
-      mockNhsAppTemplate.message,
-      null
-    );
+    expect(sendEmailMock).toHaveBeenCalledWith(mockNhsAppTemplate.id);
 
     expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
   });
@@ -122,11 +117,6 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(sendEmailMock).toHaveBeenCalledWith(
-      mockEmailTemplate.id,
-      mockEmailTemplate.name,
-      mockEmailTemplate.message,
-      mockEmailTemplate.subject
-    );
+    expect(sendEmailMock).toHaveBeenCalledWith(mockEmailTemplate.id);
   });
 });
