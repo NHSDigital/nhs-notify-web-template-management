@@ -14,6 +14,7 @@ import {
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -28,7 +29,7 @@ const generateViewTemplateLink = (template: Template): string => {
 export function ManageTemplates({
   templateList,
 }: {
-  templateList: Template[];
+  templateList: Template[] | TemplateDTO[];
 }) {
   return (
     <div className='nhsuk-grid-row'>

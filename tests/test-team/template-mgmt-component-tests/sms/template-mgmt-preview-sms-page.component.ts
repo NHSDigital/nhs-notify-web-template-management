@@ -16,13 +16,13 @@ import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
 
 const templates = {
   empty: {
-    __typename: 'TemplateStorage',
     id: 'preview-page-invalid-sms-template',
     version: 1,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     templateType: TemplateType.SMS,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    owner: process.env.USER_ID,
   } as Template,
   valid: {
     ...TemplateFactory.createSmsTemplate('valid-sms-preview-template'),
