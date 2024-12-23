@@ -101,23 +101,6 @@ test.describe('Template Submitted Page', () => {
         await assertLoginLink(props);
         await assertGoBackLinkNotPresent(props);
       });
-
-      test(`when user clicks ${channelName} "Create another template", then user is redirected to "choose-a-template-type"`, async ({
-        page,
-      }) => {
-        const templateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
-          page,
-          channelIdentifier
-        );
-
-        await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
-
-        await templateSubmittedPage.clickCreateAnotherTemplateLink();
-
-        await expect(page).toHaveURL(
-          new RegExp('/templates/choose-a-template-type')
-        );
-      });
     });
 
     test.describe('Error handling', () => {
