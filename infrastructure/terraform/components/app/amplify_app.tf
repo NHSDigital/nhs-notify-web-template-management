@@ -6,6 +6,7 @@ resource "aws_amplify_app" "main" {
   iam_service_role_arn = aws_iam_role.amplify.arn
 
   enable_auto_branch_creation = false
+  enable_branch_auto_deletion = true
   enable_branch_auto_build    = var.enable_amplify_branch_auto_build
   platform                    = "WEB_COMPUTE"
 
