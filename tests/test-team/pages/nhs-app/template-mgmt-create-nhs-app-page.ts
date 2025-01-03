@@ -15,6 +15,8 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
 
   public readonly characterCountText: Locator;
 
+  public readonly goBackLink: Locator;
+
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   constructor(page: Page) {
@@ -29,6 +31,9 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
       '[data-testid="how-to-name-your-template"]'
     );
     this.characterCountText = page.locator('[id="character-count"]');
+    this.goBackLink = page
+      .locator('.nhsuk-back-link__link')
+      .and(page.getByText('Back to choose a template type'));
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
