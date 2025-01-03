@@ -7,6 +7,7 @@ export enum TemplateType {
 export enum TemplateStatus {
   NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
   SUBMITTED = 'SUBMITTED',
+  DELETED = 'DELETED',
 }
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
@@ -20,6 +21,7 @@ export const templateStatustoDisplayMappings = (status: TemplateStatus) =>
   ({
     [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
     [TemplateStatus.SUBMITTED]: 'Submitted',
+    [TemplateStatus.DELETED]: '', // will not be shown in the UI
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
