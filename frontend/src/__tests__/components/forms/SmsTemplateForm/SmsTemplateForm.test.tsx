@@ -4,6 +4,7 @@ import { mockDeep } from 'jest-mock-extended';
 import {
   TemplateFormState,
   SMSTemplate,
+  Draft,
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 
@@ -27,12 +28,11 @@ jest.mock('@utils/amplify-utils', () => ({
 }));
 
 describe('CreateSmsTemplate component', () => {
-  test('renders page', async () => {
+  test('renders page with back link if initial state has no id', async () => {
     const container = render(
       <SmsTemplateForm
-        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+        initialState={mockDeep<Draft<TemplateFormState<SMSTemplate>>>({
           validationError: undefined,
-          id: 'template-id',
           name: 'template-name',
           message: 'template-message',
         })}
@@ -41,14 +41,14 @@ describe('CreateSmsTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  test('renders page with preloaded field values', () => {
+  test('renders page with no back link if initial state has id', async () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
+          id: 'template-id',
           name: 'template-name',
           message: 'template-message',
-          id: 'template-id',
         })}
       />
     );

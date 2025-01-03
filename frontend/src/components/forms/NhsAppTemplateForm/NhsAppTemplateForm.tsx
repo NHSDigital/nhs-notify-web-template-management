@@ -56,12 +56,14 @@ export const NhsAppTemplateForm: FC<
 
   return (
     <div className='nhsuk-grid-row'>
-      <BackLink
-        href={`${getBasePath()}/choose-a-template-type`}
-        className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
-      >
-        Go back
-      </BackLink>
+      {'id' in initialState ? null : (
+        <BackLink
+          href={`${getBasePath()}/choose-a-template-type`}
+          className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
+        >
+          Back to choose a template type
+        </BackLink>
+      )}
       <div className='nhsuk-grid-column-two-thirds'>
         <ZodErrorSummary errorHeading={errorHeading} state={state} />
         <NHSNotifyFormWrapper action={action} formId='create-nhs-app-template'>

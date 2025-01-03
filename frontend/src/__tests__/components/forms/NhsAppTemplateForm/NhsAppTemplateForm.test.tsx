@@ -66,6 +66,20 @@ test('renders page with preloaded field values', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
+test('renders page without back link for initial state with id', () => {
+  const container = render(
+    <NhsAppTemplateForm
+      initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+        validationError: undefined,
+        name: 'template-name',
+        message: 'template-message',
+        id: 'template-id',
+      })}
+    />
+  );
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
 test('renders page one error', () => {
   const container = render(
     <NhsAppTemplateForm
