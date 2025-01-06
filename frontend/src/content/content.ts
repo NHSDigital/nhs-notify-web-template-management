@@ -447,8 +447,6 @@ export const viewSubmittedTemplatePageContent = {
     'If you want to change a submitted or live template, you must create a new template to replace it.',
 };
 
-export const
-
 const content = {
   global: {
     mainLayout,
