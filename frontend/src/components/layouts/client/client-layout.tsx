@@ -8,11 +8,11 @@ import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
 import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 
+console.log('amplify ouputs', AMPLIFY_OUTPUTS());
+console.log('id', process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID);
 Amplify.configure(AMPLIFY_OUTPUTS(), { ssr: true });
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
-  console.log('amplify ouputs', AMPLIFY_OUTPUTS());
-  console.log('amplify config', process.env);
   return (
     <Authenticator.Provider>
       <NHSNotifySkipLink />
