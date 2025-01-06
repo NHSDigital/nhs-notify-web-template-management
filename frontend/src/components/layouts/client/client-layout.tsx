@@ -11,6 +11,8 @@ import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
 Amplify.configure(AMPLIFY_OUTPUTS(), { ssr: true });
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
+  console.log('amplify ouputs', AMPLIFY_OUTPUTS());
+  console.log('amplify config', process.env);
   return (
     <Authenticator.Provider>
       <NHSNotifySkipLink />
