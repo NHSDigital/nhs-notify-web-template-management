@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
 
   const token = await getAccessTokenServer();
 
-  conslole.log('token', token);
+  console.log('token', token);
   // if (!token) {
   //   return Response.redirect(
   //     new URL(
