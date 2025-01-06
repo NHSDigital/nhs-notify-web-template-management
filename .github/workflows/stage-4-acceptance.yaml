@@ -104,7 +104,9 @@ jobs:
           role-session-name: deployInfra
           aws-region: eu-west-2
       - name: "Run accessibility test"
-        run: make test-accessibility
+        run: |
+          ./scripts/export_backend_sandbox_variables.sh
+          make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
         with:

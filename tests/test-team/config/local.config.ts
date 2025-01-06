@@ -14,6 +14,7 @@ export default defineConfig({
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
+        screenshot: 'only-on-failure',
       },
     },
     {
