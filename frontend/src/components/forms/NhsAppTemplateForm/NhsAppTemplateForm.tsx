@@ -39,6 +39,7 @@ export const NhsAppTemplateForm: FC<
     templateNameLabelText,
     templateMessageLabelText,
     templateNameHintText,
+    backLinkText,
   } = createNhsAppTemplatePageContent;
   const [state, action] = useFormState(processFormActions, initialState);
 
@@ -61,7 +62,7 @@ export const NhsAppTemplateForm: FC<
           href={`${getBasePath()}/choose-a-template-type`}
           className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
         >
-          Back to choose a template type
+          {backLinkText}
         </BackLink>
       )}
       <div className='nhsuk-grid-column-two-thirds'>

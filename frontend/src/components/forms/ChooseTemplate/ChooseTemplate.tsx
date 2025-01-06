@@ -30,6 +30,7 @@ export const ChooseTemplate = () => {
     hint,
     learnMoreLink,
     learnMoreText,
+    backLinkText,
   } = chooseTemplatePageContent;
 
   return (
@@ -39,7 +40,7 @@ export const ChooseTemplate = () => {
           href={`${getBasePath()}/manage-templates`}
           className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
         >
-          Back to all templates
+          {backLinkText}
         </BackLink>
       </div>
       <ZodErrorSummary errorHeading={errorHeading} state={state} />
