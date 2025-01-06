@@ -17,7 +17,7 @@ export class OutputsHelper {
 
   constructor() {
     this._config = JSON.parse(
-      fs.readFileSync('../../sandbox_tf_outputs.json', 'utf8')
+      fs.readFileSync('../../../sandbox_tf_outputs.json', 'utf8')
     );
   }
 

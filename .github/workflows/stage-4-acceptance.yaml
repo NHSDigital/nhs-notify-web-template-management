@@ -130,6 +130,7 @@ jobs:
           npm ci
       - name: "Generate dependencies"
         run: |
+          cat sandbox_tf_outputs.json
           npm run generate-dependencies --workspaces --if-present
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
@@ -141,6 +142,7 @@ jobs:
           aws-region: eu-west-2
       - name: "Run ui component test"
         run: |
+          ./scripts/export_backend_sandbox_variables.sh
           cd tests/test-team
           npm run test:local-ui
       - name: Archive component test results
