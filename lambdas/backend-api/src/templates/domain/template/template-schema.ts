@@ -12,7 +12,6 @@ import {
   MAX_NHS_APP_CHARACTER_LENGTH,
   NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
-import { DatabaseTemplate } from './template';
 
 const $BaseCreateTemplateSchema = schemaFor<CreateTemplate>()(
   z.object({
@@ -67,19 +66,4 @@ export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
     $CreateNhsAppTemplateSchema.extend($UpdateFields),
     $CreateEmailTemplateSchema.extend($UpdateFields),
   ])
-);
-
-export const $DatabaseTemplate = schemaFor<DatabaseTemplate>()(
-  z.object({
-    id: z.string(),
-    version: z.number(),
-    templateType: z.nativeEnum(TemplateType),
-    templateStatus: z.nativeEnum(TemplateStatus),
-    name: z.string(),
-    message: z.string(),
-    subject: z.string().optional(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    owner: z.string(),
-  })
 );

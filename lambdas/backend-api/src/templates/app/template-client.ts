@@ -5,12 +5,10 @@ import {
   Result,
   TemplateDTO,
   UpdateTemplate,
-  TemplateStatus,
 } from 'nhs-notify-backend-client';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  $DatabaseTemplate,
   templateRepository,
   DatabaseTemplate,
 } from '@backend-api/templates/domain/template';
@@ -98,20 +96,6 @@ export class TemplateClient implements ITemplateClient {
     return success(this.mapDatabaseObjectToDTO(getResult.data));
   }
 
-  private includeTemplateInList(template: unknown): boolean {
-    const validationResult = $DatabaseTemplate.safeParse(template);
-
-    if (validationResult.error) {
-      logger.warn({
-        description: 'Malformed template found',
-        error: validationResult.error,
-      });
-      return false;
-    }
-
-    return true;
-  }
-
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
   ): TemplateDTO {
@@ -129,23 +113,10 @@ export class TemplateClient implements ITemplateClient {
       return listResult;
     }
 
-    const filteredTemplates: TemplateDTO[] = listResult.data
-      .filter(
-        (template) =>
-          template.templateStatus !== TemplateStatus.DELETED &&
-          this.includeTemplateInList(template)
-      )
-      .map((template) => this.mapDatabaseObjectToDTO(template))
-      .sort((a, b) => {
-        const aCreatedAt = a.createdAt;
-        const bCreatedAt = b.createdAt;
+    const templateDTOs = listResult.data.map((template) =>
+      this.mapDatabaseObjectToDTO(template)
+    );
 
-        if (aCreatedAt === bCreatedAt) {
-          return a.id.localeCompare(b.id);
-        }
-        return aCreatedAt < bCreatedAt ? 1 : -1;
-      });
-
-    return success(filteredTemplates);
+    return success(templateDTOs);
   }
 }

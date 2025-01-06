@@ -105,13 +105,12 @@ export async function getTemplates(): Promise<Template[] | []> {
     return [];
   }
 
-  // when we switch over to the API we should remove this code because the API will handle this logic
   const parsedData: Template[] = data
     .map((template) => isTemplateValid(template))
     .filter(
       (template): template is Template =>
         template !== undefined &&
-        template.templateStatus !== TemplateStatus.DELETED
+        template.templateStatus !== TemplateStatus.DELETED // when we switch over to the API we should remove this code because the API will handle the deleted filter
     )
     .sort((a, b) => {
       const aCreatedAt = a.createdAt ?? '';

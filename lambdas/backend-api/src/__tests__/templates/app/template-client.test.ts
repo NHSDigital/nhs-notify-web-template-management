@@ -284,49 +284,19 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return filtered sorted templates', async () => {
-      const template1: TemplateDTO = {
+    test('should return templates', async () => {
+      const template: TemplateDTO = {
         id: 'id',
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
-        createdAt: new Date('2022-01-01 09:00').toISOString(),
-        updatedAt: new Date('2022-01-01 09:00').toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       };
-
-      const template2: TemplateDTO = {
-        id: 'id',
-        templateType: TemplateType.EMAIL,
-        name: 'name',
-        message: 'message',
-        createdAt: new Date('2022-01-02 09:00').toISOString(),
-        updatedAt: new Date('2022-01-02 09:00').toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      };
-
-      const template3: TemplateDTO = {
-        id: 'id',
-        templateType: TemplateType.EMAIL,
-        name: 'name',
-        message: 'message',
-        createdAt: new Date('2022-01-03 09:00').toISOString(),
-        updatedAt: new Date('2022-01-03 09:00').toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      };
-
-      const invalidTemplate: TemplateDTO = {
-        id: 'id',
-        templateType: TemplateType.EMAIL,
-        createdAt: new Date('2022-01-03 09:00').toISOString(),
-        updatedAt: new Date('2022-01-03 09:00').toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      } as unknown as TemplateDTO;
 
       listMock.mockResolvedValueOnce({
-        data: [template2, invalidTemplate, template1, template3].map(
-          (template) => ({ ...template, owner: 'owner', version: 1 })
-        ), // unsorted
+        data: [{ ...template, owner: 'owner', version: 1 }],
       });
 
       const result = await client.listTemplates();
@@ -334,45 +304,7 @@ describe('templateClient', () => {
       expect(listMock).toHaveBeenCalledWith('owner');
 
       expect(result).toEqual({
-        data: [template3, template2, template1], // sorted
-      });
-    });
-
-    test('should sort templates on id if created date is equal', async () => {
-      const template1: TemplateDTO = {
-        id: 'id1',
-        templateType: TemplateType.EMAIL,
-        name: 'name',
-        message: 'message',
-        createdAt: new Date('2022-01-01 09:00').toISOString(),
-        updatedAt: new Date('2022-01-01 09:00').toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      };
-
-      const template2: TemplateDTO = {
-        id: 'id2',
-        templateType: TemplateType.EMAIL,
-        name: 'name',
-        message: 'message',
-        createdAt: new Date('2022-01-01 09:00').toISOString(),
-        updatedAt: new Date('2022-01-01 09:00').toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      };
-
-      listMock.mockResolvedValueOnce({
-        data: [template2, template1].map((template) => ({
-          ...template,
-          owner: 'owner',
-          version: 1,
-        })), // unsorted
-      });
-
-      const result = await client.listTemplates();
-
-      expect(listMock).toHaveBeenCalledWith('owner');
-
-      expect(result).toEqual({
-        data: [template1, template2], // sorted
+        data: [template],
       });
     });
   });

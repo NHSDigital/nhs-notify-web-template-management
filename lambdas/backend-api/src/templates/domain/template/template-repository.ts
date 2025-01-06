@@ -203,10 +203,13 @@ const list = async (
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
+        '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':owner': owner,
+        ':deletedStatus': TemplateStatus.DELETED,
       },
+      FilterExpression: '#status <> :deletedStatus',
     };
 
     const items: DatabaseTemplate[] = [];
