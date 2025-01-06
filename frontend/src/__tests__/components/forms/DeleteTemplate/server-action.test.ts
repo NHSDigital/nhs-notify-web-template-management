@@ -23,7 +23,6 @@ test('calls form action and redirects', async () => {
     id: 'template-id',
     name: 'template-name',
     message: 'template-message',
-    version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   };

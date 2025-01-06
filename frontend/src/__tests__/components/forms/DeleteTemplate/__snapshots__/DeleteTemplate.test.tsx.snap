@@ -12,7 +12,7 @@ exports[`renders component correctly 1`] = `
         Are you sure you want to delete the template 'template-name'?
       </h1>
       <p>
-        The template will be removed and you won't be able to recover it
+        The template will be removed and you won't be able to recover it.
       </p>
       <form
         action="/templates/manage-templates"

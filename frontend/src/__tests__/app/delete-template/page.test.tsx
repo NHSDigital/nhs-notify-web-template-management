@@ -24,7 +24,6 @@ describe('PreviewEmailTemplatePage', () => {
   it('should load page', async () => {
     const state: EmailTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
@@ -60,7 +59,6 @@ describe('PreviewEmailTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
       name: 'template-name',
       message: 'template-message',
-      version: 1,
     });
 
     await DeleteTemplatePage({
@@ -79,7 +77,6 @@ describe('PreviewEmailTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
       name: 'template-name',
       message: 'template-message',
-      version: 1,
     });
 
     await DeleteTemplatePage({

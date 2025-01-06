@@ -445,7 +445,7 @@ export const viewSubmittedTemplatePageContent = {
 
 export const deleteTemplatePageContent = {
   pageHeading: 'Are you sure you want to delete the template',
-  hintText: "The template will be removed and you won't be able to recover it",
+  hintText: "The template will be removed and you won't be able to recover it.",
   noButtonText: 'No, go back',
   yesButtonText: 'Yes, delete template',
 };

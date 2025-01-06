@@ -14,7 +14,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
-  Template,
+  DatabaseTemplate,
   templateRepository,
 } from '@backend-api/templates/domain/template';
 
@@ -23,7 +23,7 @@ jest.mock('node:crypto');
 const uuidMock = jest.mocked(uuidv4);
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-const template: Template = {
+const template: DatabaseTemplate = {
   id: 'abc-def-ghi-jkl-123',
   owner: 'real-owner',
   name: 'name',

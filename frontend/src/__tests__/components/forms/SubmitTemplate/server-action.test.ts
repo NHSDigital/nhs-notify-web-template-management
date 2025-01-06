@@ -25,7 +25,6 @@ const sendEmailMock = jest.mocked(sendEmail);
 const mockNhsAppTemplate = {
   templateType: TemplateType.NHS_APP,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  version: 1,
   name: 'name',
   message: 'body',
   id: '1',
@@ -106,7 +105,6 @@ describe('submitTemplate', () => {
   it('should send an email with the subject line when template type is EMAIL', async () => {
     const mockEmailTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',

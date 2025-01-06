@@ -25,7 +25,6 @@ describe('TextMessageTemplateSubmittedPage', () => {
       id: 'template-id',
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.SUBMITTED,
-      version: 1,
       name: 'template-name',
       message: 'example',
     };

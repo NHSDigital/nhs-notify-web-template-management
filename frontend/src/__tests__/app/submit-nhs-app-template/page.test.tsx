@@ -23,7 +23,6 @@ describe('SubmitNhsAppTemplatePage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
@@ -91,7 +90,6 @@ describe('SubmitNhsAppTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        version: 1,
         ...value,
       });
 

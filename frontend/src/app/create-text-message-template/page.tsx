@@ -10,7 +10,6 @@ const CreateSMSTemplatePage = async () => {
   const initialState: Draft<SMSTemplate> = {
     templateType: TemplateType.SMS,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    version: 1,
     name: '',
     message: '',
   };

@@ -29,7 +29,6 @@ const TemplateStorageModel = {
   id: a.string().required(),
   templateType: a.ref('TemplateType').required(),
   templateStatus: a.ref('TemplateStatus').required(),
-  version: a.integer().required(),
   name: a.string().required(),
   subject: a.string(),
   message: a.string().required(),

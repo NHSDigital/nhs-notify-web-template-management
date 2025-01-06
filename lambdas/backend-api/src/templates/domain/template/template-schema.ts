@@ -12,8 +12,9 @@ import {
   MAX_NHS_APP_CHARACTER_LENGTH,
   NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
+import { DatabaseTemplate } from './template';
 
-const $Template = schemaFor<CreateTemplate>()(
+const $BaseCreateTemplateSchema = schemaFor<CreateTemplate>()(
   z.object({
     templateType: z.nativeEnum(TemplateType),
     name: z.string().min(1),
@@ -21,15 +22,15 @@ const $Template = schemaFor<CreateTemplate>()(
   })
 );
 
-export const $SMSTemplate = schemaFor<CreateTemplate>()(
-  $Template.extend({
+export const $CreateSMSTemplateSchema = schemaFor<CreateTemplate>()(
+  $BaseCreateTemplateSchema.extend({
     templateType: z.literal(TemplateType.SMS),
     message: z.string().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
-export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
-  $Template.extend({
+export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
+  $BaseCreateTemplateSchema.extend({
     templateType: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
@@ -42,8 +43,8 @@ export const $NhsAppTemplate = schemaFor<CreateTemplate>()(
   })
 );
 
-export const $EmailTemplate = schemaFor<CreateTemplate>()(
-  $Template.extend({
+export const $CreateEmailTemplateSchema = schemaFor<CreateTemplate>()(
+  $BaseCreateTemplateSchema.extend({
     subject: z.string().min(1),
     templateType: z.literal(TemplateType.EMAIL),
     message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH).min(1),
@@ -55,15 +56,30 @@ const $UpdateFields = {
 };
 
 export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
-  $SMSTemplate,
-  $NhsAppTemplate,
-  $EmailTemplate,
+  $CreateSMSTemplateSchema,
+  $CreateNhsAppTemplateSchema,
+  $CreateEmailTemplateSchema,
 ]);
 
 export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
   z.discriminatedUnion('templateType', [
-    $SMSTemplate.extend($UpdateFields),
-    $NhsAppTemplate.extend($UpdateFields),
-    $EmailTemplate.extend($UpdateFields),
+    $CreateSMSTemplateSchema.extend($UpdateFields),
+    $CreateNhsAppTemplateSchema.extend($UpdateFields),
+    $CreateEmailTemplateSchema.extend($UpdateFields),
   ])
+);
+
+export const $DatabaseTemplate = schemaFor<DatabaseTemplate>()(
+  z.object({
+    id: z.string(),
+    version: z.number(),
+    templateType: z.nativeEnum(TemplateType),
+    templateStatus: z.nativeEnum(TemplateStatus),
+    name: z.string(),
+    message: z.string(),
+    subject: z.string().optional(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    owner: z.string(),
+  })
 );

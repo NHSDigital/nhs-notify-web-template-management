@@ -1,6 +1,6 @@
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
-export type Template = {
+export type DatabaseTemplate = {
   id: string;
   owner: string;
   version: number;

@@ -105,6 +105,7 @@ export async function getTemplates(): Promise<Template[] | []> {
     return [];
   }
 
+  // when we switch over to the API we should remove this code because the API will handle this logic
   const parsedData: Template[] = data
     .map((template) => isTemplateValid(template))
     .filter(

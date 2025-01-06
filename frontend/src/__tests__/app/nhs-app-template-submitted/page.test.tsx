@@ -25,7 +25,6 @@ describe('NhsAppTemplateSubmittedPage', () => {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
-      version: 1,
       name: 'template-name',
       message: 'example',
     };

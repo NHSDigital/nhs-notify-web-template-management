@@ -5,11 +5,14 @@ import {
   Result,
   TemplateDTO,
   UpdateTemplate,
+  TemplateStatus,
 } from 'nhs-notify-backend-client';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
+  $DatabaseTemplate,
   templateRepository,
+  DatabaseTemplate,
 } from '@backend-api/templates/domain/template';
 
 export class TemplateClient implements ITemplateClient {
@@ -44,7 +47,7 @@ export class TemplateClient implements ITemplateClient {
       return createResult;
     }
 
-    return success(createResult.data);
+    return success(this.mapDatabaseObjectToDTO(createResult.data));
   }
 
   async updateTemplate(
@@ -76,7 +79,7 @@ export class TemplateClient implements ITemplateClient {
       return updateResult;
     }
 
-    return success(updateResult.data);
+    return success(this.mapDatabaseObjectToDTO(updateResult.data));
   }
 
   async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
@@ -92,7 +95,29 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
-    return success(getResult.data);
+    return success(this.mapDatabaseObjectToDTO(getResult.data));
+  }
+
+  private includeTemplateInList(template: unknown): boolean {
+    const validationResult = $DatabaseTemplate.safeParse(template);
+
+    if (validationResult.error) {
+      logger.warn({
+        description: 'Malformed template found',
+        error: validationResult.error,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  private mapDatabaseObjectToDTO(
+    databaseTemplate: DatabaseTemplate
+  ): TemplateDTO {
+    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
+
+    return templateDTO;
   }
 
   async listTemplates(): Promise<Result<TemplateDTO[]>> {
@@ -104,6 +129,23 @@ export class TemplateClient implements ITemplateClient {
       return listResult;
     }
 
-    return success(listResult.data);
+    const filteredTemplates: TemplateDTO[] = listResult.data
+      .filter(
+        (template) =>
+          template.templateStatus !== TemplateStatus.DELETED &&
+          this.includeTemplateInList(template)
+      )
+      .map((template) => this.mapDatabaseObjectToDTO(template))
+      .sort((a, b) => {
+        const aCreatedAt = a.createdAt;
+        const bCreatedAt = b.createdAt;
+
+        if (aCreatedAt === bCreatedAt) {
+          return a.id.localeCompare(b.id);
+        }
+        return aCreatedAt < bCreatedAt ? 1 : -1;
+      });
+
+    return success(filteredTemplates);
   }
 }

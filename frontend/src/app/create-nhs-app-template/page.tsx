@@ -10,7 +10,6 @@ const CreateNHSAppTemplatePage = async () => {
   const initialState: Draft<NHSAppTemplate> = {
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    version: 1,
     name: '',
     message: '',
   };
