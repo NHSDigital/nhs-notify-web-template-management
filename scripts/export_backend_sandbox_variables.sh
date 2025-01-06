@@ -9,8 +9,3 @@ json_file="${root_dir}/sandbox_tf_outputs.json"
 export TEMPLATE_STORAGE_TABLE_NAME=$(jq -r '.dynamodb_table_templates.value' "$json_file")
 export NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID=$(jq -r '.cognito_user_pool_client_id.value' "$json_file")
 export NEXT_PUBLIC_COGNITO_USER_POOL_ID=$(jq -r '.cognito_user_pool_id.value' "$json_file")
-
-# Print the exported environment variables
-echo "TEMPLATE_STORAGE_TABLE_NAME=${TEMPLATE_STORAGE_TABLE_NAME}"
-echo "NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID=${NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID}"
-echo "NEXT_PUBLIC_COGNITO_USER_POOL_ID=${NEXT_PUBLIC_COGNITO_USER_POOL_ID}"
