@@ -25,8 +25,8 @@ describe('amplify-utils', () => {
   beforeAll(() => {
     process.env = {
       ...OLD_ENV,
-      COGNITO_USER_POOL_ID: 'mockUserPoolId',
-      COGNITO_USER_POOL_CLIENT_ID: 'mockUserPoolClientId',
+      NEXT_PUBLIC_COGNITO_USER_POOL_ID: 'mockUserPoolId',
+      NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID: 'mockUserPoolClientId',
     };
   });
 
