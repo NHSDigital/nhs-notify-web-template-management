@@ -83,6 +83,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [sandbox-set-up]
     environment: dev
+    env:
+      INCLUDE_AUTH_PAGES: 'true'
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
@@ -97,6 +99,8 @@ jobs:
       - name: "Generate dependencies"
         run: |
           npm run generate-dependencies --workspaces --if-present
+          npm run create-amplify-outputs file
+          export BACKEND_API_URL=$(jq -r '.api_base_url.value' "./sandbox_tf_outputs.json")
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -104,7 +108,9 @@ jobs:
           role-session-name: deployInfra
           aws-region: eu-west-2
       - name: "Run accessibility test"
-        run: make test-accessibility
+        run: |
+          ./scripts/export_backend_sandbox_variables.sh
+          make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
         with:
@@ -130,8 +136,9 @@ jobs:
           npm ci
       - name: "Generate dependencies"
         run: |
-          cat sandbox_tf_outputs.json
           npm run generate-dependencies --workspaces --if-present
+          npm run create-amplify-outputs file
+          export BACKEND_API_URL=$(jq -r '.api_base_url.value' "./sandbox_tf_outputs.json")
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Configure AWS credentials
@@ -142,10 +149,10 @@ jobs:
           aws-region: eu-west-2
       - name: "Run ui component test"
         run: |
-          ./scripts/export_backend_sandbox_variables.sh
           cd tests/test-team
           npm run test:local-ui
       - name: Archive component test results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: component test report

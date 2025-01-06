@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { getAccessTokenServer } from '@utils/amplify-utils';
-import { getBasePath } from '@utils/get-base-path';
+// import { getAccessTokenServer } from '@utils/amplify-utils';
 
 function isExcludedPath(path: string, excludedPaths: string[]): boolean {
   return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
@@ -13,19 +12,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = await getAccessTokenServer();
+  // const token = await getAccessTokenServer();
 
-  if (!token) {
-    return Response.redirect(
-      new URL(
-        `/auth?redirect=${encodeURIComponent(
-          // Replace create-and-submit-templates with ${request.nextUrl.pathname} once auth login is fixed otherwise we end up in a redirect loop
-          `${getBasePath()}/create-and-submit-templates`
-        )}`,
-        request.url
-      )
-    );
-  }
+  // console.log('token', token);
+  // if (!token) {
+  //   return Response.redirect(
+  //     new URL(
+  //       `/auth?redirect=${encodeURIComponent(
+  //         // Replace create-and-submit-templates with ${request.nextUrl.pathname} once auth login is fixed otherwise we end up in a redirect loop
+  //         `${getBasePath()}/create-and-submit-templates`
+  //       )}`,
+  //       request.url
+  //     )
+  //   );
+  // }
 }
 
 export const config = {

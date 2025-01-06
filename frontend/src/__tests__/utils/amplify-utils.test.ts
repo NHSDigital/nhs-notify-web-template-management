@@ -16,24 +16,13 @@ jest.mock('next/headers', () => ({
     getAll: jest.fn(),
   }),
 }));
+jest.mock('@/amplify_outputs.json', () => ({
+  name: 'mockConfig',
+}));
 
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
-const OLD_ENV = process.env;
-
 describe('amplify-utils', () => {
-  beforeAll(() => {
-    process.env = {
-      ...OLD_ENV,
-      NEXT_PUBLIC_COGNITO_USER_POOL_ID: 'mockUserPoolId',
-      NEXT_PUBLIC_COGNITO_USER_POOL_CLIENT_ID: 'mockUserPoolClientId',
-    };
-  });
-
-  afterAll(() => {
-    process.env = OLD_ENV;
-  });
-
   test('getAmplifyBackendClient', () => {
     // arrange
     const generateServerClientUsingCookiesMock = jest.mocked(
@@ -47,14 +36,7 @@ describe('amplify-utils', () => {
     // assert
     expect(generateServerClientUsingCookiesMock).toHaveBeenCalledTimes(1);
     expect(generateServerClientUsingCookiesMock).toHaveBeenCalledWith({
-      config: {
-        auth: {
-          aws_region: 'eu-west-2',
-          user_pool_id: 'mockUserPoolId',
-          user_pool_client_id: 'mockUserPoolClientId',
-        },
-        version: '1.1',
-      },
+      config: { name: 'mockConfig' },
       cookies: cookiesSpy,
       authMode: 'iam',
     });

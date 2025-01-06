@@ -6,9 +6,10 @@ import { NHSNotifyHeader } from '@molecules/Header/Header';
 import { NHSNotifyContainer } from '@layouts/container/container';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import { NHSNotifySkipLink } from '@atoms/NHSNotifySkipLink/NHSNotifySkipLink';
-import { AMPLIFY_OUTPUTS } from '@utils/amplify-outputs';
+// eslint-disable-next-line import/no-unresolved
+import amplifyConfig from '@/amplify_outputs.json';
 
-Amplify.configure(AMPLIFY_OUTPUTS(), { ssr: true });
+Amplify.configure(amplifyConfig, { ssr: true });
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
