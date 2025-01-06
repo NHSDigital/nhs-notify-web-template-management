@@ -324,7 +324,9 @@ describe('templateClient', () => {
       } as unknown as TemplateDTO;
 
       listMock.mockResolvedValueOnce({
-        data: [template2, invalidTemplate, template1, template3].map(template => ({ ...template, owner: 'owner', version: 1 })), // unsorted
+        data: [template2, invalidTemplate, template1, template3].map(
+          (template) => ({ ...template, owner: 'owner', version: 1 })
+        ), // unsorted
       });
 
       const result = await client.listTemplates();
@@ -358,7 +360,11 @@ describe('templateClient', () => {
       };
 
       listMock.mockResolvedValueOnce({
-        data: [template2, template1].map(template => ({ ...template, owner: 'owner', version: 1 })), // unsorted
+        data: [template2, template1].map((template) => ({
+          ...template,
+          owner: 'owner',
+          version: 1,
+        })), // unsorted
       });
 
       const result = await client.listTemplates();

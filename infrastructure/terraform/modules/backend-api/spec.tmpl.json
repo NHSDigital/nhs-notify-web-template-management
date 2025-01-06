@@ -347,8 +347,7 @@
           "name",
           "message",
           "createdAt",
-          "updatedAt",
-          "version"
+          "updatedAt"
         ],
         "properties": {
           "id": {
@@ -376,9 +375,6 @@
           },
           "subject": {
             "type": "string"
-          },
-          "version": {
-            "type": "number"
           }
         }
       },
