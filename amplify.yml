@@ -8,10 +8,11 @@ applications:
             - cd ..
             - nvm install 20.13.1
             - nvm use 20.13.1
+            - echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
             - npm ci --cache .npm --prefer-offline
             - npm run generate-dependencies --workspaces --if-present
             - cd frontend
-            # - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+            - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
     frontend:
       phases:
         build:
