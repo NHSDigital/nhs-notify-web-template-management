@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 // import { getAccessTokenServer } from '@utils/amplify-utils';
 
@@ -7,6 +8,8 @@ function isExcludedPath(path: string, excludedPaths: string[]): boolean {
 
 export async function middleware(request: NextRequest) {
   const excludedPaths = ['/create-and-submit-templates', '/auth'];
+
+  console.log('middleware', cookies().getAll());
 
   if (isExcludedPath(request.nextUrl.pathname, excludedPaths)) {
     return NextResponse.next();

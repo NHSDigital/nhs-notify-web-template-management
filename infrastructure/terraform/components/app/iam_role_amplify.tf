@@ -59,16 +59,4 @@ data "aws_iam_policy_document" "amplify" {
       "arn:aws:logs:${var.region}:${var.aws_account_id}:*"
     ]
   }
-
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "ssm:GetParameter",
-    ]
-
-    resources = [
-      aws_ssm_parameter.cognito_config.arn
-    ]
-  }
 }
