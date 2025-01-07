@@ -11,8 +11,8 @@ applications:
             - npm ci --cache .npm --prefer-offline
             - npm run generate-dependencies --workspaces --if-present
             - npm run create-amplify-outputs env
+            - npm run create-dot-env env
             - cd frontend
-            - echo "BACKEND_API_URL=$BACKEND_API_URL" >> .env
     frontend:
       phases:
         build:
