@@ -424,6 +424,7 @@ export const templateSubmittedPageContent = {
   liveHeading: "If you've already onboarded",
   liveText: "Once you've submitted all your templates",
   liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: 'Back to all templates',
 };
 
 export const createSmsTemplatePageContent = {

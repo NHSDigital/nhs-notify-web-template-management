@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { templateSubmittedPageContent } from '@content/content';
+import { getBasePath } from '@utils/get-base-path';
 
 type TemplateSubmittedProps = {
   templateId: string;
@@ -56,6 +57,14 @@ export const TemplateSubmitted = ({
             rel='noopener noreferrer'
           >
             {liveLinkText}
+          </Link>
+        </p>
+        <hr className='nhsuk-section-break--visible' />
+      </div>
+      <div className='nhsuk-grid-column-two-thirds'>
+        <p>
+          <Link id='go-back-link' href={`${getBasePath()}/manage-templates`}>
+            {templateSubmittedPageContent.backLinkText}
           </Link>
         </p>
       </div>
