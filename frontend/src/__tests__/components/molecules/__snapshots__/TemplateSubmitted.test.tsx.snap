@@ -71,7 +71,7 @@ exports[`TemplateSubmitted component should render 1`] = `
       />
       <p>
         <a
-          href="/templates/manage-templates"
+          href="/manage-templates"
           id="go-back-link"
         >
           Back to all templates

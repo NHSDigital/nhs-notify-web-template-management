@@ -61,7 +61,7 @@ export const TemplateSubmitted = ({
         </p>
         <hr className='nhsuk-section-break--visible' />
         <p>
-          <Link id='go-back-link' href={`${getBasePath()}/manage-templates`}>
+          <Link id='go-back-link' href='/manage-templates'>
             {templateSubmittedPageContent.backLinkText}
           </Link>
         </p>
