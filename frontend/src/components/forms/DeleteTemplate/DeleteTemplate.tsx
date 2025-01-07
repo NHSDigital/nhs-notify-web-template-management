@@ -21,8 +21,8 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
   const fullPageHeading = `${pageHeading} '${state.name}'?`;
   return (
     <div className='nhsuk-grid-row'>
-      <div className='nhsuk-grid-column-full'>
-        <h1>{fullPageHeading}</h1>
+      <div className='nhsuk-grid-column-two-thirds'>
+        <h1 className='nhsuk-heading-l'>{fullPageHeading}</h1>
         <p>{hintText}</p>
         <form
           action={`${getBasePath()}/manage-templates`}
