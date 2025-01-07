@@ -15,9 +15,9 @@ const getTemplateMock = jest.spyOn(TemplateClient.prototype, 'getTemplate');
 describe('Template API - Get', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no email in requestContext', async () => {
+  test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: undefined } },
+      requestContext: { authorizer: { user: undefined } },
       pathParameters: { templateId: '1' },
     });
 
@@ -36,7 +36,7 @@ describe('Template API - Get', () => {
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: undefined },
     });
 
@@ -62,7 +62,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -76,7 +76,7 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
     expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 
@@ -97,7 +97,7 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: '1' },
     });
 
@@ -108,7 +108,7 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
     expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 });

@@ -16,9 +16,9 @@ const createMock = jest.spyOn(TemplateClient.prototype, 'createTemplate');
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no email in requestContext', async () => {
+  test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: undefined } },
+      requestContext: { authorizer: { user: undefined } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -48,7 +48,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: undefined,
     });
 
@@ -65,7 +65,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(createMock).toHaveBeenCalledWith({});
   });
@@ -79,7 +79,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -93,7 +93,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(createMock).toHaveBeenCalledWith({ id: 1 });
   });
@@ -118,7 +118,7 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { email: 'email' } },
+      requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify(create),
     });
 
@@ -129,7 +129,7 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('email');
+    expect(TemplateClient).toHaveBeenCalledWith('sub');
 
     expect(createMock).toHaveBeenCalledWith(create);
   });
