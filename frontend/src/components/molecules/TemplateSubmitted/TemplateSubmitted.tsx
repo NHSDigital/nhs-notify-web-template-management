@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { templateSubmittedPageContent } from '@content/content';
-import { getBasePath } from '@utils/get-base-path';
 
 type TemplateSubmittedProps = {
   templateId: string;
