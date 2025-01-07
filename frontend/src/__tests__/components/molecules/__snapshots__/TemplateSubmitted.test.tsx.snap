@@ -69,10 +69,6 @@ exports[`TemplateSubmitted component should render 1`] = `
       <hr
         class="nhsuk-section-break--visible"
       />
-    </div>
-    <div
-      class="nhsuk-grid-column-two-thirds"
-    >
       <p>
         <a
           href="/templates/manage-templates"
