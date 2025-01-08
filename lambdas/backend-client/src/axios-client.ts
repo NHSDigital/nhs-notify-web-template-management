@@ -8,7 +8,6 @@ const isApplicationFailure = (error: any): error is Failure =>
   'technicalMessage' in error;
 
 export const createAxiosClient = (token: string) => {
-  console.log('backend api url', process.env.BACKEND_API_URL);
   const client = axios.create({
     baseURL: process.env.BACKEND_API_URL,
     headers: {

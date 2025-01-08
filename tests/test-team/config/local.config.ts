@@ -49,5 +49,6 @@ export default defineConfig({
     url: 'http://localhost:3000/templates/create-and-submit-templates',
     reuseExistingServer: !process.env.CI,
     stderr: 'pipe',
+    stdout: 'pipe',
   },
 });

@@ -6,6 +6,12 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from './types';
 
+function sleep(secs: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, secs * 1000);
+  });
+}
+
 export class TemplateStorageHelper {
   private readonly ddbDocClient: DynamoDBDocumentClient;
 
@@ -25,6 +31,9 @@ export class TemplateStorageHelper {
     );
 
     await Promise.all(promises);
+
+    // temporarily add this to see if this helps with the automated tests
+    await sleep(5);
   }
 
   async deleteTemplateData() {
