@@ -1,6 +1,6 @@
-import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
-// import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getBasePath } from '@utils/get-base-path';
 
 function isExcludedPath(path: string, excludedPaths: string[]): boolean {
   return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
@@ -9,26 +9,23 @@ function isExcludedPath(path: string, excludedPaths: string[]): boolean {
 export async function middleware(request: NextRequest) {
   const excludedPaths = ['/create-and-submit-templates', '/auth'];
 
-  console.log('middleware', cookies().getAll());
-
   if (isExcludedPath(request.nextUrl.pathname, excludedPaths)) {
     return NextResponse.next();
   }
 
-  // const token = await getAccessTokenServer();
+  const token = await getAccessTokenServer();
 
-  // console.log('token', token);
-  // if (!token) {
-  //   return Response.redirect(
-  //     new URL(
-  //       `/auth?redirect=${encodeURIComponent(
-  //         // Replace create-and-submit-templates with ${request.nextUrl.pathname} once auth login is fixed otherwise we end up in a redirect loop
-  //         `${getBasePath()}/create-and-submit-templates`
-  //       )}`,
-  //       request.url
-  //     )
-  //   );
-  // }
+  if (!token) {
+    return Response.redirect(
+      new URL(
+        `/auth?redirect=${encodeURIComponent(
+          // Replace create-and-submit-templates with ${request.nextUrl.pathname} once auth login is fixed otherwise we end up in a redirect loop
+          `${getBasePath()}/create-and-submit-templates`
+        )}`,
+        request.url
+      )
+    );
+  }
 }
 
 export const config = {

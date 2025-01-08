@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
-import { assertLoginLink } from './template-mgmt-common.steps';
-
-// Reset storage state for this file to avoid being authenticated
-test.use({ storageState: { cookies: [], origins: [] } });
+import { assertLogoutLink } from './template-mgmt-common.steps';
 
 test.describe('Start Page', () => {
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({
@@ -49,10 +46,10 @@ test.describe('Start Page', () => {
     );
   });
 
-  test('should display login link', async ({ page }) => {
+  test('should display logout link', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
-    await assertLoginLink({
+    await assertLogoutLink({
       page: startPage,
       id: '/templates/create-and-submit-templates',
     });

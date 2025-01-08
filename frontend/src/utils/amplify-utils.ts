@@ -7,7 +7,6 @@ import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/da
 import { Schema } from 'nhs-notify-web-template-management-amplify';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const config = require('@/amplify_outputs.json');
 
@@ -23,19 +22,14 @@ export const getAmplifyBackendClient = () =>
   });
 
 export async function getAccessTokenServer(): Promise<string | undefined> {
-  logger.info('cookies', await cookies().getAll());
-  logger.info('cookies 2', await cookies().toString());
   try {
     const { tokens } = await runWithAmplifyServerContext({
       nextServerContext: { cookies },
       operation: fetchAuthSession,
     });
 
-    console.log('tokens', tokens);
-
     return tokens?.accessToken?.toString();
-  } catch (error) {
+  } catch {
     // no-op
-    logger.error('issue with auth', error);
   }
 }
