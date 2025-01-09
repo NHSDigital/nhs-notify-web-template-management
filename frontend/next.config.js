@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+const amplifyConfig = require('./amplify_outputs.json');
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
@@ -14,6 +15,7 @@ const nextConfig = (phase) => {
     basePath,
     env: {
       basePath,
+      BACKEND_API_URL: amplifyConfig.meta.backend_api_url,
     },
 
     experimental: {

@@ -108,7 +108,6 @@ jobs:
       - name: "Run accessibility test"
         run: |
           npm run create-amplify-outputs file
-          npm run create-dot-env file
           make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
@@ -147,7 +146,6 @@ jobs:
       - name: "Run ui component test"
         run: |
           npm run create-amplify-outputs file
-          npm run create-dot-env file
           cd tests/test-team
           npm run test:local-ui
       - name: Archive component test results
