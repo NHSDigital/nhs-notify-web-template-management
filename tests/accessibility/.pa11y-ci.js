@@ -78,7 +78,7 @@ module.exports = {
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
     performCheck({ url: `${baseUrl}/invalid-template`, actions: [...signInPageActions, 'wait for h1 to be visible'], name: 'invalid-template'}),
-    performCheck({ url: `${baseUrl}/testing/email-template.html`, actions: [...signInPageActions, 'wait for table to be visible'], name: 'email-template'})
+    performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
   ],
   defaults: {
     reporters: [
