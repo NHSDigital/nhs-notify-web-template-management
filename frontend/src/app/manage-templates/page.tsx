@@ -1,10 +1,13 @@
-'use server';
-
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import { Template } from 'nhs-notify-web-template-management-utils';
 import { getTemplates } from '@utils/form-actions';
+
+// Note: this page is forced to be server-side rendered
+// This is because Next defaults this page as a static rendered page
+// which causes a build failure due to getTemplates attempting to get cookies
+export const dynamic = 'force-dynamic';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
