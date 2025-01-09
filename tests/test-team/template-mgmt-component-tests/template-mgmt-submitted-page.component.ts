@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertGoBackLink,
   assertLoginLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -99,7 +99,10 @@ test.describe('Template Submitted Page', () => {
         await assertNotifyBannerLink(props);
         await assertFooterLinks(props);
         await assertLoginLink(props);
-        await assertGoBackLinkNotPresent(props);
+        await assertGoBackLink({
+          ...props,
+          expectedUrl: 'templates/manage-templates',
+        });
       });
     });
 

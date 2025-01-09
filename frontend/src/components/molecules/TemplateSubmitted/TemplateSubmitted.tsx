@@ -58,6 +58,12 @@ export const TemplateSubmitted = ({
             {liveLinkText}
           </Link>
         </p>
+        <hr className='nhsuk-section-break--visible' />
+        <p>
+          <Link id='go-back-link' href='/manage-templates'>
+            {templateSubmittedPageContent.backLinkText}
+          </Link>
+        </p>
       </div>
     </div>
   );

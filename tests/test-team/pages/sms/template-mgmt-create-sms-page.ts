@@ -17,6 +17,8 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
 
   public readonly characterCountText: Locator;
 
+  public readonly goBackLink: Locator;
+
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   constructor(page: Page) {
@@ -32,6 +34,10 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
     );
     this.pricingLink = page.locator('[data-testid="sms-pricing-link"]');
     this.characterCountText = page.locator('[id="character-count"]');
+    this.goBackLink = page
+      .locator('.nhsuk-back-link__link')
+      .and(page.getByText('Back to choose a template type'));
+
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 

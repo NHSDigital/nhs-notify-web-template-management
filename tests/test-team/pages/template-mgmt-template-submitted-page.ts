@@ -10,6 +10,8 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
 
   public readonly serviceNowLink: Locator;
 
+  public readonly goBackLink: Locator;
+
   constructor(
     page: Page,
     private readonly channelIdentifier: string
@@ -21,6 +23,7 @@ export class TemplateMgmtTemplateSubmittedPage extends TemplateMgmtBasePage {
       '[id="create-another-template"]'
     );
     this.serviceNowLink = page.locator('[id="servicenow-link"]');
+    this.goBackLink = page.locator('#go-back-link');
   }
 
   async clickCreateAnotherTemplateLink() {

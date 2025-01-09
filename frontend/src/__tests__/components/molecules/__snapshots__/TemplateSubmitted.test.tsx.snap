@@ -66,6 +66,17 @@ exports[`TemplateSubmitted component should render 1`] = `
           raise a request with the service desk (opens in a new tab).
         </a>
       </p>
+      <hr
+        class="nhsuk-section-break--visible"
+      />
+      <p>
+        <a
+          href="/manage-templates"
+          id="go-back-link"
+        >
+          Back to all templates
+        </a>
+      </p>
     </div>
   </div>
 </DocumentFragment>

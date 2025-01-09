@@ -305,6 +305,7 @@ export const chooseTemplatePageContent = {
   hint: 'Select one option',
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
+  backLinkText: 'Back to all templates',
 };
 
 export const nameYourTemplateContent = {
@@ -396,6 +397,7 @@ export const createNhsAppTemplatePageContent = {
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const createEmailTemplatePageContent = {
@@ -406,6 +408,7 @@ export const createEmailTemplatePageContent = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const templateSubmittedPageContent = {
@@ -421,6 +424,7 @@ export const templateSubmittedPageContent = {
   liveHeading: "If you've already onboarded",
   liveText: "Once you've submitted all your templates",
   liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: 'Back to all templates',
 };
 
 export const createSmsTemplatePageContent = {
@@ -435,6 +439,7 @@ export const createSmsTemplatePageContent = {
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const viewSubmittedTemplatePageContent = {
