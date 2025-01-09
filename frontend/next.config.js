@@ -15,7 +15,7 @@ const nextConfig = (phase) => {
     basePath,
     env: {
       basePath,
-      BACKEND_API_URL: amplifyConfig.meta.backend_api_url,
+      BACKEND_API_URL: amplifyConfig?.meta?.backend_api_url,
     },
 
     experimental: {
