@@ -2,23 +2,19 @@ import { FullConfig } from '@playwright/test';
 
 import { randomUUID as uuidv4 } from 'node:crypto';
 import generate from 'generate-password';
-import { OutputsHelper } from '../helpers/outputs-helper';
+import { ConfigHelper } from '../helpers/config-helper';
 import { CognitoUserHelper } from '../helpers/cognito-user-helper';
 
 async function globalSetup(config: FullConfig) {
-  const outputsHelper = new OutputsHelper();
+  const configHelper = new ConfigHelper();
 
   process.env.TEMPLATE_STORAGE_TABLE_NAME =
-    outputsHelper.getTemplateStorageTableName();
+    configHelper.getTemplateStorageTableName();
 
-  if (!process.env.COGNITO_USER_POOL_ID) {
-    process.env.COGNITO_USER_POOL_ID = outputsHelper.getCognitoUserPoolId();
-  }
+  process.env.COGNITO_USER_POOL_ID = configHelper.getCognitoUserPoolId();
 
-  if (!process.env.COGNITO_USER_POOL_CLIENT_ID) {
-    process.env.COGNITO_USER_POOL_CLIENT_ID =
-      outputsHelper.getCognitoUserPoolClientId();
-  }
+  process.env.COGNITO_USER_POOL_CLIENT_ID =
+    configHelper.getCognitoUserPoolClientId();
 
   const cognitoUserHelper = new CognitoUserHelper();
 
