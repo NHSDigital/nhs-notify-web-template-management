@@ -19,8 +19,7 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(
       new URL(
         `/auth?redirect=${encodeURIComponent(
-          // Replace create-and-submit-templates with ${request.nextUrl.pathname} once auth login is fixed otherwise we end up in a redirect loop
-          `${getBasePath()}/create-and-submit-templates`
+          `${getBasePath()}/${request.nextUrl.pathname}`
         )}`,
         request.url
       )

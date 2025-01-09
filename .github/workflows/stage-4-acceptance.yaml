@@ -174,4 +174,4 @@ jobs:
         uses: ./.github/actions/normalize-branch-name
       - name: "Destroy Backend sandbox"
         run: |
-          echo "DEBUG"
+          npm run destroy-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
