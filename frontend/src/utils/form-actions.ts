@@ -1,7 +1,11 @@
 'use server';
 
 import { getAccessTokenServer } from '@utils/amplify-utils';
-import { Template, Draft } from 'nhs-notify-web-template-management-utils';
+import {
+  Template,
+  Draft,
+  isTemplateValid,
+} from 'nhs-notify-web-template-management-utils';
 import { BackendClient, TemplateDTO } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
@@ -10,10 +14,12 @@ export async function createTemplate(
 ): Promise<Template | TemplateDTO> {
   const token = await getAccessTokenServer();
 
-  // String(token) is temporary
-  const { data, error } = await BackendClient(
-    String(token)
-  ).templates.createTemplate(template);
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } =
+    await BackendClient(token).templates.createTemplate(template);
 
   if (error) {
     logger.error('Failed to create template', error);
@@ -28,10 +34,14 @@ export async function saveTemplate(
 ): Promise<Template | TemplateDTO> {
   const token = await getAccessTokenServer();
 
-  // String(token) is temporary
-  const { data, error } = await BackendClient(
-    String(token)
-  ).templates.updateTemplate(template.id, template);
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await BackendClient(token).templates.updateTemplate(
+    template.id,
+    template
+  );
 
   if (error) {
     logger.error('Failed to save template', error);
@@ -46,10 +56,12 @@ export async function getTemplate(
 ): Promise<Template | TemplateDTO | undefined> {
   const token = await getAccessTokenServer();
 
-  // String(token) is temporary
-  const { data, error } = await BackendClient(
-    String(token)
-  ).templates.getTemplate(templateId);
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } =
+    await BackendClient(token).templates.getTemplate(templateId);
 
   if (error) {
     logger.error('Failed to get template', error);
@@ -61,10 +73,11 @@ export async function getTemplate(
 export async function sendEmail(templateId: string) {
   const token = await getAccessTokenServer();
 
-  // String(token) is temporary
-  const { error } = await BackendClient(String(token)).functions.sendEmail(
-    templateId
-  );
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { error } = await BackendClient(token).functions.sendEmail(templateId);
 
   if (error) {
     logger.error({
@@ -77,25 +90,29 @@ export async function sendEmail(templateId: string) {
 export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
   const token = await getAccessTokenServer();
 
-  // String(token) is temporary
-  const { data, error } = await BackendClient(
-    String(token)
-  ).templates.listTemplates();
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await BackendClient(token).templates.listTemplates();
 
   if (error) {
     logger.error('Failed to get templates', error);
     return [];
   }
 
-  const sortedData = data.sort((a, b) => {
-    const aCreatedAt = a.createdAt ?? '';
-    const bCreatedAt = b.createdAt ?? '';
+  const sortedData = data
+    .map((template) => isTemplateValid(template))
+    .filter((template): template is Template => template !== undefined)
+    .sort((a, b) => {
+      const aCreatedAt = a.createdAt ?? '';
+      const bCreatedAt = b.createdAt ?? '';
 
-    if (aCreatedAt === bCreatedAt) {
-      return a.id.localeCompare(b.id);
-    }
-    return aCreatedAt < bCreatedAt ? 1 : -1;
-  });
+      if (aCreatedAt === bCreatedAt) {
+        return a.id.localeCompare(b.id);
+      }
+      return aCreatedAt < bCreatedAt ? 1 : -1;
+    });
 
   return sortedData;
 }

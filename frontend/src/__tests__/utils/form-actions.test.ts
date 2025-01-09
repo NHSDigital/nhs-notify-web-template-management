@@ -90,6 +90,23 @@ describe('form-actions', () => {
     );
   });
 
+  test('createTemplate - should thrown error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    const createTemplateInput: Draft<NHSAppTemplate> = {
+      version: 1,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'name',
+      message: 'message',
+    };
+
+    await expect(createTemplate(createTemplateInput)).rejects.toThrow(
+      'Failed to get access token'
+    );
+  });
+
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
@@ -152,6 +169,24 @@ describe('form-actions', () => {
     );
   });
 
+  test('saveTemplate - should thrown error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    const updateTemplateInput: NHSAppTemplate = {
+      id: 'pickle',
+      version: 1,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'name',
+      message: 'message',
+    };
+
+    await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
+      'Failed to get access token'
+    );
+  });
+
   test('getTemplate', async () => {
     const responseData = {
       id: 'id',
@@ -195,6 +230,15 @@ describe('form-actions', () => {
     expect(response).toEqual(undefined);
   });
 
+  test('getTemplate - should thrown error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    await expect(getTemplate('id')).rejects.toThrow(
+      'Failed to get access token'
+    );
+  });
+
   test('getTemplates', async () => {
     const responseData = {
       id: 'id',
@@ -232,6 +276,13 @@ describe('form-actions', () => {
     expect(response).toEqual([]);
   });
 
+  test('getTemplates - should thrown error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    await expect(getTemplates()).rejects.toThrow('Failed to get access token');
+  });
+
   test('sendEmail', async () => {
     mockedBackendClient.functions.sendEmail.mockResolvedValueOnce({
       data: undefined,
@@ -243,6 +294,13 @@ describe('form-actions', () => {
     expect(mockedBackendClient.functions.sendEmail).toHaveBeenCalledWith('id');
 
     expect(response).toEqual(undefined);
+  });
+
+  test('sendEmail - should thrown error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    await expect(sendEmail('id')).rejects.toThrow('Failed to get access token');
   });
 
   test('getTemplates - should return nothing when an error occurs', async () => {
@@ -260,57 +318,57 @@ describe('form-actions', () => {
 
     expect(response).toEqual(undefined);
   });
-});
 
-test('getTemplates - order by createdAt and then id', async () => {
-  const baseTemplate = {
-    version: 1,
-    templateType: TemplateType.SMS,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    name: 'Template',
-    message: 'Message',
-    updatedAt: '2021-01-01T00:00:00.000Z',
-  };
+  test('getTemplates - order by createdAt and then id', async () => {
+    const baseTemplate = {
+      version: 1,
+      templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'Template',
+      message: 'Message',
+      updatedAt: '2021-01-01T00:00:00.000Z',
+    };
 
-  const templates = [
-    { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '09', createdAt: undefined as unknown as string },
-    { ...baseTemplate, id: '10', createdAt: undefined as unknown as string },
-    { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '07', createdAt: undefined as unknown as string },
-    { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
-    { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
-  ];
+    const templates = [
+      { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '09', createdAt: undefined as unknown as string },
+      { ...baseTemplate, id: '10', createdAt: undefined as unknown as string },
+      { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '07', createdAt: undefined as unknown as string },
+      { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
+      { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
+    ];
 
-  // 06 is the newest, 08 is the oldest.
-  // Templates without a createdAt, 07, 09 and 10, go at the end.
-  // 01 - 05 all have the same createdAt.
-  const expectedOrder = [
-    '06',
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '08',
-    '07',
-    '09',
-    '10',
-  ];
+    // 06 is the newest, 08 is the oldest.
+    // Templates without a createdAt, 07, 09 and 10, go at the end.
+    // 01 - 05 all have the same createdAt.
+    const expectedOrder = [
+      '06',
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '08',
+      '07',
+      '09',
+      '10',
+    ];
 
-  mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({
-    data: templates,
+    mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({
+      data: templates,
+    });
+
+    const response = await getTemplates();
+
+    const actualOrder = [];
+    for (const template of response) {
+      actualOrder.push(template.id);
+    }
+
+    expect(actualOrder).toEqual(expectedOrder);
   });
-
-  const response = await getTemplates();
-
-  const actualOrder = [];
-  for (const template of response) {
-    actualOrder.push(template.id);
-  }
-
-  expect(actualOrder).toEqual(expectedOrder);
 });
