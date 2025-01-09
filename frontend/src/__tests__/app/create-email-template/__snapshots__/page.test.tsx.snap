@@ -9,7 +9,6 @@ exports[`CreateEmailTemplatePage should render CreateEmailTemplatePage 1`] = `
       "subject": "",
       "templateStatus": "NOT_YET_SUBMITTED",
       "templateType": "EMAIL",
-      "version": 1,
     }
   }
 />

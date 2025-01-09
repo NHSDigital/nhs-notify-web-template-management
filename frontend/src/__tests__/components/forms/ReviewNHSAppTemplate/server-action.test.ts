@@ -15,7 +15,6 @@ const redirectMock = jest.mocked(redirect);
 describe('reviewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
-    version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Example name',
@@ -32,7 +31,6 @@ describe('reviewNhsAppTemplateAction', () => {
 
     expect(newState).toEqual({
       id: 'template-id',
-      version: 1,
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Example name',

@@ -19,7 +19,8 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { randomUUID as uuidv4 } from 'node:crypto';
 import { ApplicationResult, failure, success } from '@backend-api/utils/result';
-import { Template } from './template';
+import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import { DatabaseTemplate } from './template';
 
 const client = DynamoDBDocumentClient.from(
   new DynamoDBClient({ region: 'eu-west-2' }),
@@ -31,7 +32,7 @@ const client = DynamoDBDocumentClient.from(
 const get = async (
   templateId: string,
   owner: string
-): Promise<ApplicationResult<Template>> => {
+): Promise<ApplicationResult<DatabaseTemplate>> => {
   try {
     const response = await client.send(
       new GetCommand({
@@ -47,7 +48,7 @@ const get = async (
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
-    return success(response?.Item as Template);
+    return success(response?.Item as DatabaseTemplate);
   } catch (error) {
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }
@@ -56,8 +57,8 @@ const get = async (
 const create = async (
   template: CreateTemplate,
   owner: string
-): Promise<ApplicationResult<Template>> => {
-  const entity: Template = {
+): Promise<ApplicationResult<DatabaseTemplate>> => {
+  const entity: DatabaseTemplate = {
     ...template,
     id: uuidv4(),
     owner,
@@ -89,7 +90,7 @@ const update = async (
   templateId: string,
   template: UpdateTemplate,
   owner: string
-): Promise<ApplicationResult<Template>> => {
+): Promise<ApplicationResult<DatabaseTemplate>> => {
   const updateExpression = [
     '#name = :name',
     '#message = :message',
@@ -105,7 +106,7 @@ const update = async (
     '#templateType': 'templateType',
   };
 
-  let expressionAttributeValues: Record<string, string> = {
+  let expressionAttributeValues: Record<string, string | number> = {
     ':name': template.name,
     ':message': template.message,
     ':templateStatus': template.templateStatus,
@@ -123,6 +124,13 @@ const update = async (
     expressionAttributeValues = {
       ...expressionAttributeValues,
       ':subject': template.subject,
+    };
+  }
+
+  if (template.templateStatus === TemplateStatus.DELETED) {
+    expressionAttributeValues = {
+      ...expressionAttributeValues,
+      ttl: calculateTTL(),
     };
   }
 
@@ -144,7 +152,7 @@ const update = async (
   try {
     const response = await client.send(new UpdateCommand(input));
 
-    return success(response.Attributes as Template);
+    return success(response.Attributes as DatabaseTemplate);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
       if (!error.Item) {
@@ -186,20 +194,25 @@ const update = async (
   }
 };
 
-const list = async (owner: string): Promise<ApplicationResult<Template[]>> => {
+const list = async (
+  owner: string
+): Promise<ApplicationResult<DatabaseTemplate[]>> => {
   try {
     const input: QueryCommandInput = {
       TableName: process.env.TEMPLATES_TABLE_NAME,
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
+        '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':owner': owner,
+        ':deletedStatus': TemplateStatus.DELETED,
       },
+      FilterExpression: '#status <> :deletedStatus',
     };
 
-    const items: Template[] = [];
+    const items: DatabaseTemplate[] = [];
 
     do {
       // eslint-disable-next-line no-await-in-loop
@@ -209,7 +222,7 @@ const list = async (owner: string): Promise<ApplicationResult<Template[]>> => {
 
       input.ExclusiveStartKey = LastEvaluatedKey;
 
-      items.push(...(Items as Template[]));
+      items.push(...(Items as DatabaseTemplate[]));
     } while (input.ExclusiveStartKey);
 
     return success(items);

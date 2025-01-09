@@ -26,7 +26,6 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: NHSAppTemplate = {
   id: 'template-id',
-  version: 1,
   templateType: TemplateType.NHS_APP,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',

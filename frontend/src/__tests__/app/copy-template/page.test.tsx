@@ -24,7 +24,6 @@ describe('CopyTemplatePage', () => {
   it('should load page', async () => {
     const template: EmailTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',

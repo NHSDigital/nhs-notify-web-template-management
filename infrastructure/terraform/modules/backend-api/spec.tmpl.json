@@ -390,7 +390,8 @@
         "type": "string",
         "enum": [
           "NOT_YET_SUBMITTED",
-          "SUBMITTED"
+          "SUBMITTED",
+          "DELETED"
         ]
       },
       "CreateTemplate": {

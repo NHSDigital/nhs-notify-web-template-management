@@ -25,7 +25,6 @@ describe('EmailTemplateSubmittedPage', () => {
       id: 'template-id',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.SUBMITTED,
-      version: 1,
       name: 'template-name',
       message: 'example',
       subject: 'subject',

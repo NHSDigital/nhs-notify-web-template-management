@@ -24,7 +24,6 @@ describe('EditNhsAppTemplatePage', () => {
   test('page loads', async () => {
     const state: NHSAppTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
@@ -62,7 +61,6 @@ describe('EditNhsAppTemplatePage', () => {
     async (templateType) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
-        version: 1,
         templateType,
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         name: 'name',

@@ -34,7 +34,6 @@ const mockResponseData = {
 const mockTemplates: Template[] = [
   {
     id: '1',
-    version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Template 1',
@@ -73,7 +72,6 @@ test('createTemplate', async () => {
   });
 
   const createTemplateInput: Draft<NHSAppTemplate> = {
-    version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'name',
@@ -106,7 +104,6 @@ test('createTemplate - error handling', async () => {
 
   await expect(
     createTemplate({
-      version: 1,
       templateType: TemplateType.NHS_APP,
     } as unknown as Template)
   ).rejects.toThrow('Failed to create new template');
@@ -123,12 +120,34 @@ test('saveTemplate', async () => {
 
   const response = await saveTemplate({
     id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
-    version: 1,
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'template-name',
     message: 'template-message',
   });
+
+  expect(response).toEqual(mockResponseData);
+});
+
+test('saveTemplate - includes TTL', async () => {
+  setup({
+    models: {
+      TemplateStorage: {
+        update: jest.fn().mockReturnValue({ data: mockResponseData }),
+      },
+    },
+  });
+
+  const response = await saveTemplate(
+    {
+      id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      name: 'template-name',
+      message: 'template-message',
+    },
+    10
+  );
 
   expect(response).toEqual(mockResponseData);
 });
@@ -153,7 +172,6 @@ test('saveTemplate - error handling', async () => {
   await expect(
     saveTemplate({
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
@@ -177,7 +195,6 @@ test('saveTemplate - error handling - when no data returned', async () => {
   await expect(
     saveTemplate({
       id: '0c1d3422-a2f6-44ef-969d-d513c7c9d212',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
@@ -278,7 +295,6 @@ test('getTemplates - remove invalid templates from response', async () => {
     ...mockTemplates,
     {
       id: '1',
-      version: 1,
       templateType: 'invalidType',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'Template 1',
@@ -346,7 +362,6 @@ test('getTemplates - errors', async () => {
 
 test('getTemplates - order by createdAt and then id', async () => {
   const baseTemplate = {
-    version: 1,
     templateType: 'SMS',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Template',

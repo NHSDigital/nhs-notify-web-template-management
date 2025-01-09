@@ -3,15 +3,15 @@ import { validate } from '@backend-api/utils/validate';
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  $EmailTemplate,
-  $SMSTemplate,
-  $NhsAppTemplate,
+  $CreateEmailTemplateSchema,
+  $CreateSMSTemplateSchema,
+  $CreateNhsAppTemplateSchema,
 } from '@backend-api/templates/domain/template/template-schema';
 
 describe('Template schemas', () => {
   test.each([
     {
-      schema: $EmailTemplate,
+      schema: $CreateEmailTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -20,7 +20,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $SMSTemplate,
+      schema: $CreateSMSTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -28,7 +28,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $NhsAppTemplate,
+      schema: $CreateNhsAppTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'This is a test template',
@@ -45,7 +45,7 @@ describe('Template schemas', () => {
 
   test.each([
     {
-      schema: $EmailTemplate,
+      schema: $CreateEmailTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(100_001),
@@ -54,7 +54,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $SMSTemplate,
+      schema: $CreateSMSTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(919),
@@ -62,7 +62,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $NhsAppTemplate,
+      schema: $CreateNhsAppTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(5001),
@@ -87,7 +87,7 @@ describe('Template schemas', () => {
   );
 
   test('$EmailTemplate - should fail validation, when no subject', async () => {
-    const result = await validate($EmailTemplate, {
+    const result = await validate($CreateEmailTemplateSchema, {
       name: 'Test Template',
       message: 'a'.repeat(100_000),
       templateType: TemplateType.EMAIL,
@@ -111,7 +111,7 @@ describe('Template schemas', () => {
   ])(
     '$NhsAppTemplate - should fail validation, when invalid characters are present %p',
     async (message) => {
-      const result = await validate($NhsAppTemplate, {
+      const result = await validate($CreateNhsAppTemplateSchema, {
         name: 'Test Template',
         message,
         templateType: TemplateType.NHS_APP,
