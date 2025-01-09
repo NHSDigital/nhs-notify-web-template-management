@@ -27,6 +27,7 @@ const {
   viewSubmittedEmailTemplatePage,
   viewSubmittedNHSAppTemplatePage,
   viewSubmittedTextMessageTemplatePage,
+  signInPageActions,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -76,8 +77,8 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-template`, name: 'invalid-template'}),
-    performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'})
+    performCheck({ url: `${baseUrl}/invalid-template`, actions: [...signInPageActions, 'wait for h1 to be visible'], name: 'invalid-template'}),
+    performCheck({ url: `${baseUrl}/testing/email-template.html`, actions: [...signInPageActions, 'wait for table to be visible'], name: 'email-template'})
   ],
   defaults: {
     reporters: [

@@ -7,6 +7,7 @@ const pageActions = [
   'set field #nhsAppTemplateName to example-template-1',
   'set field #nhsAppTemplateMessage to example template message',
   'click element #create-nhs-app-template-submit-button',
+  'wait for #preview-nhs-app-template-submit-button to be visible',
 ];
 
 const reviewNHSAppTemplatePage = (url) => ({
@@ -20,7 +21,6 @@ const reviewNHSAppTemplateErrorPage = (url) => ({
   url,
   actions: [
     ...pageActions,
-    'wait for #preview-nhs-app-template-submit-button to be visible',
     'click element #preview-nhs-app-template-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
