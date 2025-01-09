@@ -2,20 +2,14 @@ import { redirect, RedirectType } from 'next/navigation';
 import {
   FormState,
   TemplateType,
+  templateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 
-const templateTypeToPageMap: Record<TemplateType, string> = {
-  SMS: '/create-text-message-template',
-  EMAIL: '/create-email-template',
-  NHS_APP: '/create-nhs-app-template',
-};
-
 const $ChooseTemplate = z.object({
-  templateType: z.enum(
-    [TemplateType.SMS, TemplateType.EMAIL, TemplateType.NHS_APP],
-    { message: 'Select a template type' }
-  ),
+  templateType: z.nativeEnum(TemplateType, {
+    message: 'Select a template type',
+  }),
 });
 
 export async function chooseTemplateAction(
@@ -33,7 +27,7 @@ export async function chooseTemplateAction(
   }
 
   redirect(
-    templateTypeToPageMap[parsedForm.data.templateType],
+    `/create-${templateTypeToUrlTextMappings(parsedForm.data.templateType)}-template`,
     RedirectType.push
   );
 }

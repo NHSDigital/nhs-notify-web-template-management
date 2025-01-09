@@ -134,7 +134,6 @@ describe('Template API - Update', () => {
     const response: TemplateDTO = {
       ...update,
       id: '1-2-3',
-      version: 1,
       templateType: TemplateType.SMS,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

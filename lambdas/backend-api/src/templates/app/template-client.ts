@@ -10,6 +10,7 @@ import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
   templateRepository,
+  DatabaseTemplate,
 } from '@backend-api/templates/domain/template';
 
 export class TemplateClient implements ITemplateClient {
@@ -44,7 +45,7 @@ export class TemplateClient implements ITemplateClient {
       return createResult;
     }
 
-    return success(createResult.data);
+    return success(this.mapDatabaseObjectToDTO(createResult.data));
   }
 
   async updateTemplate(
@@ -76,7 +77,7 @@ export class TemplateClient implements ITemplateClient {
       return updateResult;
     }
 
-    return success(updateResult.data);
+    return success(this.mapDatabaseObjectToDTO(updateResult.data));
   }
 
   async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
@@ -92,7 +93,15 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
-    return success(getResult.data);
+    return success(this.mapDatabaseObjectToDTO(getResult.data));
+  }
+
+  private mapDatabaseObjectToDTO(
+    databaseTemplate: DatabaseTemplate
+  ): TemplateDTO {
+    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
+
+    return templateDTO;
   }
 
   async listTemplates(): Promise<Result<TemplateDTO[]>> {
@@ -104,6 +113,10 @@ export class TemplateClient implements ITemplateClient {
       return listResult;
     }
 
-    return success(listResult.data);
+    const templateDTOs = listResult.data.map((template) =>
+      this.mapDatabaseObjectToDTO(template)
+    );
+
+    return success(templateDTOs);
   }
 }

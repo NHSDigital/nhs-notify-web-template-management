@@ -14,7 +14,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
-  Template,
+  DatabaseTemplate,
   templateRepository,
 } from '@backend-api/templates/domain/template';
 
@@ -23,7 +23,7 @@ jest.mock('node:crypto');
 const uuidMock = jest.mocked(uuidv4);
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-const template: Template = {
+const template: DatabaseTemplate = {
   id: 'abc-def-ghi-jkl-123',
   owner: 'real-owner',
   name: 'name',
@@ -324,6 +324,40 @@ describe('templateRepository', () => {
         subject: 'updated-subject',
         templateStatus: TemplateStatus.SUBMITTED,
         templateType: TemplateType.EMAIL,
+      };
+
+      ddbMock
+        .on(UpdateCommand, {
+          TableName: 'templates',
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+        })
+        .resolves({
+          Attributes: {
+            ...template,
+            ...updatedTemplate,
+          },
+        });
+
+      const response = await templateRepository.update(
+        'abc-def-ghi-jkl-123',
+        updatedTemplate,
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        data: {
+          ...template,
+          ...updatedTemplate,
+        },
+      });
+    });
+
+    test('should update template to deleted state', async () => {
+      const updatedTemplate: UpdateTemplate = {
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: TemplateStatus.DELETED,
+        templateType: TemplateType.NHS_APP,
       };
 
       ddbMock

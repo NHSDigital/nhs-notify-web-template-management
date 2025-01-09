@@ -347,8 +347,7 @@
           "name",
           "message",
           "createdAt",
-          "updatedAt",
-          "version"
+          "updatedAt"
         ],
         "properties": {
           "id": {
@@ -376,9 +375,6 @@
           },
           "subject": {
             "type": "string"
-          },
-          "version": {
-            "type": "number"
           }
         }
       },
@@ -386,15 +382,16 @@
         "type": "string",
         "enum": [
           "NHS_APP",
-          "SMS",
-          "EMAIL"
+          "EMAIL",
+          "SMS"
         ]
       },
       "TemplateStatus": {
         "type": "string",
         "enum": [
           "NOT_YET_SUBMITTED",
-          "SUBMITTED"
+          "SUBMITTED",
+          "DELETED"
         ]
       },
       "CreateTemplate": {

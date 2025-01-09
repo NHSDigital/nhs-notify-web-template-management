@@ -23,7 +23,6 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   it('should load page', async () => {
     const state: SubmittedEmailTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
@@ -107,7 +106,6 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
-        version: 1,
         ...value,
       });
 

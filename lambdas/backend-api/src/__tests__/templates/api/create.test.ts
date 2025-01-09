@@ -107,7 +107,6 @@ describe('Template API - Create', () => {
     const response: TemplateDTO = {
       ...create,
       id: 'id',
-      version: 1,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

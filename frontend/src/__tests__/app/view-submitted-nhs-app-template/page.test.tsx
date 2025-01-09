@@ -23,7 +23,6 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   it('should load page', async () => {
     const state: SubmittedNHSAppTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
@@ -99,7 +98,6 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
-        version: 1,
         ...value,
       });
 

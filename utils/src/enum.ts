@@ -5,7 +5,7 @@ export { TemplateType, TemplateStatus };
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'NHS App',
+    [TemplateType.NHS_APP]: 'NHS App message',
     [TemplateType.SMS]: 'Text message (SMS)',
     [TemplateType.EMAIL]: 'Email',
   })[type];
@@ -14,18 +14,17 @@ export const templateStatustoDisplayMappings = (status: TemplateStatus) =>
   ({
     [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
     [TemplateStatus.SUBMITTED]: 'Submitted',
+    [TemplateStatus.DELETED]: '', // will not be shown in the UI
   })[status];
 
-export const previewTemplatePages = (type: TemplateType) =>
+export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'preview-nhs-app-template',
-    [TemplateType.SMS]: 'preview-text-message-template',
-    [TemplateType.EMAIL]: 'preview-email-template',
+    [TemplateType.NHS_APP]: 'nhs-app',
+    [TemplateType.SMS]: 'text-message',
+    [TemplateType.EMAIL]: 'email',
   })[type];
 
+export const previewTemplatePages = (type: TemplateType) =>
+  `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const viewSubmittedTemplatePages = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'view-submitted-nhs-app-template',
-    [TemplateType.SMS]: 'view-submitted-text-message-template',
-    [TemplateType.EMAIL]: 'view-submitted-email-template',
-  })[type];
+  `view-submitted-${templateTypeToUrlTextMappings(type)}-template`;

@@ -60,7 +60,7 @@ export function ManageTemplates({
             </Table.Row>
           </Table.Head>
           <Table.Body>
-            {templateList.map((template) => (
+            {templateList.map((template, index) => (
               <Table.Row key={template.id}>
                 <Table.Cell>
                   <Link href={generateViewTemplateLink(template)}>
@@ -88,14 +88,17 @@ export function ManageTemplates({
                 </Table.Cell>
                 <Table.Cell>
                   <p className='nhsuk-u-margin-bottom-2'>
-                    <Link href='#'>
+                    <Link
+                      href={`/copy-template/${template.id}`}
+                      id={`copy-template-link-${index}`}
+                    >
                       {manageTemplatesContent.tableHeadings.action.copy}
                     </Link>
                   </p>
                   {template.templateStatus ===
                   TemplateStatus.NOT_YET_SUBMITTED ? (
                     <p className='nhsuk-u-margin-bottom-2'>
-                      <Link href='#'>
+                      <Link href={`/delete-template/${template.id}`}>
                         {manageTemplatesContent.tableHeadings.action.delete}
                       </Link>
                     </p>

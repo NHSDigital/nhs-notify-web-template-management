@@ -64,7 +64,6 @@ describe('Template API - List', () => {
   test('should return template', async () => {
     const template: TemplateDTO = {
       id: 'id',
-      version: 1,
       templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',

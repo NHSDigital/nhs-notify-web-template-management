@@ -6,6 +6,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertLogoutLink,
+  assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
@@ -52,7 +53,6 @@ test.describe('Create NHS App Template Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new TemplateMgmtCreateNhsAppPage(page),
-      id: templates.emptyTemplateData.id,
       baseURL,
     };
 
@@ -64,6 +64,16 @@ test.describe('Create NHS App Template Page', () => {
       ...props,
       expectedUrl: 'templates/choose-a-template-type',
     });
+  });
+
+  test('edit page has no go back link', async ({ page, baseURL }) => {
+    const props = {
+      page: new TemplateMgmtCreateNhsAppPage(page),
+      id: templates.emptyTemplateData.id,
+      baseURL,
+    };
+
+    await assertGoBackLinkNotPresent(props);
   });
 
   test('Validate error messages on the create NHS App message template page with no template name or body', async ({

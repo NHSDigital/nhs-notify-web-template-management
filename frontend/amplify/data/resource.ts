@@ -10,6 +10,7 @@ enum TemplateType {
 enum TemplateStatus {
   NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
   SUBMITTED = 'SUBMITTED',
+  DELETED = 'DELETED',
 }
 
 const templateTypes = [
@@ -21,16 +22,17 @@ const templateTypes = [
 const templateStatuses = [
   TemplateStatus.NOT_YET_SUBMITTED,
   TemplateStatus.SUBMITTED,
+  TemplateStatus.DELETED,
 ] as const;
 
 const TemplateStorageModel = {
   id: a.string().required(),
   templateType: a.ref('TemplateType').required(),
   templateStatus: a.ref('TemplateStatus').required(),
-  version: a.integer().required(),
   name: a.string().required(),
   subject: a.string(),
   message: a.string().required(),
+  ttl: a.integer(),
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

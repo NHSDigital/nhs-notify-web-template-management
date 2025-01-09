@@ -13,6 +13,5 @@ export type TemplateDTO = {
     createdAt: string;
     updatedAt: string;
     subject?: string;
-    version: number;
 };
 

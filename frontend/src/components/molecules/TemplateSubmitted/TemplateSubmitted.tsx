@@ -14,7 +14,6 @@ export const TemplateSubmitted = ({
     pageHeading,
     templateNameHeading,
     templateIdHeading,
-    newTemplateText,
     doNextHeading,
     doNextText,
     notLiveHeading,
@@ -43,9 +42,6 @@ export const TemplateSubmitted = ({
           {templateIdHeading}
         </h2>
         <p id='template-id'>{templateId}</p>
-        <Link id='create-another-template' href='/choose-a-template-type'>
-          {newTemplateText}
-        </Link>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
         <p>{doNextText}</p>
         <h3>{notLiveHeading}</h3>
@@ -60,6 +56,12 @@ export const TemplateSubmitted = ({
             rel='noopener noreferrer'
           >
             {liveLinkText}
+          </Link>
+        </p>
+        <hr className='nhsuk-section-break--visible' />
+        <p>
+          <Link id='go-back-link' href='/manage-templates'>
+            {templateSubmittedPageContent.backLinkText}
           </Link>
         </p>
       </div>

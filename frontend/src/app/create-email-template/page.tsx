@@ -10,7 +10,6 @@ const CreateEmailTemplatePage = async () => {
   const initialState: Draft<EmailTemplate> = {
     templateType: TemplateType.EMAIL,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    version: 1,
     name: '',
     subject: '',
     message: '',

@@ -6,6 +6,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertLogoutLink,
+  assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
@@ -68,7 +69,6 @@ test.describe('Create SMS message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtCreateSmsPage(page),
-        id: templates.empty.id,
         baseURL,
       };
 
@@ -80,6 +80,16 @@ test.describe('Create SMS message template Page', () => {
         ...props,
         expectedUrl: 'templates/choose-a-template-type',
       });
+    });
+
+    test('edit page has no go back link', async ({ page, baseURL }) => {
+      const props = {
+        page: new TemplateMgmtCreateSmsPage(page),
+        id: templates.empty.id,
+        baseURL,
+      };
+
+      await assertGoBackLinkNotPresent(props);
     });
 
     test('when user visits page with previous data, then form fields retain previous data', async ({

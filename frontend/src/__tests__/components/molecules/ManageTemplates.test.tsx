@@ -12,7 +12,6 @@ const manageTemplatesProps = {
   templateList: [
     {
       id: '1',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'Template 1',
@@ -22,7 +21,6 @@ const manageTemplatesProps = {
     },
     {
       id: '2',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 2',

@@ -1,5 +1,6 @@
 import {
   CreateTemplate,
+  TemplateDTO,
   TemplateStatus,
   TemplateType,
   UpdateTemplate,
@@ -7,7 +8,7 @@ import {
 import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  Template,
+  DatabaseTemplate,
   templateRepository,
 } from '@backend-api/templates/domain/template';
 import { validate } from '@backend-api/utils/validate';
@@ -91,14 +92,18 @@ describe('templateClient', () => {
         message: 'message',
       };
 
-      const template: Template = {
+      const expectedTemplateDTO: TemplateDTO = {
         ...data,
         id: 'id',
-        owner: 'owner',
-        version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDTO,
+        owner: 'owner',
+        version: 1,
       };
 
       validateMock.mockResolvedValueOnce({
@@ -114,7 +119,7 @@ describe('templateClient', () => {
       expect(createMock).toHaveBeenCalledWith(data, 'owner');
 
       expect(result).toEqual({
-        data: template,
+        data: expectedTemplateDTO,
       });
     });
   });
@@ -186,11 +191,9 @@ describe('templateClient', () => {
         templateType: TemplateType.SMS,
       };
 
-      const template: Template = {
+      const template: TemplateDTO = {
         ...data,
         id: 'id',
-        owner: 'owner',
-        version: 1,
         templateType: TemplateType.SMS,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -201,7 +204,7 @@ describe('templateClient', () => {
       });
 
       updateMock.mockResolvedValueOnce({
-        data: template,
+        data: { ...template, owner: 'owner', version: 1 },
       });
 
       const result = await client.updateTemplate('id', data);
@@ -236,10 +239,8 @@ describe('templateClient', () => {
     });
 
     test('should return template', async () => {
-      const template: Template = {
+      const template: TemplateDTO = {
         id: 'id',
-        owner: 'owner',
-        version: 1,
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
@@ -249,7 +250,7 @@ describe('templateClient', () => {
       };
 
       getMock.mockResolvedValueOnce({
-        data: template,
+        data: { ...template, owner: 'owner', version: 1 },
       });
 
       const result = await client.getTemplate('id');
@@ -284,10 +285,8 @@ describe('templateClient', () => {
     });
 
     test('should return templates', async () => {
-      const template: Template = {
+      const template: TemplateDTO = {
         id: 'id',
-        owner: 'owner',
-        version: 1,
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
@@ -297,7 +296,7 @@ describe('templateClient', () => {
       };
 
       listMock.mockResolvedValueOnce({
-        data: [template],
+        data: [{ ...template, owner: 'owner', version: 1 }],
       });
 
       const result = await client.listTemplates();

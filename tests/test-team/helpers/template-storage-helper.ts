@@ -27,14 +27,18 @@ export class TemplateStorageHelper {
     await Promise.all(promises);
   }
 
-  async deleteTemplateData() {
-    const promises = this.templateData.map((template) =>
+  async deleteTemplateData(extraTemplateIds: string[] = []) {
+    const templateIds = [
+      ...extraTemplateIds,
+      ...this.templateData.map(({ id }) => id),
+    ];
+    const promises = templateIds.map((id) =>
       this.ddbDocClient.send(
         new DeleteCommand({
           TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
           Key: {
-            id: template.id,
             owner: process.env.USER_ID,
+            id,
           },
         })
       )

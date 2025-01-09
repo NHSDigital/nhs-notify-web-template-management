@@ -8,7 +8,6 @@ exports[`CreateSMSTemplatePage should render CreateSMSTemplatePage 1`] = `
       "name": "",
       "templateStatus": "NOT_YET_SUBMITTED",
       "templateType": "SMS",
-      "version": 1,
     }
   }
 />

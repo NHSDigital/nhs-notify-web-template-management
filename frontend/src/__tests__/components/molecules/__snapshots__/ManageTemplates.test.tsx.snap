@@ -92,7 +92,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Type 
               </span>
-              NHS App
+              NHS App message
             </td>
             <td
               class="nhsuk-table__cell"
@@ -135,7 +135,8 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/copy-template/1"
+                  id="copy-template-link-0"
                 >
                   Copy
                 </a>
@@ -144,7 +145,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/delete-template/1"
                 >
                   Delete
                 </a>
@@ -178,7 +179,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Type 
               </span>
-              NHS App
+              NHS App message
             </td>
             <td
               class="nhsuk-table__cell"
@@ -221,7 +222,8 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/copy-template/2"
+                  id="copy-template-link-1"
                 >
                   Copy
                 </a>
@@ -327,7 +329,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Type 
               </span>
-              NHS App
+              NHS App message
             </td>
             <td
               class="nhsuk-table__cell"
@@ -370,7 +372,8 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/copy-template/1"
+                  id="copy-template-link-0"
                 >
                   Copy
                 </a>
@@ -404,7 +407,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Type 
               </span>
-              NHS App
+              NHS App message
             </td>
             <td
               class="nhsuk-table__cell"
@@ -447,7 +450,8 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 class="nhsuk-u-margin-bottom-2"
               >
                 <a
-                  href="#"
+                  href="/copy-template/2"
+                  id="copy-template-link-1"
                 >
                   Copy
                 </a>

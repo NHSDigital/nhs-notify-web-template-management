@@ -24,7 +24,6 @@ describe('PreviewSMSTemplatePage', () => {
   it('should load page', async () => {
     const state: SMSTemplate = {
       id: 'template-id',
-      version: 1,
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
@@ -84,7 +83,6 @@ describe('PreviewSMSTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        version: 1,
         ...value,
       });
 

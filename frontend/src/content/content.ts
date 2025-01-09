@@ -289,18 +289,23 @@ export const submitTemplateContent = {
   buttonText: 'Submit template',
 };
 
+export const copyTemplatePageContent = {
+  pageHeading: 'Copy',
+  radiosLabel: 'Choose a template type',
+  errorHeading: 'There is a problem',
+  buttonText: 'Continue',
+  hint: 'Select one option',
+  backLinkText: 'Back to all templates',
+};
+
 export const chooseTemplatePageContent = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
-  options: [
-    { id: TemplateType.NHS_APP, text: 'NHS App message' },
-    { id: TemplateType.EMAIL, text: 'Email' },
-    { id: TemplateType.SMS, text: 'Text message (SMS)' },
-  ],
   buttonText: 'Continue',
   hint: 'Select one option',
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
+  backLinkText: 'Back to all templates',
 };
 
 export const nameYourTemplateContent = {
@@ -392,6 +397,7 @@ export const createNhsAppTemplatePageContent = {
   templateNameHintText: 'This will not be visible to recipients.',
   characterCountText: ' of 5000 characters',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const createEmailTemplatePageContent = {
@@ -402,13 +408,13 @@ export const createEmailTemplatePageContent = {
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const templateSubmittedPageContent = {
   pageHeading: 'Template submitted',
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
-  newTemplateText: 'Create another template',
   doNextHeading: 'What you need to do next',
   doNextText:
     "You'll receive a confirmation email, which contains the template name and ID.",
@@ -418,6 +424,7 @@ export const templateSubmittedPageContent = {
   liveHeading: "If you've already onboarded",
   liveText: "Once you've submitted all your templates",
   liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: 'Back to all templates',
 };
 
 export const createSmsTemplatePageContent = {
@@ -432,12 +439,20 @@ export const createSmsTemplatePageContent = {
   smsPricingText:
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
 };
 
 export const viewSubmittedTemplatePageContent = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
+};
+
+export const deleteTemplatePageContent = {
+  pageHeading: 'Are you sure you want to delete the template',
+  hintText: "The template will be removed and you won't be able to recover it.",
+  noButtonText: 'No, go back',
+  yesButtonText: 'Yes, delete template',
 };
 
 const content = {
