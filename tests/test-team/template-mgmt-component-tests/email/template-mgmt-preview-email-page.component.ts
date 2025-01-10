@@ -83,14 +83,7 @@ test.describe('Preview Email message template Page', () => {
       await assertLogoutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
-      // Note: assertBackToAllTemplatesTopLink changes the page.
-      // When assertBackToAllTemplatesBottomLink is called the Playwright Page is in
-      // a different state than expected and causes Playwright to error with "Frames detached?"
-      await assertBackToAllTemplatesBottomLink({
-        page: new TemplateMgmtPreviewEmailPage(page),
-        id: templates.valid.id,
-        baseURL,
-      });
+      await assertBackToAllTemplatesBottomLink(props);
     });
 
     test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({
