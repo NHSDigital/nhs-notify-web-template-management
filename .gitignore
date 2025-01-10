@@ -82,3 +82,4 @@ sandbox_cognito_auth_token.json
 
 frontend/public/testing
 .vscode/launch.json
+auth.json
