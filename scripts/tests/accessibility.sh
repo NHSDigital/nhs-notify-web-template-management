@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+npm run copy-files-for-testing
+
 npm run create-test-user
 
 npm run build --prefix frontend
