@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
 const manageTemplatesContent = content.pages.manageTemplates;
 
 export default async function ManageTemplatesPage() {
-  const availableTemplateList: Template[] | [] = await getTemplates();
+  const availableTemplateList = await getTemplates();
 
   return (
     <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>

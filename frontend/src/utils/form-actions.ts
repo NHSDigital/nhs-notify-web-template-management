@@ -11,7 +11,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
   template: Draft<Template>
-): Promise<Template | TemplateDTO> {
+): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -31,7 +31,7 @@ export async function createTemplate(
 
 export async function saveTemplate(
   template: Template
-): Promise<Template | TemplateDTO> {
+): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -53,7 +53,7 @@ export async function saveTemplate(
 
 export async function getTemplate(
   templateId: string
-): Promise<Template | TemplateDTO | undefined> {
+): Promise<TemplateDTO | undefined> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -87,7 +87,7 @@ export async function sendEmail(templateId: string) {
   }
 }
 
-export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
+export async function getTemplates(): Promise<TemplateDTO[]> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -102,7 +102,7 @@ export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
   }
 
   const sortedData = data
-    .map((template) => isTemplateValid(template))
+    .map((template) => isTemplateValid(template)) // TODO: Fix this
     .filter((template): template is Template => template !== undefined)
     .sort((a, b) => {
       const aCreatedAt = a.createdAt ?? '';

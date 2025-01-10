@@ -7,14 +7,14 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { zodValidate } from '@utils/validate-template';
+import { validateSubmittedSMSTemplate, zodValidate } from '@utils/validate-template';
 
 const SmsTemplateSubmittedPage = async ({
   params: { templateId },
 }: TemplateSubmittedPageProps) => {
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = zodValidate($SubmittedSMSTemplate, template);
+  const validatedTemplate = validateSubmittedSMSTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
