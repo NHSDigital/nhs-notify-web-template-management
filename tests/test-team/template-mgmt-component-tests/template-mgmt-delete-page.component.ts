@@ -3,7 +3,7 @@ import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
-  assertLoginLink,
+  assertLogoutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -66,7 +66,7 @@ test.describe('Delete Template Page', () => {
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
     await assertFooterLinks(props);
-    await assertLoginLink(props);
+    await assertLogoutLink(props);
     await assertGoBackLinkNotPresent(props);
   });
 
