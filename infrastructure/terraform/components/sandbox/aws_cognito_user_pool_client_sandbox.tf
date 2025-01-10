@@ -8,13 +8,13 @@ resource "aws_cognito_user_pool_client" "sandbox" {
     "ALLOW_USER_SRP_AUTH",
   ]
 
-  access_token_validity  = 1 # 1 hour
-  id_token_validity      = 1 # 1 hour
-  refresh_token_validity = 1 # 1 day
+  access_token_validity  = 15 # 1 minutes
+  id_token_validity      = 15 # 1 minutes
+  refresh_token_validity = 1 # 1 hour
 
   token_validity_units {
-    access_token  = "hours"
-    id_token      = "hours"
-    refresh_token = "days"
+    access_token  = "minutes"
+    id_token      = "minutes"
+    refresh_token = "hours"
   }
 }

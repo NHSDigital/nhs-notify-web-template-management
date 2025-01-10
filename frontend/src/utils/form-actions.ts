@@ -22,7 +22,7 @@ export async function createTemplate(
     await BackendClient(token).templates.createTemplate(template);
 
   if (error) {
-    logger.error('Failed to create template', error);
+    logger.error('Failed to create template', { error });
     throw new Error('Failed to create new template');
   }
 
@@ -44,7 +44,7 @@ export async function saveTemplate(
   );
 
   if (error) {
-    logger.error('Failed to save template', error);
+    logger.error('Failed to save template', { error });
     throw new Error('Failed to save template data');
   }
 
@@ -64,7 +64,7 @@ export async function getTemplate(
     await BackendClient(token).templates.getTemplate(templateId);
 
   if (error) {
-    logger.error('Failed to get template', error);
+    logger.error('Failed to get template', { error });
   }
 
   return data;
@@ -97,7 +97,7 @@ export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
   const { data, error } = await BackendClient(token).templates.listTemplates();
 
   if (error) {
-    logger.error('Failed to get templates', error);
+    logger.error('Failed to get templates', { error });
     return [];
   }
 

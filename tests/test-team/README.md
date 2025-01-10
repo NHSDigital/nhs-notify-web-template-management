@@ -33,12 +33,10 @@ Set `stdout` to `pipe` in [local.config.ts](config/local.config.ts).
 
 ### Need more debugging information?
 
-If you have CI test failures but the tests are working locally. Then set `retries` to 2 or 3 in [playwright.config.ts](config/playwright.config.ts).
-
-Commit the change and run the tests in CI. Download the artifacts, unzip and run the following:
+Run the following;
 
 ```bash
 npx playwright show-report <name of the downloaded folder>
 ```
 
-You'll then be able to see the trace information on the retried tests.
+You'll then be able to see the trace information on the failed tests.

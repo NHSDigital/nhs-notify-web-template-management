@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/template-storage-helper';
 import {
   assertFooterLinks,
-  assertGoBackLinkNotPresent,
+  assertGoBackLink,
   assertLogoutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -99,24 +99,10 @@ test.describe('Template Submitted Page', () => {
         await assertNotifyBannerLink(props);
         await assertFooterLinks(props);
         await assertLogoutLink(props);
-        await assertGoBackLinkNotPresent(props);
-      });
-
-      test(`when user clicks ${channelName} "Create another template", then user is redirected to "choose-a-template-type"`, async ({
-        page,
-      }) => {
-        const templateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
-          page,
-          channelIdentifier
-        );
-
-        await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
-
-        await templateSubmittedPage.clickCreateAnotherTemplateLink();
-
-        await expect(page).toHaveURL(
-          new RegExp('/templates/choose-a-template-type')
-        );
+        await assertGoBackLink({
+          ...props,
+          expectedUrl: 'templates/manage-templates',
+        });
       });
     });
 
