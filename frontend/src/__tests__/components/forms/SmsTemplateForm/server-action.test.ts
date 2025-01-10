@@ -8,15 +8,7 @@ import {
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      TemplateStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
+jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 

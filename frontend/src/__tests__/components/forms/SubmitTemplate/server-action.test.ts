@@ -13,9 +13,7 @@ import {
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => {},
-}));
+jest.mock('@utils/amplify-utils');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);

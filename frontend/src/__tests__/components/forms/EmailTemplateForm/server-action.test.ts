@@ -9,15 +9,7 @@ import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      TemplateStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
+jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 

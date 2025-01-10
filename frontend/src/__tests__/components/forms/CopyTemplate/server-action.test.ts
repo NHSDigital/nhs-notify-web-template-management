@@ -10,15 +10,7 @@ import { createTemplate } from '@utils/form-actions';
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      TemplateStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
+jest.mock('@utils/amplify-utils');
 
 beforeAll(() => {
   jest.useFakeTimers();
