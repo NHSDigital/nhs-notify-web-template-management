@@ -36,7 +36,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       ...templateDTO,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
@@ -46,7 +46,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ViewNHSAppTemplate initialState={submittedNHSAppTemplate} />);
+    expect(page).toEqual(
+      <ViewNHSAppTemplate initialState={submittedNHSAppTemplate} />
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

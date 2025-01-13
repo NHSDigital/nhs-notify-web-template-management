@@ -7,7 +7,6 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
-import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -76,7 +75,7 @@ describe('CreateNHSAppTemplate server actions', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } );
+    });
 
     await processFormActions(
       initialState,

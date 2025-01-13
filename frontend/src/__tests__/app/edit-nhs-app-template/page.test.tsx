@@ -37,7 +37,7 @@ describe('EditNhsAppTemplatePage', () => {
       ...templateDTO,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 

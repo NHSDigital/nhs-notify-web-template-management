@@ -39,7 +39,7 @@ describe('PreviewEmailTemplatePage', () => {
       subject: 'template-subject-line',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 

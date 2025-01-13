@@ -8,7 +8,6 @@ import {
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
-import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');

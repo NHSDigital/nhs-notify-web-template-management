@@ -62,7 +62,7 @@ describe('EditSmsTemplatePage', () => {
       ...templateDTO,
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    }
+    };
 
     const page = await EditSmsTemplatePage({
       params: { templateId: 'template-id' },

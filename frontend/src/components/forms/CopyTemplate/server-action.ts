@@ -4,7 +4,6 @@ import { redirect, RedirectType } from 'next/navigation';
 import {
   FormState,
   Template,
-  TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';

@@ -38,7 +38,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       subject: 'template-subject-line',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
@@ -48,7 +48,9 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ViewEmailTemplate initialState={submittedEmailTemplate} />);
+    expect(page).toEqual(
+      <ViewEmailTemplate initialState={submittedEmailTemplate} />
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {

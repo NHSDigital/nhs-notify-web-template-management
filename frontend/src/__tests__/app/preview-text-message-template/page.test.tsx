@@ -37,7 +37,7 @@ describe('PreviewSMSTemplatePage', () => {
       ...templateDTO,
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 

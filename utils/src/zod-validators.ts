@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { TemplateType, TemplateStatus } from './enum';
 import { $TemplateDTOSchema, TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateType, TemplateStatus } from './enum';
 
 export const $Template = z.object({
   id: z.string(),
@@ -50,6 +50,5 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
   $SubmittedSMSTemplate,
 ]);
 
-export const isTemplateValid = (
-  input: unknown
-): TemplateDTO | undefined => $TemplateDTOSchema.safeParse(input).data;
+export const isTemplateValid = (input: unknown): TemplateDTO | undefined =>
+  $TemplateDTOSchema.safeParse(input).data;

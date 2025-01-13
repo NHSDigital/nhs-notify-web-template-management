@@ -4,7 +4,6 @@
 import CopyTemplatePage from '@app/copy-template/[templateId]/page';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import {
-  EmailTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';

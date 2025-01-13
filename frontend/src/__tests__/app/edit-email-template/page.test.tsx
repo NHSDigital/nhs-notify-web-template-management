@@ -64,7 +64,7 @@ describe('EditEmailTemplatePage', () => {
       subject: 'subject',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    }
+    };
 
     const page = await EditEmailTemplatePage({
       params: { templateId: 'template-id' },

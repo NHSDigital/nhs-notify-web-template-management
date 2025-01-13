@@ -36,7 +36,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       ...templateDTO,
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.SUBMITTED,
-    }
+    };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
@@ -46,7 +46,9 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ViewSMSTemplate initialState={submittedSMSTemplate} />);
+    expect(page).toEqual(
+      <ViewSMSTemplate initialState={submittedSMSTemplate} />
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
