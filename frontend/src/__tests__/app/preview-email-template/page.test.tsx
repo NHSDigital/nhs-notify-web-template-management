@@ -31,7 +31,11 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await PreviewEmailTemplatePage({
       params: {
@@ -96,6 +100,8 @@ describe('PreviewEmailTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await PreviewEmailTemplatePage({

@@ -30,7 +30,11 @@ describe('PreviewSMSTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await PreviewSMSTemplatePage({
       params: {
@@ -84,6 +88,8 @@ describe('PreviewSMSTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await PreviewSMSTemplatePage({

@@ -30,7 +30,11 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await ViewSubmittedEmailTemplatePage({
       params: {
@@ -107,6 +111,8 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await ViewSubmittedEmailTemplatePage({

@@ -76,6 +76,8 @@ describe('CreateEmailTemplate server actions', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await processFormActions(
@@ -109,6 +111,8 @@ describe('CreateEmailTemplate server actions', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await processFormActions(

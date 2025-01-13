@@ -324,10 +324,10 @@ describe('form-actions', () => {
       { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '09', createdAt: undefined as unknown as string },
-      { ...baseTemplate, id: '10', createdAt: undefined as unknown as string },
+      { ...baseTemplate, id: '09', createdAt: '' },
+      { ...baseTemplate, id: '10', createdAt: '' },
       { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '07', createdAt: undefined as unknown as string },
+      { ...baseTemplate, id: '07', createdAt: '' },
       { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
     ];

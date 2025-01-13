@@ -6,10 +6,10 @@ import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import {
-  Template,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -26,6 +26,8 @@ const mockNhsAppTemplate = {
   name: 'name',
   message: 'body',
   id: '1',
+  createdAt: 'today',
+  updatedAt: 'today',
 };
 
 describe('submitTemplate', () => {
@@ -54,7 +56,7 @@ describe('submitTemplate', () => {
   it('should handle error when validating template', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-    } as unknown as Template);
+    } as unknown as TemplateDTO);
 
     const formData = getMockFormData({ templateId: '1' });
 
@@ -103,6 +105,8 @@ describe('submitTemplate', () => {
       name: 'name',
       subject: 'subjectLine',
       message: 'body',
+      createdAt: 'today',
+      updatedAt: 'today',
     };
 
     getTemplateMock.mockResolvedValueOnce(mockEmailTemplate);

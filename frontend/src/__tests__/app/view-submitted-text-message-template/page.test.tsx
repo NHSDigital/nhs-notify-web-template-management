@@ -29,7 +29,11 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await ViewSubmittedSMSTemplatePage({
       params: {
@@ -93,6 +97,8 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await ViewSubmittedSMSTemplatePage({

@@ -16,7 +16,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   DatabaseTemplate,
   templateRepository,
-} from '@backend-api/templates/domain/template';
+} from '@backend-api/templates/infra';
 
 jest.mock('node:crypto');
 

@@ -44,6 +44,8 @@ describe('EditEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await EditEmailTemplatePage({ params: { templateId: 'template-id' } });
@@ -54,7 +56,11 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
-    getTemplateMock.mockResolvedValueOnce(initialState);
+    getTemplateMock.mockResolvedValueOnce({
+      ...initialState,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await EditEmailTemplatePage({
       params: { templateId: 'template-id' },

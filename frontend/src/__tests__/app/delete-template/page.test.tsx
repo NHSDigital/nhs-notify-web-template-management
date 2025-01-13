@@ -31,7 +31,11 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await DeleteTemplatePage({
       params: {
@@ -59,6 +63,8 @@ describe('PreviewEmailTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
       name: 'template-name',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await DeleteTemplatePage({
@@ -77,6 +83,8 @@ describe('PreviewEmailTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
       name: 'template-name',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await DeleteTemplatePage({

@@ -31,7 +31,11 @@ describe('CopyTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(template);
+    getTemplateMock.mockResolvedValueOnce({
+      ...template,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await CopyTemplatePage({
       params: {

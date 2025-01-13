@@ -1,12 +1,10 @@
 'use server';
 
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import {
-  TemplateSubmittedPageProps,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateSubmittedPageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateSubmittedEmailTemplate, zodValidate } from '@utils/validate-template';
+import { validateSubmittedEmailTemplate } from '@utils/validate-template';
 
 const EmailTemplateSubmittedPage = async ({
   params: { templateId },

@@ -30,7 +30,11 @@ describe('EditNhsAppTemplatePage', () => {
       message: 'message',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    getTemplateMock.mockResolvedValueOnce({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await EditNhsAppTemplatePage({
       params: { templateId: 'template-id' },
@@ -65,6 +69,8 @@ describe('EditNhsAppTemplatePage', () => {
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         name: 'name',
         message: 'message',
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await EditNhsAppTemplatePage({

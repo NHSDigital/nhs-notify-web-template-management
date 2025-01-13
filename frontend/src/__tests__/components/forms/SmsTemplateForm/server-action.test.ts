@@ -71,6 +71,8 @@ describe('CreateSmsTemplate server actions', () => {
       ...initialState,
       name: 'template-name',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await processFormActions(
@@ -101,6 +103,8 @@ describe('CreateSmsTemplate server actions', () => {
       id: 'new-template-id',
       name: 'template-name',
       message: 'template-message',
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await processFormActions(

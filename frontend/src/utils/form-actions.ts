@@ -29,9 +29,7 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(
-  template: Template
-): Promise<TemplateDTO> {
+export async function saveTemplate(template: Template): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -102,11 +100,11 @@ export async function getTemplates(): Promise<TemplateDTO[]> {
   }
 
   const sortedData = data
-    .map((template) => isTemplateValid(template)) // TODO: Fix this
-    .filter((template): template is Template => template !== undefined)
+    .map((template) => isTemplateValid(template))
+    .filter((template): template is TemplateDTO => template !== undefined)
     .sort((a, b) => {
-      const aCreatedAt = a.createdAt ?? '';
-      const bCreatedAt = b.createdAt ?? '';
+      const aCreatedAt = a.createdAt;
+      const bCreatedAt = b.createdAt;
 
       if (aCreatedAt === bCreatedAt) {
         return a.id.localeCompare(b.id);

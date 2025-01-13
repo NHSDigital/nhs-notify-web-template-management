@@ -29,7 +29,11 @@ describe('NhsAppTemplateSubmittedPage', () => {
       message: 'example',
     };
 
-    getTemplateMock.mockResolvedValueOnce(template);
+    getTemplateMock.mockResolvedValueOnce({
+      ...template,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await NhsAppTemplateSubmittedPage({
       params: {

@@ -43,6 +43,8 @@ describe('EditSmsTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce({
       ...initialState,
       templateType: TemplateType.NHS_APP,
+      createdAt: 'today',
+      updatedAt: 'today',
     });
 
     await EditSmsTemplatePage({ params: { templateId: 'template-id' } });
@@ -53,7 +55,11 @@ describe('EditSmsTemplatePage', () => {
   });
 
   it('should render CreateSmsTemplate component when templateId is found', async () => {
-    getTemplateMock.mockResolvedValueOnce(initialState);
+    getTemplateMock.mockResolvedValueOnce({
+      ...initialState,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await EditSmsTemplatePage({
       params: { templateId: 'template-id' },
