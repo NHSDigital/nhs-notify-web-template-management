@@ -42,7 +42,7 @@ permissions:
 jobs:
   environment-set-up:
     name: "Environment set up"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: dev
     timeout-minutes: 15
     steps:
@@ -70,7 +70,7 @@ jobs:
 
   sandbox-set-up:
     name: "Sandbox set up"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: dev
     timeout-minutes: 15
     steps:
@@ -95,7 +95,7 @@ jobs:
 
   test-security:
     name: "Security test"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [environment-set-up, sandbox-set-up]
     timeout-minutes: 10
     steps:
@@ -109,7 +109,7 @@ jobs:
           echo "Nothing to save"
   test-accessibility:
     name: "Accessibility test"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [environment-set-up, sandbox-set-up]
     environment: dev
     timeout-minutes: 10
@@ -141,7 +141,7 @@ jobs:
           path: ".reports/accessibility"
   test-ui-component:
     name: "UI Component test"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [environment-set-up, sandbox-set-up]
     environment: dev
     timeout-minutes: 10
@@ -178,7 +178,7 @@ jobs:
   environment-tear-down:
     name: "Environment tear down"
     if: success() || failure()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [test-accessibility, test-ui-component]
     environment: dev
     steps:
@@ -206,7 +206,7 @@ jobs:
   sandbox-tear-down:
     name: "Sandbox tear down"
     if: success() || failure()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [test-accessibility, test-ui-component]
     environment: dev
     steps:

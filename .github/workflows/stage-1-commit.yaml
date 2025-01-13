@@ -35,7 +35,7 @@ on:
 jobs:
   scan-secrets:
     name: "Scan secrets"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
       - name: "Checkout code"
@@ -46,7 +46,7 @@ jobs:
         uses: ./.github/actions/scan-secrets
   check-file-format:
     name: "Check file format"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
       - name: "Checkout code"
@@ -57,7 +57,7 @@ jobs:
         uses: ./.github/actions/check-file-format
   check-markdown-format:
     name: "Check Markdown format"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
       - name: "Checkout code"
@@ -68,7 +68,7 @@ jobs:
         uses: ./.github/actions/check-markdown-format
   check-english-usage:
     name: "Check English usage"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 2
     steps:
       - name: "Checkout code"
@@ -79,7 +79,7 @@ jobs:
         uses: ./.github/actions/check-english-usage
   detect-terraform-changes:
     name: "Detect Terraform Changes"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       terraform_changed: ${{ steps.check.outputs.terraform_changed }}
     steps:
@@ -102,7 +102,7 @@ jobs:
           fi
   lint-terraform:
     name: "Lint Terraform"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 2
     needs: detect-terraform-changes
     if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
@@ -113,7 +113,7 @@ jobs:
         uses: ./.github/actions/lint-terraform
   tfsec:
     name: "TFSec Scan"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 5
     needs: detect-terraform-changes
     if: needs.detect-terraform-changes.outputs.terraform_changed == 'true'
@@ -128,7 +128,7 @@ jobs:
         uses: ./.github/actions/tfsec
   count-lines-of-code:
     name: "Count lines of code"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       id-token: write
       contents: read
@@ -147,7 +147,7 @@ jobs:
           idp_aws_report_upload_bucket_endpoint: "${{ secrets.IDP_AWS_REPORT_UPLOAD_BUCKET_ENDPOINT }}"
   scan-dependencies:
     name: "Scan dependencies"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       id-token: write
       contents: read
