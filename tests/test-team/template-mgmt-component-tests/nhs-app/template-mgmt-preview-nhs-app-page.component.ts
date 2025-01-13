@@ -82,7 +82,10 @@ test.describe('Preview NHS App template Page', () => {
       await assertLogoutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
+      await assertBackToAllTemplatesBottomLink({
+        ...props,
+        page: new TemplateMgmtPreviewNhsAppPage(page),
+      });
     });
 
     test('when user submits form with "Edit" data, then the "Create NHS App message template" page is displayed', async ({

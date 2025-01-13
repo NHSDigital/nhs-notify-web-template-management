@@ -83,7 +83,10 @@ test.describe('Preview Email message template Page', () => {
       await assertLogoutLink(props);
       await assertFooterLinks(props);
       await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
+      await assertBackToAllTemplatesBottomLink({
+        ...props,
+        page: new TemplateMgmtPreviewEmailPage(page),
+      });
     });
 
     test('when user submits form with "Edit" data, then the "Create email message template" page is displayed', async ({
