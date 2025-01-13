@@ -3,9 +3,11 @@ import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import { getTemplates } from '@utils/form-actions';
 
-// Note: this page is forced to be server-side rendered
+// Note: force this page to be dynamically rendered
 // This is because Next defaults this page as a static rendered page
-// which causes a build failure due to getTemplates attempting to get cookies
+// which causes a build failure due to getTemplates attempting to get a server-side session via cookies and failing
+// The other pages which do similar thing expect a templateId parameter
+// Which informs next it needs to be dynamically rendered
 export const dynamic = 'force-dynamic';
 
 const manageTemplatesContent = content.pages.manageTemplates;
