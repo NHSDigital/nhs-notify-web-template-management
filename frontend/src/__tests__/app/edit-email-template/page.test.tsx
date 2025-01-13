@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -18,13 +19,15 @@ jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: EmailTemplate = {
+const templateDTO: TemplateDTO = {
   id: 'template-id',
   templateType: TemplateType.EMAIL,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   subject: 'subject',
   message: 'message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('EditEmailTemplatePage', () => {
@@ -42,10 +45,8 @@ describe('EditEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when template type is not EMAIL', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...initialState,
+      ...templateDTO,
       templateType: TemplateType.NHS_APP,
-      createdAt: 'today',
-      updatedAt: 'today',
     });
 
     await EditEmailTemplatePage({ params: { templateId: 'template-id' } });
@@ -56,11 +57,14 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...initialState,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
+
+    const emailTemplate: EmailTemplate = {
+      ...templateDTO,
+      subject: 'subject',
+      templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    }
 
     const page = await EditEmailTemplatePage({
       params: { templateId: 'template-id' },
@@ -68,6 +72,6 @@ describe('EditEmailTemplatePage', () => {
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toEqual(<EmailTemplateForm initialState={initialState} />);
+    expect(page).toEqual(<EmailTemplateForm initialState={emailTemplate} />);
   });
 });

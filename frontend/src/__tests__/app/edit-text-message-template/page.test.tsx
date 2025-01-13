@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -18,12 +19,14 @@ jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: SMSTemplate = {
+const templateDTO: TemplateDTO = {
   id: 'template-id',
   templateType: TemplateType.SMS,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-  name: '',
-  message: '',
+  name: 'name',
+  message: 'message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('EditSmsTemplatePage', () => {
@@ -41,10 +44,8 @@ describe('EditSmsTemplatePage', () => {
 
   it('should redirect to invalid-template when template type is not SMS', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...initialState,
+      ...templateDTO,
       templateType: TemplateType.NHS_APP,
-      createdAt: 'today',
-      updatedAt: 'today',
     });
 
     await EditSmsTemplatePage({ params: { templateId: 'template-id' } });
@@ -55,11 +56,13 @@ describe('EditSmsTemplatePage', () => {
   });
 
   it('should render CreateSmsTemplate component when templateId is found', async () => {
-    getTemplateMock.mockResolvedValueOnce({
-      ...initialState,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
+
+    const smsTemplate: SMSTemplate = {
+      ...templateDTO,
+      templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    }
 
     const page = await EditSmsTemplatePage({
       params: { templateId: 'template-id' },
@@ -67,6 +70,6 @@ describe('EditSmsTemplatePage', () => {
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toEqual(<SmsTemplateForm initialState={initialState} />);
+    expect(page).toEqual(<SmsTemplateForm initialState={smsTemplate} />);
   });
 });

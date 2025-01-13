@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -22,20 +23,18 @@ describe('CopyTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const template: EmailTemplate = {
+    const template: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce({
-      ...template,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const page = await CopyTemplatePage({
       params: {

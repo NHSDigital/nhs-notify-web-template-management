@@ -3,14 +3,13 @@
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
   Template,
-  Draft,
   isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
-import { BackendClient, TemplateDTO } from 'nhs-notify-backend-client';
+import { BackendClient, CreateTemplate, TemplateDTO } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
-  template: Draft<Template>
+  template: CreateTemplate
 ): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 

@@ -19,8 +19,8 @@ const mockTemplates: TemplateDTO[] = [
     name: 'Template 1',
     message: 'Message',
     subject: 'Subject Line',
-    createdAt: 'today',
-    updatedAt: 'today',
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
   },
 ];
 

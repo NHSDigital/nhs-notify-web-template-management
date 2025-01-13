@@ -10,6 +10,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 jest.mock('@utils/form-actions');
@@ -22,25 +23,29 @@ describe('EditNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
-    const state: NHSAppTemplate = {
+    const templateDTO: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce({
-      ...state,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    const nhsAppTemplate: NHSAppTemplate = {
+      ...templateDTO,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    }
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await EditNhsAppTemplatePage({
       params: { templateId: 'template-id' },
     });
 
-    expect(page).toEqual(<NhsAppTemplateForm initialState={state} />);
+    expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
   });
 
   test('should render invalid template, when template is not found', async () => {

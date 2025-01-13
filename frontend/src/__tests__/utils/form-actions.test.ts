@@ -40,8 +40,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     mockedBackendClient.templates.createTemplate.mockResolvedValueOnce({
@@ -111,8 +111,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     mockedBackendClient.templates.updateTemplate.mockResolvedValueOnce({
@@ -187,8 +187,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     mockedBackendClient.templates.getTemplate.mockResolvedValueOnce({
@@ -238,8 +238,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({

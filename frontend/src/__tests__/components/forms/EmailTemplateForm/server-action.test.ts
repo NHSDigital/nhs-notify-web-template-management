@@ -8,6 +8,7 @@ import {
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -24,6 +25,8 @@ const initialState: EmailTemplate = {
   name: 'name',
   subject: 'subject',
   message: 'message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('CreateEmailTemplate server actions', () => {
@@ -76,8 +79,8 @@ describe('CreateEmailTemplate server actions', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     });
 
     await processFormActions(
@@ -111,8 +114,8 @@ describe('CreateEmailTemplate server actions', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     });
 
     await processFormActions(

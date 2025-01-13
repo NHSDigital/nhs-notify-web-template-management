@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -21,19 +22,23 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const state: SubmittedSMSTemplate = {
+    const templateDTO: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce({
-      ...state,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    const submittedSMSTemplate: SubmittedSMSTemplate = {
+      ...templateDTO,
+      templateType: TemplateType.SMS,
+      templateStatus: TemplateStatus.SUBMITTED,
+    }
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await ViewSubmittedSMSTemplatePage({
       params: {
@@ -41,7 +46,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ViewSMSTemplate initialState={state} />);
+    expect(page).toEqual(<ViewSMSTemplate initialState={submittedSMSTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
@@ -97,8 +102,8 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
       });
 
       await ViewSubmittedSMSTemplatePage({

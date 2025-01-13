@@ -26,8 +26,8 @@ const mockNhsAppTemplate = {
   name: 'name',
   message: 'body',
   id: '1',
-  createdAt: 'today',
-  updatedAt: 'today',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('submitTemplate', () => {
@@ -105,8 +105,8 @@ describe('submitTemplate', () => {
       name: 'name',
       subject: 'subjectLine',
       message: 'body',
-      createdAt: 'today',
-      updatedAt: 'today',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     getTemplateMock.mockResolvedValueOnce(mockEmailTemplate);

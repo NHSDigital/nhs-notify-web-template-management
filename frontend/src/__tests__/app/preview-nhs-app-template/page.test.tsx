@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -22,19 +23,23 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const state: NHSAppTemplate = {
+    const templateDTO: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce({
-      ...state,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
+    const nhsAppTemplate: NHSAppTemplate = {
+      ...templateDTO,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    }
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewNhsAppTemplatePage({
       params: {
@@ -42,7 +47,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewNHSAppTemplate initialState={state} />);
+    expect(page).toEqual(<ReviewNHSAppTemplate initialState={nhsAppTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
@@ -88,8 +93,8 @@ describe('PreviewNhsAppTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
       });
 
       await PreviewNhsAppTemplatePage({
