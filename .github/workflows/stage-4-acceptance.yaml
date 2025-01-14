@@ -74,6 +74,8 @@ jobs:
     environment: dev
     timeout-minutes: 15
     steps:
+      - uses: hashicorp/setup-terraform@v3
+      - uses: rhythmictech/actions-setup-tfenv@v0.0.2
       - name: "Checkout code"
         uses: actions/checkout@v4
       - name: Configure AWS credentials
