@@ -252,10 +252,7 @@ describe('templateRepository', () => {
           templateStatus: { S: TemplateStatus.SUBMITTED },
         },
         code: 400,
-        message: 'Can not update template',
-        details: {
-          templateStatus: 'Expected NOT_YET_SUBMITTED but got SUBMITTED',
-        },
+        message: 'Template has already been submitted',
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
