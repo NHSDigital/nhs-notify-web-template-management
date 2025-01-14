@@ -43,7 +43,7 @@ permissions:
 jobs:
   check-generated-dependencies:
     name: "Check generated dependencies"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
@@ -57,7 +57,7 @@ jobs:
           git diff --exit-code
   test-unit:
     name: "Unit tests"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
@@ -86,7 +86,7 @@ jobs:
         if: always()
   test-lint:
     name: "Linting"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
@@ -102,7 +102,7 @@ jobs:
           make test-lint
   test-typecheck:
     name: "Typecheck"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
@@ -119,7 +119,7 @@ jobs:
   test-coverage:
     name: "Test coverage"
     needs: [test-unit]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: "Checkout code"
@@ -133,7 +133,7 @@ jobs:
   perform-static-analysis:
     name: "Perform static analysis"
     needs: [test-unit]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
