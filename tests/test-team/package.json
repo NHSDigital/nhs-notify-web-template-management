@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-appsync": "^3.650.0",
-    "@aws-sdk/client-dynamodb": "^3.726.0",
+    "@aws-sdk/client-dynamodb": "^3.654.0",
     "@aws-sdk/lib-dynamodb": "^3.654.0",
     "@playwright/test": "^1.45.1",
     "aws-amplify": "^6.6.0"

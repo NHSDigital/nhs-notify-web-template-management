@@ -3,9 +3,9 @@ import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Mutex } from 'async-mutex';
-import type { Credential } from './cognito-auth-helper';
+import type { TestUserCredential } from './cognito-auth-helper';
 
-type CredentialNamespace = Record<string, Credential>;
+type CredentialNamespace = Record<string, TestUserCredential>;
 
 export class CredentialsFile {
   public readonly path: string;
@@ -24,7 +24,11 @@ export class CredentialsFile {
     }
   }
 
-  async set(namespace: string, key: string, value: Partial<Credential>) {
+  async set(
+    namespace: string,
+    key: string,
+    value: Partial<TestUserCredential>
+  ) {
     await this.mutex.runExclusive(() => {
       const data = this.read();
       const nsData = data[namespace] || {};
@@ -37,11 +41,14 @@ export class CredentialsFile {
     });
   }
 
-  async get(namespace: string, key: string): Promise<Credential | null> {
+  async get(
+    namespace: string,
+    key: string
+  ): Promise<TestUserCredential | null> {
     return this.mutex.runExclusive(() => this.read()[namespace]?.[key] || null);
   }
 
-  async values(namespace: string): Promise<Credential[]> {
+  async values(namespace: string): Promise<TestUserCredential[]> {
     return this.mutex.runExclusive(() =>
       Object.values(this.read()[namespace] || {})
     );

@@ -11,7 +11,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { CredentialsFile } from './credentials-file';
 
-export type Credential = {
+export type TestUserCredential = {
   user: { email: string };
   password: string;
   accessToken: string;

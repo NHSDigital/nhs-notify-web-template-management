@@ -59,7 +59,7 @@ test.describe('GET /v1/templates', () => {
 
     const created1 = await response1.json();
 
-    // create another template for user 2
+    // create another template for user 1
     const templateInput2 = {
       templateType: 'SMS',
       name: faker.word.noun(),
