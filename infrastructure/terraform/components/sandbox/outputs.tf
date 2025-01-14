@@ -9,3 +9,7 @@ output "cognito_user_pool_id" {
 output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.sandbox.id
 }
+
+output "templates_table_name" {
+  value = module.backend_api.templates_table_name
+}

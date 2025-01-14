@@ -220,7 +220,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "200 response",
             "headers": {
               "Content-Type": {
@@ -332,7 +332,7 @@
           "type": "request",
           "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
           "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "identitySource": "method.request.header.authorization,context.resourceId,context.httpMethod",
+          "identitySource": "method.request.header.authorization",
           "authorizerResultTtlInSeconds": 300
         }
       }

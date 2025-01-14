@@ -33,4 +33,5 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     stderr: 'pipe',
   },
+  globalSetup: './global.setup.ts',
 });

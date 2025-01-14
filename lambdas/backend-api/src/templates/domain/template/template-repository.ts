@@ -58,14 +58,15 @@ const create = async (
   template: CreateTemplate,
   owner: string
 ): Promise<ApplicationResult<DatabaseTemplate>> => {
+  const date = new Date().toISOString();
   const entity: DatabaseTemplate = {
     ...template,
     id: uuidv4(),
     owner,
     version: 1,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: date,
+    updatedAt: date,
   };
 
   try {
@@ -166,11 +167,8 @@ const update = async (
       if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          'Can not update template',
-          error,
-          {
-            templateStatus: `Expected ${TemplateStatus.NOT_YET_SUBMITTED} but got ${error.Item.templateStatus.S}`,
-          }
+          'Template has already been submitted',
+          error
         );
       }
 

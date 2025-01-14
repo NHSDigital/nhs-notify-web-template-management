@@ -11,8 +11,13 @@ import { jwtDecode } from 'jwt-decode';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { handler } from '../index';
 
-const methodArn =
-  'arn:aws:execute-api:eu-west-2:000000000000:api-id/stage/GET/v1/example-endpoint';
+const requestContext = {
+  accountId: '000000000000',
+  apiId: 'api-id',
+  stage: 'stage',
+};
+
+const methodArn = 'arn:aws:execute-api:eu-west-2:000000000000:api-id/stage/*';
 
 jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
   class MockCognitoIdentityProvider {
@@ -136,7 +141,7 @@ test('returns Deny policy on lambda misconfiguration', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: '123' },
       type: 'REQUEST',
     }),
@@ -151,7 +156,7 @@ test('returns Deny policy on lambda misconfiguration', async () => {
 test('returns Deny policy if no Authorization token in header', async () => {
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: undefined },
       type: 'REQUEST',
     }),
@@ -165,7 +170,7 @@ test('returns Deny policy if no Authorization token in header', async () => {
 test('returns Deny policy on malformed token', async () => {
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: 'lemon' },
       type: 'REQUEST',
     }),
@@ -194,7 +199,7 @@ test('returns Deny policy on token with missing kid', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -221,7 +226,7 @@ test('returns Deny policy on token with incorrect client_id claim', async () => 
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -250,7 +255,7 @@ test('returns Deny policy on token with incorrect iss claim', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -282,7 +287,7 @@ test('returns Deny policy on token with incorrect token_use claim', async () => 
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -313,7 +318,7 @@ test('returns Deny policy on Cognito not validating the token', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -349,7 +354,7 @@ test.each([
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -378,7 +383,7 @@ test('returns Deny policy, when no email on Cognito UserAttributes', async () =>
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -405,7 +410,7 @@ test('returns Allow policy on valid token', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),
@@ -434,7 +439,7 @@ test('returns Deny policy on expired token', async () => {
 
   const res = await handler(
     mock<APIGatewayRequestAuthorizerEvent>({
-      methodArn,
+      requestContext,
       headers: { Authorization: jwt },
       type: 'REQUEST',
     }),

@@ -90,7 +90,8 @@
         ]
       }
     ],
-    "no-empty-function": "off"
+    "no-empty-function": "off",
+    "unicorn/prefer-module": "off"
   },
   "overrides": [
     {
