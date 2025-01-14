@@ -20,6 +20,5 @@ module "amplify_branch" {
   environment_variables = {
     NOTIFY_SUBDOMAIN              = var.environment
     NEXT_PUBLIC_BASE_PATH         = "/templates~${local.normalised_branch_name}"
-    TRIGGER_ME                    = "REMOVE_ME"
   }
 }
