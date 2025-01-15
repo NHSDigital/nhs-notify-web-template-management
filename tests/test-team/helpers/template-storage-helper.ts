@@ -56,7 +56,7 @@ export class TemplateStorageHelper {
 
   /**
    * Delete templates from Terraform managed database table.
-   * Would it be better to use the API when available?
+   * Deleting directly from DB as API only supports soft-delete
    */
   async deleteTemplates(templates: { id: string; owner: string }[]) {
     const chunks: { id: string; owner: string }[][] = [];

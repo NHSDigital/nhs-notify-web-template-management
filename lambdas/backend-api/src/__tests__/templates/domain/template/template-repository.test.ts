@@ -252,7 +252,17 @@ describe('templateRepository', () => {
           templateStatus: { S: TemplateStatus.SUBMITTED },
         },
         code: 400,
-        message: 'Template has already been submitted',
+        message: 'Template with status SUBMITTED cannot be updated',
+      },
+      {
+        testName:
+          'Fails when user tries to update template when templateStatus is DELETED',
+        Item: {
+          templateType: { S: TemplateType.EMAIL },
+          templateStatus: { S: TemplateStatus.DELETED },
+        },
+        code: 400,
+        message: 'Template with status DELETED cannot be updated',
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',

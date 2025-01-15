@@ -129,9 +129,14 @@ const update = async (
   }
 
   if (template.templateStatus === TemplateStatus.DELETED) {
+    updateExpression.push('#ttl = :ttl');
+    expressionAttributeNames = {
+      ...expressionAttributeNames,
+      '#ttl': 'ttl',
+    };
     expressionAttributeValues = {
       ...expressionAttributeValues,
-      ttl: calculateTTL(),
+      ':ttl': calculateTTL(),
     };
   }
 
@@ -167,7 +172,7 @@ const update = async (
       if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          'Template has already been submitted',
+          `Template with status ${error.Item.templateStatus.S} cannot be updated`,
           error
         );
       }
@@ -201,7 +206,7 @@ const list = async (
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
-        '#status': 'status',
+        '#status': 'templateStatus',
       },
       ExpressionAttributeValues: {
         ':owner': owner,

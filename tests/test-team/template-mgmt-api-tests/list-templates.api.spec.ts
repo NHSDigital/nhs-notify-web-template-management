@@ -19,7 +19,7 @@ test.describe('GET /v1/templates', () => {
     user2 = await authHelper.getTestUser(TestUserId.User2);
   });
 
-  test.afterAll(async () => {
+  test.afterEach(async () => {
     await templateStorageHelper.deleteTemplates(createdTemplates);
   });
 
@@ -59,6 +59,8 @@ test.describe('GET /v1/templates', () => {
 
     const created1 = await response1.json();
 
+    createdTemplates.push({ id: created1.template.id, owner: user1.email });
+
     // create another template for user 1
     const templateInput2 = {
       templateType: 'SMS',
@@ -79,6 +81,8 @@ test.describe('GET /v1/templates', () => {
     expect(response2.status()).toBe(201);
 
     const created2 = await response2.json();
+
+    createdTemplates.push({ id: created2.template.id, owner: user1.email });
 
     // exercise - request user 1 templates
     const user1ListResponse = await request.get(
@@ -120,6 +124,87 @@ test.describe('GET /v1/templates', () => {
     expect(user2ResponseBody).toEqual({
       statusCode: 200,
       templates: [],
+    });
+  });
+
+  test('does not include deleted templates', async ({ request }) => {
+    const templateInput1 = {
+      templateType: 'NHS_APP',
+      name: faker.word.noun(),
+      message: faker.word.words(5),
+    };
+
+    const response1 = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: templateInput1,
+      }
+    );
+
+    expect(response1.status()).toBe(201);
+
+    const created1 = await response1.json();
+
+    createdTemplates.push({ id: created1.template.id, owner: user1.email });
+
+    // create another template for user 1
+    const templateInput2 = {
+      templateType: 'SMS',
+      name: faker.word.noun(),
+      message: faker.word.words(5),
+    };
+
+    const response2 = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: templateInput2,
+      }
+    );
+
+    expect(response2.status()).toBe(201);
+
+    const created2 = await response2.json();
+
+    createdTemplates.push({ id: created2.template.id, owner: user1.email });
+
+    // delete template 1
+
+    const deleteResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created1.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: { ...templateInput1, templateStatus: 'DELETED' },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(200);
+
+    // exercise - request templates list
+    const listResponse = await request.get(
+      `${process.env.API_BASE_URL}/v1/templates`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    //  assert on user 1 templates response
+    expect(listResponse.status()).toBe(200);
+
+    const responseBody = await listResponse.json();
+
+    expect(responseBody).toEqual({
+      statusCode: 200,
+      templates: [created2.template],
     });
   });
 });
