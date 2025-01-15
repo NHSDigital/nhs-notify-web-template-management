@@ -189,7 +189,6 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: sandbox_tf_outputs.json
-          path: sandbox_tf_outputs.json
       - name: "Repo setup"
         run: |
           npm ci
