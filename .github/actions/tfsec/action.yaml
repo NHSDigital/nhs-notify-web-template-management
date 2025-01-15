@@ -3,6 +3,8 @@ description: "Scan HCL using TFSec"
 runs:
   using: "composite"
   steps:
+    - uses: hashicorp/setup-terraform@v3
+    - uses: asdf-vm/actions/setup@v3
     - name: "TFSec Scan - Components"
       shell: bash
       run: |

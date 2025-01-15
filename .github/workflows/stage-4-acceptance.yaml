@@ -74,6 +74,8 @@ jobs:
     environment: dev
     timeout-minutes: 15
     steps:
+      - uses: hashicorp/setup-terraform@v3
+      - uses: asdf-vm/actions/setup@v3
       - name: "Checkout code"
         uses: actions/checkout@v4
       - name: Configure AWS credentials
@@ -210,6 +212,8 @@ jobs:
     needs: [test-accessibility, test-ui-component]
     environment: dev
     steps:
+      - uses: hashicorp/setup-terraform@v3
+      - uses: asdf-vm/actions/setup@v3
       - name: "Checkout code"
         uses: actions/checkout@v4
       - name: Configure AWS credentials
