@@ -7,8 +7,8 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
-import { TemplateFactory } from '../helpers/template-factory';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
+import { TemplateFactory } from '../helpers/factories/template-factory';
 
 const templates = {
   goBack: {

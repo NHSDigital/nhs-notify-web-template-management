@@ -1,4 +1,4 @@
-import { Template, TemplateStatus, TemplateType } from './types';
+import { Template, TemplateStatus, TemplateType } from '../types';
 
 export const TemplateFactory = {
   createEmailTemplate: (id: string): Template => {

@@ -8,9 +8,9 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-import { TemplateFactory } from '../helpers/template-factory';
+import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStatus, TemplateType } from '../helpers/types';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 
 const templates = {
   emailSubmitted: TemplateFactory.create({

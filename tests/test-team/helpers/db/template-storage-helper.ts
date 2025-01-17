@@ -5,7 +5,9 @@ import {
   DynamoDBDocumentClient,
   PutCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { Template } from './types';
+import { Template } from '../types';
+
+type TemplateKey = { owner: string; id: string };
 
 export class TemplateStorageHelper {
   private readonly ddbDocClient: DynamoDBDocumentClient;
@@ -14,6 +16,8 @@ export class TemplateStorageHelper {
     const dynamoClient = new DynamoDBClient({ region: 'eu-west-2' });
     this.ddbDocClient = DynamoDBDocumentClient.from(dynamoClient);
   }
+
+  private templateKeys: TemplateKey[] = [];
 
   /**
    * Seed templates to Amplify managed database table
@@ -54,15 +58,19 @@ export class TemplateStorageHelper {
     await Promise.all(promises);
   }
 
+  public addTemplateKey(key: TemplateKey) {
+    this.templateKeys.push(key);
+  }
+
   /**
    * Delete templates from Terraform managed database table.
    * Deleting directly from DB as API only supports soft-delete
    */
-  async deleteTemplates(templates: { id: string; owner: string }[]) {
+  async deleteTemplates() {
     const chunks: { id: string; owner: string }[][] = [];
 
-    for (let i = 0; i < templates.length; i += 25) {
-      chunks.push(templates.slice(i, i + 25));
+    for (let i = 0; i < this.templateKeys.length; i += 25) {
+      chunks.push(this.templateKeys.slice(i, i + 25));
     }
 
     await Promise.all(
@@ -85,5 +93,7 @@ export class TemplateStorageHelper {
         )
       )
     );
+
+    this.templateKeys = [];
   }
 }

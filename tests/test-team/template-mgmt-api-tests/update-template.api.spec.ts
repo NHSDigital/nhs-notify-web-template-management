@@ -1,17 +1,16 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import {
   createAuthHelper,
   TestUser,
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { isoDateRegExp, uuidRegExp } from '../helpers/rexexp';
+import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 
 test.describe('POST /v1/template/:templateId', async () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const createdTemplates: { owner: string; id: string }[] = [];
   let user1: TestUser;
   let user2: TestUser;
 
@@ -21,7 +20,7 @@ test.describe('POST /v1/template/:templateId', async () => {
   });
 
   test.afterAll(async () => {
-    await templateStorageHelper.deleteTemplates(createdTemplates);
+    await templateStorageHelper.deleteTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -41,12 +40,9 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'NHS_APP',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-          templateStatus: 'NOT_YET_SUBMITTED',
-        },
+        }),
       }
     );
     expect(response.status()).toBe(404);
@@ -65,17 +61,18 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
           templateType: 'NHS_APP',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-        },
+        }),
       }
     );
 
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     const updateResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -83,12 +80,9 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user2.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'NHS_APP',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-          templateStatus: 'NOT_YET_SUBMITTED',
-        },
+        }),
       }
     );
 
@@ -106,17 +100,18 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
           templateType: 'NHS_APP',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-        },
+        }),
       }
     );
 
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     const updateResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -145,17 +140,18 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
           templateType: 'NHS_APP',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-        },
+        }),
       }
     );
 
     expect(createResponse.status()).toBe(201);
     const created = await createResponse.json();
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     const updateResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -163,12 +159,9 @@ test.describe('POST /v1/template/:templateId', async () => {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: {
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
           templateType: 'INVALID',
-          name: faker.word.noun(),
-          message: faker.word.words(5),
-          templateStatus: 'NOT_YET_SUBMITTED',
-        },
+        }),
       }
     );
 
@@ -183,6 +176,50 @@ test.describe('POST /v1/template/:templateId', async () => {
     });
   });
 
+  test('returns 400 if template status is invalid', async ({ request }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+          templateStatus: 'INVALID',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateStatus:
+          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED', received 'INVALID'",
+      },
+    });
+  });
+
   test.describe('NHS_APP templates', () => {
     test('returns 200 and the updated template data', async ({ request }) => {
       const createResponse = await request.post(
@@ -191,24 +228,22 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const updateData = {
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
         templateType: 'NHS_APP',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
-        templateStatus: 'SUBMITTED',
-      };
+      });
 
       const start = new Date();
 
@@ -253,17 +288,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateSMSResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -271,12 +307,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -298,13 +331,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -330,17 +359,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -348,12 +378,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -365,12 +393,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -393,24 +419,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const submitData = {
+      const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
         templateType: 'NHS_APP',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
         templateStatus: 'SUBMITTED',
-      };
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -455,17 +480,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const deleteResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -473,12 +499,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -490,12 +514,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -516,17 +538,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -534,11 +562,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'NHS_APP',
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -559,17 +583,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -577,12 +602,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
             name: '',
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -604,17 +627,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -622,11 +651,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -647,17 +672,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -665,12 +691,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
             message: '',
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -694,17 +718,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -712,12 +737,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
             message: 'x'.repeat(5001),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -741,17 +764,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -759,12 +783,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
             message: '<>',
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -789,24 +811,22 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const updateData = {
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
         templateType: 'SMS',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
-        templateStatus: 'SUBMITTED',
-      };
+      });
 
       const start = new Date();
 
@@ -851,17 +871,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateNHSAppResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -869,12 +890,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -896,13 +914,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -928,17 +942,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -946,12 +961,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -963,12 +976,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -991,24 +1002,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const submitData = {
+      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
         templateType: 'SMS',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
         templateStatus: 'SUBMITTED',
-      };
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1053,17 +1063,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const deleteResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1071,12 +1082,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -1088,12 +1097,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -1114,17 +1121,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'SMS',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1132,11 +1145,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'SMS',
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -1157,17 +1166,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1175,12 +1185,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
             name: '',
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1202,17 +1210,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'SMS',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1220,11 +1234,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'SMS',
-            name: faker.word.noun(),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -1245,17 +1255,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1263,12 +1274,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
             message: '',
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1292,17 +1301,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1310,12 +1320,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
             message: 'x'.repeat(919),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1339,26 +1347,22 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const updateData = {
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
         templateType: 'EMAIL',
-        name: faker.word.noun(),
-        subject: faker.word.interjection(),
-        message: faker.word.words(5),
-        templateStatus: 'SUBMITTED',
-      };
+      });
 
       const start = new Date();
 
@@ -1404,18 +1408,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            subject: faker.word.interjection(),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateNHSAppResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1423,12 +1427,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1450,12 +1451,9 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1481,18 +1479,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1500,13 +1498,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1518,13 +1513,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
             templateStatus: 'SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1547,26 +1539,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
-      const submitData = {
+      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
         templateType: 'EMAIL',
-        name: faker.word.noun(),
-        subject: faker.word.interjection(),
-        message: faker.word.words(5),
         templateStatus: 'SUBMITTED',
-      };
+      });
 
       const submitResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1612,18 +1601,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const deleteResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1631,13 +1620,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -1649,13 +1635,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
             templateStatus: 'DELETED',
-          },
+          }),
         }
       );
 
@@ -1676,18 +1659,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1695,12 +1683,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'EMAIL',
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -1721,18 +1704,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1740,13 +1723,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
             name: '',
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1768,18 +1748,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { subject: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1787,12 +1772,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'EMAIL',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -1813,18 +1793,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1832,13 +1812,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
             subject: '',
-            message: faker.word.words(5),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1859,18 +1836,23 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1878,12 +1860,7 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
-            templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          data: updateData,
         }
       );
 
@@ -1904,18 +1881,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1923,13 +1900,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
             message: '',
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 
@@ -1953,18 +1927,18 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
+          }),
         }
       );
 
       expect(createResponse.status()).toBe(201);
       const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
+      templateStorageHelper.addTemplateKey({
+        id: created.template.id,
+        owner: user1.email,
+      });
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1972,13 +1946,10 @@ test.describe('POST /v1/template/:templateId', async () => {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: {
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
             templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
             message: 'x'.repeat(100_001),
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
+          }),
         }
       );
 

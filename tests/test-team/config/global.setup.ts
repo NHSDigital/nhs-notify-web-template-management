@@ -1,5 +1,5 @@
 import { FullConfig } from '@playwright/test';
-import { DatabaseTableNameHelper } from '../helpers/database-tablename-helper';
+import { DatabaseTableNameHelper } from '../helpers/db/database-tablename-helper';
 
 async function globalSetup(config: FullConfig) {
   const tableNameHelper = new DatabaseTableNameHelper();

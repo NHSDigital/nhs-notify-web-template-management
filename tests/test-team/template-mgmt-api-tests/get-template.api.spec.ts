@@ -1,16 +1,15 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import {
   createAuthHelper,
   TestUser,
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
+import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 
 test.describe('GET /v1/template/:templateId', async () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  const createdTemplates: { owner: string; id: string }[] = [];
   let user1: TestUser;
   let user2: TestUser;
 
@@ -20,7 +19,7 @@ test.describe('GET /v1/template/:templateId', async () => {
   });
 
   test.afterAll(async () => {
-    await templateStorageHelper.deleteTemplates(createdTemplates);
+    await templateStorageHelper.deleteTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -37,11 +36,9 @@ test.describe('GET /v1/template/:templateId', async () => {
     request,
   }) => {
     // setup: create a template
-    const template = {
+    const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
       templateType: 'NHS_APP',
-      name: faker.word.noun(),
-      message: faker.word.words(5),
-    };
+    });
 
     const createResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template`,
@@ -57,7 +54,10 @@ test.describe('GET /v1/template/:templateId', async () => {
 
     const created = await createResponse.json();
 
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     // exercise: make the GET request to retrieve the template
     const response = await request.get(
@@ -98,11 +98,9 @@ test.describe('GET /v1/template/:templateId', async () => {
     request,
   }) => {
     // setup: create a template belonging to user1
-    const template = {
+    const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
       templateType: 'NHS_APP',
-      name: faker.word.noun(),
-      message: faker.word.words(5),
-    };
+    });
 
     const createResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template`,
@@ -118,7 +116,10 @@ test.describe('GET /v1/template/:templateId', async () => {
 
     const created = await createResponse.json();
 
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     // exercise: make the GET request to retrieve the template as user2
     const response = await request.get(
@@ -140,11 +141,9 @@ test.describe('GET /v1/template/:templateId', async () => {
 
   test('returns 404 if template has been deleted', async ({ request }) => {
     // setup: create a template belonging to user1
-    const template = {
+    const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
       templateType: 'NHS_APP',
-      name: faker.word.noun(),
-      message: faker.word.words(5),
-    };
+    });
 
     const createResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template`,
@@ -160,7 +159,10 @@ test.describe('GET /v1/template/:templateId', async () => {
 
     const created = await createResponse.json();
 
-    createdTemplates.push({ id: created.template.id, owner: user1.email });
+    templateStorageHelper.addTemplateKey({
+      id: created.template.id,
+      owner: user1.email,
+    });
 
     const deleteResponse = await request.post(
       `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,

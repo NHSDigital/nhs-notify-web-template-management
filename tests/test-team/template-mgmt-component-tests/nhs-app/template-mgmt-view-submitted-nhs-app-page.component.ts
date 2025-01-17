@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { TemplateStorageHelper } from '../../helpers/template-storage-helper';
+import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtViewSubmittedNHSAppPage } from '../../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
-import { TemplateFactory } from '../../helpers/template-factory';
+import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { TemplateStatus } from '../../helpers/types';
 import {
   assertFooterLinks,

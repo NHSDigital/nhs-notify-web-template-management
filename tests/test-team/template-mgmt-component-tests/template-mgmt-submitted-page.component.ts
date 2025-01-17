@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { TemplateStorageHelper } from '../helpers/template-storage-helper';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
   assertGoBackLink,
@@ -7,7 +7,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
-import { TemplateFactory } from '../helpers/template-factory';
+import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateMgmtTemplateSubmittedPage } from '../pages/template-mgmt-template-submitted-page';
 import { TemplateType, TemplateStatus } from '../helpers/types';
 
