@@ -62,7 +62,7 @@ describe('templateRepository', () => {
       { id: 'abc-def-ghi-jkl-123', owner: 'fake-owner' },
       { id: 'fake-id', owner: 'real-owner' },
     ])(
-      'should return undefined when, templateId and owner does not match database record',
+      'should return not found error when, templateId and owner does not match database record',
       async ({ id, owner }) => {
         ddbMock
           .on(GetCommand, {
@@ -83,6 +83,28 @@ describe('templateRepository', () => {
         });
       }
     );
+
+    test('should return not found error when template status is DELETED', async () => {
+      ddbMock.on(GetCommand).resolves({
+        Item: {
+          id: 'abc-def-ghi-jkl-123',
+          owner: 'real-owner',
+          templateStatus: TemplateStatus.DELETED,
+        },
+      });
+
+      const response = await templateRepository.get(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        error: {
+          code: 404,
+          message: 'Template not found',
+        },
+      });
+    });
 
     test('should error when unexpected error occurs', async () => {
       ddbMock.on(GetCommand).rejects(new Error('InternalServerError'));

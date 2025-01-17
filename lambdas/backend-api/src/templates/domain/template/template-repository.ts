@@ -48,7 +48,13 @@ const get = async (
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
-    return success(response?.Item as DatabaseTemplate);
+    const item = response.Item as DatabaseTemplate;
+
+    if (item.templateStatus === TemplateStatus.DELETED) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+    }
+
+    return success(item);
   } catch (error) {
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }

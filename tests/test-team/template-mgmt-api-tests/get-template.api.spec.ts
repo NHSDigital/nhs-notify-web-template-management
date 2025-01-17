@@ -137,4 +137,58 @@ test.describe('GET /v1/template/:templateId', async () => {
       technicalMessage: 'Template not found',
     });
   });
+
+  test('returns 404 if template has been deleted', async ({ request }) => {
+    // setup: create a template belonging to user1
+    const template = {
+      templateType: 'NHS_APP',
+      name: faker.word.noun(),
+      message: faker.word.words(5),
+    };
+
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: template,
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+
+    const created = await createResponse.json();
+
+    createdTemplates.push({ id: created.template.id, owner: user1.email });
+
+    const deleteResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: { ...template, templateStatus: 'DELETED' },
+      }
+    );
+
+    expect(deleteResponse.status()).toBe(200);
+
+    // exercise: make the GET request to retrieve the deleted template
+    const response = await request.get(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    // assert
+    expect(response.status()).toBe(404);
+    expect(await response.json()).toEqual({
+      statusCode: 404,
+      technicalMessage: 'Template not found',
+    });
+  });
 });
