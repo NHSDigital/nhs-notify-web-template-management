@@ -167,7 +167,10 @@ const update = async (
     return success(response.Attributes as DatabaseTemplate);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
-      if (!error.Item) {
+      if (
+        !error.Item ||
+        error.Item.templateStatus.S === TemplateStatus.DELETED
+      ) {
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
           `Template not found`,

@@ -446,7 +446,7 @@ test.describe('POST /v1/template/:templateId', async () => {
         technicalMessage: 'Template with status SUBMITTED cannot be updated',
       });
     });
-    test('returns 400 - cannot update attributes on a deleted template', async ({
+    test('returns 404 - cannot update a deleted template', async ({
       request,
     }) => {
       const createResponse = await request.post(
@@ -499,76 +499,13 @@ test.describe('POST /v1/template/:templateId', async () => {
         }
       );
 
-      expect(updateResponse.status()).toBe(400);
+      expect(updateResponse.status()).toBe(404);
 
       const updateResponseBody = await updateResponse.json();
 
       expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
-      });
-    });
-
-    test('returns 400 - cannot change status on a deleted template', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            templateType: 'NHS_APP',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
-
-      const deleteData = {
-        templateType: 'NHS_APP',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
-        templateStatus: 'DELETED',
-      };
-
-      const deleteResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: deleteData,
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(200);
-
-      const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            ...deleteData,
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(400);
-
-      const updateResponseBody = await updateResponse.json();
-
-      expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
+        statusCode: 404,
+        technicalMessage: 'Template not found',
       });
     });
 
@@ -1107,7 +1044,7 @@ test.describe('POST /v1/template/:templateId', async () => {
         technicalMessage: 'Template with status SUBMITTED cannot be updated',
       });
     });
-    test('returns 400 - cannot update attributes on a deleted template', async ({
+    test('returns 400 - cannot update a deleted template', async ({
       request,
     }) => {
       const createResponse = await request.post(
@@ -1160,76 +1097,13 @@ test.describe('POST /v1/template/:templateId', async () => {
         }
       );
 
-      expect(updateResponse.status()).toBe(400);
+      expect(updateResponse.status()).toBe(404);
 
       const updateResponseBody = await updateResponse.json();
 
       expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
-      });
-    });
-
-    test('returns 400 - cannot change status on a deleted template', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            templateType: 'SMS',
-            name: faker.word.noun(),
-            message: faker.word.words(5),
-          },
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
-
-      const deleteData = {
-        templateType: 'SMS',
-        name: faker.word.noun(),
-        message: faker.word.words(5),
-        templateStatus: 'DELETED',
-      };
-
-      const deleteResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: deleteData,
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(200);
-
-      const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            ...deleteData,
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(400);
-
-      const updateResponseBody = await updateResponse.json();
-
-      expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
+        statusCode: 404,
+        technicalMessage: 'Template not found',
       });
     });
 
@@ -1729,7 +1603,7 @@ test.describe('POST /v1/template/:templateId', async () => {
       });
     });
 
-    test('returns 400 - cannot update attributes on a deleted template', async ({
+    test('returns 400 - cannot update a deleted template', async ({
       request,
     }) => {
       const createResponse = await request.post(
@@ -1785,78 +1659,13 @@ test.describe('POST /v1/template/:templateId', async () => {
         }
       );
 
-      expect(updateResponse.status()).toBe(400);
+      expect(updateResponse.status()).toBe(404);
 
       const updateResponseBody = await updateResponse.json();
 
       expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
-      });
-    });
-
-    test('returns 400 - cannot change status on a deleted template', async ({
-      request,
-    }) => {
-      const createResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            templateType: 'EMAIL',
-            name: faker.word.noun(),
-            subject: faker.word.interjection(),
-            message: faker.word.words(5),
-          },
-        }
-      );
-
-      expect(createResponse.status()).toBe(201);
-      const created = await createResponse.json();
-      createdTemplates.push({ id: created.template.id, owner: user1.email });
-
-      const deleteData = {
-        templateType: 'EMAIL',
-        name: faker.word.noun(),
-        subject: faker.word.interjection(),
-        message: faker.word.words(5),
-        templateStatus: 'DELETED',
-      };
-
-      const deleteResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: deleteData,
-        }
-      );
-
-      expect(deleteResponse.status()).toBe(200);
-
-      const updateResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-        {
-          headers: {
-            Authorization: await user1.getAccessToken(),
-          },
-          data: {
-            ...deleteData,
-            templateStatus: 'NOT_YET_SUBMITTED',
-          },
-        }
-      );
-
-      expect(updateResponse.status()).toBe(400);
-
-      const updateResponseBody = await updateResponse.json();
-
-      expect(updateResponseBody).toEqual({
-        statusCode: 400,
-        technicalMessage: 'Template with status DELETED cannot be updated',
+        statusCode: 404,
+        technicalMessage: 'Template not found',
       });
     });
 

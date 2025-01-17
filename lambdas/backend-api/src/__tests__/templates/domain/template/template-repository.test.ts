@@ -283,8 +283,8 @@ describe('templateRepository', () => {
           templateType: { S: TemplateType.EMAIL },
           templateStatus: { S: TemplateStatus.DELETED },
         },
-        code: 400,
-        message: 'Template with status DELETED cannot be updated',
+        code: 404,
+        message: 'Template not found',
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
