@@ -23,7 +23,7 @@ const nextConfig = (phase) => {
         allowedOrigins: [
           domain,
           domain.replace('templates', 'web-gateway'),
-          'alnu1.web-gateway.dev.nhsnotify.national.nhs.uk',
+          'https://alnu1.web-gateway.dev.nhsnotify.national.nhs.uk',
         ],
       },
     },
