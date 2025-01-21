@@ -128,9 +128,14 @@ const update = async (
   }
 
   if (template.templateStatus === TemplateStatus.DELETED) {
+    updateExpression.push('#ttl = :ttl');
+    expressionAttributeNames = {
+      ...expressionAttributeNames,
+      '#ttl': 'ttl',
+    };
     expressionAttributeValues = {
       ...expressionAttributeValues,
-      ttl: calculateTTL(),
+      ':ttl': calculateTTL(),
     };
   }
 
@@ -203,13 +208,12 @@ const list = async (
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
-        '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':owner': owner,
         ':deletedStatus': TemplateStatus.DELETED,
       },
-      FilterExpression: '#status <> :deletedStatus',
+      FilterExpression: 'templateStatus <> :deletedStatus',
     };
 
     const items: DatabaseTemplate[] = [];

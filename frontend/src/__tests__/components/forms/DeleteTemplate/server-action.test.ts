@@ -29,13 +29,10 @@ test('calls form action and redirects', async () => {
 
   await deleteTemplateAction(mockTemplate);
 
-  expect(mockSaveTemplate).toHaveBeenCalledWith(
-    {
-      ...mockTemplate,
-      templateStatus: TemplateStatus.DELETED,
-    },
-    1_643_619_600
-  );
+  expect(mockSaveTemplate).toHaveBeenCalledWith({
+    ...mockTemplate,
+    templateStatus: TemplateStatus.DELETED,
+  });
 
   expect(mockRedirect).toHaveBeenCalledWith(
     '/manage-templates',

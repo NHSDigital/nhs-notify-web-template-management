@@ -40,34 +40,6 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-  environment-set-up:
-    name: "Environment set up"
-    runs-on: ubuntu-latest
-    environment: dev
-    timeout-minutes: 15
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-      - name: "Repo setup"
-        run: |
-          npm ci
-      - name: "Generate dependencies"
-        run: |
-          npm run generate-dependencies --workspaces --if-present
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
-          aws-region: ${{ env.AWS_REGION }}
-      - name: "Create Amplify sandbox"
-        run: |
-          ./scripts/create_amplify_sandbox.sh
-      - uses: actions/upload-artifact@v4
-        with:
-          name: amplify_outputs.json
-          path: frontend/amplify_outputs.json
-
   sandbox-set-up:
     name: "Sandbox set up"
     runs-on: ubuntu-latest
@@ -94,11 +66,10 @@ jobs:
         with:
           name: sandbox_tf_outputs.json
           path: sandbox_tf_outputs.json
-
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
-    needs: [environment-set-up, sandbox-set-up]
+    needs: [sandbox-set-up]
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
@@ -112,16 +83,18 @@ jobs:
   test-accessibility:
     name: "Accessibility test"
     runs-on: ubuntu-latest
-    needs: [environment-set-up, sandbox-set-up]
+    needs: [sandbox-set-up]
     environment: dev
+    env:
+      INCLUDE_AUTH_PAGES: 'true'
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: amplify_outputs.json
-          path: frontend/
+          name: sandbox_tf_outputs.json
+          path: ./
       - name: "Repo setup"
         run: |
           npm ci
@@ -135,7 +108,9 @@ jobs:
           role-session-name: deployInfra
           aws-region: eu-west-2
       - name: "Run accessibility test"
-        run: make test-accessibility
+        run: |
+          npm run create-amplify-outputs file
+          make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
         with:
@@ -144,16 +119,18 @@ jobs:
   test-ui-component:
     name: "UI Component test"
     runs-on: ubuntu-latest
-    needs: [environment-set-up, sandbox-set-up]
+    needs: [sandbox-set-up]
     environment: dev
+    env:
+      INCLUDE_AUTH_PAGES: 'true'
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: amplify_outputs.json
-          path: frontend/
+          name: sandbox_tf_outputs.json
+          path: ./
       - name: "Repo setup"
         run: |
           npm ci
@@ -170,41 +147,15 @@ jobs:
           aws-region: eu-west-2
       - name: "Run ui component test"
         run: |
+          npm run create-amplify-outputs file
           cd tests/test-team
           npm run test:local-ui
       - name: Archive component test results
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: component test report
           path: "tests/test-team/playwright-report"
-  environment-tear-down:
-    name: "Environment tear down"
-    if: success() || failure()
-    runs-on: ubuntu-latest
-    needs: [test-accessibility, test-ui-component]
-    environment: dev
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: amplify_outputs.json
-          path: frontend/
-      - name: "Repo setup"
-        run: |
-          npm ci
-      - name: "Generate dependencies"
-        run: |
-          npm run generate-dependencies --workspaces --if-present
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
-          aws-region: eu-west-2
-      - name: "Destroy Amplify sandbox"
-        run: |
-          (cd frontend && npm run destroy-sandbox -- --identifier "wf-${GITHUB_RUN_ID}")
   sandbox-tear-down:
     name: "Sandbox tear down"
     if: success() || failure()

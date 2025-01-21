@@ -7,8 +7,9 @@ export const $Template = z.object({
   templateStatus: z.nativeEnum(TemplateStatus),
   name: z.string(),
   message: z.string(),
-  subject: z.string().nullable().optional(),
+  subject: z.string().optional(),
   createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 export const $EmailTemplate = $Template.extend({

@@ -1,17 +1,21 @@
 /** @type {import('next').NextConfig} */
 
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+const amplifyConfig = require('./amplify_outputs.json');
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
 
 const nextConfig = (phase) => {
   const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
+  const includeAuthPages =
+    process.env.INCLUDE_AUTH_PAGES === 'true' || isDevServer;
 
   return {
     basePath,
     env: {
       basePath,
+      BACKEND_API_URL: amplifyConfig?.meta?.backend_api_url,
     },
 
     experimental: {
@@ -32,7 +36,7 @@ const nextConfig = (phase) => {
     },
 
     async rewrites() {
-      if (isDevServer) {
+      if (includeAuthPages) {
         return [
           {
             source: '/auth/signout',
@@ -52,7 +56,7 @@ const nextConfig = (phase) => {
 
     // pages with e.g. .dev.tsx extension are only included when running locally
     pageExtensions: ['ts', 'tsx', 'js', 'jsx'].flatMap((extension) => {
-      return isDevServer ? [`dev.${extension}`, extension] : [extension];
+      return includeAuthPages ? [`dev.${extension}`, extension] : [extension];
     }),
   };
 };

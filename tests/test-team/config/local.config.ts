@@ -4,9 +4,21 @@ import baseConfig from './playwright.config';
 export default defineConfig({
   ...baseConfig,
 
-  timeout: 10_000,
-
+  timeout: 30_000, // 30 seconds in the playwright default
+  expect: {
+    timeout: 10_000, // default is 5 seconds. After creating and previewing sometimes the load is slow on a cold start
+  },
   projects: [
+    {
+      name: 'auth-setup',
+      testMatch: 'auth.setup.ts',
+      use: {
+        baseURL: 'http://localhost:3000',
+        ...devices['Desktop Chrome'],
+        headless: true,
+        screenshot: 'only-on-failure',
+      },
+    },
     {
       name: 'component',
       testMatch: '*.component.ts',
@@ -15,7 +27,10 @@ export default defineConfig({
         baseURL: 'http://localhost:3000',
         ...devices['Desktop Chrome'],
         headless: true,
+        storageState: './auth/user.json',
       },
+      dependencies: ['auth-setup'],
+      teardown: 'auth-teardown',
     },
     {
       name: 'e2e-local',
@@ -25,9 +40,14 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
       },
     },
+    {
+      name: 'auth-teardown',
+      testMatch: 'auth.teardown.ts',
+    },
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
+    timeout: 2 * 60 * 1000, // 2 minutes
     command: 'npm run test:start-local-app',
     url: 'http://localhost:3000/templates/create-and-submit-templates',
     reuseExistingServer: !process.env.CI,
