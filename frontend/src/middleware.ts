@@ -7,10 +7,31 @@ function isExcludedPath(path: string, excludedPaths: string[]): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+  const csp = `base-uri 'self'; form-action 'self'; frame-ancestors 'none'; default-src 'none'; connect-src 'self'; font-src 'self' https://assets.nhs.uk; img-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self'; upgrade-insecure-requests`;
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+
+  requestHeaders.set('Content-Security-Policy', csp);
+
+  requestHeaders.set(
+    'x-forwarded-host',
+    requestHeaders.get('origin')?.replace('https://', '') || '*'
+  );
+
   const excludedPaths = ['/create-and-submit-templates', '/auth'];
 
   if (isExcludedPath(request.nextUrl.pathname, excludedPaths)) {
-    return NextResponse.next();
+    const excludedPathResponse = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+
+    excludedPathResponse.headers.set('Content-Security-Policy', csp);
+
+    return excludedPathResponse;
   }
 
   const token = await getAccessTokenServer();
@@ -25,6 +46,16 @@ export async function middleware(request: NextRequest) {
       )
     );
   }
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  response.headers.set('Content-Security-Policy', csp);
+
+  return response;
 }
 
 export const config = {
