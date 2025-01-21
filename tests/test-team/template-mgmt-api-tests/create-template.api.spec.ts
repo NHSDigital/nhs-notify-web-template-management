@@ -5,7 +5,7 @@ import {
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { isoDateRegExp, uuidRegExp } from '../helpers/rexexp';
+import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 
 test.describe('POST /v1/template', async () => {
