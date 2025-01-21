@@ -5,15 +5,7 @@ import { redirect, RedirectType } from 'next/navigation';
 
 jest.mock('next/navigation');
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      TemplateStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
+jest.mock('@utils/amplify-utils');
 
 test('submit form - validation error', async () => {
   const response = await chooseTemplateAction(

@@ -8,15 +8,7 @@ import {
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => ({
-    models: {
-      TemplateStorage: {
-        update: () => ({ data: {} }),
-      },
-    },
-  }),
-}));
+jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
@@ -30,6 +22,8 @@ const initialState: NHSAppTemplate = {
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   message: 'message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('CreateNHSAppTemplate server actions', () => {
@@ -79,6 +73,8 @@ describe('CreateNHSAppTemplate server actions', () => {
       ...initialState,
       name: 'template-name',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     });
 
     await processFormActions(
@@ -109,6 +105,8 @@ describe('CreateNHSAppTemplate server actions', () => {
       id: 'new-template-id',
       name: 'template-name',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     });
 
     await processFormActions(

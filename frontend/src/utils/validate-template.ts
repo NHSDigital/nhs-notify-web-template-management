@@ -1,13 +1,5 @@
 import { z } from 'zod';
 import {
-  NHSAppTemplate,
-  EmailTemplate,
-  SMSTemplate,
-  ChannelTemplate,
-  Template,
-  SubmittedEmailTemplate,
-  SubmittedSMSTemplate,
-  SubmittedNHSAppTemplate,
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
@@ -19,86 +11,7 @@ import {
 import { TemplateDTO } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
-type TemplateUnion = Template | TemplateDTO | undefined;
-
-export const validateNHSAppTemplate = (
-  template: TemplateUnion
-): NHSAppTemplate | undefined => {
-  try {
-    return $NHSAppTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateSMSTemplate = (
-  template: TemplateUnion
-): SMSTemplate | undefined => {
-  try {
-    return $SMSTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateEmailTemplate = (
-  template: TemplateUnion
-): EmailTemplate | undefined => {
-  try {
-    return $EmailTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateSubmittedEmailTemplate = (
-  template: TemplateUnion
-): SubmittedEmailTemplate | undefined => {
-  try {
-    return $SubmittedEmailTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateSubmittedSMSTemplate = (
-  template: TemplateUnion
-): SubmittedSMSTemplate | undefined => {
-  try {
-    return $SubmittedSMSTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateSubmittedNHSAppTemplate = (
-  template: TemplateUnion
-): SubmittedNHSAppTemplate | undefined => {
-  try {
-    return $SubmittedNHSAppTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const validateChannelTemplate = (
-  template: TemplateUnion
-): ChannelTemplate | undefined => {
-  try {
-    return $ChannelTemplate.parse(template);
-  } catch (error) {
-    logger.error(error);
-    return undefined;
-  }
-};
-
-export const zodValidate = <T extends z.AnyZodObject>(
+export const zodValidate = <T extends z.Schema>(
   schema: T,
   obj: unknown
 ): z.infer<T> | undefined => {
@@ -109,3 +22,24 @@ export const zodValidate = <T extends z.AnyZodObject>(
     return undefined;
   }
 };
+
+export const validateNHSAppTemplate = (template?: TemplateDTO) =>
+  zodValidate($NHSAppTemplate, template);
+
+export const validateSMSTemplate = (template?: TemplateDTO) =>
+  zodValidate($SMSTemplate, template);
+
+export const validateEmailTemplate = (template?: TemplateDTO) =>
+  zodValidate($EmailTemplate, template);
+
+export const validateSubmittedEmailTemplate = (template?: TemplateDTO) =>
+  zodValidate($SubmittedEmailTemplate, template);
+
+export const validateSubmittedSMSTemplate = (template?: TemplateDTO) =>
+  zodValidate($SubmittedSMSTemplate, template);
+
+export const validateSubmittedNHSAppTemplate = (template?: TemplateDTO) =>
+  zodValidate($SubmittedNHSAppTemplate, template);
+
+export const validateChannelTemplate = (template?: TemplateDTO) =>
+  zodValidate($ChannelTemplate, template);

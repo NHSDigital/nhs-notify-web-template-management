@@ -29,7 +29,11 @@ describe('SubmitSmsTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValue(state);
+    getTemplateMock.mockResolvedValue({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await SubmitSmsTemplatePage({
       params: {
@@ -92,6 +96,8 @@ describe('SubmitSmsTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await SubmitSmsTemplatePage({

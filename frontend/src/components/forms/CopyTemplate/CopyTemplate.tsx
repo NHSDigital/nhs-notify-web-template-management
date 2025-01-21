@@ -1,7 +1,5 @@
 'use client';
 
-// we need this to be a client component because nhsuk-react-components uses client-only react features
-
 import { useFormState } from 'react-dom';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';

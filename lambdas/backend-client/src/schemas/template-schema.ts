@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import {
   CreateTemplate,
+  TemplateDTO,
   TemplateStatus,
   TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
-import { schemaFor } from '@backend-api/utils/schema-for';
+import { schemaFor } from './schema-for';
 import {
   MAX_SMS_CHARACTER_LENGTH,
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -16,15 +17,15 @@ import {
 const $BaseCreateTemplateSchema = schemaFor<CreateTemplate>()(
   z.object({
     templateType: z.nativeEnum(TemplateType),
-    name: z.string().min(1),
-    message: z.string(),
+    name: z.string().trim().min(1),
+    message: z.string().trim().min(1),
   })
 );
 
 export const $CreateSMSTemplateSchema = schemaFor<CreateTemplate>()(
   $BaseCreateTemplateSchema.extend({
     templateType: z.literal(TemplateType.SMS),
-    message: z.string().min(1).max(MAX_SMS_CHARACTER_LENGTH),
+    message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
@@ -33,6 +34,7 @@ export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
     templateType: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
+      .trim()
       .min(1)
       .max(MAX_NHS_APP_CHARACTER_LENGTH)
       // eslint-disable-next-line security/detect-non-literal-regexp
@@ -44,15 +46,11 @@ export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
 
 export const $CreateEmailTemplateSchema = schemaFor<CreateTemplate>()(
   $BaseCreateTemplateSchema.extend({
-    subject: z.string().min(1),
+    subject: z.string().trim().min(1),
     templateType: z.literal(TemplateType.EMAIL),
-    message: z.string().max(MAX_EMAIL_CHARACTER_LENGTH).min(1),
+    message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
   })
 );
-
-const $UpdateFields = {
-  templateStatus: z.nativeEnum(TemplateStatus),
-};
 
 export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
   $CreateSMSTemplateSchema,
@@ -60,10 +58,23 @@ export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
   $CreateEmailTemplateSchema,
 ]);
 
+const $UpdateTemplateFields = {
+  templateStatus: z.nativeEnum(TemplateStatus),
+};
+
 export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
   z.discriminatedUnion('templateType', [
-    $CreateSMSTemplateSchema.extend($UpdateFields),
-    $CreateNhsAppTemplateSchema.extend($UpdateFields),
-    $CreateEmailTemplateSchema.extend($UpdateFields),
+    $CreateSMSTemplateSchema.extend($UpdateTemplateFields),
+    $CreateNhsAppTemplateSchema.extend($UpdateTemplateFields),
+    $CreateEmailTemplateSchema.extend($UpdateTemplateFields),
   ])
+);
+
+export const $TemplateDTOSchema = schemaFor<TemplateDTO>()(
+  $BaseCreateTemplateSchema.extend({
+    id: z.string(),
+    templateStatus: z.nativeEnum(TemplateStatus),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+  })
 );

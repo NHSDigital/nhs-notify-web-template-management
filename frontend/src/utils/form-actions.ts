@@ -3,15 +3,18 @@
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
   Template,
-  Draft,
   isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
-import { BackendClient, TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  BackendClient,
+  CreateTemplate,
+  TemplateDTO,
+} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
-  template: Draft<Template>
-): Promise<Template | TemplateDTO> {
+  template: CreateTemplate
+): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -29,9 +32,7 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(
-  template: Template
-): Promise<Template | TemplateDTO> {
+export async function saveTemplate(template: Template): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -53,7 +54,7 @@ export async function saveTemplate(
 
 export async function getTemplate(
   templateId: string
-): Promise<Template | TemplateDTO | undefined> {
+): Promise<TemplateDTO | undefined> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -87,7 +88,7 @@ export async function sendEmail(templateId: string) {
   }
 }
 
-export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
+export async function getTemplates(): Promise<TemplateDTO[]> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -103,10 +104,10 @@ export async function getTemplates(): Promise<Template[] | TemplateDTO[]> {
 
   const sortedData = data
     .map((template) => isTemplateValid(template))
-    .filter((template): template is Template => template !== undefined)
+    .filter((template): template is TemplateDTO => template !== undefined)
     .sort((a, b) => {
-      const aCreatedAt = a.createdAt ?? '';
-      const bCreatedAt = b.createdAt ?? '';
+      const aCreatedAt = a.createdAt;
+      const bCreatedAt = b.createdAt;
 
       if (aCreatedAt === bCreatedAt) {
         return a.id.localeCompare(b.id);
