@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-// import { getAccessTokenServer } from '@utils/amplify-utils';
-// import { getBasePath } from '@utils/get-base-path';
+import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getBasePath } from '@utils/get-base-path';
 
 function isExcludedPath(path: string, excludedPaths: string[]): boolean {
   return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
@@ -37,18 +37,18 @@ export async function middleware(request: NextRequest) {
     return excludedPathResponse;
   }
 
-  // const token = await getAccessTokenServer();
+  const token = await getAccessTokenServer();
 
-  // if (!token) {
-  //   return Response.redirect(
-  //     new URL(
-  //       `/auth?redirect=${encodeURIComponent(
-  //         `${getBasePath()}/${request.nextUrl.pathname}`
-  //       )}`,
-  //       request.url
-  //     )
-  //   );
-  // }
+  if (!token) {
+    return Response.redirect(
+      new URL(
+        `/auth?redirect=${encodeURIComponent(
+          `${getBasePath()}/${request.nextUrl.pathname}`
+        )}`,
+        request.url
+      )
+    );
+  }
 
   const response = NextResponse.next({
     request: {
