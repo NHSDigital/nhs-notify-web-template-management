@@ -22,7 +22,7 @@ const $AccessToken = z.object({
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
-  context?: { user: string; email: string }
+  context?: { user: string; email?: string }
 ) => ({
   principalId: 'api-caller',
   policyDocument: {
@@ -123,7 +123,6 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
 
     if (!emailAddress) {
       logger.warn('Missing user email address');
-      return generatePolicy(methodArn, 'Deny');
     }
 
     return generatePolicy(methodArn, 'Allow', {

@@ -412,7 +412,7 @@ test('returns Deny policy, when no sub on Cognito UserAttributes', async () => {
   expect(warnMock).toHaveBeenCalledWith('Missing user subject');
 });
 
-test('returns Deny policy, when no email on Cognito UserAttributes', async () => {
+test('returns Allow policy, when no email on Cognito UserAttributes', async () => {
   process.env.USER_POOL_ID = 'user-pool-id-cognito-no-email';
 
   const jwt = sign(
@@ -437,7 +437,13 @@ test('returns Deny policy, when no email on Cognito UserAttributes', async () =>
     jest.fn()
   );
 
-  expect(res).toEqual(denyPolicy);
+  expect(res).toEqual({
+    ...allowPolicy,
+    context: {
+      user: 'sub',
+      email: undefined,
+    },
+  });
   expect(warnMock).toHaveBeenCalledWith('Missing user email address');
 });
 

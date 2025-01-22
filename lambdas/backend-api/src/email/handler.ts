@@ -73,7 +73,7 @@ export const emailHandler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({}),
     };
   } catch (error) {
-    logger.error('Failed to send email', { error });
+    logger.error(error);
 
     if (error instanceof ResourceNotFoundException) {
       return {
