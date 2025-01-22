@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { getAccessTokenServer } from '@utils/amplify-utils';
-import { getBasePath } from '@utils/get-base-path';
+// import { getAccessTokenServer } from '@utils/amplify-utils';
+// import { getBasePath } from '@utils/get-base-path';
 
 function isExcludedPath(path: string, excludedPaths: string[]): boolean {
   return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
