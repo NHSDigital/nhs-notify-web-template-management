@@ -33,9 +33,9 @@ export const emailHandler: APIGatewayProxyHandler = async (event) => {
 
     const templateId = getTemplateId(event);
 
-    const { username, email } = event.requestContext?.authorizer || {};
+    const { user, email } = event.requestContext?.authorizer || {};
 
-    if (!username || !email) {
+    if (!user || !email) {
       throw new ErrorWithStatusCode(
         'Missing username or email from authorization context',
         403
@@ -44,7 +44,7 @@ export const emailHandler: APIGatewayProxyHandler = async (event) => {
 
     const { name, message, subject } = await getTemplate(
       tableName,
-      username,
+      user,
       templateId
     );
 
@@ -73,7 +73,7 @@ export const emailHandler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({}),
     };
   } catch (error) {
-    logger.error(error);
+    logger.error('Failed to send email', { error });
 
     if (error instanceof ResourceNotFoundException) {
       return {

@@ -32,7 +32,23 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
       ) {
         return {
           Username: undefined,
-          UserAttributes: [{ Name: 'sub', Value: 'sub' }],
+          UserAttributes: [
+            { Name: 'sub', Value: 'sub' },
+            { Name: 'email', Value: 'test@email.com' },
+          ],
+        };
+      }
+
+      if (
+        decodedJwt.iss ===
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email'
+      ) {
+        return {
+          Username: 'username',
+          UserAttributes: [
+            { Name: 'sub', Value: 'sub' },
+            { Name: 'not-email', Value: 'test@email.com' },
+          ],
         };
       }
 
@@ -52,13 +68,19 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
       ) {
         return {
           Username: 'username',
-          UserAttributes: [{ Name: 'NOT-SUB', Value: 'not-sub' }],
+          UserAttributes: [
+            { Name: 'NOT-SUB', Value: 'not-sub' },
+            { Name: 'email', Value: 'test@email.com' },
+          ],
         };
       }
 
       return {
         Username: 'username',
-        UserAttributes: [{ Name: 'sub', Value: 'sub' }],
+        UserAttributes: [
+          { Name: 'sub', Value: 'sub' },
+          { Name: 'email', Value: 'test@email.com' },
+        ],
       };
     }
   }
@@ -101,6 +123,7 @@ const allowPolicy = {
   },
   context: {
     user: 'sub',
+    email: 'test@email.com',
   },
 };
 
@@ -387,6 +410,35 @@ test('returns Deny policy, when no sub on Cognito UserAttributes', async () => {
 
   expect(res).toEqual(denyPolicy);
   expect(warnMock).toHaveBeenCalledWith('Missing user subject');
+});
+
+test('returns Deny policy, when no email on Cognito UserAttributes', async () => {
+  process.env.USER_POOL_ID = 'user-pool-id-cognito-no-email';
+
+  const jwt = sign(
+    {
+      token_use: 'access',
+      client_id: 'user-pool-client-id',
+      iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email',
+    },
+    'key',
+    {
+      keyid: 'key-id',
+    }
+  );
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      methodArn,
+      headers: { Authorization: jwt },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+  expect(warnMock).toHaveBeenCalledWith('Missing user email address');
 });
 
 test('returns Allow policy on valid token', async () => {

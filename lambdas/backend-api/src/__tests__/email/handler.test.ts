@@ -120,8 +120,8 @@ describe('email handler', () => {
   });
 
   test.each([
-    { email: undefined, username: 'username' },
-    { email: 'email', username: undefined },
+    { email: undefined, user: 'username' },
+    { email: 'email', user: undefined },
     undefined,
   ])(
     'handles no user information from authorizer context %p',
@@ -171,7 +171,7 @@ describe('email handler', () => {
         requestContext: {
           authorizer: {
             email: 'recipient-email',
-            username: 'username',
+            user: 'username',
           },
         },
       }),
