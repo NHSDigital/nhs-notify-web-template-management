@@ -66,6 +66,10 @@ jobs:
         with:
           name: sandbox_tf_outputs.json
           path: sandbox_tf_outputs.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: amplify_outputs.json
+          path: ./frontend/amplify_outputs.json
   test-security:
     name: "Security test"
     runs-on: ubuntu-latest
@@ -95,6 +99,10 @@ jobs:
         with:
           name: sandbox_tf_outputs.json
           path: ./
+      - uses: actions/download-artifact@v4
+        with:
+          name: amplify_outputs.json
+          path: ./frontend
       - name: "Repo setup"
         run: |
           npm ci
@@ -108,9 +116,7 @@ jobs:
           role-session-name: deployInfra
           aws-region: eu-west-2
       - name: "Run accessibility test"
-        run: |
-          npm run create-amplify-outputs file
-          make test-accessibility
+        run: make test-accessibility
       - name: Archive accessibility results
         uses: actions/upload-artifact@v4
         with:
@@ -131,6 +137,10 @@ jobs:
         with:
           name: sandbox_tf_outputs.json
           path: ./
+      - uses: actions/download-artifact@v4
+        with:
+          name: amplify_outputs.json
+          path: ./frontend
       - name: "Repo setup"
         run: |
           npm ci
@@ -147,7 +157,6 @@ jobs:
           aws-region: eu-west-2
       - name: "Run ui component test"
         run: |
-          npm run create-amplify-outputs file
           cd tests/test-team
           npm run test:local-ui
       - name: Archive component test results
@@ -168,6 +177,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: sandbox_tf_outputs.json
+          path: './'
+      - uses: actions/download-artifact@v4
+        with:
+          name: amplify_outputs.json
+          path: ./frontend
       - name: "Repo setup"
         run: |
           npm ci
