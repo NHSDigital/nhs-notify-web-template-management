@@ -37,18 +37,18 @@ export async function middleware(request: NextRequest) {
     return excludedPathResponse;
   }
 
-  const token = await getAccessTokenServer();
+  // const token = await getAccessTokenServer();
 
-  if (!token) {
-    return Response.redirect(
-      new URL(
-        `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/${request.nextUrl.pathname}`
-        )}`,
-        request.url
-      )
-    );
-  }
+  // if (!token) {
+  //   return Response.redirect(
+  //     new URL(
+  //       `/auth?redirect=${encodeURIComponent(
+  //         `${getBasePath()}/${request.nextUrl.pathname}`
+  //       )}`,
+  //       request.url
+  //     )
+  //   );
+  // }
 
   const response = NextResponse.next({
     request: {
