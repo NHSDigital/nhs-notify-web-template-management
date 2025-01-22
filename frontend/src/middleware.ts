@@ -8,7 +8,10 @@ function isExcludedPath(path: string, excludedPaths: string[]): boolean {
 
 export async function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-  const csp = `base-uri 'self'; form-action 'self'; frame-ancestors 'none'; default-src 'none'; connect-src 'self'; font-src 'self' https://assets.nhs.uk; img-src 'self'; script-src 'self' 'nonce-${nonce}'; style-src 'self'; upgrade-insecure-requests`;
+  const cspUnsafeEval =
+    process.env.NODE_ENV === 'production' ? '' : `'unsafe-eval'`;
+
+  const csp = `base-uri 'self'; form-action 'self'; frame-ancestors 'none'; default-src 'none'; connect-src 'self'; font-src 'self' https://assets.nhs.uk; img-src 'self'; script-src 'self' 'nonce-${nonce}' https: http: ${cspUnsafeEval}; style-src 'self'; upgrade-insecure-requests`;
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-nonce', nonce);
