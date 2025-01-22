@@ -1,9 +1,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   BatchWriteCommand,
-  DeleteCommand,
   DynamoDBDocumentClient,
-  PutCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Template } from '../types';
 
@@ -12,66 +10,65 @@ type TemplateKey = { owner: string; id: string };
 export class TemplateStorageHelper {
   private readonly ddbDocClient: DynamoDBDocumentClient;
 
-  constructor(private readonly templateData: Template[] = []) {
+  constructor() {
     const dynamoClient = new DynamoDBClient({ region: 'eu-west-2' });
     this.ddbDocClient = DynamoDBDocumentClient.from(dynamoClient);
   }
 
-  private templateKeys: TemplateKey[] = [];
+  private seedData: Template[] = [];
+
+  private adHocTemplateKeys: TemplateKey[] = [];
 
   /**
-   * Seed templates to Amplify managed database table
+   * Seed a load of templates into the database
    */
+  async seedTemplateData(data: Template[]) {
+    this.seedData.push(...data);
 
-  async seedTemplateData() {
-    const promises = this.templateData.map((template) =>
-      this.ddbDocClient.send(
-        new PutCommand({
-          TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
-          Item: template,
-        })
-      )
+    const chunks = TemplateStorageHelper.chunk(data);
+
+    await Promise.all(
+      chunks.map(async (chunk) => {
+        await this.ddbDocClient.send(
+          new BatchWriteCommand({
+            RequestItems: {
+              [process.env.TEMPLATES_TABLE_NAME]: chunk.map((template) => ({
+                PutRequest: {
+                  Item: template,
+                },
+              })),
+            },
+          })
+        );
+      })
     );
-
-    await Promise.all(promises);
   }
 
   /**
-   * Delete templates from Amplify managed database table
+   * Delete templates seeded by calls to seedTemplateData
    */
-  async deleteTemplateData(extraTemplateIds: string[] = []) {
-    const templateIds = [
-      ...extraTemplateIds,
-      ...this.templateData.map(({ id }) => id),
-    ];
-    const promises = templateIds.map((id) =>
-      this.ddbDocClient.send(
-        new DeleteCommand({
-          TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
-          Key: {
-            id,
-          },
-        })
-      )
-    );
-
-    await Promise.all(promises);
-  }
-
-  public addTemplateKey(key: TemplateKey) {
-    this.templateKeys.push(key);
+  public async deleteSeededTemplates() {
+    await this.deleteTemplates(this.seedData);
+    this.seedData = [];
   }
 
   /**
-   * Delete templates from Terraform managed database table.
-   * Deleting directly from DB as API only supports soft-delete
+   * Stores references to templates created in tests (not via seeding)
    */
-  async deleteTemplates() {
-    const chunks: { id: string; owner: string }[][] = [];
+  public addAdHocTemplateKey(key: TemplateKey) {
+    this.adHocTemplateKeys.push(key);
+  }
 
-    for (let i = 0; i < this.templateKeys.length; i += 25) {
-      chunks.push(this.templateKeys.slice(i, i + 25));
-    }
+  /**
+   * Delete templates from database referenced by calls to addAdHocTemplateKey
+   */
+  async deleteAdHocTemplates() {
+    await this.deleteTemplates(this.adHocTemplateKeys);
+    this.adHocTemplateKeys = [];
+  }
+
+  private async deleteTemplates(keys: TemplateKey[]) {
+    const chunks = TemplateStorageHelper.chunk(keys);
 
     await Promise.all(
       chunks.map((chunk) =>
@@ -93,7 +90,18 @@ export class TemplateStorageHelper {
         )
       )
     );
+  }
 
-    this.templateKeys = [];
+  /**
+   * Breaks a list into chunks of upto 25 items
+   */
+  private static chunk<T>(list: T[]): T[][] {
+    const chunks: T[][] = [];
+
+    for (let i = 0; i < list.length; i += 25) {
+      chunks.push(list.slice(i, i + 25));
+    }
+
+    return chunks;
   }
 }

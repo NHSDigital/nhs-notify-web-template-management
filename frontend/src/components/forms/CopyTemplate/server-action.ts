@@ -4,7 +4,6 @@ import { redirect, RedirectType } from 'next/navigation';
 import {
   FormState,
   Template,
-  TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
@@ -53,7 +52,6 @@ export const copyTemplateAction: CopyTemplateAction = async (
     ...baseTemplateAttributes,
     name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
     templateType: newTemplateType,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     ...(newTemplateType === TemplateType.EMAIL && {
       subject: subject ?? 'Enter a subject line',
     }),

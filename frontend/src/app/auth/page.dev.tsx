@@ -32,7 +32,17 @@ export const Redirect = () => {
 export default function Page() {
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <Authenticator variation='default' hideSignUp>
+      <Authenticator
+        variation='default'
+        hideSignUp
+        formFields={{
+          signIn: {
+            username: {
+              type: 'text',
+            },
+          },
+        }}
+      >
         <Redirect />
       </Authenticator>
     </Suspense>

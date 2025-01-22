@@ -1,120 +1,113 @@
-/* eslint-disable array-callback-return */
-
 'use server';
 
-import { getAmplifyBackendClient } from '@utils/amplify-utils';
-import { DbOperationError } from '@domain/errors';
+import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
   Template,
-  Draft,
   isTemplateValid,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
+import {
+  BackendClient,
+  CreateTemplate,
+  TemplateDTO,
+} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export async function createTemplate(
-  template: Draft<Template>
-): Promise<Template> {
-  const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.create(template);
+  template: CreateTemplate
+): Promise<TemplateDTO> {
+  const token = await getAccessTokenServer();
 
-  if (errors || !data) {
-    logger.error('Failed to create template', errors, template);
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } =
+    await BackendClient(token).templates.createTemplate(template);
+
+  if (error) {
+    logger.error('Failed to create template', { error });
     throw new Error('Failed to create new template');
   }
+
   return data;
 }
 
-export async function saveTemplate(
-  template: Template,
-  ttl?: number // remove ttl after we get rid of Amplify backend, our own API will handle the TTLs without input from the client
-): Promise<Template> {
-  const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.update({
-      ...template,
-      ...(ttl && { ttl }),
-    });
+export async function saveTemplate(template: Template): Promise<TemplateDTO> {
+  const token = await getAccessTokenServer();
 
-  if (errors) {
-    logger.error('Failed to save template', errors);
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await BackendClient(token).templates.updateTemplate(
+    template.id,
+    template
+  );
+
+  if (error) {
+    logger.error('Failed to save template', { error });
     throw new Error('Failed to save template data');
   }
 
-  if (!data) {
-    throw new DbOperationError({
-      message:
-        'Template in unknown state. No errors reported but entity returned as falsy',
-      operation: 'update',
-    });
-  }
   return data;
 }
 
 export async function getTemplate(
   templateId: string
-): Promise<Template | undefined> {
-  const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.get({
-      id: templateId,
-    });
+): Promise<TemplateDTO | undefined> {
+  const token = await getAccessTokenServer();
 
-  if (errors) {
-    logger.error('Failed to get template', errors);
+  if (!token) {
+    throw new Error('Failed to get access token');
   }
 
-  if (!data) {
-    logger.warn(`Failed to retrieve template for ID ${templateId}`);
-    return undefined;
+  const { data, error } =
+    await BackendClient(token).templates.getTemplate(templateId);
+
+  if (error) {
+    logger.error('Failed to get template', { error });
   }
 
   return data;
 }
 
-export async function sendEmail(
-  templateId: string,
-  templateName: string,
-  templateMessage: string,
-  templateSubjectLine: string | null
-) {
-  const res = await getAmplifyBackendClient().queries.sendEmail({
-    recipientEmail: 'england.test.cm@nhs.net',
-    templateId,
-    templateName,
-    templateMessage,
-    templateSubjectLine,
-  });
+export async function sendEmail(templateId: string) {
+  const token = await getAccessTokenServer();
 
-  if (res.errors) {
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { error } = await BackendClient(token).functions.sendEmail(templateId);
+
+  if (error) {
     logger.error({
       description: 'Error sending email',
-      res,
+      error,
     });
   }
 }
 
-export async function getTemplates(): Promise<Template[] | []> {
-  const { data, errors } =
-    await getAmplifyBackendClient().models.TemplateStorage.list();
+export async function getTemplates(): Promise<TemplateDTO[]> {
+  const token = await getAccessTokenServer();
 
-  if (errors) {
-    logger.error('Failed to get templates', errors);
+  if (!token) {
+    throw new Error('Failed to get access token');
   }
 
-  if (!data) {
-    logger.warn(`Failed to retrieve templates`);
+  const { data, error } = await BackendClient(token).templates.listTemplates();
+
+  if (error) {
+    logger.error('Failed to get templates', { error });
     return [];
   }
 
-  const parsedData: Template[] = data
+  const sortedData = data
     .map((template) => isTemplateValid(template))
-    .filter(
-      (template): template is Template =>
-        template !== undefined &&
-        template.templateStatus !== TemplateStatus.DELETED // when we switch over to the API we should remove this code because the API will handle the deleted filter
-    )
+    .filter((template): template is TemplateDTO => template !== undefined)
     .sort((a, b) => {
-      const aCreatedAt = a.createdAt ?? '';
-      const bCreatedAt = b.createdAt ?? '';
+      const aCreatedAt = a.createdAt;
+      const bCreatedAt = b.createdAt;
 
       if (aCreatedAt === bCreatedAt) {
         return a.id.localeCompare(b.id);
@@ -122,5 +115,5 @@ export async function getTemplates(): Promise<Template[] | []> {
       return aCreatedAt < bCreatedAt ? 1 : -1;
     });
 
-  return parsedData;
+  return sortedData;
 }

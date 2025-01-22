@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -22,16 +23,25 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const state: EmailTemplate = {
+    const templateDTO: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    const emailTemplate: EmailTemplate = {
+      ...templateDTO,
+      subject: 'template-subject-line',
+      templateType: TemplateType.EMAIL,
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    };
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewEmailTemplatePage({
       params: {
@@ -39,7 +49,7 @@ describe('PreviewEmailTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewEmailTemplate initialState={state} />);
+    expect(page).toEqual(<ReviewEmailTemplate initialState={emailTemplate} />);
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
@@ -96,6 +106,8 @@ describe('PreviewEmailTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
       });
 
       await PreviewEmailTemplatePage({

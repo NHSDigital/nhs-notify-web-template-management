@@ -23,7 +23,8 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Collect trace when a test fails. See https://playwright.dev/docs/trace-viewer */
+    trace: 'retain-on-failure',
   },
+  globalSetup: path.resolve(__dirname, 'global.setup.ts'),
 });

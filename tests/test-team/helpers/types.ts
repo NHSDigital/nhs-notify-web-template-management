@@ -24,7 +24,6 @@ export enum TemplateStatus {
 }
 
 export type Template = {
-  __typename: string;
   createdAt: string;
   updatedAt: string;
   id: string;
@@ -34,4 +33,5 @@ export type Template = {
   subject?: string;
   templateType: TemplateType;
   templateStatus: TemplateStatus;
+  owner: string;
 };

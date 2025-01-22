@@ -8,17 +8,17 @@ export default defineConfig({
   workers: 1,
   projects: [
     {
-      name: 'api-setup',
+      name: 'api:setup',
       testMatch: 'api.setup.ts',
     },
     {
       name: 'api',
       testMatch: '*.api.spec.ts',
-      dependencies: ['api-setup'],
-      teardown: 'api-teardown',
+      dependencies: ['api:setup'],
+      teardown: 'api:teardown',
     },
     {
-      name: 'api-teardown',
+      name: 'api:teardown',
       testMatch: 'api.teardown.ts',
     },
   ],

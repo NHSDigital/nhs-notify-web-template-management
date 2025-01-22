@@ -1,7 +1,5 @@
 'use client';
 
-// we need this to be a client component because nhsuk-react-components uses client-only react features
-
 import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import {

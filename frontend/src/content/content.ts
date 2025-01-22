@@ -12,7 +12,9 @@ const headerComponent = {
     },
     logOut: {
       text: 'Log out',
-      href: '/auth/signout',
+      href: `/auth/signout?redirect=${encodeURIComponent(
+        `${getBasePath()}/create-and-submit-templates`
+      )}`,
     },
   },
 };

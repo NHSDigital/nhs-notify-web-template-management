@@ -67,9 +67,7 @@ terraform/*_output.json
 group_target-env.tfvars
 *tf_outputs.json
 
-\.amplify/
 amplify_outputs.json
-frontend/amplify/functions/send-email/email-template.json
 
 # playwright
 test-results/
@@ -82,3 +80,4 @@ sandbox_cognito_auth_token.json
 
 frontend/public/testing
 .vscode/launch.json
+auth.json

@@ -37,14 +37,26 @@ export function assertNotifyBannerLink({
   });
 }
 
-export function assertLoginLink({ page, id, baseURL }: CommonStepsProps) {
+export function assertLoginLink({ page, id }: CommonStepsProps) {
   return test.step('when user clicks "Log in", then user is redirected to "login page"', async () => {
     await page.loadPage(id);
 
-    await page.clickLoginLink();
+    const link = await page.loginLink.getAttribute('href');
 
-    await expect(page.page).toHaveURL(
-      `${baseURL}/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates`
+    expect(link).toBe(
+      '/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates'
+    );
+  });
+}
+
+export function assertLogoutLink({ page, id }: CommonStepsProps) {
+  return test.step('"Log out", should direct user to logout', async () => {
+    await page.loadPage(id);
+
+    const link = await page.logoutLink.getAttribute('href');
+
+    expect(link).toBe(
+      '/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates'
     );
   });
 }

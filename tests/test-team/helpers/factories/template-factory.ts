@@ -1,24 +1,27 @@
 import { Template, TemplateStatus, TemplateType } from '../types';
 
 export const TemplateFactory = {
-  createEmailTemplate: (id: string): Template => {
+  createEmailTemplate: (id: string, owner: string): Template => {
     return TemplateFactory.create({
       id,
+      owner,
       templateType: TemplateType.EMAIL,
       subject: '',
     });
   },
 
-  createSmsTemplate: (id: string): Template => {
+  createSmsTemplate: (id: string, owner: string): Template => {
     return TemplateFactory.create({
       id,
+      owner,
       templateType: TemplateType.SMS,
     });
   },
 
-  createNhsAppTemplate: (id: string): Template => {
+  createNhsAppTemplate: (id: string, owner: string): Template => {
     return TemplateFactory.create({
       id,
+      owner,
       templateType: TemplateType.NHS_APP,
     });
   },
@@ -26,11 +29,11 @@ export const TemplateFactory = {
   create: (
     template: Partial<Template> & {
       id: string;
+      owner: string;
       templateType: string;
     }
   ): Template => {
     return {
-      __typename: 'TemplateStorage',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       version: 1,
       createdAt: new Date().toISOString(),

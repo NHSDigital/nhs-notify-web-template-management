@@ -12,21 +12,41 @@ import { faker } from '@faker-js/faker';
 import { CredentialsFile } from './credentials-file';
 
 export type TestUserCredential = {
-  user: { email: string };
+  user: { email: string; userId: string };
   password: string;
   accessToken: string;
   refreshToken: string;
 };
 
-export type TestUser = {
-  email: string;
-  getAccessToken(): Promise<string>;
-};
-
 export enum TestUserId {
+  /**
+   * User1 is generally the signed in user
+   */
   User1 = 'User1',
+  /**
+   * User2 provides an alternative user allowing to check for things like template ownership
+   */
   User2 = 'User2',
 }
+
+export type TestUser = {
+  email: string;
+  userId: string;
+  password: string;
+  /**
+   * Gets an access token for a test user
+   * If the token is expired, tries to use refresh token
+   * If no valid token or refresh token, obtains one using password auth
+   * Password auth implicitly resets temp password if not logged in previously
+   */
+  getAccessToken(): Promise<string>;
+  /**
+   * Sets an updated password in local state.
+   * The password should already have been updated in Cognito
+   * e.g. by using the change password form in the UI
+   */
+  setUpdatedPassword(password: string): Promise<void>;
+};
 
 export class CognitoAuthHelper {
   private static credentialsFile = new CredentialsFile(
@@ -43,10 +63,7 @@ export class CognitoAuthHelper {
 
   public async setup() {
     await Promise.all(
-      Object.values(TestUserId).map(async (id) => {
-        await this.createUser(id);
-        await this.passwordAuth(id);
-      })
+      Object.values(TestUserId).map((id) => this.createUser(id))
     );
   }
 
@@ -91,17 +108,29 @@ export class CognitoAuthHelper {
       throw new Error('User not found');
     }
 
-    return {
+    const { runId } = this;
+
+    // if ths gets much more complex, maybe it should be a class
+    const user: TestUser = {
       ...credential.user,
+      password: credential.password,
       getAccessToken: () => this.getAccessToken(id),
+      async setUpdatedPassword(password) {
+        await CognitoAuthHelper.credentialsFile.set(runId, id, {
+          password,
+        });
+        this.password = password;
+      },
     };
+
+    return user;
   }
 
   private async createUser(id: TestUserId): Promise<void> {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
 
-    await this.client.send(
+    const user = await this.client.send(
       new AdminCreateUserCommand({
         UserPoolId: this.userPoolId,
         Username: email,
@@ -110,13 +139,17 @@ export class CognitoAuthHelper {
           { Name: 'email_verified', Value: 'True' },
         ],
         TemporaryPassword: tempPassword,
-        DesiredDeliveryMediums: ['EMAIL'],
         MessageAction: 'SUPPRESS',
       })
     );
 
     await CognitoAuthHelper.credentialsFile.set(this.runId, id, {
-      user: { email },
+      user: {
+        email,
+        userId:
+          user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
+          '',
+      },
       password: tempPassword,
     });
   }
@@ -216,7 +249,7 @@ export class CognitoAuthHelper {
     return response.AuthenticationResult?.AccessToken || '';
   }
 
-  private static generatePassword() {
+  static generatePassword() {
     const digits = crypto.randomInt(1000, 10_000);
     const word = faker.word.sample(4);
     const word2 = faker.word.sample(4);
@@ -224,10 +257,16 @@ export class CognitoAuthHelper {
   }
 
   private static isTokenExpired(token: string) {
+    if (!token) {
+      return true;
+    }
+
+    // not checking the validity of the token here
+    // just if it's exp claim is in the past
     const [, payload] = token.split('.');
     const { exp } = JSON.parse(Buffer.from(payload, 'base64').toString('utf8'));
 
-    return exp * 1000 < Date.now();
+    return !exp || exp * 1000 < Date.now();
   }
 }
 

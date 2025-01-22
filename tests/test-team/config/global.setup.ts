@@ -1,13 +1,7 @@
-import { FullConfig } from '@playwright/test';
-import { DatabaseTableNameHelper } from '../helpers/db/database-tablename-helper';
+import { randomUUID } from 'node:crypto';
 
-async function globalSetup(config: FullConfig) {
-  const tableNameHelper = new DatabaseTableNameHelper();
-
-  process.env.TEMPLATE_STORAGE_TABLE_NAME =
-    await tableNameHelper.getTemplateStorageTableName();
-
-  return config;
+async function globalSetup() {
+  process.env.PLAYWRIGHT_RUN_ID = randomUUID();
 }
 
 export default globalSetup;

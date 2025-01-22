@@ -29,7 +29,11 @@ describe('SubmitNhsAppTemplatePage', () => {
       message: 'template-message',
     };
 
-    getTemplateMock.mockResolvedValue(state);
+    getTemplateMock.mockResolvedValue({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
 
     const page = await SubmitNhsAppTemplatePage({
       params: {
@@ -91,6 +95,8 @@ describe('SubmitNhsAppTemplatePage', () => {
         id: 'template-id',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         ...value,
+        createdAt: 'today',
+        updatedAt: 'today',
       });
 
       await SubmitNhsAppTemplatePage({

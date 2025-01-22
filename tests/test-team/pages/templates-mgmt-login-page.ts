@@ -1,0 +1,62 @@
+import { Locator, Page } from '@playwright/test';
+import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import {
+  CognitoAuthHelper,
+  type TestUser,
+} from '../helpers/auth/cognito-auth-helper';
+
+export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
+  public readonly emailInput: Locator;
+
+  public readonly passwordInput: Locator;
+
+  public readonly confirmPasswordInput: Locator;
+
+  public readonly submitButton: Locator;
+
+  public readonly errorMessage: Locator;
+
+  constructor(page: Page) {
+    super(page);
+    this.emailInput = page.locator('input[name="username"]');
+    this.passwordInput = page.locator('input[name="password"]');
+    this.confirmPasswordInput = page.locator('input[name="confirm_password"]');
+    this.submitButton = page.locator('button[type="submit"]');
+    this.errorMessage = page.locator('.amplify-alert__body');
+  }
+
+  async cognitoSignIn(user: TestUser) {
+    await this.emailInput.fill(user.email);
+
+    await this.passwordInput.fill(user.password);
+
+    await this.clickSubmitButton();
+
+    await this.confirmPasswordInput.waitFor({
+      state: 'visible',
+      timeout: 1000,
+    });
+
+    // Note: because this is a new user, Cognito forces us to update the password.
+    if (await this.confirmPasswordInput.isVisible()) {
+      const password = CognitoAuthHelper.generatePassword();
+
+      await this.passwordInput.fill(password);
+
+      await this.confirmPasswordInput.fill(password);
+
+      await this.clickSubmitButton();
+
+      await user.setUpdatedPassword(password);
+    }
+  }
+
+  async clickSubmitButton() {
+    await this.submitButton.click();
+  }
+
+  async loadPage() {
+    await this.page.goto('/templates/create-and-submit-templates');
+    await super.clickLoginLink();
+  }
+}

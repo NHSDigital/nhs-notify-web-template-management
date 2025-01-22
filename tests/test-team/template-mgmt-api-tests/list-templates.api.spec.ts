@@ -19,7 +19,7 @@ test.describe('GET /v1/templates', () => {
   });
 
   test.afterEach(async () => {
-    await templateStorageHelper.deleteTemplates();
+    await templateStorageHelper.deleteAdHocTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -54,9 +54,9 @@ test.describe('GET /v1/templates', () => {
 
     const created1 = await response1.json();
 
-    templateStorageHelper.addTemplateKey({
+    templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
-      owner: user1.email,
+      owner: user1.userId,
     });
 
     // create another template for user 1
@@ -76,9 +76,9 @@ test.describe('GET /v1/templates', () => {
 
     const created2 = await response2.json();
 
-    templateStorageHelper.addTemplateKey({
+    templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
-      owner: user1.email,
+      owner: user1.userId,
     });
 
     // exercise - request user 1 templates
@@ -141,9 +141,9 @@ test.describe('GET /v1/templates', () => {
 
     const created1 = await response1.json();
 
-    templateStorageHelper.addTemplateKey({
+    templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
-      owner: user1.email,
+      owner: user1.userId,
     });
 
     // create another template for user 1
@@ -163,9 +163,9 @@ test.describe('GET /v1/templates', () => {
 
     const created2 = await response2.json();
 
-    templateStorageHelper.addTemplateKey({
+    templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
-      owner: user1.email,
+      owner: user1.userId,
     });
 
     // delete template 1

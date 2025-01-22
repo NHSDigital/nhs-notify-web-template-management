@@ -33,13 +33,7 @@ const config: Config = {
     '.dev.tsx',
   ],
 
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    'fixture',
-    'helpers.ts',
-    '.build',
-    'amplify/',
-  ],
+  testPathIgnorePatterns: ['/node_modules/', 'fixture', 'helpers.ts', '.build'],
 
   // Set the absolute path for imports
   moduleNameMapper: {

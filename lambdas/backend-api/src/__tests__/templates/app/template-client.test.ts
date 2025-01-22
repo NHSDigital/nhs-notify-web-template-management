@@ -4,17 +4,17 @@ import {
   TemplateStatus,
   TemplateType,
   UpdateTemplate,
-} from 'nhs-notify-backend-client';
-import {
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
+} from 'nhs-notify-backend-client';
+import {
   DatabaseTemplate,
   templateRepository,
-} from '@backend-api/templates/domain/template';
+} from '@backend-api/templates/infra';
 import { validate } from '@backend-api/utils/validate';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 
-jest.mock('@backend-api/templates/domain/template/template-repository');
+jest.mock('@backend-api/templates/infra');
 jest.mock('@backend-api/utils/validate');
 
 const createMock = jest.mocked(templateRepository.create);

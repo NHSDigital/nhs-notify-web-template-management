@@ -18,7 +18,7 @@ test.describe('POST /v1/template', async () => {
   });
 
   test.afterAll(async () => {
-    await templateStorageHelper.deleteTemplates();
+    await templateStorageHelper.deleteAdHocTemplates();
   });
 
   test('returns 401 if no auth token', async ({ request }) => {
@@ -102,9 +102,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created).toEqual({
@@ -147,9 +147,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -337,9 +337,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created).toEqual({
@@ -382,9 +382,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -544,9 +544,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created).toEqual({
@@ -590,9 +590,9 @@ test.describe('POST /v1/template', async () => {
 
       const created = await response.json();
 
-      templateStorageHelper.addTemplateKey({
+      templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.email,
+        owner: user1.userId,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');

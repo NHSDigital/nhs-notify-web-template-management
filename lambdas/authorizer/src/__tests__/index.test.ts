@@ -37,7 +37,7 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
       ) {
         return {
           Username: undefined,
-          UserAttributes: [{ Name: 'email', Value: 'email' }],
+          UserAttributes: [{ Name: 'sub', Value: 'sub' }],
         };
       }
 
@@ -53,17 +53,17 @@ jest.mock('@aws-sdk/client-cognito-identity-provider', () => {
 
       if (
         decodedJwt.iss ===
-        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email'
+        'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-sub'
       ) {
         return {
           Username: 'username',
-          UserAttributes: [{ Name: 'NOT-EMAIL', Value: 'not-email' }],
+          UserAttributes: [{ Name: 'NOT-SUB', Value: 'not-sub' }],
         };
       }
 
       return {
         Username: 'username',
-        UserAttributes: [{ Name: 'email', Value: 'email' }],
+        UserAttributes: [{ Name: 'sub', Value: 'sub' }],
       };
     }
   }
@@ -105,8 +105,7 @@ const allowPolicy = {
     ],
   },
   context: {
-    username: 'username',
-    email: 'email',
+    user: 'sub',
   },
 };
 
@@ -366,14 +365,14 @@ test.each([
   expect(warnMock).toHaveBeenCalledWith('Missing user');
 });
 
-test('returns Deny policy, when no email on Cognito UserAttributes', async () => {
-  process.env.USER_POOL_ID = 'user-pool-id-cognito-no-email';
+test('returns Deny policy, when no sub on Cognito UserAttributes', async () => {
+  process.env.USER_POOL_ID = 'user-pool-id-cognito-no-sub';
 
   const jwt = sign(
     {
       token_use: 'access',
       client_id: 'user-pool-client-id',
-      iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-email',
+      iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-sub',
     },
     'key',
     {
@@ -392,7 +391,7 @@ test('returns Deny policy, when no email on Cognito UserAttributes', async () =>
   );
 
   expect(res).toEqual(denyPolicy);
-  expect(warnMock).toHaveBeenCalledWith('Missing user email address');
+  expect(warnMock).toHaveBeenCalledWith('Missing user subject');
 });
 
 test('returns Allow policy on valid token', async () => {

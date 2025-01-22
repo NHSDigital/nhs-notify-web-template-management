@@ -6,16 +6,14 @@ import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
 import {
-  Template,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => {},
-}));
+jest.mock('@utils/amplify-utils');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -28,6 +26,8 @@ const mockNhsAppTemplate = {
   name: 'name',
   message: 'body',
   id: '1',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('submitTemplate', () => {
@@ -56,7 +56,7 @@ describe('submitTemplate', () => {
   it('should handle error when validating template', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-    } as unknown as Template);
+    } as unknown as TemplateDTO);
 
     const formData = getMockFormData({ templateId: '1' });
 
@@ -92,12 +92,7 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(sendEmailMock).toHaveBeenCalledWith(
-      mockNhsAppTemplate.id,
-      mockNhsAppTemplate.name,
-      mockNhsAppTemplate.message,
-      null
-    );
+    expect(sendEmailMock).toHaveBeenCalledWith(mockNhsAppTemplate.id);
 
     expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
   });
@@ -110,6 +105,8 @@ describe('submitTemplate', () => {
       name: 'name',
       subject: 'subjectLine',
       message: 'body',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     getTemplateMock.mockResolvedValueOnce(mockEmailTemplate);
@@ -120,11 +117,6 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(sendEmailMock).toHaveBeenCalledWith(
-      mockEmailTemplate.id,
-      mockEmailTemplate.name,
-      mockEmailTemplate.message,
-      mockEmailTemplate.subject
-    );
+    expect(sendEmailMock).toHaveBeenCalledWith(mockEmailTemplate.id);
   });
 });

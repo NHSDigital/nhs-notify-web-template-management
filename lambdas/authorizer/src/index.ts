@@ -32,7 +32,7 @@ const generateMethodArn = (
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
-  context?: { username: string; email: string }
+  context?: { user: string }
 ) => ({
   principalId: 'api-caller',
   policyDocument: {
@@ -119,18 +119,15 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
       return generatePolicy(methodArn, 'Deny');
     }
 
-    const emailAddress = UserAttributes.find(
-      ({ Name }) => Name === 'email'
-    )?.Value;
+    const sub = UserAttributes.find(({ Name }) => Name === 'sub')?.Value;
 
-    if (!emailAddress) {
-      logger.warn('Missing user email address');
+    if (!sub) {
+      logger.warn('Missing user subject');
       return generatePolicy(methodArn, 'Deny');
     }
 
     return generatePolicy(methodArn, 'Allow', {
-      username: Username,
-      email: emailAddress,
+      user: sub,
     });
   } catch (error) {
     logger.error(error);

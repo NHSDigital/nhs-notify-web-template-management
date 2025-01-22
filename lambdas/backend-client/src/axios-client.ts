@@ -9,7 +9,7 @@ const isApplicationFailure = (error: any): error is Failure =>
 
 export const createAxiosClient = (token: string) => {
   const client = axios.create({
-    baseURL: process.env.BACKEND_API_URL,
+    baseURL: process.env.API_BASE_URL,
     headers: {
       Authorization: token,
     },
