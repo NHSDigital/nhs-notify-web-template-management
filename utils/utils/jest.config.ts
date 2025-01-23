@@ -47,7 +47,7 @@ export const baseJestConfig: Config = {
 const utilsJestConfig = {
   ...baseJestConfig,
 
-  coveragePathIgnorePatterns: ['enum.ts', 'zod-validators.ts'],
+  coveragePathIgnorePatterns: ['zod-validators.ts'],
 };
 
 export default utilsJestConfig;
