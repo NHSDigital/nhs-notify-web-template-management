@@ -32,13 +32,19 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
 
     await this.clickSubmitButton();
 
-    await this.confirmPasswordInput.waitFor({
-      state: 'visible',
-      timeout: 1000,
-    });
+    let shouldResetPassword = true;
+
+    try {
+      await this.confirmPasswordInput.waitFor({
+        state: 'visible',
+        timeout: 5000,
+      });
+    } catch {
+      shouldResetPassword = false;
+    }
 
     // Note: because this is a new user, Cognito forces us to update the password.
-    if (await this.confirmPasswordInput.isVisible()) {
+    if (shouldResetPassword) {
       const password = CognitoAuthHelper.generatePassword();
 
       await this.passwordInput.fill(password);
