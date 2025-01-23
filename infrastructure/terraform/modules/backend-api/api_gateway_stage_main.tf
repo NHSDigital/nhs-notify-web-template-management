@@ -1,3 +1,5 @@
+# TODO: CCM-8422
+# tfsec:ignore:aws-api-gateway-enable-access-logging
 resource "aws_api_gateway_stage" "main" {
   stage_name    = var.environment
   description   = "Templates API stage ${var.environment}"

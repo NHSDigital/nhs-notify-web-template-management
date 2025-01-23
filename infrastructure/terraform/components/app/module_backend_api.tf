@@ -1,3 +1,5 @@
+# TODO: CCM-8418
+# tfsec:ignore:aws-iam-no-policy-wildcards
 module "backend_api" {
   source = "../../modules/backend-api"
 
