@@ -124,3 +124,9 @@ variable "disable_content" {
   description = "Value for turning switching disable conten true/false"
   default     = "false"
 }
+
+variable "override_ses_domain_name" {
+  type        = string
+  description = "Override SES Domain name"
+  default     = "NA"
+}
