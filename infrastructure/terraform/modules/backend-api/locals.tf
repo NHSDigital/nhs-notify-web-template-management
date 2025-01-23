@@ -15,11 +15,11 @@ locals {
   })
 
   backend_lambda_entrypoints = {
-    create_template  = "src/templates/api/create.ts"
-    get_template     = "src/templates/api/get.ts"
-    update_template  = "src/templates/api/update.ts"
-    list_template    = "src/templates/api/list.ts"
-    send_email       = "src/email/handler.ts"
-    template_client  = "src/index.ts"
+    create_template = "src/templates/api/create.ts"
+    get_template    = "src/templates/api/get.ts"
+    update_template = "src/templates/api/update.ts"
+    list_template   = "src/templates/api/list.ts"
+    send_email      = "src/email/handler.ts"
+    template_client = "src/index.ts"
   }
 }

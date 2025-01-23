@@ -1,5 +1,5 @@
 module "email_lambda" {
-  depends_on  = [module.build_template_lambda, module.build_template_client]
+  depends_on = [module.build_template_lambda, module.build_template_client]
 
   source      = "../lambda-function"
   description = "Send an email to the recipient"
@@ -14,7 +14,7 @@ module "email_lambda" {
 
   environment_variables = {
     TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
-    SENDER_EMAIL = "no-reply@${var.email_domain_name}"
+    SENDER_EMAIL         = "no-reply@${var.email_domain_name}"
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.email_lambda.json
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "email_lambda" {
   }
 
   statement {
-    sid  = "AllowSESAccess"
+    sid    = "AllowSESAccess"
     effect = "Allow"
 
     actions = ["ses:SendRawEmail"]
