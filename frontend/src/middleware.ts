@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(
       new URL(
         `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/${request.nextUrl.pathname}`
+          `${getBasePath()}${request.nextUrl.pathname}`
         )}`,
         request.url
       )
