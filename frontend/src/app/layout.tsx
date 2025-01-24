@@ -10,8 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  logoutWarning,
   children,
 }: {
+  logoutWarning: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -66,7 +68,10 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout>
+          {logoutWarning}
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );
