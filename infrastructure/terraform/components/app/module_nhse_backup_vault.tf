@@ -8,7 +8,8 @@ module "nhse_backup_vault" {
   backup_copy_vault_account_id = data.aws_arn.destination_vault_arn[0].account
   backup_copy_vault_arn        = data.aws_arn.destination_vault_arn[0].arn
 
-  reports_bucket = local.acct.s3_buckets["backup_reports"]["bucket"]
+  reports_bucket                     = local.acct.s3_buckets["backup_reports"]["bucket"]
+  notifications_target_email_address = var.backup_report_recipient
 
   bootstrap_kms_key_arn = module.kms.key_id
   terraform_role_arn    = local.bootstrap.iam_github_deploy_role["arn"]
