@@ -65,3 +65,9 @@ variable "email_domain_name" {
   type        = string
   description = "Email domain name"
 }
+
+variable "enable_backup" {
+  type        = bool
+  description = "Enable Backups for the DynamoDB table?"
+  default     = true
+}

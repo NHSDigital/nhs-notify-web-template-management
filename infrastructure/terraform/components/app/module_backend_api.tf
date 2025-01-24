@@ -12,5 +12,7 @@ module "backend_api" {
   log_retention_in_days = var.log_retention_in_days
   email_domain_name     = local.root_domain_name
 
-  cognito_config        = jsondecode(aws_ssm_parameter.cognito_config.value)
+  cognito_config = jsondecode(aws_ssm_parameter.cognito_config.value)
+
+  enable_backup = var.destination_vault_arn != null ? true : false
 }
