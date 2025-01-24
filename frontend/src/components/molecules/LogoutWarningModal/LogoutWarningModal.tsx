@@ -3,28 +3,25 @@
 import { Button } from 'nhsuk-react-components';
 import content from '@content/content';
 import { Modal } from '@molecules/Modal/Modal';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useIdle } from '@hooks/use-idle.hook';
+import { redirect } from 'next/navigation';
 import styles from './LogoutWarningModal.module.scss';
 
-export const LogoutWarningModal = () => {
+export const LogoutWarningModal = ({
+  authenticated,
+}: {
+  authenticated: boolean;
+}) => {
   const {
     links: { logOut },
   } = content.components.headerComponent;
 
-  const { authStatus, signOut, toSignIn } = useAuthenticator((ctx) => [
-    ctx.authStatus,
-  ]);
+  const showWarning = useIdle(5000) && authenticated;
 
-  const isAuthenticated = authStatus === 'authenticated';
-
-  const showWarning = useIdle(5000) && isAuthenticated;
-
-  const shouldSignOut = useIdle(6000) && isAuthenticated;
+  const shouldSignOut = useIdle(6000) && authenticated;
 
   if (shouldSignOut) {
-    signOut();
-    toSignIn();
+    return redirect('/auth/inactive');
   }
 
   return (
@@ -38,9 +35,7 @@ export const LogoutWarningModal = () => {
       <Modal.Footer>
         <Button className={styles.signIn}>Stay signed in</Button>
         <div className={styles.signOut}>
-          <a onClick={signOut} href={logOut.href}>
-            Sign out
-          </a>
+          <a href={logOut.href}>Sign out</a>
         </div>
       </Modal.Footer>
     </Modal>
