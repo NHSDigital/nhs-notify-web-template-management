@@ -18,179 +18,84 @@ import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-page';
 test.use({ storageState: { cookies: [], origins: [] } });
 
 test.describe('Protected Routes Tests', () => {
-  test('should not be able to access "Manage Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new ManageTemplatesPage(page);
+  for (const { TempPage, url, pageHeading } of [
+    {
+      TempPage: ManageTemplatesPage,
+      url: '/manage-templates',
+      pageHeading: 'Manage Templates',
+    },
+    {
+      TempPage: TemplateMgmtChoosePage,
+      url: '/choose-a-template-type',
+      pageHeading: 'Choose a Template Type',
+    },
+    {
+      TempPage: TemplateMgmtCreateNhsAppPage,
+      url: '/create-nhs-app-template',
+      pageHeading: 'Create NHS App Message',
+    },
+    {
+      TempPage: TemplateMgmtPreviewNhsAppPage,
+      url: '/preview-nhs-app-template',
+      pageHeading: 'Preview NHS App Message',
+    },
+    {
+      TempPage: TemplateMgmtViewSubmittedNHSAppPage,
+      url: '/view-submitted-nhs-app-template',
+      pageHeading: 'View Submitted NHS App',
+    },
+    {
+      TempPage: TemplateMgmtCreateSmsPage,
+      url: '/create-text-message-template',
+      pageHeading: 'Create SMS Template',
+    },
+    {
+      TempPage: TemplateMgmtPreviewSmsPage,
+      url: '/preview-text-message-template',
+      pageHeading: 'Preview SMS Template',
+    },
+    {
+      TempPage: TemplateMgmtViewSubmittedSMSPage,
+      url: '/view-submitted-text-message-template',
+      pageHeading: 'View Submitted SMS Template',
+    },
+    {
+      TempPage: TemplateMgmtCreateEmailPage,
+      url: '/create-email-template',
+      pageHeading: 'Create Email Template',
+    },
+    {
+      TempPage: TemplateMgmtPreviewEmailPage,
+      url: '/preview-email-template',
+      pageHeading: 'Preview Email Template',
+    },
+    {
+      TempPage: TemplateMgmtViewSubmittedEmailPage,
+      url: '/view-submitted-email-template',
+      pageHeading: 'View Submitted Email Template',
+    },
+    {
+      TempPage: TemplateMgmtCopyPage,
+      url: '/copy-template',
+      pageHeading: 'Copy Template',
+    },
+    {
+      TempPage: TemplateMgmtDeletePage,
+      url: '/delete-template',
+      pageHeading: 'Delete Template',
+    },
+  ])
+    test(`should not be able to access ${pageHeading} page without auth`, async ({
+      page,
+      baseURL,
+    }) => {
+      const templatePage = new TempPage(page);
+      await templatePage.loadPage('');
 
-    await chooseTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/manage-templates')}`
-    );
-  });
-
-  test('should not be able to access "Choose Template Type" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtChoosePage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/choose-a-template-type')}`
-    );
-  });
-
-  // NHS App Template
-  test('should not be able to access "Create NHS App Message" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/create-nhs-app-template')}`
-    );
-  });
-
-  test('should not be able to access "Preview NHS App Message" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtPreviewNhsAppPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/preview-nhs-app-template')}`
-    );
-  });
-
-  test('should not be able to access "View Submitted NHS App" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtViewSubmittedNHSAppPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/view-submitted-nhs-app-template')}`
-    );
-  });
-
-  // NHS SMS Template
-  test('should not be able to access "Create SMS Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/create-text-message-template')}`
-    );
-  });
-
-  test('should not be able to access "Preview SMS Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtPreviewSmsPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/preview-text-message-template')}`
-    );
-  });
-
-  test('should not be able to access "View Submitted SMS Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtViewSubmittedSMSPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/view-submitted-text-message-template')}`
-    );
-  });
-
-  // NHS Email Template
-  test('should not be able to access "Create Email Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/create-email-template')}`
-    );
-  });
-
-  test('should not be able to access "Preview Email Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtPreviewEmailPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/preview-email-template')}`
-    );
-  });
-
-  test('should not be able to access "View Submitted Email Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtViewSubmittedEmailPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/view-submitted-email-template')}`
-    );
-  });
-
-  // Copy Template
-  test('should not be able to access "Copy Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtCopyPage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/copy-template')}`
-    );
-  });
-
-  // Delete Template
-  test('should not be able to access "Delete Template" page without auth', async ({
-    page,
-    baseURL,
-  }) => {
-    const chooseTemplatePage = new TemplateMgmtDeletePage(page);
-
-    await chooseTemplatePage.loadPage('');
-
-    await expect(page).toHaveURL(
-      `${baseURL}/auth?redirect=${encodeURIComponent('/templates/delete-template')}`
-    );
-  });
+      await expect(page).toHaveURL(
+        `${baseURL}/auth?redirect=${encodeURIComponent(`/templates${url}`)}`
+      );
+    });
 
   // Submit Template
   test('should not be able to access "Submitted Template" page without auth', async ({
