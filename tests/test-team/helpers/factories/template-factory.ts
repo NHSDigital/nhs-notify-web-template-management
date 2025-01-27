@@ -1,0 +1,46 @@
+import { Template, TemplateStatus, TemplateType } from '../types';
+
+export const TemplateFactory = {
+  createEmailTemplate: (id: string, owner: string): Template => {
+    return TemplateFactory.create({
+      id,
+      owner,
+      templateType: TemplateType.EMAIL,
+      subject: '',
+    });
+  },
+
+  createSmsTemplate: (id: string, owner: string): Template => {
+    return TemplateFactory.create({
+      id,
+      owner,
+      templateType: TemplateType.SMS,
+    });
+  },
+
+  createNhsAppTemplate: (id: string, owner: string): Template => {
+    return TemplateFactory.create({
+      id,
+      owner,
+      templateType: TemplateType.NHS_APP,
+    });
+  },
+
+  create: (
+    template: Partial<Template> & {
+      id: string;
+      owner: string;
+      templateType: string;
+    }
+  ): Template => {
+    return {
+      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      version: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      name: '',
+      message: '',
+      ...template,
+    };
+  },
+};

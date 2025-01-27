@@ -10,7 +10,7 @@ import {
   previewTemplatePages,
   Template,
   TemplateStatus,
-  templateStatustoDisplayMappings,
+  templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
@@ -78,7 +78,7 @@ export function ManageTemplates({
                         : undefined
                     }
                   >
-                    {templateStatustoDisplayMappings(template.templateStatus)}
+                    {templateStatusToDisplayMappings(template.templateStatus)}
                   </Tag>
                 </Table.Cell>
                 <Table.Cell>

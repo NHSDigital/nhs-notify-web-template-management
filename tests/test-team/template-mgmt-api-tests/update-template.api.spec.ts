@@ -1,0 +1,1967 @@
+import { test, expect } from '@playwright/test';
+import {
+  createAuthHelper,
+  TestUser,
+  TestUserId,
+} from '../helpers/auth/cognito-auth-helper';
+import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
+import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
+import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
+
+test.describe('POST /v1/template/:templateId', async () => {
+  const authHelper = createAuthHelper();
+  const templateStorageHelper = new TemplateStorageHelper();
+  let user1: TestUser;
+  let user2: TestUser;
+
+  test.beforeAll(async () => {
+    user1 = await authHelper.getTestUser(TestUserId.User1);
+    user2 = await authHelper.getTestUser(TestUserId.User2);
+  });
+
+  test.afterAll(async () => {
+    await templateStorageHelper.deleteAdHocTemplates();
+  });
+
+  test('returns 401 if no auth token', async ({ request }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/some-template`
+    );
+    expect(response.status()).toBe(401);
+    expect(await response.json()).toEqual({
+      message: 'Unauthorized',
+    });
+  });
+
+  test('returns 404 if template does not exist', async ({ request }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/noexist`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+    expect(response.status()).toBe(404);
+    expect(await response.json()).toEqual({
+      statusCode: 404,
+      technicalMessage: 'Template not found',
+    });
+  });
+
+  test('returns 404 if template exists but is owned by a different user', async ({
+    request,
+  }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created.template.id,
+      owner: user1.userId,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user2.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(404);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 404,
+      technicalMessage: 'Template not found',
+    });
+  });
+
+  test('returns 400 if no body on request', async ({ request }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created.template.id,
+      owner: user1.userId,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateType:
+          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+      },
+    });
+  });
+
+  test('returns 400 if template type is invalid', async ({ request }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created.template.id,
+      owner: user1.userId,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'INVALID',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateType:
+          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+      },
+    });
+  });
+
+  test('returns 400 if template status is invalid', async ({ request }) => {
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created.template.id,
+      owner: user1.userId,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+          templateStatus: 'INVALID',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateStatus:
+          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED', received 'INVALID'",
+      },
+    });
+  });
+
+  test.describe('NHS_APP templates', () => {
+    test('returns 200 and the updated template data', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+        templateType: 'NHS_APP',
+      });
+
+      const start = new Date();
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          message: updateData.message,
+          name: updateData.name,
+          templateStatus: updateData.templateStatus,
+          templateType: updateData.templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+    });
+
+    test('returns 400 if changing the template type', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateSMSResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(updateSMSResponse.status()).toBe(400);
+
+      const updateSMSResponseBody = await updateSMSResponse.json();
+
+      expect(updateSMSResponseBody).toEqual({
+        details: {
+          templateType: 'Expected NHS_APP but got SMS',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+
+      const updateEmailResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(updateEmailResponse.status()).toBe(400);
+
+      const updateEmailResponseBody = await updateEmailResponse.json();
+
+      expect(updateEmailResponseBody).toEqual({
+        details: {
+          templateType: 'Expected NHS_APP but got EMAIL',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+    });
+
+    test('returns 400 - cannot update attributes on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+
+    test('returns 400 - cannot change status on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
+        templateType: 'NHS_APP',
+        templateStatus: 'SUBMITTED',
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: submitData,
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: {
+            ...submitData,
+            templateStatus: 'NOT_YET_SUBMITTED',
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+    test('returns 404 - cannot update a deleted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const deleteResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(404);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 404,
+        technicalMessage: 'Template not found',
+      });
+    });
+
+    test('returns 400 if missing template name', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template name is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            name: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if missing template message', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'NHS_APP',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template message is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            message: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if template message is over 5000 characters', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            message: 'x'.repeat(5001),
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at most 5000 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if template message has disallowed characters', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+            message: '<>',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message:
+            'Message contains disallowed characters. Disallowed characters: <(.|\n)*?>',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+  });
+
+  test.describe('SMS templates', () => {
+    test('returns 200 and the updated template data', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+        templateType: 'SMS',
+      });
+
+      const start = new Date();
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          message: updateData.message,
+          name: updateData.name,
+          templateStatus: updateData.templateStatus,
+          templateType: updateData.templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+    });
+
+    test('returns 400 if changing the template type', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateNHSAppResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(updateNHSAppResponse.status()).toBe(400);
+
+      const updateNHSAppResponseBody = await updateNHSAppResponse.json();
+
+      expect(updateNHSAppResponseBody).toEqual({
+        details: {
+          templateType: 'Expected SMS but got NHS_APP',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+
+      const updateEmailResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(updateEmailResponse.status()).toBe(400);
+
+      const updateEmailResponseBody = await updateEmailResponse.json();
+
+      expect(updateEmailResponseBody).toEqual({
+        details: {
+          templateType: 'Expected SMS but got EMAIL',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+    });
+
+    test('returns 400 - cannot update attributes on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+
+    test('returns 400 - cannot change status on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+        templateType: 'SMS',
+        templateStatus: 'SUBMITTED',
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: submitData,
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: {
+            ...submitData,
+            templateStatus: 'NOT_YET_SUBMITTED',
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+    test('returns 400 - cannot update a deleted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const deleteResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(404);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 404,
+        technicalMessage: 'Template not found',
+      });
+    });
+
+    test('returns 400 if missing template name', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'SMS',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template name is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            name: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if missing template message', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'SMS',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template message is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            message: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if template message is over 918 characters', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+            message: 'x'.repeat(919),
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at most 918 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+  });
+
+  test.describe('EMAIL templates', () => {
+    test('returns 200 and the updated template data', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+        templateType: 'EMAIL',
+      });
+
+      const start = new Date();
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          message: updateData.message,
+          name: updateData.name,
+          subject: updateData.subject,
+          templateStatus: updateData.templateStatus,
+          templateType: updateData.templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
+      });
+
+      expect(updated.template.updatedAt).toBeDateRoughlyBetween([
+        start,
+        new Date(),
+      ]);
+      expect(updated.template.createdAt).toEqual(created.template.createdAt);
+    });
+
+    test('returns 400 if changing the template type', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateNHSAppResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(updateNHSAppResponse.status()).toBe(400);
+
+      const updateNHSAppResponseBody = await updateNHSAppResponse.json();
+
+      expect(updateNHSAppResponseBody).toEqual({
+        details: {
+          templateType: 'Expected EMAIL but got NHS_APP',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+
+      const updateSMSResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(updateSMSResponse.status()).toBe(400);
+
+      const updateSMSResponseBody = await updateSMSResponse.json();
+
+      expect(updateSMSResponseBody).toEqual({
+        details: {
+          templateType: 'Expected EMAIL but got SMS',
+        },
+        statusCode: 400,
+        technicalMessage: 'Can not change template templateType',
+      });
+    });
+
+    test('returns 400 - cannot update attributes on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            templateStatus: 'SUBMITTED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+
+    test('returns 400 - cannot change status on a submitted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+        templateType: 'EMAIL',
+        templateStatus: 'SUBMITTED',
+      });
+
+      const submitResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: submitData,
+        }
+      );
+
+      expect(submitResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: {
+            ...submitData,
+            templateStatus: 'NOT_YET_SUBMITTED',
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 400,
+        technicalMessage: 'Template with status SUBMITTED cannot be updated',
+      });
+    });
+
+    test('returns 400 - cannot update a deleted template', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const deleteResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(200);
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            templateStatus: 'DELETED',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(404);
+
+      const updateResponseBody = await updateResponse.json();
+
+      expect(updateResponseBody).toEqual({
+        statusCode: 404,
+        technicalMessage: 'Template not found',
+      });
+    });
+
+    test('returns 400 if missing template name', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { name: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template name is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            name: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          name: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if missing template subject', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { subject: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          subject: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template subject is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            subject: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          subject: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if missing template message', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const { message: _, ...updateData } =
+        TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'EMAIL',
+        });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: updateData,
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'Required',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+    test('returns 400 if template message is empty', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            message: '',
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at least 1 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+
+    test('returns 400 if template message is over 100_000 characters', async ({
+      request,
+    }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: user1.userId,
+      });
+
+      const updateResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await user1.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+            templateType: 'EMAIL',
+            message: 'x'.repeat(100_001),
+          }),
+        }
+      );
+
+      expect(updateResponse.status()).toBe(400);
+
+      expect(await updateResponse.json()).toEqual({
+        details: {
+          message: 'String must contain at most 100000 character(s)',
+        },
+        statusCode: 400,
+        technicalMessage: 'Request failed validation',
+      });
+    });
+  });
+});

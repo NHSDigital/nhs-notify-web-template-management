@@ -1,4 +1,7 @@
-import type { APIGatewayRequestAuthorizerHandler } from 'aws-lambda';
+import type {
+  APIGatewayEventRequestContextWithAuthorizer,
+  APIGatewayRequestAuthorizerHandler,
+} from 'aws-lambda';
 import { z } from 'zod';
 import {
   CognitoIdentityProviderClient,
@@ -19,6 +22,13 @@ const $AccessToken = z.object({
   token_use: z.string(),
 });
 
+const getEnvironmentVariable = (envName: string) => process.env[envName];
+
+const generateMethodArn = (
+  requestContext: APIGatewayEventRequestContextWithAuthorizer<undefined>
+) =>
+  `arn:aws:execute-api:eu-west-2:${requestContext.accountId}:${requestContext.apiId}/${requestContext.stage}/*`;
+
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
@@ -38,12 +48,11 @@ const generatePolicy = (
   context,
 });
 
-const getEnvironmentVariable = (envName: string) => process.env[envName];
-
 export const handler: APIGatewayRequestAuthorizerHandler = async ({
-  methodArn,
   headers,
+  requestContext,
 }) => {
+  const methodArn = generateMethodArn(requestContext);
   try {
     if (!headers?.Authorization) {
       return generatePolicy(methodArn, 'Deny');

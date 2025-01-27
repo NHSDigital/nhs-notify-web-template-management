@@ -4,6 +4,12 @@ resource "aws_iam_role" "api_gateway_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.api_gateway_service_trust_policy.json
 }
 
+resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
+  role       = aws_iam_role.api_gateway_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+
+}
+
 resource "aws_iam_role_policy" "api_gateway_execution_policy" {
   role   = aws_iam_role.api_gateway_execution_role.name
   name   = "${local.csi}-apig-execution-policy"

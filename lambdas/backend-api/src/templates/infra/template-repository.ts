@@ -1,3 +1,4 @@
+import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   CreateTemplate,
   ErrorCase,
@@ -17,13 +18,7 @@ import {
   UpdateCommand,
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
-import { randomUUID as uuidv4 } from 'node:crypto';
-import {
-  ApplicationResult,
-  failure,
-  success,
-  calculateTTL,
-} from '@backend-api/utils/index';
+import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
 
 const client = DynamoDBDocumentClient.from(
@@ -52,7 +47,13 @@ const get = async (
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
-    return success(response?.Item as DatabaseTemplate);
+    const item = response.Item as DatabaseTemplate;
+
+    if (item.templateStatus === TemplateStatus.DELETED) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+    }
+
+    return success(item);
   } catch (error) {
     return failure(ErrorCase.DATABASE_FAILURE, 'Failed to get template', error);
   }
@@ -62,14 +63,15 @@ const create = async (
   template: CreateTemplate,
   owner: string
 ): Promise<ApplicationResult<DatabaseTemplate>> => {
+  const date = new Date().toISOString();
   const entity: DatabaseTemplate = {
     ...template,
     id: uuidv4(),
     owner,
     version: 1,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: date,
+    updatedAt: date,
   };
 
   try {
@@ -164,7 +166,10 @@ const update = async (
     return success(response.Attributes as DatabaseTemplate);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
-      if (!error.Item) {
+      if (
+        !error.Item ||
+        error.Item.templateStatus.S === TemplateStatus.DELETED
+      ) {
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
           `Template not found`,
@@ -175,11 +180,8 @@ const update = async (
       if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-          'Can not update template',
-          error,
-          {
-            templateStatus: `Expected ${TemplateStatus.NOT_YET_SUBMITTED} but got ${error.Item.templateStatus.S}`,
-          }
+          `Template with status ${error.Item.templateStatus.S} cannot be updated`,
+          error
         );
       }
 
@@ -212,12 +214,13 @@ const list = async (
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
+        '#status': 'templateStatus',
       },
       ExpressionAttributeValues: {
         ':owner': owner,
         ':deletedStatus': TemplateStatus.DELETED,
       },
-      FilterExpression: 'templateStatus <> :deletedStatus',
+      FilterExpression: '#status <> :deletedStatus',
     };
 
     const items: DatabaseTemplate[] = [];

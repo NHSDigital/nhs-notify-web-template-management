@@ -10,6 +10,6 @@ output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.sandbox.id
 }
 
-output "dynamodb_table_templates" {
-  value = module.backend_api.dynamodb_table_templates
+output "templates_table_name" {
+  value = module.backend_api.templates_table_name
 }

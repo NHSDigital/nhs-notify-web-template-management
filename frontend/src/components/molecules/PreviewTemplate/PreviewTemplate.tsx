@@ -3,7 +3,7 @@ import concatClassNames from '@utils/concat-class-names';
 import {
   Template,
   TemplateStatus,
-  templateStatustoDisplayMappings,
+  templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplate.module.scss';
@@ -53,7 +53,7 @@ export function PreviewTemplate({
                     : undefined
                 }
               >
-                {templateStatustoDisplayMappings(template.templateStatus)}
+                {templateStatusToDisplayMappings(template.templateStatus)}
               </Tag>
             </Col>
           </Row>

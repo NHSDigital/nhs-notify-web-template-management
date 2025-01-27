@@ -1,12 +1,17 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      TEMPLATE_STORAGE_TABLE_NAME: string;
+      API_BASE_URL: string;
+      COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
-      USER_TEMPORARY_PASSWORD: string;
-      USER_PASSWORD: string;
-      USER_EMAIL: string;
-      USER_ID: string;
+      PLAYWRIGHT_RUN_ID: string;
+      TEMPLATES_TABLE_NAME: string;
+    }
+  }
+
+  namespace PlaywrightTest {
+    interface Matchers<R> {
+      toBeDateRoughlyBetween(range: [Date, Date]): R;
     }
   }
 }
