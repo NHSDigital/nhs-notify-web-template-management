@@ -15,7 +15,7 @@ export class ManageTemplatesPage extends TemplateMgmtBasePage {
       .and(page.getByText('Create template'));
   }
 
-  async loadPage(): Promise<void> {
+  async loadPage(_: string): Promise<void> {
     await this.navigateTo(ManageTemplatesPage.manageTemplatesPageUrl);
   }
 
