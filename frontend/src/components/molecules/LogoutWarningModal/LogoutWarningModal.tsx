@@ -9,19 +9,23 @@ import styles from './LogoutWarningModal.module.scss';
 
 export const LogoutWarningModal = ({
   authenticated,
+  warningTimeoutInSeconds,
+  autoLogoutInSeconds,
 }: {
   authenticated: boolean;
+  warningTimeoutInSeconds: number;
+  autoLogoutInSeconds: number;
 }) => {
   const {
     links: { logOut },
   } = content.components.headerComponent;
 
-  const showWarning = useIdle(5000) && authenticated;
+  const showWarning = useIdle(warningTimeoutInSeconds) && authenticated;
 
-  const shouldSignOut = useIdle(6000) && authenticated;
+  const shouldSignOut = useIdle(autoLogoutInSeconds) && authenticated;
 
   if (shouldSignOut) {
-    return redirect('/auth/inactive');
+    // return redirect('/auth/inactive');
   }
 
   return (

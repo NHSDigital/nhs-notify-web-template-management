@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-function useIdle(idleTime: number) {
+function useIdle(idleTimeInSeconds: number) {
   const [idle, setIdle] = useState(false);
 
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
@@ -10,8 +10,11 @@ function useIdle(idleTime: number) {
       clearTimeout(timerRef.current);
     }
 
-    timerRef.current = setTimeout(() => setIdle(true), idleTime);
-  }, [idleTime]);
+    timerRef.current = setTimeout(
+      () => setIdle(true),
+      idleTimeInSeconds * 1000
+    );
+  }, [idleTimeInSeconds]);
 
   useEffect(() => {
     const events = ['keypress', 'mousemove', 'scroll', 'click'];

@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
+import content from '@content/content';
 import { signOut } from 'aws-amplify/auth';
 import { Button } from 'nhsuk-react-components';
-import content from '@content/content';
 
-export default function Page() {
+export default function Inactive() {
   const {
     links: { logIn },
   } = content.components.headerComponent;

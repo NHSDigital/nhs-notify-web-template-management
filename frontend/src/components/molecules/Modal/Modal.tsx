@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import styles from './Modal.module.scss';
 
 const Modal = ({
@@ -9,22 +10,33 @@ const Modal = ({
   showModal: boolean;
   children: React.ReactNode;
 }) => {
-  return showModal ? (
-    <div
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (showModal) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
+    }
+  }, [showModal]);
+
+  return (
+    <dialog
       className={styles.modal}
+      ref={ref}
       role='alertdialog'
       aria-modal='true'
       aria-live='assertive'
       aria-labelledby='idle-warning-heading'
     >
       <div className={styles.modal__content}>{children}</div>
-    </div>
-  ) : null;
+    </dialog>
+  );
 };
 
 const Header = ({ children }: { children: React.ReactNode }) => (
   <div id='idle-warning-heading' className={styles.modal__heading}>
-    <p>{children}</p>
+    {children}
   </div>
 );
 
