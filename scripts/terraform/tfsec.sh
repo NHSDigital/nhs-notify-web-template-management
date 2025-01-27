@@ -39,7 +39,7 @@ function run-tfsec-natively() {
   tfsec \
     --force-all-dirs \
     --exclude-downloaded-modules \
-    --config-file scripts/config/tfsec.yml \
+    --config-file scripts/config/tfsec.yaml \
     --format text \
     "$dir_to_scan"
 

@@ -30,6 +30,6 @@ resource "aws_dynamodb_table" "templates" {
     }
 
     tags = {
-      "NHSE-Enable-Backup" = var.enable_backup ? "True": "False"
+      "NHSE-Enable-Dynamo-Backup" = var.enable_backup ? "True": "False"
     }
 }
