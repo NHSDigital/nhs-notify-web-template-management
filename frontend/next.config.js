@@ -39,6 +39,11 @@ const nextConfig = (phase) => {
       if (includeAuthPages) {
         return [
           {
+            source: '/auth/inactive',
+            destination: `http://${domain}${basePath}/auth/inactive`,
+            basePath: false,
+          },
+          {
             source: '/auth/signout',
             destination: `http://${domain}${basePath}/auth/signout`,
             basePath: false,

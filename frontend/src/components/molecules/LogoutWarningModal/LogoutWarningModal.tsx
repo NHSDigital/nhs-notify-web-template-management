@@ -1,45 +1,74 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from 'nhsuk-react-components';
-import content from '@content/content';
 import { Modal } from '@molecules/Modal/Modal';
-import { useIdle } from '@hooks/use-idle.hook';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useIdleTimer } from 'react-idle-timer';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import content from '@content/content';
+import { fetchAuthSession } from 'aws-amplify/auth';
 import styles from './LogoutWarningModal.module.scss';
 
 export const LogoutWarningModal = ({
-  authenticated,
-  warningTimeoutInSeconds,
-  autoLogoutInSeconds,
+  timeTillPromptInSeconds,
+  timeTillLogoutInSeconds,
 }: {
-  authenticated: boolean;
-  warningTimeoutInSeconds: number;
-  autoLogoutInSeconds: number;
+  timeTillPromptInSeconds: number;
+  timeTillLogoutInSeconds: number;
 }) => {
   const {
-    links: { logOut },
-  } = content.components.headerComponent;
+    headerComponent: {
+      links: { logOut },
+    },
+    logoutWarningComponent,
+  } = content.components;
 
-  const showWarning = useIdle(warningTimeoutInSeconds) && authenticated;
+  const router = useRouter();
 
-  const shouldSignOut = useIdle(autoLogoutInSeconds) && authenticated;
+  const [showModal, setShowModal] = useState(false);
 
-  if (shouldSignOut) {
-    // return redirect('/auth/inactive');
-  }
+  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+
+  const authenticated = authStatus === 'authenticated';
+
+  const idle = () => {
+    if (authenticated) {
+      setShowModal(false);
+      router.push('/auth/inactive');
+    }
+  };
+
+  const prompted = () => {
+    if (authenticated) {
+      setShowModal(true);
+    }
+  };
+
+  const { activate, getRemainingTime } = useIdleTimer({
+    timeout: timeTillLogoutInSeconds * 1000,
+    promptBeforeIdle: timeTillPromptInSeconds * 1000,
+    onPrompt: prompted,
+    onIdle: idle,
+  });
+
+  const stillHere = () => {
+    activate();
+    setShowModal(false);
+    fetchAuthSession({ forceRefresh: true });
+  };
 
   return (
-    <Modal showModal={showWarning}>
+    <Modal showModal={showModal}>
       <Modal.Header>
-        For security reasons, you&apos;ll be signed out in 2 minutes.
+        {logoutWarningComponent.heading} - {getRemainingTime()}
       </Modal.Header>
-      <Modal.Body>
-        <p>If you are signed out, your template will not be saved.</p>
-      </Modal.Body>
       <Modal.Footer>
-        <Button className={styles.signIn}>Stay signed in</Button>
+        <Button className={styles.signIn} onClick={stillHere}>
+          {logoutWarningComponent.signIn}
+        </Button>
         <div className={styles.signOut}>
-          <a href={logOut.href}>Sign out</a>
+          <a href={logOut.href}>{logOut.text}</a>
         </div>
       </Modal.Footer>
     </Modal>

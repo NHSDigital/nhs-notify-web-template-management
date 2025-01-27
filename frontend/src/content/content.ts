@@ -5,7 +5,7 @@ const headerComponent = {
   serviceName: 'Notify',
   links: {
     logIn: {
-      text: 'Log in',
+      text: 'Sign in',
       href: `/auth?redirect=${encodeURIComponent(
         `${getBasePath()}/create-and-submit-templates`
       )}`,
@@ -457,6 +457,11 @@ export const deleteTemplatePageContent = {
   yesButtonText: 'Yes, delete template',
 };
 
+const logoutWarningComponent = {
+  heading: "For security reasons, you'll be signed out in 2 minutes.",
+  signIn: 'Stay signed in',
+};
+
 const content = {
   global: {
     mainLayout,
@@ -469,6 +474,7 @@ const content = {
     reviewNHSAppTemplateContent,
     reviewSMSTemplateContent,
     messageFormattingComponent,
+    logoutWarningComponent,
   },
   pages: {
     homePage,

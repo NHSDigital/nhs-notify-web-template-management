@@ -19,7 +19,6 @@ export default function Inactive() {
         You&apos;ve been signed out because you&apos;ve not used this service
         for 15 minutes.
       </p>
-      <p>Your template was not saved.</p>
       <p>Sign in again to create and submit a template to NHS Notify.</p>
       <Button href={logIn.href}>Sign in</Button>
     </div>
