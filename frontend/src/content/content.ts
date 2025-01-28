@@ -175,8 +175,7 @@ const homePage = {
   text5: 'You can save a template as a draft and edit it later.',
   text6:
     'If you want to change a submitted template, you must create a new template to replace it.',
-  text7:
-    'You can access this tool by signing in with your Care Identity.',
+  text7: 'You can access this tool by signing in with your Care Identity.',
   linkButton: {
     text: 'Start now',
     url: `${getBasePath()}/manage-templates`,
