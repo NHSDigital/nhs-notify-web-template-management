@@ -123,4 +123,24 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
       ]
     }
   }
+
+  statement {
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.s3bucket_backup_reports.arn}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${var.aws_account_id}:role/aws-service-role/reports.backup.amazonaws.com/AWSServiceRoleForBackupReports"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values = [
+        "bucket-owner-full-control"
+      ]
+    }
+  }
 }
