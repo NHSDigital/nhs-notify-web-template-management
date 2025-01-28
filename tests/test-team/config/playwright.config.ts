@@ -1,7 +1,9 @@
+import path from 'node:path';
 import { defineConfig } from '@playwright/test';
+import '../fixtures/custom-matchers';
 
 export default defineConfig({
-  testDir: '../',
+  testDir: path.resolve(__dirname, '../'),
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -14,7 +16,7 @@ export default defineConfig({
     [
       'html',
       {
-        outputFolder: '../playwright-report',
+        outputFolder: path.resolve(__dirname, '../playwright-report'),
         open: process.env.CI ? 'never' : 'on-failure',
       },
     ],
@@ -24,5 +26,5 @@ export default defineConfig({
     /* Collect trace when a test fails. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
   },
-  globalSetup: './global.setup.ts',
+  globalSetup: path.resolve(__dirname, 'global.setup.ts'),
 });
