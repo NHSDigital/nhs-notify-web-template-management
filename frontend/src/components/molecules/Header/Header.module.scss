@@ -7,3 +7,11 @@
     color: #fff;
   }
 }
+
+.header__container {
+  @media screen {
+    display: flex;
+    justify-content: space-between;
+  }
+  padding-bottom: 1em !important;
+}

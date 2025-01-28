@@ -12,7 +12,12 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
       role='banner'
       data-testid={dataTestId ?? 'page-header'}
     >
-      <div className='nhsuk-header__container'>
+      <div
+        className={concatClassNames(
+          'nhsuk-header__container',
+          styles.header__container
+        )}
+      >
         <div className='nhsuk-header__logo'>
           <Link
             className='nhsuk-header__link nhsuk-header__link--service'

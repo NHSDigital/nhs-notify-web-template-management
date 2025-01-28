@@ -1,5 +1,15 @@
 @import 'nhsuk-frontend/packages/nhsuk.scss';
 
+html {
+  // This is here because Amplify applies it's own font family
+  font-family: Frutiger W01,Arial,Sans-serif !important;
+}
+
+body {
+  // This is here because amplify applies a min height which overwrites nhsuk causing a white space
+  min-height: auto !important;
+}
+
 code {
   display: inline-block;
   padding: 0.6rem;
