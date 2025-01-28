@@ -1,6 +1,5 @@
 module "nhse_backup_vault" {
-  # source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/aws-backup-source?ref=v1.0.6"
-  source = "/Users/aiden.vaines/Clients/NHS/notify/nhs-notify-shared-modules/infrastructure/modules/aws-backup-source"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/aws-backup-source?ref=v1.0.7"
   count = var.destination_vault_arn != null ? 1:0
 
   project_name     = local.csi
