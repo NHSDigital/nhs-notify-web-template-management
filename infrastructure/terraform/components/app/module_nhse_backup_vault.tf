@@ -1,10 +1,10 @@
 module "nhse_backup_vault" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/aws-backup-source?ref=v1.0.7"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/aws-backup-source?ref=v1.0.8"
   count = var.destination_vault_arn != null ? 1:0
 
-  project_name     = local.csi
-  environment_name = var.environment
-
+  component   = var.component
+  environment = var.environment
+  project     = var.project
   backup_copy_vault_account_id = data.aws_arn.destination_vault_arn[0].account
   backup_copy_vault_arn        = data.aws_arn.destination_vault_arn[0].arn
 
@@ -13,6 +13,10 @@ module "nhse_backup_vault" {
   notification_kms_key               = module.kms.key_id
 
   management_ci_role_arn = local.bootstrap.iam_github_deploy_role["arn"]
+  principal_org_id       = var.aws_principal_org_id
+
+  restore_testing_plan_scheduled_expression = "cron(0 4 ? * wed *)"
+  restore_testing_plan_start_window         = 1
 
   backup_plan_config_dynamodb = {
                                   "compliance_resource_types": [

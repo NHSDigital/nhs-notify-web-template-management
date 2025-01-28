@@ -17,6 +17,11 @@ variable "aws_account_id" {
   description = "The AWS Account ID (numeric)"
 }
 
+variable "aws_principal_org_id" {
+  type        = string
+  description = "The AWS Org ID (numeric)"
+}
+
 variable "region" {
   type        = string
   description = "The AWS Region"
