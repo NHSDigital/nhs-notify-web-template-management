@@ -458,8 +458,10 @@ export const deleteTemplatePageContent = {
 };
 
 const logoutWarningComponent = {
-  heading: "For security reasons, you'll be signed out in 2 minutes.",
+  heading: (remaining: string) =>
+    `For security reasons, you'll be signed out in ${remaining}.`,
   signIn: 'Stay signed in',
+  body: "If you're signed out, any unsaved changes will be lost.",
 };
 
 const content = {
