@@ -17,6 +17,11 @@ variable "aws_account_id" {
   description = "The AWS Account ID (numeric)"
 }
 
+variable "aws_principal_org_id" {
+  type        = string
+  description = "The AWS Org ID (numeric)"
+}
+
 variable "region" {
   type        = string
   description = "The AWS Region"
@@ -123,4 +128,28 @@ variable "disable_content" {
   type        = string
   description = "Value for turning switching disable conten true/false"
   default     = "false"
+}
+
+variable "destination_vault_arn" {
+  type        = string
+  description = "ARN of the backup vault in the destination account, if this environment should be backed up"
+  default     = null
+}
+
+variable "backup_schedule_cron" {
+  type        = string
+  description = "Defines the backup schedule in AWS Cron Expression format"
+  default     = "cron(0 0/6 * * ? *)"
+}
+
+variable "retention_period" {
+  type        = number
+  description = "Backup Vault Retention Period"
+  default     = 14
+}
+
+variable "backup_report_recipient" {
+  type        = string
+  description = "Primary recipient of the Backup reports"
+  default     = ""
 }
