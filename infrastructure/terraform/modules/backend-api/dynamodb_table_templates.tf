@@ -28,4 +28,8 @@ resource "aws_dynamodb_table" "templates" {
         enabled     = true
         kms_key_arn = aws_kms_key.dynamo.arn
     }
+
+    tags = {
+      "NHSE-Enable-Dynamo-Backup" = var.enable_backup ? "True": "False"
+    }
 }

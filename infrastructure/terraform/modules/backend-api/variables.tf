@@ -60,3 +60,9 @@ variable "cognito_config" {
   })
   description = "Cognito config"
 }
+
+variable "enable_backup" {
+  type        = bool
+  description = "Enable Backups for the DynamoDB table?"
+  default     = true
+}

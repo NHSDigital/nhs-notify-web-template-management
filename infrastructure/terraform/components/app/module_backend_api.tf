@@ -1,3 +1,5 @@
+# TODO: CCM-8418
+# tfsec:ignore:aws-iam-no-policy-wildcards
 module "backend_api" {
   source = "../../modules/backend-api"
 
@@ -9,5 +11,7 @@ module "backend_api" {
   csi                   = local.csi
   log_retention_in_days = var.log_retention_in_days
 
-  cognito_config        = jsondecode(data.aws_ssm_parameter.cognito_config.value)
+  cognito_config = jsondecode(aws_ssm_parameter.cognito_config.value)
+
+  enable_backup = var.destination_vault_arn != null ? true : false
 }
