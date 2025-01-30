@@ -11,7 +11,6 @@ import {
   createTemplate,
   saveTemplate,
   getTemplate,
-  sendEmail,
   getTemplates,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
@@ -272,42 +271,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
-  });
-
-  test('sendEmail', async () => {
-    mockedBackendClient.functions.sendEmail.mockResolvedValueOnce({
-      data: undefined,
-      error: undefined,
-    });
-
-    const response = await sendEmail('id');
-
-    expect(mockedBackendClient.functions.sendEmail).toHaveBeenCalledWith('id');
-
-    expect(response).toEqual(undefined);
-  });
-
-  test('sendEmail - should thrown error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
-
-    await expect(sendEmail('id')).rejects.toThrow('Failed to get access token');
-  });
-
-  test('getTemplates - should return nothing when an error occurs', async () => {
-    mockedBackendClient.functions.sendEmail.mockResolvedValueOnce({
-      data: undefined,
-      error: {
-        code: 404,
-        message: 'Not found',
-      },
-    });
-
-    const response = await sendEmail('id');
-
-    expect(mockedBackendClient.functions.sendEmail).toHaveBeenCalledWith('id');
-
-    expect(response).toEqual(undefined);
   });
 
   test('getTemplates - order by createdAt and then id', async () => {

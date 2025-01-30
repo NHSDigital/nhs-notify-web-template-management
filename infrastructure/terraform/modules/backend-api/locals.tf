@@ -11,7 +11,6 @@ locals {
     UPDATE_LAMBDA_ARN       = module.update_template_lambda.function_arn
     GET_LAMBDA_ARN          = module.get_template_lambda.function_arn
     LIST_LAMBDA_ARN         = module.list_template_lambda.function_arn
-    EMAIL_LAMBDA_ARN        = module.email_lambda.function_arn
   })
 
   backend_lambda_entrypoints = {
@@ -19,7 +18,6 @@ locals {
     get_template     = "src/templates/api/get.ts"
     update_template  = "src/templates/api/update.ts"
     list_template    = "src/templates/api/list.ts"
-    send_email       = "src/email/handler.ts"
     template_client  = "src/index.ts"
   }
 }

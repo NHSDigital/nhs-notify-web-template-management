@@ -71,23 +71,6 @@ export async function getTemplate(
   return data;
 }
 
-export async function sendEmail(templateId: string) {
-  const token = await getAccessTokenServer();
-
-  if (!token) {
-    throw new Error('Failed to get access token');
-  }
-
-  const { error } = await BackendClient(token).functions.sendEmail(templateId);
-
-  if (error) {
-    logger.error({
-      description: 'Error sending email',
-      error,
-    });
-  }
-}
-
 export async function getTemplates(): Promise<TemplateDTO[]> {
   const token = await getAccessTokenServer();
 

@@ -37,40 +37,27 @@
 
 ### Running the project locally
 
-1. Convert the email HTML template into a JSON file that can be packaged with the email sending lambda.
-
-   ```shell
-   npm run generate-dependencies
-   ```
-
-2. (Optional) If you want to test sending emails then you will need to set the following environment variables locally.
-
-   ```shell
-   export ACCOUNT_ID=<aws_account_id>
-   export NOTIFY_DOMAIN_NAME=<ses_verified_domain>
-   ```
-
-3. To create a Terraform backend sandbox, run:
+1. To create a Terraform backend sandbox, run:
 
    ```shell
    npm run create-backend-sandbox <environment-name>
    ```
 
-4. Then in a separate terminal, run the app locally:
+2. Then in a separate terminal, run the app locally:
 
    ```shell
    npm run dev
    ```
 
-5. Open your browser and go to `localhost:3000` to view the app.
+3. Open your browser and go to `localhost:3000` to view the app.
 
-6. To destroy a Terraform backend sandbox, run:
+4. To destroy a Terraform backend sandbox, run:
 
    ```shell
    npm run destroy-backend-sandbox <environment-name>
    ```
 
-7. (Optional) Create a `.env` file at `frontend/.env` and add `INCLUDE_AUTH_PAGES=true` to include the local auth pages when doing a production Next build
+5. (Optional) Create a `.env` file at `frontend/.env` and add `INCLUDE_AUTH_PAGES=true` to include the local auth pages when doing a production Next build
 
 ### Other commands
 

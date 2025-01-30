@@ -263,62 +263,6 @@
           "type": "AWS_PROXY"
         }
       }
-    },
-    "/v1/email": {
-      "post": {
-        "summary": "Send an email to the user",
-        "description": "Send an email to the user",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "requestBody": {
-          "description": "Id of template to send to user",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendEmail"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${EMAIL_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
     }
   },
   "components": {
@@ -491,17 +435,6 @@
             "type": "integer"
           },
           "details": {}
-        }
-      },
-      "SendEmail": {
-        "type": "object",
-        "required": [
-          "templateId"
-        ],
-        "properties": {
-          "templateId": {
-            "type": "string"
-          }
         }
       }
     }
