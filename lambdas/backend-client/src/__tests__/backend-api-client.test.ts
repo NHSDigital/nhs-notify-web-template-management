@@ -15,10 +15,7 @@ describe('BackendAPIClient', () => {
   });
 
   test('should use passed in clients', async () => {
-    const client = new BackendApiClient(
-      'token',
-      templatesApiMock,
-    );
+    const client = new BackendApiClient('token', templatesApiMock);
 
     expect(client.templates).toBe(templatesApiMock);
   });
