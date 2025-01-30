@@ -6,16 +6,17 @@ import { ITemplateClient } from '../types/template-client';
 jest.mock('../template-api-client');
 
 const templatesApiMock = mockDeep<ITemplateClient>();
+const testToken = '000';
 
 describe('BackendAPIClient', () => {
   test('should default to concrete implementation', async () => {
-    BackendClient('token');
+    BackendClient(testToken);
 
-    expect(TemplateApiClient).toHaveBeenCalledWith('token');
+    expect(TemplateApiClient).toHaveBeenCalledWith(testToken);
   });
 
   test('should use passed in clients', async () => {
-    const client = new BackendApiClient('token', templatesApiMock);
+    const client = new BackendApiClient(testToken, templatesApiMock);
 
     expect(client.templates).toBe(templatesApiMock);
   });
