@@ -43,9 +43,6 @@ exports[`TemplateSubmitted component should render 1`] = `
       >
         What you need to do next
       </h2>
-      <p>
-        You'll receive a confirmation email, which contains the template name and ID.
-      </p>
       <h3>
         If you're currently onboarding
       </h3>
