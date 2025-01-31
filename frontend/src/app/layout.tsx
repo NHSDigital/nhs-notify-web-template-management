@@ -26,7 +26,7 @@ export default function RootLayout({
         <Script
           src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`}
           nonce={nonce}
-          defer
+          strategy='afterInteractive'
         />
         <title>{content.global.mainLayout.title}</title>
         <link
@@ -73,7 +73,7 @@ export default function RootLayout({
           type='text/javascript'
           src={`${getBasePath()}/lib/nhs-frontend-js-check.js`}
           nonce={nonce}
-          defer
+          strategy='afterInteractive'
         />
       </head>
       <body suppressHydrationWarning>

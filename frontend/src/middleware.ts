@@ -16,6 +16,7 @@ function getContentSecurityPolicy(nonce: string) {
     'object-src': [`'none'`],
     'script-src': [`'nonce-${nonce}'`, `'strict-dynamic'`],
     'style-src': [`'self'`],
+    'upgrade-insecure-requests;': [],
   };
 
   if (process.env.NODE_ENV === 'development') {
@@ -41,10 +42,10 @@ export async function middleware(request: NextRequest) {
 
   requestHeaders.set('Content-Security-Policy', csp);
 
-  requestHeaders.set(
-    'x-forwarded-host',
-    requestHeaders.get('origin')?.replace('https://', '') || '*'
-  );
+  // requestHeaders.set(
+  //   'x-forwarded-host',
+  //   requestHeaders.get('origin')?.replace('https://', '') || '*'
+  // );
 
   const excludedPaths = ['/create-and-submit-templates', '/auth'];
 
