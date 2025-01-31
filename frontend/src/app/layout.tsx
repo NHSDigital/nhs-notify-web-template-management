@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import Script from 'next/script';
 import '@styles/app.scss';
 import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
@@ -16,10 +18,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const nonce = headers().get('x-nonce') ?? undefined;
+
   return (
     <html lang='en'>
       <head>
-        <script src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`} defer />
+        <Script
+          src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`}
+          nonce={nonce}
+          defer
+        />
         <title>{content.global.mainLayout.title}</title>
         <link
           rel='shortcut icon'
@@ -61,9 +69,10 @@ export default function RootLayout({
           name='msapplication-square310x310logo'
           content={`${getBasePath()}/lib/assets/favicons/largetile-310x310.png`}
         />
-        <script
+        <Script
           type='text/javascript'
           src={`${getBasePath()}/lib/nhs-frontend-js-check.js`}
+          nonce={nonce}
           defer
         />
       </head>
