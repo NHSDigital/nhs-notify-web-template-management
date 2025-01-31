@@ -2,16 +2,39 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
 
+function getContentSecurityPolicy(nonce: string) {
+  const contentSecurityPolicyDirective = {
+    'base-uri': [`'self'`],
+    'default-src': [`'none'`],
+    'frame-ancestors': [`'none'`],
+    'font-src': [`'self'`, 'https://assets.nhs.uk'],
+    'form-action': [`'self'`],
+    'frame-src': [`'self'`],
+    'connect-src': [`'self'`, 'https://cognito-idp.eu-west-2.amazonaws.com'],
+    'img-src': [`'self'`],
+    'manifest-src': [`'self'`],
+    'object-src': [`'none'`],
+    'script-src': [`'nonce-${nonce}'`, `'strict-dynamic'`],
+    'style-src': [`'self'`],
+  };
+
+  if (process.env.NODE_ENV === 'development') {
+    contentSecurityPolicyDirective['script-src'].push(`'unsafe-eval'`);
+  }
+
+  return Object.entries(contentSecurityPolicyDirective)
+    .map(([key, value]) => `${key} ${value.join(' ')}`)
+    .join('; ');
+}
+
 function isExcludedPath(path: string, excludedPaths: string[]): boolean {
   return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
 }
 
 export async function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-  const cspUnsafeEval =
-    process.env.NODE_ENV === 'production' ? '' : `http: 'unsafe-eval'`;
 
-  const csp = `base-uri 'self'; form-action 'self'; frame-ancestors 'none'; default-src 'none'; connect-src 'self'; font-src 'self' https://assets.nhs.uk; img-src 'self'; script-src 'self' 'nonce-${nonce}' ${cspUnsafeEval}; style-src 'self' 'nonce-${nonce}'; upgrade-insecure-requests`;
+  const csp = getContentSecurityPolicy(nonce);
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-nonce', nonce);
