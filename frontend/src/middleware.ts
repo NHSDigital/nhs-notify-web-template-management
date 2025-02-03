@@ -14,8 +14,8 @@ function getContentSecurityPolicy(nonce: string) {
     'img-src': [`'self'`],
     'manifest-src': [`'self'`],
     'object-src': [`'none'`],
-    'script-src': [`'nonce-${nonce}'`, `'strict-dynamic'`],
-    'style-src': [`'self'`],
+    'script-src': [`'self'`, `'nonce-${nonce}'`],
+    'style-src': [`'self'`, `'nonce-${nonce}'`],
     'upgrade-insecure-requests;': [],
   };
 
@@ -41,11 +41,6 @@ export async function middleware(request: NextRequest) {
   requestHeaders.set('x-nonce', nonce);
 
   requestHeaders.set('Content-Security-Policy', csp);
-
-  // requestHeaders.set(
-  //   'x-forwarded-host',
-  //   requestHeaders.get('origin')?.replace('https://', '') || '*'
-  // );
 
   const excludedPaths = ['/create-and-submit-templates', '/auth'];
 
