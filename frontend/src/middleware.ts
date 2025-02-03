@@ -28,8 +28,8 @@ function getContentSecurityPolicy(nonce: string) {
     .join('; ');
 }
 
-function isExcludedPath(path: string, excludedPaths: string[]): boolean {
-  return excludedPaths.some((excludedPath) => path.startsWith(excludedPath));
+function isPublicPath(path: string, publicPaths: string[]): boolean {
+  return publicPaths.some((publicPath) => path.startsWith(publicPath));
 }
 
 export async function middleware(request: NextRequest) {
@@ -38,22 +38,20 @@ export async function middleware(request: NextRequest) {
   const csp = getContentSecurityPolicy(nonce);
 
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-nonce', nonce);
-
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const excludedPaths = ['/create-and-submit-templates', '/auth'];
+  const publicPaths = ['/create-and-submit-templates', '/auth'];
 
-  if (isExcludedPath(request.nextUrl.pathname, excludedPaths)) {
-    const excludedPathResponse = NextResponse.next({
+  if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
+    const publicPathResponse = NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     });
 
-    excludedPathResponse.headers.set('Content-Security-Policy', csp);
+    publicPathResponse.headers.set('Content-Security-Policy', csp);
 
-    return excludedPathResponse;
+    return publicPathResponse;
   }
 
   const token = await getAccessTokenServer();
@@ -88,6 +86,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|lib).*)',
   ],
 };
