@@ -87,3 +87,5 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 }
+
+export const TemplateClient = (token: string) => new TemplateApiClient(token);
