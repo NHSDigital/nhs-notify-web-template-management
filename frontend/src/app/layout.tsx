@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 const config = {
   basePath: getBasePath(),
   logoutInSeconds:
-    Number(process.env.NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS) || 900, // 15 minutes force logout
+    Number(process.env.NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS) || 120, // 15 minutes force logout
   promptTimeSeconds:
-    Number(process.env.NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT) || 120, // 2 minutes before logout
+    Number(process.env.NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT) || 60, // 2 minutes before logout
 };
 
 export default function RootLayout({
@@ -78,7 +78,7 @@ export default function RootLayout({
         <ClientLayout>
           <LogoutWarningModal
             logoutInSeconds={config.logoutInSeconds}
-            promptTimeSeconds={config.promptTimeSeconds}
+            promptBeforeLogoutSeconds={config.promptTimeSeconds}
           />
           {children}
         </ClientLayout>

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LogoutWarningModal should match snapshot 1`] = `
+<DocumentFragment>
+  <dialog
+    aria-labelledby="idle-warning-heading"
+    aria-live="assertive"
+    aria-modal="true"
+    class="modal"
+    role="alertdialog"
+  >
+    <div
+      class="modal__content"
+    >
+      <div
+        class="modal__heading"
+        data-testid="modal-header"
+        id="idle-warning-heading"
+      >
+        For security reasons, you'll be signed out in 2 minutes.
+      </div>
+      <div
+        class="modal__body"
+      >
+        <p>
+          If you're signed out, any unsaved changes will be lost.
+        </p>
+      </div>
+      <div
+        class="modal__footer"
+      >
+        <button
+          aria-disabled="false"
+          class="nhsuk-button signIn"
+          data-testid="modal-sign-in"
+          type="submit"
+        >
+          Stay signed in
+        </button>
+        <div
+          class="signOut"
+        >
+          <a
+            class="nhsuk-link"
+            data-testid="modal-sign-out"
+            href="/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+          >
+            Sign out
+          </a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</DocumentFragment>
+`;

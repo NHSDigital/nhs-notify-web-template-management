@@ -1,22 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Button } from 'nhsuk-react-components';
-import { Modal } from '@molecules/Modal/Modal';
-import { useRouter, usePathname } from 'next/navigation';
 import { useIdleTimer } from 'react-idle-timer';
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import content from '@content/content';
+import { Button } from 'nhsuk-react-components';
 import { fetchAuthSession } from 'aws-amplify/auth';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useRouter, usePathname } from 'next/navigation';
+import { Modal } from '@molecules/Modal/Modal';
+import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
-import styles from './LogoutWarningModal.module.scss';
 import { formatTime } from './format-time';
 
+import styles from './LogoutWarningModal.module.scss';
+
 export const LogoutWarningModal = ({
-  promptTimeSeconds,
+  promptBeforeLogoutSeconds: promptTimeSeconds,
   logoutInSeconds,
 }: {
-  promptTimeSeconds: number;
+  promptBeforeLogoutSeconds: number;
   logoutInSeconds: number;
 }) => {
   const {
@@ -33,11 +34,7 @@ export const LogoutWarningModal = ({
   const [remainingTime, setRemainingTime] = useState(initial);
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
-  const authenticated = authStatus === 'authenticated';
-
   const idle = () => {
-    if (!authenticated) return;
-
     setShowModal(false);
 
     router.push(
@@ -48,9 +45,7 @@ export const LogoutWarningModal = ({
   };
 
   const prompted = () => {
-    if (authenticated) {
-      setShowModal(true);
-    }
+    setShowModal(true);
   };
 
   const { reset, getRemainingTime } = useIdleTimer({
@@ -58,6 +53,7 @@ export const LogoutWarningModal = ({
     promptBeforeIdle: promptTimeSeconds * 1000,
     onPrompt: prompted,
     onIdle: idle,
+    disabled: authStatus !== 'authenticated',
   });
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
@@ -74,28 +70,37 @@ export const LogoutWarningModal = ({
     return () => {
       clearInterval(intervalRef.current);
     };
-  });
+  }, [showModal, getRemainingTime]);
 
   const stillHere = () => {
     reset();
     setShowModal(false);
+    setRemainingTime(initial);
     fetchAuthSession({ forceRefresh: true });
   };
 
   return (
     <Modal showModal={showModal}>
       <Modal.Header>
-        {logoutWarningComponent.heading(remainingTime)}
+        {`${logoutWarningComponent.heading} ${remainingTime}.`}
       </Modal.Header>
       <Modal.Body>
         <p>{logoutWarningComponent.body}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button className={styles.signIn} onClick={stillHere}>
+        <Button
+          className={styles.signIn}
+          onClick={stillHere}
+          data-testid='modal-sign-in'
+        >
           {logoutWarningComponent.signIn}
         </Button>
         <div className={styles.signOut}>
-          <a className='nhsuk-link' href={logOut.href}>
+          <a
+            className='nhsuk-link'
+            href={logOut.href}
+            data-testid='modal-sign-out'
+          >
             {logOut.text}
           </a>
         </div>

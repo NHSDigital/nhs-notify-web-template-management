@@ -35,7 +35,11 @@ const Modal = ({
 };
 
 const Header = ({ children }: { children: React.ReactNode }) => (
-  <div id='idle-warning-heading' className={styles.modal__heading}>
+  <div
+    id='idle-warning-heading'
+    data-testid='modal-header'
+    className={styles.modal__heading}
+  >
     {children}
   </div>
 );

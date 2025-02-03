@@ -458,8 +458,7 @@ export const deleteTemplatePageContent = {
 };
 
 const logoutWarningComponent = {
-  heading: (remaining: string) =>
-    `For security reasons, you'll be signed out in ${remaining}.`,
+  heading: "For security reasons, you'll be signed out in",
   signIn: 'Stay signed in',
   body: "If you're signed out, any unsaved changes will be lost.",
 };
