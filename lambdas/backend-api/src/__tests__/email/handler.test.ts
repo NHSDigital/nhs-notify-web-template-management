@@ -64,7 +64,10 @@ describe('email handler', () => {
 
   test('handles ResourceNotFoundException', async () => {
     jest.mocked(getTemplate).mockImplementation(() => {
-      throw Object.create(ResourceNotFoundException.prototype);
+      throw new ResourceNotFoundException({
+        message: 'Resource Not Found',
+        $metadata: {},
+      });
     });
 
     const res = await emailHandler(

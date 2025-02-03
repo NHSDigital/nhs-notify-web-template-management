@@ -172,11 +172,10 @@ const homePage = {
   pageSubHeading: 'Before you start',
   text4:
     'Only use this tool if your message content has been signed off by the relevant stakeholders in your team.',
-  text5: 'You cannot save a template as a draft and edit it later.',
+  text5: 'You can save a template as a draft and edit it later.',
   text6:
     'If you want to change a submitted template, you must create a new template to replace it.',
-  text7:
-    'You can access this tool by signing in with your NHSmail account or Care Identity.',
+  text7: 'You can access this tool by signing in with your Care Identity.',
   linkButton: {
     text: 'Start now',
     url: `${getBasePath()}/manage-templates`,

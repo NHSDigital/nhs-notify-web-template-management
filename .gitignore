@@ -11,6 +11,7 @@
 !project.code-workspace
 .rej
 *.porig
+.vscode/launch.json
 
 # Please, add your custom content below!
 
@@ -67,7 +68,13 @@ terraform/*_output.json
 group_target-env.tfvars
 *tf_outputs.json
 
+# Amplify
 amplify_outputs.json
+.amplify
+sandbox_cognito_auth_token.json
+frontend/public/testing
+frontend/amplify/functions/send-email/email-template.json
+auth.json
 
 # playwright
 test-results/
@@ -75,9 +82,3 @@ tests/test-team/test-results/
 tests/test-team/playwright-report/
 tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
-
-sandbox_cognito_auth_token.json
-
-frontend/public/testing
-.vscode/launch.json
-auth.json

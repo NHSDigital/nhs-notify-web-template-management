@@ -1,5 +1,9 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import {
+  CognitoAuthHelper,
+  type TestUser,
+} from '../helpers/auth/cognito-auth-helper';
 
 export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
   public readonly emailInput: Locator;
@@ -21,23 +25,36 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
     this.errorMessage = page.locator('.amplify-alert__body');
   }
 
-  async cognitoSignIn(email: string) {
-    await this.emailInput.fill(email);
+  async cognitoSignIn(user: TestUser) {
+    await this.emailInput.fill(user.email);
 
-    await this.passwordInput.fill(process.env.USER_TEMPORARY_PASSWORD);
-
-    await this.clickSubmitButton();
-
-    // Note: because this is a new user Cognito forces us to update the password.
-    await this.cognitoUpdateUserPassword();
+    await this.passwordInput.fill(user.password);
 
     await this.clickSubmitButton();
-  }
 
-  async cognitoUpdateUserPassword() {
-    await this.passwordInput.fill(process.env.USER_PASSWORD);
+    let shouldResetPassword = true;
 
-    await this.confirmPasswordInput.fill(process.env.USER_PASSWORD);
+    try {
+      await this.confirmPasswordInput.waitFor({
+        state: 'visible',
+        timeout: 5000,
+      });
+    } catch {
+      shouldResetPassword = false;
+    }
+
+    // Note: because this is a new user, Cognito forces us to update the password.
+    if (shouldResetPassword) {
+      const password = CognitoAuthHelper.generatePassword();
+
+      await this.passwordInput.fill(password);
+
+      await this.confirmPasswordInput.fill(password);
+
+      await this.clickSubmitButton();
+
+      await user.setUpdatedPassword(password);
+    }
   }
 
   async clickSubmitButton() {

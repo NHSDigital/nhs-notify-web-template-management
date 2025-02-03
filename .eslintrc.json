@@ -86,11 +86,12 @@
         "devDependencies": [
           "jest.config.ts",
           "jest.setup.ts",
-          "src/__tests__/**"
+          "**/__tests__/**"
         ]
       }
     ],
-    "no-empty-function": "off"
+    "no-empty-function": "off",
+    "unicorn/prefer-module": "off"
   },
   "overrides": [
     {
