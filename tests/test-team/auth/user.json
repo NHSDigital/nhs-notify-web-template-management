@@ -1,0 +1,65 @@
+{
+  "cookies": [
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.LastAuthUser",
+      "value": "1cabd-playwright-nhs-notify-web-template-mmgmt@notify.nhs.uk",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.1cabd-playwright-nhs-notify-web-template-mmgmt%40notify.nhs.uk.accessToken",
+      "value": "eyJraWQiOiJONXpPcGVENEhBM1Y5QllnWXUzWnlCSGVKWldcL2todUhISzExXC9zSFplTWM9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIyNmEyNDI0NC04MGUxLTcwOGUtNGMyMS1lYzUyYjRjNjdkNTkiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0yLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMl9LVDN2NlFjTUQiLCJjbGllbnRfaWQiOiI3NjFiNHZja3JyY24xbWR1dHY0bTZjcWNmciIsIm9yaWdpbl9qdGkiOiJiODJjNmQwZC0zOTE1LTQ1NTYtYjM0OS0yMmU3OTQwNzliZjMiLCJldmVudF9pZCI6IjM0YzYyYjZlLTUxYjAtNGZkMy04Y2Q2LTZiYWZhN2JhNzY5YyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3Mzc3Mzg1MzksImV4cCI6MTczNzczOTQzOSwiaWF0IjoxNzM3NzM4NTM5LCJqdGkiOiI0ODYwYzUwYS1lYjFhLTQxOWYtYTdlMC0zNmQwNzg0MmI5ZjUiLCJ1c2VybmFtZSI6IjFjYWJkLXBsYXl3cmlnaHQtbmhzLW5vdGlmeS13ZWItdGVtcGxhdGUtbW1nbXRAbm90aWZ5Lm5ocy51ayJ9.1cJxA4CUycNzQZv82qcSxSbRX6tArqrrrJHDmSncg1tdc5F--NCx_2ZCtfj2MbCFU89i_k151g7MdYEhMPyoMWyaVkChbWZNUd_cUFGmHSWzLxZ2HFeoRBapZ68v3sz2Agq6LB9wtZ1wCV7H5V4KIigbLIJD62EgTHj-e05Yu3i0Pt-hT8L2r2T0QHlegNCgPVurTU-8wJJmxLP9RMcbzreWW-Iz9Q-A2LN7pt4kLt92u280KXevW-zvdAwv8cNIlzxKS-hjpoM6LZJHGFBxws-XFhT9UBJWMgEaZURKeh7aoHT6hD1ar3boQ4A5JFG-az0oPTB1SmD-SI8uFlAe0w",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.1cabd-playwright-nhs-notify-web-template-mmgmt%40notify.nhs.uk.idToken",
+      "value": "eyJraWQiOiJ0WlBcL2RMYkdPZzdmc0g1SUh1bHcrcm5zYnhLNml5cmFuZFFJMHJXMlBTbz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyNmEyNDI0NC04MGUxLTcwOGUtNGMyMS1lYzUyYjRjNjdkNTkiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LXdlc3QtMi5hbWF6b25hd3MuY29tXC9ldS13ZXN0LTJfS1QzdjZRY01EIiwiY29nbml0bzp1c2VybmFtZSI6IjFjYWJkLXBsYXl3cmlnaHQtbmhzLW5vdGlmeS13ZWItdGVtcGxhdGUtbW1nbXRAbm90aWZ5Lm5ocy51ayIsIm9yaWdpbl9qdGkiOiJiODJjNmQwZC0zOTE1LTQ1NTYtYjM0OS0yMmU3OTQwNzliZjMiLCJhdWQiOiI3NjFiNHZja3JyY24xbWR1dHY0bTZjcWNmciIsImV2ZW50X2lkIjoiMzRjNjJiNmUtNTFiMC00ZmQzLThjZDYtNmJhZmE3YmE3NjljIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE3Mzc3Mzg1MzksImV4cCI6MTczNzczOTQzOSwiaWF0IjoxNzM3NzM4NTM5LCJqdGkiOiIyMzM2MzhiNy02NWI2LTQyYTktODBjMC00ZjcwNzVjZDM5MTkiLCJlbWFpbCI6IjFjYWJkLXBsYXl3cmlnaHQtbmhzLW5vdGlmeS13ZWItdGVtcGxhdGUtbW1nbXRAbm90aWZ5Lm5ocy51ayJ9.dcmZ8-GSkHWlcPuO0cbYFdMpne0dc3u3nHIpmzjj-sWIJvyBchODNa0mHJNF0y1ZYdBWi0dtiQEYAKf031whbaImvSA49myBpchmFiP7RbtSTxLEvYj0QG745zqmH_rvEJ_HeEzzN3zvEDTGoZnT6a3LNZNjIrDEOdvoYlo6Dxo96VfQI-rSdluT1baBqc3aglH8bY-OqU6lKoiMX0Qyq5D3G7l7BZKIFatoI82Wo4I3getFt3Nd3MaTqorBwb_0LndozuH9jLiHZ-B8duXwv20d_uDbJ6N2f9EzHOLLppsOvqNyii-Wbu395RTMwFGXrXa3ZtxesB4-9fuOJ6_Haw",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.1cabd-playwright-nhs-notify-web-template-mmgmt%40notify.nhs.uk.refreshToken",
+      "value": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.hjYNPdfR8o04lxuQxOcHl85taMdFi_zqCOuKn5uesuck-RhfqmvNYuSEZXnSLyp9nYgQ7c3NSou9LB5pAA2EtP9rZI0kJBs1grN1_RJjv6M_8k0w_wx-VEEbO-muyJEgQHSSUnd_GiYAx0ygPC7ztY_GENtrjOWCPfuF8Xy-0oFEPEOGXCmpLw9k1B2GRQvnf_dpYvm0hYTPUfQALodTC4NDcx8CLdGeU6plhjg3_8kZWvyBnk7-qC5-YV49oMgKU2ziNtV9-fKmNRXP6UcuGvNvNaB6_PnNjuDJxVfLm60xoC112whOJjvWKpmFsGaG0euqGjWwHXIdIswm1A4LOA.lBL_USszVgS9_gfp.WK0wVNwFWYiHfkAZroK19SEc67r8qCKMZdE9IZQvFA8EtoUAWXxtSfDAf9JUn1ww2pv61WPedHMaCIsl3eDEtr498F-ctF4Dbkbcdoclmz07kPIZPKgzJaviDsEYoV8QYwRkixnGEE9Cnwn0Vo4tlxfL5hRlNRIJRfg5ncKOXkgxkz2XuHORuJdCEIyvky-8v-arIFh0ASd12TcMoC-iN3jDDOa91vcSHxchqzAJaTEk2WcCZZlpNy6-WtnUeMxAQtR19a3_2abssJ2eYKU-MxEZ9OPfvUGZVN73v0tLAfIQ9IzGf_hMSXDyroZfDp2gy433BU9KgS41k7v1aseRWvJK2USabAUkrWEc62D2ggRW-3xov252VF5o5Brx-OSZtlGkMQB70THzozDgbX38H3PHbVJhSRycAOBbyVvpHAAPK8gO5DyUhE9XOl6dbuWOfl8Kl2mTbQDsdmeY6s1CwOOQC7Oke_-KRX20cknYtvHHSMlZ-78x83QAid6WKl3bdFT1Y9_7dPNccsG8Tjd1hAGsZ96ZuqJRuAK03FLMdPpPCyJUMce1UFxm3M15BbevCkoBwgHji2zvZNZgbWA9KzW0ayY7SPqCZ03vV9B00gHn4HiWR3b4hujtW5WdAj58EK8zbeJbOvhxROczJo85Yc7NUaEPCQEeicDUmUp4vaT7w0qz8j0gpMDGMxLB-0sVlYdCbw3HICpWFwvwM61lHdrOjiaq7GI70BmtZRpwWGjSu1hNfjBZaSWrjcEOJNOqzk7wSoVN3gooVDqKkuuqkzyxRAg9xYQkT869i3-2o761KkrIDN2sbX5MB2r6S2QQ7L3nY7OTwhl8sU8qGlaKcJK3G_fuIZ6CSfRkf5v5qS_fklFVZRlR_WitnqT8ZK5qXemqQti5rRtsWloRPuXshmpq_PH2o_ZW-xUn4PKXZ0C31t2zAiIDNSr8bNhSH4sA6q8FQSsPooc21tl1F9rE-vhHuzHqADCqc5XsEhXk8rzKWkfMdAvcNHm6kUWlU56zt11fV_dgIOtUU9R3A7DaTNWTGj4shn84Q2MeOsKsRh4mTm7wv0NqOFVWcCFzsy0Guw_QvEiQ0RerQzsiHLYoeJgzVQeDt5ZoE6v5qEQ4Sw0V2tWj82KrfYHHLPAUrIx2EIb8kasWYvWL8FJA9O03L_vLkrN3DBol8UBwqKYbOUxUx9l7gsmbmViEYwPFsC9fMjK1KIQ15z_jGIk74Fx80rL7aC6bVdCbejA29AtDTr7gTiV5AnldqC2wxdn0W3QOdnpa4O73kNP4uz3S5nfIsUbQ-52H36PPI2bkGmnrLpgLpPONVy9QQ9UbO3OSEybSAU5PX5x5M6WCUMY13maY7rIaUW9kEQvJ7YFWog.4hn00m4Iul3Xx85CNiQIYA",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.1cabd-playwright-nhs-notify-web-template-mmgmt%40notify.nhs.uk.signInDetails",
+      "value": "{%22loginId%22:%221cabd-playwright-nhs-notify-web-template-mmgmt@notify.nhs.uk%22%2C%22authFlowType%22:%22USER_SRP_AUTH%22}",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "CognitoIdentityServiceProvider.761b4vckrrcn1mdutv4m6cqcfr.1cabd-playwright-nhs-notify-web-template-mmgmt%40notify.nhs.uk.clockDrift",
+      "value": "-887",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1769274539,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
