@@ -1,5 +1,3 @@
-const url = (baseUrl) => `${baseUrl}/create-template`;
-
 const pageActions = [
   'wait for element #templateType-NHS_APP to be visible',
   'click element #templateType-NHS_APP',
@@ -7,15 +5,15 @@ const pageActions = [
   'wait for element #create-nhs-app-template-submit-button to be visible',
 ];
 
-const createNHSAppTemplatePage = (baseUrl) => ({
+const createNHSAppTemplatePage = (url) => ({
   name: 'create-nhs-app-template',
-  url: url(baseUrl),
+  url,
   actions: pageActions,
 });
 
-const createNHSAppTemplateErrorPage = (baseUrl) => ({
+const createNHSAppTemplateErrorPage = (url) => ({
   name: 'create-nhs-app-template-error',
-  url: url(baseUrl),
+  url,
   actions: [
     ...pageActions,
     'click element #create-nhs-app-template-submit-button',

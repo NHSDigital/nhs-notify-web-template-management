@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateSMSTemplatePage should render CreateSMSTemplatePage 1`] = `
+<SmsTemplateForm
+  initialState={
+    {
+      "message": "",
+      "name": "",
+      "templateStatus": "NOT_YET_SUBMITTED",
+      "templateType": "SMS",
+    }
+  }
+/>
+`;

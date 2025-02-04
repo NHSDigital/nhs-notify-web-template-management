@@ -35,19 +35,52 @@
   npm install
 ```
 
-- To run the project locally, you will first need to run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
+### Running the project locally
 
-```shell
-  npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
-```
+1. Convert the email HTML template into a JSON file that can be packaged with the email sending lambda.
 
-- Then in a separate terminal, run the app locally:
+   ```shell
+   npm run generate-dependencies
+   ```
 
-```shell
-  npm run dev
-```
+2. (Optional) If you want to test sending emails then you will need to set the following environment variables locally.
 
-- Open your browser and go to `localhost:3000` to view the app.
+   ```shell
+   export ACCOUNT_ID=<aws_account_id>
+   export NOTIFY_DOMAIN_NAME=<ses_verified_domain>
+   ```
+
+3. To run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
+
+   ```shell
+   npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
+   ```
+
+4. To create a Terraform backend sandbox, run:
+
+   ```shell
+   npm run create-backend-sandbox <environment-name>
+   ```
+
+5. Then in a separate terminal, run the app locally:
+
+   ```shell
+   npm run dev
+   ```
+
+6. Open your browser and go to `localhost:3000` to view the app.
+
+7. To destroy an Amplify sandbox, run:
+
+   ```shell
+   npm run destroy-sandbox -- --profile <the name of the AWS config profile for the account you are authenticated with>
+   ```
+
+8. To destroy a Terraform backend sandbox, run:
+
+   ```shell
+   npm run destroy-backend-sandbox <environment-name>
+   ```
 
 ### Other commands
 
@@ -55,6 +88,10 @@
 - Accessibility test `npm run test:accessibility`
 
 You can find more commands in the `package.json` file
+
+### Running Team and IAM Web Auth projects locally
+
+Read more in the [README.md](./local/README.md).
 
 ### Project structure
 
@@ -76,3 +113,4 @@ module "amp_branch" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/amp_branch?ref=v1.0.0"
   ...
 }
+```
