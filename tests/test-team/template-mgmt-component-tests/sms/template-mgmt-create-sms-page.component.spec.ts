@@ -5,7 +5,7 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
-  assertLogoutLink,
+  assertSignOutLink,
   assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -86,7 +86,7 @@ test.describe('Create SMS message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLogoutLink(props);
+      await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,

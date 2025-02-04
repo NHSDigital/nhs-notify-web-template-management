@@ -7,17 +7,21 @@ import content from '@content/content';
 export const AuthLink = () => {
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
-  let id = 'login-link';
-  let linkContent = content.components.headerComponent.links.logIn;
+  let id = 'sign-in-link';
+  let linkContent = content.components.headerComponent.links.signIn;
 
   if (authStatus === 'authenticated') {
-    id = 'logout-link';
-    linkContent = content.components.headerComponent.links.logOut;
+    id = 'sign-out-link';
+    linkContent = content.components.headerComponent.links.signOut;
   }
 
   return (
-    <div className='nhsuk-account__login' data-testid='login-link'>
-      <a id={id} className='nhsuk-account__login--link' href={linkContent.href}>
+    <div className='nhsuk-account__sign-in' data-testid='sign-in-link'>
+      <a
+        id={id}
+        className='nhsuk-account__sign-in--link'
+        href={linkContent.href}
+      >
         {linkContent.text}
       </a>
     </div>

@@ -5,9 +5,9 @@ export class TemplateMgmtBasePage {
 
   readonly notifyBannerLink: Locator;
 
-  readonly loginLink: Locator;
+  readonly signInLink: Locator;
 
-  readonly logoutLink: Locator;
+  readonly signOutLink: Locator;
 
   readonly goBackLink: Locator;
 
@@ -30,13 +30,13 @@ export class TemplateMgmtBasePage {
       '[class="nhsuk-header__link nhsuk-header__link--service"]'
     );
 
-    this.loginLink = page
-      .locator('[class="nhsuk-account__login--link"]')
-      .and(page.getByText('Log in'));
+    this.signInLink = page
+      .locator('[class="nhsuk-account__sign-in--link"]')
+      .and(page.getByText('Sign in'));
 
-    this.logoutLink = page
-      .locator('[class="nhsuk-account__login--link"]')
-      .and(page.getByText('Log out'));
+    this.signOutLink = page
+      .locator('[class="nhsuk-account__sign-in--link"]')
+      .and(page.getByText('Sign out'));
 
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
@@ -68,8 +68,8 @@ export class TemplateMgmtBasePage {
     await this.notifyBannerLink.click();
   }
 
-  async clickLoginLink() {
-    await this.loginLink.click();
+  async clickSignInLink() {
+    await this.signInLink.click();
   }
 
   async clickSubmitButton() {

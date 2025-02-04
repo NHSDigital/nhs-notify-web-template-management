@@ -5,7 +5,7 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import {
   assertFooterLinks,
   assertGoBackLink,
-  assertLogoutLink,
+  assertSignOutLink,
   assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -71,7 +71,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
-    await assertLogoutLink(props);
+    await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLink({
       ...props,

@@ -4,14 +4,14 @@ import { TemplateType } from 'nhs-notify-web-template-management-utils';
 const headerComponent = {
   serviceName: 'Notify',
   links: {
-    logIn: {
-      text: 'Log in',
+    signIn: {
+      text: 'Sign in',
       href: `/auth?redirect=${encodeURIComponent(
         `${getBasePath()}/create-and-submit-templates`
       )}`,
     },
-    logOut: {
-      text: 'Log out',
+    signOut: {
+      text: 'Sign out',
       href: `/auth/signout?redirect=${encodeURIComponent(
         `${getBasePath()}/create-and-submit-templates`
       )}`,
