@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient } from '../template-api-client';
+import { TemplateApiClient, TemplateClient } from '../template-api-client';
 import { TemplateStatus, TemplateType } from '../types/generated';
 
 const axiosMock = new MockAdapter(axios);
@@ -8,6 +8,12 @@ const axiosMock = new MockAdapter(axios);
 describe('TemplateAPIClient', () => {
   beforeEach(() => {
     axiosMock.reset();
+  });
+
+  test('TemplateClient should construct TemplateApiClient', () => {
+    const result = TemplateClient('token');
+
+    expect(result).toBeTruthy();
   });
 
   test('createTemplate - should return error', async () => {
