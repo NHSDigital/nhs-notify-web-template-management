@@ -19,6 +19,7 @@ data "aws_iam_policy_document" "github_deploy" {
       "apigateway:*",
       "appsync:*",
       "backup:*",
+      "backup-storage:*",
       "cloudformation:*",
       "cognito-idp:*",
       "ses:*",
