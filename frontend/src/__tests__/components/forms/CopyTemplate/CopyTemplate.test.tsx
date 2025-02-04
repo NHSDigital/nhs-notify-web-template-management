@@ -9,9 +9,7 @@ import {
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => {},
-}));
+jest.mock('@utils/amplify-utils');
 
 jest.mock('react-dom', () => {
   const originalModule = jest.requireActual('react-dom');

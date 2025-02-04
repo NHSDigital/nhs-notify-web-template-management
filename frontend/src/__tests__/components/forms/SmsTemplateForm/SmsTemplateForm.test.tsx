@@ -23,9 +23,7 @@ jest.mock('react-dom', () => {
   };
 });
 
-jest.mock('@utils/amplify-utils', () => ({
-  getAmplifyBackendClient: () => {},
-}));
+jest.mock('@utils/amplify-utils');
 
 describe('CreateSmsTemplate component', () => {
   test('renders page with back link if initial state has no id', async () => {

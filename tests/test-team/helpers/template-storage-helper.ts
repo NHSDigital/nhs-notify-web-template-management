@@ -37,6 +37,7 @@ export class TemplateStorageHelper {
         new DeleteCommand({
           TableName: process.env.TEMPLATE_STORAGE_TABLE_NAME,
           Key: {
+            owner: process.env.USER_ID,
             id,
           },
         })

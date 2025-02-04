@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
+import { assertLogoutLink } from './template-mgmt-common.steps';
 
 test.describe('Start Page', () => {
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({
@@ -45,22 +46,14 @@ test.describe('Start Page', () => {
     );
   });
 
-  test(
-    'should navigate to login page when "log in" link clicked',
-    { tag: '@Update/CCM-4889' },
-    async ({ page, baseURL }) => {
-      const startPage = new TemplateMgmtStartPage(page);
+  test('should display logout link', async ({ page }) => {
+    const startPage = new TemplateMgmtStartPage(page);
 
-      await startPage.navigateToStartPage();
-      await startPage.clickLoginLink();
-
-      await expect(page).toHaveURL(
-        `${baseURL}/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates`
-      );
-
-      expect(await page.locator('h1').textContent()).toBe('404');
-    }
-  );
+    await assertLogoutLink({
+      page: startPage,
+      id: '/templates/create-and-submit-templates',
+    });
+  });
 
   test('should not display "Go Back" link on page', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);

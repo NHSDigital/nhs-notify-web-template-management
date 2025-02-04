@@ -28,6 +28,8 @@ describe('EmailTemplateSubmittedPage', () => {
       name: 'template-name',
       message: 'example',
       subject: 'subject',
+      createdAt: 'today',
+      updatedAt: 'today',
     };
 
     getTemplateMock.mockResolvedValueOnce(template);
