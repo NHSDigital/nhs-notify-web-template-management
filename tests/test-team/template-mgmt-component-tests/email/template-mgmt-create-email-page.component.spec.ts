@@ -1,62 +1,29 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtCreateEmailPage } from '../../pages/email/template-mgmt-create-email-page';
-import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
   assertLogoutLink,
-  assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   TestUserId,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
-  return {
-    empty: TemplateFactory.createEmailTemplate('empty-email-template', owner),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', owner),
-    submitAndReturn: TemplateFactory.createEmailTemplate(
-      'submit-and-return-create-email-template',
-      owner
-    ),
-    goBackAndReturn: TemplateFactory.createEmailTemplate(
-      'go-back-email-template',
-      owner
-    ),
-    noEmailTemplateType: TemplateFactory.create({
-      id: 'no-email-template-type-template',
-      templateType: TemplateType.NHS_APP,
-      owner,
-    }),
-    previousData: {
-      ...TemplateFactory.createEmailTemplate(
-        'previous-data-email-template',
-        owner
-      ),
-      name: 'previous-data-email-template',
-      subject: 'previous-data-email-template-subject-line',
-      message: 'previous-data-email-template-message',
-    },
-  };
-}
-
 test.describe('Create Email message template Page', () => {
-  let templates: ReturnType<typeof createTemplates>;
   const templateStorageHelper = new TemplateStorageHelper();
+  let user: TestUser;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(TestUserId.User1);
-    templates = createTemplates(user.userId);
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
+    user = await createAuthHelper().getTestUser(TestUserId.User1);
   });
 
   test.afterAll(async () => {
-    await templateStorageHelper.deleteSeededTemplates();
+    await templateStorageHelper.deleteAdHocTemplates();
   });
 
   test('when user visits page, then page is loaded', async ({
@@ -65,10 +32,10 @@ test.describe('Create Email message template Page', () => {
   }) => {
     const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-    await createEmailTemplatePage.loadPage(templates.empty.id);
+    await createEmailTemplatePage.loadPage();
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-email-template/${templates.empty.id}`
+      `${baseURL}/templates/create-email-template`
     );
 
     expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
@@ -93,40 +60,12 @@ test.describe('Create Email message template Page', () => {
       });
     });
 
-    test('edit page has no go back link', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtCreateEmailPage(page),
-        id: templates.empty.id,
-        baseURL,
-      };
-
-      await assertGoBackLinkNotPresent(props);
-    });
-
-    test('when user visits page with previous data, then form fields retain previous data', async ({
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(templates.previousData.id);
-
-      await expect(createEmailTemplatePage.nameInput).toHaveValue(
-        templates.previousData.name
-      );
-      await expect(createEmailTemplatePage.subjectLineInput).toHaveValue(
-        templates.previousData.subject
-      );
-      await expect(createEmailTemplatePage.messageTextArea).toHaveValue(
-        templates.previousData.message
-      );
-    });
-
     test('when user clicks "Personalisation" tool tips, then tool tips are displayed', async ({
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.goBackAndReturn.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.personalisationFields.click();
 
@@ -140,7 +79,7 @@ test.describe('Create Email message template Page', () => {
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.messageFormatting.assertDetailsOpen([
         createEmailTemplatePage.messageFormatting.lineBreaksAndParagraphs,
@@ -188,7 +127,7 @@ test.describe('Create Email message template Page', () => {
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -199,12 +138,11 @@ test.describe('Create Email message template Page', () => {
     });
 
     test('when user submits form with valid data, then the next page is displayed', async ({
-      baseURL,
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.submit.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.nameInput.fill(
         'This is an email template name'
@@ -220,41 +158,30 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.clickSubmitButton();
 
+      const previewPageRegex = "\\/templates\\/preview-email-template\\/([0-9a-fA-F-]+)(?:\\?from=edit)?$";
+
       await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-email-template/${templates.submit.id}?from=edit`
+        RegExp(previewPageRegex)
       );
+
+      const previewPageParts = page.url().match(previewPageRegex);
+
+      expect(previewPageParts?.length).toEqual(2);
+
+      templateStorageHelper.addAdHocTemplateKey({
+        id: previewPageParts![1],
+        owner: user.userId,
+      });
     });
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with mismatched template journey, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage(templates.noEmailTemplateType.id);
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
-
-      await createEmailTemplatePage.loadPage('/fake-template-id');
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
     test('when user submits form with no data, then errors are displayed', async ({
       page,
     }) => {
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.clickSubmitButton();
 
@@ -290,7 +217,7 @@ test.describe('Create Email message template Page', () => {
 
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.subjectLineInput.fill(
         'template-subject-line'
@@ -318,7 +245,7 @@ test.describe('Create Email message template Page', () => {
 
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.nameInput.fill('template-name');
 
@@ -345,7 +272,7 @@ test.describe('Create Email message template Page', () => {
 
       const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
 
-      await createEmailTemplatePage.loadPage(templates.empty.id);
+      await createEmailTemplatePage.loadPage();
 
       await createEmailTemplatePage.nameInput.fill('template-name');
 
