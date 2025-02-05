@@ -22,7 +22,7 @@ export const LogoutWarningModal = ({
 }) => {
   const {
     headerComponent: {
-      links: { logOut },
+      links: { signOut: logOut },
     },
     logoutWarningComponent,
   } = content.components;
@@ -40,7 +40,7 @@ export const LogoutWarningModal = ({
     router.push(
       `/auth/inactive?redirect=${encodeURIComponent(
         `${getBasePath()}/${pathname}`
-      )}`
+      )}`,
     );
   };
 

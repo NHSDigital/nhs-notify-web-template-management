@@ -1,21 +1,35 @@
 'use client';
 
-import React, { Suspense, useEffect } from 'react';
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import React, { Suspense, use } from 'react';
 import { Redirect } from '../page.dev';
+import { signOut } from 'aws-amplify/auth';
 
-export default function Page() {
-  const { authStatus, signOut } = useAuthenticator((ctx) => [ctx.authStatus]);
+const UsePromise = ({
+  promise: promise,
+  children,
+}: {
+  promise: Promise<void>;
+  children: React.ReactNode;
+}) => {
+  use(promise);
 
-  useEffect(() => {
-    if (authStatus === 'authenticated') {
-      signOut();
-    }
-  }, [authStatus, signOut]);
+  return <>{children}</>;
+};
+
+export const SignOut = ({ children }: { children: React.ReactNode }) => {
+  const signoutPromise = signOut({ global: true });
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      {authStatus === 'authenticated' ? <p>Signing out</p> : <Redirect />}
+    <Suspense fallback={<p>Signing out...</p>}>
+      <UsePromise promise={signoutPromise}>{children}</UsePromise>
     </Suspense>
+  );
+};
+
+export default function Page() {
+  return (
+    <SignOut>
+      <Redirect />
+    </SignOut>
   );
 }
