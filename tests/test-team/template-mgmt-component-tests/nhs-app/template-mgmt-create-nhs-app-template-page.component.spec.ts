@@ -48,7 +48,7 @@ test.describe('Create NHS App Template Page', () => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
     await createTemplatePage.loadPage();
-    
+
     expect(await createTemplatePage.pageHeader.textContent()).toBe(
       'Create NHS App message template'
     );
@@ -72,7 +72,7 @@ test.describe('Create NHS App Template Page', () => {
     await page
       .locator('[id="nhsAppTemplateMessage"]')
       .fill('This is an NHS App message');
-    await createTemplatePage.clickSubmitButton();    
+    await createTemplatePage.clickSubmitButton();
 
     const previewPageRegex = "\\/templates\\/preview-nhs-app-template\\/([0-9a-fA-F-]+)(?:\\?from=edit)?$";
 
