@@ -25,10 +25,11 @@ describe('middleware function', () => {
     const request = new NextRequest(url);
     const response = await middleware(request);
 
-    expect(response.status).toBe(302);
+    expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe(
       'https://url.com/auth?redirect=%2Ftemplates%2F%2Fmanage-templates'
     );
+    expect(response.headers.get('Content-Type')).toBe('text/html');
   });
 
   it('if request path is protected, and access token is obtained, respond with CSP', async () => {
