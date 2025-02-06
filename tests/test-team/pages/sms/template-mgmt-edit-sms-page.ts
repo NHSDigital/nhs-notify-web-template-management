@@ -37,6 +37,8 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/edit-text-message-template/${templateId}`);
+    await this.navigateTo(
+      `/templates/edit-text-message-template/${templateId}`
+    );
   }
 }

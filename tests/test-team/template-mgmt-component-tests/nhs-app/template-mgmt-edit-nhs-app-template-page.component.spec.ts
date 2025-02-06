@@ -262,15 +262,10 @@ test.describe('Edit NHS App Template Page', () => {
       baseURL,
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-
-      await editTemplatePage.loadPage(templates.emptyTemplateData.id);
-
+      await editTemplatePage.loadPage('empty-nhs-app-template');
       const newTabPromise = page.waitForEvent('popup');
-
       await page.getByRole('link', { name }).click();
-
       const newTab = await newTabPromise;
-
       await expect(newTab).toHaveURL(`${baseURL}/${url}`);
     });
   }

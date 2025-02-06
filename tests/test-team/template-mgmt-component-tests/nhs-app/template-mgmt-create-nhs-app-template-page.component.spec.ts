@@ -74,11 +74,9 @@ test.describe('Create NHS App Template Page', () => {
       .fill('This is an NHS App message');
     await createTemplatePage.clickSubmitButton();
 
-    const previewPageRegex = "\\/templates\\/preview-nhs-app-template\\/([0-9a-fA-F-]+)(?:\\?from=edit)?$";
+    const previewPageRegex = String.raw`\/templates\/preview-nhs-app-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
 
-    await expect(page).toHaveURL(
-      RegExp(previewPageRegex)
-    );
+    await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
     const previewPageParts = page.url().match(previewPageRegex);
     expect(previewPageParts?.length).toEqual(2);

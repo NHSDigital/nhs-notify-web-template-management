@@ -8,7 +8,6 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUser,
@@ -27,9 +26,7 @@ test.describe('Create SMS message template Page', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  test('when user visits page, then page is loaded', async ({
-    page,
-  }) => {
+  test('when user visits page, then page is loaded', async ({ page }) => {
     const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
     await createSmsTemplatePage.loadPage();
@@ -174,11 +171,9 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.clickSubmitButton();
 
-      const previewPageRegex = "\\/templates\\/preview-text-message-template\\/([0-9a-fA-F-]+)(?:\\?from=edit)?$";
+      const previewPageRegex = String.raw`\/templates\/preview-text-message-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
 
-      await expect(page).toHaveURL(
-        RegExp(previewPageRegex)
-      );
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
       const previewPageParts = page.url().match(previewPageRegex);
       expect(previewPageParts?.length).toEqual(2);

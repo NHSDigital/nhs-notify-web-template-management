@@ -34,9 +34,7 @@ test.describe('Create Email message template Page', () => {
 
     await createEmailTemplatePage.loadPage();
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/create-email-template`
-    );
+    await expect(page).toHaveURL(`${baseURL}/templates/create-email-template`);
 
     expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
       'Create email template'
@@ -158,11 +156,9 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.clickSubmitButton();
 
-      const previewPageRegex = "\\/templates\\/preview-email-template\\/([0-9a-fA-F-]+)(?:\\?from=edit)?$";
+      const previewPageRegex = String.raw`\/templates\/preview-email-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
 
-      await expect(page).toHaveURL(
-        RegExp(previewPageRegex)
-      );
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
       const previewPageParts = page.url().match(previewPageRegex);
 

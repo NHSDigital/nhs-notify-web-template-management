@@ -189,15 +189,10 @@ test.describe('Edit SMS message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditSmsPage(page);
-
-        await editTemplatePage.loadPage(templates.empty.id);
-
+        await editTemplatePage.loadPage('empty-sms-template');
         const newTabPromise = page.waitForEvent('popup');
-
         await page.getByRole('link', { name }).click();
-
         const newTab = await newTabPromise;
-
         await expect(newTab).toHaveURL(`${baseURL}/${url}`);
       });
     }
@@ -210,13 +205,9 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.loadPage(templates.submit.id);
 
-      await editSmsTemplatePage.nameInput.fill(
-        'This is an SMS template name'
-      );
+      await editSmsTemplatePage.nameInput.fill('This is an SMS template name');
 
-      await editSmsTemplatePage.messageTextArea.fill(
-        'This is an SMS message'
-      );
+      await editSmsTemplatePage.messageTextArea.fill('This is an SMS message');
 
       await editSmsTemplatePage.clickSubmitButton();
 
@@ -269,9 +260,7 @@ test.describe('Edit SMS message template Page', () => {
       ).toBeVisible();
 
       await expect(
-        editSmsTemplatePage.errorSummary.locator(
-          `[href="#smsTemplateMessage"]`
-        )
+        editSmsTemplatePage.errorSummary.locator(`[href="#smsTemplateMessage"]`)
       ).toBeVisible();
     });
 

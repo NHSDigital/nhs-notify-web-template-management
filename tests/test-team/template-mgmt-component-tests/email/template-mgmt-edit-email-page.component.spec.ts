@@ -117,9 +117,9 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.personalisationFields.click();
 
-      await expect(
-        editEmailTemplatePage.personalisationFields
-      ).toHaveAttribute('open');
+      await expect(editEmailTemplatePage.personalisationFields).toHaveAttribute(
+        'open'
+      );
     });
 
     test('when user clicks "Message formatting" tool tips, then tool tips are displayed', async ({
@@ -157,15 +157,10 @@ test.describe('Edit Email message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditEmailPage(page);
-
-        await editTemplatePage.loadPage(templates.empty.id);
-
+        await editTemplatePage.loadPage('empty-email-template');
         const newTabPromise = page.waitForEvent('popup');
-
         await page.getByRole('link', { name }).click();
-
         const newTab = await newTabPromise;
-
         await expect(newTab).toHaveURL(`${baseURL}/${url}`);
       });
     }
@@ -247,9 +242,9 @@ test.describe('Edit Email message template Page', () => {
 
       await expect(editEmailTemplatePage.errorSummary).toBeVisible();
 
-      await expect(
-        editEmailTemplatePage.errorSummary.locator('h2')
-      ).toHaveText('There is a problem');
+      await expect(editEmailTemplatePage.errorSummary.locator('h2')).toHaveText(
+        'There is a problem'
+      );
 
       await expect(
         editEmailTemplatePage.errorSummary.locator(
@@ -342,10 +337,9 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.clickSubmitButton();
 
-      const emailMessageErrorLink =
-        editEmailTemplatePage.errorSummary.locator(
-          '[href="#emailTemplateMessage"]'
-        );
+      const emailMessageErrorLink = editEmailTemplatePage.errorSummary.locator(
+        '[href="#emailTemplateMessage"]'
+      );
 
       await expect(emailMessageErrorLink).toHaveText(errorMessage);
 
