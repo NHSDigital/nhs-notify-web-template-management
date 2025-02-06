@@ -11,19 +11,18 @@ import {
   createTemplate,
   saveTemplate,
   getTemplate,
-  sendEmail,
   getTemplates,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { mockDeep } from 'jest-mock-extended';
-import { IBackendClient } from 'nhs-notify-backend-client/src/types/backend-client';
+import { ITemplateClient } from 'nhs-notify-backend-client';
 
-const mockedBackendClient = mockDeep<IBackendClient>();
+const mockedTemplateClient = mockDeep<ITemplateClient>();
 const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/backend-api-client', () => ({
-  BackendClient: () => mockedBackendClient,
+jest.mock('nhs-notify-backend-client/src/template-api-client', () => ({
+  TemplateClient: () => mockedTemplateClient,
 }));
 
 describe('form-actions', () => {
@@ -44,7 +43,7 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    mockedBackendClient.templates.createTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
@@ -57,7 +56,7 @@ describe('form-actions', () => {
 
     const response = await createTemplate(createTemplateInput);
 
-    expect(mockedBackendClient.templates.createTemplate).toHaveBeenCalledWith(
+    expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
       createTemplateInput
     );
 
@@ -65,7 +64,7 @@ describe('form-actions', () => {
   });
 
   test('createTemplate - should thrown error when saving unexpectedly fails', async () => {
-    mockedBackendClient.templates.createTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Bad request',
@@ -83,7 +82,7 @@ describe('form-actions', () => {
       'Failed to create new template'
     );
 
-    expect(mockedBackendClient.templates.createTemplate).toHaveBeenCalledWith(
+    expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
       createTemplateInput
     );
   });
@@ -115,7 +114,7 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    mockedBackendClient.templates.updateTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
@@ -129,7 +128,7 @@ describe('form-actions', () => {
 
     const response = await saveTemplate(updateTemplateInput);
 
-    expect(mockedBackendClient.templates.updateTemplate).toHaveBeenCalledWith(
+    expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
       updateTemplateInput
     );
@@ -138,7 +137,7 @@ describe('form-actions', () => {
   });
 
   test('saveTemplate - should thrown error when saving unexpectedly fails', async () => {
-    mockedBackendClient.templates.updateTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Bad request',
@@ -157,7 +156,7 @@ describe('form-actions', () => {
       'Failed to save template data'
     );
 
-    expect(mockedBackendClient.templates.updateTemplate).toHaveBeenCalledWith(
+    expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
       updateTemplateInput
     );
@@ -191,21 +190,19 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    mockedBackendClient.templates.getTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
     const response = await getTemplate('id');
 
-    expect(mockedBackendClient.templates.getTemplate).toHaveBeenCalledWith(
-      'id'
-    );
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
 
     expect(response).toEqual(responseData);
   });
 
   test('getTemplate - should return undefined when no data', async () => {
-    mockedBackendClient.templates.getTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: undefined,
       error: {
         code: 404,
@@ -215,9 +212,7 @@ describe('form-actions', () => {
 
     const response = await getTemplate('id');
 
-    expect(mockedBackendClient.templates.getTemplate).toHaveBeenCalledWith(
-      'id'
-    );
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
 
     expect(response).toEqual(undefined);
   });
@@ -242,19 +237,19 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({
+    mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: [responseData],
     });
 
     const response = await getTemplates();
 
-    expect(mockedBackendClient.templates.listTemplates).toHaveBeenCalledWith();
+    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith();
 
     expect(response).toEqual([responseData]);
   });
 
   test('getTemplates - should return empty array when fetching unexpectedly fails', async () => {
-    mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({
+    mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: undefined,
       error: {
         code: 500,
@@ -272,42 +267,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
-  });
-
-  test('sendEmail', async () => {
-    mockedBackendClient.functions.sendEmail.mockResolvedValueOnce({
-      data: undefined,
-      error: undefined,
-    });
-
-    const response = await sendEmail('id');
-
-    expect(mockedBackendClient.functions.sendEmail).toHaveBeenCalledWith('id');
-
-    expect(response).toEqual(undefined);
-  });
-
-  test('sendEmail - should thrown error when no token', async () => {
-    authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
-
-    await expect(sendEmail('id')).rejects.toThrow('Failed to get access token');
-  });
-
-  test('getTemplates - should return nothing when an error occurs', async () => {
-    mockedBackendClient.functions.sendEmail.mockResolvedValueOnce({
-      data: undefined,
-      error: {
-        code: 404,
-        message: 'Not found',
-      },
-    });
-
-    const response = await sendEmail('id');
-
-    expect(mockedBackendClient.functions.sendEmail).toHaveBeenCalledWith('id');
-
-    expect(response).toEqual(undefined);
   });
 
   test('getTemplates - order by createdAt and then id', async () => {
@@ -348,7 +307,7 @@ describe('form-actions', () => {
       '10',
     ];
 
-    mockedBackendClient.templates.listTemplates.mockResolvedValueOnce({
+    mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: templates,
     });
 
