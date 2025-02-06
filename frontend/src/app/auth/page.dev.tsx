@@ -8,6 +8,7 @@ import '@aws-amplify/ui-react/styles.css';
 // eslint-disable-next-line  unicorn/prefer-node-protocol
 import path from 'path';
 import { getBasePath } from '@utils/get-base-path';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const Redirect = () => {
   const searchParams = useSearchParams();
@@ -31,20 +32,22 @@ export const Redirect = () => {
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Authenticator
-        variation='default'
-        hideSignUp
-        formFields={{
-          signIn: {
-            username: {
-              type: 'text',
+    <NHSNotifyMain>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Authenticator
+          variation='default'
+          hideSignUp
+          formFields={{
+            signIn: {
+              username: {
+                type: 'text',
+              },
             },
-          },
-        }}
-      >
-        <Redirect />
-      </Authenticator>
-    </Suspense>
+          }}
+        >
+          <Redirect />
+        </Authenticator>
+      </Suspense>
+    </NHSNotifyMain>
   );
 }

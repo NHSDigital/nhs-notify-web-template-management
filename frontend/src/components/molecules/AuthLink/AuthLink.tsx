@@ -3,6 +3,7 @@
 import React from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import content from '@content/content';
+import styles from './AuthLink.module.scss';
 
 export const AuthLink = () => {
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
@@ -16,12 +17,8 @@ export const AuthLink = () => {
   }
 
   return (
-    <div className='nhsuk-account__sign-in' data-testid='sign-in-link'>
-      <a
-        id={id}
-        className='nhsuk-account__sign-in--link'
-        href={linkContent.href}
-      >
+    <div className={styles['auth-link']} data-testid='auth-link'>
+      <a id={id} className={styles['auth-link__link']} href={linkContent.href}>
         {linkContent.text}
       </a>
     </div>
