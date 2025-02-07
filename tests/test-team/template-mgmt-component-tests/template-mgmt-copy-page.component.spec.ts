@@ -157,7 +157,7 @@ test.describe('Copy Template Page', () => {
           })
           .first();
 
-        expect(templateRow).toContainText('Not yet submitted');
+        await expect(templateRow).toContainText('Not yet submitted');
 
         const copyUrl = await templateRow
           .getByText('Copy', { exact: true })
@@ -165,12 +165,13 @@ test.describe('Copy Template Page', () => {
 
         const newTemplateId = copyUrl?.split('/').at(-1);
 
-        if (!newTemplateId) {
-          throw new Error('Could not determine ID of copied template');
-        }
+        expect(
+          newTemplateId,
+          'Could not determine ID of copied template'
+        ).toBeDefined();
 
         templateStorageHelper.addAdHocTemplateKey({
-          id: newTemplateId,
+          id: newTemplateId!,
           owner: user.userId,
         });
 
@@ -178,11 +179,11 @@ test.describe('Copy Template Page', () => {
           `/templates/preview-${templateTypeToUrlTextMappings(targetTemplateType)}-template/${newTemplateId}`
         );
 
-        expect(page.getByText(template.message)).toBeVisible();
+        await expect(page.getByText(template.message)).toBeVisible();
 
         if (targetTemplateType === TemplateType.EMAIL) {
           const expectedSubject = template.subject ?? 'Enter a subject line';
-          expect(page.getByText(expectedSubject)).toBeVisible();
+          await expect(page.getByText(expectedSubject)).toBeVisible();
         }
       });
     }

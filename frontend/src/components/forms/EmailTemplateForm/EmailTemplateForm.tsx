@@ -1,7 +1,6 @@
 'use client';
 
-import { FC } from 'react';
-import { useFormState } from 'react-dom';
+import { FC, useActionState } from 'react';
 import {
   TextInput,
   HintText,
@@ -42,7 +41,7 @@ export const EmailTemplateForm: FC<
     backLinkText,
   } = createEmailTemplatePageContent;
 
-  const [state, action] = useFormState(processFormActions, initialState);
+  const [state, action] = useActionState(processFormActions, initialState);
 
   const [emailTemplateName, emailTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);

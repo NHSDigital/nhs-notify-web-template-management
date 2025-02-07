@@ -11,7 +11,7 @@ import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { reviewNhsAppTemplateAction } from './server-action';
 
@@ -20,7 +20,7 @@ export function ReviewNHSAppTemplate({
 }: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const searchParams = useSearchParams();
 
-  const [state, action] = useFormState(
+  const [state, action] = useActionState(
     reviewNhsAppTemplateAction,
     initialState
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -18,7 +18,7 @@ type CopyTemplate = {
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {
-  const [state, action] = useFormState(copyTemplateAction, { template });
+  const [state, action] = useActionState(copyTemplateAction, { template });
 
   const templateTypes = Object.values(TemplateType);
   const options = templateTypes.map((templateType) => ({

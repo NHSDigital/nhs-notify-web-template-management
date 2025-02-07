@@ -8,7 +8,7 @@ import {
   EmailTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
@@ -26,7 +26,10 @@ export function ReviewEmailTemplate({
     },
   } = content;
 
-  const [state, action] = useFormState(reviewEmailTemplateAction, initialState);
+  const [state, action] = useActionState(
+    reviewEmailTemplateAction,
+    initialState
+  );
 
   const templateSubjectLine = initialState.subject;
   const templateMessage = initialState.message;

@@ -14,7 +14,7 @@ test.describe('Start Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
     );
-    expect(await startPage.pageHeader.textContent()).toBe(
+    await expect(startPage.pageHeader).toHaveText(
       'Create and submit a template to NHS Notify'
     );
   });
@@ -41,7 +41,7 @@ test.describe('Start Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/create-and-submit-templates`
     );
-    expect(await startPage.pageHeader.textContent()).toBe(
+    await expect(startPage.pageHeader).toHaveText(
       'Create and submit a template to NHS Notify'
     );
   });
@@ -111,11 +111,12 @@ test('Footer links exist and are visible', async ({ page }) => {
   await Promise.all(
     footerLinks.map(async (link) => {
       const linkLocator = page.locator(link.selector);
-      const href = await linkLocator.getAttribute('href');
-      expect(linkLocator, `${link.name} should be visible`).toBeVisible();
-      expect(href, `${link.name} should have href ${link.href}`).toBe(
-        link.href
-      );
+      const href = linkLocator;
+      await expect(linkLocator, `${link.name} should be visible`).toBeVisible();
+      await expect(
+        href,
+        `${link.name} should have href ${link.href}`
+      ).toHaveAttribute('href', link.href);
     })
   );
 });

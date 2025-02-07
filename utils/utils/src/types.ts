@@ -55,15 +55,15 @@ export type FormState = {
 export type TemplateFormState<T = Template> = FormState & T;
 
 export type PageProps = {
-  params: {
+  params: Promise<{
     templateId: string;
-  };
+  }>;
 };
 
 export type TemplateSubmittedPageProps = {
-  params: {
+  params: Promise<{
     templateId: string;
-  };
+  }>;
 };
 
 export type PageComponentProps<T> = {

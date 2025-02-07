@@ -1,7 +1,6 @@
 'use client';
 
-import { FC } from 'react';
-import { useFormState } from 'react-dom';
+import { FC, useActionState } from 'react';
 import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
 import { deleteTemplatePageContent } from '@content/content';
 import { Button } from 'nhsuk-react-components';
@@ -16,7 +15,7 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
   const { pageHeading, hintText, noButtonText, yesButtonText } =
     deleteTemplatePageContent;
 
-  const [state, action] = useFormState(deleteTemplateAction, template);
+  const [state, action] = useActionState(deleteTemplateAction, template);
 
   const fullPageHeading = `${pageHeading} '${state.name}'?`;
   return (

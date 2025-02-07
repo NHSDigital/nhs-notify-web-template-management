@@ -71,7 +71,7 @@ test.describe('Create Email message template Page', () => {
       `${baseURL}/templates/edit-email-template/${templates.empty.id}`
     );
 
-    expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createEmailTemplatePage.pageHeader).toHaveText(
       'Create email template'
     );
   });

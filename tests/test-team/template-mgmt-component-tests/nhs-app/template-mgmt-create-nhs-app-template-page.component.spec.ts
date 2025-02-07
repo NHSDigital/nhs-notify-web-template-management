@@ -58,7 +58,7 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
   });
@@ -100,7 +100,7 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     await createTemplatePage.clickSubmitButton();
@@ -144,7 +144,7 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     const templateName = 'NHS Testing 123';
@@ -167,7 +167,7 @@ test.describe('Create NHS App Template Page', () => {
     await expect(page).toHaveURL(
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     const templateMessage = 'Test Message box';
