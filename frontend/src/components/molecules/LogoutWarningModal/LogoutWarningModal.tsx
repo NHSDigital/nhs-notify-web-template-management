@@ -14,7 +14,7 @@ import { formatTime } from './format-time';
 import styles from './LogoutWarningModal.module.scss';
 
 export const LogoutWarningModal = ({
-  promptBeforeLogoutSeconds: promptTimeSeconds,
+  promptBeforeLogoutSeconds,
   logoutInSeconds,
 }: {
   promptBeforeLogoutSeconds: number;
@@ -22,16 +22,17 @@ export const LogoutWarningModal = ({
 }) => {
   const {
     headerComponent: {
-      links: { signOut: logOut },
+      links: { logOut: logOut },
     },
     logoutWarningComponent,
   } = content.components;
 
+  const initialTime = formatTime(promptBeforeLogoutSeconds);
+
   const router = useRouter();
   const pathname = usePathname();
-  const initial = formatTime(promptTimeSeconds);
   const [showModal, setShowModal] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(initial);
+  const [remainingTime, setRemainingTime] = useState(initialTime);
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   const idle = () => {
@@ -50,7 +51,7 @@ export const LogoutWarningModal = ({
 
   const { reset, getRemainingTime } = useIdleTimer({
     timeout: logoutInSeconds * 1000,
-    promptBeforeIdle: promptTimeSeconds * 1000,
+    promptBeforeIdle: promptBeforeLogoutSeconds * 1000,
     onPrompt: prompted,
     onIdle: idle,
     disabled: authStatus !== 'authenticated',
@@ -75,7 +76,7 @@ export const LogoutWarningModal = ({
   const stillHere = () => {
     reset();
     setShowModal(false);
-    setRemainingTime(initial);
+    setRemainingTime(initialTime);
     fetchAuthSession({ forceRefresh: true });
   };
 

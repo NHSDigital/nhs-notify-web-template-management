@@ -27,7 +27,7 @@ const Modal = ({
       role='alertdialog'
       aria-modal='true'
       aria-live='assertive'
-      aria-labelledby='idle-warning-heading'
+      aria-labelledby='modal-heading'
     >
       <div className={styles.modal__content}>{children}</div>
     </dialog>
@@ -36,7 +36,7 @@ const Modal = ({
 
 const Header = ({ children }: { children: React.ReactNode }) => (
   <div
-    id='idle-warning-heading'
+    id='modal-heading'
     data-testid='modal-header'
     className={styles.modal__heading}
   >

@@ -21,15 +21,15 @@ beforeEach(() => {
 });
 
 describe('AuthLink', () => {
-  it('renders Sign in link when authStatus is configuring', async () => {
+  it('renders Log in link when authStatus is configuring', async () => {
     const container = render(<AuthLink />);
 
-    await screen.findByText('Sign in');
+    await screen.findByText('Log in');
 
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders Sign in link when authStatus is unauthenticated', async () => {
+  it('renders Log in link when authStatus is unauthenticated', async () => {
     jest.mocked(useAuthenticator).mockReturnValueOnce(
       mockDeep<UseAuthenticator>({
         authStatus: 'unauthenticated',
@@ -38,11 +38,11 @@ describe('AuthLink', () => {
 
     const container = render(<AuthLink />);
 
-    await screen.findByText('Sign in');
+    await screen.findByText('Log in');
 
     expect(container.asFragment()).toMatchSnapshot();
   });
-  it('renders Sign out link when authStatus is authenticated', async () => {
+  it('renders Log out link when authStatus is authenticated', async () => {
     jest.mocked(useAuthenticator).mockReturnValueOnce(
       mockDeep<UseAuthenticator>({
         authStatus: 'authenticated',
@@ -51,7 +51,7 @@ describe('AuthLink', () => {
 
     const container = render(<AuthLink />);
 
-    await screen.findByText('Sign out');
+    await screen.findByText('Log out');
 
     expect(container.asFragment()).toMatchSnapshot();
   });

@@ -1,51 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuthLink renders Sign in link when authStatus is configuring 1`] = `
+exports[`AuthLink renders Log in link when authStatus is configuring 1`] = `
 <DocumentFragment>
   <div
-    class="account__login"
+    class="nhsuk-account__login"
     data-testid="login-link"
   >
     <a
-      class="account__login_link"
+      class="nhsuk-account__login--link"
       href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
       id="login-link"
     >
-      Sign in
+      Log in
     </a>
   </div>
 </DocumentFragment>
 `;
 
-exports[`AuthLink renders Sign in link when authStatus is unauthenticated 1`] = `
+exports[`AuthLink renders Log in link when authStatus is unauthenticated 1`] = `
 <DocumentFragment>
   <div
-    class="account__login"
+    class="nhsuk-account__login"
     data-testid="login-link"
   >
     <a
-      class="account__login_link"
+      class="nhsuk-account__login--link"
       href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
       id="login-link"
     >
-      Sign in
+      Log in
     </a>
   </div>
 </DocumentFragment>
 `;
 
-exports[`AuthLink renders Sign out link when authStatus is authenticated 1`] = `
+exports[`AuthLink renders Log out link when authStatus is authenticated 1`] = `
 <DocumentFragment>
   <div
-    class="account__login"
+    class="nhsuk-account__login"
     data-testid="login-link"
   >
     <a
-      class="account__login_link"
+      class="nhsuk-account__login--link"
       href="/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
       id="logout-link"
     >
-      Sign out
+      Log out
     </a>
   </div>
 </DocumentFragment>

@@ -20,7 +20,7 @@ export const SignOut = ({ children }: { children: React.ReactNode }) => {
   const signoutPromise = signOut({ global: true });
 
   return (
-    <Suspense fallback={<p>Signing out...</p>}>
+    <Suspense fallback={<p>Signing out</p>}>
       <UsePromise promise={signoutPromise}>{children}</UsePromise>
     </Suspense>
   );
