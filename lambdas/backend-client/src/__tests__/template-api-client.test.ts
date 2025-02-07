@@ -1,13 +1,21 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient } from '../template-api-client';
+import { TemplateApiClient, TemplateClient } from '../template-api-client';
 import { TemplateStatus, TemplateType } from '../types/generated';
 
 const axiosMock = new MockAdapter(axios);
 
+const testToken = 'abc';
+
 describe('TemplateAPIClient', () => {
   beforeEach(() => {
     axiosMock.reset();
+  });
+
+  test('TemplateClient should construct TemplateApiClient', () => {
+    const result = TemplateClient(testToken);
+
+    expect(result).toBeTruthy();
   });
 
   test('createTemplate - should return error', async () => {
@@ -19,7 +27,7 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.createTemplate({
       name: 'test',
@@ -51,7 +59,7 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.createTemplate({
       name: 'name',
@@ -78,7 +86,7 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.updateTemplate('real-id', {
       name: 'test',
@@ -114,7 +122,7 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.updateTemplate('real-id', {
       name: 'name',
@@ -137,7 +145,7 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.getTemplate('real-id');
 
@@ -168,7 +176,7 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.getTemplate('real-id');
 
@@ -183,7 +191,7 @@ describe('TemplateAPIClient', () => {
       technicalMessage: 'Internal server error',
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.listTemplates();
 
@@ -211,7 +219,7 @@ describe('TemplateAPIClient', () => {
       templates: [data],
     });
 
-    const client = new TemplateApiClient('token');
+    const client = new TemplateApiClient(testToken);
 
     const result = await client.listTemplates();
 

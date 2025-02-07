@@ -415,8 +415,6 @@ export const templateSubmittedPageContent = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  doNextText:
-    "You'll receive a confirmation email, which contains the template name and ID.",
   notLiveHeading: "If you're currently onboarding",
   notLiveText:
     "Tell your onboarding manager once you've submitted all your templates.",

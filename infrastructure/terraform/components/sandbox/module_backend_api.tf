@@ -8,7 +8,6 @@ module "backend_api" {
   group                 = var.group
   csi                   = local.csi
   log_retention_in_days = var.log_retention_in_days
-  email_domain_name     = "no-domain"
 
   cognito_config = {
     USER_POOL_ID        = aws_cognito_user_pool.sandbox.id
