@@ -28,7 +28,7 @@ describe('Header component', () => {
 
     expect(screen.getByTestId('page-header')).toBeInTheDocument();
     expect(screen.getByTestId('page-header-logo')).toBeInTheDocument();
-    expect(screen.getByTestId('sign-in-link')).toBeInTheDocument();
+    expect(screen.getByTestId('auth-link')).toBeInTheDocument();
   });
 
   it('should not render sign in link', () => {
@@ -36,6 +36,6 @@ describe('Header component', () => {
 
     render(<NHSNotifyHeader />);
 
-    expect(screen.queryByTestId('sign-in-link')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('auth-link')).not.toBeInTheDocument();
   });
 });

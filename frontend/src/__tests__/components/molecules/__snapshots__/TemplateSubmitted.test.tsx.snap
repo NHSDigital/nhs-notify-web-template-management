@@ -2,79 +2,85 @@
 
 exports[`TemplateSubmitted component should render 1`] = `
 <DocumentFragment>
-  <div
-    class="nhsuk-grid-row"
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
   >
     <div
-      class="nhsuk-grid-column-two-thirds"
+      class="nhsuk-grid-row"
     >
       <div
-        class="notify-confirmation-panel"
+        class="nhsuk-grid-column-two-thirds"
       >
-        <h1
-          class="nhsuk-heading-l nhsuk-u-margin-bottom-0"
-          id="template-submitted"
+        <div
+          class="notify-confirmation-panel"
         >
-          Template submitted
-        </h1>
+          <h1
+            class="nhsuk-heading-l nhsuk-u-margin-bottom-0"
+            id="template-submitted"
+          >
+            Template submitted
+          </h1>
+        </div>
+        <h2
+          class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
+        >
+          Template name
+        </h2>
+        <p
+          id="template-name"
+        >
+          template-name
+        </p>
+        <h2
+          class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
+        >
+          Template ID
+        </h2>
+        <p
+          id="template-id"
+        >
+          template-id
+        </p>
+        <h2
+          class="nhsuk-u-margin-top-5"
+        >
+          What you need to do next
+        </h2>
+        <h3>
+          If you're currently onboarding
+        </h3>
+        <p>
+          Tell your onboarding manager once you've submitted all your templates.
+        </p>
+        <h3>
+          If you've already onboarded
+        </h3>
+        <p>
+          Once you've submitted all your templates 
+          <a
+            href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
+            id="servicenow-link"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            raise a request with the service desk (opens in a new tab).
+          </a>
+        </p>
+        <hr
+          class="nhsuk-section-break--visible"
+        />
+        <p>
+          <a
+            href="/manage-templates"
+            id="go-back-link"
+          >
+            Back to all templates
+          </a>
+        </p>
       </div>
-      <h2
-        class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
-      >
-        Template name
-      </h2>
-      <p
-        id="template-name"
-      >
-        template-name
-      </p>
-      <h2
-        class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
-      >
-        Template ID
-      </h2>
-      <p
-        id="template-id"
-      >
-        template-id
-      </p>
-      <h2
-        class="nhsuk-u-margin-top-5"
-      >
-        What you need to do next
-      </h2>
-      <h3>
-        If you're currently onboarding
-      </h3>
-      <p>
-        Tell your onboarding manager once you've submitted all your templates.
-      </p>
-      <h3>
-        If you've already onboarded
-      </h3>
-      <p>
-        Once you've submitted all your templates 
-        <a
-          href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
-          id="servicenow-link"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          raise a request with the service desk (opens in a new tab).
-        </a>
-      </p>
-      <hr
-        class="nhsuk-section-break--visible"
-      />
-      <p>
-        <a
-          href="/manage-templates"
-          id="go-back-link"
-        >
-          Back to all templates
-        </a>
-      </p>
     </div>
-  </div>
+  </main>
 </DocumentFragment>
 `;
