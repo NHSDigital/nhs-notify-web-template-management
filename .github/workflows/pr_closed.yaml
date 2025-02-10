@@ -25,7 +25,7 @@ jobs:
   deploy-main:
     needs: check-merge
     if: github.event_name == 'workflow_dispatch' || needs.check-merge.outputs.merged == 'true'
-    name: Deploy changes to main in dev AWS account
+    name: Deploy changes to main in dev AWS account blah
 
     permissions:
       id-token: write
