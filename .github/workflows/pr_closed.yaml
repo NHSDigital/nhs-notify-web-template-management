@@ -1,4 +1,4 @@
-name: PR Merged
+name: PR Closed
 
 on:
   workflow_dispatch:
@@ -12,7 +12,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-merge:
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.check.outputs.merged }}
+    if: github.event_name != 'workflow_dispatch'
+    steps:
+      - name: Check if PR was merged
+        id: check
+        run: echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
+
   deploy-main:
+    needs: check-merge
+    if: github.event_name == 'workflow_dispatch' || needs.check-merge.outputs.merged == 'true'
     name: Deploy changes to main in dev AWS account
 
     permissions:
