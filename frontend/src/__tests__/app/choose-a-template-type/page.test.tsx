@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import ChooseATemplateTypePage from '@app/choose-a-template-type/page';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
-import { useActionState } from 'react';
 
 jest.mock('next/navigation', () => ({
   redirect: () => {
