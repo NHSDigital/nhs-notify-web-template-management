@@ -28,7 +28,7 @@ jobs:
             echo "Job triggered by Merged PR - running 'deploy-main'"
           else
             echo "deploy=false" >> $GITHUB_OUTPUT
-            echo "Job not triggered by workflow_dispatch or Merged PR - Skipping 'deploy-main'"
+            echo "Job not triggsssssered by workflow_dispatch or Merged PR - Skipping 'deploy-main'"
           fi
 
   deploy-main:
