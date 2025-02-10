@@ -18,7 +18,12 @@ export const AuthLink = () => {
 
   return (
     <div className={styles['auth-link']} data-testid='auth-link'>
-      <a id={id} className={styles['auth-link__link']} href={linkContent.href}>
+      <a
+        id={id}
+        className={styles['auth-link__link']}
+        data-testid='auth-link__link'
+        href={linkContent.href}
+      >
         {linkContent.text}
       </a>
     </div>

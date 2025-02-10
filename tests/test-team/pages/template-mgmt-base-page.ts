@@ -31,11 +31,11 @@ export class TemplateMgmtBasePage {
     );
 
     this.signInLink = page
-      .locator('[class="nhsuk-account__sign-in--link"]')
+      .locator('[data-testid="auth-link__link"]')
       .and(page.getByText('Sign in'));
 
     this.signOutLink = page
-      .locator('[class="nhsuk-account__sign-in--link"]')
+      .locator('[data-testid="auth-link__link"]')
       .and(page.getByText('Sign out'));
 
     this.goBackLink = page

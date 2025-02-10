@@ -55,9 +55,7 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
 
     const link = await page.signOutLink.getAttribute('href');
 
-    expect(link).toBe(
-      '/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates'
-    );
+    expect(link).toBe('/auth/signout');
   });
 }
 
