@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Check if PR was merged
         id: check
-        run: echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUTS
+        run: echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
 
   deploy-main:
     needs: check-merge
