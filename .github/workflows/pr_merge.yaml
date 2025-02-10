@@ -24,7 +24,7 @@ jobs:
   deploy-main:
     needs: check-merge
     if: needs.check-merge.outputs.merged == 'true'
-    name: Deploy changes to main in dev AWS account
+    name: Deploy changes to main in dev AWS account Blah
 
     permissions:
       id-token: write
