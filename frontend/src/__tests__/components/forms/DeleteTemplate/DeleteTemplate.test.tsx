@@ -6,12 +6,12 @@ import {
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData

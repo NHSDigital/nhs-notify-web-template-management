@@ -37,9 +37,9 @@ describe('SubmitEmailTemplatePage', () => {
     });
 
     const page = await SubmitEmailTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(
@@ -56,9 +56,9 @@ describe('SubmitEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValue(undefined);
 
     await SubmitEmailTemplatePage({
-      params: {
-        templateId: 'invalid-template',
-      },
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -113,9 +113,9 @@ describe('SubmitEmailTemplatePage', () => {
       });
 
       await SubmitEmailTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

@@ -13,12 +13,12 @@ import { useSearchParams } from 'next/navigation';
 jest.mock('@forms/ReviewEmailTemplate/server-actions');
 jest.mock('@utils/markdownit');
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData

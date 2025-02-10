@@ -47,5 +47,10 @@
     "lcov-result-merger": "^5.0.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2"
+  },
+  "overrides": {
+    "pretty-format": {
+      "react-is": "19.0.0"
+    }
   }
 }
