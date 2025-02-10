@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   check-merge-or-workflow-dispatch:
+    runs-on: ubuntu-latest
     outputs:
       deploy: ${{ steps.check.outputs.deploy }}
     steps:
