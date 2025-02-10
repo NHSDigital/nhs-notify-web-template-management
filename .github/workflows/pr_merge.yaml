@@ -12,7 +12,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-merge:
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.check.outputs.merged }}
+    steps:
+      - name: Check if PR was merged
+        id: check
+        run: echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_ENV
+
   deploy-main:
+    needs: check-merge
+    if: needs.check-merge.outputs.merged == 'true'
     name: Deploy changes to main in dev AWS account
 
     permissions:
