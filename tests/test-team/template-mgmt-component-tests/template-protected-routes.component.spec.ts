@@ -58,10 +58,9 @@ const publicRoutes = new Set(['create-and-submit-templates']);
 
 test.describe('Protected Routes Tests', () => {
   test('all protected routes are covered', async () => {
-    const projectRoot = await execSync(
-      '/usr/bin/git rev-parse --show-toplevel',
-      { encoding: 'utf8' }
-    ).trim();
+    const projectRoot = execSync('/usr/bin/git rev-parse --show-toplevel', {
+      encoding: 'utf8',
+    }).trim();
 
     const pageTsxPaths = await glob(
       `${projectRoot}/frontend/src/app/**/page.tsx`
