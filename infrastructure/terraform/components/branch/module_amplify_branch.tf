@@ -18,7 +18,7 @@ module "amplify_branch" {
   enable_auto_build = true
 
   environment_variables = {
-    NOTIFY_SUBDOMAIN              = var.environment
-    NEXT_PUBLIC_BASE_PATH         = "/templates~${local.normalised_branch_name}"
+    NOTIFY_SUBDOMAIN      = var.environment
+    NEXT_PUBLIC_BASE_PATH = "/templates~${local.normalised_branch_name}"
   }
 }

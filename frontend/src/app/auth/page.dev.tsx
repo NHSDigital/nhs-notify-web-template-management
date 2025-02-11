@@ -10,7 +10,7 @@ import path from 'path';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
-export const Redirect = () => {
+const useRedirectPath = () => {
   const searchParams = useSearchParams();
 
   const requestRedirectPath = searchParams.get('redirect');
@@ -27,7 +27,19 @@ export const Redirect = () => {
     redirectPath = redirectPath.slice(basePath.length);
   }
 
+  return redirectPath;
+};
+
+export const Redirect = () => {
+  const redirectPath = useRedirectPath();
+
   return redirect(redirectPath, RedirectType.push);
+};
+
+const SignIn = () => {
+  const redirectPath = useRedirectPath();
+
+  redirect(`/auth/signin?redirect=${encodeURIComponent(redirectPath)}`);
 };
 
 export default function Page() {
@@ -45,7 +57,7 @@ export default function Page() {
             },
           }}
         >
-          <Redirect />
+          <SignIn />
         </Authenticator>
       </Suspense>
     </NHSNotifyMain>
