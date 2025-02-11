@@ -7,6 +7,7 @@ import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
@@ -27,43 +28,50 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   } = submitTemplateContent;
 
   return (
-    <div className='nhsuk-grid-row'>
-      <div className='nhsuk-grid-column-two-thirds'>
-        <h1>
-          {pageHeading} {`'${templateName}'`}
-        </h1>
-        <WarningCallout>
-          <WarningCallout.Label headingLevel='h2'>
-            {warningCalloutLabel}
-          </WarningCallout.Label>
-          <p>{warningCalloutText}</p>
-        </WarningCallout>
-        <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
-        <p>{submitChecklistIntroduction}</p>
-        <ul>
-          {submitChecklistItems.map((item) => (
-            <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
+    <NHSNotifyMain>
+      <div className='nhsuk-grid-row'>
+        <div className='nhsuk-grid-column-two-thirds'>
+          <h1>
+            {pageHeading} {`'${templateName}'`}
+          </h1>
+          <WarningCallout>
+            <WarningCallout.Label headingLevel='h2'>
+              {warningCalloutLabel}
+            </WarningCallout.Label>
+            <p>{warningCalloutText}</p>
+          </WarningCallout>
+          <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
+          <p>{submitChecklistIntroduction}</p>
+          <ul>
+            {submitChecklistItems.map((item) => (
+              <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
+            ))}
+          </ul>
+          {submitChecklistParagraphs.map((item) => (
+            <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
           ))}
-        </ul>
-        {submitChecklistParagraphs.map((item) => (
-          <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
-        ))}
-        <NHSNotifyFormWrapper
-          formId='submit-template-form'
-          action={submitTemplate.bind(null, submitPath)}
-        >
-          <input type='hidden' name='templateId' value={templateId} readOnly />
-          <Button
-            secondary
-            id='go-back-button'
-            className='nhsuk-u-margin-right-3'
-            href={`${getBasePath()}/${goBackPath}/${templateId}`}
+          <NHSNotifyFormWrapper
+            formId='submit-template-form'
+            action={submitTemplate.bind(null, submitPath)}
           >
-            {goBackButtonText}
-          </Button>
-          <Button id='submit-template-button'>{buttonText}</Button>
-        </NHSNotifyFormWrapper>
+            <input
+              type='hidden'
+              name='templateId'
+              value={templateId}
+              readOnly
+            />
+            <Button
+              secondary
+              id='go-back-button'
+              className='nhsuk-u-margin-right-3'
+              href={`${getBasePath()}/${goBackPath}/${templateId}`}
+            >
+              {goBackButtonText}
+            </Button>
+            <Button id='submit-template-button'>{buttonText}</Button>
+          </NHSNotifyFormWrapper>
+        </div>
       </div>
-    </div>
+    </NHSNotifyMain>
   );
 };

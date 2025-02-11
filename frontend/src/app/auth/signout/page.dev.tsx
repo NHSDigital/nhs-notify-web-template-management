@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { Redirect } from '../page.dev';
 
 export default function Page() {
@@ -14,8 +15,10 @@ export default function Page() {
   }, [authStatus, signOut]);
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      {authStatus === 'authenticated' ? <p>Signing out</p> : <Redirect />}
-    </Suspense>
+    <NHSNotifyMain>
+      <Suspense fallback={<p>Loading...</p>}>
+        {authStatus === 'authenticated' ? <p>Signing out</p> : <Redirect />}
+      </Suspense>
+    </NHSNotifyMain>
   );
 }

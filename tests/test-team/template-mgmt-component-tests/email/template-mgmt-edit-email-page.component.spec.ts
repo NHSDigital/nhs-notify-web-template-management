@@ -4,7 +4,7 @@ import { TemplateMgmtEditEmailPage } from '../../pages/email/template-mgmt-edit-
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
-  assertLogoutLink,
+  assertSignOutLink,
   assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -85,7 +85,7 @@ test.describe('Edit Email message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLogoutLink(props);
+      await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLinkNotPresent(props);
     });

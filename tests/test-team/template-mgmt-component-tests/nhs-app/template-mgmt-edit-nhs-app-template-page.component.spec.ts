@@ -4,7 +4,7 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
-  assertLogoutLink,
+  assertSignOutLink,
   assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -71,7 +71,7 @@ test.describe('Edit NHS App Template Page', () => {
 
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
-    await assertLogoutLink(props);
+    await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLinkNotPresent(props);
   });
