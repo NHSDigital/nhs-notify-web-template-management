@@ -12,20 +12,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  check-merge:
+  check-merge-or-workflow-dispatch:
     runs-on: ubuntu-latest
     outputs:
-      merged: ${{ steps.check.outputs.merged }}
-    if: github.event_name != 'workflow_dispatch'
+      deploy: ${{ steps.check.outputs.deploy }}
     steps:
-      - name: Check if PR was merged
+      - name: Check if PR was merged or workflow is triggered by workflow_dispatch
         id: check
-        run: echo "merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "deploy=true" >> $GITHUB_OUTPUT
+            echo "Job triggered by workflow_dispatch - running 'deploy-main'"
+          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
+            echo "deploy=true" >> $GITHUB_OUTPUT
+            echo "Job triggered by Merged PR - running 'deploy-main'"
+          else
+            echo "deploy=false" >> $GITHUB_OUTPUT
+            echo "Job not triggered by workflow_dispatch or Merged PR - Skipping 'deploy-main'"
+          fi
 
   deploy-main:
-    needs: check-merge
-    if: github.event_name == 'workflow_dispatch' || needs.check-merge.outputs.merged == 'true'
+    needs: check-merge-or-workflow-dispatch
     name: Deploy changes to main in dev AWS account
+    if: needs.check-merge-or-workflow-dispatch.outputs.deploy == 'true'
 
     permissions:
       id-token: write
