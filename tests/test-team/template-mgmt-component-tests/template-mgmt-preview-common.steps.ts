@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtPreviewPage } from '../pages/template-mgmt-preview-base-page';
+import { TemplateMgmtPreviewBasePage } from '../pages/template-mgmt-preview-base-page';
 
 type PreviewStepsProps = {
-  page: TemplateMgmtPreviewPage;
+  page: TemplateMgmtPreviewBasePage;
   id: string;
   baseURL?: string;
 };

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-base-page';
+import { TemplateMgmtSubmitBasePage } from '../pages/template-mgmt-submit-base-page';
 
 type CommonStepsProps = {
-  page: TemplateMgmtSubmitPage;
+  page: TemplateMgmtSubmitBasePage;
   id: string;
   baseURL?: string;
 };
