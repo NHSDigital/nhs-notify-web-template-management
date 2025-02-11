@@ -17,6 +17,10 @@ const nextConfig = (phase) => {
       basePath,
       API_BASE_URL: amplifyConfig?.meta?.api_base_url,
     },
+  
+    sassOptions: {
+      quietDeps: true,
+    },
 
     experimental: {
       serverActions: {
