@@ -158,6 +158,7 @@ test.describe('Create Email message template Page', () => {
 
       const previewPageRegex = String.raw`\/templates\/preview-email-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
       const previewPageParts = page.url().match(previewPageRegex);

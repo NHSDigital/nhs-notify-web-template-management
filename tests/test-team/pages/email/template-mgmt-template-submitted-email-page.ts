@@ -4,8 +4,7 @@ export class TemplateMgmtTemplateSubmittedEmailPage extends TemplateMgmtTemplate
   static readonly pageRootUrl = 'email-template-submitted';
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageRootUrl } =
-      TemplateMgmtTemplateSubmittedEmailPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtTemplateSubmittedEmailPage;
 
     await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
   }
