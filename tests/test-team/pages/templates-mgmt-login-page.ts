@@ -63,6 +63,6 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
 
   async loadPage() {
     await this.page.goto('/templates/create-and-submit-templates');
-    await super.clickLoginLink();
+    await super.clickSignInLink();
   }
 }

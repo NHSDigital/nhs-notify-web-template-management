@@ -10,6 +10,7 @@ import { renderSMSMarkdown } from '@utils/markdownit';
 import { BackLink } from 'nhsuk-react-components';
 import { viewSubmittedTemplatePageContent as content } from '@content/content';
 import Link from 'next/link';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewSMSTemplate({
   initialState,
@@ -19,18 +20,22 @@ export function ViewSMSTemplate({
   const html = renderSMSMarkdown(templateMessage);
 
   return (
-    <div className='nhsuk-grid-row'>
-      <div className='nhsuk-grid-column-full'>
-        <BackLink href={`${getBasePath()}/manage-templates`}>
-          Back to all templates
-        </BackLink>
-        <PreviewTemplate.Sms template={initialState} message={html} />
-        <p>{content.cannotEdit}</p>
-        <p>{content.createNewTemplate}</p>
-        <p>
-          <Link href='/manage-templates'>Back to all templates</Link>
-        </p>
-      </div>
-    </div>
+    <>
+      <BackLink href={`${getBasePath()}/manage-templates`}>
+        Back to all templates
+      </BackLink>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <PreviewTemplate.Sms template={initialState} message={html} />
+            <p>{content.cannotEdit}</p>
+            <p>{content.createNewTemplate}</p>
+            <p>
+              <Link href='/manage-templates'>Back to all templates</Link>
+            </p>
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
   );
 }

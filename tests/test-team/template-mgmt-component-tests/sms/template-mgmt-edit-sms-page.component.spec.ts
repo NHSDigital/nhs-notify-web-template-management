@@ -4,7 +4,7 @@ import { TemplateMgmtEditSmsPage } from '../../pages/sms/template-mgmt-edit-sms-
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
-  assertLogoutLink,
+  assertSignOutLink,
   assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
@@ -86,7 +86,7 @@ test.describe('Edit SMS message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLogoutLink(props);
+      await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLinkNotPresent(props);
     });

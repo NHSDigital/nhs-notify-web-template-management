@@ -1,28 +1,25 @@
 'use client';
 
-import React, { Suspense, use } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { Redirect } from '../page.dev';
-import { signOut } from 'aws-amplify/auth';
-
-const UsePromise = ({
-  promise: promise,
-  children,
-}: {
-  promise: Promise<void>;
-  children: React.ReactNode;
-}) => {
-  use(promise);
-
-  return <>{children}</>;
-};
 
 export const SignOut = ({ children }: { children: React.ReactNode }) => {
-  const signoutPromise = signOut({ global: true });
+  const { signOut, authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+
+  useEffect(() => {
+    if (authStatus === 'authenticated') {
+      signOut();
+    }
+  }, [authStatus, signOut]);
 
   return (
-    <Suspense fallback={<p>Signing out</p>}>
-      <UsePromise promise={signoutPromise}>{children}</UsePromise>
-    </Suspense>
+    <NHSNotifyMain>
+      <Suspense fallback={<p>Loading...</p>}>
+        {authStatus === 'authenticated' ? <p>Signing out</p> : children}
+      </Suspense>
+    </NHSNotifyMain>
   );
 };
 

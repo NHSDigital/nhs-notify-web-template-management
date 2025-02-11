@@ -3,7 +3,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   assertFooterLinks,
   assertGoBackLink,
-  assertLogoutLink,
+  assertSignOutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -111,7 +111,7 @@ test.describe('Template Submitted Page', () => {
         await assertSkipToMainContent(props);
         await assertNotifyBannerLink(props);
         await assertFooterLinks(props);
-        await assertLogoutLink(props);
+        await assertSignOutLink(props);
         await assertGoBackLink({
           ...props,
           expectedUrl: 'templates/manage-templates',

@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <script src={`${config.basePath}/lib/nhsuk-8.3.0.min.js`} defer />
+        <script src={`${config.basePath}/lib/nhsuk-9.1.0.min.js`} defer />
         <title>{content.global.mainLayout.title}</title>
         <link
           rel='shortcut icon'

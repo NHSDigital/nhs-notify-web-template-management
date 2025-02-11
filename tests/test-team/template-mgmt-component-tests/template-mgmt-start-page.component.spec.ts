@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
-import { assertLogoutLink } from './template-mgmt-common.steps';
+import { assertSignOutLink } from './template-mgmt-common.steps';
 
 test.describe('Start Page', () => {
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({
@@ -46,10 +46,10 @@ test.describe('Start Page', () => {
     );
   });
 
-  test('should display logout link', async ({ page }) => {
+  test('should display sign out link', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);
 
-    await assertLogoutLink({
+    await assertSignOutLink({
       page: startPage,
       id: '/templates/create-and-submit-templates',
     });

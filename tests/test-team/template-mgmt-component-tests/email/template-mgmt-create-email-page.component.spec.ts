@@ -4,7 +4,7 @@ import { TemplateMgmtCreateEmailPage } from '../../pages/email/template-mgmt-cre
 import {
   assertFooterLinks,
   assertGoBackLink,
-  assertLogoutLink,
+  assertSignOutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
@@ -50,7 +50,7 @@ test.describe('Create Email message template Page', () => {
 
       await assertSkipToMainContent(props);
       await assertNotifyBannerLink(props);
-      await assertLogoutLink(props);
+      await assertSignOutLink(props);
       await assertFooterLinks(props);
       await assertGoBackLink({
         ...props,
