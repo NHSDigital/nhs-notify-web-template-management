@@ -5,7 +5,7 @@ jest.mock('@utils/amplify-utils');
 
 jest.mock('@forms/SubmitTemplate/server-action', () => ({
   submitTemplate: {
-    bind: () => {},
+    bind: () => '/action',
   },
 }));
 
@@ -17,6 +17,7 @@ describe('SubmitTemplate component', () => {
         templateName='template-name'
         goBackPath='example'
         submitPath='example-submit'
+        csrfToken='csrf-token'
       />
     );
 

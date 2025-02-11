@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -17,12 +18,15 @@ const SubmitNhsAppTemplatePage = async ({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  const csrfToken = await getCsrfFormValue();
+
   return (
     <SubmitTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-nhs-app-template'
       submitPath='nhs-app-template-submitted'
+      csrfToken={csrfToken}
     />
   );
 };

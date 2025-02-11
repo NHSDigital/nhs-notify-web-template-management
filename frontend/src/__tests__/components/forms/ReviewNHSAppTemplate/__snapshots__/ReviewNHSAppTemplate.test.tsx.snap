@@ -171,6 +171,12 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
             type="hidden"
             value="preview-nhs-app-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
+          />
           <div
             class="nhsuk-form-group nhsuk-form-group--error"
           >
@@ -413,6 +419,12 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
             type="hidden"
             value="preview-nhs-app-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
+          />
           <div
             class="nhsuk-form-group"
           >
@@ -637,6 +649,12 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
             readonly=""
             type="hidden"
             value="preview-nhs-app-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
           />
           <div
             class="nhsuk-form-group"

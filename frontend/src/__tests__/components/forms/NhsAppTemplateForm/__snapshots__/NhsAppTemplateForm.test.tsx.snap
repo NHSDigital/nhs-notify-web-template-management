@@ -44,6 +44,12 @@ exports[`renders page 1`] = `
             type="hidden"
             value="create-nhs-app-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
+          />
           <h1
             class="nhsuk-heading-xl"
             data-testid="page-heading"
@@ -523,6 +529,12 @@ exports[`renders page one error 1`] = `
             readonly=""
             type="hidden"
             value="create-nhs-app-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
           />
           <h1
             class="nhsuk-heading-xl"
@@ -1018,6 +1030,12 @@ exports[`renders page with multiple errors 1`] = `
             type="hidden"
             value="create-nhs-app-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
+          />
           <h1
             class="nhsuk-heading-xl"
             data-testid="page-heading"
@@ -1492,6 +1510,12 @@ exports[`renders page with preloaded field values 1`] = `
             type="hidden"
             value="create-nhs-app-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
+          />
           <h1
             class="nhsuk-heading-xl"
             data-testid="page-heading"
@@ -1919,6 +1943,12 @@ exports[`renders page without back link for initial state with id 1`] = `
             readonly=""
             type="hidden"
             value="create-nhs-app-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="csrf-token"
           />
           <h1
             class="nhsuk-heading-xl"

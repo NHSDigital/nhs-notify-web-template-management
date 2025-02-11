@@ -15,6 +15,13 @@ import { TemplateDTO } from 'nhs-notify-backend-client';
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/ReviewSMSTemplate');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -47,7 +54,9 @@ describe('PreviewSMSTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ReviewSMSTemplate initialState={smsTemplate} />);
+    expect(page).toEqual(
+      <ReviewSMSTemplate initialState={smsTemplate} csrfToken='csrf-token' />
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

@@ -1,3 +1,4 @@
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import {
   NHSAppTemplate,
@@ -14,7 +15,11 @@ const CreateNHSAppTemplatePage = async () => {
     message: '',
   };
 
-  return <NhsAppTemplateForm initialState={initialState} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <NhsAppTemplateForm initialState={initialState} csrfToken={csrfToken} />
+  );
 };
 
 export default CreateNHSAppTemplatePage;

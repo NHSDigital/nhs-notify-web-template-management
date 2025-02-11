@@ -32,6 +32,7 @@ test('renders page with preloaded field values', () => {
         subject: 'template-subject-line',
         message: 'template-message',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -47,6 +48,7 @@ test('renders page without back link for initial state with id', () => {
         message: 'template-message',
         id: 'template-id',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -66,6 +68,7 @@ test('renders page one error', () => {
         subject: '',
         message: '',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -87,6 +90,7 @@ test('renders page with multiple errors', () => {
         subject: '',
         message: '',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();

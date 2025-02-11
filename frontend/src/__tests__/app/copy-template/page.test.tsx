@@ -14,6 +14,13 @@ import { TemplateDTO } from 'nhs-notify-backend-client';
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/ChooseTemplate/ChooseTemplate');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -41,7 +48,9 @@ describe('CopyTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<CopyTemplate template={template} />);
+    expect(page).toEqual(
+      <CopyTemplate template={template} csrfToken='csrf-token' />
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {

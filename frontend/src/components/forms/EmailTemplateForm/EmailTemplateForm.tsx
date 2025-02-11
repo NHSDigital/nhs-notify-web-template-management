@@ -20,7 +20,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   Draft,
   EmailTemplate,
-  PageComponentProps,
+  FormPageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { createEmailTemplatePageContent } from '@content/content';
@@ -30,8 +30,8 @@ import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const EmailTemplateForm: FC<
-  PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
-> = ({ initialState }) => {
+  FormPageComponentProps<EmailTemplate | Draft<EmailTemplate>>
+> = ({ initialState, csrfToken }) => {
   const {
     pageHeading,
     errorHeading,
@@ -77,6 +77,7 @@ export const EmailTemplateForm: FC<
             <NHSNotifyFormWrapper
               action={action}
               formId='create-email-template'
+              csrfToken={csrfToken}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {pageHeading}

@@ -17,7 +17,7 @@ import { getBasePath } from '@utils/get-base-path';
 import { useFormState } from 'react-dom';
 import {
   Draft,
-  PageComponentProps,
+  FormPageComponentProps,
   SMSTemplate,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
@@ -32,8 +32,8 @@ import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const SmsTemplateForm: FC<
-  PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
-> = ({ initialState }) => {
+  FormPageComponentProps<SMSTemplate | Draft<SMSTemplate>>
+> = ({ initialState, csrfToken }) => {
   const [state, action] = useFormState(processFormActions, initialState);
 
   const [smsTemplateName, smsTemplateNameHandler] =
@@ -63,7 +63,7 @@ export const SmsTemplateForm: FC<
               state={state}
             />
             <h1 data-testid='page-heading'>{content.pageHeading}</h1>
-            <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
+            <NHSNotifyFormWrapper action={action} formId='create-sms-template' csrfToken={csrfToken}>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>
                   {content.templateNameLabelText}

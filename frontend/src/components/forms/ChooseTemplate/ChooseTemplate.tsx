@@ -13,7 +13,11 @@ import {
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
 
-export const ChooseTemplate = () => {
+type ChooseTemplateProps = {
+  csrfToken: string;
+};
+
+export const ChooseTemplate = ({ csrfToken }: ChooseTemplateProps) => {
   const [state, action] = useFormState(chooseTemplateAction, {});
 
   const templateTypes = Object.values(TemplateType);
@@ -50,6 +54,7 @@ export const ChooseTemplate = () => {
           hint={hint}
           learnMoreLink={learnMoreLink}
           learnMoreText={learnMoreText}
+          csrfToken={csrfToken}
         />
       </NHSNotifyMain>
     </>

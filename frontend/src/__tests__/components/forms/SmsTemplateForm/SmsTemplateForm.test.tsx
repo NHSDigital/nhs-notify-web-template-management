@@ -34,6 +34,7 @@ describe('CreateSmsTemplate component', () => {
           name: 'template-name',
           message: 'template-message',
         })}
+        csrfToken='csrf-token'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -48,6 +49,7 @@ describe('CreateSmsTemplate component', () => {
           name: 'template-name',
           message: 'template-message',
         })}
+        csrfToken='csrf-token'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -67,6 +69,7 @@ describe('CreateSmsTemplate component', () => {
           name: 'template-name',
           message: 'template-message',
         })}
+        csrfToken='csrf-token'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -87,6 +90,7 @@ describe('CreateSmsTemplate component', () => {
           name: 'template-name',
           message: 'template-message',
         })}
+        csrfToken='csrf-token'
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -103,6 +107,7 @@ describe('CreateSmsTemplate component', () => {
           message: '',
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 

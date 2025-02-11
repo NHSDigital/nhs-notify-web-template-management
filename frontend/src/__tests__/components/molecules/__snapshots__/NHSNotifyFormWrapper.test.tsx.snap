@@ -12,6 +12,12 @@ exports[`Renders back button 1`] = `
       value="form-id"
     />
     <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="csrf-token"
+    />
+    <input
       id="input"
       readonly=""
       value="4"

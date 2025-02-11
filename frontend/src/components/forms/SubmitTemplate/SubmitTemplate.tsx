@@ -14,6 +14,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateId,
   goBackPath,
   submitPath,
+  csrfToken,
 }) => {
   const {
     pageHeading,
@@ -53,6 +54,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           <NHSNotifyFormWrapper
             formId='submit-template-form'
             action={submitTemplate.bind(null, submitPath)}
+            csrfToken={csrfToken}
           >
             <input
               type='hidden'

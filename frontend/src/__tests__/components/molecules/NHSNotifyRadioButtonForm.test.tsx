@@ -20,6 +20,7 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
       ]}
       buttonText='Continue'
       hint='Example hint'
+      csrfToken='csrf-token'
     />
   );
 
@@ -46,6 +47,7 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
         { id: 'option-2', text: 'option 2' },
       ]}
       buttonText='Continue'
+      csrfToken='csrf-token'
     />
   );
 
@@ -72,6 +74,7 @@ test('Renders NHSNotifyRadioButtonForm - handles validation errors for other fie
         { id: 'option-2', text: 'option 2' },
       ]}
       buttonText='Continue'
+      csrfToken='csrf-token'
     />
   );
 
@@ -91,6 +94,7 @@ test('Renders NHSNotifyRadioButtonForm - renders without validation error field'
         { id: 'option-2', text: 'option 2' },
       ]}
       buttonText='Continue'
+      csrfToken='csrf-token'
     />
   );
 
@@ -118,6 +122,7 @@ test('Renders NHSNotifyRadioButtonForm with learn more link', () => {
       hint='Example hint'
       learnMoreLink='/features'
       learnMoreText='learn more'
+      csrfToken='csrf-token'
     />
   );
 
@@ -144,6 +149,7 @@ test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLink 
       buttonText='Continue'
       hint='Example hint'
       learnMoreText='learn more'
+      csrfToken='csrf-token'
     />
   );
 
@@ -170,6 +176,7 @@ test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreText 
       buttonText='Continue'
       hint='Example hint'
       learnMoreLink='/features'
+      csrfToken='csrf-token'
     />
   );
 

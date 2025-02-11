@@ -1,5 +1,6 @@
 'use server';
 
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -17,7 +18,11 @@ const PreviewSMSTemplatePage = async ({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewSMSTemplate initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <ReviewSMSTemplate initialState={validatedTemplate} csrfToken={csrfToken} />
+  );
 };
 
 export default PreviewSMSTemplatePage;

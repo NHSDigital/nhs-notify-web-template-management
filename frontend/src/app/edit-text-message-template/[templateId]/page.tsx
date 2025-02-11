@@ -1,5 +1,6 @@
 'use server';
 
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -15,7 +16,11 @@ const CreateSmsTemplatePage = async ({ params: { templateId } }: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <SmsTemplateForm initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <SmsTemplateForm initialState={validatedTemplate} csrfToken={csrfToken} />
+  );
 };
 
 export default CreateSmsTemplatePage;

@@ -16,9 +16,10 @@ import { copyTemplateAction } from './server-action';
 
 type CopyTemplate = {
   template: Template;
+  csrfToken: string;
 };
 
-export const CopyTemplate = ({ template }: CopyTemplate) => {
+export const CopyTemplate = ({ template, csrfToken }: CopyTemplate) => {
   const [state, action] = useFormState(copyTemplateAction, { template });
 
   const templateTypes = Object.values(TemplateType);
@@ -61,6 +62,7 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
                 isPgeHeading: false,
                 size: 'm',
               }}
+              csrfToken={csrfToken}
             />
           </div>
         </div>

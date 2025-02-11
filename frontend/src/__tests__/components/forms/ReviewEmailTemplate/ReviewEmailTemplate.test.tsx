@@ -45,6 +45,7 @@ describe('Review email form renders', () => {
           message: 'message',
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -66,6 +67,7 @@ describe('Review email form renders', () => {
           message: 'message',
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -87,6 +89,7 @@ describe('Review email form renders', () => {
           message: 'message',
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -103,6 +106,7 @@ describe('Review email form renders', () => {
           message: 'message',
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -133,6 +137,7 @@ describe('Review email form renders', () => {
           message,
           id: 'template-id',
         })}
+        csrfToken='csrf-token'
       />
     );
 

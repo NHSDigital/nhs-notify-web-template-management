@@ -30,6 +30,7 @@ describe('ReviewTemplate component', () => {
             { id: 'option-2', text: 'option 2' },
           ],
           buttonText: 'Continue',
+          csrfToken: 'csrf-token',
         }}
         PreviewComponent={<>Preview</>}
       />
@@ -66,6 +67,7 @@ describe('ReviewTemplate component', () => {
             { id: 'option-2', text: 'option 2' },
           ],
           buttonText: 'Continue',
+          csrfToken: 'csrf-token',
         }}
         PreviewComponent={<>Preview</>}
       />
@@ -94,6 +96,7 @@ describe('ReviewTemplate component', () => {
             { id: 'option-2', text: 'option 2' },
           ],
           buttonText: 'Continue',
+          csrfToken: 'csrf-token',
         }}
         PreviewComponent={<>Preview</>}
       />

@@ -15,6 +15,13 @@ import { TemplateDTO } from 'nhs-notify-backend-client';
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -48,7 +55,10 @@ describe('PreviewNhsAppTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <ReviewNHSAppTemplate initialState={nhsAppTemplate} />
+      <ReviewNHSAppTemplate
+        initialState={nhsAppTemplate}
+        csrfToken='csrf-token'
+      />
     );
   });
 

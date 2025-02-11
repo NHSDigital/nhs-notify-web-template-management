@@ -2,6 +2,7 @@
 
 exports[`CreateSMSTemplatePage should render CreateSMSTemplatePage 1`] = `
 <SmsTemplateForm
+  csrfToken="csrf-token"
   initialState={
     {
       "message": "",

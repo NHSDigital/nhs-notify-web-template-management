@@ -70,9 +70,16 @@ export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
 };
 
+export type FormPageComponentProps<T> = PageComponentProps<T> & {
+  csrfToken: string;
+};
+
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
   templateId: string;
   goBackPath: string;
   submitPath: string;
+  csrfToken: string;
 };
+
+export type ServerAction = string | ((payload: FormData) => void);

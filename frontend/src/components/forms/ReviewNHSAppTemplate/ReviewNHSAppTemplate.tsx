@@ -5,7 +5,7 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import {
   NHSAppTemplate,
-  PageComponentProps,
+  FormPageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
@@ -18,7 +18,8 @@ import { reviewNhsAppTemplateAction } from './server-action';
 
 export function ReviewNHSAppTemplate({
   initialState,
-}: Readonly<PageComponentProps<NHSAppTemplate>>) {
+  csrfToken,
+}: Readonly<FormPageComponentProps<NHSAppTemplate>>) {
   const searchParams = useSearchParams();
 
   const [state, action] = useFormState(
@@ -53,6 +54,7 @@ export function ReviewNHSAppTemplate({
                 action,
                 formId: 'preview-nhs-app-template',
                 radiosId: 'reviewNHSAppTemplateAction',
+                csrfToken,
               }}
               PreviewComponent={
                 <PreviewTemplate.NHSApp

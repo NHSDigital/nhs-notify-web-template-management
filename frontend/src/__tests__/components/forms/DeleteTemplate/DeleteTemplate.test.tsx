@@ -17,9 +17,13 @@ jest.mock('react-dom', () => {
         formData: FormData
       ) => Promise<TemplateFormState>,
       initialState: TemplateFormState
-    ) => [initialState, '/action'],
+    ) => [initialState, '/yes-action'],
   };
 });
+jest.mock('@forms/DeleteTemplate/server-action', () => ({
+  deleteTemplateYesAction: '/yes-action',
+  deleteTemplateNoAction: '/no-action',
+}));
 
 test('renders component correctly', () => {
   const container = render(
@@ -28,6 +32,7 @@ test('renders component correctly', () => {
         id: 'template-id',
         name: 'template-name',
       })}
+      csrfToken='csrf-token'
     />
   );
 

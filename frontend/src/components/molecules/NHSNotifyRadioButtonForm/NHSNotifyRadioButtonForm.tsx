@@ -21,6 +21,7 @@ export type NHSNotifyRadioButtonFormProps = {
   };
   learnMoreLink?: string;
   learnMoreText?: string;
+  csrfToken: string;
 };
 
 export const NHSNotifyRadioButtonForm = ({
@@ -35,8 +36,9 @@ export const NHSNotifyRadioButtonForm = ({
   hint = '',
   learnMoreLink = '',
   learnMoreText = '',
+  csrfToken,
 }: NHSNotifyRadioButtonFormProps) => (
-  <NHSNotifyFormWrapper action={action} formId={formId}>
+  <NHSNotifyFormWrapper action={action} formId={formId} csrfToken={csrfToken}>
     <Fieldset>
       <Fieldset.Legend
         data-testid={`${radiosId}-form__legend`}

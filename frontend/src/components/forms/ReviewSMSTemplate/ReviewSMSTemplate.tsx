@@ -5,7 +5,7 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
 import {
-  PageComponentProps,
+  FormPageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { useFormState } from 'react-dom';
@@ -18,7 +18,8 @@ import { reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
   initialState,
-}: Readonly<PageComponentProps<SMSTemplate>>) {
+  csrfToken,
+}: Readonly<FormPageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
   const {
@@ -49,6 +50,7 @@ export function ReviewSMSTemplate({
                 action,
                 formId: 'review-sms-template',
                 radiosId: 'reviewSMSTemplateAction',
+                csrfToken,
               }}
               PreviewComponent={
                 <PreviewTemplate.Sms template={initialState} message={html} />

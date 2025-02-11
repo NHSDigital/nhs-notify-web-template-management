@@ -5,6 +5,7 @@ import {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
+import { getCsrfFormValue } from '@utils/csrf-utils';
 
 const CreateEmailTemplatePage = async () => {
   const initialState: Draft<EmailTemplate> = {
@@ -15,7 +16,11 @@ const CreateEmailTemplatePage = async () => {
     message: '',
   };
 
-  return <EmailTemplateForm initialState={initialState} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <EmailTemplateForm initialState={initialState} csrfToken={csrfToken} />
+  );
 };
 
 export default CreateEmailTemplatePage;

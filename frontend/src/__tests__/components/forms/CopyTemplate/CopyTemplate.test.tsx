@@ -32,7 +32,9 @@ jest.mock('react-dom', () => {
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
+    const container = render(
+      <CopyTemplate template={mockDeep<Template>()} csrfToken='csrfToken' />
+    );
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
@@ -78,7 +80,9 @@ describe('Choose template page', () => {
 
     jest.mocked(useFormState).mockImplementation(mockUseFormState);
 
-    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
+    const container = render(
+      <CopyTemplate template={mockDeep<Template>()} csrfToken='csrf-token' />
+    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

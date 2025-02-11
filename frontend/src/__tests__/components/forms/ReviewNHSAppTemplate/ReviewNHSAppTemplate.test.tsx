@@ -44,6 +44,7 @@ describe('Review nhs app form renders', () => {
           name: 'test-template-nhs app',
           message: 'message',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -64,6 +65,7 @@ describe('Review nhs app form renders', () => {
           name: 'test-template-nhs app',
           message: 'message',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -84,6 +86,7 @@ describe('Review nhs app form renders', () => {
           name: 'test-template-nhs app',
           message: 'message',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -99,6 +102,7 @@ describe('Review nhs app form renders', () => {
           name: 'test-template-nhs app',
           message: 'message',
         })}
+        csrfToken='csrf-token'
       />
     );
 
@@ -128,6 +132,7 @@ describe('Review nhs app form renders', () => {
           name: 'test-template-nhs app',
           message,
         })}
+        csrfToken='csrf-token'
       />
     );
 

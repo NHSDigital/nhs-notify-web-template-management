@@ -8,6 +8,7 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
 import { validateChannelTemplate } from '@utils/validate-template';
+import { getCsrfFormValue } from '@utils/csrf-utils';
 
 const DeleteTemplatePage = async ({ params: { templateId } }: PageProps) => {
   const template = await getTemplate(templateId);
@@ -22,7 +23,9 @@ const DeleteTemplatePage = async ({ params: { templateId } }: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <DeleteTemplate template={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return <DeleteTemplate template={validatedTemplate} csrfToken={csrfToken} />;
 };
 
 export default DeleteTemplatePage;

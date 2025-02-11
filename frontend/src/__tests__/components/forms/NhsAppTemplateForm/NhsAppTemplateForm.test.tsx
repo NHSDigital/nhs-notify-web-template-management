@@ -23,6 +23,13 @@ jest.mock('react-dom', () => {
     ) => [initialState, '/action'],
   };
 });
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 test('renders page', async () => {
   const user = userEvent.setup();
@@ -34,6 +41,7 @@ test('renders page', async () => {
         name: 'template-name',
         message: 'template-message',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -59,6 +67,7 @@ test('renders page with preloaded field values', () => {
         name: 'template-name',
         message: 'template-message',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -73,6 +82,7 @@ test('renders page without back link for initial state with id', () => {
         message: 'template-message',
         id: 'template-id',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -91,6 +101,7 @@ test('renders page one error', () => {
         name: '',
         message: '',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();
@@ -110,6 +121,7 @@ test('renders page with multiple errors', () => {
         name: '',
         message: '',
       })}
+      csrfToken='csrf-token'
     />
   );
   expect(container.asFragment()).toMatchSnapshot();

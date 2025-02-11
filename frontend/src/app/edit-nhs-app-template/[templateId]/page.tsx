@@ -1,5 +1,6 @@
 'use server';
 
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -17,7 +18,14 @@ const CreateNhsAppTemplatePage = async ({
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <NhsAppTemplateForm initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <NhsAppTemplateForm
+      initialState={validatedTemplate}
+      csrfToken={csrfToken}
+    />
+  );
 };
 
 export default CreateNhsAppTemplatePage;

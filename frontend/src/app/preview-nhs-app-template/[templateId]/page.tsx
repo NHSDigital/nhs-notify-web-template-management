@@ -1,5 +1,6 @@
 'use server';
 
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -17,7 +18,14 @@ const PreviewNhsAppTemplatePage = async ({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewNHSAppTemplate initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <ReviewNHSAppTemplate
+      initialState={validatedTemplate}
+      csrfToken={csrfToken}
+    />
+  );
 };
 
 export default PreviewNhsAppTemplatePage;

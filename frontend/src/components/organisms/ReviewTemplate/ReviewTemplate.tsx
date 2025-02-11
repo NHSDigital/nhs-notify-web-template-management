@@ -29,6 +29,7 @@ export function ReviewTemplate({
           isPgeHeading: false,
           size: 'm',
         }}
+        csrfToken={form.csrfToken}
       />
     </>
   );

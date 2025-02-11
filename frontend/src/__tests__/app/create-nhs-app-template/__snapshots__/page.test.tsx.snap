@@ -2,6 +2,7 @@
 
 exports[`CreateNHSAppTemplatePage should render CreateNHSAppTemplatePage 1`] = `
 <NhsAppTemplateForm
+  csrfToken="csrf-token"
   initialState={
     {
       "message": "",

@@ -5,6 +5,7 @@ import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import { PageProps, $Template } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { zodValidate } from '@utils/validate-template';
+import { getCsrfFormValue } from '@utils/csrf-utils';
 
 const CopyTemplatePage = async ({ params: { templateId } }: PageProps) => {
   const template = await getTemplate(templateId);
@@ -15,7 +16,9 @@ const CopyTemplatePage = async ({ params: { templateId } }: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <CopyTemplate template={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return <CopyTemplate template={validatedTemplate} csrfToken={csrfToken} />;
 };
 
 export default CopyTemplatePage;

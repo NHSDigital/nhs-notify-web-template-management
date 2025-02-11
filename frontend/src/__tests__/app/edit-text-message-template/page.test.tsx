@@ -15,6 +15,13 @@ import { TemplateDTO } from 'nhs-notify-backend-client';
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
@@ -70,6 +77,8 @@ describe('EditSmsTemplatePage', () => {
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
-    expect(page).toEqual(<SmsTemplateForm initialState={smsTemplate} />);
+    expect(page).toEqual(
+      <SmsTemplateForm initialState={smsTemplate} csrfToken='csrf-token' />
+    );
   });
 });

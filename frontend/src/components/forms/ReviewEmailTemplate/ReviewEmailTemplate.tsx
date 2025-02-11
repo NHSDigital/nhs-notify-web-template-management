@@ -6,7 +6,7 @@ import { ReviewTemplate } from '@organisms/ReviewTemplate';
 import content from '@content/content';
 import {
   EmailTemplate,
-  PageComponentProps,
+  FormPageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { useFormState } from 'react-dom';
 import { getBasePath } from '@utils/get-base-path';
@@ -18,7 +18,8 @@ import { reviewEmailTemplateAction } from './server-actions';
 
 export function ReviewEmailTemplate({
   initialState,
-}: Readonly<PageComponentProps<EmailTemplate>>) {
+  csrfToken,
+}: Readonly<FormPageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
   const {
@@ -51,6 +52,7 @@ export function ReviewEmailTemplate({
                 action,
                 formId: 'review-email-template',
                 radiosId: 'reviewEmailTemplateAction',
+                csrfToken,
               }}
               PreviewComponent={
                 <PreviewTemplate.Email

@@ -15,6 +15,13 @@ import { TemplateDTO } from 'nhs-notify-backend-client';
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
@@ -45,7 +52,12 @@ describe('EditNhsAppTemplatePage', () => {
       params: { templateId: 'template-id' },
     });
 
-    expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
+    expect(page).toEqual(
+      <NhsAppTemplateForm
+        initialState={nhsAppTemplate}
+        csrfToken='csrf-token'
+      />
+    );
   });
 
   test('should render invalid template, when template is not found', async () => {

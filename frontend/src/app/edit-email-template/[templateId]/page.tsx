@@ -1,3 +1,4 @@
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -15,7 +16,11 @@ const CreateEmailTemplatePage = async ({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <EmailTemplateForm initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <EmailTemplateForm initialState={validatedTemplate} csrfToken={csrfToken} />
+  );
 };
 
 export default CreateEmailTemplatePage;

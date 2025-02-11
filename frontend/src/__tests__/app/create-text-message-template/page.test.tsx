@@ -4,6 +4,13 @@
 import CreateSMSTemplatePage from '@app/create-text-message-template/page';
 
 jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 describe('CreateSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

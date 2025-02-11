@@ -1,3 +1,4 @@
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import {
   SMSTemplate,
@@ -14,7 +15,9 @@ const CreateSMSTemplatePage = async () => {
     message: '',
   };
 
-  return <SmsTemplateForm initialState={initialState} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return <SmsTemplateForm initialState={initialState} csrfToken={csrfToken} />;
 };
 
 export default CreateSMSTemplatePage;

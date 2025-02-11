@@ -2,6 +2,7 @@
 
 exports[`CreateEmailTemplatePage should render CreateEmailTemplatePage 1`] = `
 <EmailTemplateForm
+  csrfToken="csrf-token"
   initialState={
     {
       "message": "",

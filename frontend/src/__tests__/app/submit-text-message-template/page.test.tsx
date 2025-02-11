@@ -13,6 +13,13 @@ import {
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitTemplate');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
@@ -47,6 +54,7 @@ describe('SubmitSmsTemplatePage', () => {
         templateId={state.id}
         goBackPath='preview-text-message-template'
         submitPath='text-message-template-submitted'
+        csrfToken='csrf-token'
       />
     );
   });

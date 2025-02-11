@@ -27,6 +27,13 @@ jest.mock('react-dom', () => {
     ) => [initialState, '/action'],
   };
 });
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 test('ChooseATemplateTypePage', async () => {
   const page = await ChooseATemplateTypePage();

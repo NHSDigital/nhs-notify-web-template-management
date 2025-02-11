@@ -4,6 +4,13 @@
 import CreateEmailTemplatePage from '@app/create-email-template/page';
 
 jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
+jest.mock('next/headers', () => ({
+  cookies: () => ({
+    get: () => ({
+      value: 'csrf-token',
+    }),
+  }),
+}));
 
 describe('CreateEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

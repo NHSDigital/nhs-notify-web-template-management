@@ -20,7 +20,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   Draft,
   NHSAppTemplate,
-  PageComponentProps,
+  FormPageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { createNhsAppTemplatePageContent } from '@content/content';
@@ -30,8 +30,8 @@ import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const NhsAppTemplateForm: FC<
-  PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
-> = ({ initialState }) => {
+  FormPageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
+> = ({ initialState, csrfToken }) => {
   const {
     pageHeading,
     errorHeading,
@@ -70,6 +70,7 @@ export const NhsAppTemplateForm: FC<
             <NHSNotifyFormWrapper
               action={action}
               formId='create-nhs-app-template'
+              csrfToken={csrfToken}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {pageHeading}

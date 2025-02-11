@@ -1,5 +1,6 @@
 'use server';
 
+import { getCsrfFormValue } from '@utils/csrf-utils';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -17,7 +18,14 @@ const PreviewEmailTemplatePage = async ({
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewEmailTemplate initialState={validatedTemplate} />;
+  const csrfToken = await getCsrfFormValue();
+
+  return (
+    <ReviewEmailTemplate
+      initialState={validatedTemplate}
+      csrfToken={csrfToken}
+    />
+  );
 };
 
 export default PreviewEmailTemplatePage;
