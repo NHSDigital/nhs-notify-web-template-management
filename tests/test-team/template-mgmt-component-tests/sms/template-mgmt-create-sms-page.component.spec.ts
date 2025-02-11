@@ -1,71 +1,35 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtCreateSmsPage } from '../../pages/sms/template-mgmt-create-sms-page';
-import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   assertFooterLinks,
   assertGoBackLink,
   assertLogoutLink,
-  assertGoBackLinkNotPresent,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   TestUserId,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
-  return {
-    empty: TemplateFactory.createSmsTemplate('empty-sms-template', owner),
-    submit: TemplateFactory.createSmsTemplate('submit-sms-template', owner),
-    submitAndReturn: TemplateFactory.createSmsTemplate(
-      'submit-and-return-create-sms-template',
-      owner
-    ),
-    goBackAndReturn: TemplateFactory.createSmsTemplate(
-      'go-back-sms-template',
-      owner
-    ),
-    noSmsTemplateType: TemplateFactory.create({
-      id: 'no-sms-template-type-template',
-      templateType: TemplateType.EMAIL,
-      owner,
-    }),
-    previousData: {
-      ...TemplateFactory.createSmsTemplate('previous-data-sms-template', owner),
-      name: 'previous-data-sms-template',
-      message: 'previous-data-sms-template-message',
-    },
-  };
-}
-
 test.describe('Create SMS message template Page', () => {
-  let templates: Record<string, Template>;
   const templateStorageHelper = new TemplateStorageHelper();
+  let user: TestUser;
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(TestUserId.User1);
-    templates = createTemplates(user.userId);
-    await templateStorageHelper.seedTemplateData(Object.values(templates));
+    user = await createAuthHelper().getTestUser(TestUserId.User1);
   });
 
   test.afterAll(async () => {
-    await templateStorageHelper.deleteSeededTemplates();
+    await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  test('when user visits page, then page is loaded', async ({
-    page,
-    baseURL,
-  }) => {
+  test('when user visits page, then page is loaded', async ({ page }) => {
     const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-    await createSmsTemplatePage.loadPage(templates.empty.id);
-
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-text-message-template/${templates.empty.id}`
-    );
+    await createSmsTemplatePage.loadPage();
 
     expect(await createSmsTemplatePage.pageHeader.textContent()).toBe(
       'Create text message template'
@@ -94,35 +58,10 @@ test.describe('Create SMS message template Page', () => {
       });
     });
 
-    test('edit page has no go back link', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtCreateSmsPage(page),
-        id: templates.empty.id,
-        baseURL,
-      };
-
-      await assertGoBackLinkNotPresent(props);
-    });
-
-    test('when user visits page with previous data, then form fields retain previous data', async ({
-      page,
-    }) => {
-      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-      await createSmsTemplatePage.loadPage(templates.previousData.id);
-
-      await expect(createSmsTemplatePage.nameInput).toHaveValue(
-        templates.previousData.name
-      );
-      await expect(createSmsTemplatePage.messageTextArea).toHaveValue(
-        templates.previousData.message
-      );
-    });
-
     test('character count', async ({ page }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.submit.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
@@ -144,7 +83,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.goBackAndReturn.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.personalisationFields.click();
 
@@ -158,7 +97,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.empty.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.messageFormatting.assertDetailsOpen([
         createSmsTemplatePage.messageFormatting.linksAndUrls,
@@ -170,7 +109,7 @@ test.describe('Create SMS message template Page', () => {
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.empty.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -216,12 +155,11 @@ test.describe('Create SMS message template Page', () => {
     }
 
     test('when user submits form with valid data, then the next page is displayed', async ({
-      baseURL,
       page,
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.submit.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.nameInput.fill(
         'This is an SMS template name'
@@ -233,41 +171,26 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.clickSubmitButton();
 
-      await expect(page).toHaveURL(
-        `${baseURL}/templates/preview-text-message-template/${templates.submit.id}?from=edit`
-      );
+      const previewPageRegex = String.raw`\/templates\/preview-text-message-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
+
+      await expect(page).toHaveURL(new RegExp(previewPageRegex));
+
+      const previewPageParts = page.url().match(previewPageRegex);
+      expect(previewPageParts?.length).toEqual(2);
+      templateStorageHelper.addAdHocTemplateKey({
+        id: previewPageParts![1],
+        owner: user.userId,
+      });
     });
   });
 
   test.describe('Error handling', () => {
-    test('when user visits page with mismatched template journey, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-      await createSmsTemplatePage.loadPage(templates.noSmsTemplateType.id);
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when user visits page with a fake template, then an invalid template error is displayed', async ({
-      baseURL,
-      page,
-    }) => {
-      const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
-
-      await createSmsTemplatePage.loadPage('/fake-template-id');
-
-      await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
     test('when user submits form with no data, then errors are displayed', async ({
       page,
     }) => {
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.empty.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.clickSubmitButton();
 
@@ -295,7 +218,7 @@ test.describe('Create SMS message template Page', () => {
 
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.empty.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.messageTextArea.fill('template-message');
 
@@ -319,7 +242,7 @@ test.describe('Create SMS message template Page', () => {
 
       const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
 
-      await createSmsTemplatePage.loadPage(templates.empty.id);
+      await createSmsTemplatePage.loadPage();
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
