@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
-  static readonly pageUrlRoot = 'preview-email-template';
+  static readonly pageRootUrl = 'preview-email-template';
 
   public readonly editRadioOption: Locator;
 
@@ -28,8 +28,8 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
   }
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtPreviewEmailPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtPreviewEmailPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
   }
 }

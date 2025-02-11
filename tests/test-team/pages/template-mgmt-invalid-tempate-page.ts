@@ -1,11 +1,11 @@
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtInvalidTemplatePage extends TemplateMgmtBasePage {
-  static readonly pageUrlRoot = 'invalid-template';
+  static readonly pageRootUrl = 'invalid-template';
 
   async loadPage() {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtInvalidTemplatePage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtInvalidTemplatePage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}`);
   }
 }

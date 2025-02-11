@@ -3,7 +3,7 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
-  static readonly pageUrlRoot = 'create-email-template';
+  static readonly pageRootUrl = 'create-email-template';
 
   public readonly nameInput: Locator;
 
@@ -41,8 +41,8 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
   }
 
   async loadPage() {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtCreateEmailPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtCreateEmailPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}`);
   }
 }

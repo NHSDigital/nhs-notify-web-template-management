@@ -1,11 +1,11 @@
 import { TemplateMgmtSubmitBasePage } from '../template-mgmt-submit-base-page';
 
 export class TemplateMgmtSubmitEmailPage extends TemplateMgmtSubmitBasePage {
-  static readonly pageUrlRoot = 'submit-email-template';
+  static readonly pageRootUrl = 'submit-email-template';
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtSubmitEmailPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtSubmitEmailPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
   }
 }

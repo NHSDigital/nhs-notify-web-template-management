@@ -1,12 +1,12 @@
 import { TemplateMgmtTemplateSubmittedBasePage } from '../template-mgmt-template-submitted-base-page';
 
 export class TemplateMgmtTemplateSubmittedNhsAppPage extends TemplateMgmtTemplateSubmittedBasePage {
-  static readonly pageUrlRoot = 'nhs-app-template-submitted';
+  static readonly pageRootUrl = 'nhs-app-template-submitted';
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageUrlRoot } =
+    const { appRootUrl, pageRootUrl } =
       TemplateMgmtTemplateSubmittedNhsAppPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
   }
 }

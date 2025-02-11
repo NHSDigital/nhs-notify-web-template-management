@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtViewSubmitedPage } from '../template-mgmt-view-submitted-page';
 
 export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmitedPage {
-  static readonly pageUrlRoot = 'view-submitted-nhs-app-template';
+  static readonly pageRootUrl = 'view-submitted-nhs-app-template';
 
   public readonly messageText: Locator;
 
@@ -12,8 +12,8 @@ export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmite
   }
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtViewSubmittedNhsAppPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtViewSubmittedNhsAppPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
   }
 }

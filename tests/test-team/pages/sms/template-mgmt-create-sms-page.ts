@@ -3,7 +3,7 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
-  static readonly pageUrlRoot = 'create-text-message-template';
+  static readonly pageRootUrl = 'create-text-message-template';
 
   public readonly nameInput: Locator;
 
@@ -44,8 +44,8 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
   }
 
   async loadPage() {
-    const { appRootUrl, pageUrlRoot } = TemplateMgmtCreateSmsPage;
+    const { appRootUrl, pageRootUrl } = TemplateMgmtCreateSmsPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}`);
+    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}`);
   }
 }

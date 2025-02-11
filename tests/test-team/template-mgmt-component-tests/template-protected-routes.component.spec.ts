@@ -79,7 +79,7 @@ test.describe('Protected Routes Tests', () => {
     const uncovered = nonPublic.filter(
       (r) =>
         !protectedPages.some(
-          (nonPublicPage) => nonPublicPage.pageUrlRoot.slice(1) === r
+          (nonPublicPage) => nonPublicPage.pageRootUrl.slice(1) === r
         )
     );
 
@@ -89,7 +89,7 @@ test.describe('Protected Routes Tests', () => {
   });
 
   for (const PageModel of protectedPages)
-    test(`should not be able to access ${PageModel.pageUrlRoot} page without auth`, async ({
+    test(`should not be able to access ${PageModel.pageRootUrl} page without auth`, async ({
       page,
       baseURL,
     }) => {
@@ -97,7 +97,7 @@ test.describe('Protected Routes Tests', () => {
       await templatePage.loadPage('');
 
       const redirectPath = encodeURIComponent(
-        `/templates/${PageModel.pageUrlRoot}`
+        `/templates/${PageModel.pageRootUrl}`
       );
 
       await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);
