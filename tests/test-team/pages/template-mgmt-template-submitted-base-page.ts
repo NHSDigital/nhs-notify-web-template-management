@@ -12,10 +12,7 @@ export abstract class TemplateMgmtTemplateSubmittedBasePage extends TemplateMgmt
 
   public readonly goBackLink: Locator;
 
-  constructor(
-    page: Page,
-    private readonly channelIdentifier: string
-  ) {
+  constructor(page: Page) {
     super(page);
     this.templateIdText = page.locator('[id="template-id"]');
     this.templateNameText = page.locator('[id="template-name"]');
@@ -28,11 +25,5 @@ export abstract class TemplateMgmtTemplateSubmittedBasePage extends TemplateMgmt
 
   async clickCreateAnotherTemplateLink() {
     await this.createAnotherTemplateLink.click();
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/${this.channelIdentifier}-template-submitted/${templateId}`
-    );
   }
 }

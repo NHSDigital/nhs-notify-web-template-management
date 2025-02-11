@@ -22,103 +22,35 @@ import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
+import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
-  {
-    PageModel: ManageTemplatesPage,
-    url: '/manage-templates',
-  },
-  {
-    PageModel: TemplateMgmtChoosePage,
-    url: '/choose-a-template-type',
-  },
-  {
-    PageModel: TemplateMgmtCreateNhsAppPage,
-    url: '/create-nhs-app-template',
-  },
-  {
-    PageModel: TemplateMgmtPreviewNhsAppPage,
-    url: '/preview-nhs-app-template',
-  },
-  {
-    PageModel: TemplateMgmtViewSubmittedNhsAppPage,
-    url: '/view-submitted-nhs-app-template',
-  },
-  {
-    PageModel: TemplateMgmtCreateSmsPage,
-    url: '/create-text-message-template',
-  },
-  {
-    PageModel: TemplateMgmtPreviewSmsPage,
-    url: '/preview-text-message-template',
-  },
-  {
-    PageModel: TemplateMgmtViewSubmittedSmsPage,
-    url: '/view-submitted-text-message-template',
-  },
-  {
-    PageModel: TemplateMgmtCreateEmailPage,
-    url: '/create-email-template',
-  },
-  {
-    PageModel: TemplateMgmtPreviewEmailPage,
-    url: '/preview-email-template',
-  },
-  {
-    PageModel: TemplateMgmtViewSubmittedEmailPage,
-    url: '/view-submitted-email-template',
-  },
-  {
-    PageModel: TemplateMgmtCopyPage,
-    url: '/copy-template',
-  },
-  {
-    PageModel: TemplateMgmtDeletePage,
-    url: '/delete-template',
-  },
-  {
-    PageModel: TemplateMgmtSubmitNhsAppPage,
-    url: '/submit-nhs-app-template',
-  },
-  {
-    PageModel: TemplateMgmtSubmitEmailPage,
-    url: '/submit-email-template',
-  },
-  {
-    PageModel: TemplateMgmtSubmitSmsPage,
-    url: '/submit-text-message-template',
-  },
-  {
-    PageModel: TemplateMgmtSubmitSmsPage,
-    url: '/invalid-template',
-  },
-  {
-    PageModel: TemplateMgmtTemplateSubmittedNhsAppPage,
-    url: '/nhs-app-template-submitted',
-  },
-  {
-    PageModel: TemplateMgmtTemplateSubmittedSmsPage,
-    url: '/text-message-template-submitted',
-  },
-  {
-    PageModel: TemplateMgmtTemplateSubmittedEmailPage,
-    url: '/email-template-submitted',
-  },
-  {
-    PageModel: TemplateMgmtEditNhsAppPage,
-    url: '/edit-nhs-app-template',
-  },
-  {
-    PageModel: TemplateMgmtEditSmsPage,
-    url: '/edit-text-message-template',
-  },
-  {
-    PageModel: TemplateMgmtEditEmailPage,
-    url: '/edit-email-template',
-  },
+  ManageTemplatesPage,
+  TemplateMgmtChoosePage,
+  TemplateMgmtCreateNhsAppPage,
+  TemplateMgmtPreviewNhsAppPage,
+  TemplateMgmtViewSubmittedNhsAppPage,
+  TemplateMgmtCreateSmsPage,
+  TemplateMgmtPreviewSmsPage,
+  TemplateMgmtViewSubmittedSmsPage,
+  TemplateMgmtCreateEmailPage,
+  TemplateMgmtPreviewEmailPage,
+  TemplateMgmtViewSubmittedEmailPage,
+  TemplateMgmtCopyPage,
+  TemplateMgmtDeletePage,
+  TemplateMgmtSubmitNhsAppPage,
+  TemplateMgmtSubmitEmailPage,
+  TemplateMgmtSubmitSmsPage,
+  TemplateMgmtInvalidTemplatePage,
+  TemplateMgmtTemplateSubmittedNhsAppPage,
+  TemplateMgmtTemplateSubmittedSmsPage,
+  TemplateMgmtTemplateSubmittedEmailPage,
+  TemplateMgmtEditNhsAppPage,
+  TemplateMgmtEditSmsPage,
+  TemplateMgmtEditEmailPage,
 ];
 
 const publicRoutes = new Set(['create-and-submit-templates']);
@@ -145,7 +77,10 @@ test.describe('Protected Routes Tests', () => {
     expect(nonPublic.length).toBeGreaterThan(0);
 
     const uncovered = nonPublic.filter(
-      (r) => !protectedPages.some(({ url }) => url.slice(1) === r)
+      (r) =>
+        !protectedPages.some(
+          (nonPublicPage) => nonPublicPage.pageUrlRoot.slice(1) === r
+        )
     );
 
     expect(uncovered).toHaveLength(0);
@@ -153,15 +88,17 @@ test.describe('Protected Routes Tests', () => {
     expect(nonPublic.length).toBe(protectedPages.length);
   });
 
-  for (const { PageModel, url } of protectedPages)
-    test(`should not be able to access ${url} page without auth`, async ({
+  for (const PageModel of protectedPages)
+    test(`should not be able to access ${PageModel.pageUrlRoot} page without auth`, async ({
       page,
       baseURL,
     }) => {
       const templatePage = new PageModel(page);
       await templatePage.loadPage('');
 
-      const redirectPath = encodeURIComponent(`/templates${url}`);
+      const redirectPath = encodeURIComponent(
+        `/templates/${PageModel.pageUrlRoot}`
+      );
 
       await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);
     });

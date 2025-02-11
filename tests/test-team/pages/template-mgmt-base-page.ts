@@ -3,6 +3,10 @@ import { Locator, type Page } from '@playwright/test';
 export abstract class TemplateMgmtBasePage {
   readonly page: Page;
 
+  static readonly appRootUrl = 'templates';
+
+  static readonly pageUrlRoot: string;
+
   readonly notifyBannerLink: Locator;
 
   readonly signInLink: Locator;
@@ -76,10 +80,7 @@ export abstract class TemplateMgmtBasePage {
     await this.submitButton.click();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async loadPage(pathSupplement?: string) {
-    throw new Error('Not implemented');
-  }
+  abstract loadPage(pathSupplement?: string): Promise<void>;
 
   async clickBackLink() {
     await this.goBackLink.click();

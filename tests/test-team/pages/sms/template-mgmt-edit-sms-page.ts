@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
+  static readonly pageUrlRoot = 'edit-text-message-template';
+
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -37,8 +39,8 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/edit-text-message-template/${templateId}`
-    );
+    const { appRootUrl, pageUrlRoot } = TemplateMgmtEditSmsPage;
+
+    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
   }
 }

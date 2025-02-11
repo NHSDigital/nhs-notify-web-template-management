@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
+  static readonly pageUrlRoot = 'edit-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -34,6 +36,8 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/edit-email-template/${templateId}`);
+    const { appRootUrl, pageUrlRoot } = TemplateMgmtEditEmailPage;
+
+    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
   }
 }

@@ -2,6 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtViewSubmitedPage } from '../template-mgmt-view-submitted-page';
 
 export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmitedPage {
+  static readonly pageUrlRoot = 'view-submitted-nhs-app-template';
+
   public readonly messageText: Locator;
 
   constructor(page: Page) {
@@ -10,8 +12,8 @@ export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmite
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/view-submitted-nhs-app-template/${templateId}`
-    );
+    const { appRootUrl, pageUrlRoot } = TemplateMgmtViewSubmittedNhsAppPage;
+
+    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
   }
 }

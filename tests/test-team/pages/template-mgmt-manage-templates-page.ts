@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class ManageTemplatesPage extends TemplateMgmtBasePage {
-  private static manageTemplatesPageUrl = '/templates/manage-templates';
+  static readonly pageUrlRoot = 'manage-templates';
 
   readonly createTemplateButton: Locator;
 
@@ -16,7 +16,9 @@ export class ManageTemplatesPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(): Promise<void> {
-    await this.navigateTo(ManageTemplatesPage.manageTemplatesPageUrl);
+    const { appRootUrl, pageUrlRoot } = ManageTemplatesPage;
+
+    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}`);
   }
 
   async clickCreateTemplateButton() {

@@ -2,6 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
+  static readonly pageUrlRoot = 'delete-template';
+
   readonly goBackButton: Locator;
 
   readonly confirmButton: Locator;
@@ -14,6 +16,8 @@ export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/delete-template/${templateId}`);
+    const { appRootUrl, pageUrlRoot } = TemplateMgmtDeletePage;
+
+    await this.navigateTo(`/${appRootUrl}/${pageUrlRoot}/${templateId}`);
   }
 }
