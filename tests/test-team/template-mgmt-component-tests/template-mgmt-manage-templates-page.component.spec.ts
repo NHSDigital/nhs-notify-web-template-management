@@ -111,7 +111,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
     await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
     await expect(manageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
@@ -124,7 +124,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -149,7 +149,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -180,7 +180,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
     await expect(manageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
@@ -195,7 +195,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -218,7 +218,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -241,7 +241,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -265,7 +265,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -285,7 +285,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
@@ -301,7 +301,7 @@ test.describe('Manage templates page', () => {
     baseURL,
   }) => {
     const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage('');
+    await manageTemplatesPage.loadPage();
 
     expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
 
