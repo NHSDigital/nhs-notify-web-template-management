@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtViewSubmitedPage } from '../template-mgmt-view-submitted-page';
 
-export class TemplateMgmtViewSubmittedNHSAppPage extends TemplateMgmtViewSubmitedPage {
+export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmitedPage {
   public readonly messageText: Locator;
 
   constructor(page: Page) {

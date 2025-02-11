@@ -14,7 +14,7 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     );
   }
 
-  async loadPage(_: string) {
+  async loadPage() {
     await this.navigateTo('/templates/choose-a-template-type');
   }
 

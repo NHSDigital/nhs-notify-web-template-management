@@ -8,7 +8,7 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { TemplateMgmtTemplateSubmittedPage } from '../pages/template-mgmt-template-submitted-page';
+import { TemplateMgmtTemplateSubmittedPage } from '../pages/template-mgmt-template-submitted-base-page';
 import { TemplateType, TemplateStatus, Template } from '../helpers/types';
 import {
   createAuthHelper,

@@ -1,6 +1,6 @@
 import { Locator, type Page } from '@playwright/test';
 
-export class TemplateMgmtBasePage {
+export abstract class TemplateMgmtBasePage {
   readonly page: Page;
 
   readonly notifyBannerLink: Locator;
@@ -76,7 +76,8 @@ export class TemplateMgmtBasePage {
     await this.submitButton.click();
   }
 
-  async loadPage(_?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async loadPage(pathSupplement?: string) {
     throw new Error('Not implemented');
   }
 

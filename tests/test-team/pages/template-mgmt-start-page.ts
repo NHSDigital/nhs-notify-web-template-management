@@ -31,7 +31,7 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
     await this.startButton.click();
   }
 
-  async loadPage(_?: string): Promise<void> {
+  async loadPage(): Promise<void> {
     await this.navigateToStartPage();
   }
 }
