@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtViewSubmitedPage } from '../template-mgmt-view-submitted-page';
+import { TemplateMgmtViewSubmitedBasePage } from '../template-mgmt-view-submitted-base-page';
 
-export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmitedPage {
+export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmitedBasePage {
   static readonly pageRootUrl = 'view-submitted-nhs-app-template';
 
   public readonly messageText: Locator;
