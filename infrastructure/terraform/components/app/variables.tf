@@ -110,7 +110,6 @@ variable "CSRF_SECRET" {
   # Github only does uppercase env vars
   type        = string
   description = "Secure cryptographic key to be used for generating CSRF tokens - This is entended to be read from CI variables and not commited to any codebase"
-  default     = "unset"
 }
 
 variable "branch_name" {
