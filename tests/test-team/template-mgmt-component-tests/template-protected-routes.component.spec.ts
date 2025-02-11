@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { glob } from 'glob';
+import { execSync } from 'node:child_process';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
 import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
@@ -57,7 +58,14 @@ const publicRoutes = new Set(['create-and-submit-templates']);
 
 test.describe('Protected Routes Tests', () => {
   test('all protected routes are covered', async () => {
-    const pageTsxPaths = await glob('../../frontend/src/app/**/page.tsx');
+    const projectRoot = await execSync(
+      '/usr/bin/git rev-parse --show-toplevel',
+      { encoding: 'utf8' }
+    ).trim();
+
+    const pageTsxPaths = await glob(
+      `${projectRoot}/frontend/src/app/**/page.tsx`
+    );
 
     const routes = pageTsxPaths.map((p) => {
       const dynamicStripped = p.replaceAll(/\/\[[^[]+]/g, '');
@@ -78,9 +86,7 @@ test.describe('Protected Routes Tests', () => {
 
     const uncovered = nonPublic.filter(
       (r) =>
-        !protectedPages.some(
-          (nonPublicPage) => nonPublicPage.pageRootUrl.slice(1) === r
-        )
+        !protectedPages.some((nonPublicPage) => nonPublicPage.pageRootUrl === r)
     );
 
     expect(uncovered).toHaveLength(0);
