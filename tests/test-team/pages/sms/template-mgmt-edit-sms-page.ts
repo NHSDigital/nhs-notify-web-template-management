@@ -2,10 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
-export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
   public readonly nameInput: Locator;
-
-  public readonly subjectLineInput: Locator;
 
   public readonly messageTextArea: Locator;
 
@@ -15,15 +13,16 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
 
   public readonly namingYourTemplate: Locator;
 
-  public readonly goBackLink: Locator;
+  public readonly pricingLink: Locator;
+
+  public readonly characterCountText: Locator;
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
   constructor(page: Page) {
     super(page);
-    this.nameInput = page.locator('[id="emailTemplateName"]');
-    this.subjectLineInput = page.locator('[id="emailTemplateSubjectLine"]');
-    this.messageTextArea = page.locator('[id="emailTemplateMessage"]');
+    this.nameInput = page.locator('[id="smsTemplateName"]');
+    this.messageTextArea = page.locator('[id="smsTemplateMessage"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.personalisationFields = page.locator(
       '[data-testid="personalisation-details"]'
@@ -31,14 +30,15 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
-      .and(page.getByText('Back to choose a template type'));
+    this.pricingLink = page.locator('[data-testid="sms-pricing-link"]');
+    this.characterCountText = page.locator('[id="character-count"]');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage() {
-    await this.navigateTo('/templates/create-email-template');
+  async loadPage(templateId: string) {
+    await this.navigateTo(
+      `/templates/edit-text-message-template/${templateId}`
+    );
   }
 }

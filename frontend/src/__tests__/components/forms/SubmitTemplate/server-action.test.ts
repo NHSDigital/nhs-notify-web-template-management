@@ -4,7 +4,7 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getTemplate, saveTemplate, sendEmail } from '@utils/form-actions';
+import { getTemplate, saveTemplate } from '@utils/form-actions';
 import {
   TemplateType,
   TemplateStatus,
@@ -18,7 +18,6 @@ jest.mock('@utils/amplify-utils');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 const saveTemplateMock = jest.mocked(saveTemplate);
-const sendEmailMock = jest.mocked(sendEmail);
 
 const mockNhsAppTemplate = {
   templateType: TemplateType.NHS_APP,
@@ -65,13 +64,11 @@ describe('submitTemplate', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  it('should handle error when failing to send email', async () => {
+  it('should handle error when failing to save template', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
 
-    saveTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
-
-    sendEmailMock.mockImplementationOnce(() => {
-      throw new Error('failed to send email');
+    saveTemplateMock.mockImplementationOnce(() => {
+      throw new Error('failed to save template');
     });
 
     const formData = getMockFormData({
@@ -79,11 +76,11 @@ describe('submitTemplate', () => {
     });
 
     await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
-      'failed to send email'
+      'failed to save template'
     );
   });
 
-  it('should redirect when successfully sent email', async () => {
+  it('should redirect when successfully submitted', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
 
     const formData = getMockFormData({
@@ -92,31 +89,17 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(sendEmailMock).toHaveBeenCalledWith(mockNhsAppTemplate.id);
-
+    expect(saveTemplateMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        createdAt: '2025-01-13T10:19:25.579Z',
+        id: '1',
+        message: 'body',
+        name: 'name',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+      })
+    );
     expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
-  });
-
-  it('should send an email with the subject line when template type is EMAIL', async () => {
-    const mockEmailTemplate = {
-      id: 'template-id',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      name: 'name',
-      subject: 'subjectLine',
-      message: 'body',
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
-    };
-
-    getTemplateMock.mockResolvedValueOnce(mockEmailTemplate);
-
-    const formData = getMockFormData({
-      templateId: 'template-id',
-    });
-
-    await submitTemplate('submit-route', formData);
-
-    expect(sendEmailMock).toHaveBeenCalledWith(mockEmailTemplate.id);
   });
 });

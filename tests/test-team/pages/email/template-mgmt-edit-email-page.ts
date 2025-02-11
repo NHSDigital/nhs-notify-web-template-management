@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
-export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -14,8 +14,6 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
   public readonly personalisationFields: Locator;
 
   public readonly namingYourTemplate: Locator;
-
-  public readonly goBackLink: Locator;
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
@@ -31,14 +29,11 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.goBackLink = page
-      .locator('.nhsuk-back-link__link')
-      .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage() {
-    await this.navigateTo('/templates/create-email-template');
+  async loadPage(templateId: string) {
+    await this.navigateTo(`/templates/edit-email-template/${templateId}`);
   }
 }

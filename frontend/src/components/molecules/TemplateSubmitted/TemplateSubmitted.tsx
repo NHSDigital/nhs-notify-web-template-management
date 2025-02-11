@@ -15,7 +15,6 @@ export const TemplateSubmitted = ({
     templateNameHeading,
     templateIdHeading,
     doNextHeading,
-    doNextText,
     notLiveHeading,
     notLiveText,
     liveHeading,
@@ -43,7 +42,6 @@ export const TemplateSubmitted = ({
         </h2>
         <p id='template-id'>{templateId}</p>
         <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
-        <p>{doNextText}</p>
         <h3>{notLiveHeading}</h3>
         <p>{notLiveText}</p>
         <h3>{liveHeading}</h3>

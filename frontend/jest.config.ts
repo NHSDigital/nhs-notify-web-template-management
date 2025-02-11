@@ -28,7 +28,6 @@ const config: Config = {
     '.snap',
     'resource.ts',
     'backend.ts',
-    'generate-dependencies.ts',
     'jest.config.ts',
     '.dev.tsx',
   ],
