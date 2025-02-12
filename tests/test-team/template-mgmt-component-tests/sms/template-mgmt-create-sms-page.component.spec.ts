@@ -171,7 +171,8 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.clickSubmitButton();
 
-      const previewPageRegex = /\/templates\/preview-text-message-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$/;
+      const previewPageRegex =
+        /\/templates\/preview-text-message-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
