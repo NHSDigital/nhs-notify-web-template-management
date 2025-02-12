@@ -39,10 +39,4 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'edit-text-message-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtEditSmsPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

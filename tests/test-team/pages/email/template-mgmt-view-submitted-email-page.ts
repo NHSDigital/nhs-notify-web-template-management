@@ -15,11 +15,4 @@ export class TemplateMgmtViewSubmittedEmailPage extends TemplateMgmtViewSubmited
   static get pageUrlSegment() {
     return 'view-submitted-email-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } =
-      TemplateMgmtViewSubmittedEmailPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

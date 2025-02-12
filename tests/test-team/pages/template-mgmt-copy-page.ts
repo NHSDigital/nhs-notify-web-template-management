@@ -24,12 +24,6 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
     return 'copy-template';
   }
 
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCopyPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
-
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
   }

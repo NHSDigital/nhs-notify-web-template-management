@@ -64,11 +64,4 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
   async clickSubmitButton() {
     await this.submitButton.click();
   }
-
-  async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtSignInPage;
-
-    await this.page.goto(`/${appUrlSegment}/${pageUrlSegment}`);
-    await super.clickSignInLink();
-  }
 }

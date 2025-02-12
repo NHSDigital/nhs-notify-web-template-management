@@ -28,10 +28,4 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
   static get pageUrlSegment() {
     return 'preview-email-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtPreviewEmailPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

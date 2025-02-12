@@ -18,12 +18,6 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     return 'choose-a-template-type';
   }
 
-  async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtChoosePage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
-
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
   }

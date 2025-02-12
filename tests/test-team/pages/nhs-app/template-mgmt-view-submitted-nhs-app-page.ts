@@ -12,11 +12,4 @@ export class TemplateMgmtViewSubmittedNhsAppPage extends TemplateMgmtViewSubmite
   static get pageUrlSegment() {
     return 'view-submitted-nhs-app-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } =
-      TemplateMgmtViewSubmittedNhsAppPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

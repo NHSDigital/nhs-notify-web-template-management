@@ -41,10 +41,4 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'create-email-template';
   }
-
-  async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCreateEmailPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
 }

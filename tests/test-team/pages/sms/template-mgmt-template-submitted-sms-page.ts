@@ -4,11 +4,4 @@ export class TemplateMgmtTemplateSubmittedSmsPage extends TemplateMgmtTemplateSu
   static get pageUrlSegment() {
     return 'text-message-template-submitted';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } =
-      TemplateMgmtTemplateSubmittedSmsPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

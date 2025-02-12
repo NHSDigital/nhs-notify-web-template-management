@@ -17,12 +17,6 @@ export class ManageTemplatesPage extends TemplateMgmtBasePage {
     return 'manage-templates';
   }
 
-  async loadPage(): Promise<void> {
-    const { appUrlSegment, pageUrlSegment } = ManageTemplatesPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
-
   async clickCreateTemplateButton() {
     await this.createTemplateButton.click();
   }

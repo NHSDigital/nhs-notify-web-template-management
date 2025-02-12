@@ -40,10 +40,4 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'create-nhs-app-template';
   }
-
-  async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCreateNhsAppPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
 }

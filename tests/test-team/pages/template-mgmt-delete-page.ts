@@ -16,10 +16,4 @@ export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'delete-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtDeletePage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

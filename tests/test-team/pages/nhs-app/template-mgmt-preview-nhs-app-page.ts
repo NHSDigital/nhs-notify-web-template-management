@@ -25,10 +25,4 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
   static get pageUrlSegment() {
     return 'preview-nhs-app-template';
   }
-
-  async loadPage(sessionId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtPreviewNhsAppPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${sessionId}`);
-  }
 }

@@ -25,10 +25,4 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
   static get pageUrlSegment() {
     return 'preview-text-message-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtPreviewSmsPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

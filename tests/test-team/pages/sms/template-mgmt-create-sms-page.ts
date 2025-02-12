@@ -44,10 +44,4 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'create-text-message-template';
   }
-
-  async loadPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCreateSmsPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
 }

@@ -35,10 +35,4 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'edit-nhs-app-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtEditNhsAppPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }

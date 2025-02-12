@@ -27,17 +27,7 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
     'text messages (SMS)',
   ];
 
-  async navigateToStartPage() {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtStartPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
-  }
-
   async clickStartButton() {
     await this.startButton.click();
-  }
-
-  async loadPage(): Promise<void> {
-    await this.navigateToStartPage();
   }
 }

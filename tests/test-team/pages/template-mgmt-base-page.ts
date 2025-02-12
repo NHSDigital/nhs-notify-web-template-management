@@ -66,6 +66,17 @@ export abstract class TemplateMgmtBasePage {
     throw new Error('unimplemented');
   }
 
+  async loadPage(templateId?: string) {
+    const { appUrlSegment, pageUrlSegment } = this
+      .constructor as typeof TemplateMgmtBasePage;
+
+    await this.navigateTo(
+      templateId
+        ? `/${appUrlSegment}/${pageUrlSegment}/${templateId}`
+        : `/${appUrlSegment}/${pageUrlSegment}`
+    );
+  }
+
   async navigateTo(url: string) {
     await this.page.goto(url);
   }
@@ -81,8 +92,6 @@ export abstract class TemplateMgmtBasePage {
   async clickSubmitButton() {
     await this.submitButton.click();
   }
-
-  abstract loadPage(pathSupplement?: string): Promise<void>;
 
   async clickBackLink() {
     await this.goBackLink.click();

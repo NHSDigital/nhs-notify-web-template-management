@@ -36,10 +36,4 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
   static get pageUrlSegment() {
     return 'edit-email-template';
   }
-
-  async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtEditEmailPage;
-
-    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
-  }
 }
