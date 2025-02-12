@@ -24,7 +24,7 @@ import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-ema
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
-import { TemplateMgmtLandingPage } from '../pages/templates-mgmt-landing-page';
+import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -55,7 +55,7 @@ const protectedPages = [
   TemplateMgmtViewSubmittedSmsPage,
 ];
 
-const publicPages = [TemplateMgmtLandingPage];
+const publicPages = [TemplateMgmtStartPage];
 
 test.describe('Protected Routes Tests', () => {
   test.only('all protected routes are covered', async () => {

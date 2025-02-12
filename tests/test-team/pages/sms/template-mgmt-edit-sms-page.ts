@@ -3,8 +3,6 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
-  static readonly pageUrlSegment = 'edit-text-message-template';
-
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -36,6 +34,10 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
     this.characterCountText = page.locator('[id="character-count"]');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+  }
+
+  static get pageUrlSegment() {
+    return 'edit-text-message-template';
   }
 
   async loadPage(templateId: string) {

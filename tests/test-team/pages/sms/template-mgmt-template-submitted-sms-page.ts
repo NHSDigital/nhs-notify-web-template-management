@@ -1,7 +1,9 @@
 import { TemplateMgmtTemplateSubmittedBasePage } from '../template-mgmt-template-submitted-base-page';
 
 export class TemplateMgmtTemplateSubmittedSmsPage extends TemplateMgmtTemplateSubmittedBasePage {
-  static readonly pageUrlSegment = 'text-message-template-submitted';
+  static get pageUrlSegment() {
+    return 'text-message-template-submitted';
+  }
 
   async loadPage(templateId: string) {
     const { appUrlSegment, pageUrlSegment } = TemplateMgmtTemplateSubmittedSmsPage;

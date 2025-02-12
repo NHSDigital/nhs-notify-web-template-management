@@ -3,8 +3,6 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
-  static readonly pageUrlSegment = 'create-nhs-app-template';
-
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -37,6 +35,10 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to choose a template type'));
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+  }
+
+  static get pageUrlSegment() {
+    return 'create-nhs-app-template';
   }
 
   async loadPage() {

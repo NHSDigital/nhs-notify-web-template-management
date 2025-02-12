@@ -3,8 +3,6 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
-  static readonly pageUrlSegment = 'edit-email-template';
-
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -33,6 +31,10 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
     );
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+  }
+
+  static get pageUrlSegment() {
+    return 'edit-email-template';
   }
 
   async loadPage(templateId: string) {

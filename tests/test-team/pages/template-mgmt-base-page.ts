@@ -5,8 +5,6 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly appUrlSegment = 'templates';
 
-  static readonly pageUrlSegment: string;
-
   readonly notifyBannerLink: Locator;
 
   readonly signInLink: Locator;
@@ -62,6 +60,10 @@ export abstract class TemplateMgmtBasePage {
     this.skipLink = page
       .locator('[id="skip-link"]')
       .and(page.getByText('Skip to main content'));
+  }
+
+  static get pageUrlSegment(): string {
+    throw new Error('unimplemented')
   }
 
   async navigateTo(url: string) {

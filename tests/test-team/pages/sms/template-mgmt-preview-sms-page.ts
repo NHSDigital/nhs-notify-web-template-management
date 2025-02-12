@@ -2,8 +2,6 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
-  static readonly pageUrlSegment = 'preview-text-message-template';
-
   public readonly editRadioOption: Locator;
 
   public readonly submitRadioOption: Locator;
@@ -22,6 +20,10 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');
+  }
+
+  static get pageUrlSegment() {
+    return 'preview-text-message-template';
   }
 
   async loadPage(templateId: string) {

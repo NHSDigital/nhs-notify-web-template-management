@@ -2,8 +2,6 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
-  static readonly pageUrlSegment = 'choose-a-template-type';
-
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
@@ -14,6 +12,10 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     this.learnMoreLink = page.getByText(
       'Learn more about message channels (opens in a new tab)'
     );
+  }
+
+  static get pageUrlSegment() {
+    return 'choose-a-template-type';
   }
 
   async loadPage() {

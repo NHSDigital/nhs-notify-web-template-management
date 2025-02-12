@@ -25,6 +25,10 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
     this.errorMessage = page.locator('.amplify-alert__body');
   }
 
+  static get pageUrlSegment() {
+    return 'create-and-submit-templates';
+  }
+
   async cognitoSignIn(user: TestUser) {
     await this.emailInput.fill(user.email);
 
@@ -62,7 +66,9 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
   }
 
   async loadPage() {
-    await this.page.goto('/templates/create-and-submit-templates');
+    const { appUrlSegment, pageUrlSegment } = TemplateMgmtSignInPage;
+
+    await this.page.goto(`/${appUrlSegment}/${pageUrlSegment}`);
     await super.clickSignInLink();
   }
 }
