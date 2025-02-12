@@ -6,7 +6,8 @@ export class TemplateMgmtTemplateSubmittedNhsAppPage extends TemplateMgmtTemplat
   }
 
   async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtTemplateSubmittedNhsAppPage;
+    const { appUrlSegment, pageUrlSegment } =
+      TemplateMgmtTemplateSubmittedNhsAppPage;
 
     await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
   }

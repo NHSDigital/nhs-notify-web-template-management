@@ -6,7 +6,8 @@ export class TemplateMgmtTemplateSubmittedSmsPage extends TemplateMgmtTemplateSu
   }
 
   async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtTemplateSubmittedSmsPage;
+    const { appUrlSegment, pageUrlSegment } =
+      TemplateMgmtTemplateSubmittedSmsPage;
 
     await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
   }
