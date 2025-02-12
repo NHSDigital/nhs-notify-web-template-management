@@ -2,6 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'copy-template'
+
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
@@ -18,10 +20,6 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to all templates'));
-  }
-
-  static get pageUrlSegment() {
-    return 'copy-template';
   }
 
   async checkRadioButton(radioButtonLabel: string) {

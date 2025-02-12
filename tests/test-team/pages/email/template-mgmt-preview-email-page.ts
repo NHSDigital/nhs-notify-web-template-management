@@ -2,6 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
+    static readonly pageUrlSegment = 'preview-email-template'
+    
   public readonly editRadioOption: Locator;
 
   public readonly submitRadioOption: Locator;
@@ -23,9 +25,5 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.subjectLineText = page.locator('[id="preview-content-subject"]');
     this.messageText = page.locator('[id="preview-content-message"]');
-  }
-
-  static get pageUrlSegment() {
-    return 'preview-email-template';
   }
 }

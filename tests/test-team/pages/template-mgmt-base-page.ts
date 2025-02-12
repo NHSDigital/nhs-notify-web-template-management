@@ -5,6 +5,8 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly appUrlSegment = 'templates';
 
+  static pageUrlSegment: string;
+
   readonly notifyBannerLink: Locator;
 
   readonly signInLink: Locator;
@@ -62,13 +64,13 @@ export abstract class TemplateMgmtBasePage {
       .and(page.getByText('Skip to main content'));
   }
 
-  static get pageUrlSegment(): string {
-    throw new Error('unimplemented');
-  }
-
   async loadPage(templateId?: string) {
     const { appUrlSegment, pageUrlSegment } = this
       .constructor as typeof TemplateMgmtBasePage;
+
+    if (!pageUrlSegment) {
+      throw new Error('pageUrlSegment is not defined');
+    }
 
     await this.navigateTo(
       templateId

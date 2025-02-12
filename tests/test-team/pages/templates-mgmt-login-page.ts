@@ -6,6 +6,8 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 
 export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
+    static readonly pageUrlSegment = 'create-and-submit-templates'
+    
   public readonly emailInput: Locator;
 
   public readonly passwordInput: Locator;
@@ -23,10 +25,6 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
     this.confirmPasswordInput = page.locator('input[name="confirm_password"]');
     this.submitButton = page.locator('button[type="submit"]');
     this.errorMessage = page.locator('.amplify-alert__body');
-  }
-
-  static get pageUrlSegment() {
-    return 'create-and-submit-templates';
   }
 
   async cognitoSignIn(user: TestUser) {

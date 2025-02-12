@@ -2,6 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class ManageTemplatesPage extends TemplateMgmtBasePage {
+    static readonly pageUrlSegment = 'manage-templates'
+    
   readonly createTemplateButton: Locator;
 
   constructor(page: Page) {
@@ -11,10 +13,6 @@ export class ManageTemplatesPage extends TemplateMgmtBasePage {
       .locator('[class="nhsuk-button"]')
       .and(page.getByRole('button'))
       .and(page.getByText('Create template'));
-  }
-
-  static get pageUrlSegment() {
-    return 'manage-templates';
   }
 
   async clickCreateTemplateButton() {
