@@ -30,6 +30,8 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
   }
 
   async cognitoSignIn(user: TestUser) {
+    await super.clickSignInLink();
+
     await this.emailInput.fill(user.email);
 
     await this.passwordInput.fill(user.password);
