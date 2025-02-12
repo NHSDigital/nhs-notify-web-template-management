@@ -1,5 +1,5 @@
 module "kms" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms?ref=v1.0.6"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms?ref=v1.0.8"
 
   aws_account_id = var.aws_account_id
   component      = var.component
