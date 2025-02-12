@@ -153,3 +153,31 @@ variable "backup_report_recipient" {
   description = "Primary recipient of the Backup reports"
   default     = ""
 }
+
+variable "enable_event_caching" {
+  type        = bool
+  description = "Enable caching of events to an S3 bucket"
+  default     = true
+}
+
+variable "event_delivery_logging" {
+  type        = bool
+  description = "Enable SNS Event Delivery logging"
+  default     = true
+}
+
+variable "event_delivery_logging_success_sample_percentage" {
+  type        = number
+  description = "Enable caching of events to an S3 bucket"
+  default     = 0
+}
+
+variable "data_plane_bus_arn" {
+  type        = string
+  description = "Data plane event bus arn"
+}
+
+variable "control_plane_bus_arn" {
+  type        = string
+  description = "Data plane event bus arn"
+}
