@@ -19,6 +19,8 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="smsTemplateName"]');
@@ -34,11 +36,18 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
     this.characterCountText = page.locator('[id="character-count"]');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-sms-template-submit-button"]'
+    );
   }
 
   async loadPage(templateId: string) {
     await this.navigateTo(
       `/templates/edit-text-message-template/${templateId}`
     );
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

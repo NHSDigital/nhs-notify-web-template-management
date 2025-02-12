@@ -10,6 +10,8 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewPage {
 
   public readonly messageText: Locator;
 
+  public readonly continueButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -20,9 +22,16 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewPage {
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');
+    this.continueButton = page.locator(
+      '[id="preview-nhs-app-template-submit-button"]'
+    );
   }
 
   async loadPage(sessionId: string) {
     await this.navigateTo(`/templates/preview-nhs-app-template/${sessionId}`);
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

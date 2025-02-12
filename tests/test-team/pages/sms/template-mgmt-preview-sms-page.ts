@@ -10,6 +10,8 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewPage {
 
   public readonly messageText: Locator;
 
+  public readonly continueButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -20,11 +22,18 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewPage {
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');
+    this.continueButton = page.locator(
+      '[id="preview-email-template-submit-button"]'
+    );
   }
 
   async loadPage(templateId: string) {
     await this.navigateTo(
       `/templates/preview-text-message-template/${templateId}`
     );
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

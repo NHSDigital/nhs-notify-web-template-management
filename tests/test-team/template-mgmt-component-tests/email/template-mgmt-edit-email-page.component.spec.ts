@@ -200,7 +200,7 @@ test.describe('Edit Email message template Page', () => {
         'This is an email message'
       );
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-email-template/${templates.submit.id}?from=edit`
@@ -238,7 +238,7 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.loadPage(templates.empty.id);
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(editEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -280,7 +280,7 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailNameErrorLink = editEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -306,7 +306,7 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailSubjectLineErrorLink =
         editEmailTemplatePage.errorSummary.locator(
@@ -335,7 +335,7 @@ test.describe('Edit Email message template Page', () => {
         'template-subject-line'
       );
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailMessageErrorLink = editEmailTemplatePage.errorSummary.locator(
         '[href="#emailTemplateMessage"]'

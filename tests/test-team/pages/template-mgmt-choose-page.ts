@@ -6,12 +6,17 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
 
   readonly learnMoreLink: Locator;
 
+  readonly continueButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
     this.learnMoreLink = page.getByText(
       'Learn more about message channels (opens in a new tab)'
     );
+    this.continueButton = page.locator('button.nhsuk-button[type="submit"]', {
+      hasText: 'Continue',
+    });
   }
 
   async loadPage(_: string) {
@@ -20,5 +25,9 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
 
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

@@ -21,6 +21,8 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="smsTemplateName"]');
@@ -39,9 +41,16 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePage {
       .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-sms-template-submit-button"]'
+    );
   }
 
   async loadPage() {
     await this.navigateTo('/templates/create-text-message-template');
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

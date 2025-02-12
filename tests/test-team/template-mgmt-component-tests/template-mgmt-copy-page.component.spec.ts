@@ -106,7 +106,7 @@ test.describe('Copy Template Page', () => {
     const copyTemplatePage = new TemplateMgmtCopyPage(page);
 
     await copyTemplatePage.loadPage(templates.email.id);
-    await copyTemplatePage.clickSubmitButton();
+    await copyTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/copy-template/${templates.email.id}`
@@ -136,7 +136,7 @@ test.describe('Copy Template Page', () => {
         await copyTemplatePage.checkRadioButton(
           templateTypeDisplayMappings(targetTemplateType)
         );
-        await copyTemplatePage.clickSubmitButton();
+        await copyTemplatePage.clickContinueButton();
 
         await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
 

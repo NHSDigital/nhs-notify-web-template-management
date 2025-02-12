@@ -17,6 +17,8 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="emailTemplateName"]');
@@ -31,9 +33,17 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
     );
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-email-template-submit-button"]'
+    );
   }
 
   async loadPage(templateId: string) {
     await this.navigateTo(`/templates/edit-email-template/${templateId}`);
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

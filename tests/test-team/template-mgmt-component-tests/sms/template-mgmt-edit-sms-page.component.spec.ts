@@ -209,7 +209,7 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.messageTextArea.fill('This is an SMS message');
 
-      await editSmsTemplatePage.clickSubmitButton();
+      await editSmsTemplatePage.clickSaveAndPreviewButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-text-message-template/${templates.submit.id}?from=edit`
@@ -247,7 +247,7 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.loadPage(templates.empty.id);
 
-      await editSmsTemplatePage.clickSubmitButton();
+      await editSmsTemplatePage.clickSaveAndPreviewButton();
 
       await expect(editSmsTemplatePage.errorSummary).toBeVisible();
 
@@ -275,7 +275,7 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.messageTextArea.fill('template-message');
 
-      await editSmsTemplatePage.clickSubmitButton();
+      await editSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsNameErrorLink = editSmsTemplatePage.errorSummary.locator(
         `[href="#smsTemplateName"]`
@@ -299,7 +299,7 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.nameInput.fill('template-name');
 
-      await editSmsTemplatePage.clickSubmitButton();
+      await editSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsMessageErrorLink = editSmsTemplatePage.errorSummary.locator(
         '[href="#smsTemplateMessage"]'

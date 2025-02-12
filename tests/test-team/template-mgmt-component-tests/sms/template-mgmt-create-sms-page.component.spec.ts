@@ -169,7 +169,7 @@ test.describe('Create SMS message template Page', () => {
         'This is an SMS message'
       );
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const previewPageRegex = String.raw`\/templates\/preview-text-message-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
 
@@ -192,7 +192,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.loadPage();
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       await expect(createSmsTemplatePage.errorSummary).toBeVisible();
 
@@ -222,7 +222,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.messageTextArea.fill('template-message');
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsNameErrorLink = createSmsTemplatePage.errorSummary.locator(
         `[href="#smsTemplateName"]`
@@ -246,7 +246,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
         '[href="#smsTemplateMessage"]'
