@@ -23,7 +23,7 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewPage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');
     this.continueButton = page.locator(
-      '[id="preview-email-template-submit-button"]'
+      '[id="review-sms-template-submit-button"]'
     );
   }
 
