@@ -70,6 +70,12 @@ exports[`SubmitTemplate component should render 1`] = `
             value="submit-template-form"
           />
           <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
             name="templateId"
             readonly=""
             type="hidden"

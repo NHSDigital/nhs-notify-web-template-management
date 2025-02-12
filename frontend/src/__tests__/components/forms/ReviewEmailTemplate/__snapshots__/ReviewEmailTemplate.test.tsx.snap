@@ -197,6 +197,12 @@ exports[`Review email form renders matches error snapshot 1`] = `
             type="hidden"
             value="review-email-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <div
             class="nhsuk-form-group nhsuk-form-group--error"
           >
@@ -465,6 +471,12 @@ exports[`Review email form renders matches snapshot when navigating from edit sc
             type="hidden"
             value="review-email-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <div
             class="nhsuk-form-group"
           >
@@ -715,6 +727,12 @@ exports[`Review email form renders matches snapshot when navigating from manage 
             readonly=""
             type="hidden"
             value="review-email-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
           />
           <div
             class="nhsuk-form-group"

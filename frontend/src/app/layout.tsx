@@ -3,6 +3,7 @@ import '@styles/app.scss';
 import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
+import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,
@@ -68,7 +69,9 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <ClientLayout>{children}</ClientLayout>
+        <CookiesProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </CookiesProvider>
       </body>
     </html>
   );

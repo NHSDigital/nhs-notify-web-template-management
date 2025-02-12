@@ -22,10 +22,22 @@ exports[`renders component correctly 1`] = `
           The template will be removed and you won't be able to recover it.
         </p>
         <form
-          action="/templates/manage-templates"
+          action="/no-action"
           class="nhsuk-u-margin-right-3"
           style="display: inline;"
         >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="delete-template-no"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <button
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary"
@@ -35,9 +47,21 @@ exports[`renders component correctly 1`] = `
           </button>
         </form>
         <form
-          action="/action"
+          action="/yes-action"
           style="display: inline;"
         >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="delete-template-yes"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <button
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--warning"

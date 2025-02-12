@@ -1,5 +1,8 @@
 import { redirect, RedirectType } from 'next/navigation';
-import { deleteTemplateAction } from '@forms/DeleteTemplate/server-action';
+import {
+  deleteTemplateYesAction,
+  deleteTemplateNoAction,
+} from '@forms/DeleteTemplate/server-action';
 import {
   NHSAppTemplate,
   TemplateStatus,
@@ -15,6 +18,17 @@ beforeAll(() => {
   jest.setSystemTime(new Date('2022-01-01 09:00'));
 });
 
+test('redirects', async () => {
+  const mockRedirect = jest.mocked(redirect);
+
+  await deleteTemplateNoAction();
+
+  expect(mockRedirect).toHaveBeenCalledWith(
+    '/manage-templates',
+    RedirectType.push
+  );
+});
+
 test('calls form action and redirects', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockSaveTemplate = jest.mocked(saveTemplate);
@@ -27,7 +41,7 @@ test('calls form action and redirects', async () => {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   };
 
-  await deleteTemplateAction(mockTemplate);
+  await deleteTemplateYesAction(mockTemplate);
 
   expect(mockSaveTemplate).toHaveBeenCalledWith({
     ...mockTemplate,
