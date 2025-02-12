@@ -33,25 +33,25 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({
         <div className='nhsuk-grid-column-two-thirds'>
           <h1 className='nhsuk-heading-l'>{fullPageHeading}</h1>
           <p>{hintText}</p>
-        <NHSNotifyFormWrapper
-          action={deleteTemplateNoAction}
-          formId='delete-template-no'
-          csrfToken={csrfToken}
-          formAttributes={{
-            className: 'nhsuk-u-margin-right-3',
-            style: { display: 'inline' },
-          }}
-        >
-          <Button secondary>{noButtonText}</Button>
-        </NHSNotifyFormWrapper>
-        <NHSNotifyFormWrapper
-          action={action}
-          formAttributes={{ style: { display: 'inline' } }}
-          formId='delete-template-yes'
-          csrfToken={csrfToken}
-        >
-          <Button className='nhsuk-button--warning'>{yesButtonText}</Button>
-        </NHSNotifyFormWrapper>
+          <NHSNotifyFormWrapper
+            action={deleteTemplateNoAction}
+            formId='delete-template-no'
+            csrfToken={csrfToken}
+            formAttributes={{
+              className: 'nhsuk-u-margin-right-3',
+              style: { display: 'inline' },
+            }}
+          >
+            <Button secondary>{noButtonText}</Button>
+          </NHSNotifyFormWrapper>
+          <NHSNotifyFormWrapper
+            action={action}
+            formAttributes={{ style: { display: 'inline' } }}
+            formId='delete-template-yes'
+            csrfToken={csrfToken}
+          >
+            <Button className='nhsuk-button--warning'>{yesButtonText}</Button>
+          </NHSNotifyFormWrapper>
         </div>
       </div>
     </NHSNotifyMain>

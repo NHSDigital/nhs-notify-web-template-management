@@ -63,7 +63,11 @@ export const SmsTemplateForm: FC<
               state={state}
             />
             <h1 data-testid='page-heading'>{content.pageHeading}</h1>
-            <NHSNotifyFormWrapper action={action} formId='create-sms-template' csrfToken={csrfToken}>
+            <NHSNotifyFormWrapper
+              action={action}
+              formId='create-sms-template'
+              csrfToken={csrfToken}
+            >
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>
                   {content.templateNameLabelText}
