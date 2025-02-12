@@ -58,7 +58,7 @@ const protectedPages = [
 const publicPages = [TemplateMgmtStartPage];
 
 test.describe('Protected Routes Tests', () => {
-  test.only('all protected routes are covered', async () => {
+  test('all protected routes are covered', async () => {
     const projectRoot = execSync('/usr/bin/git rev-parse --show-toplevel', {
       encoding: 'utf8',
     }).trim();

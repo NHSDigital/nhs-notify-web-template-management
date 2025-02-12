@@ -17,7 +17,8 @@ export class TemplateMgmtViewSubmittedEmailPage extends TemplateMgmtViewSubmited
   }
 
   async loadPage(templateId: string) {
-    const { appUrlSegment, pageUrlSegment } = TemplateMgmtViewSubmittedEmailPage;
+    const { appUrlSegment, pageUrlSegment } =
+      TemplateMgmtViewSubmittedEmailPage;
 
     await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
   }

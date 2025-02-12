@@ -63,7 +63,7 @@ export abstract class TemplateMgmtBasePage {
   }
 
   static get pageUrlSegment(): string {
-    throw new Error('unimplemented')
+    throw new Error('unimplemented');
   }
 
   async navigateTo(url: string) {
