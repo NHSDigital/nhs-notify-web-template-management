@@ -27,7 +27,7 @@ describe('middleware function', () => {
 
     expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe(
-      'https://url.com/auth?redirect=%2Ftemplates%2F%2Fmanage-templates'
+      'https://url.com/auth?redirect=%2Ftemplates%2Fmanage-templates'
     );
     expect(response.headers.get('Content-Type')).toBe('text/html');
   });
