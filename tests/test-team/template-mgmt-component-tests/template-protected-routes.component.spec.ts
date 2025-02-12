@@ -100,11 +100,11 @@ test.describe('Protected Routes Tests', () => {
       page,
       baseURL,
     }) => {
-      const templatePage = new PageModel(page);
-      await templatePage.loadPage('');
+      const appPage = new PageModel(page);
+      await appPage.loadPage('');
 
       const redirectPath = encodeURIComponent(
-        `/templates/${PageModel.pageUrlSegment}`
+        `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}`
       );
 
       await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);
