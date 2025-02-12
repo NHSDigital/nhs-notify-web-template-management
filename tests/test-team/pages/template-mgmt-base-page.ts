@@ -5,7 +5,7 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly appUrlSegment = 'templates';
 
-  static pageUrlSegment: string;
+  static readonly pageUrlSegment: string;
 
   readonly notifyBannerLink: Locator;
 

@@ -2,8 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
-    static readonly pageUrlSegment = 'create-and-submit-templates'
-    
+  static readonly pageUrlSegment = 'create-and-submit-templates';
+
   readonly startButton: Locator;
 
   readonly listOfTemplates: Locator;

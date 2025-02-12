@@ -6,8 +6,8 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 
 export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
-    static readonly pageUrlSegment = 'create-and-submit-templates'
-    
+  static readonly pageUrlSegment = 'create-and-submit-templates';
+
   public readonly emailInput: Locator;
 
   public readonly passwordInput: Locator;

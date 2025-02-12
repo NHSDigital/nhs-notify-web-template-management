@@ -3,8 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
-    static readonly pageUrlSegment = 'create-email-template'
-    
+  static readonly pageUrlSegment = 'create-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;

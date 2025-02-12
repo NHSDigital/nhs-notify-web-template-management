@@ -3,8 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePage {
-    static readonly pageUrlSegment = 'edit-nhs-app-template'
-    
+  static readonly pageUrlSegment = 'edit-nhs-app-template';
+
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;

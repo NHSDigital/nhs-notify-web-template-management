@@ -2,8 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
-    static readonly pageUrlSegment = 'preview-nhs-app-template'
-    
+  static readonly pageUrlSegment = 'preview-nhs-app-template';
+
   public readonly editRadioOption: Locator;
 
   public readonly submitRadioOption: Locator;

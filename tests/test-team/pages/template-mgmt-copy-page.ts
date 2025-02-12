@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
-  static readonly pageUrlSegment = 'copy-template'
+  static readonly pageUrlSegment = 'copy-template';
 
   readonly radioButtons: Locator;
 
