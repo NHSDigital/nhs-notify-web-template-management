@@ -1,9 +1,6 @@
 'use client';
 
-// this is an npm module, not node:path
-// eslint-disable-next-line  unicorn/prefer-node-protocol
-import path from 'path';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Button } from 'nhsuk-react-components';
 import { useSearchParams } from 'next/navigation';
 import { getBasePath } from '@utils/get-base-path';
@@ -13,15 +10,19 @@ import { SignOut } from '../signout/page.dev';
 const timeTillLogout =
   Number(process.env.NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS) || 900;
 
+const SignInButton = () => {
+  const searchParams = useSearchParams().toString();
+
+  const signLinLink = getBasePath() + (searchParams ? `?${searchParams}` : '');
+
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Button href={signLinLink}>Sign in</Button>
+    </Suspense>
+  );
+};
+
 export default function Inactive() {
-  const searchParams = useSearchParams();
-
-  const requestRedirectPath =
-    searchParams.get('redirect') ||
-    `${getBasePath()}/create-and-submit-templates`;
-
-  const redirectPath = path.normalize(requestRedirectPath);
-
   return (
     <SignOut>
       <div className='nhsuk-grid-row'>
@@ -33,7 +34,7 @@ export default function Inactive() {
           </p>
           <p>Any unsaved changes have been lost.</p>
           <p>Sign in again to create and submit a template to NHS Notify.</p>
-          <Button href={`/auth?redirect=${redirectPath}`}>Sign in</Button>
+          <SignInButton />
         </div>
       </div>
     </SignOut>

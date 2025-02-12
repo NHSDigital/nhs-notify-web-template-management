@@ -43,9 +43,9 @@ exports[`LogoutWarningModal should match snapshot 1`] = `
           <a
             class="nhsuk-link"
             data-testid="modal-sign-out"
-            href="/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+            href="/auth/signout"
           >
-            Log out
+            Sign out
           </a>
         </div>
       </div>
