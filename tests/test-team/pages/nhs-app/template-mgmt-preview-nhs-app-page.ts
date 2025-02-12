@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
 export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
-  static readonly pageRootUrl = 'preview-nhs-app-template';
+  static readonly pageUrlSegment = 'preview-nhs-app-template';
 
   public readonly editRadioOption: Locator;
 
@@ -25,8 +25,8 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
   }
 
   async loadPage(sessionId: string) {
-    const { appRootUrl, pageRootUrl } = TemplateMgmtPreviewNhsAppPage;
+    const { appUrlSegment, pageUrlSegment } = TemplateMgmtPreviewNhsAppPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${sessionId}`);
+    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${sessionId}`);
   }
 }

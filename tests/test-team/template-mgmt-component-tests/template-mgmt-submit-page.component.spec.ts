@@ -154,21 +154,21 @@ test.describe('Submit template Page', async () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  for (const { channelName, channelIdentifier, Page } of [
+  for (const { channelName, channelIdentifier, PageModel } of [
     {
       channelName: 'Email',
       channelIdentifier: 'email',
-      Page: TemplateMgmtSubmitEmailPage,
+      PageModel: TemplateMgmtSubmitEmailPage,
     },
     {
       channelName: 'SMS',
       channelIdentifier: 'text-message',
-      Page: TemplateMgmtSubmitSmsPage,
+      PageModel: TemplateMgmtSubmitSmsPage,
     },
     {
       channelName: 'NHS App',
       channelIdentifier: 'nhs-app',
-      Page: TemplateMgmtSubmitNhsAppPage,
+      PageModel: TemplateMgmtSubmitNhsAppPage,
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
@@ -177,7 +177,7 @@ test.describe('Submit template Page', async () => {
       page,
       baseURL,
     }) => {
-      const submitTemplatePage = new Page(page);
+      const submitTemplatePage = new PageModel(page);
 
       await submitTemplatePage.loadPage(templates[channelIdentifier].valid.id);
 
@@ -194,7 +194,7 @@ test.describe('Submit template Page', async () => {
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
-          page: new Page(page),
+          page: new PageModel(page),
           id: templates[channelIdentifier].valid.id,
           baseURL,
         };
@@ -212,7 +212,7 @@ test.describe('Submit template Page', async () => {
       test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({
         page,
       }) => {
-        const submitTemplatePage = new Page(page);
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage(
           templates[channelIdentifier].submit.id
@@ -232,7 +232,7 @@ test.describe('Submit template Page', async () => {
         baseURL,
         page,
       }) => {
-        const submitTemplatePage = new Page(page);
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage(
           templates[channelIdentifier].empty.id
@@ -245,7 +245,7 @@ test.describe('Submit template Page', async () => {
         baseURL,
         page,
       }) => {
-        const submitTemplatePage = new Page(page);
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage('/fake-template-id');
 

@@ -24,6 +24,7 @@ import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-ema
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
+import { TemplateMgmtLandingPage } from '../pages/templates-mgmt-landing-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -54,10 +55,10 @@ const protectedPages = [
   TemplateMgmtViewSubmittedSmsPage,
 ];
 
-const publicRoutes = new Set(['create-and-submit-templates']);
+const publicPages = [TemplateMgmtLandingPage];
 
 test.describe('Protected Routes Tests', () => {
-  test('all protected routes are covered', async () => {
+  test.only('all protected routes are covered', async () => {
     const projectRoot = execSync('/usr/bin/git rev-parse --show-toplevel', {
       encoding: 'utf8',
     }).trim();
@@ -79,13 +80,14 @@ test.describe('Protected Routes Tests', () => {
       return route;
     });
 
-    const nonPublic = routes.filter((r) => !publicRoutes.has(r));
+    const nonPublic = routes.filter(
+      (r) => !publicPages.some(({ pageUrlSegment }) => pageUrlSegment === r)
+    );
 
     expect(nonPublic.length).toBeGreaterThan(0);
 
     const uncovered = nonPublic.filter(
-      (r) =>
-        !protectedPages.some((nonPublicPage) => nonPublicPage.pageRootUrl === r)
+      (r) => !protectedPages.some(({ pageUrlSegment }) => pageUrlSegment === r)
     );
 
     expect(uncovered).toHaveLength(0);
@@ -94,7 +96,7 @@ test.describe('Protected Routes Tests', () => {
   });
 
   for (const PageModel of protectedPages)
-    test(`should not be able to access ${PageModel.pageRootUrl} page without auth`, async ({
+    test(`should not be able to access ${PageModel.pageUrlSegment} page without auth`, async ({
       page,
       baseURL,
     }) => {
@@ -102,7 +104,7 @@ test.describe('Protected Routes Tests', () => {
       await templatePage.loadPage('');
 
       const redirectPath = encodeURIComponent(
-        `/templates/${PageModel.pageRootUrl}`
+        `/templates/${PageModel.pageUrlSegment}`
       );
 
       await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);

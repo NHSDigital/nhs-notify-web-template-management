@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtViewSubmitedBasePage } from '../template-mgmt-view-submitted-base-page';
 
 export class TemplateMgmtViewSubmittedEmailPage extends TemplateMgmtViewSubmitedBasePage {
-  static readonly pageRootUrl = 'view-submitted-email-template';
+  static readonly pageUrlSegment = 'view-submitted-email-template';
 
   public readonly subjectLineText: Locator;
 
@@ -15,8 +15,8 @@ export class TemplateMgmtViewSubmittedEmailPage extends TemplateMgmtViewSubmited
   }
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageRootUrl } = TemplateMgmtViewSubmittedEmailPage;
+    const { appUrlSegment, pageUrlSegment } = TemplateMgmtViewSubmittedEmailPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
+    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
   }
 }

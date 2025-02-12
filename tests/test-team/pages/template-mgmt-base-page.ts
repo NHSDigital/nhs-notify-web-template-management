@@ -3,9 +3,9 @@ import { Locator, type Page } from '@playwright/test';
 export abstract class TemplateMgmtBasePage {
   readonly page: Page;
 
-  static readonly appRootUrl = 'templates';
+  static readonly appUrlSegment = 'templates';
 
-  static readonly pageRootUrl: string;
+  static readonly pageUrlSegment: string;
 
   readonly notifyBannerLink: Locator;
 

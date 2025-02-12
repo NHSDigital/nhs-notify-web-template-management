@@ -2,7 +2,7 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
-  static readonly pageRootUrl = 'copy-template';
+  static readonly pageUrlSegment = 'copy-template';
 
   readonly radioButtons: Locator;
 
@@ -23,9 +23,9 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
   }
 
   async loadPage(templateId: string) {
-    const { appRootUrl, pageRootUrl } = TemplateMgmtCopyPage;
+    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCopyPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}/${templateId}`);
+    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}/${templateId}`);
   }
 
   async checkRadioButton(radioButtonLabel: string) {

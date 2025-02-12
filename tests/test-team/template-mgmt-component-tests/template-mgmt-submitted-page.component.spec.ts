@@ -62,21 +62,21 @@ test.describe('Template Submitted Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  for (const { channelName, channelIdentifier, Page } of [
+  for (const { channelName, channelIdentifier, PageModel } of [
     {
       channelName: 'email',
       channelIdentifier: 'email',
-      Page: TemplateMgmtTemplateSubmittedEmailPage,
+      PageModel: TemplateMgmtTemplateSubmittedEmailPage,
     },
     {
       channelName: 'sms',
       channelIdentifier: 'text-message',
-      Page: TemplateMgmtTemplateSubmittedSmsPage,
+      PageModel: TemplateMgmtTemplateSubmittedSmsPage,
     },
     {
       channelName: 'nhs-app',
       channelIdentifier: 'nhs-app',
-      Page: TemplateMgmtTemplateSubmittedNhsAppPage,
+      PageModel: TemplateMgmtTemplateSubmittedNhsAppPage,
     },
   ] as const) {
     // eslint-disable-next-line no-loop-func
@@ -84,7 +84,7 @@ test.describe('Template Submitted Page', () => {
       page,
       baseURL,
     }) => {
-      const templateSubmittedPage = new Page(page);
+      const templateSubmittedPage = new PageModel(page);
 
       await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
 
@@ -114,7 +114,7 @@ test.describe('Template Submitted Page', () => {
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
-          page: new Page(page),
+          page: new PageModel(page),
           id: templates[channelIdentifier].id,
           baseURL,
         };
@@ -135,7 +135,7 @@ test.describe('Template Submitted Page', () => {
         baseURL,
         page,
       }) => {
-        const templateSubmittedPage = new Page(page);
+        const templateSubmittedPage = new PageModel(page);
 
         await templateSubmittedPage.loadPage('/fake-template-id');
 

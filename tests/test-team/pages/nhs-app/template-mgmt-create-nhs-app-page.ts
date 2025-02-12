@@ -3,7 +3,7 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
-  static readonly pageRootUrl = 'create-nhs-app-template';
+  static readonly pageUrlSegment = 'create-nhs-app-template';
 
   public readonly nameInput: Locator;
 
@@ -40,8 +40,8 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
   }
 
   async loadPage() {
-    const { appRootUrl, pageRootUrl } = TemplateMgmtCreateNhsAppPage;
+    const { appUrlSegment, pageUrlSegment } = TemplateMgmtCreateNhsAppPage;
 
-    await this.navigateTo(`/${appRootUrl}/${pageRootUrl}`);
+    await this.navigateTo(`/${appUrlSegment}/${pageUrlSegment}`);
   }
 }
