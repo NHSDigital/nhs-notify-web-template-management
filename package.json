@@ -14,6 +14,7 @@
     "create-amplify-outputs": "tsx ./scripts/create-amplify-outputs.ts",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
+    "generate-dependencies": "npm run generate-dependencies --workspaces --if-present",
     "start": "npm run start --workspace frontend",
     "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "test:unit": "npm run test:unit --workspaces",
