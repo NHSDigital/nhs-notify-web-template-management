@@ -1,7 +1,23 @@
 {
   "extends": [
+    "../.eslintrc",
     "next",
-    "next/core-web-vitals",
-    "../.eslintrc"
-  ]
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "react/display-name": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-no-useless-fragment": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ],
+    "react/no-danger": "off",
+    "react/require-default-props": "off",
+    "react/jsx-no-bind": "off"
+  }
 }

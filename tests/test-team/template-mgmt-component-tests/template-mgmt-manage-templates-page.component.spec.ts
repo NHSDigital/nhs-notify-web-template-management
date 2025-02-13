@@ -185,7 +185,7 @@ test.describe('Manage templates page', () => {
     await expect(manageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
     );
-    expect(manageTemplatesPage.createTemplateButton).toBeVisible();
+    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
     await expect(page).toHaveURL('/templates/choose-a-template-type');
   });
@@ -203,7 +203,7 @@ test.describe('Manage templates page', () => {
       'email-not-yet-submitted_manage-templates-page'
     );
 
-    expect(templatePreviewLink).toHaveAttribute(
+    await expect(templatePreviewLink).toHaveAttribute(
       'href',
       `/templates/preview-email-template/${templates.emailNotYetSubmitted.id}`
     );
@@ -226,7 +226,7 @@ test.describe('Manage templates page', () => {
       'email-submitted_manage-templates-page'
     );
 
-    expect(templatePreviewLink).toHaveAttribute(
+    await expect(templatePreviewLink).toHaveAttribute(
       'href',
       `/templates/view-submitted-email-template/${templates.emailSubmitted.id}`
     );
@@ -250,7 +250,7 @@ test.describe('Manage templates page', () => {
     );
     const templateCopyLink = templateRow.getByText('Copy');
 
-    expect(templateCopyLink).toHaveAttribute(
+    await expect(templateCopyLink).toHaveAttribute(
       'href',
       `/templates/copy-template/${templates.emailSubmitted.id}`
     );
@@ -275,7 +275,7 @@ test.describe('Manage templates page', () => {
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
 
     const deleteTemplateURL = `/templates/delete-template/${templates.emailNotYetSubmitted.id}`;
-    expect(templateDeleteLink).toHaveAttribute('href', deleteTemplateURL);
+    await expect(templateDeleteLink).toHaveAttribute('href', deleteTemplateURL);
     await templateDeleteLink.click();
     await expect(page).toHaveURL(new RegExp(deleteTemplateURL)); // eslint-disable-line security/detect-non-literal-regexp
   });

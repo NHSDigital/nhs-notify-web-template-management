@@ -6,9 +6,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
 import { validateSMSTemplate } from '@utils/validate-template';
 
-const PreviewSMSTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const PreviewSMSTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateSMSTemplate(template);

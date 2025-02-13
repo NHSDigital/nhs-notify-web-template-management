@@ -8,6 +8,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplate.module.scss';
 import { PreviewTemplateProps } from './preview-template.types';
+import { JSX } from 'react';
 
 export function PreviewTemplate({
   template,

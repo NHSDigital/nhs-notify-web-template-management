@@ -42,7 +42,9 @@ describe('EditNhsAppTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await EditNhsAppTemplatePage({
-      params: { templateId: 'template-id' },
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
     });
 
     expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
@@ -52,9 +54,9 @@ describe('EditNhsAppTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await EditNhsAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -79,9 +81,9 @@ describe('EditNhsAppTemplatePage', () => {
       });
 
       await EditNhsAppTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

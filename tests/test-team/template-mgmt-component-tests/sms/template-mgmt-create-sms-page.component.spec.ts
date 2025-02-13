@@ -31,7 +31,7 @@ test.describe('Create SMS message template Page', () => {
 
     await createSmsTemplatePage.loadPage();
 
-    expect(await createSmsTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createSmsTemplatePage.pageHeader).toHaveText(
       'Create text message template'
     );
 

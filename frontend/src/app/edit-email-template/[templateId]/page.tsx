@@ -4,9 +4,9 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { validateEmailTemplate } from '@utils/validate-template';
 
-const CreateEmailTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const CreateEmailTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateEmailTemplate(template);

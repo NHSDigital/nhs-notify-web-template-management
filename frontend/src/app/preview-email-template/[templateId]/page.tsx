@@ -6,9 +6,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
 import { validateEmailTemplate } from '@utils/validate-template';
 
-const PreviewEmailTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const PreviewEmailTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateEmailTemplate(template);

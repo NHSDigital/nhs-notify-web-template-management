@@ -36,9 +36,9 @@ describe('SubmitNhsAppTemplatePage', () => {
     });
 
     const page = await SubmitNhsAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
     expect(page).toEqual(
       <SubmitTemplate
@@ -54,9 +54,9 @@ describe('SubmitNhsAppTemplatePage', () => {
     getTemplateMock.mockResolvedValue(undefined);
 
     await SubmitNhsAppTemplatePage({
-      params: {
-        templateId: 'invalid-template',
-      },
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -100,9 +100,9 @@ describe('SubmitNhsAppTemplatePage', () => {
       });
 
       await SubmitNhsAppTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

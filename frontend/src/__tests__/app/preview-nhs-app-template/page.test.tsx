@@ -42,9 +42,9 @@ describe('PreviewNhsAppTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewNhsAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(
@@ -54,9 +54,9 @@ describe('PreviewNhsAppTemplatePage', () => {
 
   it('should redirect to invalid-template when no template is found', async () => {
     await PreviewNhsAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -100,9 +100,9 @@ describe('PreviewNhsAppTemplatePage', () => {
       });
 
       await PreviewNhsAppTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

@@ -6,7 +6,9 @@ import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { validateSMSTemplate } from '@utils/validate-template';
 
-const SubmitSmsTemplatePage = async ({ params: { templateId } }: PageProps) => {
+const SubmitSmsTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateSMSTemplate(template);

@@ -44,9 +44,9 @@ describe('PreviewEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await DeleteTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(<DeleteTemplate template={emailTemplate} />);
@@ -54,9 +54,9 @@ describe('PreviewEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when no templateId is found', async () => {
     await DeleteTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -74,9 +74,9 @@ describe('PreviewEmailTemplatePage', () => {
     });
 
     await DeleteTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -94,9 +94,9 @@ describe('PreviewEmailTemplatePage', () => {
     });
 
     await DeleteTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/manage-templates', 'push');

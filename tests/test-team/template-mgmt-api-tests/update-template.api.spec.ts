@@ -8,7 +8,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 
-test.describe('POST /v1/template/:templateId', async () => {
+test.describe('POST /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;

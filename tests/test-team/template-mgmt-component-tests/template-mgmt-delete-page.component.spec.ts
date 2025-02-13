@@ -101,6 +101,6 @@ test.describe('Delete Template Page', () => {
 
     await expect(page).toHaveURL('/templates/manage-templates');
 
-    await expect(page.getByText(templates.confirm.name)).not.toBeVisible();
+    await expect(page.getByText(templates.confirm.name)).toBeHidden();
   });
 });

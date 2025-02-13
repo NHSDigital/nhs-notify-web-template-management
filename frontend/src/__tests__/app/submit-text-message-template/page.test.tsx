@@ -36,9 +36,9 @@ describe('SubmitSmsTemplatePage', () => {
     });
 
     const page = await SubmitSmsTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(
@@ -55,9 +55,9 @@ describe('SubmitSmsTemplatePage', () => {
     getTemplateMock.mockResolvedValue(undefined);
 
     await SubmitSmsTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'invalid-template',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -101,9 +101,9 @@ describe('SubmitSmsTemplatePage', () => {
       });
 
       await SubmitSmsTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

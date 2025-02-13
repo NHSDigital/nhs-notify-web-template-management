@@ -1,7 +1,7 @@
 'use client';
 
+import { useActionState } from 'react';
 import { mockDeep } from 'jest-mock-extended';
-import { useFormState } from 'react-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import {
@@ -11,12 +11,12 @@ import {
 
 jest.mock('@utils/amplify-utils');
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: jest
+    useActionState: jest
       .fn()
       .mockImplementation(
         (
@@ -64,7 +64,7 @@ describe('Choose template page', () => {
   });
 
   it('renders error component', () => {
-    const mockUseFormState = jest.fn().mockReturnValue([
+    const mockUseActionState = jest.fn().mockReturnValue([
       {
         validationError: {
           formErrors: [],
@@ -76,7 +76,7 @@ describe('Choose template page', () => {
       '/action',
     ]);
 
-    jest.mocked(useFormState).mockImplementation(mockUseFormState);
+    jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
     const container = render(<CopyTemplate template={mockDeep<Template>()} />);
     expect(container.asFragment()).toMatchSnapshot();

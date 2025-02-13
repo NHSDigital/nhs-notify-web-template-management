@@ -36,7 +36,11 @@ describe('EditEmailTemplatePage', () => {
   it('should redirect to invalid-template when no template is found', async () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
-    await EditEmailTemplatePage({ params: { templateId: 'template-id' } });
+    await EditEmailTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
@@ -49,7 +53,11 @@ describe('EditEmailTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
     });
 
-    await EditEmailTemplatePage({ params: { templateId: 'template-id' } });
+    await EditEmailTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
@@ -67,7 +75,9 @@ describe('EditEmailTemplatePage', () => {
     };
 
     const page = await EditEmailTemplatePage({
-      params: { templateId: 'template-id' },
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');

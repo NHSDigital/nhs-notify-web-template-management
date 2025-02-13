@@ -35,9 +35,9 @@ describe('EmailTemplateSubmittedPage', () => {
     getTemplateMock.mockResolvedValueOnce(template);
 
     const page = await EmailTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
@@ -54,9 +54,9 @@ describe('EmailTemplateSubmittedPage', () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await EmailTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'invalid-template',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template');

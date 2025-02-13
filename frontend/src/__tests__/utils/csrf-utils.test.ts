@@ -54,7 +54,7 @@ afterAll(() => {
 
 describe('getCsrfFormValue', () => {
   test('cookie is present', async () => {
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => ({
           name: 'csrf_token',
@@ -68,7 +68,7 @@ describe('getCsrfFormValue', () => {
     expect(csrfToken).toEqual('token');
   });
   test('cookie is not present', async () => {
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => undefined,
       })
@@ -157,7 +157,7 @@ describe('verifyCsrfTokenFull', () => {
     });
 
     jest.mocked(getAccessTokenServer).mockResolvedValue(mockJwt);
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => ({
           name: 'csrf_token',
@@ -177,7 +177,7 @@ describe('verifyCsrfTokenFull', () => {
     });
 
     jest.mocked(getAccessTokenServer).mockResolvedValue(mockJwt);
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => ({
           name: 'csrf_token',
@@ -197,7 +197,7 @@ describe('verifyCsrfTokenFull', () => {
     });
 
     jest.mocked(getAccessTokenServer).mockResolvedValue(mockJwt);
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => ({
           name: 'csrf_token',
@@ -217,7 +217,7 @@ describe('verifyCsrfTokenFull', () => {
     });
 
     jest.mocked(getAccessTokenServer).mockResolvedValue(mockJwt);
-    jest.mocked(cookies).mockReturnValue(
+    jest.mocked(cookies).mockResolvedValue(
       mockDeep<ReadonlyRequestCookies>({
         get: (_: string) => ({
           name: 'csrf_token',

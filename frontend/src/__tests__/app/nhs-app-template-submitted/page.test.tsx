@@ -36,9 +36,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
     });
 
     const page = await NhsAppTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
@@ -55,9 +55,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await NhsAppTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'invalid-template',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template');
