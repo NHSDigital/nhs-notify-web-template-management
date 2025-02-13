@@ -1,5 +1,5 @@
 module "eventpub" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=CCM-7938_MessagingInfraFix"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub?ref=v1.0.8"
 
   name = "eventpub"
 
