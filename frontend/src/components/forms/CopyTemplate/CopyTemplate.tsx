@@ -21,7 +21,9 @@ type CopyTemplate = {
 export const CopyTemplate = ({ template }: CopyTemplate) => {
   const [state, action] = useActionState(copyTemplateAction, { template });
 
-  const templateTypes = Object.values(TemplateType);
+  const templateTypes = Object.values(TemplateType).filter(
+    (t) => process.env.ENABLE_LETTERS || t !== TemplateType.LETTER
+  );
   const options = templateTypes.map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),

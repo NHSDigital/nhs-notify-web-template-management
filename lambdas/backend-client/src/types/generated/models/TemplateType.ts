@@ -6,4 +6,5 @@ export enum TemplateType {
     NHS_APP = 'NHS_APP',
     EMAIL = 'EMAIL',
     SMS = 'SMS',
+    LETTER = 'LETTER'
 }
