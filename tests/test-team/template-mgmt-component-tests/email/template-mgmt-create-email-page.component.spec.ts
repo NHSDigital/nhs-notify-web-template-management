@@ -156,7 +156,8 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.clickSubmitButton();
 
-      const previewPageRegex = String.raw`\/templates\/preview-email-template\/([0-9a-fA-F-]+)(?:\?from=edit)?$`;
+      const previewPageRegex =
+        /\/templates\/preview-email-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
