@@ -11,6 +11,7 @@ import {
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { copyTemplateAction } from './server-action';
 
 type CopyTemplate = {
@@ -38,32 +39,32 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
   const fullPageHeading = `${pageHeading} '${template.name}'`;
 
   return (
-    <div className='nhsuk-grid-row'>
-      <div className='nhsuk-grid-column-two-thirds'>
-        <BackLink
-          id='back-link'
-          href={`${getBasePath()}/manage-templates`}
-          className='nhsuk-u-margin-bottom-5'
-        >
-          {backLinkText}
-        </BackLink>
-        <h1 className='nhsuk-heading-xl'>{fullPageHeading}</h1>
-        <ZodErrorSummary errorHeading={errorHeading} state={state} />
-        <NHSNotifyRadioButtonForm
-          formId='choose-a-template-type'
-          radiosId='templateType'
-          action={action}
-          state={state}
-          pageHeading={radiosLabel}
-          options={options}
-          buttonText={buttonText}
-          hint={hint}
-          legend={{
-            isPgeHeading: false,
-            size: 'm',
-          }}
-        />
-      </div>
-    </div>
+    <>
+      <BackLink id='back-link' href={`${getBasePath()}/manage-templates`}>
+        {backLinkText}
+      </BackLink>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-two-thirds'>
+            <h1 className='nhsuk-heading-xl'>{fullPageHeading}</h1>
+            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <NHSNotifyRadioButtonForm
+              formId='choose-a-template-type'
+              radiosId='templateType'
+              action={action}
+              state={state}
+              pageHeading={radiosLabel}
+              options={options}
+              buttonText={buttonText}
+              hint={hint}
+              legend={{
+                isPgeHeading: false,
+                size: 'm',
+              }}
+            />
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
   );
 };

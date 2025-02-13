@@ -8,8 +8,9 @@ import '@aws-amplify/ui-react/styles.css';
 // eslint-disable-next-line  unicorn/prefer-node-protocol
 import path from 'path';
 import { getBasePath } from '@utils/get-base-path';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
-export const Redirect = () => {
+const useRedirectPath = () => {
   const searchParams = useSearchParams();
 
   const requestRedirectPath = searchParams.get('redirect');
@@ -26,25 +27,39 @@ export const Redirect = () => {
     redirectPath = redirectPath.slice(basePath.length);
   }
 
+  return redirectPath;
+};
+
+export const Redirect = () => {
+  const redirectPath = useRedirectPath();
+
   return redirect(redirectPath, RedirectType.push);
+};
+
+const SignIn = () => {
+  const redirectPath = useRedirectPath();
+
+  redirect(`/auth/signin?redirect=${encodeURIComponent(redirectPath)}`);
 };
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Authenticator
-        variation='default'
-        hideSignUp
-        formFields={{
-          signIn: {
-            username: {
-              type: 'text',
+    <NHSNotifyMain>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Authenticator
+          variation='default'
+          hideSignUp
+          formFields={{
+            signIn: {
+              username: {
+                type: 'text',
+              },
             },
-          },
-        }}
-      >
-        <Redirect />
-      </Authenticator>
-    </Suspense>
+          }}
+        >
+          <SignIn />
+        </Authenticator>
+      </Suspense>
+    </NHSNotifyMain>
   );
 }

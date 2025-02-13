@@ -76,3 +76,5 @@ export type SubmitTemplatePageComponentProps = {
   goBackPath: string;
   submitPath: string;
 };
+
+export type ServerAction = string | ((payload: FormData) => void);

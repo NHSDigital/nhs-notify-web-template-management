@@ -3,11 +3,14 @@ import '@styles/app.scss';
 import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
+import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
   title: content.global.mainLayout.title,
   description: content.global.mainLayout.description,
 };
+
+export const dynamic = 'force-dynamic';
 
 export default function RootLayout({
   children,
@@ -17,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <head>
-        <script src={`${getBasePath()}/lib/nhsuk-8.3.0.min.js`} defer />
+        <script src={`${getBasePath()}/lib/nhsuk-9.1.0.min.js`} defer />
         <title>{content.global.mainLayout.title}</title>
         <link
           rel='shortcut icon'
@@ -66,7 +69,9 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        <ClientLayout>{children}</ClientLayout>
+        <CookiesProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </CookiesProvider>
       </body>
     </html>
   );

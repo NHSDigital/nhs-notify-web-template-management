@@ -37,11 +37,11 @@ export function assertNotifyBannerLink({
   });
 }
 
-export function assertLoginLink({ page, id }: CommonStepsProps) {
-  return test.step('when user clicks "Log in", then user is redirected to "login page"', async () => {
+export function assertSignInLink({ page, id }: CommonStepsProps) {
+  return test.step('when user clicks "Sign in", then user is redirected to "sign in page"', async () => {
     await page.loadPage(id);
 
-    const link = page.loginLink;
+    const link = page.signInLink;
 
     await expect(link).toHaveAttribute(
       'href',
@@ -50,15 +50,15 @@ export function assertLoginLink({ page, id }: CommonStepsProps) {
   });
 }
 
-export function assertLogoutLink({ page, id }: CommonStepsProps) {
-  return test.step('"Log out", should direct user to logout', async () => {
+export function assertSignOutLink({ page, id }: CommonStepsProps) {
+  return test.step('"Sign out", should direct user to signout', async () => {
     await page.loadPage(id);
 
-    const link = page.logoutLink;
+    const link = page.signInLink;
 
     await expect(link).toHaveAttribute(
       'href',
-      '/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates'
+      '/auth/signout'
     );
   });
 }

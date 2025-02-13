@@ -1,5 +1,5 @@
 module "create_template_lambda" {
-  depends_on  = [module.build_template_lambda, module.build_template_client]
+  depends_on = [module.build_template_lambda, module.build_template_client]
 
   source      = "../lambda-function"
   description = "Create template API endpoint"

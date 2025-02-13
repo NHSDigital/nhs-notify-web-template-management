@@ -2,94 +2,108 @@
 
 exports[`SubmitTemplate component should render 1`] = `
 <DocumentFragment>
-  <div
-    class="nhsuk-grid-row"
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
   >
     <div
-      class="nhsuk-grid-column-two-thirds"
+      class="nhsuk-grid-row"
     >
-      <h1>
-        Submit 'template-name'
-      </h1>
       <div
-        class="nhsuk-warning-callout"
+        class="nhsuk-grid-column-two-thirds"
       >
-        <h2
-          class="nhsuk-warning-callout__label"
+        <h1>
+          Submit 'template-name'
+        </h1>
+        <div
+          class="nhsuk-warning-callout"
         >
-          <span
-            role="text"
+          <h2
+            class="nhsuk-warning-callout__label"
           >
             <span
-              class="nhsuk-u-visually-hidden"
+              role="text"
             >
-              Important: 
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
             </span>
-            Important
-          </span>
+          </h2>
+          <p>
+            When you submit this template it cannot be changed. It can only be replaced by a new template.
+          </p>
+        </div>
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Before you submit
         </h2>
         <p>
-          When you submit this template it cannot be changed. It can only be replaced by a new template.
+          You should check that your template:
         </p>
+        <ul>
+          <li>
+            is signed off by the relevant stakeholders in your team
+          </li>
+          <li>
+            does not have any spelling errors
+          </li>
+          <li>
+            is formatted correctly
+          </li>
+        </ul>
+        <p>
+          When you submit a template, it will be used by NHS Notify to set up the messages you want to send.
+        </p>
+        <p>
+          If you want to change a submitted template, you must create and submit a new template to replace it.
+        </p>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="submit-template-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            draggable="false"
+            href="/templates/example/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            id="submit-template-button"
+            type="submit"
+          >
+            Submit template
+          </button>
+        </form>
       </div>
-      <h2
-        class="nhsuk-heading-m"
-      >
-        Before you submit
-      </h2>
-      <p>
-        You should check that your template:
-      </p>
-      <ul>
-        <li>
-          is signed off by the relevant stakeholders in your team
-        </li>
-        <li>
-          does not have any spelling errors
-        </li>
-        <li>
-          is formatted correctly
-        </li>
-      </ul>
-      <p>
-        When you submit a template, it will be used by NHS Notify to set up the messages you want to send.
-      </p>
-      <p>
-        If you want to change a submitted template, you must create and submit a new template to replace it.
-      </p>
-      <form>
-        <input
-          name="form-id"
-          readonly=""
-          type="hidden"
-          value="submit-template-form"
-        />
-        <input
-          name="templateId"
-          readonly=""
-          type="hidden"
-          value="template-id"
-        />
-        <a
-          aria-disabled="false"
-          class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
-          draggable="false"
-          href="/templates/example/template-id"
-          id="go-back-button"
-          role="button"
-        >
-          Go back
-        </a>
-        <button
-          aria-disabled="false"
-          class="nhsuk-button"
-          id="submit-template-button"
-          type="submit"
-        >
-          Submit template
-        </button>
-      </form>
     </div>
-  </div>
+  </main>
 </DocumentFragment>
 `;

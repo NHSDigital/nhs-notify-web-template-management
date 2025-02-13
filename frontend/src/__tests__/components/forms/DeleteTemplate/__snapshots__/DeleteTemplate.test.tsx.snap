@@ -2,46 +2,76 @@
 
 exports[`renders component correctly 1`] = `
 <DocumentFragment>
-  <div
-    class="nhsuk-grid-row"
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
   >
     <div
-      class="nhsuk-grid-column-two-thirds"
+      class="nhsuk-grid-row"
     >
-      <h1
-        class="nhsuk-heading-l"
+      <div
+        class="nhsuk-grid-column-two-thirds"
       >
-        Are you sure you want to delete the template 'template-name'?
-      </h1>
-      <p>
-        The template will be removed and you won't be able to recover it.
-      </p>
-      <form
-        action="/templates/manage-templates"
-        class="nhsuk-u-margin-right-3"
-        style="display: inline;"
-      >
-        <button
-          aria-disabled="false"
-          class="nhsuk-button nhsuk-button--secondary"
-          type="submit"
+        <h1
+          class="nhsuk-heading-l"
         >
-          No, go back
-        </button>
-      </form>
-      <form
-        action="/action"
-        style="display: inline;"
-      >
-        <button
-          aria-disabled="false"
-          class="nhsuk-button nhsuk-button--warning"
-          type="submit"
+          Are you sure you want to delete the template 'template-name'?
+        </h1>
+        <p>
+          The template will be removed and you won't be able to recover it.
+        </p>
+        <form
+          action="/no-action"
+          class="nhsuk-u-margin-right-3"
+          style="display: inline;"
         >
-          Yes, delete template
-        </button>
-      </form>
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="delete-template-no"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary"
+            type="submit"
+          >
+            No, go back
+          </button>
+        </form>
+        <form
+          action="/yes-action"
+          style="display: inline;"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="delete-template-yes"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <button
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--warning"
+            type="submit"
+          >
+            Yes, delete template
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
+  </main>
 </DocumentFragment>
 `;

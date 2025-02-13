@@ -26,6 +26,7 @@ import { createEmailTemplatePageContent } from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
@@ -62,79 +63,87 @@ export const EmailTemplateForm: FC<
     state.validationError?.fieldErrors.emailTemplateMessage?.join(', ');
 
   return (
-    <div className='nhsuk-grid-row'>
+    <>
       {'id' in initialState ? null : (
-        <BackLink
-          href={`${getBasePath()}/choose-a-template-type`}
-          className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
-        >
+        <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {backLinkText}
         </BackLink>
       )}
-      <div className='nhsuk-grid-column-two-thirds'>
-        <ZodErrorSummary errorHeading={errorHeading} state={state} />
-        <NHSNotifyFormWrapper action={action} formId='create-email-template'>
-          <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-            {pageHeading}
-          </h1>
-
-          <FormSection>
-            <div className={templateNameError && 'nhsuk-form-group--error'}>
-              <Label htmlFor='emailTemplateName' size='s'>
-                {templateNameLabelText}
-              </Label>
-              <HintText>{templateNameHintText}</HintText>
-              <TemplateNameGuidance template={TemplateType.EMAIL} />
-              <TextInput
-                id='emailTemplateName'
-                onChange={emailTemplateNameHandler}
-                value={emailTemplateName}
-                error={templateNameError}
-                errorProps={{ id: 'emailTemplateName--error-message' }}
-                data-testid='emailTemplateName-input'
-              />
-            </div>
-          </FormSection>
-
-          <FormSection>
-            <div
-              className={templateSubjectLineError && 'nhsuk-form-group--error'}
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-two-thirds'>
+            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <NHSNotifyFormWrapper
+              action={action}
+              formId='create-email-template'
             >
-              <Label htmlFor='emailTemplateSubjectLine' size='s'>
-                {templateSubjectLineLabelText}
-              </Label>
-              <TextInput
-                id='emailTemplateSubjectLine'
-                onChange={emailTemplateSubjectLineHandler}
-                value={emailTemplateSubjectLine}
-                error={templateSubjectLineError}
-                errorProps={{ id: 'emailTemplateSubjectLine--error-message' }}
-                data-testid='emailTemplateSubjectLine-input'
-              />
-            </div>
+              <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
+                {pageHeading}
+              </h1>
 
-            <Textarea
-              label={templateMessageLabelText}
-              labelProps={{ size: 's' }}
-              id='emailTemplateMessage'
-              rows={10}
-              onChange={emailTemplateMessageHandler}
-              value={emailTemplateMessage}
-              error={templateMessageError}
-              errorProps={{ id: 'emailTemplateMessage--error-message' }}
-              data-testid='emailTemplateMessage-input'
-            />
-          </FormSection>
-          <Button type='submit' id='create-email-template-submit-button'>
-            {buttonText}
-          </Button>
-        </NHSNotifyFormWrapper>
-      </div>
-      <div className='nhsuk-grid-column-one-third'>
-        <Personalisation />
-        <MessageFormatting template={TemplateType.EMAIL} />
-        <ChannelGuidance template={TemplateType.EMAIL} />
-      </div>
-    </div>
+              <FormSection>
+                <div className={templateNameError && 'nhsuk-form-group--error'}>
+                  <Label htmlFor='emailTemplateName' size='s'>
+                    {templateNameLabelText}
+                  </Label>
+                  <HintText>{templateNameHintText}</HintText>
+                  <TemplateNameGuidance template={TemplateType.EMAIL} />
+                  <TextInput
+                    id='emailTemplateName'
+                    onChange={emailTemplateNameHandler}
+                    value={emailTemplateName}
+                    error={templateNameError}
+                    errorProps={{ id: 'emailTemplateName--error-message' }}
+                    data-testid='emailTemplateName-input'
+                  />
+                </div>
+              </FormSection>
+
+              <FormSection>
+                <div
+                  className={
+                    templateSubjectLineError && 'nhsuk-form-group--error'
+                  }
+                >
+                  <Label htmlFor='emailTemplateSubjectLine' size='s'>
+                    {templateSubjectLineLabelText}
+                  </Label>
+                  <TextInput
+                    id='emailTemplateSubjectLine'
+                    onChange={emailTemplateSubjectLineHandler}
+                    value={emailTemplateSubjectLine}
+                    error={templateSubjectLineError}
+                    errorProps={{
+                      id: 'emailTemplateSubjectLine--error-message',
+                    }}
+                    data-testid='emailTemplateSubjectLine-input'
+                  />
+                </div>
+
+                <Textarea
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  id='emailTemplateMessage'
+                  rows={10}
+                  onChange={emailTemplateMessageHandler}
+                  value={emailTemplateMessage}
+                  error={templateMessageError}
+                  errorProps={{ id: 'emailTemplateMessage--error-message' }}
+                  data-testid='emailTemplateMessage-input'
+                />
+              </FormSection>
+              <Button type='submit' id='create-email-template-submit-button'>
+                {buttonText}
+              </Button>
+            </NHSNotifyFormWrapper>
+          </div>
+          <div className='nhsuk-grid-column-one-third'>
+            <Personalisation />
+            <MessageFormatting template={TemplateType.EMAIL} />
+            <ChannelGuidance template={TemplateType.EMAIL} />
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
   );
 };

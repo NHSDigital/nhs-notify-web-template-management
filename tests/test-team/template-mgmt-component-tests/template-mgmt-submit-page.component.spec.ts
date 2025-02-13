@@ -5,7 +5,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template, TemplateType, TemplateStatus } from '../helpers/types';
 import {
   assertFooterLinks,
-  assertLogoutLink,
+  assertSignOutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -199,7 +199,7 @@ test.describe('Submit template Page', () => {
 
         await assertSkipToMainContent(props);
         await assertNotifyBannerLink(props);
-        await assertLogoutLink(props);
+        await assertSignOutLink(props);
         await assertFooterLinks(props);
         await assertGoBackButton({
           ...props,

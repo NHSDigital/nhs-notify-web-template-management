@@ -10,6 +10,7 @@ import {
   TemplateType,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
 
 export const ChooseTemplate = () => {
@@ -33,27 +34,24 @@ export const ChooseTemplate = () => {
 
   return (
     <>
-      <div className='nhsuk-grid-row'>
-        <BackLink
-          href={`${getBasePath()}/manage-templates`}
-          className='nhsuk-u-margin-bottom-5 nhsuk-u-margin-left-3'
-        >
-          {backLinkText}
-        </BackLink>
-      </div>
-      <ZodErrorSummary errorHeading={errorHeading} state={state} />
-      <NHSNotifyRadioButtonForm
-        formId='choose-a-template-type'
-        radiosId='templateType'
-        action={action}
-        state={state}
-        pageHeading={pageHeading}
-        options={options}
-        buttonText={buttonText}
-        hint={hint}
-        learnMoreLink={learnMoreLink}
-        learnMoreText={learnMoreText}
-      />
+      <BackLink href={`${getBasePath()}/manage-templates`}>
+        {backLinkText}
+      </BackLink>
+      <NHSNotifyMain>
+        <ZodErrorSummary errorHeading={errorHeading} state={state} />
+        <NHSNotifyRadioButtonForm
+          formId='choose-a-template-type'
+          radiosId='templateType'
+          action={action}
+          state={state}
+          pageHeading={pageHeading}
+          options={options}
+          buttonText={buttonText}
+          hint={hint}
+          learnMoreLink={learnMoreLink}
+          learnMoreText={learnMoreText}
+        />
+      </NHSNotifyMain>
     </>
   );
 };

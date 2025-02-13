@@ -38,11 +38,7 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
   }
 
-  async loadPage(templateId?: string) {
-    await this.navigateTo(
-      templateId
-        ? `/templates/edit-email-template/${templateId}`
-        : '/templates/create-email-template'
-    );
+  async loadPage() {
+    await this.navigateTo('/templates/create-email-template');
   }
 }

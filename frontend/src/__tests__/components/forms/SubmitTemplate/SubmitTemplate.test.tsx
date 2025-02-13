@@ -5,7 +5,7 @@ jest.mock('@utils/amplify-utils');
 
 jest.mock('@forms/SubmitTemplate/server-action', () => ({
   submitTemplate: {
-    bind: () => {},
+    bind: () => '/action',
   },
 }));
 

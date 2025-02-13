@@ -5,14 +5,19 @@ import { AuthLink } from '@molecules/AuthLink/AuthLink';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
 
-export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
+export function NHSNotifyHeader({ dataTestId }: HeaderType) {
   return (
     <header
       className='nhsuk-header'
       role='banner'
       data-testid={dataTestId ?? 'page-header'}
     >
-      <div className='nhsuk-header__container'>
+      <div
+        className={concatClassNames(
+          'nhsuk-header__container',
+          styles.header__container
+        )}
+      >
         <div className='nhsuk-header__logo'>
           <Link
             className='nhsuk-header__link nhsuk-header__link--service'
@@ -47,14 +52,7 @@ export function NHSNotifyHeader({ className, dataTestId }: HeaderType) {
             </span>
           </Link>
         </div>
-        <div
-          className={concatClassNames(
-            className,
-            'nhsuk-header__content',
-            styles.header__content
-          )}
-          id='content-header'
-        >
+        <div className='nhsuk-header__content' id='content-header'>
           {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? null : (
             <AuthLink />
           )}

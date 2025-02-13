@@ -1,7 +1,7 @@
 version: 1
 applications:
   - appRoot: frontend
-    backend:
+    frontend:
       phases:
         build:
           commands:
@@ -10,18 +10,8 @@ applications:
             - nvm use 20.13.1
             - npm ci --cache .npm --prefer-offline
             - npm run create-amplify-outputs env
-            - cd frontend
-    frontend:
-      phases:
-        build:
-          commands:
             - npm run build
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
-      cache:
-        paths:
-          - frontend/.next/cache/**/*
-          - .npm/**/*
-          - node_modules/**/*

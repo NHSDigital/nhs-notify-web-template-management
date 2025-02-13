@@ -3,7 +3,7 @@ import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import {
   assertFooterLinks,
   assertGoBackLink,
-  assertLogoutLink,
+  assertSignOutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -85,7 +85,7 @@ test.describe('Copy Template Page', () => {
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
     await assertFooterLinks(props);
-    await assertLogoutLink(props);
+    await assertSignOutLink(props);
     await assertGoBackLink(props);
   });
 

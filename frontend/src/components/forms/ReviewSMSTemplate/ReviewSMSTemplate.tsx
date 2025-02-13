@@ -13,6 +13,7 @@ import { BackLink } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { reviewSmsTemplateAction } from './server-actions';
 
 export function ReviewSMSTemplate({
@@ -32,29 +33,33 @@ export function ReviewSMSTemplate({
   const isFromEditPage = searchParams.get('from') === 'edit';
 
   return (
-    <div className='nhsuk-grid-row'>
-      <div className='nhsuk-grid-column-full'>
-        <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
-          Back to all templates
-        </BackLink>
-        <ReviewTemplate
-          template={initialState}
-          sectionHeading={isFromEditPage ? sectionHeading : undefined}
-          form={{
-            ...form,
-            state,
-            action,
-            formId: 'review-sms-template',
-            radiosId: 'reviewSMSTemplateAction',
-          }}
-          PreviewComponent={
-            <PreviewTemplate.Sms template={initialState} message={html} />
-          }
-        />
-        <p>
-          <Link href='/manage-templates'>Back to all templates</Link>
-        </p>
-      </div>
-    </div>
+    <>
+      <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
+        Back to all templates
+      </BackLink>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <ReviewTemplate
+              template={initialState}
+              sectionHeading={isFromEditPage ? sectionHeading : undefined}
+              form={{
+                ...form,
+                state,
+                action,
+                formId: 'review-sms-template',
+                radiosId: 'reviewSMSTemplateAction',
+              }}
+              PreviewComponent={
+                <PreviewTemplate.Sms template={initialState} message={html} />
+              }
+            />
+            <p>
+              <Link href='/manage-templates'>Back to all templates</Link>
+            </p>
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
   );
 }

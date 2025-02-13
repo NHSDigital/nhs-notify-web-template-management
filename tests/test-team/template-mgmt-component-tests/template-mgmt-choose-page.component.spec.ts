@@ -3,7 +3,7 @@ import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
-  assertLogoutLink,
+  assertSignOutLink,
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
@@ -38,7 +38,7 @@ test.describe('Choose Template Type Page', () => {
     await assertSkipToMainContent(props);
     await assertNotifyBannerLink(props);
     await assertFooterLinks(props);
-    await assertLogoutLink(props);
+    await assertSignOutLink(props);
     await assertGoBackLinkNotPresent(props);
   });
 
