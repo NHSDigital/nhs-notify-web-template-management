@@ -10,7 +10,11 @@ export const ErrorPage404 = () => {
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
-        <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
+        <h1
+          id='not-found'
+          className='nhsuk-heading-xl'
+          data-testid='page-heading'
+        >
           {error404PageContent.pageHeading}
         </h1>
 
