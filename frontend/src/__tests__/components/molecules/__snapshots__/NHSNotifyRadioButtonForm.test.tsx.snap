@@ -11,6 +11,12 @@ exports[`Renders NHSNotifyRadioButtonForm - handles validation errors for other 
       type="hidden"
       value="form-id"
     />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <div
       class="nhsuk-form-group"
     >
@@ -100,6 +106,12 @@ exports[`Renders NHSNotifyRadioButtonForm - renders without validation error fie
       type="hidden"
       value="form-id"
     />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <div
       class="nhsuk-form-group"
     >
@@ -188,6 +200,12 @@ exports[`Renders NHSNotifyRadioButtonForm correctly with errors 1`] = `
       readonly=""
       type="hidden"
       value="form-id"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
     />
     <div
       class="nhsuk-form-group nhsuk-form-group--error"
@@ -290,6 +308,12 @@ exports[`Renders NHSNotifyRadioButtonForm correctly without errors 1`] = `
       type="hidden"
       value="form-id"
     />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <div
       class="nhsuk-form-group"
     >
@@ -385,6 +409,12 @@ exports[`Renders NHSNotifyRadioButtonForm with learn more link 1`] = `
       readonly=""
       type="hidden"
       value="form-id"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
     />
     <div
       class="nhsuk-form-group"
@@ -491,6 +521,12 @@ exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLi
       type="hidden"
       value="form-id"
     />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
     <div
       class="nhsuk-form-group"
     >
@@ -586,6 +622,12 @@ exports[`Renders NHSNotifyRadioButtonForm without learn more link if learnMoreTe
       readonly=""
       type="hidden"
       value="form-id"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
     />
     <div
       class="nhsuk-form-group"

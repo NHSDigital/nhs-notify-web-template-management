@@ -57,6 +57,12 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             type="hidden"
             value="create-sms-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <div
             class="nhsuk-form-group--error"
           >
@@ -411,6 +417,12 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             type="hidden"
             value="create-sms-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <div>
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -761,6 +773,12 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             type="hidden"
             value="create-sms-template"
           />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
           <div
             class="nhsuk-form-group--error"
           >
@@ -1104,6 +1122,12 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             readonly=""
             type="hidden"
             value="create-sms-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
           />
           <div>
             <label
