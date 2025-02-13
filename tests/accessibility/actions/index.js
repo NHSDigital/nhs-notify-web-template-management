@@ -21,4 +21,5 @@ module.exports = {
   ...require('./view-submitted-text-message-template.actions'),
   ...require('./copy-template.actions'),
   ...require('./sign-in-page.actions'),
+  ...require('./non-existent-page.actions'),
 };

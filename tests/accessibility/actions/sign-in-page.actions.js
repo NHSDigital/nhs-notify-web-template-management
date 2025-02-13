@@ -10,5 +10,5 @@ const signInPageActions = [
 ];
 
 module.exports = {
-    signInPageActions,
+  signInPageActions,
 };
