@@ -57,7 +57,7 @@ export async function middleware(request: NextRequest) {
   const token = await getAccessTokenServer();
 
   if (!token) {
-    const redirectResponse = NextResponse.redirect(
+    return NextResponse.redirect(
       new URL(
         `/auth?redirect=${encodeURIComponent(
           `${getBasePath()}/${request.nextUrl.pathname}`
@@ -65,10 +65,6 @@ export async function middleware(request: NextRequest) {
         request.url
       )
     );
-
-    redirectResponse.headers.set('Content-Type', 'text/html');
-
-    return redirectResponse;
   }
 
   const response = NextResponse.next({
