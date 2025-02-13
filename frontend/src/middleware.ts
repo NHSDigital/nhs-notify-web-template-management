@@ -1,6 +1,13 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
+
+const middlewareSkipPaths = [
+  '/_next/static',
+  '_next/image',
+  '/favicon.ico',
+  '/lib',
+];
 
 function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective = {
@@ -33,6 +40,14 @@ function isPublicPath(path: string, publicPaths: string[]): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  if (
+    middlewareSkipPaths.some((prefix) =>
+      request.nextUrl.pathname.startsWith(prefix)
+    )
+  ) {
+    return NextResponse.next();
+  }
+
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const csp = getContentSecurityPolicy(nonce);
@@ -40,7 +55,7 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const publicPaths = ['/create-and-submit-templates', '/auth', '/lib'];
+  const publicPaths = ['/create-and-submit-templates', '/auth'];
 
   if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
     const publicPathResponse = NextResponse.next({
@@ -77,16 +92,3 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
-
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - lib/ (our static content)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|lib/).*)',
-  ],
-};
