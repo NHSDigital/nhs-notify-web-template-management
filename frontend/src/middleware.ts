@@ -6,7 +6,7 @@ const middlewareSkipPaths = [
   '/_next/static',
   '_next/image',
   '/favicon.ico',
-  '/lib',
+  '/lib/',
 ];
 
 function getContentSecurityPolicy(nonce: string) {
