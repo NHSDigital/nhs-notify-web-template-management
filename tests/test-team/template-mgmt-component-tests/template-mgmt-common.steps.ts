@@ -56,10 +56,7 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
 
     const link = page.signInLink;
 
-    await expect(link).toHaveAttribute(
-      'href',
-      '/auth/signout'
-    );
+    await expect(link).toHaveAttribute('href', '/auth/signout');
   });
 }
 

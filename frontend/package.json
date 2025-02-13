@@ -23,6 +23,7 @@
     "@aws-sdk/client-ses": "^3.637.0",
     "aws-amplify": "^6.12.3",
     "date-fns": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
