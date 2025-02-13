@@ -28,7 +28,7 @@
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
     "next": "^15.1.7",
-    "next-client-cookies": "^1.1.1",
+    "next-client-cookies": "^2.0.1",
     "nhs-notify-backend-client": "*",
     "nhs-notify-web-template-management-utils": "*",
     "nhsuk-frontend": "^9.1.0",
