@@ -4,6 +4,8 @@ import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
   public readonly continueButton: Locator;
 
+  static readonly pageUrlSegment = 'copy-template';
+
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
@@ -24,10 +26,6 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
     this.continueButton = page.locator(
       '[id="choose-a-template-type-submit-button"]'
     );
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/copy-template/${templateId}`);
   }
 
   async checkRadioButton(radioButtonLabel: string) {

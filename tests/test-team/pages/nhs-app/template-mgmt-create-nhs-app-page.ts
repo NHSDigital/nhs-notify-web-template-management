@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'create-nhs-app-template';
+
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -40,10 +42,6 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
     this.saveAndPreviewButton = page.locator(
       '[id="create-nhs-app-template-submit-button"]'
     );
-  }
-
-  async loadPage() {
-    await this.navigateTo('/templates/create-nhs-app-template');
   }
 
   async clickSaveAndPreviewButton() {

@@ -15,7 +15,7 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage('');
+    await chooseTemplatePage.loadPage();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
     await expect(chooseTemplatePage.pageHeader).toHaveText(
@@ -47,7 +47,7 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage('');
+    await chooseTemplatePage.loadPage();
 
     await expect(chooseTemplatePage.radioButtons).toHaveCount(3);
   });
@@ -80,7 +80,7 @@ test.describe('Choose Template Type Page', () => {
     }) => {
       const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-      await chooseTemplatePage.loadPage('');
+      await chooseTemplatePage.loadPage();
       await chooseTemplatePage.checkRadioButton(label);
       await chooseTemplatePage.clickContinueButton();
 

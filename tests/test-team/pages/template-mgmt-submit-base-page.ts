@@ -1,15 +1,12 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
-export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
+export abstract class TemplateMgmtSubmitBasePage extends TemplateMgmtBasePage {
   public readonly submitButton: Locator;
 
   public readonly goBackButton: Locator;
 
-  constructor(
-    page: Page,
-    private readonly channelIdentifier: string
-  ) {
+  constructor(page: Page) {
     super(page);
     this.submitButton = page
       .locator('[id="submit-template-button"]')
@@ -17,12 +14,6 @@ export class TemplateMgmtSubmitPage extends TemplateMgmtBasePage {
     this.goBackButton = page
       .locator('[id="go-back-button"]')
       .and(page.getByRole('button'));
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/submit-${this.channelIdentifier}-template/${templateId}`
-    );
   }
 
   async clickSubmitTemplateButton() {

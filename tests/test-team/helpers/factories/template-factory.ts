@@ -1,10 +1,15 @@
 import { Template, TemplateStatus, TemplateType } from '../types';
 
 export const TemplateFactory = {
-  createEmailTemplate: (id: string, owner: string): Template => {
+  createEmailTemplate: (
+    id: string,
+    owner: string,
+    name: string = ''
+  ): Template => {
     return TemplateFactory.create({
       id,
       owner,
+      name,
       templateType: TemplateType.EMAIL,
       subject: '',
     });
@@ -14,6 +19,7 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
+      name: '',
       templateType: TemplateType.SMS,
     });
   },
@@ -22,6 +28,7 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
+      name: '',
       templateType: TemplateType.NHS_APP,
     });
   },
@@ -30,6 +37,7 @@ export const TemplateFactory = {
     template: Partial<Template> & {
       id: string;
       owner: string;
+      name: string;
       templateType: string;
     }
   ): Template => {
@@ -38,7 +46,6 @@ export const TemplateFactory = {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      name: '',
       message: '',
       ...template,
     };

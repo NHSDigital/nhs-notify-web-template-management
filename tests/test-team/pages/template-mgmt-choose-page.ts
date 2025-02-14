@@ -2,6 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'choose-a-template-type';
+
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
@@ -17,10 +19,6 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     this.continueButton = page.locator('button.nhsuk-button[type="submit"]', {
       hasText: 'Continue',
     });
-  }
-
-  async loadPage(_: string) {
-    await this.navigateTo('/templates/choose-a-template-type');
   }
 
   async checkRadioButton(radioButtonLabel: string) {

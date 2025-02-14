@@ -6,6 +6,8 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 
 export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'create-and-submit-templates';
+
   public readonly emailInput: Locator;
 
   public readonly passwordInput: Locator;
@@ -31,6 +33,8 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
   }
 
   async cognitoSignIn(user: TestUser) {
+    await super.clickSignInLink();
+
     await this.emailInput.fill(user.email);
 
     await this.passwordInput.fill(user.password);
@@ -68,10 +72,5 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
 
   async clickChangePasswordButton() {
     await this.changePasswordButton.click();
-  }
-
-  async loadPage() {
-    await this.page.goto('/templates/create-and-submit-templates');
-    await super.clickSignInLink();
   }
 }

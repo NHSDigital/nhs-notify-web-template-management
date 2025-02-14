@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'edit-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -37,10 +39,6 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
     this.saveAndPreviewButton = page.locator(
       '[id="create-email-template-submit-button"]'
     );
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/edit-email-template/${templateId}`);
   }
 
   async clickSaveAndPreviewButton() {

@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'edit-text-message-template';
+
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -38,12 +40,6 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePage {
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(
       '[id="create-sms-template-submit-button"]'
-    );
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/edit-text-message-template/${templateId}`
     );
   }
 

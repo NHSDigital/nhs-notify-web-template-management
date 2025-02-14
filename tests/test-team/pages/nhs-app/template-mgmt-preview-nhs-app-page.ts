@@ -1,7 +1,9 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtPreviewPage } from '../template-mgmt-preview-page';
+import { TemplateMgmtPreviewBasePage } from '../template-mgmt-preview-base-page';
 
-export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewPage {
+export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
+  static readonly pageUrlSegment = 'preview-nhs-app-template';
+
   public readonly editRadioOption: Locator;
 
   public readonly submitRadioOption: Locator;
@@ -25,10 +27,6 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewPage {
     this.continueButton = page.locator(
       '[id="preview-nhs-app-template-submit-button"]'
     );
-  }
-
-  async loadPage(sessionId: string) {
-    await this.navigateTo(`/templates/preview-nhs-app-template/${sessionId}`);
   }
 
   async clickContinueButton() {
