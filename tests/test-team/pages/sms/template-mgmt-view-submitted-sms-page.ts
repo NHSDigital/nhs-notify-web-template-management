@@ -6,8 +6,15 @@ export class TemplateMgmtViewSubmittedSmsPage extends TemplateMgmtViewSubmitedBa
 
   public readonly messageText: Locator;
 
+  public readonly submitTemplateButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.messageText = page.locator('[id="preview-content-message"]');
+    this.submitTemplateButton = page.locator('[id="submit-template-button"]');
+  }
+
+  async clickSubmitTemplateButton() {
+    await this.submitTemplateButton.click();
   }
 }

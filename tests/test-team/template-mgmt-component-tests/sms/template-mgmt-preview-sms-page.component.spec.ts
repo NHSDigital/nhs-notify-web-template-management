@@ -105,7 +105,7 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.editRadioOption.click();
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
@@ -122,7 +122,7 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.submitRadioOption.click();
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-text-message-template/${templates.valid.id}`
@@ -162,7 +162,7 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.loadPage(templates.valid.id);
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(previewSmsTemplatePage.errorSummary).toBeVisible();
 

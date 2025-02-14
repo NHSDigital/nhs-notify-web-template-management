@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal should match snapshot 1`] = `
+<div>
+  <dialog
+    aria-labelledby="modal-heading"
+    aria-live="assertive"
+    aria-modal="true"
+    class="modal"
+    role="alertdialog"
+  >
+    <div
+      class="modal__content"
+    >
+      <div
+        class="modal__heading"
+        data-testid="modal-header"
+        id="modal-heading"
+      >
+        Header
+      </div>
+      <div
+        class="modal__heading"
+        data-testid="modal-header"
+        id="modal-heading"
+      >
+        Body
+      </div>
+      <div
+        class="modal__heading"
+        data-testid="modal-header"
+        id="modal-heading"
+      >
+        Footer
+      </div>
+    </div>
+  </dialog>
+</div>
+`;

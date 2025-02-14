@@ -1,5 +1,10 @@
 @import 'nhsuk-frontend/packages/nhsuk.scss';
 
+body {
+  // This is here because amplify applies a min height which overwrites nhsuk causing a white space
+  min-height: auto !important;
+}
+
 code {
   display: inline-block;
   padding: 0.6rem;

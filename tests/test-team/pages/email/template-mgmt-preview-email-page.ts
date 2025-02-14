@@ -14,6 +14,8 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
 
   public readonly messageText: Locator;
 
+  public readonly continueButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
@@ -25,5 +27,12 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.subjectLineText = page.locator('[id="preview-content-subject"]');
     this.messageText = page.locator('[id="preview-content-message"]');
+    this.continueButton = page.locator(
+      '[id="review-email-template-submit-button"]'
+    );
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

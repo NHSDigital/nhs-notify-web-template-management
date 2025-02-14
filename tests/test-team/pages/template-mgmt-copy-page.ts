@@ -2,6 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
+  public readonly continueButton: Locator;
+
   static readonly pageUrlSegment = 'copy-template';
 
   readonly radioButtons: Locator;
@@ -20,9 +22,17 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to all templates'));
+
+    this.continueButton = page.locator(
+      '[id="choose-a-template-type-submit-button"]'
+    );
   }
 
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

@@ -5,8 +5,8 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { Redirect } from '../page.dev';
 
-export default function Page() {
-  const { authStatus, signOut } = useAuthenticator((ctx) => [ctx.authStatus]);
+export const SignOut = ({ children }: { children: React.ReactNode }) => {
+  const { signOut, authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
@@ -17,8 +17,16 @@ export default function Page() {
   return (
     <NHSNotifyMain>
       <Suspense fallback={<p>Loading...</p>}>
-        {authStatus === 'authenticated' ? <p>Signing out</p> : <Redirect />}
+        {authStatus === 'authenticated' ? <p>Signing out</p> : children}
       </Suspense>
     </NHSNotifyMain>
+  );
+};
+
+export default function Page() {
+  return (
+    <SignOut>
+      <Redirect />
+    </SignOut>
   );
 }
