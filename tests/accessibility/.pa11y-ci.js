@@ -29,6 +29,7 @@ const {
   viewSubmittedTextMessageTemplatePage,
   copyTemplatePage,
   signInPageActions,
+  nonExistentPage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -38,7 +39,7 @@ const manageTemplatesUrl = `${baseUrl}/manage-templates`;
 
 module.exports = {
   urls: [
-    performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
+    performCheck(nonExistentPage('http://localhost:3000/some-404')),
     performCheck({ url: startUrl, name: 'landing-page' }),
 
     //My Messages Templates
@@ -64,7 +65,9 @@ module.exports = {
     performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
+    performCheck(
+      viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
+    ),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
@@ -79,7 +82,11 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-template`, actions: [...signInPageActions, 'wait for h1 to be visible'], name: 'invalid-template'}),
+    performCheck({
+      url: `${baseUrl}/invalid-template`,
+      actions: [...signInPageActions, 'wait for h1 to be visible'],
+      name: 'invalid-template',
+    }),
   ],
   defaults: {
     reporters: [
@@ -88,18 +95,15 @@ module.exports = {
         'pa11y-ci-reporter-html',
         {
           destination: './.reports/accessibility',
-          includeZeroIssues: true
-        }
+          includeZeroIssues: true,
+        },
       ],
     ],
-    rules: [
-      'Principle1.Guideline1_3.1_3_1_AAA',
-    ],
+    rules: ['Principle1.Guideline1_3.1_3_1_AAA'],
     chromeLaunchConfig: {
-      args: ['--no-sandbox']
+      args: ['--no-sandbox'],
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
-  }
+  },
 };
-

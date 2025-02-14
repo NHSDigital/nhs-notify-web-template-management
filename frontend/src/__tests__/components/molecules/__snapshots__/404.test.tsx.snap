@@ -14,6 +14,7 @@ exports[`ErrorPage404 1`] = `
       <h1
         class="nhsuk-heading-xl"
         data-testid="page-heading"
+        id="not-found"
       >
         Sorry, we could not find that page
       </h1>

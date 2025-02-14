@@ -1,6 +1,15 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
+
+const middlewareSkipPaths = [
+  '/_next/static',
+  '/_next/image',
+  '/favicon.ico',
+  '/lib/',
+];
+
+const publicPaths = ['/create-and-submit-templates', '/auth'];
 
 function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective = {
@@ -28,11 +37,13 @@ function getContentSecurityPolicy(nonce: string) {
     .join('; ');
 }
 
-function isPublicPath(path: string, publicPaths: string[]): boolean {
-  return publicPaths.some((publicPath) => path.startsWith(publicPath));
-}
-
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (middlewareSkipPaths.some((prefix) => pathname.startsWith(prefix))) {
+    return NextResponse.next();
+  }
+
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const csp = getContentSecurityPolicy(nonce);
@@ -40,9 +51,7 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const publicPaths = ['/create-and-submit-templates', '/auth', '/lib'];
-
-  if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
+  if (publicPaths.some((prefix) => pathname.startsWith(prefix))) {
     const publicPathResponse = NextResponse.next({
       request: {
         headers: requestHeaders,
@@ -50,25 +59,19 @@ export async function middleware(request: NextRequest) {
     });
 
     publicPathResponse.headers.set('Content-Security-Policy', csp);
-
     return publicPathResponse;
   }
 
   const token = await getAccessTokenServer();
 
   if (!token) {
-    const redirectResponse = NextResponse.redirect(
-      new URL(
-        `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/${request.nextUrl.pathname}`
-        )}`,
-        request.url
-      )
+    const redirectSegment = encodeURIComponent(
+      `${getBasePath()}/${request.nextUrl.pathname}`
     );
 
-    redirectResponse.headers.set('Content-Type', 'text/html');
-
-    return redirectResponse;
+    return NextResponse.redirect(
+      new URL(`/auth?redirect=${redirectSegment}`, request.url)
+    );
   }
 
   const response = NextResponse.next({
@@ -81,16 +84,3 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
-
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - lib/ (our static content)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|lib/).*)',
-  ],
-};
