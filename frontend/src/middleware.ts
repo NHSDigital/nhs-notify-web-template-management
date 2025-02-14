@@ -38,11 +38,9 @@ function getContentSecurityPolicy(nonce: string) {
 }
 
 export async function middleware(request: NextRequest) {
-  if (
-    middlewareSkipPaths.some((prefix) =>
-      request.nextUrl.pathname.startsWith(prefix)
-    )
-  ) {
+  const { pathname } = request.nextUrl;
+
+  if (middlewareSkipPaths.some((prefix) => pathname.startsWith(prefix))) {
     return NextResponse.next();
   }
 
@@ -53,9 +51,7 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  if (
-    publicPaths.some((prefix) => request.nextUrl.pathname.startsWith(prefix))
-  ) {
+  if (publicPaths.some((prefix) => pathname.startsWith(prefix))) {
     const publicPathResponse = NextResponse.next({
       request: {
         headers: requestHeaders,
@@ -63,20 +59,18 @@ export async function middleware(request: NextRequest) {
     });
 
     publicPathResponse.headers.set('Content-Security-Policy', csp);
-
     return publicPathResponse;
   }
 
   const token = await getAccessTokenServer();
 
   if (!token) {
+    const redirectSegment = encodeURIComponent(
+      `${getBasePath()}/${request.nextUrl.pathname}`
+    );
+
     return NextResponse.redirect(
-      new URL(
-        `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/${request.nextUrl.pathname}`
-        )}`,
-        request.url
-      )
+      new URL(`/auth?redirect=${redirectSegment}`, request.url)
     );
   }
 
