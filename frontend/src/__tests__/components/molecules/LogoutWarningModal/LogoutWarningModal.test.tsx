@@ -2,7 +2,6 @@ import { render, fireEvent, act } from '@testing-library/react';
 import { LogoutWarningModal } from '@molecules/LogoutWarningModal/LogoutWarningModal';
 import { useAuthenticator, type UseAuthenticator } from '@aws-amplify/ui-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { fetchAuthSession } from 'aws-amplify/auth';
 import { mockDeep } from 'jest-mock-extended';
 
 jest.mock('next/navigation');
@@ -82,8 +81,6 @@ describe('LogoutWarningModal', () => {
       jest.advanceTimersByTime(60 * 15 * 1000);
       fireEvent.focus(document);
     });
-
-    expect(fetchAuthSession).not.toHaveBeenCalled();
 
     expect(routerPushMock).not.toHaveBeenCalled();
 
@@ -179,8 +176,6 @@ describe('LogoutWarningModal', () => {
     });
 
     fireEvent.click(getByTestId('modal-sign-in'));
-
-    expect(fetchAuthSession).toHaveBeenCalledWith({ forceRefresh: true });
 
     expect(dialogCloseMock).toHaveBeenCalledTimes(2);
   });

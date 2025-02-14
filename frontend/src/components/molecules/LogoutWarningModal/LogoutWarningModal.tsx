@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 import { Button } from 'nhsuk-react-components';
-import { fetchAuthSession } from 'aws-amplify/auth';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Modal } from '@molecules/Modal/Modal';
@@ -77,7 +76,6 @@ export const LogoutWarningModal = ({
     reset();
     setShowModal(false);
     setRemainingTime(initialTime);
-    fetchAuthSession({ forceRefresh: true });
   };
 
   return (
