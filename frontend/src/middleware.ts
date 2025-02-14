@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
+import hashes from '../csp-hashes.json';
 
 function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective = {
@@ -14,7 +15,7 @@ function getContentSecurityPolicy(nonce: string) {
     'img-src': [`'self'`],
     'manifest-src': [`'self'`],
     'object-src': [`'none'`],
-    'script-src': [`'self'`, `'nonce-${nonce}'`],
+    'script-src': [`'self'`, `'nonce-${nonce}'`, hashes.join(' ')],
     'style-src': [`'self'`, `'nonce-${nonce}'`],
     'upgrade-insecure-requests;': [],
   };

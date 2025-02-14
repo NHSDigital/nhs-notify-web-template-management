@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "tsx ./src/scripts/post-build-static.ts",
     "start": "next start",
     "lint": "npm run mock-amplify-outputs && next lint --dir .",
     "lint:fix": "npm run lint -- --fix",
@@ -26,6 +27,7 @@
     "@edge-csrf/nextjs": "^2.5.2",
     "aws-amplify": "^6.6.0",
     "date-fns": "^4.1.0",
+    "glob": "^11.0.1",
     "jwt-decode": "^4.0.0",
     "markdown-it": "^13.0.1",
     "mimetext": "^3.0.24",
@@ -35,6 +37,7 @@
     "nhs-notify-web-template-management-utils": "*",
     "nhsuk-frontend": "^9.1.0",
     "nhsuk-react-components": "^5.0.0",
+    "node-html-parser": "^7.0.1",
     "path": "^0.12.7",
     "react": "^18",
     "react-dom": "^18",

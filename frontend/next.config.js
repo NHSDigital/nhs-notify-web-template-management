@@ -1,12 +1,15 @@
 /** @type {import('next').NextConfig} */
 
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
+const { readFileSync } = require('node:fs');
 const amplifyConfig = require('./amplify_outputs.json');
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
 const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
 
 const nextConfig = (phase) => {
+  const hashes = JSON.parse(readFileSync('./csp-hashes.json'));
+
   const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
   const includeAuthPages =
     process.env.INCLUDE_AUTH_PAGES === 'true' || isDevServer;
@@ -22,6 +25,20 @@ const nextConfig = (phase) => {
       serverActions: {
         allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
       },
+    },
+
+    async headers() {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            {
+              key: 'Content-Security-Policy',
+              value: `script-src 'self' ${hashes.join(' ')};`,
+            },
+          ],
+        },
+      ];
     },
 
     async redirects() {
