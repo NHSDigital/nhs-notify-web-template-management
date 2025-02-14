@@ -9,6 +9,8 @@ const middlewareSkipPaths = [
   '/lib/',
 ];
 
+const publicPaths = ['/create-and-submit-templates', '/auth'];
+
 function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective = {
     'base-uri': [`'self'`],
@@ -35,10 +37,6 @@ function getContentSecurityPolicy(nonce: string) {
     .join('; ');
 }
 
-function isPublicPath(path: string, publicPaths: string[]): boolean {
-  return publicPaths.some((publicPath) => path.startsWith(publicPath));
-}
-
 export async function middleware(request: NextRequest) {
   if (
     middlewareSkipPaths.some((prefix) =>
@@ -55,9 +53,9 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const publicPaths = ['/create-and-submit-templates', '/auth'];
-
-  if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
+  if (
+    publicPaths.some((prefix) => request.nextUrl.pathname.startsWith(prefix))
+  ) {
     const publicPathResponse = NextResponse.next({
       request: {
         headers: requestHeaders,
