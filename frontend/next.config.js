@@ -59,8 +59,7 @@ const nextConfig = (phase) => {
       return [
         {
           source: '/auth/inactive',
-          destination: `http://${domain}/auth/inactive`,
-          basePath: false,
+          destination: `https://${domain}/auth/inactive`,
         },
       ];
     },
