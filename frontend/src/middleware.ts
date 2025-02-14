@@ -4,7 +4,7 @@ import { getBasePath } from '@utils/get-base-path';
 
 const middlewareSkipPaths = [
   '/_next/static',
-  '_next/image',
+  '/_next/image',
   '/favicon.ico',
   '/lib/',
 ];

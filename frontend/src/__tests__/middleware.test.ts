@@ -20,6 +20,23 @@ afterAll(() => {
 });
 
 describe('middleware function', () => {
+  it.each([
+    'https://url.com/_next/static/script.js',
+    'https://url.com/_next/image/img.png',
+    'https://url.com/favicon.ico',
+    'https://url.com/lib/script.js',
+  ])(
+    'if middleware is skipped for request %s, CSP is not applied',
+    async (path) => {
+      const url = new URL(path);
+      const request = new NextRequest(url);
+      const response = await middleware(request);
+
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Content-Security-Policy')).toBeNull();
+    }
+  );
+
   it('if middleware is skipped for request path, CSP is not applied', async () => {
     const url = new URL('https://url.com/_next/static/script.js');
     const request = new NextRequest(url);
