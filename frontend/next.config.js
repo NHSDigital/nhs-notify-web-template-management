@@ -39,11 +39,6 @@ const nextConfig = (phase) => {
       if (includeAuthPages) {
         return [
           {
-            source: '/auth/inactive',
-            destination: `http://${domain}${basePath}/auth/inactive`,
-            basePath: false,
-          },
-          {
             source: '/auth/signout',
             destination: `http://${domain}${basePath}/auth/signout`,
             basePath: false,
@@ -56,7 +51,13 @@ const nextConfig = (phase) => {
         ];
       }
 
-      return [];
+      return [
+        {
+          source: '/auth/inactive',
+          destination: `http://${domain}${basePath}/auth/inactive`,
+          basePath: false,
+        },
+      ];
     },
 
     // pages with e.g. .dev.tsx extension are only included when running locally
