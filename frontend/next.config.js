@@ -33,11 +33,11 @@ const nextConfig = (phase) => {
           permanent: false,
         },
         {
-          source: '/templates/auth/inactive',
+          source: `${basePath}/auth/inactive`,
           destination: '/auth/inactive',
           permanent: false,
           basePath: false,
-        }
+        },
       ];
     },
 
@@ -46,7 +46,7 @@ const nextConfig = (phase) => {
         return [
           {
             source: '/auth/inactive',
-            destination: `http://${domain}${basePath}/auth/inactive`,
+            destination: `http://${domain}${basePath}/auth/idle`,
             basePath: false,
           },
           {

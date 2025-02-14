@@ -22,7 +22,7 @@ const SignInButton = () => {
   );
 };
 
-export default function Inactive() {
+export default function Idle() {
   return (
     <SignOut>
       <div className='nhsuk-grid-row'>

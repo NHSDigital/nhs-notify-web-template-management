@@ -57,7 +57,7 @@ test.describe('Logout warning', () => {
     await expect(dialog).not.toBeVisible();
   });
 
-  test('logout warning should force logout after timeout', async ({ page }) => {
+  test.only('logout warning should force logout after timeout', async ({ page, baseURL }) => {
     const loginPage = new TemplateMgmtSignInPage(page);
 
     await loginPage.loadPage();
