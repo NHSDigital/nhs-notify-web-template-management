@@ -9,7 +9,7 @@ export function NHSNotifyButton({
   ...rest
 }: ButtonType & React.ComponentProps<typeof Button>) {
   return (
-    <Button {...rest} href={href} data-testid='link-button'>
+    <Button preventDoubleClick {...rest} href={href} data-testid='link-button'>
       {children}
     </Button>
   );

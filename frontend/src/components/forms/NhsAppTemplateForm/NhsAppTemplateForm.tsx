@@ -103,7 +103,7 @@ export const NhsAppTemplateForm: FC<
                 {nhsAppTemplateMessage.length}
                 {characterCountText}
               </p>
-              <Button type='submit' id='create-nhs-app-template-submit-button'>
+              <Button id='create-nhs-app-template-submit-button' preventDoubleClick={true} debounceTimeout={5000}>
                 {buttonText}
               </Button>
             </NHSNotifyFormWrapper>

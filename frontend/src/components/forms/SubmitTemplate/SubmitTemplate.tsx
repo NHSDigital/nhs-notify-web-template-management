@@ -61,6 +61,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
               readOnly
             />
             <Button
+              preventDoubleClick
               secondary
               id='go-back-button'
               className='nhsuk-u-margin-right-3'
@@ -68,7 +69,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
             >
               {goBackButtonText}
             </Button>
-            <Button id='submit-template-button'>{buttonText}</Button>
+            <Button preventDoubleClick id='submit-template-button'>{buttonText}</Button>
           </NHSNotifyFormWrapper>
         </div>
       </div>

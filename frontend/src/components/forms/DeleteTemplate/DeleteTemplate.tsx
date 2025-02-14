@@ -37,14 +37,14 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
               style: { display: 'inline' },
             }}
           >
-            <Button secondary>{noButtonText}</Button>
+            <Button preventDoubleClick secondary>{noButtonText}</Button>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
             action={action}
             formAttributes={{ style: { display: 'inline' } }}
             formId='delete-template-yes'
           >
-            <Button className='nhsuk-button--warning'>{yesButtonText}</Button>
+            <Button preventDoubleClick className='nhsuk-button--warning'>{yesButtonText}</Button>
           </NHSNotifyFormWrapper>
         </div>
       </div>

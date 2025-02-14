@@ -111,7 +111,7 @@ export const SmsTemplateForm: FC<
                   {content.smsPricingText}
                 </a>
               </p>
-              <Button id='create-sms-template-submit-button'>
+              <Button preventDoubleClick id='create-sms-template-submit-button'>
                 {content.buttonText}
               </Button>
             </NHSNotifyFormWrapper>

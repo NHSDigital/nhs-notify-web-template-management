@@ -72,6 +72,7 @@ export const NHSNotifyRadioButtonForm = ({
       </Radios>
     </Fieldset>
     <Button
+      preventDoubleClick
       type='submit'
       data-testid='submit-button'
       id={`${formId}-submit-button`}

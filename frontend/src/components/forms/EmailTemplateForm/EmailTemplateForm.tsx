@@ -133,7 +133,7 @@ export const EmailTemplateForm: FC<
                   data-testid='emailTemplateMessage-input'
                 />
               </FormSection>
-              <Button type='submit' id='create-email-template-submit-button'>
+              <Button preventDoubleClick type='submit' id='create-email-template-submit-button'>
                 {buttonText}
               </Button>
             </NHSNotifyFormWrapper>
