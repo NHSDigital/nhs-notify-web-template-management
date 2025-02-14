@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { globSync } from 'glob';
 
@@ -45,3 +45,4 @@ console.log(
   `Persisting the following hash information to ${CSP_HASHES_OUTFILE}: ${uniqueCspHashes}`
 );
 writeFileSync(CSP_HASHES_OUTFILE, JSON.stringify(uniqueCspHashes));
+appendFileSync(CSP_HASHES_OUTFILE, '\n');
