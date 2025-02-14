@@ -3,6 +3,8 @@ import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
 
 export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'create-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -36,9 +38,5 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
       .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
-  }
-
-  async loadPage() {
-    await this.navigateTo('/templates/create-email-template');
   }
 }
