@@ -32,6 +32,12 @@ const nextConfig = (phase) => {
           basePath: false,
           permanent: false,
         },
+        {
+          source: '/auth/inactive',
+          destination: `/auth/inactive`,
+          basePath: false,
+          permanent: false,
+        },
       ];
     },
 
@@ -56,12 +62,7 @@ const nextConfig = (phase) => {
         ];
       }
 
-      return [
-        {
-          source: '/auth/inactive',
-          destination: `https://${domain}/auth/inactive`,
-        },
-      ];
+      return [];
     },
 
     // pages with e.g. .dev.tsx extension are only included when running locally
