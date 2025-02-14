@@ -1,5 +1,5 @@
 module "s3bucket_backup_reports" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v1.0.5"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v1.0.8"
 
   name = "backup-reports"
 
@@ -15,7 +15,6 @@ module "s3bucket_backup_reports" {
 
   lifecycle_rules = [
     {
-      prefix  = ""
       enabled = true
 
       noncurrent_version_transition = [
@@ -97,7 +96,7 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
     ]
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${var.aws_account_id}:root"
       ]
@@ -117,7 +116,7 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
     ]
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${var.aws_account_id}:root"
       ]

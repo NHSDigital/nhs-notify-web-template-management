@@ -37,6 +37,7 @@ resource "aws_amplify_app" "main" {
     API_BASE_URL                             = module.backend_api.api_base_url
     USER_POOL_ID                             = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_ID"]
     USER_POOL_CLIENT_ID                      = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_CLIENT_ID"]
+    CSRF_SECRET                              = aws_ssm_parameter.csrf_secret.value
     NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS     = 900
     NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT = 120
   }

@@ -4,7 +4,7 @@ set -euo pipefail
 
 npm run create-test-user
 
-npm run build --prefix frontend
+npm run build
 
 npm run app:start --prefix frontend
 

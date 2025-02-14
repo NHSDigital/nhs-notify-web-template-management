@@ -10,7 +10,7 @@ resource "aws_cognito_user_pool_client" "sandbox" {
 
   access_token_validity  = 15 # 1 minutes
   id_token_validity      = 15 # 1 minutes
-  refresh_token_validity = 1 # 1 hour
+  refresh_token_validity = 1  # 1 hour
 
   token_validity_units {
     access_token  = "minutes"

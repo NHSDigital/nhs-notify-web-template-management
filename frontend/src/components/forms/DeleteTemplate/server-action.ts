@@ -5,7 +5,11 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { saveTemplate } from '@utils/form-actions';
 
-export const deleteTemplateAction = async (
+export const deleteTemplateNoAction = async () => {
+  redirect('/manage-templates', RedirectType.push);
+};
+
+export const deleteTemplateYesAction = async (
   template: ChannelTemplate
 ): Promise<never> => {
   await saveTemplate({

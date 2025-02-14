@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const publicPaths = ['/create-and-submit-templates', '/auth'];
+  const publicPaths = ['/create-and-submit-templates', '/auth', '/lib'];
 
   if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
     const publicPathResponse = NextResponse.next({

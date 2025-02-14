@@ -1,5 +1,5 @@
 module "amplify_branch" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/amp_branch?ref=v1.0.0"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/amp_branch?ref=v1.0.8"
 
   name         = local.normalised_branch_name
   display_name = local.normalised_branch_name
@@ -18,7 +18,7 @@ module "amplify_branch" {
   enable_auto_build = true
 
   environment_variables = {
-    NOTIFY_SUBDOMAIN              = var.environment
-    NEXT_PUBLIC_BASE_PATH         = "/templates~${local.normalised_branch_name}"
+    NOTIFY_SUBDOMAIN      = var.environment
+    NEXT_PUBLIC_BASE_PATH = "/templates~${local.normalised_branch_name}"
   }
 }
