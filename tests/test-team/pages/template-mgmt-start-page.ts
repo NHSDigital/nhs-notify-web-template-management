@@ -2,6 +2,8 @@ import { Locator, type Page } from '@playwright/test';
 import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 
 export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
+  static readonly pageUrlSegment = 'create-and-submit-templates';
+
   readonly startButton: Locator;
 
   readonly listOfTemplates: Locator;
@@ -23,15 +25,7 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
     'text messages (SMS)',
   ];
 
-  async navigateToStartPage() {
-    await this.navigateTo('/templates/create-and-submit-templates');
-  }
-
   async clickStartButton() {
     await this.startButton.click();
-  }
-
-  async loadPage(_?: string): Promise<void> {
-    await this.navigateToStartPage();
   }
 }

@@ -31,6 +31,7 @@ function createTemplates(owner: string) {
       id: 'no-sms-template-type-template',
       templateType: TemplateType.EMAIL,
       owner,
+      name: 'no-sms-template-type-template',
     }),
     previousData: {
       ...TemplateFactory.createSmsTemplate('previous-data-sms-template', owner),

@@ -1,17 +1,13 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtViewSubmitedPage } from '../template-mgmt-view-submitted-page';
+import { TemplateMgmtViewSubmitedBasePage } from '../template-mgmt-view-submitted-base-page';
 
-export class TemplateMgmtViewSubmittedSMSPage extends TemplateMgmtViewSubmitedPage {
+export class TemplateMgmtViewSubmittedSmsPage extends TemplateMgmtViewSubmitedBasePage {
+  static readonly pageUrlSegment = 'view-submitted-text-message-template';
+
   public readonly messageText: Locator;
 
   constructor(page: Page) {
     super(page);
     this.messageText = page.locator('[id="preview-content-message"]');
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(
-      `/templates/view-submitted-text-message-template/${templateId}`
-    );
   }
 }

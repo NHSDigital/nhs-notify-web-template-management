@@ -77,6 +77,7 @@ test.describe('Create NHS App Template Page', () => {
     const previewPageRegex =
       /\/templates\/preview-nhs-app-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
+    // eslint-disable-next-line security/detect-non-literal-regexp
     await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
     const previewPageParts = page.url().match(previewPageRegex);

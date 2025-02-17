@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { TemplateMgmtSubmitPage } from '../pages/template-mgmt-submit-page';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template, TemplateType, TemplateStatus } from '../helpers/types';
 import {
@@ -14,6 +13,9 @@ import {
   createAuthHelper,
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
+import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
+import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
+import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(TestUserId.User1);
@@ -152,18 +154,21 @@ test.describe('Submit template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  for (const { channelName, channelIdentifier } of [
+  for (const { channelName, channelIdentifier, PageModel } of [
     {
       channelName: 'Email',
       channelIdentifier: 'email',
+      PageModel: TemplateMgmtSubmitEmailPage,
     },
     {
       channelName: 'SMS',
       channelIdentifier: 'text-message',
+      PageModel: TemplateMgmtSubmitSmsPage,
     },
     {
       channelName: 'NHS App',
       channelIdentifier: 'nhs-app',
+      PageModel: TemplateMgmtSubmitNhsAppPage,
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
@@ -172,10 +177,7 @@ test.describe('Submit template Page', () => {
       page,
       baseURL,
     }) => {
-      const submitTemplatePage = new TemplateMgmtSubmitPage(
-        page,
-        channelIdentifier
-      );
+      const submitTemplatePage = new PageModel(page);
 
       await submitTemplatePage.loadPage(templates[channelIdentifier].valid.id);
 
@@ -192,7 +194,7 @@ test.describe('Submit template Page', () => {
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
-          page: new TemplateMgmtSubmitPage(page, channelIdentifier),
+          page: new PageModel(page),
           id: templates[channelIdentifier].valid.id,
           baseURL,
         };
@@ -210,10 +212,7 @@ test.describe('Submit template Page', () => {
       test(`when user submits form, then the ${channelName} "Template submitted" page is displayed`, async ({
         page,
       }) => {
-        const submitTemplatePage = new TemplateMgmtSubmitPage(
-          page,
-          channelIdentifier
-        );
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage(
           templates[channelIdentifier].submit.id
@@ -233,10 +232,7 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
-        const submitTemplatePage = new TemplateMgmtSubmitPage(
-          page,
-          channelIdentifier
-        );
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage(
           templates[channelIdentifier].empty.id
@@ -249,10 +245,7 @@ test.describe('Submit template Page', () => {
         baseURL,
         page,
       }) => {
-        const submitTemplatePage = new TemplateMgmtSubmitPage(
-          page,
-          channelIdentifier
-        );
+        const submitTemplatePage = new PageModel(page);
 
         await submitTemplatePage.loadPage('/fake-template-id');
 

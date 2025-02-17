@@ -25,6 +25,7 @@ data "aws_iam_policy_document" "github_deploy" {
       "firehose:*",
       "ses:*",
       "sns:*",
+      "sqs:*",
     ]
     resources = ["*"]
   }
