@@ -6,7 +6,7 @@ import {
 import { render } from '@testing-library/react';
 import { verifyCsrfTokenFull } from '@utils/csrf-utils';
 
-jest.mock("@utils/csrf-utils", () => ({
+jest.mock('@utils/csrf-utils', () => ({
   verifyCsrfTokenFull: jest.fn(),
 }));
 
@@ -28,7 +28,7 @@ describe('csrfServerAction', () => {
   });
 
   test('server action', async () => {
-    const mockAction = jest.fn(() => "response");
+    const mockAction = jest.fn(() => 'response');
     const action = csrfServerAction(mockAction);
 
     if (typeof action === 'string') {
@@ -36,7 +36,7 @@ describe('csrfServerAction', () => {
     }
 
     const mockFormData = mockDeep<FormData>();
-    const response = await action(mockFormData);
+    await action(mockFormData);
 
     expect(verifyCsrfTokenFull).toHaveBeenCalledWith(mockFormData);
     expect(mockAction).toHaveBeenCalledWith(mockFormData);
