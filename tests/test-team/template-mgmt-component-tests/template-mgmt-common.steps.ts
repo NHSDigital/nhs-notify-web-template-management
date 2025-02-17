@@ -54,7 +54,7 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
   return test.step('"Sign out", should direct user to signout', async () => {
     await page.loadPage(id);
 
-    const link = page.signInLink;
+    const link = page.signOutLink;
 
     await expect(link).toHaveAttribute('href', '/auth/signout');
   });
