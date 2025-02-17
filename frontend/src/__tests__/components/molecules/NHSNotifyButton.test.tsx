@@ -1,16 +1,23 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
-describe.only('NHS Notify button', () => {
+describe('NHS Notify button', () => {
   it('renders component correctly as a button', () => {
-    render(<NHSNotifyButton data-testid='button'> Button text</NHSNotifyButton>);
+    render(
+      <NHSNotifyButton data-testid='button'> Button text</NHSNotifyButton>
+    );
 
     expect(screen.getByTestId('button')).toBeInTheDocument();
     expect(screen.getByTestId('button')).toHaveTextContent('Button text');
   });
 
   it('renders component correctly as a link button', () => {
-    render(<NHSNotifyButton data-testid='link-button' href="#"> Button text</NHSNotifyButton>);
+    render(
+      <NHSNotifyButton data-testid='link-button' href='#'>
+        {' '}
+        Button text
+      </NHSNotifyButton>
+    );
 
     expect(screen.getByTestId('link-button')).toBeInTheDocument();
     expect(screen.getByTestId('link-button')).toHaveTextContent('Button text');
@@ -20,7 +27,12 @@ describe.only('NHS Notify button', () => {
   it('debounces multiple clicks', async () => {
     const onClick = jest.fn();
 
-    render(<NHSNotifyButton data-testid='button' onClick={onClick}> Button text</NHSNotifyButton>);
+    render(
+      <NHSNotifyButton data-testid='button' onClick={onClick}>
+        {' '}
+        Button text
+      </NHSNotifyButton>
+    );
 
     const button = screen.getByTestId('button');
 
@@ -35,7 +47,9 @@ describe.only('NHS Notify button', () => {
   });
 
   it('default onClick does nothing', async () => {
-    const container = render(<NHSNotifyButton data-testid='button'>Button text</NHSNotifyButton>);
+    const container = render(
+      <NHSNotifyButton data-testid='button'>Button text</NHSNotifyButton>
+    );
 
     const button = screen.getByTestId('button');
 
