@@ -25,7 +25,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { createNhsAppTemplatePageContent } from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
-import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
+import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
@@ -99,10 +99,12 @@ export const NhsAppTemplateForm: FC<
                 error={templateMessageError}
                 errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
               />
-              <p style={useJsEnabledStyle()} id='character-count'>
-                {nhsAppTemplateMessage.length}
-                {characterCountText}
-              </p>
+              <JsEnabled>
+                <p id='character-count'>
+                  {nhsAppTemplateMessage.length}
+                  {characterCountText}
+                </p>
+              </JsEnabled>
               <Button type='submit' id='create-nhs-app-template-submit-button'>
                 {buttonText}
               </Button>

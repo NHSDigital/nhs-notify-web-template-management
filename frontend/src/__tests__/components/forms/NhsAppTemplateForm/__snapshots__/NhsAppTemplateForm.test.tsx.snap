@@ -143,12 +143,15 @@ exports[`renders page 1`] = `
               template-message
             </textarea>
           </div>
-          <p
-            id="character-count"
-            style=""
+          <div
+            class=""
           >
-            16 of 5000 characters
-          </p>
+            <p
+              id="character-count"
+            >
+              16 of 5000 characters
+            </p>
+          </div>
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -414,7 +417,7 @@ exports[`renders page 1`] = `
           More about NHS App messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -641,12 +644,15 @@ exports[`renders page one error 1`] = `
               rows="10"
             />
           </div>
-          <p
-            id="character-count"
-            style=""
+          <div
+            class=""
           >
-            0 of 5000 characters
-          </p>
+            <p
+              id="character-count"
+            >
+              0 of 5000 characters
+            </p>
+          </div>
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -912,7 +918,7 @@ exports[`renders page one error 1`] = `
           More about NHS App messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1153,12 +1159,15 @@ exports[`renders page with multiple errors 1`] = `
               rows="10"
             />
           </div>
-          <p
-            id="character-count"
-            style=""
+          <div
+            class=""
           >
-            0 of 5000 characters
-          </p>
+            <p
+              id="character-count"
+            >
+              0 of 5000 characters
+            </p>
+          </div>
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -1424,7 +1433,7 @@ exports[`renders page with multiple errors 1`] = `
           More about NHS App messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1609,12 +1618,15 @@ exports[`renders page with preloaded field values 1`] = `
               template-message
             </textarea>
           </div>
-          <p
-            id="character-count"
-            style=""
+          <div
+            class=""
           >
-            16 of 5000 characters
-          </p>
+            <p
+              id="character-count"
+            >
+              16 of 5000 characters
+            </p>
+          </div>
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -1880,7 +1892,7 @@ exports[`renders page with preloaded field values 1`] = `
           More about NHS App messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -2043,12 +2055,15 @@ exports[`renders page without back link for initial state with id 1`] = `
               template-message
             </textarea>
           </div>
-          <p
-            id="character-count"
-            style=""
+          <div
+            class=""
           >
-            16 of 5000 characters
-          </p>
+            <p
+              id="character-count"
+            >
+              16 of 5000 characters
+            </p>
+          </div>
           <button
             aria-disabled="false"
             class="nhsuk-button"
@@ -2314,7 +2329,7 @@ exports[`renders page without back link for initial state with id 1`] = `
           More about NHS App messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"

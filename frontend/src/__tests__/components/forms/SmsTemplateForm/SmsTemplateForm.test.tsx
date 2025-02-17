@@ -116,7 +116,7 @@ describe('CreateSmsTemplate component', () => {
 
     await user.type(templateMessageBox, longMessage);
 
-    const characterCount = document.querySelector('#smsMessageCharacterCount');
+    const characterCount = document.querySelector('#character-count');
 
     if (!characterCount) {
       throw new Error('Template name box not found');

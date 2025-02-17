@@ -165,8 +165,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -326,7 +325,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -511,8 +510,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -672,7 +670,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -893,8 +891,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -1054,7 +1051,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1217,8 +1214,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -1378,7 +1374,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
