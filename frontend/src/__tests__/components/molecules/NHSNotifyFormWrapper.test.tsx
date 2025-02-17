@@ -1,11 +1,14 @@
 import { mockDeep } from 'jest-mock-extended';
-import { render } from '@testing-library/react';
 import {
   NHSNotifyFormWrapper,
   csrfServerAction,
 } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { render } from '@testing-library/react';
+import { verifyCsrfTokenFull } from '@utils/csrf-utils';
 
-jest.mock('@utils/csrf-utils');
+jest.mock("@utils/csrf-utils", () => ({
+  verifyCsrfTokenFull: jest.fn(),
+}));
 
 test('Renders back button', () => {
   const container = render(
@@ -25,14 +28,17 @@ describe('csrfServerAction', () => {
   });
 
   test('server action', async () => {
-    const action = csrfServerAction(() => 'response');
+    const mockAction = jest.fn(() => "response");
+    const action = csrfServerAction(mockAction);
 
     if (typeof action === 'string') {
       throw new TypeError('Expected server action');
     }
 
-    const response = await action(mockDeep<FormData>());
+    const mockFormData = mockDeep<FormData>();
+    const response = await action(mockFormData);
 
-    expect(response).toEqual('response');
+    expect(verifyCsrfTokenFull).toHaveBeenCalledWith(mockFormData);
+    expect(mockAction).toHaveBeenCalledWith(mockFormData);
   });
 });
