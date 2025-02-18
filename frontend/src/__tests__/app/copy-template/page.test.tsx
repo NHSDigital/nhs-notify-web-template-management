@@ -21,17 +21,36 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('CopyTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
+  const template: TemplateDTO = {
+    id: 'template-id',
+    templateType: TemplateType.EMAIL,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'template-name',
+    subject: 'template-subject-line',
+    message: 'template-message',
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
+  };
+
   it('should load page', async () => {
-    const template: TemplateDTO = {
-      id: 'template-id',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    getTemplateMock.mockResolvedValueOnce(template);
+
+    const page = await CopyTemplatePage({
+      params: {
+        templateId: 'template-id',
+      },
+    });
+
+    expect(page).toEqual(
+      <CopyTemplate
+        template={template}
+        templateTypes={Object.values(TemplateType)}
+      />
+    );
+  });
+
+  it('Letter option is hidden when the feature flag is not enabled', async () => {
+    delete process.env.ENABLE_LETTERS;
 
     getTemplateMock.mockResolvedValueOnce(template);
 
@@ -41,7 +60,16 @@ describe('CopyTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<CopyTemplate template={template} />);
+    expect(page).toEqual(
+      <CopyTemplate
+        template={template}
+        templateTypes={[
+          TemplateType.NHS_APP,
+          TemplateType.EMAIL,
+          TemplateType.SMS,
+        ]}
+      />
+    );
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
