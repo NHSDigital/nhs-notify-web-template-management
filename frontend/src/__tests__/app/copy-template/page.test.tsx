@@ -50,7 +50,7 @@ describe('CopyTemplatePage', () => {
   });
 
   it('Letter option is hidden when the feature flag is not enabled', async () => {
-    delete process.env.ENABLE_LETTERS;
+    delete process.env.NEXT_PUBLIC_ENABLE_LETTERS;
 
     getTemplateMock.mockResolvedValueOnce(template);
 

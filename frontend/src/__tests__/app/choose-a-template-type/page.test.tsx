@@ -37,7 +37,7 @@ test('ChooseATemplateTypePage', async () => {
 });
 
 test('ChooseATemplateTypePage - LETTER option is hidden when feature flag is not enabled', async () => {
-  delete process.env.ENABLE_LETTERS;
+  delete process.env.NEXT_PUBLIC_ENABLE_LETTERS;
 
   const page = await ChooseATemplateTypePage();
 

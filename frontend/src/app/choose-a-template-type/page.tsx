@@ -5,7 +5,7 @@ import { TemplateType } from 'nhs-notify-backend-client';
 
 const ChooseATemplateTypePage = async () => {
   const templateTypes = Object.values(TemplateType).filter(
-    (t) => process.env.ENABLE_LETTERS || t !== TemplateType.LETTER
+    (t) => process.env.NEXT_PUBLIC_ENABLE_LETTERS || t !== TemplateType.LETTER
   );
 
   return <ChooseTemplate templateTypes={templateTypes} />;

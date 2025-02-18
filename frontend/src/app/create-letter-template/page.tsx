@@ -2,7 +2,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { notFound } from 'next/navigation';
 
 const CreateLetterTemplatePage = async () => {
-  if (!process.env.ENABLE_LETTERS) notFound();
+  if (!process.env.NEXT_PUBLIC_ENABLE_LETTERS) notFound();
 
   return (
     <NHSNotifyMain>

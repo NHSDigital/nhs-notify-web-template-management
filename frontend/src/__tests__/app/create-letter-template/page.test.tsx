@@ -13,7 +13,7 @@ describe('CreateLetterTemplatePage', () => {
   });
 
   it('returns 404 when letters feature flag is not enabled', async () => {
-    delete process.env.ENABLE_LETTERS;
+    delete process.env.NEXT_PUBLIC_ENABLE_LETTERS;
 
     await expect(CreateLetterTemplatePage()).rejects.toThrow('NEXT_NOT_FOUND');
   });
