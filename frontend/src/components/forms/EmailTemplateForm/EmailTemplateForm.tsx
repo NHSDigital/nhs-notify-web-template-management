@@ -7,7 +7,6 @@ import {
   HintText,
   Label,
   Textarea,
-  Button,
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
@@ -28,6 +27,7 @@ import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
@@ -133,9 +133,12 @@ export const EmailTemplateForm: FC<
                   data-testid='emailTemplateMessage-input'
                 />
               </FormSection>
-              <Button type='submit' id='create-email-template-submit-button'>
+              <NHSNotifyButton
+                type='submit'
+                id='create-email-template-submit-button'
+              >
                 {buttonText}
-              </Button>
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
           <div className='nhsuk-grid-column-one-third'>

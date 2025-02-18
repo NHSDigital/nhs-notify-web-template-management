@@ -1,6 +1,7 @@
-import { Radios, Fieldset, Button } from 'nhsuk-react-components';
+import { Radios, Fieldset } from 'nhsuk-react-components';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;
@@ -71,12 +72,12 @@ export const NHSNotifyRadioButtonForm = ({
         ))}
       </Radios>
     </Fieldset>
-    <Button
+    <NHSNotifyButton
       type='submit'
       data-testid='submit-button'
       id={`${formId}-submit-button`}
     >
       {buttonText}
-    </Button>
+    </NHSNotifyButton>
   </NHSNotifyFormWrapper>
 );
