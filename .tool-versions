@@ -5,6 +5,8 @@ terraform 1.9.2
 vale 3.6.0
 tfsec 1.28.10
 nodejs 20.13.1
+pnpm 10.4.1
+python 3.13.2t
 
 # ==============================================================================
 # The section below is reserved for Docker image versions.

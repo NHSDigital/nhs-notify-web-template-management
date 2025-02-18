@@ -1,0 +1,29 @@
+{
+  "name": "@nhs-notify/template-management-schemas",
+  "version": "0.1.0",
+  "description": "",
+  "repository": "git@github.com:NHSDigital/nhs-notify-web-template-management.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.4.1",
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "zod-to-json-schema": "^3.24.1"
+  }
+}
