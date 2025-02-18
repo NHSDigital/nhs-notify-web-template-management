@@ -7,6 +7,8 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly pageUrlSegment: string;
 
+  static readonly dynamicPage: boolean;
+
   readonly notifyBannerLink: Locator;
 
   readonly signInLink: Locator;
@@ -64,20 +66,7 @@ export abstract class TemplateMgmtBasePage {
       .and(page.getByText('Skip to main content'));
   }
 
-  async loadPage(templateId?: string) {
-    const { appUrlSegment, pageUrlSegment } = this
-      .constructor as typeof TemplateMgmtBasePage;
-
-    if (!pageUrlSegment) {
-      throw new Error('pageUrlSegment is not defined');
-    }
-
-    await this.navigateTo(
-      templateId
-        ? `/${appUrlSegment}/${pageUrlSegment}/${templateId}`
-        : `/${appUrlSegment}/${pageUrlSegment}`
-    );
-  }
+  // abstract loadPage(templateId?: string): Promise<void>;
 
   async navigateTo(url: string) {
     await this.page.goto(url);
