@@ -7,8 +7,6 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly pageUrlSegment: string;
 
-  static readonly dynamicPage: boolean;
-
   readonly notifyBannerLink: Locator;
 
   readonly signInLink: Locator;
@@ -66,7 +64,7 @@ export abstract class TemplateMgmtBasePage {
       .and(page.getByText('Skip to main content'));
   }
 
-  // abstract loadPage(templateId?: string): Promise<void>;
+  abstract loadPage(templateId?: string): Promise<void>;
 
   async navigateTo(url: string) {
     await this.page.goto(url);
