@@ -196,6 +196,12 @@ exports[`ChooseATemplateTypePage 1`] = `
         type="hidden"
         value="choose-a-template-type"
       />
+      <input
+        name="csrf_token"
+        readonly=""
+        type="hidden"
+        value="no_token"
+      />
       <div
         class="nhsuk-form-group"
       >
