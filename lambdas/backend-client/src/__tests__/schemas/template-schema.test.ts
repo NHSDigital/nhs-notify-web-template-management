@@ -295,7 +295,7 @@ describe('Template schemas', () => {
     });
   });
 
-  test('Letter creation should fail', () => {
+  test('Letter update should fail', () => {
     const result = $UpdateTemplateSchema.safeParse({
       name: 'Test Template',
       message: 'mesage',
