@@ -9,7 +9,7 @@ const CreateLetterTemplatePage = async () => {
       <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
         Create letter template
       </h1>
-      <p>🚧 Placeholder 🚧</p>
+      <p id='placeholder'>🚧 Placeholder 🚧</p>
     </NHSNotifyMain>
   );
 };

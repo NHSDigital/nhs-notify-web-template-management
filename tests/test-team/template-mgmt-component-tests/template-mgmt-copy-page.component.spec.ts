@@ -96,7 +96,7 @@ test.describe('Copy Template Page', () => {
 
     await copyTemplatePage.loadPage(templates.email.id);
 
-    await expect(copyTemplatePage.radioButtons).toHaveCount(3);
+    await expect(copyTemplatePage.radioButtons).toHaveCount(4);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({

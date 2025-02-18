@@ -49,7 +49,7 @@ test.describe('Choose Template Type Page', () => {
 
     await chooseTemplatePage.loadPage();
 
-    await expect(chooseTemplatePage.radioButtons).toHaveCount(3);
+    await expect(chooseTemplatePage.radioButtons).toHaveCount(4);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({
