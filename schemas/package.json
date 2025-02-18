@@ -1,5 +1,5 @@
 {
-  "name": "@nhs-notify/template-management-schemas",
+  "name": "@nhsdigital/nhs-notify-web-template-management-schemas",
   "version": "0.1.0",
   "description": "",
   "repository": "git@github.com:NHSDigital/nhs-notify-web-template-management.git",
@@ -15,7 +15,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "packageManager": "pnpm@10.4.1",
   "dependencies": {
     "zod": "^3.24.2"
