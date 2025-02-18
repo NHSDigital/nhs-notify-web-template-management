@@ -19,9 +19,13 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
   const { pageHeading, hintText, noButtonText, yesButtonText } =
     deleteTemplatePageContent;
 
-  const [state, action] = useActionState(deleteTemplateYesAction, template);
+  const [yesState, yesAction] = useActionState(
+    deleteTemplateYesAction,
+    template
+  );
+  const [_, noAction] = useActionState(deleteTemplateNoAction, null);
 
-  const fullPageHeading = `${pageHeading} '${state.name}'?`;
+  const fullPageHeading = `${pageHeading} '${yesState.name}'?`;
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
@@ -29,7 +33,7 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
           <h1 className='nhsuk-heading-l'>{fullPageHeading}</h1>
           <p>{hintText}</p>
           <NHSNotifyFormWrapper
-            action={deleteTemplateNoAction}
+            action={noAction}
             formId='delete-template-no'
             formAttributes={{
               className: 'nhsuk-u-margin-right-3',
@@ -39,7 +43,7 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
             <Button secondary>{noButtonText}</Button>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
-            action={action}
+            action={yesAction}
             formAttributes={{ style: { display: 'inline' } }}
             formId='delete-template-yes'
           >
