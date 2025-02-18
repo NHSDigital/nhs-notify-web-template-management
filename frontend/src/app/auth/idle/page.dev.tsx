@@ -13,11 +13,11 @@ const timeTillLogout =
 const SignInButton = () => {
   const searchParams = useSearchParams().toString();
 
-  const signLinLink = getBasePath() + (searchParams ? `?${searchParams}` : '');
+  const signInLink = getBasePath() + (searchParams ? `?${searchParams}` : '');
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <Button href={signLinLink}>Sign in</Button>
+      <Button href={signInLink}>Sign in</Button>
     </Suspense>
   );
 };

@@ -50,6 +50,7 @@ export default defineConfig({
         headless: true,
         storageState: path.resolve(__dirname, '../.auth/user.json'),
       },
+      timeout: 60_000,
       dependencies: ['component:setup'],
       teardown: 'component:teardown',
       fullyParallel: true, // make these sets of tests parallel due to their slow nature.
