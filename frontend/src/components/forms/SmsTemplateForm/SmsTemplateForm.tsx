@@ -6,7 +6,6 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import {
-  Button,
   HintText,
   Label,
   Textarea,
@@ -28,6 +27,7 @@ import { createSmsTemplatePageContent as content } from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
@@ -111,9 +111,9 @@ export const SmsTemplateForm: FC<
                   {content.smsPricingText}
                 </a>
               </p>
-              <Button id='create-sms-template-submit-button'>
+              <NHSNotifyButton id='create-sms-template-submit-button'>
                 {content.buttonText}
-              </Button>
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
           <div className='nhsuk-grid-column-one-third'>
