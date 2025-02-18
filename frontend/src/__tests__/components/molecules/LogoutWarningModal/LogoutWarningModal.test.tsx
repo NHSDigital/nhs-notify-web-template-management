@@ -127,12 +127,12 @@ describe('LogoutWarningModal', () => {
 
     const events = [
       {
-        timeRemaining: 30,
-        advanceTimersBySeconds: 30,
+        timeRemaining: 29,
+        advanceTimersBySeconds: 31,
       },
       {
         timeRemaining: 20,
-        advanceTimersBySeconds: 10,
+        advanceTimersBySeconds: 9,
       },
       {
         timeRemaining: 10,
@@ -214,13 +214,13 @@ describe('LogoutWarningModal', () => {
     });
 
     act(() => {
-      // advance timers by 30 seconds
-      jest.advanceTimersByTime(30_000);
+      // advance timers by 32 seconds
+      jest.advanceTimersByTime(32_000);
       fireEvent.focus(document);
     });
 
     expect(getByTestId('modal-header').innerHTML).toEqual(
-      `For security reasons, you'll be signed out in 30 seconds.`
+      `For security reasons, you'll be signed out in 28 seconds.`
     );
 
     const clicked = fireEvent.click(getByTestId('modal-sign-in'));
