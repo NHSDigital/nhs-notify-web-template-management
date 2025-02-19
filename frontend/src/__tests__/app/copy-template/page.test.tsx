@@ -36,40 +36,12 @@ describe('CopyTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(template);
 
     const page = await CopyTemplatePage({
-      params: {
-        templateId: 'template-id',
-      },
-    });
-
-    expect(page).toEqual(
-      <CopyTemplate
-        template={template}
-        templateTypes={Object.values(TemplateType)}
-      />
-    );
-  });
-
-  it('Letter option is hidden when the feature flag is not enabled', async () => {
-    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'false';
-
-    getTemplateMock.mockResolvedValueOnce(template);
-
-    const page = await CopyTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
     });
 
-    expect(page).toEqual(
-      <CopyTemplate
-        template={template}
-        templateTypes={[
-          TemplateType.NHS_APP,
-          TemplateType.EMAIL,
-          TemplateType.SMS,
-        ]}
-      />
-    );
+    expect(page).toEqual(<CopyTemplate template={template} />);
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
