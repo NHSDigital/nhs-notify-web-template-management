@@ -35,12 +35,12 @@ describe('ManageTemplatesPage', () => {
 
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('page-heading')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toHaveAttribute(
+    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAttribute(
       'href',
       manageTemplatesContent.createTemplateButton.url
     );
-    expect(screen.getByTestId('link-button')).toHaveTextContent(
+    expect(screen.getByRole('button')).toHaveTextContent(
       manageTemplatesContent.createTemplateButton.text
     );
 
@@ -52,12 +52,12 @@ describe('ManageTemplatesPage', () => {
 
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('page-heading')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toBeInTheDocument();
-    expect(screen.getByTestId('link-button')).toHaveAttribute(
+    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAttribute(
       'href',
       manageTemplatesContent.createTemplateButton.url
     );
-    expect(screen.getByTestId('link-button')).toHaveTextContent(
+    expect(screen.getByRole('button')).toHaveTextContent(
       manageTemplatesContent.createTemplateButton.text
     );
 

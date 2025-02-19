@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NHS Notify button default onClick does nothing 1`] = `
+<DocumentFragment>
+  <button
+    aria-disabled="false"
+    class="nhsuk-button"
+    data-testid="button"
+    type="submit"
+  >
+    Button text
+  </button>
+</DocumentFragment>
+`;

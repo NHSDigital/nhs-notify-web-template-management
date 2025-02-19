@@ -136,7 +136,7 @@ async function createTemplates() {
   };
 }
 
-test.describe('Submit template Page', async () => {
+test.describe('Submit template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let templates: Awaited<ReturnType<typeof createTemplates>>;
 

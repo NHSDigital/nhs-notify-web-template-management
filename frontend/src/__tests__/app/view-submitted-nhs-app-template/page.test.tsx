@@ -41,9 +41,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await ViewSubmittedNHSAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(
@@ -53,9 +53,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
 
   it('should redirect to invalid-template when no template is found', async () => {
     await ViewSubmittedNHSAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -115,9 +115,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       });
 
       await ViewSubmittedNHSAppTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

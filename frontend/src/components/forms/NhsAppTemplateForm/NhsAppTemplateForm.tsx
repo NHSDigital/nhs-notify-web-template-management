@@ -1,13 +1,11 @@
 'use client';
 
-import { FC } from 'react';
-import { useFormState } from 'react-dom';
+import { FC, useActionState } from 'react';
 import {
   TextInput,
   HintText,
   Label,
   Textarea,
-  Button,
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
@@ -28,6 +26,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
@@ -42,7 +41,7 @@ export const NhsAppTemplateForm: FC<
     templateNameHintText,
     backLinkText,
   } = createNhsAppTemplatePageContent;
-  const [state, action] = useFormState(processFormActions, initialState);
+  const [state, action] = useActionState(processFormActions, initialState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
@@ -105,9 +104,9 @@ export const NhsAppTemplateForm: FC<
                   {characterCountText}
                 </p>
               </JsEnabled>
-              <Button type='submit' id='create-nhs-app-template-submit-button'>
+              <NHSNotifyButton id='create-nhs-app-template-submit-button'>
                 {buttonText}
-              </Button>
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
           <div className='nhsuk-grid-column-one-third'>

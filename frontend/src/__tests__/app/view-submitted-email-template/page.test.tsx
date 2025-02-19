@@ -43,9 +43,9 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await ViewSubmittedEmailTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(
@@ -55,9 +55,9 @@ describe('ViewSubmittedEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when no templateId is found', async () => {
     await ViewSubmittedEmailTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -124,9 +124,9 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       });
 
       await ViewSubmittedEmailTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

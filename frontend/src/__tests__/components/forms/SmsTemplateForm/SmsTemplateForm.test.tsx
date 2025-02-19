@@ -8,12 +8,12 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData

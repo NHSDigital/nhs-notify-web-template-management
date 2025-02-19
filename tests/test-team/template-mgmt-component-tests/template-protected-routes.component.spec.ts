@@ -25,6 +25,7 @@ import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
+import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -101,10 +102,14 @@ test.describe('Protected Routes Tests', () => {
       baseURL,
     }) => {
       const appPage = new PageModel(page);
-      await appPage.loadPage('');
+      const isDynamic = appPage instanceof TemplateMgmtBasePageDynamic;
+
+      await (isDynamic ? appPage.loadPage('template-id') : appPage.loadPage());
 
       const redirectPath = encodeURIComponent(
-        `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}`
+        isDynamic
+          ? `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}/template-id`
+          : `/${PageModel.appUrlSegment}/${PageModel.pageUrlSegment}`
       );
 
       await expect(page).toHaveURL(`${baseURL}/auth?redirect=${redirectPath}`);
