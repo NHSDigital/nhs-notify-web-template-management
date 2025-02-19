@@ -1,7 +1,7 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtStartPage extends TemplateMgmtBasePage {
+export class TemplateMgmtStartPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment = 'create-and-submit-templates';
 
   readonly startButton: Locator;

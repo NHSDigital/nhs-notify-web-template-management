@@ -1,18 +1,18 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/amplify-utils');
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: jest
+    useActionState: jest
       .fn()
       .mockImplementation(
         (
@@ -60,7 +60,7 @@ describe('Choose template page', () => {
   });
 
   it('renders error component', () => {
-    const mockUseFormState = jest.fn().mockReturnValue([
+    const mockUseActionState = jest.fn().mockReturnValue([
       {
         validationError: {
           formErrors: [],
@@ -72,7 +72,7 @@ describe('Choose template page', () => {
       '/action',
     ]);
 
-    jest.mocked(useFormState).mockImplementation(mockUseFormState);
+    jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
     const container = render(<ChooseTemplate />);
     expect(container.asFragment()).toMatchSnapshot();

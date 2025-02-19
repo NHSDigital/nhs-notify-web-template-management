@@ -13,14 +13,13 @@ import {
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
-import { useFormState } from 'react-dom';
 import {
   Draft,
   PageComponentProps,
   SMSTemplate,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { FC } from 'react';
+import { FC, useActionState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { createSmsTemplatePageContent as content } from '@content/content';
@@ -34,7 +33,7 @@ import { calculateHowManySmsMessages } from './view-actions';
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
 > = ({ initialState }) => {
-  const [state, action] = useFormState(processFormActions, initialState);
+  const [state, action] = useActionState(processFormActions, initialState);
 
   const [smsTemplateName, smsTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);

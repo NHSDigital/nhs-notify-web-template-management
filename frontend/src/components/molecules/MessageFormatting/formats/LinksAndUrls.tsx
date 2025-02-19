@@ -1,5 +1,6 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
+import { JSX } from 'react';
 
 const { linksAndUrls } = content.components.messageFormattingComponent;
 

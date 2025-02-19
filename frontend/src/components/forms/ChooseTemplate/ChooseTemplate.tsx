@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
 
 export const ChooseTemplate = () => {
-  const [state, action] = useFormState(chooseTemplateAction, {});
+  const [state, action] = useActionState(chooseTemplateAction, {});
 
   const templateTypes = Object.values(TemplateType);
   const options = templateTypes.map((templateType) => ({

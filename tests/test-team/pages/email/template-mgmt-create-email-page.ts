@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
+import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment = 'create-email-template';
 
   public readonly nameInput: Locator;

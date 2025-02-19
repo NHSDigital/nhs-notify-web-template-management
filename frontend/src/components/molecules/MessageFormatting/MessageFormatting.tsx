@@ -10,6 +10,7 @@ import {
   LinksAndUrlsNoMarkdown,
   NumberedList,
 } from './formats';
+import { JSX } from 'react';
 
 const messageFormattingContent = content.components.messageFormattingComponent;
 
