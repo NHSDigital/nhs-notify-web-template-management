@@ -83,58 +83,51 @@ export const EmailTemplateForm: FC<
                 {editMode ? 'Edit ' : 'Create '}
                 {pageHeadingSuffix}
               </h1>
-
-              <FormSection>
-                <div className={templateNameError && 'nhsuk-form-group--error'}>
-                  <Label htmlFor='emailTemplateName' size='s'>
-                    {templateNameLabelText}
-                  </Label>
-                  <HintText>{templateNameHintText}</HintText>
-                  <TemplateNameGuidance template={TemplateType.EMAIL} />
-                  <TextInput
-                    id='emailTemplateName'
-                    onChange={emailTemplateNameHandler}
-                    value={emailTemplateName}
-                    error={templateNameError}
-                    errorProps={{ id: 'emailTemplateName--error-message' }}
-                    data-testid='emailTemplateName-input'
-                  />
-                </div>
-              </FormSection>
-
-              <FormSection>
-                <div
-                  className={
-                    templateSubjectLineError && 'nhsuk-form-group--error'
-                  }
-                >
-                  <Label htmlFor='emailTemplateSubjectLine' size='s'>
-                    {templateSubjectLineLabelText}
-                  </Label>
-                  <TextInput
-                    id='emailTemplateSubjectLine'
-                    onChange={emailTemplateSubjectLineHandler}
-                    value={emailTemplateSubjectLine}
-                    error={templateSubjectLineError}
-                    errorProps={{
-                      id: 'emailTemplateSubjectLine--error-message',
-                    }}
-                    data-testid='emailTemplateSubjectLine-input'
-                  />
-                </div>
-
-                <Textarea
-                  label={templateMessageLabelText}
-                  labelProps={{ size: 's' }}
-                  id='emailTemplateMessage'
-                  rows={10}
-                  onChange={emailTemplateMessageHandler}
-                  value={emailTemplateMessage}
-                  error={templateMessageError}
-                  errorProps={{ id: 'emailTemplateMessage--error-message' }}
-                  data-testid='emailTemplateMessage-input'
+              <div className={templateNameError && 'nhsuk-form-group--error'}>
+                <Label htmlFor='emailTemplateName' size='s'>
+                  {templateNameLabelText}
+                </Label>
+                <HintText>{templateNameHintText}</HintText>
+                <TemplateNameGuidance template={TemplateType.EMAIL} />
+                <TextInput
+                  id='emailTemplateName'
+                  onChange={emailTemplateNameHandler}
+                  value={emailTemplateName}
+                  error={templateNameError}
+                  errorProps={{ id: 'emailTemplateName--error-message' }}
+                  data-testid='emailTemplateName-input'
                 />
-              </FormSection>
+              </div>
+              <div
+                className={
+                  templateSubjectLineError && 'nhsuk-form-group--error'
+                }
+              >
+                <Label htmlFor='emailTemplateSubjectLine' size='s'>
+                  {templateSubjectLineLabelText}
+                </Label>
+                <TextInput
+                  id='emailTemplateSubjectLine'
+                  onChange={emailTemplateSubjectLineHandler}
+                  value={emailTemplateSubjectLine}
+                  error={templateSubjectLineError}
+                  errorProps={{
+                    id: 'emailTemplateSubjectLine--error-message',
+                  }}
+                  data-testid='emailTemplateSubjectLine-input'
+                />
+              </div>
+              <Textarea
+                label={templateMessageLabelText}
+                labelProps={{ size: 's' }}
+                id='emailTemplateMessage'
+                rows={10}
+                onChange={emailTemplateMessageHandler}
+                value={emailTemplateMessage}
+                error={templateMessageError}
+                errorProps={{ id: 'emailTemplateMessage--error-message' }}
+                data-testid='emailTemplateMessage-input'
+              />
               <NHSNotifyButton
                 type='submit'
                 id='create-email-template-submit-button'
