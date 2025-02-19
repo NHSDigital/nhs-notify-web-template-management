@@ -28,15 +28,14 @@ resource "aws_amplify_app" "main" {
   ]
 
   environment_variables = {
-    NOTIFY_GROUP                = var.group
-    NOTIFY_ENVIRONMENT          = var.environment
-    NOTIFY_DOMAIN_NAME          = local.root_domain_name
-    ACCOUNT_ID                  = var.aws_account_id
-    NEXT_PUBLIC_DISABLE_CONTENT = var.disable_content
-    AMPLIFY_MONOREPO_APP_ROOT   = "frontend"
-    API_BASE_URL                = module.backend_api.api_base_url
-    USER_POOL_ID                = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_ID"]
-    USER_POOL_CLIENT_ID         = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_CLIENT_ID"]
-    CSRF_SECRET                 = aws_ssm_parameter.csrf_secret.value
+    NOTIFY_GROUP              = var.group
+    NOTIFY_ENVIRONMENT        = var.environment
+    NOTIFY_DOMAIN_NAME        = local.root_domain_name
+    ACCOUNT_ID                = var.aws_account_id
+    AMPLIFY_MONOREPO_APP_ROOT = "frontend"
+    API_BASE_URL              = module.backend_api.api_base_url
+    USER_POOL_ID              = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_ID"]
+    USER_POOL_CLIENT_ID       = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_CLIENT_ID"]
+    CSRF_SECRET               = aws_ssm_parameter.csrf_secret.value
   }
 }
