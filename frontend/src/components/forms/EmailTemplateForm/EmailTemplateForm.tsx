@@ -22,7 +22,6 @@ import {
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
