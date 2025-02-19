@@ -66,8 +66,6 @@ export async function middleware(request: NextRequest) {
       )
     );
 
-    redirectResponse.headers.set('Content-Type', 'text/html');
-
     return redirectResponse;
   }
 
