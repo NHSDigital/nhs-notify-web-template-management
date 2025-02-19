@@ -1,13 +1,14 @@
 'use client';
 
-import { FC } from 'react';
-import { WarningCallout, Button } from 'nhsuk-react-components';
+import { FC, useActionState } from 'react';
+import { WarningCallout } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from 'nhs-notify-web-template-management-utils';
 import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
@@ -26,6 +27,8 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     goBackButtonText,
     buttonText,
   } = submitTemplateContent;
+
+  const [_, action] = useActionState(submitTemplate, submitPath);
 
   return (
     <NHSNotifyMain>
@@ -50,25 +53,24 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           {submitChecklistParagraphs.map((item) => (
             <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
           ))}
-          <NHSNotifyFormWrapper
-            formId='submit-template-form'
-            action={submitTemplate.bind(null, submitPath)}
-          >
+          <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input
               type='hidden'
               name='templateId'
               value={templateId}
               readOnly
             />
-            <Button
+            <NHSNotifyButton
               secondary
               id='go-back-button'
               className='nhsuk-u-margin-right-3'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
             >
               {goBackButtonText}
-            </Button>
-            <Button id='submit-template-button'>{buttonText}</Button>
+            </NHSNotifyButton>
+            <NHSNotifyButton id='submit-template-button'>
+              {buttonText}
+            </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
       </div>

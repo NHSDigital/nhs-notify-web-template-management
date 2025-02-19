@@ -44,9 +44,9 @@ describe('PreviewEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewEmailTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(page).toEqual(<ReviewEmailTemplate initialState={emailTemplate} />);
@@ -54,9 +54,9 @@ describe('PreviewEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when no templateId is found', async () => {
     await PreviewEmailTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
@@ -111,9 +111,9 @@ describe('PreviewEmailTemplatePage', () => {
       });
 
       await PreviewEmailTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
