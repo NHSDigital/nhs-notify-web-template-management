@@ -367,7 +367,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
 </DocumentFragment>
 `;
 
-exports[`CreateSmsTemplate component renders page with back link if initial state has no id 1`] = `
+exports[`CreateSmsTemplate component renders page with back link if initial state has no id - edit mode 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
