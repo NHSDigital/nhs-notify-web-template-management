@@ -7,7 +7,6 @@ import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import {
   Template,
   TemplateFormState,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/amplify-utils');
@@ -33,12 +32,7 @@ jest.mock('react', () => {
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-    const container = render(
-      <CopyTemplate
-        template={mockDeep<Template>()}
-        templateTypes={Object.values(TemplateType)}
-      />
-    );
+    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
@@ -85,12 +79,7 @@ describe('Choose template page', () => {
 
     jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
-    const container = render(
-      <CopyTemplate
-        template={mockDeep<Template>()}
-        templateTypes={Object.values(TemplateType)}
-      />
-    );
+    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

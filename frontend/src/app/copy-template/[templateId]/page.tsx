@@ -2,11 +2,7 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
-import {
-  PageProps,
-  $Template,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { PageProps, $Template } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { zodValidate } from '@utils/validate-template';
 
@@ -21,15 +17,7 @@ const CopyTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const templateTypes = Object.values(TemplateType).filter(
-    (t) =>
-      process.env.NEXT_PUBLIC_ENABLE_LETTERS === 'true' ||
-      t !== TemplateType.LETTER
-  );
-
-  return (
-    <CopyTemplate template={validatedTemplate} templateTypes={templateTypes} />
-  );
+  return <CopyTemplate template={validatedTemplate} />;
 };
 
 export default CopyTemplatePage;

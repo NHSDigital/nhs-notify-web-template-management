@@ -16,13 +16,16 @@ import { copyTemplateAction } from './server-action';
 
 type CopyTemplate = {
   template: Template;
-  templateTypes: TemplateType[];
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {
   const [state, action] = useActionState(copyTemplateAction, { template });
 
-  const options = templateTypes.map((templateType) => ({
+  const options = [
+    TemplateType.NHS_APP,
+    TemplateType.EMAIL,
+    TemplateType.SMS,
+  ].map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),
   }));
