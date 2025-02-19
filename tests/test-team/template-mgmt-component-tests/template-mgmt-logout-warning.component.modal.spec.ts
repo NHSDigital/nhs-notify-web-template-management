@@ -36,7 +36,7 @@ test.describe('Logout warning', () => {
 
     await dialog.getByRole('button', { name: 'Stay signed in' }).click();
 
-    expect(dialog).not.toBeVisible();
+    await expect(dialog).not.toBeVisible();
   });
 
   test('logout warning should pop up and close after user clicks "Sign out"', async ({
