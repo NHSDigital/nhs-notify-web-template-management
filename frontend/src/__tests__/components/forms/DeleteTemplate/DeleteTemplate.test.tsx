@@ -1,25 +1,19 @@
 import { render } from '@testing-library/react';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
 import { mockDeep } from 'jest-mock-extended';
-import {
-  EmailTemplate,
-  TemplateFormState,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
-      _: (
-        formState: TemplateFormState,
-        formData: FormData
-      ) => Promise<TemplateFormState>,
-      initialState: TemplateFormState
-    ) => [initialState, '/yes-action'],
+    useActionState: jest.fn((action, initialState) => {
+      return [initialState, action];
+    }),
   };
 });
+
 jest.mock('@forms/DeleteTemplate/server-action', () => ({
   deleteTemplateYesAction: '/yes-action',
   deleteTemplateNoAction: '/no-action',

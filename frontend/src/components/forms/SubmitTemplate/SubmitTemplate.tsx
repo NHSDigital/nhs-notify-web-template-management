@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useActionState } from 'react';
 import { WarningCallout } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from 'nhs-notify-web-template-management-utils';
 import { submitTemplateContent } from '@content/content';
@@ -28,6 +28,8 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     buttonText,
   } = submitTemplateContent;
 
+  const [_, action] = useActionState(submitTemplate, submitPath);
+
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
@@ -51,10 +53,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           {submitChecklistParagraphs.map((item) => (
             <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
           ))}
-          <NHSNotifyFormWrapper
-            formId='submit-template-form'
-            action={submitTemplate.bind(null, submitPath)}
-          >
+          <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input
               type='hidden'
               name='templateId'

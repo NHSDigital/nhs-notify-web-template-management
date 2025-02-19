@@ -6,9 +6,9 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { validateNHSAppTemplate } from '@utils/validate-template';
 
-const CreateNhsAppTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const CreateNhsAppTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateNHSAppTemplate(template);
