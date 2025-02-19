@@ -58,7 +58,7 @@ test.describe('Choose Template Type Page', () => {
   }) => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
-    await chooseTemplatePage.loadPage('');
+    await chooseTemplatePage.loadPage();
     await chooseTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);

@@ -12,6 +12,10 @@ import { formatTime } from './format-time';
 
 import styles from './LogoutWarningModal.module.scss';
 
+// Note: This is 5 seconds because it gives a screen reader a chance to read out the full modal title.
+// Whereas with 1 second a screen reader doesn't get a chance to read out the whole modal and is jarring.
+const HEADING_UPDATE_INTERVAL = 5000;
+
 export const LogoutWarningModal = ({
   promptBeforeLogoutSeconds,
   logoutInSeconds,
@@ -64,7 +68,7 @@ export const LogoutWarningModal = ({
       const remaining = Math.ceil(getRemainingTime() / 1000);
 
       setRemainingTime(formatTime(remaining));
-    }, 1000);
+    }, HEADING_UPDATE_INTERVAL);
 
     return () => {
       if (intervalRef.current) {
