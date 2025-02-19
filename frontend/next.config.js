@@ -18,6 +18,10 @@ const nextConfig = (phase) => {
       API_BASE_URL: amplifyConfig?.meta?.api_base_url,
     },
 
+    sassOptions: {
+      quietDeps: true,
+    },
+
     experimental: {
       serverActions: {
         allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],

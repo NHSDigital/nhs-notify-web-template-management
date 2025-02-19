@@ -8,7 +8,7 @@ import {
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
@@ -27,7 +27,7 @@ export function ReviewSMSTemplate({
     },
   } = content;
 
-  const [state, action] = useFormState(reviewSmsTemplateAction, initialState);
+  const [state, action] = useActionState(reviewSmsTemplateAction, initialState);
   const templateMessage = initialState.message;
   const html = renderSMSMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';

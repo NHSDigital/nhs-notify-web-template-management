@@ -1,4 +1,4 @@
-@import 'nhsuk-frontend/packages/nhsuk.scss';
+@use 'nhsuk-frontend/packages/nhsuk.scss' as nhsuk;
 
 body {
   // This is here because amplify applies a min height which overwrites nhsuk causing a white space
@@ -8,7 +8,7 @@ body {
 code {
   display: inline-block;
   padding: 0.6rem;
-  background-color: $nhsuk-border-color;
+  background-color: nhsuk.$nhsuk-border-color;
 }
 
 .notify-confirmation-panel {

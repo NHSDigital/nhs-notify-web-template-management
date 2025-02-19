@@ -9,7 +9,9 @@ import { redirect, RedirectType } from 'next/navigation';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
 import { validateChannelTemplate } from '@utils/validate-template';
 
-const DeleteTemplatePage = async ({ params: { templateId } }: PageProps) => {
+const DeleteTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   if (template?.templateStatus === TemplateStatus.DELETED) {

@@ -49,7 +49,7 @@ test.describe('Create NHS App Template Page', () => {
 
     await createTemplatePage.loadPage();
 
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     await createTemplatePage.clickSaveAndPreviewButton();
@@ -94,7 +94,7 @@ test.describe('Create NHS App Template Page', () => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
     await createTemplatePage.loadPage();
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
@@ -111,7 +111,7 @@ test.describe('Create NHS App Template Page', () => {
     const createTemplatePage = new TemplateMgmtCreateNhsAppPage(page);
 
     await createTemplatePage.loadPage();
-    expect(await createTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
     const templateMessage = 'Test Message box';

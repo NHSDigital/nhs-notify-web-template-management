@@ -35,13 +35,12 @@ export const LogoutWarningModal = ({
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   const idle = () => {
-    setShowModal(false);
-
     router.push(
       `/auth/inactive?redirect=${encodeURIComponent(
         `${getBasePath()}/${pathname}`
       )}`
     );
+    setShowModal(false);
   };
 
   const prompted = () => {
@@ -56,7 +55,7 @@ export const LogoutWarningModal = ({
     disabled: authStatus !== 'authenticated',
   });
 
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {
     if (!showModal) return;
@@ -68,7 +67,9 @@ export const LogoutWarningModal = ({
     }, 1000);
 
     return () => {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, [showModal, getRemainingTime]);
 

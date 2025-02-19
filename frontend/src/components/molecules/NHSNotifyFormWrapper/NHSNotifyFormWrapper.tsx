@@ -1,7 +1,8 @@
-import type {
-  DetailedHTMLProps,
-  PropsWithChildren,
-  FormHTMLAttributes,
+import {
+  type DetailedHTMLProps,
+  type PropsWithChildren,
+  type FormHTMLAttributes,
+  startTransition,
 } from 'react';
 import { useCookies } from 'next-client-cookies';
 import { verifyCsrfTokenFull } from '@utils/csrf-utils';
@@ -15,7 +16,9 @@ export const csrfServerAction = (action: ServerAction) => {
   return async (formData: FormData) => {
     await verifyCsrfTokenFull(formData);
 
-    return action(formData);
+    return startTransition(() => {
+      action(formData);
+    });
   };
 };
 
