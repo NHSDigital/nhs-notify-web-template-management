@@ -393,8 +393,8 @@ export const channelGuidanceContent = {
   },
 };
 
-export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS App message template',
+const templateFormNhsAppContent = {
+  pageHeadingSuffix: 'NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -404,8 +404,8 @@ export const createNhsAppTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const createEmailTemplatePageContent = {
-  pageHeading: 'Create email template',
+const templateFormEmailContent = {
+  pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
@@ -415,22 +415,8 @@ export const createEmailTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const templateSubmittedPageContent = {
-  pageHeading: 'Template submitted',
-  templateNameHeading: 'Template name',
-  templateIdHeading: 'Template ID',
-  doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
-  backLinkText: 'Back to all templates',
-};
-
-export const createSmsTemplatePageContent = {
-  pageHeading: 'Create text message template',
+const templateFormSmsContent = {
+  pageHeadingSuffix: 'text message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -442,6 +428,20 @@ export const createSmsTemplatePageContent = {
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+};
+
+const templateSubmittedPageContent = {
+  pageHeading: 'Template submitted',
+  templateNameHeading: 'Template name',
+  templateIdHeading: 'Template ID',
+  doNextHeading: 'What you need to do next',
+  notLiveHeading: "If you're currently onboarding",
+  notLiveText:
+    "Tell your onboarding manager once you've submitted all your templates.",
+  liveHeading: "If you've already onboarded",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: 'Back to all templates',
 };
 
 export const viewSubmittedTemplatePageContent = {
@@ -476,6 +476,9 @@ const content = {
     reviewSMSTemplateContent,
     messageFormattingComponent,
     logoutWarningComponent,
+    templateFormEmailContent,
+    templateFormNhsAppContent,
+    templateFormSmsContent,
   },
   pages: {
     homePage,

@@ -22,7 +22,7 @@ import {
 import { FC, useActionState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
-import { createSmsTemplatePageContent as content } from '@content/content';
+import content from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -47,9 +47,11 @@ export const SmsTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.smsTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {content.backLinkText}
         </BackLink>
@@ -61,7 +63,10 @@ export const SmsTemplateForm: FC<
               errorHeading={content.errorHeading}
               state={state}
             />
-            <h1 data-testid='page-heading'>{content.pageHeading}</h1>
+            <h1 data-testid='page-heading'>
+              {editMode ? 'Edit ' : 'Create '}
+              {content.pageHeadingSuffix}
+            </h1>
             <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>

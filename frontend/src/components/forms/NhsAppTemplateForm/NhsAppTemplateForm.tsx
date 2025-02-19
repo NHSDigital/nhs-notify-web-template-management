@@ -32,7 +32,7 @@ export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
 > = ({ initialState }) => {
   const {
-    pageHeading,
+    pageHeadingSuffix,
     errorHeading,
     buttonText,
     characterCountText,
@@ -55,9 +55,11 @@ export const NhsAppTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {backLinkText}
         </BackLink>
@@ -71,7 +73,8 @@ export const NhsAppTemplateForm: FC<
               formId='create-nhs-app-template'
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {pageHeading}
+                {editMode ? 'Edit ' : 'Create '}
+                {pageHeadingSuffix}
               </h1>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='nhsAppTemplateName' size='s'>

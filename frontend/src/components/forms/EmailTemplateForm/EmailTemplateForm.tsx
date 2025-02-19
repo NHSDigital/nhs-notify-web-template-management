@@ -32,7 +32,7 @@ export const EmailTemplateForm: FC<
   PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
 > = ({ initialState }) => {
   const {
-    pageHeading,
+    pageHeadingSuffix,
     errorHeading,
     buttonText,
     templateNameLabelText,
@@ -62,9 +62,11 @@ export const EmailTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.emailTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {backLinkText}
         </BackLink>
@@ -78,7 +80,8 @@ export const EmailTemplateForm: FC<
               formId='create-email-template'
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {pageHeading}
+                {editMode ? 'Edit ' : 'Create '}
+                {pageHeadingSuffix}
               </h1>
 
               <FormSection>
