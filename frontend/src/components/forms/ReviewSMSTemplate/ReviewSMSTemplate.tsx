@@ -21,11 +21,7 @@ export function ReviewSMSTemplate({
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
-  const {
-    components: {
-      reviewSMSTemplate: { sectionHeading, form },
-    },
-  } = content;
+  const { sectionHeading, form } = content.components.reviewSMSTemplate;
 
   const [state, action] = useActionState(reviewSmsTemplateAction, initialState);
   const templateMessage = initialState.message;
