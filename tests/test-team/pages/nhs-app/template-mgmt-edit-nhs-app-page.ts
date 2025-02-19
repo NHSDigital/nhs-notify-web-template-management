@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
+import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
 
-export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePage {
+export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
   static readonly pageUrlSegment = 'edit-nhs-app-template';
 
   public readonly nameInput: Locator;

@@ -1,9 +1,7 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
 
-export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
-  public readonly continueButton: Locator;
-
+export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
   static readonly pageUrlSegment = 'copy-template';
 
   readonly radioButtons: Locator;
@@ -11,6 +9,8 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
   readonly learnMoreLink: Locator;
 
   readonly goBackLink: Locator;
+
+  readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);

@@ -1,11 +1,11 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
 import {
   CognitoAuthHelper,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
+import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtSignInPage extends TemplateMgmtBasePage {
+export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment = 'create-and-submit-templates';
 
   public readonly emailInput: Locator;
