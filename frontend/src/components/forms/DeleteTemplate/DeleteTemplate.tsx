@@ -3,9 +3,9 @@
 import { FC, useActionState } from 'react';
 import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
 import { deleteTemplatePageContent } from '@content/content';
-import { Button } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
@@ -40,14 +40,16 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
               style: { display: 'inline' },
             }}
           >
-            <Button secondary>{noButtonText}</Button>
+            <NHSNotifyButton secondary>{noButtonText}</NHSNotifyButton>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
             action={yesAction}
             formAttributes={{ style: { display: 'inline' } }}
             formId='delete-template-yes'
           >
-            <Button className='nhsuk-button--warning'>{yesButtonText}</Button>
+            <NHSNotifyButton className='nhsuk-button--warning'>
+              {yesButtonText}
+            </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
       </div>

@@ -6,7 +6,6 @@ import {
   HintText,
   Label,
   Textarea,
-  Button,
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
@@ -27,6 +26,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
@@ -102,9 +102,9 @@ export const NhsAppTemplateForm: FC<
                 {nhsAppTemplateMessage.length}
                 {characterCountText}
               </p>
-              <Button type='submit' id='create-nhs-app-template-submit-button'>
+              <NHSNotifyButton id='create-nhs-app-template-submit-button'>
                 {buttonText}
-              </Button>
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
           <div className='nhsuk-grid-column-one-third'>

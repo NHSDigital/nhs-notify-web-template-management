@@ -1,13 +1,14 @@
 'use client';
 
 import { FC, useActionState } from 'react';
-import { WarningCallout, Button } from 'nhsuk-react-components';
+import { WarningCallout } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from 'nhs-notify-web-template-management-utils';
 import { submitTemplateContent } from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
@@ -59,15 +60,17 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
               value={templateId}
               readOnly
             />
-            <Button
+            <NHSNotifyButton
               secondary
               id='go-back-button'
               className='nhsuk-u-margin-right-3'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
             >
               {goBackButtonText}
-            </Button>
-            <Button id='submit-template-button'>{buttonText}</Button>
+            </NHSNotifyButton>
+            <NHSNotifyButton id='submit-template-button'>
+              {buttonText}
+            </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
       </div>
