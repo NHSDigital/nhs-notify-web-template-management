@@ -107,7 +107,7 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.editRadioOption.click();
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-email-template/${templates.valid.id}`
@@ -124,7 +124,7 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.submitRadioOption.click();
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-email-template/${templates.valid.id}`
@@ -164,7 +164,7 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.loadPage(templates.valid.id);
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(previewEmailTemplatePage.errorSummary).toBeVisible();
 

@@ -452,6 +452,12 @@ export const deleteTemplatePageContent = {
   yesButtonText: 'Yes, delete template',
 };
 
+const logoutWarningComponent = {
+  heading: "For security reasons, you'll be signed out in",
+  signIn: 'Stay signed in',
+  body: "If you're signed out, any unsaved changes will be lost.",
+};
+
 const content = {
   global: {
     mainLayout,
@@ -464,6 +470,7 @@ const content = {
     reviewNHSAppTemplateContent,
     reviewSMSTemplateContent,
     messageFormattingComponent,
+    logoutWarningComponent,
   },
   pages: {
     homePage,

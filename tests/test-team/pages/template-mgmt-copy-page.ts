@@ -10,6 +10,8 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
 
   readonly goBackLink: Locator;
 
+  readonly continueButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.radioButtons = page.getByRole('radio');
@@ -20,9 +22,17 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to all templates'));
+
+    this.continueButton = page.locator(
+      '[id="choose-a-template-type-submit-button"]'
+    );
   }
 
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

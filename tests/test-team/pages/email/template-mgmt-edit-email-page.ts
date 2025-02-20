@@ -19,6 +19,8 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="emailTemplateName"]');
@@ -33,5 +35,13 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
     );
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-email-template-submit-button"]'
+    );
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

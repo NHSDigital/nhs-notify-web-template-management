@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test:local-ui": "playwright test --project component -c config/component/component.config.ts",
+    "test:local-ui": "playwright test -c config/component/component.config.ts",
     "test:local-ui-e2e": "playwright test --project e2e-local -c config/e2e/e2e.config.ts",
     "test:api": "playwright test --project api -c config/api/api.config.ts",
     "lint": "eslint .",
