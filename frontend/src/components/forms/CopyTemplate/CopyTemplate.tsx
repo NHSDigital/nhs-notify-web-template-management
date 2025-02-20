@@ -21,8 +21,11 @@ type CopyTemplate = {
 export const CopyTemplate = ({ template }: CopyTemplate) => {
   const [state, action] = useActionState(copyTemplateAction, { template });
 
-  const templateTypes = Object.values(TemplateType);
-  const options = templateTypes.map((templateType) => ({
+  const options = [
+    TemplateType.NHS_APP,
+    TemplateType.EMAIL,
+    TemplateType.SMS,
+  ].map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),
   }));

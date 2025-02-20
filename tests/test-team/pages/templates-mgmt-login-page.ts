@@ -14,7 +14,9 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
 
   public readonly confirmPasswordInput: Locator;
 
-  public readonly submitButton: Locator;
+  public readonly signInButton: Locator;
+
+  public readonly changePasswordButton: Locator;
 
   public readonly errorMessage: Locator;
 
@@ -23,7 +25,10 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
     this.emailInput = page.locator('input[name="username"]');
     this.passwordInput = page.locator('input[name="password"]');
     this.confirmPasswordInput = page.locator('input[name="confirm_password"]');
-    this.submitButton = page.locator('button[type="submit"]');
+    this.signInButton = page.locator('.amplify-button', { hasText: 'Sign in' });
+    this.changePasswordButton = page.locator('.amplify-button', {
+      hasText: 'Change Password',
+    });
     this.errorMessage = page.locator('.amplify-alert__body');
   }
 
@@ -34,7 +39,7 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
 
     await this.passwordInput.fill(user.password);
 
-    await this.clickSubmitButton();
+    await this.clickSignInButton();
 
     let shouldResetPassword = true;
 
@@ -55,13 +60,17 @@ export class TemplateMgmtSignInPage extends TemplateMgmtBasePageNonDynamic {
 
       await this.confirmPasswordInput.fill(password);
 
-      await this.clickSubmitButton();
+      await this.clickChangePasswordButton();
 
       await user.setUpdatedPassword(password);
     }
   }
 
-  async clickSubmitButton() {
-    await this.submitButton.click();
+  async clickSignInButton() {
+    await this.signInButton.click();
+  }
+
+  async clickChangePasswordButton() {
+    await this.changePasswordButton.click();
   }
 }

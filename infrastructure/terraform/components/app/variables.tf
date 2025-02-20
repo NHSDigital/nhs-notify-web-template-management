@@ -187,3 +187,9 @@ variable "control_plane_bus_arn" {
   type        = string
   description = "Data plane event bus arn"
 }
+
+variable "enable_letters" {
+  type        = string
+  description = "Feature flag for letters"
+  default     = false
+}

@@ -34,6 +34,7 @@ on:
 
 env:
   AWS_REGION: eu-west-2
+  NEXT_PUBLIC_ENABLE_LETTERS: true
 
 permissions:
   id-token: write # This is required for requesting the JWT
