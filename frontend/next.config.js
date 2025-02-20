@@ -36,12 +36,23 @@ const nextConfig = (phase) => {
           basePath: false,
           permanent: false,
         },
+        {
+          source: `${basePath}/auth/inactive`,
+          destination: '/auth/inactive',
+          permanent: false,
+          basePath: false,
+        },
       ];
     },
 
     async rewrites() {
       if (includeAuthPages) {
         return [
+          {
+            source: '/auth/inactive',
+            destination: `http://${domain}${basePath}/auth/idle`,
+            basePath: false,
+          },
           {
             source: '/auth/signout',
             destination: `http://${domain}${basePath}/auth/signout`,

@@ -21,6 +21,8 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="smsTemplateName"]');
@@ -36,5 +38,12 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     this.characterCountText = page.locator('[id="character-count"]');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-sms-template-submit-button"]'
+    );
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

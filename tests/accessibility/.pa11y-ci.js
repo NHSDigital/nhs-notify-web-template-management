@@ -8,6 +8,7 @@ const {
   reviewNHSAppTemplateErrorPage,
   submitNHSAppTemplatePage,
   createEmailTemplatePage,
+  createLetterTemplatePage,
   createEmailTemplateErrorPage,
   reviewEmailTemplatePage,
   reviewEmailTemplateErrorPage,
@@ -64,7 +65,9 @@ module.exports = {
     performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
+    performCheck(
+      viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
+    ),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
@@ -79,7 +82,14 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-template`, actions: [...signInPageActions, 'wait for h1 to be visible'], name: 'invalid-template'}),
+    // Letter Journey
+    performCheck(createLetterTemplatePage(chooseTemplateUrl)),
+
+    performCheck({
+      url: `${baseUrl}/invalid-template`,
+      actions: [...signInPageActions, 'wait for h1 to be visible'],
+      name: 'invalid-template',
+    }),
   ],
   defaults: {
     reporters: [
@@ -88,18 +98,15 @@ module.exports = {
         'pa11y-ci-reporter-html',
         {
           destination: './.reports/accessibility',
-          includeZeroIssues: true
-        }
+          includeZeroIssues: true,
+        },
       ],
     ],
-    rules: [
-      'Principle1.Guideline1_3.1_3_1_AAA',
-    ],
+    rules: ['Principle1.Guideline1_3.1_3_1_AAA'],
     chromeLaunchConfig: {
-      args: ['--no-sandbox']
+      args: ['--no-sandbox'],
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
-  }
+  },
 };
-

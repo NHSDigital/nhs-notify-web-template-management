@@ -49,7 +49,7 @@ test.describe('Choose Template Type Page', () => {
 
     await chooseTemplatePage.loadPage();
 
-    await expect(chooseTemplatePage.radioButtons).toHaveCount(3);
+    await expect(chooseTemplatePage.radioButtons).toHaveCount(4);
   });
 
   test('should display error if no template type option selected and continue button clicked', async ({
@@ -59,7 +59,7 @@ test.describe('Choose Template Type Page', () => {
     const chooseTemplatePage = new TemplateMgmtChoosePage(page);
 
     await chooseTemplatePage.loadPage();
-    await chooseTemplatePage.clickSubmitButton();
+    await chooseTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(`${baseURL}/templates/choose-a-template-type`);
 
@@ -82,7 +82,7 @@ test.describe('Choose Template Type Page', () => {
 
       await chooseTemplatePage.loadPage();
       await chooseTemplatePage.checkRadioButton(label);
-      await chooseTemplatePage.clickSubmitButton();
+      await chooseTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/create-${path}-template`

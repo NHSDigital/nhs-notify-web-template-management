@@ -8,6 +8,7 @@ const protectedPaths = [
   /^\/create-email-template$/,
   /^\/create-nhs-app-template$/,
   /^\/create-text-message-template$/,
+  /^\/create-letter-template$/,
   /^\/delete-template\/[^/]+$/,
   /^\/edit-email-template\/[^/]+$/,
   /^\/edit-nhs-app-template/,
@@ -33,6 +34,7 @@ const publicPaths = [
   /^\/auth$/,
   /^\/auth\/signin$/,
   /^\/auth\/signout$/,
+  /^\/auth\/idle$/,
 ];
 
 function getContentSecurityPolicy(nonce: string) {
