@@ -30,6 +30,7 @@ const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
     LinksAndUrlsMarkdown(),
   ],
   [TemplateType.SMS]: [LinksAndUrlsNoMarkdown()],
+  [TemplateType.LETTER]: [],
 };
 
 export function MessageFormatting({ template }: { template: TemplateType }) {
