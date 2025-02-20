@@ -55,7 +55,7 @@ exports[`ChannelGuidance component should correctly render the component for tem
     More about letters
   </h2>
   <ul
-    style="list-style-type: none; padding: 0px;"
+    class="channel-guidance__list"
   />
 </DocumentFragment>
 `;
