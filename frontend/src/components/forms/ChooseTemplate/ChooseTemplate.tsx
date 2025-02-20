@@ -13,10 +13,13 @@ import {
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
 
-export const ChooseTemplate = () => {
+export const ChooseTemplate = ({
+  templateTypes,
+}: {
+  templateTypes: TemplateType[];
+}) => {
   const [state, action] = useActionState(chooseTemplateAction, {});
 
-  const templateTypes = Object.values(TemplateType);
   const options = templateTypes.map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),

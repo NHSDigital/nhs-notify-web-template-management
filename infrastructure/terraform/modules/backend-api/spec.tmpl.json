@@ -327,7 +327,8 @@
         "enum": [
           "NHS_APP",
           "EMAIL",
-          "SMS"
+          "SMS",
+          "LETTER"
         ]
       },
       "TemplateStatus": {

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateLetterTemplatePage should render CreateLetterTemplatePage 1`] = `
+<NHSNotifyMain>
+  <h1
+    className="nhsuk-heading-xl"
+    data-testid="page-heading"
+  >
+    Create letter template
+  </h1>
+  <p
+    id="placeholder"
+  >
+    🚧 Placeholder 🚧
+  </p>
+</NHSNotifyMain>
+`;

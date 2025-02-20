@@ -154,7 +154,7 @@ test.describe('Create Email message template Page', () => {
         'This is an email message'
       );
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const previewPageRegex =
         /\/templates\/preview-email-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
@@ -181,7 +181,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage();
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(createEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -223,7 +223,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailNameErrorLink = createEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -249,7 +249,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailSubjectLineErrorLink =
         createEmailTemplatePage.errorSummary.locator(
@@ -278,7 +278,7 @@ test.describe('Create Email message template Page', () => {
         'template-subject-line'
       );
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailMessageErrorLink =
         createEmailTemplatePage.errorSummary.locator(

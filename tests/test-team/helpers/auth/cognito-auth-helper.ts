@@ -23,10 +23,26 @@ export enum TestUserId {
    * User1 is generally the signed in user
    */
   User1 = 'User1',
+
   /**
    * User2 provides an alternative user allowing to check for things like template ownership
    */
   User2 = 'User2',
+
+  /**
+   * User3 idle user that stays stayed in
+   */
+  User3 = 'User3',
+
+  /**
+   * User4 idle user which signs out automatically
+   */
+  User4 = 'User4',
+
+  /**
+   * User5 idle user which signs out manually
+   */
+  User5 = 'User5',
 }
 
 export type TestUser = {

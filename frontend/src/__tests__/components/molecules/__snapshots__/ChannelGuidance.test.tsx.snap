@@ -47,6 +47,19 @@ exports[`ChannelGuidance component should correctly render the component for tem
 </DocumentFragment>
 `;
 
+exports[`ChannelGuidance component should correctly render the component for templateType LETTER 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-m"
+  >
+    More about letters
+  </h2>
+  <ul
+    style="list-style-type: none; padding: 0px;"
+  />
+</DocumentFragment>
+`;
+
 exports[`ChannelGuidance component should correctly render the component for templateType NHS_APP 1`] = `
 <DocumentFragment>
   <h2

@@ -19,6 +19,8 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
 
+  public readonly saveAndPreviewButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="nhsAppTemplateName"]');
@@ -32,5 +34,13 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
     );
     this.characterCountText = page.locator('[id="character-count"]');
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-nhs-app-template-submit-button"]'
+    );
+  }
+
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

@@ -90,7 +90,7 @@ test.describe('Edit NHS App Template Page', () => {
     await expect(editTemplatePage.pageHeader).toHaveText(
       'Create NHS App message template'
     );
-    await editTemplatePage.clickSubmitButton();
+    await editTemplatePage.clickSaveAndPreviewButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
 
     await expect(
@@ -114,7 +114,7 @@ test.describe('Edit NHS App Template Page', () => {
     await page
       .locator('[id="nhsAppTemplateMessage"]')
       .fill('This is an NHS App message');
-    await editTemplatePage.clickSubmitButton();
+    await editTemplatePage.clickSaveAndPreviewButton();
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-nhs-app-template/${templates.submit.id}?from=edit`
     );
@@ -136,7 +136,7 @@ test.describe('Edit NHS App Template Page', () => {
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
-    await editTemplatePage.clickSubmitButton();
+    await editTemplatePage.clickSaveAndPreviewButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
@@ -159,7 +159,7 @@ test.describe('Edit NHS App Template Page', () => {
     );
     const templateMessage = 'Test Message box';
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);
-    await editTemplatePage.clickSubmitButton();
+    await editTemplatePage.clickSaveAndPreviewButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
 
     await expect(
