@@ -53,6 +53,10 @@ export const BackendConfigHelper = {
             api_base_url: config.apiBaseUrl,
             templates_table_name: config.templatesTableName,
           },
+          storage: {
+            aws_region: 'eu-west-2',
+            bucket_name: 'pdf-upload-test-bucket-2',
+          },
         },
         null,
         2
