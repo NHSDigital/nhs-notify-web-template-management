@@ -574,7 +574,7 @@ exports[`renders page one error 1`] = `
           More about emails
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1220,7 +1220,7 @@ exports[`renders page with multiple errors 1`] = `
           More about emails
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1789,7 +1789,7 @@ exports[`renders page with preloaded field values 1`] = `
           More about emails
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -2336,7 +2336,7 @@ exports[`renders page without back link for initial state with id 1`] = `
           More about emails
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
