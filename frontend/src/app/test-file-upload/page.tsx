@@ -11,6 +11,12 @@ async function uploadFile(formData: FormData) {
     const result = await uploadData({
       path: `incoming/${randomUUID()}`,
       data: file,
+      options: {
+        bucket: {
+          region: 'eu-west-2',
+          bucketName: 'pdf-upload-test-bucket-2',
+        },
+      },
     }).result;
     console.log('Succeeded:', result);
   } catch (error) {
@@ -22,7 +28,6 @@ const UploadFilePage = async () => {
   return (
     <form action={uploadFile}>
       <label>
-        <span>Upload a file</span>
         <input type='file' name='file' />
       </label>
       <button type='submit'>Submit</button>
