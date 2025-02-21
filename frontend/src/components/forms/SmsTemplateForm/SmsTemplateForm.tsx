@@ -1,6 +1,6 @@
 'use client';
 
-import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
+import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -88,7 +88,7 @@ export const SmsTemplateForm: FC<
                 error={templateMessageError}
                 errorProps={{ id: 'smsTemplateMessage--error-message' }}
               />
-              <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
+              <JsEnabled>
                 <p className='nhsuk-u-margin-bottom-0' id='character-count'>
                   {smsTemplateMessage.length} characters
                 </p>
@@ -99,7 +99,7 @@ export const SmsTemplateForm: FC<
                   )}
                   {content.smsCountText2}
                 </p>
-              </div>
+              </JsEnabled>
               <p>
                 <a
                   href={content.smsPricingLink}
