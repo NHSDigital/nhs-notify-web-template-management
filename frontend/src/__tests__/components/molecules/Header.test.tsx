@@ -12,30 +12,11 @@ jest.mocked(useAuthenticator).mockReturnValue(
 );
 
 describe('Header component', () => {
-  const ENV = process.env;
-
-  beforeEach(() => {
-    jest.resetModules();
-    process.env = { ...ENV };
-  });
-
-  afterAll(() => {
-    process.env = ENV;
-  });
-
   it('renders component correctly', () => {
     render(<NHSNotifyHeader />);
 
     expect(screen.getByTestId('page-header')).toBeInTheDocument();
     expect(screen.getByTestId('page-header-logo')).toBeInTheDocument();
     expect(screen.getByTestId('auth-link')).toBeInTheDocument();
-  });
-
-  it('should not render sign in link', () => {
-    process.env.NEXT_PUBLIC_DISABLE_CONTENT = 'true';
-
-    render(<NHSNotifyHeader />);
-
-    expect(screen.queryByTestId('auth-link')).not.toBeInTheDocument();
   });
 });

@@ -130,12 +130,6 @@ variable "commit_id" {
   default     = "HEAD"
 }
 
-variable "disable_content" {
-  type        = string
-  description = "Value for turning switching disable conten true/false"
-  default     = "false"
-}
-
 variable "destination_vault_arn" {
   type        = string
   description = "ARN of the backup vault in the destination account, if this environment should be backed up"
