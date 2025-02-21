@@ -5,7 +5,7 @@ import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { getBasePath } from '@utils/get-base-path';
-import { chooseTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import {
   TemplateType,
   templateTypeDisplayMappings,
@@ -33,7 +33,7 @@ export const ChooseTemplate = ({
     learnMoreLink,
     learnMoreText,
     backLinkText,
-  } = chooseTemplatePageContent;
+  } = content.components.chooseTemplate;
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { getBasePath } from '@utils/get-base-path';
 import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
-const headerComponent = {
+const header = {
   serviceName: 'Notify',
   links: {
     signIn: {
@@ -17,7 +17,7 @@ const headerComponent = {
   },
 };
 
-const footerComponent = {
+const footer = {
   nhsEngland: 'NHS England',
   supportLinks: 'Support links',
   links: {
@@ -32,7 +32,7 @@ const footerComponent = {
   },
 };
 
-const personalisationComponent = {
+const personalisation = {
   header: 'Personalisation',
   details: {
     title: 'Personalisation fields',
@@ -60,7 +60,7 @@ const personalisationComponent = {
   },
 };
 
-const messageFormattingComponent = {
+const messageFormatting = {
   header: 'Message formatting',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
@@ -201,7 +201,7 @@ const manageTemplates = {
   },
 };
 
-const reviewEmailTemplateContent = {
+const reviewEmailTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -214,7 +214,7 @@ const reviewEmailTemplateContent = {
   },
 };
 
-const reviewNHSAppTemplateContent = {
+const reviewNHSAppTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -227,7 +227,7 @@ const reviewNHSAppTemplateContent = {
   },
 };
 
-const reviewSMSTemplateContent = {
+const reviewSMSTemplate = {
   sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
@@ -253,7 +253,7 @@ const reviewSMSTemplateContent = {
   },
 };
 
-const error404PageContent = {
+const error404 = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
   backLink: {
@@ -268,7 +268,7 @@ const error404PageContent = {
   },
 };
 
-export const submitTemplateContent = {
+const submitTemplate = {
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
   warningCalloutText:
@@ -288,7 +288,7 @@ export const submitTemplateContent = {
   buttonText: 'Submit template',
 };
 
-export const copyTemplatePageContent = {
+const copyTemplate = {
   pageHeading: 'Copy',
   radiosLabel: 'Choose a template type',
   errorHeading: 'There is a problem',
@@ -297,7 +297,7 @@ export const copyTemplatePageContent = {
   backLinkText: 'Back to all templates',
 };
 
-export const chooseTemplatePageContent = {
+const chooseTemplate = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
@@ -307,7 +307,7 @@ export const chooseTemplatePageContent = {
   backLinkText: 'Back to all templates',
 };
 
-export const nameYourTemplateContent = {
+const nameYourTemplate = {
   templateNameDetailsSummary: 'Naming your templates',
   templateNameDetailsOpeningParagraph:
     'You should name your templates in a way that works best for your service or organisation.',
@@ -335,7 +335,7 @@ export const nameYourTemplateContent = {
   },
 };
 
-export const channelGuidanceContent = {
+const channelGuidance = {
   [TemplateType.NHS_APP]: {
     heading: 'More about NHS App messages',
     guidanceLinks: [
@@ -393,8 +393,8 @@ export const channelGuidanceContent = {
   },
 };
 
-export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS App message template',
+const templateFormNhsApp = {
+  pageHeadingSuffix: 'NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -404,8 +404,8 @@ export const createNhsAppTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const createEmailTemplatePageContent = {
-  pageHeading: 'Create email template',
+const templateFormEmail = {
+  pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
@@ -415,22 +415,8 @@ export const createEmailTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const templateSubmittedPageContent = {
-  pageHeading: 'Template submitted',
-  templateNameHeading: 'Template name',
-  templateIdHeading: 'Template ID',
-  doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
-  backLinkText: 'Back to all templates',
-};
-
-export const createSmsTemplatePageContent = {
-  pageHeading: 'Create text message template',
+const templateFormSms = {
+  pageHeadingSuffix: 'text message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -444,20 +430,34 @@ export const createSmsTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const viewSubmittedTemplatePageContent = {
+const templateSubmitted = {
+  pageHeading: 'Template submitted',
+  templateNameHeading: 'Template name',
+  templateIdHeading: 'Template ID',
+  doNextHeading: 'What you need to do next',
+  notLiveHeading: "If you're currently onboarding",
+  notLiveText:
+    "Tell your onboarding manager once you've submitted all your templates.",
+  liveHeading: "If you've already onboarded",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: 'Back to all templates',
+};
+
+const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
 };
 
-export const deleteTemplatePageContent = {
+const deleteTemplate = {
   pageHeading: 'Are you sure you want to delete the template',
   hintText: "The template will be removed and you won't be able to recover it.",
   noButtonText: 'No, go back',
   yesButtonText: 'Yes, delete template',
 };
 
-const logoutWarningComponent = {
+const logoutWarning = {
   heading: "For security reasons, you'll be signed out in",
   signIn: 'Stay signed in',
   body: "If you're signed out, any unsaved changes will be lost.",
@@ -468,18 +468,29 @@ const content = {
     mainLayout,
   },
   components: {
-    headerComponent,
-    footerComponent,
-    personalisationComponent,
-    reviewEmailTemplateContent,
-    reviewNHSAppTemplateContent,
-    reviewSMSTemplateContent,
-    messageFormattingComponent,
-    logoutWarningComponent,
+    channelGuidance,
+    chooseTemplate,
+    copyTemplate,
+    deleteTemplate,
+    footer,
+    header,
+    logoutWarning,
+    messageFormatting,
+    nameYourTemplate,
+    personalisation,
+    reviewEmailTemplate,
+    reviewNHSAppTemplate,
+    reviewSMSTemplate,
+    submitTemplate,
+    templateFormEmail,
+    templateFormNhsApp,
+    templateFormSms,
+    templateSubmitted,
+    viewSubmittedTemplate,
   },
   pages: {
     homePage,
-    error404PageContent,
+    error404,
     manageTemplates,
   },
 };

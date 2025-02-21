@@ -64,7 +64,7 @@ test('renders page with preloaded field values', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('renders page without back link for initial state with id', () => {
+test('renders page without back link for initial state with id - edit mode', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({

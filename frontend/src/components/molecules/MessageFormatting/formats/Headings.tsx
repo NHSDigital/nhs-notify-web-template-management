@@ -1,7 +1,7 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 
-const { headings } = content.components.messageFormattingComponent;
+const { headings } = content.components.messageFormatting;
 
 export const Headings = () => (
   <Details data-testid='headings-details'>

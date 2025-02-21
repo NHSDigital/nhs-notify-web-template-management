@@ -23,12 +23,8 @@ export const LogoutWarningModal = ({
   promptBeforeLogoutSeconds: number;
   logoutInSeconds: number;
 }) => {
-  const {
-    headerComponent: {
-      links: { signOut },
-    },
-    logoutWarningComponent,
-  } = content.components;
+  const { signOut } = content.components.header.links;
+  const { logoutWarning } = content.components;
 
   const initialTime = formatTime(promptBeforeLogoutSeconds);
 
@@ -86,10 +82,10 @@ export const LogoutWarningModal = ({
   return (
     <Modal showModal={showModal}>
       <Modal.Header>
-        {`${logoutWarningComponent.heading} ${remainingTime}.`}
+        {`${logoutWarning.heading} ${remainingTime}.`}
       </Modal.Header>
       <Modal.Body>
-        <p>{logoutWarningComponent.body}</p>
+        <p>{logoutWarning.body}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button
@@ -97,7 +93,7 @@ export const LogoutWarningModal = ({
           onClick={stillHere}
           data-testid='modal-sign-in'
         >
-          {logoutWarningComponent.signIn}
+          {logoutWarning.signIn}
         </Button>
         <div className={styles.signOut}>
           <a

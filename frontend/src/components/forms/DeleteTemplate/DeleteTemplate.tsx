@@ -2,7 +2,7 @@
 
 import { FC, useActionState } from 'react';
 import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
-import { deleteTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -17,7 +17,7 @@ type DeleteTemplateProps = {
 
 export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
   const { pageHeading, hintText, noButtonText, yesButtonText } =
-    deleteTemplatePageContent;
+    content.components.deleteTemplate;
 
   const [yesState, yesAction] = useActionState(
     deleteTemplateYesAction,

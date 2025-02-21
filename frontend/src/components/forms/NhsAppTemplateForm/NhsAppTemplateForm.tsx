@@ -21,7 +21,7 @@ import {
   PageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { createNhsAppTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
@@ -32,7 +32,7 @@ export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
 > = ({ initialState }) => {
   const {
-    pageHeading,
+    pageHeadingSuffix,
     errorHeading,
     buttonText,
     characterCountText,
@@ -40,7 +40,8 @@ export const NhsAppTemplateForm: FC<
     templateMessageLabelText,
     templateNameHintText,
     backLinkText,
-  } = createNhsAppTemplatePageContent;
+  } = content.components.templateFormNhsApp;
+
   const [state, action] = useActionState(processFormActions, initialState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
@@ -55,9 +56,11 @@ export const NhsAppTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {backLinkText}
         </BackLink>
@@ -71,7 +74,8 @@ export const NhsAppTemplateForm: FC<
               formId='create-nhs-app-template'
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {pageHeading}
+                {editMode ? 'Edit ' : 'Create '}
+                {pageHeadingSuffix}
               </h1>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='nhsAppTemplateName' size='s'>

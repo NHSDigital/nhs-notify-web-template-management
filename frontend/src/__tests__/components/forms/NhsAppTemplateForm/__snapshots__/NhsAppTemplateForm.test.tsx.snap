@@ -1934,7 +1934,7 @@ exports[`renders page with preloaded field values 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders page without back link for initial state with id 1`] = `
+exports[`renders page without back link for initial state with id - edit mode 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -1966,7 +1966,7 @@ exports[`renders page without back link for initial state with id 1`] = `
             class="nhsuk-heading-xl"
             data-testid="page-heading"
           >
-            Create NHS App message template
+            Edit NHS App message template
           </h1>
           <div>
             <label

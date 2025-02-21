@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import content from '@content/content';
 
-const footerContent = content.components.footerComponent;
+const footerContent = content.components.footer;
 
 export function NHSNotifyFooter() {
   return (

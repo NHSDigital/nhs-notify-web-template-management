@@ -1,7 +1,7 @@
 import content from '@content/content';
 import { Details } from 'nhsuk-react-components';
 
-const personalisationContent = content.components.personalisationComponent;
+const personalisationContent = content.components.personalisation;
 
 export function Personalisation() {
   return (

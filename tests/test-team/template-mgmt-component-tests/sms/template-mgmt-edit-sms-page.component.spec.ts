@@ -68,7 +68,7 @@ test.describe('Edit SMS message template Page', () => {
     );
 
     await expect(editSmsTemplatePage.pageHeader).toHaveText(
-      'Create text message template'
+      'Edit text message template'
     );
 
     await expect(editSmsTemplatePage.pricingLink).toHaveAttribute(

@@ -72,7 +72,7 @@ test.describe('Edit Email message template Page', () => {
     );
 
     await expect(editEmailTemplatePage.pageHeader).toHaveText(
-      'Create email template'
+      'Edit email template'
     );
   });
 

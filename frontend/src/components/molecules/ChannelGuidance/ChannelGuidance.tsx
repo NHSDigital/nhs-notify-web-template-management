@@ -1,20 +1,19 @@
 import { TemplateType } from 'nhs-notify-web-template-management-utils';
-import { channelGuidanceContent } from '@content/content';
 import styles from './ChannelGuidance.module.scss';
+import content from '@content/content';
 
 export type ChannelGuidanceType = {
   template: TemplateType;
 };
 
 export function ChannelGuidance({ template }: ChannelGuidanceType) {
+  const { channelGuidance } = content.components;
+
   return (
     <>
-      <h2 className='nhsuk-heading-m'>
-        {channelGuidanceContent[template].heading}
-      </h2>
-
+      <h2 className='nhsuk-heading-m'>{channelGuidance[template].heading}</h2>
       <ul className={styles['channel-guidance__list']}>
-        {channelGuidanceContent[template].guidanceLinks.map((guidanceLink) => (
+        {channelGuidance[template].guidanceLinks.map((guidanceLink) => (
           <li className='nhsuk-u-margin-bottom-3' key={guidanceLink.text}>
             <a
               href={guidanceLink.link}

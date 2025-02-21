@@ -21,11 +21,7 @@ export function ReviewEmailTemplate({
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
-  const {
-    components: {
-      reviewEmailTemplateContent: { sectionHeading, form },
-    },
-  } = content;
+  const { form, sectionHeading } = content.components.reviewEmailTemplate;
 
   const [state, action] = useActionState(
     reviewEmailTemplateAction,

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { NHSNotifyFooter } from '@molecules/Footer/Footer';
 import content from '@content/content';
 
-const footerContent = content.components.footerComponent;
+const footerContent = content.components.footer;
 
 describe('Footer component', () => {
   it('renders component correctly', () => {

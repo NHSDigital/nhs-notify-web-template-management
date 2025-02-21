@@ -44,7 +44,7 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
               />
             </svg>
             <span className='nhsuk-header__service-name'>
-              {content.components.headerComponent.serviceName}
+              {content.components.header.serviceName}
             </span>
           </Link>
         </div>

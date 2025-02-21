@@ -58,7 +58,7 @@ test.describe('Edit NHS App Template Page', () => {
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
-      'Create NHS App message template'
+      'Edit NHS App message template'
     );
   });
 
@@ -88,7 +88,7 @@ test.describe('Edit NHS App Template Page', () => {
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
-      'Create NHS App message template'
+      'Edit NHS App message template'
     );
     await editTemplatePage.clickSaveAndPreviewButton();
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
@@ -132,7 +132,7 @@ test.describe('Edit NHS App Template Page', () => {
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
-      'Create NHS App message template'
+      'Edit NHS App message template'
     );
     const templateName = 'NHS Testing 123';
     await page.locator('[id="nhsAppTemplateName"]').fill(templateName);
@@ -155,7 +155,7 @@ test.describe('Edit NHS App Template Page', () => {
       `${baseURL}/templates/edit-nhs-app-template/${templates.emptyTemplateData.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
-      'Create NHS App message template'
+      'Edit NHS App message template'
     );
     const templateMessage = 'Test Message box';
     await page.locator('[id="nhsAppTemplateMessage"]').fill(templateMessage);

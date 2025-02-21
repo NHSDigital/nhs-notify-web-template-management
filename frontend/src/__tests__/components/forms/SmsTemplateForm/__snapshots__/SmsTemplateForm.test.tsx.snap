@@ -46,7 +46,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"
@@ -367,7 +367,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
 </DocumentFragment>
 `;
 
-exports[`CreateSmsTemplate component renders page with back link if initial state has no id 1`] = `
+exports[`CreateSmsTemplate component renders page with back link if initial state has no id - edit mode 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -760,7 +760,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"
@@ -1109,7 +1109,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"

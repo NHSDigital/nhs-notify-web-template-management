@@ -1,7 +1,7 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 
-const { boldText } = content.components.messageFormattingComponent;
+const { boldText } = content.components.messageFormatting;
 
 export const BoldText = () => (
   <Details data-testid='bold-text-details'>

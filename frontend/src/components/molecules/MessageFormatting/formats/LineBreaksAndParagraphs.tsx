@@ -2,8 +2,7 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
 
-const { lineBreaksAndParagraphs } =
-  content.components.messageFormattingComponent;
+const { lineBreaksAndParagraphs } = content.components.messageFormatting;
 
 export const LineBreaksAndParagraphs = () => (
   <Details data-testid='lines-breaks-and-paragraphs-details'>

@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { TemplateType } from 'nhs-notify-web-template-management-utils';
-import { nameYourTemplateContent } from '@content/content';
+import content from '@content/content';
 
 describe('TemplateNameGuidance component', () => {
   const templateTypes = Object.keys(TemplateType);
@@ -19,7 +19,9 @@ describe('TemplateNameGuidance component', () => {
     (templateType: string) => {
       const templateTypeToUse = templateType as TemplateType;
       const expectedText =
-        nameYourTemplateContent.templateNameDetailsExample[templateTypeToUse];
+        content.components.nameYourTemplate.templateNameDetailsExample[
+          templateTypeToUse
+        ];
 
       const container = render(
         <TemplateNameGuidance template={templateTypeToUse} />

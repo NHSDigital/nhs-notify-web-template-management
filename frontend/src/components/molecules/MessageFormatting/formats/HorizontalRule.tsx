@@ -2,7 +2,7 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
 
-const { horizontalLine } = content.components.messageFormattingComponent;
+const { horizontalLine } = content.components.messageFormatting;
 
 export const HorizontalRule = () => (
   <Details data-testid='horizontal-lines-details'>

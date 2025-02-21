@@ -30,11 +30,7 @@ export function ReviewNHSAppTemplate({
   const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
-  const {
-    components: {
-      reviewNHSAppTemplateContent: { sectionHeading, form },
-    },
-  } = content;
+  const { sectionHeading, form } = content.components.reviewNHSAppTemplate;
 
   return (
     <>

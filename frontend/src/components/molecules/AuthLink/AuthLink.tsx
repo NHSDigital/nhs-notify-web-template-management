@@ -9,11 +9,11 @@ export const AuthLink = () => {
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   let id = 'sign-in-link';
-  let linkContent = content.components.headerComponent.links.signIn;
+  let linkContent = content.components.header.links.signIn;
 
   if (authStatus === 'authenticated') {
     id = 'sign-out-link';
-    linkContent = content.components.headerComponent.links.signOut;
+    linkContent = content.components.header.links.signOut;
   }
 
   return (

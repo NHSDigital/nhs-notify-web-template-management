@@ -92,132 +92,124 @@ exports[`renders page one error 1`] = `
             Create email template
           </h1>
           <div
-            class="border"
+            class="nhsuk-form-group--error"
           >
-            <div
-              class="nhsuk-form-group--error"
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateName"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateName"
-              >
-                Template name
-              </label>
-              <div
-                class="nhsuk-hint"
-              >
-                This will not be visible to recipients.
-              </div>
-              <details
-                class="nhsuk-details"
-                data-testid="how-to-name-your-template"
-              >
-                <summary
-                  class="nhsuk-details__summary"
-                >
-                  <span
-                    class="nhsuk-details__summary-text"
-                  >
-                    Naming your templates
-                  </span>
-                </summary>
-                <div
-                  class="nhsuk-details__text"
-                >
-                  <p>
-                    You should name your templates in a way that works best for your service or organisation.
-                  </p>
-                  <p>
-                    Common template names include the:
-                  </p>
-                  <ul>
-                    <li>
-                      message channel it uses
-                    </li>
-                    <li>
-                      subject or reason for the message
-                    </li>
-                    <li>
-                      intended audience for the template
-                    </li>
-                    <li>
-                      version number of the template
-                    </li>
-                  </ul>
-                  <p
-                    data-testid="template-name-example"
-                  >
-                    For example, 'Email - covid19 2023 - over 65s - version 3'
-                  </p>
-                </div>
-              </details>
-              <div
-                class="nhsuk-form-group nhsuk-form-group--error"
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
+            </div>
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template"
+            >
+              <summary
+                class="nhsuk-details__summary"
               >
                 <span
-                  class="nhsuk-error-message"
-                  id="emailTemplateName--error-message"
+                  class="nhsuk-details__summary-text"
                 >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Error: 
-                  </span>
-                  Template name error
+                  Naming your templates
                 </span>
-                <input
-                  aria-describedby="emailTemplateName--error-message"
-                  class="nhsuk-input nhsuk-input--error"
-                  data-testid="emailTemplateName-input"
-                  id="emailTemplateName"
-                  name="emailTemplateName"
-                  type="text"
-                  value=""
-                />
+              </summary>
+              <div
+                class="nhsuk-details__text"
+              >
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'Email - covid19 2023 - over 65s - version 3'
+                </p>
               </div>
+            </details>
+            <div
+              class="nhsuk-form-group nhsuk-form-group--error"
+            >
+              <span
+                class="nhsuk-error-message"
+                id="emailTemplateName--error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Template name error
+              </span>
+              <input
+                aria-describedby="emailTemplateName--error-message"
+                class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateName-input"
+                id="emailTemplateName"
+                name="emailTemplateName"
+                type="text"
+                value=""
+              />
             </div>
           </div>
-          <div
-            class="border"
-          >
-            <div>
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateSubjectLine"
-              >
-                Subject line
-              </label>
-              <div
-                class="nhsuk-form-group"
-              >
-                <input
-                  class="nhsuk-input"
-                  data-testid="emailTemplateSubjectLine-input"
-                  id="emailTemplateSubjectLine"
-                  name="emailTemplateSubjectLine"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
+          <div>
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateSubjectLine"
+            >
+              Subject line
+            </label>
             <div
               class="nhsuk-form-group"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateMessage"
-                id="emailTemplateMessage--label"
-              >
-                Message
-              </label>
-              <textarea
-                class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
-                id="emailTemplateMessage"
-                name="emailTemplateMessage"
-                rows="10"
+              <input
+                class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
+                id="emailTemplateSubjectLine"
+                name="emailTemplateSubjectLine"
+                type="text"
+                value=""
               />
             </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateMessage"
+              id="emailTemplateMessage--label"
+            >
+              Message
+            </label>
+            <textarea
+              class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
+              id="emailTemplateMessage"
+              name="emailTemplateMessage"
+              rows="10"
+            />
           </div>
           <button
             aria-disabled="false"
@@ -712,158 +704,150 @@ exports[`renders page with multiple errors 1`] = `
             Create email template
           </h1>
           <div
-            class="border"
+            class="nhsuk-form-group--error"
           >
-            <div
-              class="nhsuk-form-group--error"
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateName"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateName"
-              >
-                Template name
-              </label>
-              <div
-                class="nhsuk-hint"
-              >
-                This will not be visible to recipients.
-              </div>
-              <details
-                class="nhsuk-details"
-                data-testid="how-to-name-your-template"
-              >
-                <summary
-                  class="nhsuk-details__summary"
-                >
-                  <span
-                    class="nhsuk-details__summary-text"
-                  >
-                    Naming your templates
-                  </span>
-                </summary>
-                <div
-                  class="nhsuk-details__text"
-                >
-                  <p>
-                    You should name your templates in a way that works best for your service or organisation.
-                  </p>
-                  <p>
-                    Common template names include the:
-                  </p>
-                  <ul>
-                    <li>
-                      message channel it uses
-                    </li>
-                    <li>
-                      subject or reason for the message
-                    </li>
-                    <li>
-                      intended audience for the template
-                    </li>
-                    <li>
-                      version number of the template
-                    </li>
-                  </ul>
-                  <p
-                    data-testid="template-name-example"
-                  >
-                    For example, 'Email - covid19 2023 - over 65s - version 3'
-                  </p>
-                </div>
-              </details>
-              <div
-                class="nhsuk-form-group nhsuk-form-group--error"
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
+            </div>
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template"
+            >
+              <summary
+                class="nhsuk-details__summary"
               >
                 <span
-                  class="nhsuk-error-message"
-                  id="emailTemplateName--error-message"
+                  class="nhsuk-details__summary-text"
                 >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Error: 
-                  </span>
-                  Template name error
+                  Naming your templates
                 </span>
-                <input
-                  aria-describedby="emailTemplateName--error-message"
-                  class="nhsuk-input nhsuk-input--error"
-                  data-testid="emailTemplateName-input"
-                  id="emailTemplateName"
-                  name="emailTemplateName"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            class="border"
-          >
-            <div
-              class="nhsuk-form-group--error"
-            >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateSubjectLine"
-              >
-                Subject line
-              </label>
+              </summary>
               <div
-                class="nhsuk-form-group nhsuk-form-group--error"
+                class="nhsuk-details__text"
               >
-                <span
-                  class="nhsuk-error-message"
-                  id="emailTemplateSubjectLine--error-message"
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
                 >
-                  <span
-                    class="nhsuk-u-visually-hidden"
-                  >
-                    Error: 
-                  </span>
-                  Template subject line error
-                </span>
-                <input
-                  aria-describedby="emailTemplateSubjectLine--error-message"
-                  class="nhsuk-input nhsuk-input--error"
-                  data-testid="emailTemplateSubjectLine-input"
-                  id="emailTemplateSubjectLine"
-                  name="emailTemplateSubjectLine"
-                  type="text"
-                  value=""
-                />
+                  For example, 'Email - covid19 2023 - over 65s - version 3'
+                </p>
               </div>
-            </div>
+            </details>
             <div
               class="nhsuk-form-group nhsuk-form-group--error"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateMessage"
-                id="emailTemplateMessage--label"
-              >
-                Message
-              </label>
               <span
                 class="nhsuk-error-message"
-                id="emailTemplateMessage--error-message"
+                id="emailTemplateName--error-message"
               >
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
                   Error: 
                 </span>
-                Template message error
+                Template name error
               </span>
-              <textarea
-                aria-describedby="emailTemplateMessage--error-message"
-                class="nhsuk-textarea nhsuk-textarea--error"
-                data-testid="emailTemplateMessage-input"
-                id="emailTemplateMessage"
-                name="emailTemplateMessage"
-                rows="10"
+              <input
+                aria-describedby="emailTemplateName--error-message"
+                class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateName-input"
+                id="emailTemplateName"
+                name="emailTemplateName"
+                type="text"
+                value=""
               />
             </div>
+          </div>
+          <div
+            class="nhsuk-form-group--error"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateSubjectLine"
+            >
+              Subject line
+            </label>
+            <div
+              class="nhsuk-form-group nhsuk-form-group--error"
+            >
+              <span
+                class="nhsuk-error-message"
+                id="emailTemplateSubjectLine--error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Template subject line error
+              </span>
+              <input
+                aria-describedby="emailTemplateSubjectLine--error-message"
+                class="nhsuk-input nhsuk-input--error"
+                data-testid="emailTemplateSubjectLine-input"
+                id="emailTemplateSubjectLine"
+                name="emailTemplateSubjectLine"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateMessage"
+              id="emailTemplateMessage--label"
+            >
+              Message
+            </label>
+            <span
+              class="nhsuk-error-message"
+              id="emailTemplateMessage--error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Template message error
+            </span>
+            <textarea
+              aria-describedby="emailTemplateMessage--error-message"
+              class="nhsuk-textarea nhsuk-textarea--error"
+              data-testid="emailTemplateMessage-input"
+              id="emailTemplateMessage"
+              name="emailTemplateMessage"
+              rows="10"
+            />
           </div>
           <button
             aria-disabled="false"
@@ -1318,121 +1302,113 @@ exports[`renders page with preloaded field values 1`] = `
           >
             Create email template
           </h1>
-          <div
-            class="border"
-          >
-            <div>
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateName"
-              >
-                Template name
-              </label>
-              <div
-                class="nhsuk-hint"
-              >
-                This will not be visible to recipients.
-              </div>
-              <details
-                class="nhsuk-details"
-                data-testid="how-to-name-your-template"
-              >
-                <summary
-                  class="nhsuk-details__summary"
-                >
-                  <span
-                    class="nhsuk-details__summary-text"
-                  >
-                    Naming your templates
-                  </span>
-                </summary>
-                <div
-                  class="nhsuk-details__text"
-                >
-                  <p>
-                    You should name your templates in a way that works best for your service or organisation.
-                  </p>
-                  <p>
-                    Common template names include the:
-                  </p>
-                  <ul>
-                    <li>
-                      message channel it uses
-                    </li>
-                    <li>
-                      subject or reason for the message
-                    </li>
-                    <li>
-                      intended audience for the template
-                    </li>
-                    <li>
-                      version number of the template
-                    </li>
-                  </ul>
-                  <p
-                    data-testid="template-name-example"
-                  >
-                    For example, 'Email - covid19 2023 - over 65s - version 3'
-                  </p>
-                </div>
-              </details>
-              <div
-                class="nhsuk-form-group"
-              >
-                <input
-                  class="nhsuk-input"
-                  data-testid="emailTemplateName-input"
-                  id="emailTemplateName"
-                  name="emailTemplateName"
-                  type="text"
-                  value="template-name"
-                />
-              </div>
+          <div>
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateName"
+            >
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
             </div>
-          </div>
-          <div
-            class="border"
-          >
-            <div>
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateSubjectLine"
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template"
+            >
+              <summary
+                class="nhsuk-details__summary"
               >
-                Subject line
-              </label>
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
               <div
-                class="nhsuk-form-group"
+                class="nhsuk-details__text"
               >
-                <input
-                  class="nhsuk-input"
-                  data-testid="emailTemplateSubjectLine-input"
-                  id="emailTemplateSubjectLine"
-                  name="emailTemplateSubjectLine"
-                  type="text"
-                  value="template-subject-line"
-                />
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'Email - covid19 2023 - over 65s - version 3'
+                </p>
               </div>
-            </div>
+            </details>
             <div
               class="nhsuk-form-group"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateMessage"
-                id="emailTemplateMessage--label"
-              >
-                Message
-              </label>
-              <textarea
-                class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
-                id="emailTemplateMessage"
-                name="emailTemplateMessage"
-                rows="10"
-              >
-                template-message
-              </textarea>
+              <input
+                class="nhsuk-input"
+                data-testid="emailTemplateName-input"
+                id="emailTemplateName"
+                name="emailTemplateName"
+                type="text"
+                value="template-name"
+              />
             </div>
+          </div>
+          <div>
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateSubjectLine"
+            >
+              Subject line
+            </label>
+            <div
+              class="nhsuk-form-group"
+            >
+              <input
+                class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
+                id="emailTemplateSubjectLine"
+                name="emailTemplateSubjectLine"
+                type="text"
+                value="template-subject-line"
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateMessage"
+              id="emailTemplateMessage--label"
+            >
+              Message
+            </label>
+            <textarea
+              class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
+              id="emailTemplateMessage"
+              name="emailTemplateMessage"
+              rows="10"
+            >
+              template-message
+            </textarea>
           </div>
           <button
             aria-disabled="false"
@@ -1831,7 +1807,7 @@ exports[`renders page with preloaded field values 1`] = `
 </DocumentFragment>
 `;
 
-exports[`renders page without back link for initial state with id 1`] = `
+exports[`renders page without back link for initial state with id - edit mode 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -1863,123 +1839,115 @@ exports[`renders page without back link for initial state with id 1`] = `
             class="nhsuk-heading-xl"
             data-testid="page-heading"
           >
-            Create email template
+            Edit email template
           </h1>
-          <div
-            class="border"
-          >
-            <div>
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateName"
-              >
-                Template name
-              </label>
-              <div
-                class="nhsuk-hint"
-              >
-                This will not be visible to recipients.
-              </div>
-              <details
-                class="nhsuk-details"
-                data-testid="how-to-name-your-template"
-              >
-                <summary
-                  class="nhsuk-details__summary"
-                >
-                  <span
-                    class="nhsuk-details__summary-text"
-                  >
-                    Naming your templates
-                  </span>
-                </summary>
-                <div
-                  class="nhsuk-details__text"
-                >
-                  <p>
-                    You should name your templates in a way that works best for your service or organisation.
-                  </p>
-                  <p>
-                    Common template names include the:
-                  </p>
-                  <ul>
-                    <li>
-                      message channel it uses
-                    </li>
-                    <li>
-                      subject or reason for the message
-                    </li>
-                    <li>
-                      intended audience for the template
-                    </li>
-                    <li>
-                      version number of the template
-                    </li>
-                  </ul>
-                  <p
-                    data-testid="template-name-example"
-                  >
-                    For example, 'Email - covid19 2023 - over 65s - version 3'
-                  </p>
-                </div>
-              </details>
-              <div
-                class="nhsuk-form-group"
-              >
-                <input
-                  class="nhsuk-input"
-                  data-testid="emailTemplateName-input"
-                  id="emailTemplateName"
-                  name="emailTemplateName"
-                  type="text"
-                  value="template-name"
-                />
-              </div>
+          <div>
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateName"
+            >
+              Template name
+            </label>
+            <div
+              class="nhsuk-hint"
+            >
+              This will not be visible to recipients.
             </div>
-          </div>
-          <div
-            class="border"
-          >
-            <div>
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateSubjectLine"
+            <details
+              class="nhsuk-details"
+              data-testid="how-to-name-your-template"
+            >
+              <summary
+                class="nhsuk-details__summary"
               >
-                Subject line
-              </label>
+                <span
+                  class="nhsuk-details__summary-text"
+                >
+                  Naming your templates
+                </span>
+              </summary>
               <div
-                class="nhsuk-form-group"
+                class="nhsuk-details__text"
               >
-                <input
-                  class="nhsuk-input"
-                  data-testid="emailTemplateSubjectLine-input"
-                  id="emailTemplateSubjectLine"
-                  name="emailTemplateSubjectLine"
-                  type="text"
-                  value="template-subject-line"
-                />
+                <p>
+                  You should name your templates in a way that works best for your service or organisation.
+                </p>
+                <p>
+                  Common template names include the:
+                </p>
+                <ul>
+                  <li>
+                    message channel it uses
+                  </li>
+                  <li>
+                    subject or reason for the message
+                  </li>
+                  <li>
+                    intended audience for the template
+                  </li>
+                  <li>
+                    version number of the template
+                  </li>
+                </ul>
+                <p
+                  data-testid="template-name-example"
+                >
+                  For example, 'Email - covid19 2023 - over 65s - version 3'
+                </p>
               </div>
-            </div>
+            </details>
             <div
               class="nhsuk-form-group"
             >
-              <label
-                class="nhsuk-label nhsuk-label--s"
-                for="emailTemplateMessage"
-                id="emailTemplateMessage--label"
-              >
-                Message
-              </label>
-              <textarea
-                class="nhsuk-textarea"
-                data-testid="emailTemplateMessage-input"
-                id="emailTemplateMessage"
-                name="emailTemplateMessage"
-                rows="10"
-              >
-                template-message
-              </textarea>
+              <input
+                class="nhsuk-input"
+                data-testid="emailTemplateName-input"
+                id="emailTemplateName"
+                name="emailTemplateName"
+                type="text"
+                value="template-name"
+              />
             </div>
+          </div>
+          <div>
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateSubjectLine"
+            >
+              Subject line
+            </label>
+            <div
+              class="nhsuk-form-group"
+            >
+              <input
+                class="nhsuk-input"
+                data-testid="emailTemplateSubjectLine-input"
+                id="emailTemplateSubjectLine"
+                name="emailTemplateSubjectLine"
+                type="text"
+                value="template-subject-line"
+              />
+            </div>
+          </div>
+          <div
+            class="nhsuk-form-group"
+          >
+            <label
+              class="nhsuk-label nhsuk-label--s"
+              for="emailTemplateMessage"
+              id="emailTemplateMessage--label"
+            >
+              Message
+            </label>
+            <textarea
+              class="nhsuk-textarea"
+              data-testid="emailTemplateMessage-input"
+              id="emailTemplateMessage"
+              name="emailTemplateMessage"
+              rows="10"
+            >
+              template-message
+            </textarea>
           </div>
           <button
             aria-disabled="false"

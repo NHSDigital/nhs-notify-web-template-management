@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { templateSubmittedPageContent } from '@content/content';
+import content from '@content/content';
 
 type TemplateSubmittedProps = {
   templateId: string;
@@ -12,6 +12,7 @@ export const TemplateSubmitted = ({
   templateName,
 }: TemplateSubmittedProps) => {
   const {
+    backLinkText,
     pageHeading,
     templateNameHeading,
     templateIdHeading,
@@ -21,7 +22,7 @@ export const TemplateSubmitted = ({
     liveHeading,
     liveLinkText,
     liveText,
-  } = templateSubmittedPageContent;
+  } = content.components.templateSubmitted;
 
   return (
     <NHSNotifyMain>
@@ -61,7 +62,7 @@ export const TemplateSubmitted = ({
           <hr className='nhsuk-section-break--visible' />
           <p>
             <Link id='go-back-link' href='/manage-templates'>
-              {templateSubmittedPageContent.backLinkText}
+              {backLinkText}
             </Link>
           </p>
         </div>

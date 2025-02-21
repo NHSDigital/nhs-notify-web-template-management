@@ -26,7 +26,7 @@ jest.mock('react', () => {
 jest.mock('@utils/amplify-utils');
 
 describe('CreateSmsTemplate component', () => {
-  test('renders page with back link if initial state has no id', async () => {
+  test('renders page with back link if initial state has no id - edit mode', async () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<Draft<TemplateFormState<SMSTemplate>>>({
