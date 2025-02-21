@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+# feature flag
+export NEXT_PUBLIC_ENABLE_LETTERS=true
+
 npm run create-test-user
 
 npm run build
