@@ -21,7 +21,7 @@ import {
   PageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { createEmailTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import { FormSection } from '@molecules/FormSection/FormSection';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
@@ -40,7 +40,7 @@ export const EmailTemplateForm: FC<
     templateMessageLabelText,
     templateNameHintText,
     backLinkText,
-  } = createEmailTemplatePageContent;
+  } = content.components.templateFormEmail;
 
   const [state, action] = useActionState(processFormActions, initialState);
 

@@ -2,7 +2,7 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import { JSX } from 'react';
 
-const { linksAndUrls } = content.components.messageFormattingComponent;
+const { linksAndUrls } = content.components.messageFormatting;
 
 const LinksAndUrls = ({ children }: { children?: JSX.Element }) => (
   <Details data-testid='link-and-url-details'>

@@ -21,7 +21,7 @@ import {
   PageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { createNhsAppTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
@@ -40,7 +40,8 @@ export const NhsAppTemplateForm: FC<
     templateMessageLabelText,
     templateNameHintText,
     backLinkText,
-  } = createNhsAppTemplatePageContent;
+  } = content.components.templateFormNhsApp;
+
   const [state, action] = useActionState(processFormActions, initialState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =

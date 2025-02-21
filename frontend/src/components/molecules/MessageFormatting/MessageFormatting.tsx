@@ -12,7 +12,7 @@ import {
 } from './formats';
 import { JSX } from 'react';
 
-const messageFormattingContent = content.components.messageFormattingComponent;
+const messageFormattingContent = content.components.messageFormatting;
 
 const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
   [TemplateType.NHS_APP]: [

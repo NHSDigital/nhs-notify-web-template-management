@@ -8,7 +8,7 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { BackLink } from 'nhsuk-react-components';
-import { viewSubmittedTemplatePageContent as content } from '@content/content';
+import content from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
@@ -19,6 +19,9 @@ export function ViewEmailTemplate({
   const templateMessage = initialState.message;
 
   const html = renderEmailMarkdown(templateMessage);
+
+  const { cannotEdit, createNewTemplate } =
+    content.components.viewSubmittedTemplate;
 
   return (
     <>
@@ -33,8 +36,8 @@ export function ViewEmailTemplate({
               subject={templateSubjectLine}
               message={html}
             />
-            <p>{content.cannotEdit}</p>
-            <p>{content.createNewTemplate}</p>
+            <p>{cannotEdit}</p>
+            <p>{createNewTemplate}</p>
             <p>
               <Link href='/manage-templates'>Back to all templates</Link>
             </p>

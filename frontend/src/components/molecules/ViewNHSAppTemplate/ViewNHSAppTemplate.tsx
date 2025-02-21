@@ -8,7 +8,7 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { BackLink } from 'nhsuk-react-components';
-import { viewSubmittedTemplatePageContent as content } from '@content/content';
+import content from '@content/content';
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
@@ -19,6 +19,9 @@ export function ViewNHSAppTemplate({
 
   const html = renderNHSAppMarkdown(templateMessage);
 
+  const { cannotEdit, createNewTemplate } =
+    content.components.viewSubmittedTemplate;
+
   return (
     <>
       <BackLink href={`${getBasePath()}/manage-templates`}>
@@ -28,8 +31,8 @@ export function ViewNHSAppTemplate({
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplate.NHSApp template={initialState} message={html} />
-            <p>{content.cannotEdit}</p>
-            <p>{content.createNewTemplate}</p>
+            <p>{cannotEdit}</p>
+            <p>{createNewTemplate}</p>
             <p>
               <Link href='/manage-templates'>Back to all templates</Link>
             </p>

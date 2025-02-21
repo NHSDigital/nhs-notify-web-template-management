@@ -32,7 +32,7 @@ export function ReviewNHSAppTemplate({
 
   const {
     components: {
-      reviewNHSAppTemplateContent: { sectionHeading, form },
+      reviewNHSAppTemplate: { sectionHeading, form },
     },
   } = content;
 

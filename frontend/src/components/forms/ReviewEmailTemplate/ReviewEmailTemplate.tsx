@@ -23,7 +23,7 @@ export function ReviewEmailTemplate({
 
   const {
     components: {
-      reviewEmailTemplateContent: { sectionHeading, form },
+      reviewEmailTemplate: { sectionHeading, form },
     },
   } = content;
 

@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
-import { copyTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import {
   Template,
   TemplateType,
@@ -37,7 +37,7 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
     pageHeading,
     radiosLabel,
     backLinkText,
-  } = copyTemplatePageContent;
+  } = content.components.copyTemplate;
 
   const fullPageHeading = `${pageHeading} '${template.name}'`;
 

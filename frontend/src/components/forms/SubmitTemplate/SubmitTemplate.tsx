@@ -3,7 +3,7 @@
 import { FC, useActionState } from 'react';
 import { WarningCallout } from 'nhsuk-react-components';
 import { SubmitTemplatePageComponentProps } from 'nhs-notify-web-template-management-utils';
-import { submitTemplateContent } from '@content/content';
+import content from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
@@ -26,7 +26,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     submitChecklistParagraphs,
     goBackButtonText,
     buttonText,
-  } = submitTemplateContent;
+  } = content.components.submitTemplate;
 
   const [_, action] = useActionState(submitTemplate, submitPath);
 

@@ -2,7 +2,7 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
 
-const { bulletLists } = content.components.messageFormattingComponent;
+const { bulletLists } = content.components.messageFormatting;
 
 export const BulletList = () => (
   <Details data-testid='bullet-lists-details'>

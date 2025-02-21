@@ -49,30 +49,41 @@ export const SmsTemplateForm: FC<
 
   const editMode = 'id' in initialState;
 
+  const {
+    backLinkText,
+    buttonText,
+    errorHeading,
+    pageHeadingSuffix,
+    smsCountText1,
+    smsCountText2,
+    smsPricingLink,
+    smsPricingText,
+    templateMessageLabelText,
+    templateNameHintText,
+    templateNameLabelText,
+  } = content.components.templateFormSms;
+
   return (
     <>
       {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
-          {content.backLinkText}
+          {backLinkText}
         </BackLink>
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={content.errorHeading}
-              state={state}
-            />
+            <ZodErrorSummary errorHeading={errorHeading} state={state} />
             <h1 data-testid='page-heading'>
               {editMode ? 'Edit ' : 'Create '}
-              {content.pageHeadingSuffix}
+              {pageHeadingSuffix}
             </h1>
             <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>
-                  {content.templateNameLabelText}
+                  {templateNameLabelText}
                 </Label>
-                <HintText>{content.templateNameHintText}</HintText>
+                <HintText>{templateNameHintText}</HintText>
                 <TemplateNameGuidance template='SMS' />
                 <TextInput
                   id='smsTemplateName'
@@ -84,7 +95,7 @@ export const SmsTemplateForm: FC<
               </div>
               <Textarea
                 id='smsTemplateMessage'
-                label={content.templateMessageLabelText}
+                label={templateMessageLabelText}
                 labelProps={{ size: 's' }}
                 defaultValue={smsTemplateMessage}
                 onChange={smsTemplateMessageHandler}
@@ -98,25 +109,25 @@ export const SmsTemplateForm: FC<
                   {smsTemplateMessage.length} characters
                 </p>
                 <p>
-                  {content.smsCountText1}
+                  {smsCountText1}
                   {calculateHowManySmsMessages(
                     Number(smsTemplateMessage.length)
                   )}
-                  {content.smsCountText2}
+                  {smsCountText2}
                 </p>
               </JsEnabled>
               <p>
                 <a
-                  href={content.smsPricingLink}
+                  href={smsPricingLink}
                   data-testid='sms-pricing-link'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  {content.smsPricingText}
+                  {smsPricingText}
                 </a>
               </p>
               <NHSNotifyButton id='create-sms-template-submit-button'>
-                {content.buttonText}
+                {buttonText}
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
