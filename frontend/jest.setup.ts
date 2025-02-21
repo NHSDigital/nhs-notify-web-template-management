@@ -13,3 +13,6 @@ import 'whatwg-fetch';
 Object.assign(global, { TextDecoder, TextEncoder });
 
 createMocks();
+
+// set feature flag
+process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'true';

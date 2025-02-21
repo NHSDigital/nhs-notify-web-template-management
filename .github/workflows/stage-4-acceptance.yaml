@@ -34,7 +34,6 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  NEXT_PUBLIC_ENABLE_LETTERS: true
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -90,8 +89,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [sandbox-set-up]
     environment: dev
-    env:
-      INCLUDE_AUTH_PAGES: 'true'
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
@@ -125,8 +122,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [sandbox-set-up]
     environment: dev
-    env:
-      INCLUDE_AUTH_PAGES: 'true'
     timeout-minutes: 10
     steps:
       - name: "Checkout code"
