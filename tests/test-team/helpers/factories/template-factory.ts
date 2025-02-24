@@ -33,6 +33,15 @@ export const TemplateFactory = {
     });
   },
 
+  createLetterTemplate: (id: string, owner: string): Template => {
+    return TemplateFactory.create({
+      id,
+      owner,
+      name: '',
+      templateType: TemplateType.LETTER,
+    });
+  },
+
   create: (
     template: Partial<Template> & {
       id: string;

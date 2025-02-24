@@ -6,7 +6,7 @@ import type { TemplateType } from './TemplateType';
 export type CreateTemplate = {
     templateType: TemplateType;
     name: string;
-    message: string;
+    message?: string;
     subject?: string;
 };
 

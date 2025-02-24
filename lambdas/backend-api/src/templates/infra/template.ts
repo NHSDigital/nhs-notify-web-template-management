@@ -7,7 +7,7 @@ export type DatabaseTemplate = {
   templateType: TemplateType;
   templateStatus: TemplateStatus;
   name: string;
-  message: string;
+  message?: string;
   subject?: string;
   createdAt: string;
   updatedAt: string;
