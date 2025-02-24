@@ -19,7 +19,7 @@ jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const templateDTO: TemplateDTO = {
+const templateDTO = {
   id: 'template-id',
   templateType: TemplateType.EMAIL,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -28,7 +28,7 @@ const templateDTO: TemplateDTO = {
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-};
+} satisfies TemplateDTO;
 
 describe('EditEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

@@ -3,6 +3,7 @@ import {
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
+  $LetterTemplate,
   $ChannelTemplate,
   $SubmittedEmailTemplate,
   $SubmittedSMSTemplate,
@@ -31,6 +32,9 @@ export const validateSMSTemplate = (template?: TemplateDTO) =>
 
 export const validateEmailTemplate = (template?: TemplateDTO) =>
   zodValidate($EmailTemplate, template);
+
+export const validateLetterTemplate = (template?: TemplateDTO) =>
+  zodValidate($LetterTemplate, template);
 
 export const validateSubmittedEmailTemplate = (template?: TemplateDTO) =>
   zodValidate($SubmittedEmailTemplate, template);

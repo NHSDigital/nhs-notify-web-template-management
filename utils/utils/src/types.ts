@@ -9,6 +9,7 @@ import {
   $SubmittedEmailTemplate,
   $SubmittedSMSTemplate,
   $SubmittedNHSAppTemplate,
+  $LetterTemplate,
 } from './zod-validators';
 
 export type FormId =
@@ -39,6 +40,8 @@ export type SubmittedSMSTemplate = z.infer<typeof $SubmittedSMSTemplate>;
 export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
 export type SubmittedNHSAppTemplate = z.infer<typeof $SubmittedNHSAppTemplate>;
+
+export type LetterTemplate = z.infer<typeof $LetterTemplate>;
 
 export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
 

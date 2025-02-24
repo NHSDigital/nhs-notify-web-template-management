@@ -23,7 +23,7 @@ describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -31,7 +31,7 @@ describe('PreviewSMSTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,

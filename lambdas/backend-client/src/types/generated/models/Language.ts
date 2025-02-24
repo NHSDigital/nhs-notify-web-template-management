@@ -1,0 +1,35 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export enum Language {
+    ALBANIAN = 'ALBANIAN',
+    ARABIC = 'ARABIC',
+    BULGARIAN = 'BULGARIAN',
+    CHINESE = 'CHINESE',
+    ENGLISH = 'ENGLISH',
+    FRENCH = 'FRENCH',
+    GERMAN = 'GERMAN',
+    GUJARATI = 'GUJARATI',
+    HINDI = 'HINDI',
+    HUNGARIAN = 'HUNGARIAN',
+    ITALIAN = 'ITALIAN',
+    LATVIAN = 'LATVIAN',
+    LITHUANIAN = 'LITHUANIAN',
+    MODERN_GREEK = 'MODERN GREEK',
+    NEPALI = 'NEPALI',
+    PERSIAN = 'PERSIAN',
+    POLISH = 'POLISH',
+    PUNJABI = 'PUNJABI',
+    ROMANIAN = 'ROMANIAN',
+    RUSSIAN = 'RUSSIAN',
+    SLOVAK = 'SLOVAK',
+    SOMALI = 'SOMALI',
+    SPANISH = 'SPANISH',
+    TURKISH = 'TURKISH',
+    BENGALI = 'BENGALI',
+    KURDISH = 'KURDISH',
+    PORTUGUESE = 'PORTUGUESE',
+    TAMIL = 'TAMIL',
+    URDU = 'URDU',
+}

@@ -99,14 +99,12 @@ const update = async (
 ): Promise<ApplicationResult<DatabaseTemplate>> => {
   const updateExpression = [
     '#name = :name',
-    '#message = :message',
     '#updatedAt = :updateAt',
     '#templateStatus = :templateStatus',
   ];
 
   let expressionAttributeNames: Record<string, string> = {
     '#name': 'name',
-    '#message': 'message',
     '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
     '#templateType': 'templateType',
@@ -114,12 +112,23 @@ const update = async (
 
   let expressionAttributeValues: Record<string, string | number> = {
     ':name': template.name,
-    ':message': template.message,
     ':templateStatus': template.templateStatus,
     ':updateAt': new Date().toISOString(),
     ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
     ':templateType': template.templateType,
   };
+
+  if (template.message) {
+    updateExpression.push('#message = :message');
+    expressionAttributeNames = {
+      ...expressionAttributeNames,
+      '#message': 'message',
+    };
+    expressionAttributeValues = {
+      ...expressionAttributeValues,
+      ':message': template.message,
+    };
+  }
 
   if (template.subject) {
     updateExpression.push('#subject = :subject');
