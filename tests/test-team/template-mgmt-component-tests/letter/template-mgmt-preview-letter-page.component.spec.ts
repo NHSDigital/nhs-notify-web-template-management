@@ -67,7 +67,7 @@ test.describe('Preview Letter template Page', () => {
     await previewLetterTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-nhs-app-template/${templates.valid.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
     );
 
     await expect(previewLetterTemplatePage.editRadioOption).not.toBeChecked();
@@ -75,16 +75,12 @@ test.describe('Preview Letter template Page', () => {
     await expect(previewLetterTemplatePage.submitRadioOption).not.toBeChecked();
 
     await expect(previewLetterTemplatePage.pageHeader).toContainText(
-      'test-template-nhs-app'
-    );
-
-    await expect(previewLetterTemplatePage.messageText).toHaveText(
-      'test-template-message'
+      'test-template-letter'
     );
   });
 
   test.describe('Page functionality', () => {
-    test('common page tests', async ({ page, baseURL }) => {
+    test('common page tests @debug', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewLetterPage(page),
         id: templates.valid.id,
