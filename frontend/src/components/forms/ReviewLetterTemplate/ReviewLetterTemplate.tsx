@@ -13,13 +13,14 @@ import { getBasePath } from '@utils/get-base-path';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { reviewLetterTemplateAction } from './server-actions';
+import { PreviewTemplate } from '@molecules/PreviewTemplate';
 
 export function ReviewLetterTemplate({
   initialState,
 }: Readonly<PageComponentProps<LetterTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { sectionHeading, form } = content.components.reviewSMSTemplate;
+  const { sectionHeading, form } = content.components.reviewLetterTemplate;
 
   const [state, action] = useActionState(
     reviewLetterTemplateAction,
@@ -42,9 +43,12 @@ export function ReviewLetterTemplate({
                 ...form,
                 state,
                 action,
-                formId: 'review-letter-template',
+                formId: 'preview-letter-template',
                 radiosId: 'reviewLetterTemplateAction',
               }}
+              PreviewComponent={
+                <PreviewTemplate.Letter template={initialState} />
+              }
             />
             <p>
               <Link href='/manage-templates'>Back to all templates</Link>

@@ -8,5 +8,5 @@ export type ReviewTemplateProps = {
   form: {
     errorHeading: string;
   } & NHSNotifyRadioButtonFormProps;
-  PreviewComponent?: React.ReactElement<typeof PreviewTemplate>;
+  PreviewComponent: React.ReactElement<typeof PreviewTemplate>;
 };

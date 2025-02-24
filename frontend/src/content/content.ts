@@ -214,6 +214,19 @@ const reviewEmailTemplate = {
   },
 };
 
+const reviewLetterTemplate = {
+  sectionHeading: 'Template saved',
+  form: {
+    errorHeading: 'There is a problem',
+    pageHeading: 'What would you like to do next?',
+    options: [
+      { id: 'letter-edit', text: 'Edit template' },
+      { id: 'letter-submit', text: 'Submit template' },
+    ],
+    buttonText: 'Continue',
+  },
+};
+
 const reviewNHSAppTemplate = {
   sectionHeading: 'Template saved',
   form: {
@@ -479,6 +492,7 @@ const content = {
     nameYourTemplate,
     personalisation,
     reviewEmailTemplate,
+    reviewLetterTemplate,
     reviewNHSAppTemplate,
     reviewSMSTemplate,
     submitTemplate,
