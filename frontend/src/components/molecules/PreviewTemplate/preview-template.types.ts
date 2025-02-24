@@ -9,7 +9,7 @@ type PreviewTemplateHeadingsType =
 
 export type PreviewTemplateProps = {
   template: Template;
-  preview?: {
+  previewContent?: {
     heading: PreviewTemplateHeadingsType;
     id: string;
     value: string;

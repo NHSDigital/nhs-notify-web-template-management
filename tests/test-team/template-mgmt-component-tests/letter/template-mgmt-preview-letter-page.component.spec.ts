@@ -80,7 +80,7 @@ test.describe('Preview Letter template Page', () => {
   });
 
   test.describe('Page functionality', () => {
-    test('common page tests @debug', async ({ page, baseURL }) => {
+    test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtPreviewLetterPage(page),
         id: templates.valid.id,

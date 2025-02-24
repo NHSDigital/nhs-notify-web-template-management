@@ -1,16 +1,45 @@
-import { TemplateType, TemplateStatus } from 'nhs-notify-backend-client';
+import {
+  TemplateType,
+  TemplateStatus,
+  LetterType,
+  Language,
+} from 'nhs-notify-backend-client';
 
 // eslint-disable-next-line unicorn/prefer-export-from
 export { TemplateType, TemplateStatus };
 
-export const templateTypeDisplayMappings = (type: TemplateType) =>
+const letterTypeMapping = (letterType: LetterType) =>
   ({
+    [LetterType.AUDIO]: 'Audio',
+    [LetterType.BRAILLE]: 'Braille',
+    [LetterType.BSL]: 'British Sign Language',
+    [LetterType.STANDARD]: 'Standard',
+    [LetterType.LARGE_PRINT]: 'Large print',
+  })[letterType];
+
+export const languageMapping = (language: Language) =>
+  language
+    .split(' ')
+    .map((word) => `${word[0]}${word.slice(1).toLocaleLowerCase()}`)
+    .join(' ');
+
+export const templateTypeDisplayMappings = (
+  type: TemplateType,
+  letterType?: LetterType,
+  language?: Language
+) => {
+  const letterPrefix =
+    language === Language.ENGLISH
+      ? letterTypeMapping(letterType ?? LetterType.STANDARD)
+      : 'Additional language';
+
+  return {
     [TemplateType.NHS_APP]: 'NHS App message',
     [TemplateType.SMS]: 'Text message (SMS)',
     [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: 'Letter',
-  })[type];
-
+    [TemplateType.LETTER]: `${letterPrefix} letter`,
+  }[type];
+};
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
     [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
