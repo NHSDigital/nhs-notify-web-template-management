@@ -303,6 +303,18 @@
           "templateStatus": {
             "$ref": "#/components/schemas/TemplateStatus"
           },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "pdfTemplateInputFile": {
+            "type": "string"
+          },
+          "testPersonalisationInputFile": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -339,12 +351,55 @@
           "DELETED"
         ]
       },
+      "Language": {
+        "type": "string",
+        "enum": [
+          "ALBANIAN",
+          "ARABIC",
+          "BULGARIAN",
+          "CHINESE",
+          "ENGLISH",
+          "FRENCH",
+          "GERMAN",
+          "GUJARATI",
+          "HINDI",
+          "HUNGARIAN",
+          "ITALIAN",
+          "LATVIAN",
+          "LITHUANIAN",
+          "MODERN GREEK",
+          "NEPALI",
+          "PERSIAN",
+          "POLISH",
+          "PUNJABI",
+          "ROMANIAN",
+          "RUSSIAN",
+          "SLOVAK",
+          "SOMALI",
+          "SPANISH",
+          "TURKISH",
+          "BENGALI",
+          "KURDISH",
+          "PORTUGUESE",
+          "TAMIL",
+          "URDU"
+        ]
+      },
+      "LetterType": {
+        "type": "string",
+        "enum": [
+          "AUDIO",
+          "BRAILLE",
+          "BSL",
+          "LARGE_PRINT",
+          "STANDARD"
+        ]
+      },
       "CreateTemplate": {
         "type": "object",
         "required": [
           "templateType",
-          "name",
-          "message"
+          "name"
         ],
         "properties": {
           "templateType": {
@@ -366,7 +421,6 @@
         "required": [
           "templateStatus",
           "name",
-          "message",
           "templateType"
         ],
         "properties": {

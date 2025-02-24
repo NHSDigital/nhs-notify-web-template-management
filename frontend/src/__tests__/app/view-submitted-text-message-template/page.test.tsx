@@ -22,7 +22,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.SUBMITTED,
@@ -30,7 +30,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     const submittedSMSTemplate: SubmittedSMSTemplate = {
       ...templateDTO,

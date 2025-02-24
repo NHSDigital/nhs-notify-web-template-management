@@ -7,7 +7,7 @@ import type { TemplateType } from './TemplateType';
 export type UpdateTemplate = {
     templateStatus: TemplateStatus;
     name: string;
-    message: string;
+    message?: string;
     subject?: string;
     /**
      * This value will never be updated. It is used to determine the type of template being validated.
