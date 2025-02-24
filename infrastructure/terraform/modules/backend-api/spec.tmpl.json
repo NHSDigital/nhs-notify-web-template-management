@@ -289,7 +289,6 @@
           "templateType",
           "templateStatus",
           "name",
-          "message",
           "createdAt",
           "updatedAt"
         ],
