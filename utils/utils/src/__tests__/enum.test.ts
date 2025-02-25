@@ -33,19 +33,15 @@ describe('templateTypeDisplayMappings', () => {
 });
 
 describe('letterTypeDisplayMappings', () => {
-  const letterCases: [LetterType | undefined, Language | undefined, string][] =
-    [
-      [LetterType.STANDARD, Language.ENGLISH, 'Standard letter'],
-      [LetterType.STANDARD, Language.BENGALI, 'Letter - Bengali'],
-      [LetterType.STANDARD, Language.MODERN_GREEK, 'Letter - Modern Greek'],
-      [LetterType.BRAILLE, Language.ENGLISH, 'Braille letter'],
-      [LetterType.AUDIO, Language.ENGLISH, 'Audio letter'],
-      [LetterType.LARGE_PRINT, Language.ENGLISH, 'Large print letter'],
-      [LetterType.BSL, Language.ENGLISH, 'British Sign Language letter'],
-      [undefined, Language.HUNGARIAN, 'Letter - Hungarian'],
-      [undefined, Language.ENGLISH, 'Standard letter'],
-      [undefined, undefined, 'Standard letter'],
-    ];
+  const letterCases: [LetterType, Language, string][] = [
+    [LetterType.STANDARD, Language.ENGLISH, 'Standard letter'],
+    [LetterType.STANDARD, Language.BENGALI, 'Letter - Bengali'],
+    [LetterType.STANDARD, Language.MODERN_GREEK, 'Letter - Modern Greek'],
+    [LetterType.BRAILLE, Language.ENGLISH, 'Braille letter'],
+    [LetterType.AUDIO, Language.ENGLISH, 'Audio letter'],
+    [LetterType.LARGE_PRINT, Language.ENGLISH, 'Large print letter'],
+    [LetterType.BSL, Language.ENGLISH, 'British Sign Language letter'],
+  ];
 
   test.each(letterCases)(
     'letter type %s and language %s map to %s',
