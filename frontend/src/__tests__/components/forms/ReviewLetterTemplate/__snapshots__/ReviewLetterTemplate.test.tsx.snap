@@ -149,20 +149,26 @@ exports[`Review letter form renders matches error snapshot 1`] = `
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                file.pdf
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    file.pdf
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -180,20 +186,26 @@ exports[`Review letter form renders matches error snapshot 1`] = `
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                test-data.csv
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    test-data.csv
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -433,20 +445,26 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                file.pdf
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    file.pdf
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -464,20 +482,26 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                test-data.csv
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    test-data.csv
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -700,20 +724,26 @@ exports[`Review letter form renders matches snapshot when navigating from manage
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                file.pdf
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    file.pdf
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -731,20 +761,26 @@ exports[`Review letter form renders matches snapshot when navigating from manage
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                <svg
-                  class="icon"
-                  fill="none"
-                  height="26"
-                  viewBox="0 0 20 26"
-                  width="20"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="container"
                 >
-                  <path
-                    d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                    fill="#4C6272"
-                  />
-                </svg>
-                test-data.csv
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <div>
+                    test-data.csv
+                  </div>
+                </div>
               </div>
             </div>
           </div>

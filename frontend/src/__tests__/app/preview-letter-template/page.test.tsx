@@ -129,8 +129,6 @@ describe('PreviewLetterTemplatePage', () => {
   ])(
     'should redirect to invalid-template when template is $description',
     async ({ description: _, ...value }) => {
-      console.log(OLD_ENV.NEXT_PUBLIC_ENABLE_LETTERS);
-
       getTemplateMock.mockResolvedValueOnce({
         ...templateDTO,
         ...value,
