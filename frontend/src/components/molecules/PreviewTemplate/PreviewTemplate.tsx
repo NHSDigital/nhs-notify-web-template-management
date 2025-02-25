@@ -1,8 +1,14 @@
 import { Container, Row, Col, Tag } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
+  type EmailTemplate,
+  type LetterTemplate,
+  type SMSTemplate,
   letterTypeDisplayMappings,
-  Template,
+  NHSAppTemplate,
+  SubmittedEmailTemplate,
+  SubmittedNHSAppTemplate,
+  SubmittedSMSTemplate,
   TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
@@ -10,6 +16,7 @@ import {
 import styles from './PreviewTemplate.module.scss';
 import { PreviewTemplateProps } from './preview-template.types';
 import { JSX } from 'react';
+import { Filename } from '@atoms/Filename/Filename';
 
 export function PreviewTemplate({
   template,
@@ -61,8 +68,8 @@ export function PreviewTemplate({
               </Tag>
             </Col>
           </Row>
-          {additionalMetaFields.map((row) => (
-            <Row className={styles.preview__row} key='testdata'>
+          {additionalMetaFields?.map((row) => (
+            <Row className={styles.preview__row} key={row.id}>
               <Col width='one-third' className={styles.preview__col}>
                 <div className={styles.preview__col_heading}>{row.title}</div>
               </Col>
@@ -109,7 +116,7 @@ PreviewTemplate.Email = ({
   subject,
   message,
 }: {
-  template: Template;
+  template: EmailTemplate | SubmittedEmailTemplate;
   subject: string;
   message: string;
 }) => (
@@ -128,13 +135,12 @@ PreviewTemplate.NHSApp = ({
   template,
   message,
 }: {
-  template: Template;
+  template: NHSAppTemplate | SubmittedNHSAppTemplate;
   message: string;
 }) => (
   <PreviewTemplate
     template={template}
     templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    additionalMetaFields={[]}
     previewContent={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
@@ -143,18 +149,17 @@ PreviewTemplate.Sms = ({
   template,
   message,
 }: {
-  template: Template;
+  template: SMSTemplate | SubmittedSMSTemplate;
   message: string;
 }) => (
   <PreviewTemplate
     template={template}
     templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    additionalMetaFields={[]}
     previewContent={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
 
-PreviewTemplate.Letter = ({ template }: { template: Template }) => (
+PreviewTemplate.Letter = ({ template }: { template: LetterTemplate }) => (
   <PreviewTemplate
     template={template}
     templateTypeText={letterTypeDisplayMappings(
@@ -165,12 +170,12 @@ PreviewTemplate.Letter = ({ template }: { template: Template }) => (
       {
         title: 'Template file',
         id: 'templatefile',
-        content: template.pdfTemplateInputFile ?? '',
+        content: <Filename filename={template.pdfTemplateInputFile} />,
       },
       {
         title: 'Test personalisation file',
         id: 'testdatafile',
-        content: template.testPersonalisationInputFile ?? '',
+        content: <Filename filename={template.testPersonalisationInputFile} />,
       },
     ]}
   />

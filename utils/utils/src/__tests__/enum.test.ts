@@ -1,6 +1,6 @@
 import { Language, LetterType } from 'nhs-notify-backend-client';
 import {
-  languageMapping,
+  letterTypeDisplayMappings,
   previewTemplatePages,
   TemplateStatus,
   templateStatusToDisplayMappings,
@@ -27,35 +27,32 @@ describe('templateTypeDisplayMappings', () => {
     expect(templateTypeDisplayMappings(TemplateType.EMAIL)).toEqual('Email');
   });
 
-  const letterCases: [LetterType | undefined, Language, string][] = [
-    [LetterType.STANDARD, Language.ENGLISH, 'Standard letter'],
-    [LetterType.STANDARD, Language.BENGALI, 'Additional language letter'],
-    [LetterType.BRAILLE, Language.ENGLISH, 'Braille letter'],
-    [LetterType.AUDIO, Language.ENGLISH, 'Audio letter'],
-    [LetterType.LARGE_PRINT, Language.ENGLISH, 'Large print letter'],
-    [LetterType.BSL, Language.ENGLISH, 'British Sign Language letter'],
-    [undefined, Language.ENGLISH, 'Standard letter'],
-  ];
+  test('LETTER', () => {
+    expect(templateTypeDisplayMappings(TemplateType.LETTER)).toEqual('Letter');
+  });
+});
+
+describe('letterTypeDisplayMappings', () => {
+  const letterCases: [LetterType | undefined, Language | undefined, string][] =
+    [
+      [LetterType.STANDARD, Language.ENGLISH, 'Standard letter'],
+      [LetterType.STANDARD, Language.BENGALI, 'Letter - Bengali'],
+      [LetterType.STANDARD, Language.MODERN_GREEK, 'Letter - Modern Greek'],
+      [LetterType.BRAILLE, Language.ENGLISH, 'Braille letter'],
+      [LetterType.AUDIO, Language.ENGLISH, 'Audio letter'],
+      [LetterType.LARGE_PRINT, Language.ENGLISH, 'Large print letter'],
+      [LetterType.BSL, Language.ENGLISH, 'British Sign Language letter'],
+      [undefined, Language.HUNGARIAN, 'Letter - Hungarian'],
+      [undefined, Language.ENGLISH, 'Standard letter'],
+      [undefined, undefined, 'Standard letter'],
+    ];
 
   test.each(letterCases)(
     'letter type %s and language %s map to %s',
     (letterType, language, expected) => {
-      expect(
-        templateTypeDisplayMappings(TemplateType.LETTER, letterType, language)
-      ).toBe(expected);
+      expect(letterTypeDisplayMappings(letterType, language)).toBe(expected);
     }
   );
-});
-
-describe('languageMappings', () => {
-  const languageCases: [Language, string][] = [
-    [Language.ENGLISH, 'English'],
-    [Language.MODERN_GREEK, 'Modern Greek'],
-  ];
-
-  test.each(languageCases)('language %s maps to %s', (language, expected) => {
-    expect(languageMapping(language)).toBe(expected);
-  });
 });
 
 describe('templateStatusToDisplayMappings', () => {

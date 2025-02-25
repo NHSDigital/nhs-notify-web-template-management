@@ -58,6 +58,9 @@ export const $LetterTemplate = $Template.extend({
   pdfTemplateInputFile: z.string(),
   testPersonalisationInputFile: z.string(),
 });
+export const $SubmittedLetterTemplate = $LetterTemplate.extend({
+  templateStatus: z.literal(TemplateStatus.SUBMITTED),
+});
 
 export const $ChannelTemplate = z.discriminatedUnion('templateType', [
   $NHSAppTemplate,
@@ -70,6 +73,7 @@ export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
   $SubmittedNHSAppTemplate,
   $SubmittedEmailTemplate,
   $SubmittedSMSTemplate,
+  $SubmittedLetterTemplate,
 ]);
 
 export const isTemplateValid = (input: unknown): TemplateDTO | undefined =>
