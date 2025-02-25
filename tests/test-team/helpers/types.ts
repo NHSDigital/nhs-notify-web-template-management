@@ -1,3 +1,5 @@
+import { Language, LetterType } from 'nhs-notify-backend-client';
+
 export enum TemplateType {
   NHS_APP = 'NHS_APP',
   SMS = 'SMS',
@@ -36,5 +38,9 @@ export type Template = {
   subject?: string;
   templateType: TemplateType;
   templateStatus: TemplateStatus;
+  letterType?: LetterType;
+  language?: Language;
+  pdfTemplateInputFile?: string;
+  testPersonalisationInputFile?: string;
   owner: string;
 };

@@ -1,3 +1,4 @@
+import { Language, LetterType } from 'nhs-notify-backend-client';
 import { Template, TemplateStatus, TemplateType } from '../types';
 
 export const TemplateFactory = {
@@ -33,12 +34,16 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (id: string, owner: string): Template => {
+  createLetterTemplate: (id: string, owner: string, name: string): Template => {
     return TemplateFactory.create({
       id,
       owner,
-      name: '',
+      name,
       templateType: TemplateType.LETTER,
+      letterType: LetterType.STANDARD,
+      language: Language.ENGLISH,
+      pdfTemplateInputFile: 'file.pdf',
+      testPersonalisationInputFile: 'test-data.csv',
     });
   },
 

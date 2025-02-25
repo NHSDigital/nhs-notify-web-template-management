@@ -10,7 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -74,6 +74,14 @@ describe('PreviewEmailTemplatePage', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+    },
+    {
+      templateType: TemplateType.LETTER,
+      name: 'template-name',
+      letterType: LetterType.STANDARD,
+      language: Language.ENGLISH,
+      pdfTemplateInputFile: 'template.pdf',
+      testPersonalisationInputFile: 'test-data.csv',
     },
     {
       templateType: TemplateType.EMAIL,
