@@ -33,13 +33,9 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createLetterTemplate(
         'valid-letter-preview-template',
-        user.userId
+        user.userId,
+        'test-template-letter'
       ),
-      name: 'test-template-letter',
-      letterType: 'STANDARD',
-      language: 'ENGLISH',
-      pdfTemplateInputFile: 'file.pdf',
-      testPersonalisationInputFile: 'test-data.csv',
     },
   };
 }
