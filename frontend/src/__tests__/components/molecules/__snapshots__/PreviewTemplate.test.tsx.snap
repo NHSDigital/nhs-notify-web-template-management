@@ -213,3 +213,100 @@ exports[`PreviewTemplate component matches submitted snapshot 1`] = `
   </div>
 </DocumentFragment>
 `;
+
+exports[`PreviewTemplate component renders without content preview 1`] = `
+<DocumentFragment>
+  <h1
+    class="review__heading"
+    data-testid="preview-message__heading"
+  >
+    Example template
+  </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <div
+      class="preview"
+    >
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Template ID
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          template-id
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Type
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          Channel template
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Status
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--grey"
+          >
+            Submitted
+          </strong>
+        </div>
+      </div>
+      <div
+        class="nhsuk-grid-row preview__row"
+      >
+        <div
+          class="nhsuk-grid-column-one-third preview__col"
+        >
+          <div
+            class="preview__col_heading"
+          >
+            Meta
+          </div>
+        </div>
+        <div
+          class="nhsuk-grid-column-two-thirds col"
+        >
+          <p>
+            metadata
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

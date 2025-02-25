@@ -10,7 +10,11 @@ type PreviewTemplateHeadingsType =
 export type PreviewTemplateProps = {
   template: Template;
   templateTypeText: string;
-  additionalMetaFields: { title: string; id: string; content: string }[];
+  additionalMetaFields?: {
+    title: string;
+    id: string;
+    content: React.ReactElement;
+  }[];
   previewContent?: {
     heading: PreviewTemplateHeadingsType;
     id: string;

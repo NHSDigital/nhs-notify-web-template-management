@@ -17,7 +17,6 @@ describe('PreviewTemplate component', () => {
           } as Template
         }
         templateTypeText='Channel template'
-        additionalMetaFields={[]}
         previewContent={[
           {
             heading: 'Heading',
@@ -42,7 +41,6 @@ describe('PreviewTemplate component', () => {
           } as Template
         }
         templateTypeText='Channel template'
-        additionalMetaFields={[]}
         previewContent={[
           {
             heading: 'Heading',
@@ -50,6 +48,30 @@ describe('PreviewTemplate component', () => {
             value: 'Test value-1',
           },
         ]}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('renders without content preview', () => {
+    const container = render(
+      <PreviewTemplate
+        template={
+          {
+            id: 'template-id',
+            name: 'Example template',
+            templateStatus: TemplateStatus.SUBMITTED,
+          } as Template
+        }
+        additionalMetaFields={[
+          {
+            title: 'Meta',
+            id: 'meta',
+            content: <p>metadata</p>,
+          },
+        ]}
+        templateTypeText='Channel template'
       />
     );
 
@@ -66,7 +88,6 @@ describe('PreviewTemplate component', () => {
           } as Template
         }
         templateTypeText='Channel template'
-        additionalMetaFields={[]}
         previewContent={[
           {
             heading: 'Subject',

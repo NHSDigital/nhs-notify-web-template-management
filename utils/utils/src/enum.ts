@@ -23,23 +23,22 @@ export const languageMapping = (language: Language) =>
     .map((word) => `${word[0]}${word.slice(1).toLocaleLowerCase()}`)
     .join(' ');
 
-export const templateTypeDisplayMappings = (
-  type: TemplateType,
-  letterType?: LetterType,
-  language?: Language
-) => {
-  const letterPrefix =
-    language === Language.ENGLISH
-      ? letterTypeMapping(letterType ?? LetterType.STANDARD)
-      : 'Additional language';
-
-  return {
+export const templateTypeDisplayMappings = (type: TemplateType) =>
+  ({
     [TemplateType.NHS_APP]: 'NHS App message',
     [TemplateType.SMS]: 'Text message (SMS)',
     [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: `${letterPrefix} letter`,
-  }[type];
-};
+    [TemplateType.LETTER]: 'Letter',
+  })[type];
+
+export const letterTypeDisplayMappings = (
+  letterType: LetterType,
+  language: Language
+) =>
+  language === Language.ENGLISH
+    ? `${letterTypeMapping(letterType ?? LetterType.STANDARD)} letter`
+    : `Letter - ${languageMapping(language)}`;
+
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
     [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
