@@ -3,7 +3,7 @@ import styles from './Filename.module.scss';
 
 export function Filename({ filename }: { filename: string }): JSX.Element {
   return (
-    <>
+    <div className={styles.container}>
       <svg
         className={styles.icon}
         width='20'
@@ -17,7 +17,7 @@ export function Filename({ filename }: { filename: string }): JSX.Element {
           fill='#4C6272'
         />
       </svg>
-      {filename}
-    </>
+      <div>{filename}</div>
+    </div>
   );
 }

@@ -3,19 +3,20 @@ import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
   Template,
   TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
+import { Language, LetterType } from 'nhs-notify-backend-client';
 
 describe('PreviewTemplate component', () => {
   it('matches not yet submitted snapshot', () => {
     const container = render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          } as Template
-        }
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateType: TemplateType.NHS_APP,
+        }}
         templateTypeText='Channel template'
         previewContent={[
           {
@@ -33,13 +34,12 @@ describe('PreviewTemplate component', () => {
   it('matches submitted snapshot', () => {
     const container = render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
-          } as Template
-        }
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.SMS,
+        }}
         templateTypeText='Channel template'
         previewContent={[
           {
@@ -57,13 +57,16 @@ describe('PreviewTemplate component', () => {
   it('renders without content preview', () => {
     const container = render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
-          } as Template
-        }
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.LETTER,
+          letterType: LetterType.STANDARD,
+          language: Language.FRENCH,
+          pdfTemplateInputFile: 'file.pdf',
+          testPersonalisationInputFile: 'file.csv',
+        }}
         additionalMetaFields={[
           {
             title: 'Meta',
@@ -81,12 +84,12 @@ describe('PreviewTemplate component', () => {
   it('renders component correctly', () => {
     render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-          } as Template
-        }
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateType: TemplateType.NHS_APP,
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        }}
         templateTypeText='Channel template'
         previewContent={[
           {
