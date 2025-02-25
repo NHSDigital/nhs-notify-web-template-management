@@ -36,7 +36,7 @@ export const letterTypeDisplayMappings = (
   language: Language
 ) =>
   language === Language.ENGLISH
-    ? `${letterTypeMapping(letterType ?? LetterType.STANDARD)} letter`
+    ? `${letterTypeMapping(letterType)} letter`
     : `Letter - ${languageMapping(language)}`;
 
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
