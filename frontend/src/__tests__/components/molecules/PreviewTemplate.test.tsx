@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
-  Template,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';

@@ -8,6 +8,12 @@ import {
 // eslint-disable-next-line unicorn/prefer-export-from
 export { TemplateType, TemplateStatus };
 
+export const languageMapping = (language: Language) =>
+  language
+    .split(' ')
+    .map((word) => `${word[0]}${word.slice(1).toLocaleLowerCase()}`)
+    .join(' ');
+
 const letterTypeMapping = (letterType: LetterType) =>
   ({
     [LetterType.AUDIO]: 'Audio',
@@ -17,11 +23,13 @@ const letterTypeMapping = (letterType: LetterType) =>
     [LetterType.LARGE_PRINT]: 'Large print',
   })[letterType];
 
-export const languageMapping = (language: Language) =>
-  language
-    .split(' ')
-    .map((word) => `${word[0]}${word.slice(1).toLocaleLowerCase()}`)
-    .join(' ');
+export const letterTypeDisplayMappings = (
+  letterType: LetterType,
+  language: Language
+) =>
+  language === Language.ENGLISH
+    ? `${letterTypeMapping(letterType)} letter`
+    : `Letter - ${languageMapping(language)}`;
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
@@ -30,14 +38,6 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     [TemplateType.EMAIL]: 'Email',
     [TemplateType.LETTER]: 'Letter',
   })[type];
-
-export const letterTypeDisplayMappings = (
-  letterType: LetterType,
-  language: Language
-) =>
-  language === Language.ENGLISH
-    ? `${letterTypeMapping(letterType)} letter`
-    : `Letter - ${languageMapping(language)}`;
 
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
