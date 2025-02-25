@@ -46,7 +46,9 @@ exports[`PreviewTemplate component matches not yet submitted snapshot 1`] = `
         </div>
         <div
           class="nhsuk-grid-column-two-thirds col"
-        />
+        >
+          Channel template
+        </div>
       </div>
       <div
         class="nhsuk-grid-row preview__row"
@@ -151,7 +153,9 @@ exports[`PreviewTemplate component matches submitted snapshot 1`] = `
         </div>
         <div
           class="nhsuk-grid-column-two-thirds col"
-        />
+        >
+          Channel template
+        </div>
       </div>
       <div
         class="nhsuk-grid-row preview__row"

@@ -9,6 +9,8 @@ type PreviewTemplateHeadingsType =
 
 export type PreviewTemplateProps = {
   template: Template;
+  templateTypeText: string;
+  additionalMetaFields: { title: string; id: string; content: string }[];
   previewContent?: {
     heading: PreviewTemplateHeadingsType;
     id: string;

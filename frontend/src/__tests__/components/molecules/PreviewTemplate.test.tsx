@@ -16,7 +16,9 @@ describe('PreviewTemplate component', () => {
             templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
           } as Template
         }
-        preview={[
+        templateTypeText='Channel template'
+        additionalMetaFields={[]}
+        previewContent={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -39,7 +41,9 @@ describe('PreviewTemplate component', () => {
             templateStatus: TemplateStatus.SUBMITTED,
           } as Template
         }
-        preview={[
+        templateTypeText='Channel template'
+        additionalMetaFields={[]}
+        previewContent={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -61,7 +65,9 @@ describe('PreviewTemplate component', () => {
             name: 'Example template',
           } as Template
         }
-        preview={[
+        templateTypeText='Channel template'
+        additionalMetaFields={[]}
+        previewContent={[
           {
             heading: 'Subject',
             id: 'subject',
