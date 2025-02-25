@@ -1,7 +1,7 @@
 import { Container, Row, Col, Tag } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
-  languageMapping,
+  letterTypeDisplayMappings,
   Template,
   TemplateStatus,
   templateStatusToDisplayMappings,
@@ -13,10 +13,10 @@ import { JSX } from 'react';
 
 export function PreviewTemplate({
   template,
+  templateTypeText,
+  additionalMetaFields,
   previewContent,
 }: Readonly<PreviewTemplateProps>): JSX.Element {
-  console.log(template);
-
   return (
     <>
       <h1
@@ -42,11 +42,7 @@ export function PreviewTemplate({
               <div className={styles.preview__col_heading}>Type</div>
             </Col>
             <Col width='two-thirds' className={styles.col}>
-              {templateTypeDisplayMappings(
-                template.templateType,
-                template.letterType,
-                template.language
-              )}
+              {templateTypeText}
             </Col>
           </Row>
           <Row className={styles.preview__row}>
@@ -65,36 +61,16 @@ export function PreviewTemplate({
               </Tag>
             </Col>
           </Row>
-          {template.language ? (
-            <Row className={styles.preview__row}>
+          {additionalMetaFields.map((row) => (
+            <Row className={styles.preview__row} key='testdata'>
               <Col width='one-third' className={styles.preview__col}>
-                <div className={styles.preview__col_heading}>Language</div>
+                <div className={styles.preview__col_heading}>{row.title}</div>
               </Col>
               <Col width='two-thirds' className={styles.col}>
-                {languageMapping(template.language)}
+                {row.content}
               </Col>
             </Row>
-          ) : null}
-          {template.pdfTemplateInputFile ? (
-            <Row className={styles.preview__row}>
-              <Col width='one-third' className={styles.preview__col}>
-                <div className={styles.preview__col_heading}>Language</div>
-              </Col>
-              <Col width='two-thirds' className={styles.col}>
-                template.pdfTemplateInputFile
-              </Col>
-            </Row>
-          ) : null}
-          {template.testPersonalisationInputFile ? (
-            <Row className={styles.preview__row}>
-              <Col width='one-third' className={styles.preview__col}>
-                <div className={styles.preview__col_heading}>Language</div>
-              </Col>
-              <Col width='two-thirds' className={styles.col}>
-                template.testPersonalisationInputFile
-              </Col>
-            </Row>
-          ) : null}
+          ))}
         </div>
         {previewContent ? (
           <div
@@ -139,6 +115,8 @@ PreviewTemplate.Email = ({
 }) => (
   <PreviewTemplate
     template={template}
+    templateTypeText={templateTypeDisplayMappings(template.templateType)}
+    additionalMetaFields={[]}
     previewContent={[
       { heading: 'Subject', id: 'subject', value: subject },
       { heading: 'Message', id: 'message', value: message },
@@ -155,6 +133,8 @@ PreviewTemplate.NHSApp = ({
 }) => (
   <PreviewTemplate
     template={template}
+    templateTypeText={templateTypeDisplayMappings(template.templateType)}
+    additionalMetaFields={[]}
     previewContent={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
@@ -168,10 +148,30 @@ PreviewTemplate.Sms = ({
 }) => (
   <PreviewTemplate
     template={template}
+    templateTypeText={templateTypeDisplayMappings(template.templateType)}
+    additionalMetaFields={[]}
     previewContent={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
 
 PreviewTemplate.Letter = ({ template }: { template: Template }) => (
-  <PreviewTemplate template={template} />
+  <PreviewTemplate
+    template={template}
+    templateTypeText={letterTypeDisplayMappings(
+      template.letterType,
+      template.language
+    )}
+    additionalMetaFields={[
+      {
+        title: 'Template file',
+        id: 'templatefile',
+        content: template.pdfTemplateInputFile ?? '',
+      },
+      {
+        title: 'Test personalisation file',
+        id: 'testdatafile',
+        content: template.testPersonalisationInputFile ?? '',
+      },
+    ]}
+  />
 );
