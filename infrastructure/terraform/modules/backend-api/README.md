@@ -14,6 +14,7 @@ No requirements.
 | <a name="input_component"></a> [component](#input\_component) | The variable encapsulating the name of this component | `string` | `"api"` | no |
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
+| <a name="input_enable_letters"></a> [enable\_letters](#input\_enable\_letters) | Enable letters feature flag | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
