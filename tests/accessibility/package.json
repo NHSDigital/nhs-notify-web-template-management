@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
-    "accessibility-test-setup": "tsx ./tests/accessibility/pa11y-setup.ts",
-    "accessibility-test-teardown": "tsx ./tests/accessibility/pa11y-teardown.ts",
+    "test:accessibility": "pa11y-ci -c .pa11y-ci.js",
+    "accessibility-test-setup": "tsx ./pa11y-setup.ts",
+    "accessibility-test-teardown": "tsx ./pa11y-teardown.ts",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test:unit": "echo \"Unit tests not required\"",
