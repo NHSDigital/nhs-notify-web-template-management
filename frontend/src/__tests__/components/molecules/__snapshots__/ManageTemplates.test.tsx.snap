@@ -254,7 +254,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Name 
               </span>
               <a
-                href="/view-submitted-letter-template/2"
+                href="/view-submitted-letter-template/3"
               >
                 Template 3
               </a>
@@ -565,7 +565,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="/view-submitted-letter-template/2"
+                href="/view-submitted-letter-template/3"
               >
                 Template 3
               </a>

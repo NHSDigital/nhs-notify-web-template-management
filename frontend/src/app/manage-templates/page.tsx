@@ -3,6 +3,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import { getTemplates } from '@utils/form-actions';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 // Note: force this page to be dynamically rendered
 // This is because Next defaults this page as a static rendered page
@@ -15,6 +16,12 @@ const manageTemplatesContent = content.pages.manageTemplates;
 
 export default async function ManageTemplatesPage() {
   const availableTemplateList = await getTemplates();
+
+  const flagFiltered = (availableTemplateList ?? []).filter(
+    (template) =>
+      process.env.NEXT_PUBLIC_ENABLE_LETTERS === 'true' ||
+      template.templateType !== TemplateType.LETTER
+  );
 
   return (
     <NHSNotifyMain>
@@ -31,7 +38,7 @@ export default async function ManageTemplatesPage() {
             {manageTemplatesContent.createTemplateButton.text}
           </NHSNotifyButton>
 
-          {availableTemplateList && availableTemplateList.length > 0 ? (
+          {flagFiltered.length > 0 ? (
             <ManageTemplates templateList={availableTemplateList} />
           ) : (
             <p id='no-templates-available' data-testid='no-templates-available'>

@@ -30,7 +30,7 @@ const manageTemplatesProps = {
       createdAt: '2021-02-01T00:00:00.000Z',
     },
     {
-      id: '2',
+      id: '3',
       templateType: TemplateType.LETTER,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 3',
