@@ -17,7 +17,7 @@ export function Filename({ filename }: { filename: string }): JSX.Element {
           fill='#4C6272'
         />
       </svg>
-      <div>{filename}</div>
+      <p className={styles.text}>{filename}</p>
     </div>
   );
 }
