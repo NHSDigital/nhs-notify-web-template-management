@@ -12,8 +12,17 @@ jest.mock('@backend-api/templates/app/template-client');
 
 const getTemplateMock = jest.spyOn(TemplateClient.prototype, 'getTemplate');
 
+const OLD_ENV = { ...process.env };
+
 describe('Template API - Get', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    process.env.ENABLE_LETTERS_BACKEND = 'true';
+  });
+
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
     const event = mock<APIGatewayProxyEvent>({
@@ -76,8 +85,30 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
     expect(getTemplateMock).toHaveBeenCalledWith('1');
+  });
+
+  test('creates template client with letter flag value', async () => {
+    process.env.ENABLE_LETTERS_BACKEND = 'false';
+
+    getTemplateMock.mockResolvedValueOnce({
+      error: {
+        code: 500,
+        message: 'Internal server error',
+      },
+    });
+
+    await handler(
+      mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: { user: 'sub' } },
+        pathParameters: { templateId: '1' },
+      }),
+      mock<Context>(),
+      jest.fn()
+    );
+
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
   });
 
   test('should return template', async () => {
@@ -107,7 +138,7 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
     expect(getTemplateMock).toHaveBeenCalledWith('1');
   });
 });

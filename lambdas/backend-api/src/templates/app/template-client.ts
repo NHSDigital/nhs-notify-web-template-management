@@ -18,7 +18,7 @@ import {
 export class TemplateClient implements ITemplateClient {
   constructor(
     private readonly _owner: string,
-    private readonly enableLetters = false
+    private readonly enableLetters: boolean
   ) {}
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
