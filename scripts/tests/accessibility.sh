@@ -11,7 +11,7 @@ templates_table_name=$(
   jq -r '.templates_table_name.value' "$(git rev-parse --show-toplevel)/sandbox_tf_outputs.json"
 )
 
-if [ "$templates_table_name" == "null" ]; then    
+if [ "$templates_table_name" == "null" ]; then
   echo "Failed to determine templates table name" >&2
   exit 1
 fi
