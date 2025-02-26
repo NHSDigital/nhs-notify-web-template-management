@@ -15,6 +15,7 @@ const setup = async () => {
     symbols: true,
     strict: true,
   });
+
   const testUserClient = new TestUserClient('./frontend');
 
   const { userId } = await testUserClient.createTestUser(

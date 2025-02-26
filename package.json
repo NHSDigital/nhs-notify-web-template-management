@@ -18,7 +18,6 @@
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "generate-dependencies": "npm run generate-dependencies --workspaces --if-present",
     "start": "npm run start --workspace frontend",
-    "test:accessibility": "npm run test:accessibility --workspace tests/accessibility",
     "test:unit": "npm run test:unit --workspaces",
     "typecheck": "npm run typecheck --workspaces",
     "lint": "npm run lint --workspaces",

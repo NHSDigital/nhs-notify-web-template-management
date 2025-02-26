@@ -18,7 +18,7 @@ fi
 
 export TEMPLATES_TABLE_NAME=$templates_table_name
 
-npm run accessibility-test-setup
+npm run accessibility-test-setup -w tests/accessibility
 
 npm run build
 
@@ -26,6 +26,6 @@ npm run app:start --prefix frontend
 
 npm run app:wait --prefix frontend
 
-npm run test:accessibility
+npm run test:accessibility -w tests/accessibility
 
-npm run accessibility-test-teardown
+npm run accessibility-test-teardown  -w tests/accessibility

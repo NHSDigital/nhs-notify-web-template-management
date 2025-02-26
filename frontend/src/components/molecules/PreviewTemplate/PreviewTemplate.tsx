@@ -1,10 +1,10 @@
 import { Container, Row, Col, Tag } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
+  letterTypeDisplayMappings,
   type EmailTemplate,
   type LetterTemplate,
   type SMSTemplate,
-  letterTypeDisplayMappings,
   NHSAppTemplate,
   SubmittedEmailTemplate,
   SubmittedNHSAppTemplate,

@@ -84,7 +84,7 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
-    // // Letter Journey
+    // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
     performCheck(reviewLetterTemplatePage(baseUrl)),
     performCheck(reviewLetterTemplateErrorPage(baseUrl)),
