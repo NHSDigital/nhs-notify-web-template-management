@@ -18,9 +18,11 @@ exports[`Filename component renders component correctly 1`] = `
         fill="#4C6272"
       />
     </svg>
-    <div>
+    <p
+      class="text"
+    >
       file.txt
-    </div>
+    </p>
   </div>
 </DocumentFragment>
 `;

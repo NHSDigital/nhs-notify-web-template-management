@@ -165,9 +165,11 @@ exports[`Review letter form renders matches error snapshot 1`] = `
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     file.pdf
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -202,9 +204,11 @@ exports[`Review letter form renders matches error snapshot 1`] = `
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     test-data.csv
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -461,9 +465,11 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     file.pdf
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -498,9 +504,11 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     test-data.csv
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -740,9 +748,11 @@ exports[`Review letter form renders matches snapshot when navigating from manage
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     file.pdf
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
@@ -777,9 +787,11 @@ exports[`Review letter form renders matches snapshot when navigating from manage
                       fill="#4C6272"
                     />
                   </svg>
-                  <div>
+                  <p
+                    class="text"
+                  >
                     test-data.csv
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
