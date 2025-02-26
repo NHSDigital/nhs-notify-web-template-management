@@ -9,7 +9,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -32,6 +32,19 @@ describe('CopyTemplatePage', () => {
     updatedAt: '2025-01-13T10:19:25.579Z',
   };
 
+  const letterTemplate: TemplateDTO = {
+    id: 'template-id',
+    templateType: TemplateType.LETTER,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'template-name',
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
+    letterType: LetterType.BSL,
+    language: Language.FRENCH,
+    pdfTemplateInputFile: 'file.pdf',
+    testPersonalisationInputFile: 'file.csv',
+  };
+
   it('should load page', async () => {
     getTemplateMock.mockResolvedValueOnce(template);
 
@@ -45,6 +58,18 @@ describe('CopyTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
+    await CopyTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  it('should redirect to invalid-template when the template is a letter', async () => {
+    getTemplateMock.mockResolvedValueOnce(letterTemplate);
+
     await CopyTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
