@@ -70,7 +70,7 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {});
   });
@@ -119,7 +119,7 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', { name: 'name' });
   });
@@ -156,7 +156,7 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update);
   });

@@ -65,7 +65,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(createMock).toHaveBeenCalledWith({});
   });
@@ -93,7 +93,7 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(createMock).toHaveBeenCalledWith({ id: 1 });
   });
@@ -128,7 +128,7 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
+    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
 
     expect(createMock).toHaveBeenCalledWith(create);
   });

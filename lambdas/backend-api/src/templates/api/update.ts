@@ -13,7 +13,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return apiFailure(400, 'Invalid request');
   }
 
-  const client = new TemplateClient(user);
+  const client = new TemplateClient(user, false);
 
   const { data, error } = await client.updateTemplate(templateId, dto);
 
