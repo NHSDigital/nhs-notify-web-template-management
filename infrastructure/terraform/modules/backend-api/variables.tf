@@ -66,3 +66,8 @@ variable "enable_backup" {
   description = "Enable Backups for the DynamoDB table?"
   default     = true
 }
+
+variable "enable_letters" {
+  type        = bool
+  description = "Enable letters feature flag"
+}

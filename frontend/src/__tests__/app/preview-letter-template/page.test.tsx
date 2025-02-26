@@ -39,16 +39,9 @@ const letterTemplate: LetterTemplate = {
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
 };
 
-const OLD_ENV = { ...process.env };
-
 describe('PreviewLetterTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'true';
-  });
-
-  afterAll(() => {
-    process.env = OLD_ENV;
   });
 
   it('should load page', async () => {
@@ -63,18 +56,6 @@ describe('PreviewLetterTemplatePage', () => {
     expect(page).toEqual(
       <ReviewLetterTemplate initialState={letterTemplate} />
     );
-  });
-
-  it('should redirect to invalid-template when letters feature flag is not enabled', async () => {
-    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'false';
-
-    await PreviewLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: 'template-id',
-      }),
-    });
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
