@@ -242,7 +242,7 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner');
+      const noLettersClient = new TemplateClient('owner', false);
 
       getMock.mockResolvedValueOnce({
         data: {
@@ -320,7 +320,7 @@ describe('templateClient', () => {
     });
 
     test('filters out letters if the feature flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner');
+      const noLettersClient = new TemplateClient('owner', false);
 
       const template: TemplateDTO = {
         id: 'id',
