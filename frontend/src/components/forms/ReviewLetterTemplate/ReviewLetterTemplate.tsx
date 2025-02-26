@@ -43,7 +43,7 @@ export function ReviewLetterTemplate({
                 ...form,
                 state,
                 action,
-                formId: 'preview-letter-template',
+                formId: 'review-letter-template',
                 radiosId: 'reviewLetterTemplateAction',
               }}
               PreviewComponent={

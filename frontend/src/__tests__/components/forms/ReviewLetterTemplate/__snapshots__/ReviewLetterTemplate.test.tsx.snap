@@ -217,7 +217,7 @@ exports[`Review letter form renders matches error snapshot 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-letter-template"
+            value="review-letter-template"
           />
           <input
             name="csrf_token"
@@ -302,7 +302,7 @@ exports[`Review letter form renders matches error snapshot 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-letter-template-submit-button"
+            id="review-letter-template-submit-button"
             type="submit"
           >
             Continue
@@ -513,7 +513,7 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-letter-template"
+            value="review-letter-template"
           />
           <input
             name="csrf_token"
@@ -586,7 +586,7 @@ exports[`Review letter form renders matches snapshot when navigating from edit s
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-letter-template-submit-button"
+            id="review-letter-template-submit-button"
             type="submit"
           >
             Continue
@@ -792,7 +792,7 @@ exports[`Review letter form renders matches snapshot when navigating from manage
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-letter-template"
+            value="review-letter-template"
           />
           <input
             name="csrf_token"
@@ -865,7 +865,7 @@ exports[`Review letter form renders matches snapshot when navigating from manage
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-letter-template-submit-button"
+            id="review-letter-template-submit-button"
             type="submit"
           >
             Continue

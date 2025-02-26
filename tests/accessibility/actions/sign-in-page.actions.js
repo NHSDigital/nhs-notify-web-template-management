@@ -1,6 +1,8 @@
 const { readFileSync } = require('node:fs');
 
-const { email, password } = JSON.parse(readFileSync('./auth.json', 'utf8'));
+const { email, password } = JSON.parse(
+  readFileSync('./pa11y-fixtures.json', 'utf8')
+);
 
 const signInPageActions = [
   'wait for element button[type="submit"] to be visible',
@@ -10,5 +12,5 @@ const signInPageActions = [
 ];
 
 module.exports = {
-    signInPageActions,
+  signInPageActions,
 };

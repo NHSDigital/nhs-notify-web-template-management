@@ -51,11 +51,15 @@ export class TestUserClient {
 
     const username = res.User?.Username;
 
-    if (!username) {
+    const userId = res.User?.Attributes?.find(
+      (attr) => attr.Name === 'sub'
+    )?.Value;
+
+    if (!username || !userId) {
       throw new Error('Error during user creation');
     }
 
-    return username;
+    return { username, userId };
   }
 
   async deleteTestUser(email: string) {
