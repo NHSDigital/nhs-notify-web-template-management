@@ -21,7 +21,8 @@ export function ReviewEmailTemplate({
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { form, sectionHeading } = content.components.reviewEmailTemplate;
+  const { form, sectionHeading, backLinkText } =
+    content.components.reviewEmailTemplate;
 
   const [state, action] = useActionState(
     reviewEmailTemplateAction,
@@ -60,7 +61,7 @@ export function ReviewEmailTemplate({
               }
             />
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/manage-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>

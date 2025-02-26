@@ -20,7 +20,8 @@ export function ReviewLetterTemplate({
 }: Readonly<PageComponentProps<LetterTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { sectionHeading, form } = content.components.reviewLetterTemplate;
+  const { sectionHeading, form, backLinkText } =
+    content.components.reviewLetterTemplate;
 
   const [state, action] = useActionState(
     reviewLetterTemplateAction,
@@ -51,7 +52,7 @@ export function ReviewLetterTemplate({
               }
             />
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/manage-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>

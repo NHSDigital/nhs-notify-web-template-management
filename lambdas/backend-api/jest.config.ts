@@ -13,6 +13,7 @@ const jestConfig = {
   ...baseJestConfig,
   moduleNameMapper: moduleNameMapperDefaults,
   testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 
 export default jestConfig;
