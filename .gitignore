@@ -83,3 +83,6 @@ tests/test-team/playwright-report/
 tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
 lambdas/backend-api/src/email/email-template.json
+
+# pa11y
+pa11y-fixtures.json
