@@ -5,6 +5,7 @@ import {
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
+import { LetterType, Language } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -27,6 +28,17 @@ const manageTemplatesProps = {
       message: 'Message',
       subject: 'Subject Line',
       createdAt: '2021-02-01T00:00:00.000Z',
+    },
+    {
+      id: '2',
+      templateType: TemplateType.LETTER,
+      templateStatus: TemplateStatus.SUBMITTED,
+      name: 'Template 3',
+      createdAt: '2021-02-01T00:00:00.000Z',
+      letterType: LetterType.STANDARD,
+      language: Language.FRENCH,
+      pdfTemplateInputFile: 'file.pdf',
+      testPersonalisationInputFile: 'file.csv',
     },
   ],
 };

@@ -14,7 +14,7 @@ import {
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDTO, TemplateType } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -87,14 +87,16 @@ export function ManageTemplates({
                   {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  <p className='nhsuk-u-margin-bottom-2'>
-                    <Link
-                      href={`/copy-template/${template.id}`}
-                      id={`copy-template-link-${index}`}
-                    >
-                      {manageTemplatesContent.tableHeadings.action.copy}
-                    </Link>
-                  </p>
+                  {template.templateType === TemplateType.LETTER ? null : (
+                    <p className='nhsuk-u-margin-bottom-2'>
+                      <Link
+                        href={`/copy-template/${template.id}`}
+                        id={`copy-template-link-${index}`}
+                      >
+                        {manageTemplatesContent.tableHeadings.action.copy}
+                      </Link>
+                    </p>
+                  )}
                   {template.templateStatus ===
                   TemplateStatus.NOT_YET_SUBMITTED ? (
                     <p className='nhsuk-u-margin-bottom-2'>

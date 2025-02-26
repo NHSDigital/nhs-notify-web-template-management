@@ -39,6 +39,13 @@ function createTemplates(owner: string) {
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
+    letter: {
+      ...TemplateFactory.createLetterTemplate(
+        'letter-template-copy-page',
+        owner,
+        'letter-template-copy-page-name'
+      ),
+    },
   };
 }
 
@@ -188,4 +195,15 @@ test.describe('Copy Template Page', () => {
       });
     }
   }
+
+  test(`when navigating to the copy page for a letter template, invalid template error is displayed`, async ({
+    baseURL,
+    page,
+  }) => {
+    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+
+    await copyTemplatePage.loadPage(templates.letter.id);
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+  });
 });
