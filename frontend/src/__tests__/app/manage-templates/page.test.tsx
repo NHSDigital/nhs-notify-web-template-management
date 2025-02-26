@@ -7,7 +7,7 @@ import {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -26,10 +26,18 @@ const mockTemplates: TemplateDTO[] = [
 
 jest.mock('@utils/form-actions');
 
+const OLD_ENV = { ...process.env };
+
 describe('ManageTemplatesPage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'true';
   });
+
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
+
   test('renders the page without templates', async () => {
     render(await ManageTemplatesPage());
 
@@ -46,6 +54,7 @@ describe('ManageTemplatesPage', () => {
 
     expect(screen.getByTestId('no-templates-available')).toBeInTheDocument();
   });
+
   test('renders the page with templates', async () => {
     jest.mocked(getTemplates).mockResolvedValue(mockTemplates);
     render(await ManageTemplatesPage());
@@ -62,5 +71,27 @@ describe('ManageTemplatesPage', () => {
     );
 
     expect(screen.getByTestId('manage-template-table')).toBeInTheDocument();
+  });
+
+  test('letters are hidden when feature flag is not enabled', async () => {
+    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'false';
+
+    jest.mocked(getTemplates).mockResolvedValue([
+      {
+        id: '1',
+        templateType: TemplateType.LETTER,
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        name: 'Template 1',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+        letterType: LetterType.BSL,
+        language: Language.FRENCH,
+        pdfTemplateInputFile: 'file.pdf',
+        testPersonalisationInputFile: 'file.csv',
+      },
+    ]);
+    render(await ManageTemplatesPage());
+
+    expect(screen.getByTestId('no-templates-available')).toBeInTheDocument();
   });
 });
