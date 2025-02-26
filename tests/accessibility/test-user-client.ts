@@ -15,6 +15,7 @@ export class TestUserClient {
 
   constructor(amplifyOutputsPathPrefix = '../..') {
     const amplifyOutputs = JSON.parse(
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       readFileSync(`${amplifyOutputsPathPrefix}/amplify_outputs.json`, 'utf8')
     );
 
