@@ -6,6 +6,8 @@ import {
   UpdateTemplate,
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
+  Language,
+  LetterType,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -23,7 +25,8 @@ const getMock = jest.mocked(templateRepository.get);
 const listMock = jest.mocked(templateRepository.list);
 const validateMock = jest.mocked(validate);
 
-const client = new TemplateClient('owner');
+// letters feature flag is enabled
+const client = new TemplateClient('owner', true);
 
 describe('templateClient', () => {
   beforeEach(jest.resetAllMocks);
@@ -238,6 +241,38 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
+      const noLettersClient = new TemplateClient('owner');
+
+      getMock.mockResolvedValueOnce({
+        data: {
+          id: 'id',
+          templateType: TemplateType.LETTER,
+          name: 'name',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          letterType: LetterType.BSL,
+          language: Language.FRENCH,
+          pdfTemplateInputFile: 'file.pdf',
+          testPersonalisationInputFile: 'file.csv',
+          owner: 'owner',
+          version: 1,
+        },
+      });
+
+      const result = await noLettersClient.getTemplate('id');
+
+      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+
+      expect(result).toEqual({
+        error: {
+          code: 404,
+          message: 'Template not found',
+        },
+      });
+    });
+
     test('should return template', async () => {
       const template: TemplateDTO = {
         id: 'id',
@@ -281,6 +316,35 @@ describe('templateClient', () => {
           code: 500,
           message: 'Internal server error',
         },
+      });
+    });
+
+    test('filters out letters if the feature flag is not enabled', async () => {
+      const noLettersClient = new TemplateClient('owner');
+
+      const template: TemplateDTO = {
+        id: 'id',
+        templateType: TemplateType.LETTER,
+        name: 'name',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        letterType: LetterType.BSL,
+        language: Language.FRENCH,
+        pdfTemplateInputFile: 'file.pdf',
+        testPersonalisationInputFile: 'file.csv',
+      };
+
+      listMock.mockResolvedValueOnce({
+        data: [{ ...template, owner: 'owner', version: 1 }],
+      });
+
+      const result = await noLettersClient.listTemplates();
+
+      expect(listMock).toHaveBeenCalledWith('owner');
+
+      expect(result).toEqual({
+        data: [],
       });
     });
 

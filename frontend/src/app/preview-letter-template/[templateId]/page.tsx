@@ -7,10 +7,6 @@ import { validateLetterTemplate } from '@utils/validate-template';
 import { ReviewLetterTemplate } from '@forms/ReviewLetterTemplate/ReviewLetterTemplate';
 
 const PreviewLetterTemplatePage = async (props: PageProps) => {
-  if (process.env.NEXT_PUBLIC_ENABLE_LETTERS !== 'true') {
-    return redirect('/invalid-template', RedirectType.replace);
-  }
-
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
