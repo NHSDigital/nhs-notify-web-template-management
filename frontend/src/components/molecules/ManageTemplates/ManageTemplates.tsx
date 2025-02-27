@@ -8,7 +8,6 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import {
   previewTemplatePages,
-  Template,
   TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
@@ -18,7 +17,7 @@ import { TemplateDTO, TemplateType } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const generateViewTemplateLink = (template: Template): string => {
+const generateViewTemplateLink = (template: TemplateDTO): string => {
   if (template.templateStatus === TemplateStatus.SUBMITTED) {
     return `/${viewSubmittedTemplatePages(template.templateType)}/${template.id}`;
   }
@@ -29,7 +28,7 @@ const generateViewTemplateLink = (template: Template): string => {
 export function ManageTemplates({
   templateList,
 }: {
-  templateList: Template[] | TemplateDTO[];
+  templateList: TemplateDTO[];
 }) {
   return (
     <div className='nhsuk-grid-row'>

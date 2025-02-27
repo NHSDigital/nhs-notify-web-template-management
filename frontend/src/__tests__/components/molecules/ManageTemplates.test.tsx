@@ -19,6 +19,7 @@ const manageTemplatesProps = {
       message: 'Message',
       subject: 'Subject Line',
       createdAt: '2021-01-01T00:00:00.000Z',
+      updatedAt: '2021-01-01T00:00:00.000Z',
     },
     {
       id: '2',
@@ -28,6 +29,7 @@ const manageTemplatesProps = {
       message: 'Message',
       subject: 'Subject Line',
       createdAt: '2021-02-01T00:00:00.000Z',
+      updatedAt: '2021-02-01T00:00:00.000Z',
     },
     {
       id: '3',
@@ -39,6 +41,7 @@ const manageTemplatesProps = {
       language: Language.FRENCH,
       pdfTemplateInputFile: 'file.pdf',
       testPersonalisationInputFile: 'file.csv',
+      updatedAt: '2021-02-01T00:00:00.000Z',
     },
   ],
 };
