@@ -412,6 +412,12 @@
           },
           "subject": {
             "type": "string"
+          },
+          "letterType": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
           }
         }
       },
