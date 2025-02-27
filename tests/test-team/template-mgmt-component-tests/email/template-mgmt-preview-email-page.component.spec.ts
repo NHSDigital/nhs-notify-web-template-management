@@ -177,7 +177,9 @@ test.describe('Preview Email message template Page', () => {
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#previewEmailTemplateAction')).toBeInViewport();
+      await expect(
+        page.locator('#previewEmailTemplateAction')
+      ).toBeInViewport();
     });
   });
 });
