@@ -3,13 +3,9 @@ import {
   $EmailTemplate,
   $SMSTemplate,
   $NHSAppTemplate,
-  $ChannelTemplate,
-  $SubmittedChannelTemplate,
-  $SubmittedEmailTemplate,
-  $SubmittedSMSTemplate,
-  $SubmittedNHSAppTemplate,
+  $Template,
+  $SubmittedTemplate,
   $LetterTemplate,
-  $SubmittedLetterTemplate,
 } from './zod-validators';
 
 export type FormId =
@@ -29,25 +25,15 @@ export type FormErrorState = {
 
 export type EmailTemplate = z.infer<typeof $EmailTemplate>;
 
-export type SubmittedEmailTemplate = z.infer<typeof $SubmittedEmailTemplate>;
-
 export type SMSTemplate = z.infer<typeof $SMSTemplate>;
-
-export type SubmittedSMSTemplate = z.infer<typeof $SubmittedSMSTemplate>;
 
 export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
-export type SubmittedNHSAppTemplate = z.infer<typeof $SubmittedNHSAppTemplate>;
-
 export type LetterTemplate = z.infer<typeof $LetterTemplate>;
 
-export type SubmittedLetterTemplate = z.infer<typeof $SubmittedLetterTemplate>;
+export type Template = z.infer<typeof $Template>;
 
-export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
-
-export type SubmittedChannelTemplate = z.infer<
-  typeof $SubmittedChannelTemplate
->;
+export type SubmittedTemplate = z.infer<typeof $SubmittedTemplate>;
 
 export type Draft<T> = Omit<T, 'id'>;
 
@@ -55,7 +41,7 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type TemplateFormState<T = ChannelTemplate> = FormState & T;
+export type TemplateFormState<T = Template> = FormState & T;
 
 export type PageProps = {
   params: Promise<{

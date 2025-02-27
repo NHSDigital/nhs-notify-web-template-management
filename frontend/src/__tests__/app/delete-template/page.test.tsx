@@ -22,7 +22,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  it.only('should load page', async () => {
+  it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.EMAIL,

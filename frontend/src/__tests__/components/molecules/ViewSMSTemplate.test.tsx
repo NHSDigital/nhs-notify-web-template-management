@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import {
-  SubmittedSMSTemplate,
+  SMSTemplate,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 
@@ -15,7 +15,7 @@ describe('ViewNHSAppTemplate component', () => {
             name: 'Example template',
             templateStatus: TemplateStatus.SUBMITTED,
             message: 'Example message',
-          } as SubmittedSMSTemplate
+          } as SMSTemplate
         }
       />
     );

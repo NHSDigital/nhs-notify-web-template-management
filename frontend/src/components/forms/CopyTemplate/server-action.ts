@@ -52,7 +52,7 @@ export const copyTemplateAction: CopyTemplateAction = async (
     name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
     templateType: newTemplateType,
     ...(formState.template.templateType === TemplateType.EMAIL && {
-      subject: formState.template.subject ?? 'Enter a subject line',
+      subject: formState.template.subject,
     }),
   });
 
