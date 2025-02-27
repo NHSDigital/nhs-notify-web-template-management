@@ -2,7 +2,7 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  ChannelTemplate,
+  Template,
   FormState,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
@@ -17,7 +17,7 @@ const $CopyTemplate = z.object({
 });
 
 type CopyTemplateActionState = FormState & {
-  template: ChannelTemplate;
+  template: Template;
 };
 type CopyTemplateAction = (
   formState: CopyTemplateActionState,

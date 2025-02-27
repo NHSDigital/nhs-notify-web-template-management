@@ -2,7 +2,7 @@
 
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
-  ChannelTemplate,
+  Template,
   isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
 import { CreateTemplate, TemplateDTO } from 'nhs-notify-backend-client';
@@ -28,9 +28,7 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(
-  template: ChannelTemplate
-): Promise<TemplateDTO> {
+export async function saveTemplate(template: Template): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {

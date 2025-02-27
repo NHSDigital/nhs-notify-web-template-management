@@ -1,10 +1,10 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate/PreviewTemplate';
 import { NHSNotifyRadioButtonFormProps } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
+import { Template } from 'nhs-notify-web-template-management-utils';
 
 export type ReviewTemplateProps = {
   sectionHeading: string | undefined;
-  template: ChannelTemplate;
+  template: Template;
   form: {
     errorHeading: string;
   } & NHSNotifyRadioButtonFormProps;

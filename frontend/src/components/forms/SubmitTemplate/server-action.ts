@@ -3,7 +3,7 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
 import { z } from 'zod';
-import { validateChannelTemplate } from '@utils/validate-template';
+import { validateTemplate } from '@utils/validate-template';
 import { TemplateStatus } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
@@ -20,7 +20,7 @@ export async function submitTemplate(route: string, formData: FormData) {
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateChannelTemplate(template);
+  const validatedTemplate = validateTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

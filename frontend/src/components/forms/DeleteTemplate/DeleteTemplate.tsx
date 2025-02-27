@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useActionState } from 'react';
-import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
+import { Template } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -12,7 +12,7 @@ import {
 } from './server-action';
 
 type DeleteTemplateProps = {
-  template: ChannelTemplate;
+  template: Template;
 };
 
 export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
