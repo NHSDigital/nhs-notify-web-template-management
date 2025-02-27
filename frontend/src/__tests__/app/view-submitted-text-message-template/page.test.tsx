@@ -4,7 +4,7 @@
 import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import {
-  SubmittedSMSTemplate,
+  SMSTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
@@ -32,7 +32,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDTO;
 
-    const submittedSMSTemplate: SubmittedSMSTemplate = {
+    const submittedSMSTemplate: SMSTemplate = {
       ...templateDTO,
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.SUBMITTED,

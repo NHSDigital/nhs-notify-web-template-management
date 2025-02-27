@@ -4,7 +4,7 @@
 import ViewSubmittedEmailTemplatePage from '@app/view-submitted-email-template/[templateId]/page';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import {
-  SubmittedEmailTemplate,
+  EmailTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
@@ -33,7 +33,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDTO;
 
-    const submittedEmailTemplate: SubmittedEmailTemplate = {
+    const submittedEmailTemplate: EmailTemplate = {
       ...templateDTO,
       subject: 'template-subject-line',
       templateType: TemplateType.EMAIL,

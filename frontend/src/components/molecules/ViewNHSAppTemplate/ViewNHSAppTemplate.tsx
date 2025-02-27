@@ -2,8 +2,8 @@
 
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
+  NHSAppTemplate,
   PageComponentProps,
-  SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewNHSAppTemplate({
   initialState,
-}: Readonly<PageComponentProps<SubmittedNHSAppTemplate>>) {
+}: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const templateMessage = initialState.message;
 
   const html = renderNHSAppMarkdown(templateMessage);

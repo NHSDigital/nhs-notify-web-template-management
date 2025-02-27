@@ -24,6 +24,9 @@ export const $EmailTemplate = $TemplateBase.extend({
 export const $SubmittedEmailTemplate = $EmailTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
+export const $NonSubmittedEmailTemplate = $EmailTemplate.extend({
+  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+});
 
 export const $NHSAppTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.NHS_APP),
@@ -31,6 +34,9 @@ export const $NHSAppTemplate = $TemplateBase.extend({
 });
 export const $SubmittedNHSAppTemplate = $NHSAppTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
+});
+export const $NonSubmittedNHSAppTemplate = $NHSAppTemplate.extend({
+  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
 });
 
 export const $SMSTemplate = $TemplateBase.extend({
@@ -40,6 +46,9 @@ export const $SMSTemplate = $TemplateBase.extend({
 export const $SubmittedSMSTemplate = $SMSTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
+const $NonSubmittedSMSTemplate = $SMSTemplate.extend({
+  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+});
 
 export const $LetterTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.LETTER),
@@ -48,22 +57,32 @@ export const $LetterTemplate = $TemplateBase.extend({
   pdfTemplateInputFile: z.string(),
   testPersonalisationInputFile: z.string(),
 });
-export const $SubmittedLetterTemplate = $LetterTemplate.extend({
+const $SubmittedLetterTemplate = $LetterTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
+const $NonSubmittedLetterTemplate = $LetterTemplate.extend({
+  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+});
 
-export const $ChannelTemplate = z.discriminatedUnion('templateType', [
+export const $Template = z.discriminatedUnion('templateType', [
   $NHSAppTemplate,
   $EmailTemplate,
   $SMSTemplate,
   $LetterTemplate,
 ]);
 
-export const $SubmittedChannelTemplate = z.discriminatedUnion('templateType', [
+export const $SubmittedTemplate = z.discriminatedUnion('templateType', [
   $SubmittedNHSAppTemplate,
   $SubmittedEmailTemplate,
   $SubmittedSMSTemplate,
   $SubmittedLetterTemplate,
+]);
+
+export const $NonSubmittedTemplate = z.discriminatedUnion('templateType', [
+  $NonSubmittedNHSAppTemplate,
+  $NonSubmittedEmailTemplate,
+  $NonSubmittedSMSTemplate,
+  $NonSubmittedLetterTemplate,
 ]);
 
 export const isTemplateValid = (input: unknown): TemplateDTO | undefined =>

@@ -6,9 +6,6 @@ import {
   type LetterTemplate,
   type SMSTemplate,
   NHSAppTemplate,
-  SubmittedEmailTemplate,
-  SubmittedNHSAppTemplate,
-  SubmittedSMSTemplate,
   TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
@@ -116,7 +113,7 @@ PreviewTemplate.Email = ({
   subject,
   message,
 }: {
-  template: EmailTemplate | SubmittedEmailTemplate;
+  template: EmailTemplate;
   subject: string;
   message: string;
 }) => (
@@ -135,7 +132,7 @@ PreviewTemplate.NHSApp = ({
   template,
   message,
 }: {
-  template: NHSAppTemplate | SubmittedNHSAppTemplate;
+  template: NHSAppTemplate;
   message: string;
 }) => (
   <PreviewTemplate
@@ -149,7 +146,7 @@ PreviewTemplate.Sms = ({
   template,
   message,
 }: {
-  template: SMSTemplate | SubmittedSMSTemplate;
+  template: SMSTemplate;
   message: string;
 }) => (
   <PreviewTemplate

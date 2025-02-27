@@ -2,8 +2,8 @@
 
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
+  EmailTemplate,
   PageComponentProps,
-  SubmittedEmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewEmailTemplate({
   initialState,
-}: Readonly<PageComponentProps<SubmittedEmailTemplate>>) {
+}: Readonly<PageComponentProps<EmailTemplate>>) {
   const templateSubjectLine = initialState.subject;
   const templateMessage = initialState.message;
 

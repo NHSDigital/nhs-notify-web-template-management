@@ -4,7 +4,7 @@
 import ViewSubmittedNHSAppTemplatePage from '@app/view-submitted-nhs-app-template/[templateId]/page';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
 import {
-  SubmittedNHSAppTemplate,
+  NHSAppTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
@@ -32,7 +32,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDTO;
 
-    const submittedNHSAppTemplate: SubmittedNHSAppTemplate = {
+    const submittedNHSAppTemplate: NHSAppTemplate = {
       ...templateDTO,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
