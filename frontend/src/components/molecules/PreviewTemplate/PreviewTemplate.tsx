@@ -22,7 +22,7 @@ export function PreviewTemplate({
   template,
   templateTypeText,
   additionalMetaFields,
-  previewContent,
+  contentPreview,
 }: Readonly<PreviewTemplateProps>): JSX.Element {
   return (
     <>
@@ -79,11 +79,11 @@ export function PreviewTemplate({
             </Row>
           ))}
         </div>
-        {previewContent ? (
+        {contentPreview ? (
           <div
             className={concatClassNames('nhsuk-u-margin-top-4', styles.preview)}
           >
-            {previewContent.map(({ heading, value, id }, idx) => (
+            {contentPreview.map(({ heading, value, id }, idx) => (
               <Row key={id} className={styles.preview__row}>
                 <Col width='one-third' className={styles.preview__col}>
                   <div
@@ -124,7 +124,7 @@ PreviewTemplate.Email = ({
     template={template}
     templateTypeText={templateTypeDisplayMappings(template.templateType)}
     additionalMetaFields={[]}
-    previewContent={[
+    contentPreview={[
       { heading: 'Subject', id: 'subject', value: subject },
       { heading: 'Message', id: 'message', value: message },
     ]}
@@ -141,7 +141,7 @@ PreviewTemplate.NHSApp = ({
   <PreviewTemplate
     template={template}
     templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    previewContent={[{ heading: 'Message', id: 'message', value: message }]}
+    contentPreview={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
 
@@ -155,7 +155,7 @@ PreviewTemplate.Sms = ({
   <PreviewTemplate
     template={template}
     templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    previewContent={[{ heading: 'Message', id: 'message', value: message }]}
+    contentPreview={[{ heading: 'Message', id: 'message', value: message }]}
   />
 );
 

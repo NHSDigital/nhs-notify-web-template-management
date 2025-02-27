@@ -5,7 +5,7 @@ import { mockDeep } from 'jest-mock-extended';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import {
-  Template,
+  ChannelTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 
@@ -32,7 +32,9 @@ jest.mock('react', () => {
 
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
-    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
+    const container = render(
+      <CopyTemplate template={mockDeep<ChannelTemplate>()} />
+    );
     expect(container.asFragment()).toMatchSnapshot();
 
     const radioButtons = [
@@ -78,7 +80,9 @@ describe('Choose template page', () => {
 
     jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
-    const container = render(<CopyTemplate template={mockDeep<Template>()} />);
+    const container = render(
+      <CopyTemplate template={mockDeep<ChannelTemplate>()} />
+    );
     expect(container.asFragment()).toMatchSnapshot();
   });
 });

@@ -1,6 +1,8 @@
 import { copyTemplateAction } from '@forms/CopyTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import {
+  EmailTemplate,
+  NHSAppTemplate,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
@@ -18,7 +20,7 @@ beforeAll(() => {
 });
 
 test('submit form - validation error', async () => {
-  const template = {
+  const template: NHSAppTemplate = {
     id: 'template-id',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     templateType: TemplateType.NHS_APP,
@@ -50,7 +52,7 @@ test('submit form - create email template from non-email template', async () => 
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate = {
+  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     templateType: TemplateType.NHS_APP,
     name: 'template-name',
@@ -86,7 +88,7 @@ test('submit form - create email template from email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate = {
+  const testTemplate: Omit<EmailTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     templateType: TemplateType.EMAIL,
     name: 'template-name',
@@ -122,7 +124,7 @@ test('submit form - create non-email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate = {
+  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     templateType: TemplateType.NHS_APP,
     name: 'template-name',
