@@ -51,8 +51,10 @@ export const copyTemplateAction: CopyTemplateAction = async (
     ...baseTemplateAttributes,
     name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
     templateType: newTemplateType,
-    ...(formState.template.templateType === TemplateType.EMAIL && {
-      subject: formState.template.subject,
+    ...(parsedForm.data.templateType === TemplateType.EMAIL && {
+      subject:
+        ('subject' in formState.template && formState.template.subject) ||
+        'Enter a subject line',
     }),
   });
 
