@@ -1,6 +1,6 @@
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  ChannelTemplate,
+  Template,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import { saveTemplate } from '@utils/form-actions';
@@ -10,7 +10,7 @@ export const deleteTemplateNoAction = async () => {
 };
 
 export const deleteTemplateYesAction = async (
-  template: ChannelTemplate
+  template: Template
 ): Promise<never> => {
   await saveTemplate({
     ...template,

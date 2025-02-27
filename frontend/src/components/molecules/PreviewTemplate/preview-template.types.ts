@@ -1,4 +1,4 @@
-import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
+import { Template } from 'nhs-notify-web-template-management-utils';
 
 type PreviewTemplateHeadingsType =
   | 'Id'
@@ -8,7 +8,7 @@ type PreviewTemplateHeadingsType =
   | 'Message';
 
 export type PreviewTemplateProps = {
-  template: ChannelTemplate;
+  template: Template;
   templateTypeText: string;
   additionalMetaFields?: {
     title: string;
