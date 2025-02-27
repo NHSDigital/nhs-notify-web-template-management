@@ -7,6 +7,7 @@ import content from '@content/content';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import {
+  letterTypeDisplayMappings,
   previewTemplatePages,
   TemplateStatus,
   templateStatusToDisplayMappings,
@@ -24,6 +25,15 @@ const generateViewTemplateLink = (template: TemplateDTO): string => {
 
   return `/${previewTemplatePages(template.templateType)}/${template.id}`;
 };
+
+const typeDisplayMappings = (template: TemplateDTO) =>
+  template.templateType === TemplateType.LETTER &&
+  'letterType' in template &&
+  template.letterType &&
+  'language' in template &&
+  template.language
+    ? letterTypeDisplayMappings(template.letterType, template.language)
+    : templateTypeDisplayMappings(template.templateType);
 
 export function ManageTemplates({
   templateList,
@@ -66,9 +76,7 @@ export function ManageTemplates({
                     {template.name}
                   </Link>
                 </Table.Cell>
-                <Table.Cell>
-                  {templateTypeDisplayMappings(template.templateType)}
-                </Table.Cell>
+                <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag
                     color={
