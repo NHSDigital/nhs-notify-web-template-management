@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import {
-  $Template,
   $EmailTemplate,
   $SMSTemplate,
   $NHSAppTemplate,
@@ -27,8 +26,6 @@ export type FormErrorState = {
   formErrors: string[];
   fieldErrors: Record<string, string[]>;
 };
-
-export type Template = z.infer<typeof $Template>;
 
 export type EmailTemplate = z.infer<typeof $EmailTemplate>;
 
@@ -58,7 +55,7 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type TemplateFormState<T = Template> = FormState & T;
+export type TemplateFormState<T = ChannelTemplate> = FormState & T;
 
 export type PageProps = {
   params: Promise<{
