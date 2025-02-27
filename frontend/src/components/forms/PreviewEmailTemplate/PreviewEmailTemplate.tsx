@@ -22,7 +22,7 @@ export function PreviewEmailTemplate({
   const searchParams = useSearchParams();
 
   const { form, sectionHeading, backLinkText } =
-    content.components.reviewEmailTemplate;
+    content.components.previewEmailTemplate;
 
   const [state, action] = useActionState(
     previewEmailTemplateAction,

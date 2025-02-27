@@ -22,7 +22,7 @@ const initialState: SMSTemplate = {
   message: 'template-message',
 };
 
-describe('reviewSmsTemplateAction server action', () => {
+describe('previewSmsTemplateAction server action', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should return state when validation fails', async () => {

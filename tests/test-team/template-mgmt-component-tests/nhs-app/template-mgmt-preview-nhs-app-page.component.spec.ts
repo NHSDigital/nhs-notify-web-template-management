@@ -169,7 +169,7 @@ test.describe('Preview NHS App template Page', () => {
 
       const selectOptionErrorLink =
         previewNhsAppTemplatePage.errorSummary.locator(
-          '[href="#reviewNHSAppTemplateAction"]'
+          '[href="#previewNHSAppTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
@@ -177,7 +177,7 @@ test.describe('Preview NHS App template Page', () => {
       await selectOptionErrorLink.click();
 
       await expect(
-        page.locator('#reviewNHSAppTemplateAction')
+        page.locator('#previewNHSAppTemplateAction')
       ).toBeInViewport();
     });
   });

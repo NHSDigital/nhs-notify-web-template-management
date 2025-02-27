@@ -203,7 +203,7 @@ const manageTemplates = {
   },
 };
 
-const reviewEmailTemplate = {
+const previewEmailTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -217,7 +217,7 @@ const reviewEmailTemplate = {
   backLinkText: backToAllTemplates,
 };
 
-const reviewLetterTemplate = {
+const previewLetterTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -231,7 +231,7 @@ const reviewLetterTemplate = {
   backLinkText: backToAllTemplates,
 };
 
-const reviewNHSAppTemplate = {
+const previewNHSAppTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -245,7 +245,7 @@ const reviewNHSAppTemplate = {
   backLinkText: backToAllTemplates,
 };
 
-const reviewSMSTemplate = {
+const previewSMSTemplate = {
   sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
@@ -497,10 +497,10 @@ const content = {
     messageFormatting,
     nameYourTemplate,
     personalisation,
-    reviewEmailTemplate,
-    reviewLetterTemplate,
-    reviewNHSAppTemplate,
-    reviewSMSTemplate,
+    previewEmailTemplate,
+    previewLetterTemplate,
+    previewNHSAppTemplate,
+    previewSMSTemplate,
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,

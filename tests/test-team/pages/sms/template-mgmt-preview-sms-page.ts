@@ -17,10 +17,10 @@ export class TemplateMgmtPreviewSmsPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
-      '[id="reviewSMSTemplateAction-sms-edit"]'
+      '[id="previewSMSTemplateAction-sms-edit"]'
     );
     this.submitRadioOption = page.locator(
-      '[id="reviewSMSTemplateAction-sms-submit"]'
+      '[id="previewSMSTemplateAction-sms-submit"]'
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');

@@ -3,7 +3,7 @@
 exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`] = `
 <DocumentFragment>
   <h1
-    class="review__heading"
+    class="preview__heading"
     data-testid="preview-message__heading"
   >
     Example template
@@ -110,7 +110,7 @@ exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`]
 exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
 <DocumentFragment>
   <h1
-    class="review__heading"
+    class="preview__heading"
     data-testid="preview-message__heading"
   >
     Example template
@@ -333,7 +333,7 @@ exports[`PreviewTemplate component renders letter template when testPersonalisat
 exports[`PreviewTemplate component renders without content preview 1`] = `
 <DocumentFragment>
   <h1
-    class="review__heading"
+    class="preview__heading"
     data-testid="preview-message__heading"
   >
     Example template

@@ -22,7 +22,7 @@ export function PreviewSMSTemplate({
   const searchParams = useSearchParams();
 
   const { sectionHeading, form, backLinkText } =
-    content.components.reviewSMSTemplate;
+    content.components.previewSMSTemplate;
 
   const [state, action] = useActionState(
     previewSmsTemplateAction,

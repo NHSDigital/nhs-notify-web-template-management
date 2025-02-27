@@ -67,7 +67,7 @@ exports[`Preview email form renders matches error snapshot 1`] = `
           </ul>
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-email
@@ -341,7 +341,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
           Template saved
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-email
@@ -598,7 +598,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
         class="nhsuk-grid-column-full"
       >
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-email

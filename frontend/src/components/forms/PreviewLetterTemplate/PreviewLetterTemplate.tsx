@@ -21,7 +21,7 @@ export function PreviewLetterTemplate({
   const searchParams = useSearchParams();
 
   const { sectionHeading, form, backLinkText } =
-    content.components.reviewLetterTemplate;
+    content.components.previewLetterTemplate;
 
   const [state, action] = useActionState(
     previewLetterTemplateAction,

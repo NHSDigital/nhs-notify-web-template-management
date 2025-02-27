@@ -31,7 +31,7 @@ export function PreviewNHSAppTemplate({
   const isFromEditPage = searchParams.get('from') === 'edit';
 
   const { sectionHeading, form, backLinkText } =
-    content.components.reviewNHSAppTemplate;
+    content.components.previewNHSAppTemplate;
 
   return (
     <>
@@ -49,7 +49,7 @@ export function PreviewNHSAppTemplate({
                 state,
                 action,
                 formId: 'preview-nhs-app-template',
-                radiosId: 'reviewNHSAppTemplateAction',
+                radiosId: 'previewNHSAppTemplateAction',
               }}
               previewDetailsComponent={
                 <PreviewTemplateDetails.NHSApp

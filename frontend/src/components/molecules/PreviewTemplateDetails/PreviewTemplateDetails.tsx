@@ -25,7 +25,7 @@ export function PreviewTemplateDetails({
     <>
       <h1
         data-testid='preview-message__heading'
-        className={styles.review__heading}
+        className={styles.preview__heading}
       >
         {template.name}
       </h1>

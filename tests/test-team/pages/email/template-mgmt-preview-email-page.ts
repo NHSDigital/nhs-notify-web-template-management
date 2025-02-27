@@ -19,10 +19,10 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
-      '[id="reviewEmailTemplateAction-email-edit"]'
+      '[id="previewEmailTemplateAction-email-edit"]'
     );
     this.submitRadioOption = page.locator(
-      '[id="reviewEmailTemplateAction-email-submit"]'
+      '[id="previewEmailTemplateAction-email-submit"]'
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.subjectLineText = page.locator('[id="preview-content-subject"]');

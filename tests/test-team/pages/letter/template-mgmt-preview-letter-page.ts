@@ -17,10 +17,10 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
-      '[id="reviewLetterTemplateAction-letter-edit"]'
+      '[id="previewLetterTemplateAction-letter-edit"]'
     );
     this.submitRadioOption = page.locator(
-      '[id="reviewLetterTemplateAction-letter-submit"]'
+      '[id="previewLetterTemplateAction-letter-submit"]'
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');

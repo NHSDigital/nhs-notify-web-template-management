@@ -170,14 +170,14 @@ test.describe('Preview Email message template Page', () => {
 
       const selectOptionErrorLink =
         previewEmailTemplatePage.errorSummary.locator(
-          '[href="#reviewEmailTemplateAction"]'
+          '[href="#previewEmailTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#reviewEmailTemplateAction')).toBeInViewport();
+      await expect(page.locator('#previewEmailTemplateAction')).toBeInViewport();
     });
   });
 });

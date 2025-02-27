@@ -10,13 +10,13 @@ const pageActions = [
   'wait for #preview-nhs-app-template-submit-button to be visible',
 ];
 
-const reviewNHSAppTemplatePage = (url) => ({
+const previewNHSAppTemplatePage = (url) => ({
   name: 'preview-nhs-app-template',
   url,
   actions: pageActions,
 });
 
-const reviewNHSAppTemplateErrorPage = (url) => ({
+const previewNHSAppTemplateErrorPage = (url) => ({
   name: 'preview-nhs-app-template-error',
   url,
   actions: [
@@ -32,6 +32,6 @@ const reviewNHSAppTemplateErrorPage = (url) => ({
 
 module.exports = {
   pageActions,
-  reviewNHSAppTemplatePage,
-  reviewNHSAppTemplateErrorPage,
+  previewNHSAppTemplatePage,
+  previewNHSAppTemplateErrorPage,
 };

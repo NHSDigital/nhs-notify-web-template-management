@@ -23,7 +23,7 @@ const initialState: EmailTemplate = {
   message: 'template-message',
 };
 
-describe('reviewEmailTemplateAction server action', () => {
+describe('previewEmailTemplateAction server action', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should return state when validation fails', async () => {

@@ -67,7 +67,7 @@ exports[`Review sms form renders matches error snapshot 1`] = `
           </ul>
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-sms
@@ -315,7 +315,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
           Template saved
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-sms
@@ -546,7 +546,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
         class="nhsuk-grid-column-full"
       >
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-sms
