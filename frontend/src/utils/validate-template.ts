@@ -5,7 +5,6 @@ import {
   $EmailTemplate,
   $LetterTemplate,
   $Template,
-  $SubmittedTemplate,
   $NonSubmittedTemplate,
   $SubmittedEmailTemplate,
   $SubmittedNHSAppTemplate,
