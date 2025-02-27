@@ -1,4 +1,4 @@
-import { Template } from 'nhs-notify-web-template-management-utils';
+import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
 
 type PreviewTemplateHeadingsType =
   | 'Id'
@@ -8,14 +8,14 @@ type PreviewTemplateHeadingsType =
   | 'Message';
 
 export type PreviewTemplateProps = {
-  template: Template;
+  template: ChannelTemplate;
   templateTypeText: string;
   additionalMetaFields?: {
     title: string;
     id: string;
     content: React.ReactElement;
   }[];
-  previewContent?: {
+  contentPreview?: {
     heading: PreviewTemplateHeadingsType;
     id: string;
     value: string;

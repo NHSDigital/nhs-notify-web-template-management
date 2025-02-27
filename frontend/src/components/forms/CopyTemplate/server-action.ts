@@ -2,8 +2,8 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import {
+  ChannelTemplate,
   FormState,
-  Template,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
@@ -17,7 +17,7 @@ const $CopyTemplate = z.object({
 });
 
 type CopyTemplateActionState = FormState & {
-  template: Template;
+  template: ChannelTemplate;
 };
 type CopyTemplateAction = (
   formState: CopyTemplateActionState,
@@ -41,7 +41,6 @@ export const copyTemplateAction: CopyTemplateAction = async (
 
   const newTemplateType = parsedForm.data.templateType;
   const {
-    subject,
     name,
     id: _1,
     createdAt: _2,
@@ -52,8 +51,8 @@ export const copyTemplateAction: CopyTemplateAction = async (
     ...baseTemplateAttributes,
     name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
     templateType: newTemplateType,
-    ...(newTemplateType === TemplateType.EMAIL && {
-      subject: subject ?? 'Enter a subject line',
+    ...(formState.template.templateType === TemplateType.EMAIL && {
+      subject: formState.template.subject ?? 'Enter a subject line',
     }),
   });
 

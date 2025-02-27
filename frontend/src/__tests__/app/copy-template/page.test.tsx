@@ -21,7 +21,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('CopyTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  const template: TemplateDTO = {
+  const template = {
     id: 'template-id',
     templateType: TemplateType.EMAIL,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -30,7 +30,7 @@ describe('CopyTemplatePage', () => {
     message: 'template-message',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
-  };
+  } satisfies TemplateDTO;
 
   const letterTemplate: TemplateDTO = {
     id: 'template-id',

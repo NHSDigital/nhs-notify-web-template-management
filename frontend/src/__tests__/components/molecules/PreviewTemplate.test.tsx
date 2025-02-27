@@ -13,11 +13,12 @@ describe('PreviewTemplate component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
+          message: 'app message message',
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
           templateType: TemplateType.NHS_APP,
         }}
         templateTypeText='Channel template'
-        previewContent={[
+        contentPreview={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -38,9 +39,10 @@ describe('PreviewTemplate component', () => {
           name: 'Example template',
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.SMS,
+          message: 'text message message',
         }}
         templateTypeText='Channel template'
-        previewContent={[
+        contentPreview={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -86,11 +88,12 @@ describe('PreviewTemplate component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
+          message: 'app message message',
           templateType: TemplateType.NHS_APP,
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
         }}
         templateTypeText='Channel template'
-        previewContent={[
+        contentPreview={[
           {
             heading: 'Subject',
             id: 'subject',

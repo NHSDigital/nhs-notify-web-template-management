@@ -6,7 +6,7 @@ import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NH
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import content from '@content/content';
 import {
-  Template,
+  ChannelTemplate,
   TemplateType,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
@@ -15,7 +15,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { copyTemplateAction } from './server-action';
 
 type CopyTemplate = {
-  template: Template;
+  template: ChannelTemplate;
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {
