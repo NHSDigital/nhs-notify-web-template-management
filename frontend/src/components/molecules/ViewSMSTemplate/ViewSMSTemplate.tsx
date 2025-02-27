@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import {
   PageComponentProps,
   SMSTemplate,
@@ -30,7 +30,10 @@ export function ViewSMSTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplate.Sms template={initialState} message={html} />
+            <PreviewTemplateDetails.Sms
+              template={initialState}
+              message={html}
+            />
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>

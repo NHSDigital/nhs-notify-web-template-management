@@ -3,7 +3,7 @@
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import { validateEmailTemplate } from '@utils/validate-template';
 
 const PreviewEmailTemplatePage = async (props: PageProps) => {
@@ -17,7 +17,7 @@ const PreviewEmailTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewEmailTemplate initialState={validatedTemplate} />;
+  return <PreviewEmailTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewEmailTemplatePage;

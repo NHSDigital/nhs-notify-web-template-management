@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
+import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import {
   NHSAppTemplate,
   TemplateType,
@@ -14,7 +14,7 @@ import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate');
+jest.mock('@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -48,7 +48,7 @@ describe('PreviewNhsAppTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <ReviewNHSAppTemplate initialState={nhsAppTemplate} />
+      <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );
   });
 

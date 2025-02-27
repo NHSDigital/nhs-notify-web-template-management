@@ -3,7 +3,7 @@
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import { validateSMSTemplate } from '@utils/validate-template';
 
 const PreviewSMSTemplatePage = async (props: PageProps) => {
@@ -17,7 +17,7 @@ const PreviewSMSTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewSMSTemplate initialState={validatedTemplate} />;
+  return <PreviewSMSTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewSMSTemplatePage;

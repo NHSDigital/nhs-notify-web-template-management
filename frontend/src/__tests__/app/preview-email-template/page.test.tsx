@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
-import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import {
   EmailTemplate,
   TemplateType,
@@ -14,7 +14,7 @@ import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewEmailTemplate');
+jest.mock('@forms/PreviewEmailTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -49,7 +49,7 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<ReviewEmailTemplate initialState={emailTemplate} />);
+    expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {

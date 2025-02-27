@@ -1,16 +1,16 @@
 'use client';
 
 import { render, screen } from '@testing-library/react';
-import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import {
-  NHSAppTemplate,
+  SMSTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-import { renderNHSAppMarkdown } from '@utils/markdownit';
+import { renderSMSMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 
-jest.mock('@forms/PreviewNHSAppTemplate/server-action');
+jest.mock('@forms/PreviewSMSTemplate/server-actions');
 jest.mock('@utils/markdownit');
 
 jest.mock('react', () => {
@@ -34,15 +34,15 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
-describe('Preview nhs app form renders', () => {
+describe('Review sms form renders', () => {
   it('matches snapshot when navigating from manage templates screen', () => {
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-sms',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -57,12 +57,12 @@ describe('Preview nhs app form renders', () => {
     }));
 
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-sms',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -72,17 +72,17 @@ describe('Preview nhs app form renders', () => {
 
   it('matches error snapshot', () => {
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
-              previewNHSAppTemplateAction: ['Select an option'],
+              previewSMSTemplateAction: ['Select an option'],
             },
           },
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-sms',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -92,41 +92,41 @@ describe('Preview nhs app form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-sms',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
 
-    expect(screen.getByTestId('nhsapp-edit-radio')).toHaveAttribute(
+    expect(screen.getByTestId('sms-edit-radio')).toHaveAttribute(
       'value',
-      'nhsapp-edit'
+      'sms-edit'
     );
 
-    expect(screen.getByTestId('nhsapp-submit-radio')).toHaveAttribute(
+    expect(screen.getByTestId('sms-submit-radio')).toHaveAttribute(
       'value',
-      'nhsapp-submit'
+      'sms-submit'
     );
   });
 
   it('should render message with markdown', () => {
-    const renderMock = jest.mocked(renderNHSAppMarkdown);
+    const renderMock = jest.mocked(renderSMSMarkdown);
 
     renderMock.mockReturnValue('Rendered via MD');
 
-    const message = 'nhs app message body';
+    const message = 'sms message body';
 
     render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-sms',
           message,
+          id: 'template-id',
         })}
       />
     );

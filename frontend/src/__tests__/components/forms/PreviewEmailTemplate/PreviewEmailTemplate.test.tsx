@@ -1,16 +1,16 @@
 'use client';
 
 import { render, screen } from '@testing-library/react';
-import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import {
-  NHSAppTemplate,
+  EmailTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-import { renderNHSAppMarkdown } from '@utils/markdownit';
+import { renderEmailMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 
-jest.mock('@forms/PreviewNHSAppTemplate/server-action');
+jest.mock('@forms/PreviewEmailTemplate/server-actions');
 jest.mock('@utils/markdownit');
 
 jest.mock('react', () => {
@@ -34,15 +34,16 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
-describe('Preview nhs app form renders', () => {
+describe('Preview email form renders', () => {
   it('matches snapshot when navigating from manage templates screen', () => {
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-email',
+          subject: 'template-subject-line',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -57,12 +58,13 @@ describe('Preview nhs app form renders', () => {
     }));
 
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-email',
+          subject: 'template-subject-line',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -72,17 +74,18 @@ describe('Preview nhs app form renders', () => {
 
   it('matches error snapshot', () => {
     const container = render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: {
             formErrors: [],
             fieldErrors: {
-              previewNHSAppTemplateAction: ['Select an option'],
+              previewEmailTemplateAction: ['Select an option'],
             },
           },
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-email',
+          subject: 'template-subject-line',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
@@ -92,41 +95,43 @@ describe('Preview nhs app form renders', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-email',
+          subject: 'template-subject-line',
           message: 'message',
+          id: 'template-id',
         })}
       />
     );
 
-    expect(screen.getByTestId('nhsapp-edit-radio')).toHaveAttribute(
+    expect(screen.getByTestId('email-edit-radio')).toHaveAttribute(
       'value',
-      'nhsapp-edit'
+      'email-edit'
     );
 
-    expect(screen.getByTestId('nhsapp-submit-radio')).toHaveAttribute(
+    expect(screen.getByTestId('email-submit-radio')).toHaveAttribute(
       'value',
-      'nhsapp-submit'
+      'email-submit'
     );
   });
 
-  it('should render message with markdown', () => {
-    const renderMock = jest.mocked(renderNHSAppMarkdown);
+  it('should should render subject line and message with markdown', () => {
+    const renderMock = jest.mocked(renderEmailMarkdown);
 
     renderMock.mockReturnValue('Rendered via MD');
 
-    const message = 'nhs app message body';
+    const message = 'email message body';
 
     render(
-      <PreviewNHSAppTemplate
-        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
-          id: 'template-id',
-          name: 'test-template-nhs app',
+          name: 'test-template-email',
+          subject: 'template-subject-line',
           message,
+          id: 'template-id',
         })}
       />
     );
@@ -134,6 +139,9 @@ describe('Preview nhs app form renders', () => {
     expect(renderMock).toHaveBeenCalledWith(message);
 
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
+      'template-subject-line'
+    );
+    expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'
     );
   });

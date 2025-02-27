@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Preview nhs app form renders matches error snapshot 1`] = `
+exports[`Preview email form renders matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -59,7 +59,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
           >
             <li>
               <a
-                href="#previewNHSAppTemplateAction"
+                href="#previewEmailTemplateAction"
               >
                 Select an option
               </a>
@@ -70,7 +70,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
           class="review__heading"
           data-testid="preview-message__heading"
         >
-          test-template-nhs app
+          test-template-email
         </h1>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
@@ -145,6 +145,32 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
                 <div
                   class="preview__col_heading"
                   data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="preview__col_content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  template-subject-line
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                  data-testid="preview__heading-1"
                   id="preview-heading-message"
                 >
                   Message
@@ -155,7 +181,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
               >
                 <div
                   class="preview__col_content"
-                  data-testid="preview__content-0"
+                  data-testid="preview__content-1"
                   id="preview-content-message"
                 />
               </div>
@@ -169,7 +195,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-nhs-app-template"
+            value="preview-email-template"
           />
           <input
             name="csrf_token"
@@ -178,39 +204,51 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
             value="no_token"
           />
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-form-group--error"
           >
             <fieldset
               class="nhsuk-fieldset"
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewEmailTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
               <div
-                class="nhsuk-form-group"
+                class="nhsuk-form-group nhsuk-form-group--error"
               >
+                <span
+                  class="nhsuk-error-message"
+                  id="previewEmailTemplateAction--error-message"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Select an option
+                </span>
                 <div
+                  aria-describedby="previewEmailTemplateAction--error-message"
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewEmailTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-edit-radio"
+                      id="previewEmailTemplateAction-email-edit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-edit"
+                      value="email-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewEmailTemplateAction-email-edit"
+                      id="previewEmailTemplateAction-email-edit--label"
                     >
                       Edit template
                     </label>
@@ -220,16 +258,16 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-submit-radio"
+                      id="previewEmailTemplateAction-email-submit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-submit"
+                      value="email-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewEmailTemplateAction-email-submit"
+                      id="previewEmailTemplateAction-email-submit--label"
                     >
                       Submit template
                     </label>
@@ -242,7 +280,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-nhs-app-template-submit-button"
+            id="preview-email-template-submit-button"
             type="submit"
           >
             Continue
@@ -261,7 +299,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Preview nhs app form renders matches snapshot when navigating from edit screen 1`] = `
+exports[`Preview email form renders matches snapshot when navigating from edit screen 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -306,7 +344,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
           class="review__heading"
           data-testid="preview-message__heading"
         >
-          test-template-nhs app
+          test-template-email
         </h1>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
@@ -381,6 +419,32 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                 <div
                   class="preview__col_heading"
                   data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="preview__col_content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  template-subject-line
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                  data-testid="preview__heading-1"
                   id="preview-heading-message"
                 >
                   Message
@@ -391,7 +455,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
               >
                 <div
                   class="preview__col_content"
-                  data-testid="preview__content-0"
+                  data-testid="preview__content-1"
                   id="preview-content-message"
                 />
               </div>
@@ -405,7 +469,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-nhs-app-template"
+            value="preview-email-template"
           />
           <input
             name="csrf_token"
@@ -421,7 +485,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewEmailTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
@@ -430,23 +494,23 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
               >
                 <div
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewEmailTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-edit-radio"
+                      id="previewEmailTemplateAction-email-edit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-edit"
+                      value="email-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewEmailTemplateAction-email-edit"
+                      id="previewEmailTemplateAction-email-edit--label"
                     >
                       Edit template
                     </label>
@@ -456,16 +520,16 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-submit-radio"
+                      id="previewEmailTemplateAction-email-submit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-submit"
+                      value="email-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewEmailTemplateAction-email-submit"
+                      id="previewEmailTemplateAction-email-submit--label"
                     >
                       Submit template
                     </label>
@@ -478,7 +542,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-nhs-app-template-submit-button"
+            id="preview-email-template-submit-button"
             type="submit"
           >
             Continue
@@ -497,7 +561,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
 </DocumentFragment>
 `;
 
-exports[`Preview nhs app form renders matches snapshot when navigating from manage templates screen 1`] = `
+exports[`Preview email form renders matches snapshot when navigating from manage templates screen 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -537,7 +601,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
           class="review__heading"
           data-testid="preview-message__heading"
         >
-          test-template-nhs app
+          test-template-email
         </h1>
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
@@ -612,6 +676,32 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                 <div
                   class="preview__col_heading"
                   data-testid="preview__heading-0"
+                  id="preview-heading-subject"
+                >
+                  Subject
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="preview__col_content"
+                  data-testid="preview__content-0"
+                  id="preview-content-subject"
+                >
+                  template-subject-line
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                  data-testid="preview__heading-1"
                   id="preview-heading-message"
                 >
                   Message
@@ -622,7 +712,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               >
                 <div
                   class="preview__col_content"
-                  data-testid="preview__content-0"
+                  data-testid="preview__content-1"
                   id="preview-content-message"
                 />
               </div>
@@ -636,7 +726,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             name="form-id"
             readonly=""
             type="hidden"
-            value="preview-nhs-app-template"
+            value="preview-email-template"
           />
           <input
             name="csrf_token"
@@ -652,7 +742,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewEmailTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
@@ -661,23 +751,23 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
               >
                 <div
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewEmailTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-edit-radio"
+                      id="previewEmailTemplateAction-email-edit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-edit"
+                      value="email-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewEmailTemplateAction-email-edit"
+                      id="previewEmailTemplateAction-email-edit--label"
                     >
                       Edit template
                     </label>
@@ -687,16 +777,16 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
                   >
                     <input
                       class="nhsuk-radios__input"
-                      data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      data-testid="email-submit-radio"
+                      id="previewEmailTemplateAction-email-submit"
+                      name="previewEmailTemplateAction"
                       type="radio"
-                      value="nhsapp-submit"
+                      value="email-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewEmailTemplateAction-email-submit"
+                      id="previewEmailTemplateAction-email-submit--label"
                     >
                       Submit template
                     </label>
@@ -709,7 +799,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="preview-nhs-app-template-submit-button"
+            id="preview-email-template-submit-button"
             type="submit"
           >
             Continue

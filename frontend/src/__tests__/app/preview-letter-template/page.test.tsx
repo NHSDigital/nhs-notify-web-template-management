@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewLetterTemplatePage from '@app/preview-letter-template/[templateId]/page';
-import { ReviewLetterTemplate } from '@forms/ReviewLetterTemplate/ReviewLetterTemplate';
+import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
 import {
   type LetterTemplate,
   TemplateType,
@@ -19,7 +19,7 @@ import {
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewLetterTemplate/ReviewLetterTemplate');
+jest.mock('@forms/PreviewLetterTemplate/PreviewLetterTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -68,7 +68,7 @@ describe('PreviewLetterTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <ReviewLetterTemplate initialState={letterTemplate} />
+      <PreviewLetterTemplate initialState={letterTemplate} />
     );
   });
 

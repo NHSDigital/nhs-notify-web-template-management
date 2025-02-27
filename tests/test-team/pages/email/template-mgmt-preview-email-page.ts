@@ -28,7 +28,7 @@ export class TemplateMgmtPreviewEmailPage extends TemplateMgmtPreviewBasePage {
     this.subjectLineText = page.locator('[id="preview-content-subject"]');
     this.messageText = page.locator('[id="preview-content-message"]');
     this.continueButton = page.locator(
-      '[id="review-email-template-submit-button"]'
+      '[id="preview-email-template-submit-button"]'
     );
   }
 

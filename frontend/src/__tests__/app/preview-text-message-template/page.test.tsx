@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
-import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import {
   SMSTemplate,
   TemplateType,
@@ -14,7 +14,7 @@ import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewSMSTemplate');
+jest.mock('@forms/PreviewSMSTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -47,7 +47,7 @@ describe('PreviewSMSTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<ReviewSMSTemplate initialState={smsTemplate} />);
+    expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
