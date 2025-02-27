@@ -4,7 +4,6 @@ import {
   $SMSTemplate,
   $NHSAppTemplate,
   $Template,
-  $SubmittedTemplate,
   $LetterTemplate,
 } from './zod-validators';
 
@@ -32,8 +31,6 @@ export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 export type LetterTemplate = z.infer<typeof $LetterTemplate>;
 
 export type Template = z.infer<typeof $Template>;
-
-export type SubmittedTemplate = z.infer<typeof $SubmittedTemplate>;
 
 export type Draft<T> = Omit<T, 'id'>;
 
