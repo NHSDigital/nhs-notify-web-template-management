@@ -5,7 +5,11 @@ import {
   Template,
   isTemplateValid,
 } from 'nhs-notify-web-template-management-utils';
-import { CreateTemplate, TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  CreateLetterTemplate,
+  CreateTemplate,
+  TemplateDTO,
+} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
@@ -19,6 +23,31 @@ export async function createTemplate(
   }
 
   const { data, error } = await TemplateClient(token).createTemplate(template);
+
+  if (error) {
+    logger.error('Failed to create template', { error });
+    throw new Error('Failed to create new template');
+  }
+
+  return data;
+}
+
+export async function createLetterTemplate(
+  template: CreateLetterTemplate,
+  pdf: File,
+  csv: File
+): Promise<TemplateDTO> {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await TemplateClient(token).createLetterTemplate(
+    template,
+    pdf,
+    csv
+  );
 
   if (error) {
     logger.error('Failed to create template', { error });

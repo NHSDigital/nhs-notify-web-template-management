@@ -1,9 +1,10 @@
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { $TemplateDTOSchema, TemplateDTO } from 'nhs-notify-backend-client';
 import { TemplateType, TemplateStatus } from './enum';
 
-export const $Template = z.object({
-  id: z.string(),
+const $Template = z.object({
+  id: z.string().optional().default(randomUUID()),
   templateType: z.nativeEnum(TemplateType),
   templateStatus: z.nativeEnum(TemplateStatus),
   name: z.string(),

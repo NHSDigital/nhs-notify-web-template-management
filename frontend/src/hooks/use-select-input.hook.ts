@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-type InputValue = HTMLTextAreaElement | HTMLInputElement | HTMLOptionElement;
+type InputValue = HTMLOptionElement;
 
-export const useTextInput = <T extends InputValue>(
+export const useSelectInput = <T extends InputValue>(
   initialState: string
 ): [string, React.ChangeEventHandler<T>] => {
   const [value, setValue] = useState(initialState);

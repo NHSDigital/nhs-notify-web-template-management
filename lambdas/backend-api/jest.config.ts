@@ -11,6 +11,7 @@ const moduleNameMapperDefaults = pathsToModuleNameMapper(
 
 const jestConfig = {
   ...baseJestConfig,
+  coveragePathIgnorePatterns: ['create-letter.ts'],
   moduleNameMapper: moduleNameMapperDefaults,
   testEnvironment: 'node',
 };

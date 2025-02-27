@@ -8,5 +8,7 @@ export type CreateTemplate = {
     name: string;
     message: string;
     subject?: string;
+    letterType?: string;
+    language?: string;
 };
 

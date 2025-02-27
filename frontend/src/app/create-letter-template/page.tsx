@@ -1,17 +1,20 @@
-import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { notFound } from 'next/navigation';
+import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import {
+  Draft,
+  LetterTemplate,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-web-template-management-utils';
 
 const CreateLetterTemplatePage = async () => {
-  if (process.env.NEXT_PUBLIC_ENABLE_LETTERS !== 'true') notFound();
+  const initialState: Draft<LetterTemplate> = {
+    templateType: TemplateType.LETTER,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: '',
+    message: '',
+  };
 
-  return (
-    <NHSNotifyMain>
-      <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-        Create letter template
-      </h1>
-      <p id='placeholder'>🚧 Placeholder 🚧</p>
-    </NHSNotifyMain>
-  );
+  return <LetterTemplateForm initialState={initialState} />;
 };
 
 export default CreateLetterTemplatePage;

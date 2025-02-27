@@ -404,6 +404,17 @@ const templateFormNhsApp = {
   backLinkText: 'Back to choose a template type',
 };
 
+const templateFormLetter = {
+  pageHeadingSuffix: 'Letter message template',
+  errorHeading: 'There is a problem',
+  templateNameLabelText: 'Template name',
+  templateMessageLabelText: 'Message',
+  templateNameHintText: 'This will not be visible to recipients.',
+  characterCountText: ' of 5000 characters',
+  buttonText: 'Save and preview',
+  backLinkText: 'Back to choose a template type',
+};
+
 const templateFormEmail = {
   pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
@@ -484,6 +495,7 @@ const content = {
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,
+    templateFormLetter,
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,

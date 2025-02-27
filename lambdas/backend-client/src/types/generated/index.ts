@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export type { CreateLetterTemplate } from './models/CreateLetterTemplate';
 export type { CreateTemplate } from './models/CreateTemplate';
 export type { Failure } from './models/Failure';
 export type { Success } from './models/Success';
