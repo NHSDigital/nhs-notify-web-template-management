@@ -52,10 +52,9 @@ test('submit form - create email template from non-email template', async () => 
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<EmailTemplate, 'id'> = {
+  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.EMAIL,
-    subject: 'Enter a subject line',
+    templateType: TemplateType.NHS_APP,
     name: 'template-name',
     message: 'template-message',
   };

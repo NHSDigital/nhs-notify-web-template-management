@@ -21,6 +21,8 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
+    console.log(JSON.stringify(template));
+
     const response = await catchAxiosError(
       this._client.post<Success>('/v1/template', template)
     );
