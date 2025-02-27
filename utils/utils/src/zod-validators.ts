@@ -7,7 +7,7 @@ import {
 } from 'nhs-notify-backend-client';
 import { TemplateType, TemplateStatus } from './enum';
 
-export const $Template = z.object({
+const $TemplateBase = z.object({
   id: z.string(),
   templateType: z.nativeEnum(TemplateType),
   templateStatus: z.nativeEnum(TemplateStatus),
@@ -16,7 +16,7 @@ export const $Template = z.object({
   updatedAt: z.string().optional(),
 });
 
-export const $EmailTemplate = $Template.extend({
+export const $EmailTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.EMAIL),
   subject: z.string(),
   message: z.string(),
@@ -25,7 +25,7 @@ export const $SubmittedEmailTemplate = $EmailTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
 
-export const $NHSAppTemplate = $Template.extend({
+export const $NHSAppTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.NHS_APP),
   message: z.string(),
 });
@@ -33,7 +33,7 @@ export const $SubmittedNHSAppTemplate = $NHSAppTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
 
-export const $SMSTemplate = $Template.extend({
+export const $SMSTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.SMS),
   message: z.string(),
 });
@@ -41,7 +41,7 @@ export const $SubmittedSMSTemplate = $SMSTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
 });
 
-export const $LetterTemplate = $Template.extend({
+export const $LetterTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.LETTER),
   letterType: z.nativeEnum(LetterType),
   language: z.nativeEnum(Language),
