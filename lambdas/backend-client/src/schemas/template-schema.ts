@@ -52,7 +52,7 @@ export const $CreateLetterTemplateSchema = schemaFor<CreateTemplate>()(
     letterType: z.nativeEnum(LetterType),
     language: z.nativeEnum(Language),
     pdfTemplateInputFile: z.string(),
-    testPersonalisationInputFile: z.string(),
+    testPersonalisationInputFile: z.string().optional(),
   })
 );
 
@@ -84,11 +84,18 @@ export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
   ])
 );
 
+export const $dtoFields = {
+  id: z.string(),
+  templateStatus: z.nativeEnum(TemplateStatus),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+};
+
 export const $TemplateDTOSchema = schemaFor<TemplateDTO>()(
-  $BaseCreateTemplateSchema.extend({
-    id: z.string(),
-    templateStatus: z.nativeEnum(TemplateStatus),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-  })
+  z.discriminatedUnion('templateType', [
+    $CreateSMSTemplateSchema.extend($dtoFields),
+    $CreateNhsAppTemplateSchema.extend($dtoFields),
+    $CreateEmailTemplateSchema.extend($dtoFields),
+    $CreateLetterTemplateSchema.extend($dtoFields),
+  ])
 );

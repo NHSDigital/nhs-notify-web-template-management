@@ -1,5 +1,3 @@
-'use server';
-
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';

@@ -26,9 +26,6 @@ const nextConfig = (phase) => {
       serverActions: {
         allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
       },
-      serverActions: {
-        bodySizeLimit: '6mb',
-      },
     },
 
     async redirects() {

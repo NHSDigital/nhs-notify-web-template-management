@@ -414,10 +414,10 @@
             "type": "string"
           },
           "letterType": {
-            "type": "string"
+            "type": "#/components/schemas/LetterType"
           },
           "language": {
-            "type": "string"
+            "type": "#/components/schemas/Language"
           }
         }
       },
@@ -440,6 +440,12 @@
           },
           "subject": {
             "type": "string"
+          },
+          "letterType": {
+            "type": "#/components/schemas/LetterType"
+          },
+          "language": {
+            "type": "#/components/schemas/Language"
           },
           "templateType": {
             "$ref": "#/components/schemas/TemplateType",

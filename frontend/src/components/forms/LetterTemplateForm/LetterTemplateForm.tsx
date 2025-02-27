@@ -15,7 +15,9 @@ import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyF
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import {
   Draft,
+  languageMapping,
   LetterTemplate,
+  letterTypeMapping,
   PageComponentProps,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
@@ -29,12 +31,12 @@ export const LetterTemplateForm: FC<
   PageComponentProps<LetterTemplate | Draft<LetterTemplate>>
 > = ({ initialState }) => {
   const {
-    pageHeadingSuffix,
+    backLinkText,
     errorHeading,
-    buttonText,
+    pageHeading,
     templateNameLabelText,
     templateNameHintText,
-    backLinkText,
+    buttonText,
   } = content.components.templateFormLetter;
 
   const [state, action] = useActionState(processFormActions, initialState);
@@ -42,12 +44,12 @@ export const LetterTemplateForm: FC<
   const [letterTemplateName, letterTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
 
-  const [letterType, letterTypeHandler] = useTextInput<HTMLOptionElement>(
-    state.letterType || LetterType.STANDARD
+  const [letterType, letterTypeHandler] = useTextInput<HTMLSelectElement>(
+    state.letterType
   );
 
   const [letterLanguage, letterLanguageHandler] =
-    useTextInput<HTMLOptionElement>(state.language || Language.ENGLISH);
+    useTextInput<HTMLSelectElement>(state.language);
 
   const templateNameError =
     state.validationError?.fieldErrors.letterTemplateName?.join(', ');
@@ -70,8 +72,7 @@ export const LetterTemplateForm: FC<
               formId='create-letter-template'
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {editMode ? 'Edit ' : 'Create '}
-                {pageHeadingSuffix}
+                {pageHeading}
               </h1>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='letterTemplateName' size='s'>
@@ -91,15 +92,12 @@ export const LetterTemplateForm: FC<
                 hint='Choose the type of letter template you are uploading'
                 label='Letter type'
                 id='letterType'
+                defaultValue={letterType}
+                onChange={letterTypeHandler}
               >
                 {Object.values(LetterType).map((type) => (
-                  <Select.Option
-                    defaultValue={letterType}
-                    onChange={letterTypeHandler}
-                    key={type}
-                    value={type}
-                  >
-                    {type}
+                  <Select.Option key={`option-${type}`} value={type}>
+                    {letterTypeMapping(type)}
                   </Select.Option>
                 ))}
               </Select>
@@ -107,15 +105,12 @@ export const LetterTemplateForm: FC<
                 hint='Choose the language of this letter template'
                 label='Additional language'
                 id='letterLanguage'
+                defaultValue={letterLanguage}
+                onChange={letterLanguageHandler}
               >
                 {Object.values(Language).map((language) => (
-                  <Select.Option
-                    defaultValue={letterLanguage}
-                    onChange={letterLanguageHandler}
-                    key={language}
-                    value={language}
-                  >
-                    {language}
+                  <Select.Option key={`option-${language}`} value={language}>
+                    {languageMapping(language)}
                   </Select.Option>
                 ))}
               </Select>

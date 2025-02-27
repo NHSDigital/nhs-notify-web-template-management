@@ -172,7 +172,9 @@ PreviewTemplate.Letter = ({ template }: { template: LetterTemplate }) => (
       {
         title: 'Test personalisation file',
         id: 'testdatafile',
-        content: <Filename filename={template.testPersonalisationInputFile} />,
+        content: (
+          <Filename filename={template.testPersonalisationInputFile || ''} />
+        ),
       },
     ]}
   />

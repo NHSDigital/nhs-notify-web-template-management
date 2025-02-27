@@ -4,11 +4,7 @@ import {
   Draft,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
-import {
-  saveTemplate,
-  createLetterTemplate,
-  createTemplate,
-} from '@utils/form-actions';
+import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Language, LetterType } from 'nhs-notify-backend-client';
 
@@ -26,23 +22,22 @@ const $CreateLetterTemplateSchema = z.object({
     .instanceof(File, {
       message: 'Please select a template pdf file.',
     })
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
+    .refine((pdf) => pdf.size <= 5 * 1024 * 1024, {
       message: `The pdf is too large. Please choose a template pdf smaller than 5MB.`,
     })
-    .refine((file) => file.type === 'application/pdf', {
+    .refine((pdf) => pdf.type === 'application/pdf', {
       message: 'Please upload a valid .pdf file.',
     }),
   csv: z
     .instanceof(File, {
       message: 'Please select a sample data csv file.',
     })
-    .refine((file) => file.size <= 10 * 1024, {
+    .refine((csv) => csv.size <= 10 * 1024, {
       message: `The csv is too large. Please provide sample data smaller than 10KB.`,
     })
-    .refine((file) => file.type === 'text/csv', {
+    .refine((csv) => csv.size === 0 || csv.type === 'text/csv', {
       message: 'Please upload a valid .csv file.',
-    })
-    .optional(),
+    }),
 });
 
 export async function processFormActions(
@@ -71,7 +66,7 @@ export async function processFormActions(
     letterType: letterType as LetterType,
     language: letterLanguage as Language,
     pdfTemplateInputFile: pdf.name,
-    ...(csv && { testPersonalisationInputFile: csv.name }),
+    ...(csv.size > 0 && { testPersonalisationInputFile: csv.name }),
   };
 
   const savedTemplate = await ('id' in updatedTemplate
