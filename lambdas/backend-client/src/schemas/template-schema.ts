@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import {
   CreateTemplate,
+  Language,
+  LetterType,
   TemplateDTO,
   TemplateStatus,
   TemplateType,
@@ -44,6 +46,16 @@ export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
   })
 );
 
+export const $CreateLetterTemplateSchema = schemaFor<CreateTemplate>()(
+  $BaseCreateTemplateSchema.extend({
+    templateType: z.literal(TemplateType.LETTER),
+    letterType: z.nativeEnum(LetterType),
+    language: z.nativeEnum(Language),
+    pdfTemplateInputFile: z.string(),
+    testPersonalisationInputFile: z.string().optional(),
+  })
+);
+
 export const $CreateEmailTemplateSchema = schemaFor<CreateTemplate>()(
   $BaseCreateTemplateSchema.extend({
     subject: z.string().trim().min(1),
@@ -56,6 +68,7 @@ export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
   $CreateSMSTemplateSchema,
   $CreateNhsAppTemplateSchema,
   $CreateEmailTemplateSchema,
+  $CreateLetterTemplateSchema,
 ]);
 
 const $UpdateTemplateFields = {
@@ -67,14 +80,22 @@ export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
     $CreateSMSTemplateSchema.extend($UpdateTemplateFields),
     $CreateNhsAppTemplateSchema.extend($UpdateTemplateFields),
     $CreateEmailTemplateSchema.extend($UpdateTemplateFields),
+    $CreateLetterTemplateSchema.extend($UpdateTemplateFields),
   ])
 );
 
+export const $dtoFields = {
+  id: z.string(),
+  templateStatus: z.nativeEnum(TemplateStatus),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+};
+
 export const $TemplateDTOSchema = schemaFor<TemplateDTO>()(
-  $BaseCreateTemplateSchema.extend({
-    id: z.string(),
-    templateStatus: z.nativeEnum(TemplateStatus),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-  })
+  z.discriminatedUnion('templateType', [
+    $CreateSMSTemplateSchema.extend($dtoFields),
+    $CreateNhsAppTemplateSchema.extend($dtoFields),
+    $CreateEmailTemplateSchema.extend($dtoFields),
+    $CreateLetterTemplateSchema.extend($dtoFields),
+  ])
 );

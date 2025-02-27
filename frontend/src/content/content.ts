@@ -350,7 +350,7 @@ const nameYourTemplate = {
     [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
     [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
     [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.LETTER]: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
+    [TemplateType.LETTER]: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
   },
 };
 
@@ -421,6 +421,15 @@ const templateFormNhsApp = {
   characterCountText: ' of 5000 characters',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+};
+
+const templateFormLetter = {
+  backLinkText: 'Back to choose a template type',
+  errorHeading: 'There is a problem',
+  pageHeading: 'Upload a letter template',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
+  buttonText: 'Save and upload',
 };
 
 const templateFormEmail = {
@@ -504,6 +513,7 @@ const content = {
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,
+    templateFormLetter,
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,

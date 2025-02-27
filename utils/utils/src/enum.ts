@@ -14,7 +14,7 @@ export const languageMapping = (language: Language) =>
     .map((word) => `${word[0]}${word.slice(1).toLocaleLowerCase()}`)
     .join(' ');
 
-const letterTypeMapping = (letterType: LetterType) =>
+export const letterTypeMapping = (letterType: LetterType) =>
   ({
     [LetterType.AUDIO]: 'Audio',
     [LetterType.BRAILLE]: 'Braille',
