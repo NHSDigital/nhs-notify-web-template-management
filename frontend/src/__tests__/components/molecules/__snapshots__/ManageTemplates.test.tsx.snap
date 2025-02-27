@@ -269,7 +269,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Type 
               </span>
-              Letter
+              Letter - French
             </td>
             <td
               class="nhsuk-table__cell"
@@ -580,7 +580,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Type 
               </span>
-              Letter
+              Letter - French
             </td>
             <td
               class="nhsuk-table__cell"
