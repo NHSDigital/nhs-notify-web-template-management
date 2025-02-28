@@ -37,7 +37,7 @@ describe('templateClient', () => {
         },
       });
 
-      const data: CreateTemplate = {
+      const data = {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
@@ -56,7 +56,7 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
-      const data: CreateTemplate = {
+      const data = {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
@@ -86,7 +86,7 @@ describe('templateClient', () => {
     });
 
     test('should return created template', async () => {
-      const data: CreateTemplate = {
+      const data = {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',

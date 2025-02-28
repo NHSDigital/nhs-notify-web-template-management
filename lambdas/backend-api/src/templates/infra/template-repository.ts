@@ -1,4 +1,3 @@
-import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   CreateTemplate,
   ErrorCase,
@@ -66,7 +65,6 @@ const create = async (
   const date = new Date().toISOString();
   const entity: DatabaseTemplate = {
     ...template,
-    id: uuidv4(),
     owner,
     version: 1,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,

@@ -47,6 +47,11 @@ variable "csi" {
   description = "CSI from the parent component"
 }
 
+variable "csi_global" {
+  type        = string
+  description = "Global CSI from the parent component"
+}
+
 variable "log_retention_in_days" {
   type        = number
   description = "The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite"

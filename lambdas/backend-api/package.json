@@ -11,6 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.699.0",
     "@aws-sdk/client-dynamodb": "^3.696.0",
+    "@aws-sdk/client-s3": "^3.750.0",
     "@aws-sdk/client-ses": "^3.699.0",
     "@aws-sdk/lib-dynamodb": "^3.698.0",
     "handlebars": "^4.7.8",
@@ -19,6 +20,7 @@
     "mimetext": "^3.0.24",
     "nhs-notify-backend-client": "*",
     "nhs-notify-web-template-management-utils": "*",
+    "parse-multipart-data": "^1.5.0",
     "tsx": "^4.19.2",
     "winston": "^3.17.0",
     "zod": "^3.23.8"

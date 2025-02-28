@@ -210,6 +210,85 @@
         }
       }
     },
+    "/v1/letter-template": {
+      "post": {
+        "summary": "Create a template",
+        "description": "Create a template",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Template to create",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "CreateLetterTemplate": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "$ref": "#/components/schemas/CreateTemplate"
+                    },
+                    "letterPdf": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "testCsv": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LETTER_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
     "/v1/templates": {
       "get": {
         "summary": "List all templates",
@@ -357,6 +436,12 @@
             "type": "string"
           },
           "subject": {
+            "type": "string"
+          },
+          "letterType": {
+            "type": "string"
+          },
+          "language": {
             "type": "string"
           }
         }

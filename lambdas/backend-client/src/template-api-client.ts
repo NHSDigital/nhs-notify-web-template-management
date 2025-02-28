@@ -22,7 +22,11 @@ export class TemplateApiClient implements ITemplateClient {
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
     const response = await catchAxiosError(
-      this._client.post<Success>('/v1/template', template)
+      this._client.post<Success>('/v1/template', template, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     );
 
     if (response.error) {
@@ -36,12 +40,42 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 
+  async createLetterTemplate(
+    template: CreateTemplate,
+    pdf: File,
+    csv: File
+  ): Promise<Result<TemplateDTO>> {
+    const formData = new FormData();
+    formData.append('template', JSON.stringify(template));
+    formData.append('letterPdf', pdf);
+    formData.append('testCsv', csv);
+    const response = await catchAxiosError(
+      this._client.post<Success>('/v1/letter-template', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    );
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+    return {
+      data: response.data.template,
+    };
+  }
+
   async updateTemplate(
     templateId: string,
     template: UpdateTemplate
   ): Promise<Result<TemplateDTO>> {
     const response = await catchAxiosError(
-      this._client.post<Success>(`/v1/template/${templateId}`, template)
+      this._client.post<Success>(`/v1/template/${templateId}`, template, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     );
 
     if (response.error) {
