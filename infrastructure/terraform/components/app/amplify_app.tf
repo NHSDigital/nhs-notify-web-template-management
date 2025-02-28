@@ -6,6 +6,7 @@ resource "aws_amplify_app" "main" {
   iam_service_role_arn = aws_iam_role.amplify.arn
 
   enable_auto_branch_creation = false
+  enable_branch_auto_deletion = true
   enable_branch_auto_build    = var.enable_amplify_branch_auto_build
   platform                    = "WEB_COMPUTE"
 
@@ -27,9 +28,12 @@ resource "aws_amplify_app" "main" {
   ]
 
   environment_variables = {
-    NOTIFY_GROUP        = var.group
-    NOTIFY_ENVIRONMENT  = var.environment
-    NOTIFY_DOMAIN_NAME  = local.root_domain_name
-    ACCOUNT_ID      = var.aws_account_id
+    NOTIFY_GROUP                = var.group
+    NOTIFY_ENVIRONMENT          = var.environment
+    NOTIFY_DOMAIN_NAME          = local.root_domain_name
+    ACCOUNT_ID                  = var.aws_account_id
+    NEXT_PUBLIC_DISABLE_CONTENT = var.disable_content
+    AMPLIFY_MONOREPO_APP_ROOT   = "frontend"
+    BACKEND_API_URL             = module.backend_api.api_base_url
   }
 }

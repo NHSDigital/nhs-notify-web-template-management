@@ -1,0 +1,21 @@
+{
+  "name": "nhs-notify-web-template-management-ui-tests",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test:start-local-app": "npm run build --prefix ../../frontend && npm run start --prefix ../../frontend",
+    "test:local-ui": "playwright test --project component -c config/local.config.ts",
+    "test:local-ui-e2e": "playwright test --project e2e-local -c config/local.config.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-appsync": "^3.650.0",
+    "@aws-sdk/client-dynamodb": "^3.654.0",
+    "@aws-sdk/lib-dynamodb": "^3.654.0",
+    "@playwright/test": "^1.45.1",
+    "aws-amplify": "^6.6.0"
+  }
+}

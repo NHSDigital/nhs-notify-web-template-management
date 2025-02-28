@@ -90,11 +90,37 @@ variable "enable_cognito_built_in_idp" {
 variable "enable_amplify_basic_auth" {
   type        = bool
   description = "Enable a basic set of credentials in the form of a dynamicly generated username and password for the amplify app branches. Not intended for production use"
-  default     = false
+  default     = true
+}
+
+# Github Environments only handles uppercase envvars
+variable "AMPLIFY_BASIC_AUTH_SECRET" {
+  # Github only does uppercase env vars
+  type        = string
+  description = "Secret key/password to use for Amplify Basic Auth - This is entended to be read from CI variables and not commited to any codebase"
+  default     = "unset"
 }
 
 variable "branch_name" {
   type        = string
   description = "The branch name to deploy"
   default     = "main"
+}
+
+variable "url_prefix" {
+  type        = string
+  description = "The url prefix to use for the deployed branch"
+  default     = "main"
+}
+
+variable "commit_id" {
+  type        = string
+  description = "The commit to deploy. Must be in the tree for branch_name"
+  default     = "HEAD"
+}
+
+variable "disable_content" {
+  type        = string
+  description = "Value for turning switching disable conten true/false"
+  default     = "false"
 }
