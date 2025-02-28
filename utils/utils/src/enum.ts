@@ -16,7 +16,7 @@ export const languageMapping = (language: Language) =>
 
 const letterTypeMapping = (letterType: LetterType) =>
   ({
-    [LetterType.AUDIO]: 'Audio',
+    [LetterType.AUDIO]: 'Audio CD',
     [LetterType.BRAILLE]: 'Braille',
     [LetterType.BSL]: 'British Sign Language',
     [LetterType.STANDARD]: 'Standard',

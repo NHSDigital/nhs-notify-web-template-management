@@ -169,11 +169,17 @@ PreviewTemplate.Letter = ({ template }: { template: LetterTemplate }) => (
         id: 'templatefile',
         content: <Filename filename={template.pdfTemplateInputFile} />,
       },
-      {
-        title: 'Test personalisation file',
-        id: 'testdatafile',
-        content: <Filename filename={template.testPersonalisationInputFile} />,
-      },
+      ...(template.testPersonalisationInputFile
+        ? [
+            {
+              title: 'Test personalisation file',
+              id: 'testdatafile',
+              content: (
+                <Filename filename={template.testPersonalisationInputFile} />
+              ),
+            },
+          ]
+        : []),
     ]}
   />
 );

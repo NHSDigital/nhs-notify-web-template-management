@@ -26,14 +26,17 @@ const generateViewTemplateLink = (template: TemplateDTO): string => {
   return `/${previewTemplatePages(template.templateType)}/${template.id}`;
 };
 
-const typeDisplayMappings = (template: TemplateDTO) =>
-  template.templateType === TemplateType.LETTER &&
-  'letterType' in template &&
-  template.letterType &&
-  'language' in template &&
-  template.language
+const typeDisplayMappings = (template: TemplateDTO): string => {
+  console.log(template);
+
+  return template.templateType === TemplateType.LETTER &&
+    'letterType' in template &&
+    template.letterType &&
+    'language' in template &&
+    template.language
     ? letterTypeDisplayMappings(template.letterType, template.language)
     : templateTypeDisplayMappings(template.templateType);
+};
 
 export function ManageTemplates({
   templateList,

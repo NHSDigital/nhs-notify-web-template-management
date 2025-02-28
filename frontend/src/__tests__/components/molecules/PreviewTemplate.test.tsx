@@ -82,6 +82,24 @@ describe('PreviewTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('renders letter template when testPersonalisationInputFile is not set', () => {
+    const container = render(
+      <PreviewTemplate.Letter
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.LETTER,
+          letterType: LetterType.STANDARD,
+          language: Language.FRENCH,
+          pdfTemplateInputFile: 'file.pdf',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders component correctly', () => {
     render(
       <PreviewTemplate

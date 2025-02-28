@@ -55,7 +55,7 @@ export const $LetterTemplate = $TemplateBase.extend({
   letterType: z.nativeEnum(LetterType),
   language: z.nativeEnum(Language),
   pdfTemplateInputFile: z.string(),
-  testPersonalisationInputFile: z.string(),
+  testPersonalisationInputFile: z.string().optional(),
 });
 const $SubmittedLetterTemplate = $LetterTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),

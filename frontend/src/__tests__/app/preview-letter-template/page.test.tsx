@@ -103,8 +103,9 @@ describe('PreviewLetterTemplatePage', () => {
       pdfTemplateInputFile: undefined as unknown as string,
     },
     {
-      description: 'a letter lacking testPersonalisationInputFile',
-      testPersonalisationInputFile: undefined as unknown as string,
+      description:
+        'a letter where testPersonalisationInputFile is the wrong data type',
+      testPersonalisationInputFile: 9 as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $description',
