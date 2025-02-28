@@ -30,13 +30,13 @@ export const TemplateFactory = {
     }
   ): Template => {
     return {
-      __typename: 'TemplateStorage',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       name: '',
       message: '',
+      owner: process.env.USER_ID,
       ...template,
     };
   },

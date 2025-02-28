@@ -50,37 +50,27 @@
    export NOTIFY_DOMAIN_NAME=<ses_verified_domain>
    ```
 
-3. To run an Amplify sandbox. To do this, authenticate with an AWS account that has Amplify enabled, then run:
-
-   ```shell
-   npx ampx sandbox --profile <the name of the AWS config profile for the account you are authenticated with>
-   ```
-
-4. To create a Terraform backend sandbox, run:
+3. To create a Terraform backend sandbox, run:
 
    ```shell
    npm run create-backend-sandbox <environment-name>
    ```
 
-5. Then in a separate terminal, run the app locally:
+4. Then in a separate terminal, run the app locally:
 
    ```shell
    npm run dev
    ```
 
-6. Open your browser and go to `localhost:3000` to view the app.
+5. Open your browser and go to `localhost:3000` to view the app.
 
-7. To destroy an Amplify sandbox, run:
-
-   ```shell
-   npm run destroy-sandbox -- --profile <the name of the AWS config profile for the account you are authenticated with>
-   ```
-
-8. To destroy a Terraform backend sandbox, run:
+6. To destroy a Terraform backend sandbox, run:
 
    ```shell
    npm run destroy-backend-sandbox <environment-name>
    ```
+
+7. (Optional) Create a `.env` file at `frontend/.env` and add `INCLUDE_AUTH_PAGES=true` to include the local auth pages when doing a production Next build
 
 ### Other commands
 

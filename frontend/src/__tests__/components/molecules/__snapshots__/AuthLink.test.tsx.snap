@@ -42,7 +42,7 @@ exports[`AuthLink renders Log out link when authStatus is authenticated 1`] = `
   >
     <a
       class="nhsuk-account__login--link"
-      href="/auth/signout"
+      href="/auth/signout?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
       id="logout-link"
     >
       Log out

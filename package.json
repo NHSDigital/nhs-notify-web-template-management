@@ -5,13 +5,13 @@
     "lambdas/backend-api",
     "lambdas/backend-client",
     "frontend",
-    "frontend/amplify",
     "tests/test-team",
     "utils"
   ],
   "scripts": {
     "build": "npm run build --workspace frontend --if-present",
     "copy-files-for-testing": "mkdir -p frontend/public/testing && cp ./lambdas/backend-api/src/email/email-template.html ./frontend/public/testing/email-template.html",
+    "create-amplify-outputs": "node ./scripts/create-amplify-outputs.js",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "start": "npm run start --workspace frontend",
@@ -19,7 +19,9 @@
     "test:unit": "npm run test:unit --workspaces",
     "typecheck": "npm run typecheck --workspaces",
     "lint": "npm run lint --workspaces",
-    "dev": "npm run dev --workspace frontend --if-present"
+    "dev": "npm run dev --workspace frontend --if-present",
+    "create-test-user": "tsx ./tests/accessibility/create-test-user.ts",
+    "delete-test-user": "tsx ./tests/accessibility/delete-test-user.ts"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
@@ -45,6 +47,7 @@
     "jest-html-reporter": "^3.10.2",
     "jest-mock-extended": "^3.0.7",
     "lcov-result-merger": "^5.0.1",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2"
   }
 }

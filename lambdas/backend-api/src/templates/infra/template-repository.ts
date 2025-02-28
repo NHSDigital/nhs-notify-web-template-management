@@ -18,8 +18,12 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { randomUUID as uuidv4 } from 'node:crypto';
-import { ApplicationResult, failure, success } from '@backend-api/utils/result';
-import { calculateTTL } from '@backend-api/utils/calculate-ttl';
+import {
+  ApplicationResult,
+  failure,
+  success,
+  calculateTTL,
+} from '@backend-api/utils/index';
 import { DatabaseTemplate } from './template';
 
 const client = DynamoDBDocumentClient.from(
@@ -128,9 +132,14 @@ const update = async (
   }
 
   if (template.templateStatus === TemplateStatus.DELETED) {
+    updateExpression.push('#ttl = :ttl');
+    expressionAttributeNames = {
+      ...expressionAttributeNames,
+      '#ttl': 'ttl',
+    };
     expressionAttributeValues = {
       ...expressionAttributeValues,
-      ttl: calculateTTL(),
+      ':ttl': calculateTTL(),
     };
   }
 
@@ -203,13 +212,12 @@ const list = async (
       KeyConditionExpression: '#owner = :owner',
       ExpressionAttributeNames: {
         '#owner': 'owner',
-        '#status': 'status',
       },
       ExpressionAttributeValues: {
         ':owner': owner,
         ':deletedStatus': TemplateStatus.DELETED,
       },
-      FilterExpression: '#status <> :deletedStatus',
+      FilterExpression: 'templateStatus <> :deletedStatus',
     };
 
     const items: DatabaseTemplate[] = [];

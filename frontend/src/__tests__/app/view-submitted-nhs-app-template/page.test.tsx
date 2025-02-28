@@ -10,6 +10,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -21,15 +22,23 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const state: SubmittedNHSAppTemplate = {
+    const templateDTO: TemplateDTO = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'template-message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
-    getTemplateMock.mockResolvedValueOnce(state);
+    const submittedNHSAppTemplate: SubmittedNHSAppTemplate = {
+      ...templateDTO,
+      templateType: TemplateType.NHS_APP,
+      templateStatus: TemplateStatus.SUBMITTED,
+    };
+
+    getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await ViewSubmittedNHSAppTemplatePage({
       params: {
@@ -37,7 +46,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       },
     });
 
-    expect(page).toEqual(<ViewNHSAppTemplate initialState={state} />);
+    expect(page).toEqual(
+      <ViewNHSAppTemplate initialState={submittedNHSAppTemplate} />
+    );
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
@@ -99,6 +110,8 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       getTemplateMock.mockResolvedValueOnce({
         id: 'template-id',
         ...value,
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
       });
 
       await ViewSubmittedNHSAppTemplatePage({
