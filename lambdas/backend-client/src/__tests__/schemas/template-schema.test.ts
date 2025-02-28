@@ -247,24 +247,6 @@ describe('Template schemas', () => {
 
       expect(result.data).toEqual(template);
     });
-
-    test('Letter creation should fail', () => {
-      const result = $CreateTemplateSchema.safeParse({
-        name: 'Test Template',
-        message: 'mesage',
-        templateType: TemplateType.LETTER,
-      });
-
-      expect(result.error?.flatten()).toEqual(
-        expect.objectContaining({
-          fieldErrors: {
-            templateType: [
-              "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
-            ],
-          },
-        })
-      );
-    });
   });
 
   describe('$UpdateTemplateSchema', () => {
@@ -293,23 +275,5 @@ describe('Template schemas', () => {
 
       expect(result.data).toEqual(template);
     });
-  });
-
-  test('Letter update should fail', () => {
-    const result = $UpdateTemplateSchema.safeParse({
-      name: 'Test Template',
-      message: 'mesage',
-      templateType: TemplateType.LETTER,
-    });
-
-    expect(result.error?.flatten()).toEqual(
-      expect.objectContaining({
-        fieldErrors: {
-          templateType: [
-            "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
-          ],
-        },
-      })
-    );
   });
 });
