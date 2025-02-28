@@ -38,7 +38,7 @@ describe('letterTypeDisplayMappings', () => {
     [LetterType.STANDARD, Language.BENGALI, 'Letter - Bengali'],
     [LetterType.STANDARD, Language.MODERN_GREEK, 'Letter - Modern Greek'],
     [LetterType.BRAILLE, Language.ENGLISH, 'Braille letter'],
-    [LetterType.AUDIO, Language.ENGLISH, 'Audio letter'],
+    [LetterType.AUDIO, Language.ENGLISH, 'Audio CD letter'],
     [LetterType.LARGE_PRINT, Language.ENGLISH, 'Large print letter'],
     [LetterType.BSL, Language.ENGLISH, 'British Sign Language letter'],
   ];
