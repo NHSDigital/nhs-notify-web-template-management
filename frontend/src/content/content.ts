@@ -155,6 +155,8 @@ const mainLayout = {
   description: 'Template management',
 };
 
+const backToAllTemplates = 'Back to all templates';
+
 const homePage = {
   pageHeading: 'Create and submit a template to NHS Notify',
   text1:
@@ -212,6 +214,21 @@ const reviewEmailTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
+};
+
+const reviewLetterTemplate = {
+  sectionHeading: 'Template saved',
+  form: {
+    errorHeading: 'There is a problem',
+    pageHeading: 'What would you like to do next?',
+    options: [
+      { id: 'letter-edit', text: 'Edit template' },
+      { id: 'letter-submit', text: 'Submit template' },
+    ],
+    buttonText: 'Continue',
+  },
+  backLinkText: backToAllTemplates,
 };
 
 const reviewNHSAppTemplate = {
@@ -225,6 +242,7 @@ const reviewNHSAppTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
 const reviewSMSTemplate = {
@@ -251,6 +269,7 @@ const reviewSMSTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
 const error404 = {
@@ -294,7 +313,7 @@ const copyTemplate = {
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const chooseTemplate = {
@@ -304,7 +323,7 @@ const chooseTemplate = {
   hint: 'Select one option',
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const nameYourTemplate = {
@@ -441,7 +460,7 @@ const templateSubmitted = {
   liveHeading: "If you've already onboarded",
   liveText: "Once you've submitted all your templates",
   liveLinkText: 'raise a request with the service desk (opens in a new tab).',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const viewSubmittedTemplate = {
@@ -479,6 +498,7 @@ const content = {
     nameYourTemplate,
     personalisation,
     reviewEmailTemplate,
+    reviewLetterTemplate,
     reviewNHSAppTemplate,
     reviewSMSTemplate,
     submitTemplate,

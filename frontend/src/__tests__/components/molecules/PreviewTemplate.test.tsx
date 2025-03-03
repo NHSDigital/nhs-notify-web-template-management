@@ -1,22 +1,28 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
-  Template,
   TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
+import {
+  Language,
+  LetterType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 describe('PreviewTemplate component', () => {
   it('matches not yet submitted snapshot', () => {
     const container = render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          } as Template
-        }
-        preview={[
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          message: 'app message message',
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateType: TemplateType.NHS_APP,
+        }}
+        templateTypeText='Channel template'
+        contentPreview={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -32,14 +38,15 @@ describe('PreviewTemplate component', () => {
   it('matches submitted snapshot', () => {
     const container = render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
-          } as Template
-        }
-        preview={[
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.SMS,
+          message: 'text message message',
+        }}
+        templateTypeText='Channel template'
+        contentPreview={[
           {
             heading: 'Heading',
             id: 'heading',
@@ -52,16 +59,79 @@ describe('PreviewTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('renders without content preview', () => {
+    const container = render(
+      <PreviewTemplate
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.LETTER,
+          letterType: LetterType.X0,
+          language: Language.FR,
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+            testDataCsv: {
+              fileName: 'file.csv',
+              currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+          },
+        }}
+        additionalMetaFields={[
+          {
+            title: 'Meta',
+            id: 'meta',
+            content: <p>metadata</p>,
+          },
+        ]}
+        templateTypeText='Channel template'
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('renders letter template when testPersonalisationInputFile is not set', () => {
+    const container = render(
+      <PreviewTemplate.Letter
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: TemplateStatus.SUBMITTED,
+          templateType: TemplateType.LETTER,
+          letterType: LetterType.X0,
+          language: Language.FR,
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+          },
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders component correctly', () => {
     render(
       <PreviewTemplate
-        template={
-          {
-            id: 'template-id',
-            name: 'Example template',
-          } as Template
-        }
-        preview={[
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          message: 'app message message',
+          templateType: TemplateType.NHS_APP,
+          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        }}
+        templateTypeText='Channel template'
+        contentPreview={[
           {
             heading: 'Subject',
             id: 'subject',

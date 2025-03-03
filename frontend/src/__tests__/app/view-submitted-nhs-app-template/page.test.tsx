@@ -4,7 +4,7 @@
 import ViewSubmittedNHSAppTemplatePage from '@app/view-submitted-nhs-app-template/[templateId]/page';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
 import {
-  SubmittedNHSAppTemplate,
+  NHSAppTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
@@ -22,7 +22,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,
@@ -30,9 +30,9 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
-    const submittedNHSAppTemplate: SubmittedNHSAppTemplate = {
+    const submittedNHSAppTemplate: NHSAppTemplate = {
       ...templateDTO,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.SUBMITTED,

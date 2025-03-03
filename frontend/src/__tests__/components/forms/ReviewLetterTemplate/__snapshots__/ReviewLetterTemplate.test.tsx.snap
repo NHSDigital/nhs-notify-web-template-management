@@ -1,0 +1,895 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Review letter form renders matches error snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="notify-confirmation-panel nhsuk-heading-l"
+        >
+          Template saved
+        </div>
+        <div
+          aria-labelledby="error-summary-title"
+          class="nhsuk-error-summary"
+          role="alert"
+          tabindex="-1"
+        >
+          <h2
+            class="nhsuk-error-summary__title"
+            data-testid="error-summary"
+            id="error-summary-title"
+          >
+            There is a problem
+          </h2>
+          <ul
+            class="nhsuk-list nhsuk-error-summary__list"
+          >
+            <li>
+              <a
+                href="#reviewLetterTemplateAction"
+              >
+                Select an option
+              </a>
+            </li>
+          </ul>
+        </div>
+        <h1
+          class="review__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template ID
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                template-id
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Type
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                Letter - German
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Status
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <strong
+                  class="nhsuk-tag"
+                />
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Test personalisation file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    test-data.csv
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="review-letter-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <div
+            class="nhsuk-form-group nhsuk-form-group--error"
+          >
+            <fieldset
+              class="nhsuk-fieldset"
+            >
+              <legend
+                class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+                data-testid="reviewLetterTemplateAction-form__legend"
+              >
+                What would you like to do next?
+              </legend>
+              <div
+                class="nhsuk-form-group nhsuk-form-group--error"
+              >
+                <span
+                  class="nhsuk-error-message"
+                  id="reviewLetterTemplateAction--error-message"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Select an option
+                </span>
+                <div
+                  aria-describedby="reviewLetterTemplateAction--error-message"
+                  class="nhsuk-radios"
+                  id="reviewLetterTemplateAction"
+                >
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-edit-radio"
+                      id="reviewLetterTemplateAction-letter-edit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-edit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-edit"
+                      id="reviewLetterTemplateAction-letter-edit--label"
+                    >
+                      Edit template
+                    </label>
+                  </div>
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-submit-radio"
+                      id="reviewLetterTemplateAction-letter-submit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-submit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-submit"
+                      id="reviewLetterTemplateAction-letter-submit--label"
+                    >
+                      Submit template
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="review-letter-template-submit-button"
+            type="submit"
+          >
+            Continue
+          </button>
+        </form>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Review letter form renders matches snapshot when navigating from edit screen 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          class="notify-confirmation-panel nhsuk-heading-l"
+        >
+          Template saved
+        </div>
+        <h1
+          class="review__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template ID
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                template-id
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Type
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                Braille letter
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Status
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <strong
+                  class="nhsuk-tag"
+                />
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Test personalisation file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    test-data.csv
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="review-letter-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <div
+            class="nhsuk-form-group"
+          >
+            <fieldset
+              class="nhsuk-fieldset"
+            >
+              <legend
+                class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+                data-testid="reviewLetterTemplateAction-form__legend"
+              >
+                What would you like to do next?
+              </legend>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="reviewLetterTemplateAction"
+                >
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-edit-radio"
+                      id="reviewLetterTemplateAction-letter-edit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-edit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-edit"
+                      id="reviewLetterTemplateAction-letter-edit--label"
+                    >
+                      Edit template
+                    </label>
+                  </div>
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-submit-radio"
+                      id="reviewLetterTemplateAction-letter-submit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-submit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-submit"
+                      id="reviewLetterTemplateAction-letter-submit--label"
+                    >
+                      Submit template
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="review-letter-template-submit-button"
+            type="submit"
+          >
+            Continue
+          </button>
+        </form>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Review letter form renders matches snapshot when navigating from manage templates screen 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1
+          class="review__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template ID
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                template-id
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Type
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                Braille letter
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Status
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <strong
+                  class="nhsuk-tag"
+                />
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Test personalisation file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="review-letter-template"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <div
+            class="nhsuk-form-group"
+          >
+            <fieldset
+              class="nhsuk-fieldset"
+            >
+              <legend
+                class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+                data-testid="reviewLetterTemplateAction-form__legend"
+              >
+                What would you like to do next?
+              </legend>
+              <div
+                class="nhsuk-form-group"
+              >
+                <div
+                  class="nhsuk-radios"
+                  id="reviewLetterTemplateAction"
+                >
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-edit-radio"
+                      id="reviewLetterTemplateAction-letter-edit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-edit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-edit"
+                      id="reviewLetterTemplateAction-letter-edit--label"
+                    >
+                      Edit template
+                    </label>
+                  </div>
+                  <div
+                    class="nhsuk-radios__item"
+                  >
+                    <input
+                      class="nhsuk-radios__input"
+                      data-testid="letter-submit-radio"
+                      id="reviewLetterTemplateAction-letter-submit"
+                      name="reviewLetterTemplateAction"
+                      type="radio"
+                      value="letter-submit"
+                    />
+                    <label
+                      class="nhsuk-label nhsuk-radios__label"
+                      for="reviewLetterTemplateAction-letter-submit"
+                      id="reviewLetterTemplateAction-letter-submit--label"
+                    >
+                      Submit template
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            data-testid="submit-button"
+            id="review-letter-template-submit-button"
+            type="submit"
+          >
+            Continue
+          </button>
+        </form>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

@@ -3,7 +3,7 @@
 import { PreviewTemplate } from '@molecules/PreviewTemplate';
 import {
   PageComponentProps,
-  SubmittedSMSTemplate,
+  SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewSMSTemplate({
   initialState,
-}: Readonly<PageComponentProps<SubmittedSMSTemplate>>) {
+}: Readonly<PageComponentProps<SMSTemplate>>) {
   const templateMessage = initialState.message;
 
   const html = renderSMSMarkdown(templateMessage);

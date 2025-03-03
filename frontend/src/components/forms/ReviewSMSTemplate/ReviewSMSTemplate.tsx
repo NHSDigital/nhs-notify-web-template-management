@@ -21,7 +21,8 @@ export function ReviewSMSTemplate({
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { sectionHeading, form } = content.components.reviewSMSTemplate;
+  const { sectionHeading, form, backLinkText } =
+    content.components.reviewSMSTemplate;
 
   const [state, action] = useActionState(reviewSmsTemplateAction, initialState);
   const templateMessage = initialState.message;
@@ -31,7 +32,7 @@ export function ReviewSMSTemplate({
   return (
     <>
       <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
-        Back to all templates
+        {backLinkText}
       </BackLink>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
@@ -51,7 +52,7 @@ export function ReviewSMSTemplate({
               }
             />
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/manage-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>

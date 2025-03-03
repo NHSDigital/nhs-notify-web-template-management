@@ -1,4 +1,6 @@
+import { Language, LetterType } from 'nhs-notify-backend-client';
 import {
+  letterTypeDisplayMappings,
   previewTemplatePages,
   TemplateStatus,
   templateStatusToDisplayMappings,
@@ -24,6 +26,29 @@ describe('templateTypeDisplayMappings', () => {
   test('EMAIL', () => {
     expect(templateTypeDisplayMappings(TemplateType.EMAIL)).toEqual('Email');
   });
+
+  test('LETTER', () => {
+    expect(templateTypeDisplayMappings(TemplateType.LETTER)).toEqual('Letter');
+  });
+});
+
+describe('letterTypeDisplayMappings', () => {
+  const letterCases: [LetterType, Language, string][] = [
+    [LetterType.X0, Language.EN, 'Standard letter'],
+    [LetterType.X0, Language.BN, 'Letter - Bengali'],
+    [LetterType.X0, Language.EL, 'Letter - Greek'],
+    [LetterType.Q1, Language.EN, 'Braille letter'],
+    [LetterType.X3, Language.EN, 'Audio CD letter'],
+    [LetterType.X1, Language.EN, 'Large print letter'],
+    [LetterType.Q4, Language.EN, 'British Sign Language letter'],
+  ];
+
+  test.each(letterCases)(
+    'letter type %s and language %s map to %s',
+    (letterType, language, expected) => {
+      expect(letterTypeDisplayMappings(letterType, language)).toBe(expected);
+    }
+  );
 });
 
 describe('templateStatusToDisplayMappings', () => {

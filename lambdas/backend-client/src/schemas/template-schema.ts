@@ -18,7 +18,7 @@ const $BaseCreateTemplateSchema = schemaFor<CreateTemplate>()(
   z.object({
     templateType: z.nativeEnum(TemplateType),
     name: z.string().trim().min(1),
-    message: z.string().trim().min(1),
+    message: z.string().trim().min(1).optional(),
   })
 );
 

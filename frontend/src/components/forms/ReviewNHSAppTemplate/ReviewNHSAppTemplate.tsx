@@ -30,7 +30,8 @@ export function ReviewNHSAppTemplate({
   const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
-  const { sectionHeading, form } = content.components.reviewNHSAppTemplate;
+  const { sectionHeading, form, backLinkText } =
+    content.components.reviewNHSAppTemplate;
 
   return (
     <>
@@ -58,7 +59,7 @@ export function ReviewNHSAppTemplate({
               }
             />
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/manage-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>

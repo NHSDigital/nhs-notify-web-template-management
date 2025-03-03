@@ -3,10 +3,12 @@ import {
   $NHSAppTemplate,
   $SMSTemplate,
   $EmailTemplate,
-  $ChannelTemplate,
+  $LetterTemplate,
+  $Template,
+  $NonSubmittedTemplate,
   $SubmittedEmailTemplate,
-  $SubmittedSMSTemplate,
   $SubmittedNHSAppTemplate,
+  $SubmittedSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDTO } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -32,6 +34,9 @@ export const validateSMSTemplate = (template?: TemplateDTO) =>
 export const validateEmailTemplate = (template?: TemplateDTO) =>
   zodValidate($EmailTemplate, template);
 
+export const validateLetterTemplate = (template?: TemplateDTO) =>
+  zodValidate($LetterTemplate, template);
+
 export const validateSubmittedEmailTemplate = (template?: TemplateDTO) =>
   zodValidate($SubmittedEmailTemplate, template);
 
@@ -41,5 +46,8 @@ export const validateSubmittedSMSTemplate = (template?: TemplateDTO) =>
 export const validateSubmittedNHSAppTemplate = (template?: TemplateDTO) =>
   zodValidate($SubmittedNHSAppTemplate, template);
 
-export const validateChannelTemplate = (template?: TemplateDTO) =>
-  zodValidate($ChannelTemplate, template);
+export const validateTemplate = (template?: TemplateDTO) =>
+  zodValidate($Template, template);
+
+export const validateNonSubmittedTemplate = (template?: TemplateDTO) =>
+  zodValidate($NonSubmittedTemplate, template);
