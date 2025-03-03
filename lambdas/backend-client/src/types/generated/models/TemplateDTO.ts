@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Files } from './Files';
 import type { Language } from './Language';
 import type { LetterType } from './LetterType';
 import type { TemplateStatus } from './TemplateStatus';
@@ -12,8 +13,7 @@ export type TemplateDTO = {
     templateStatus: TemplateStatus;
     letterType?: LetterType;
     language?: Language;
-    pdfTemplateInputFile?: string;
-    testPersonalisationInputFile?: string;
+    files?: Files;
     name: string;
     message?: string;
     createdAt: string;

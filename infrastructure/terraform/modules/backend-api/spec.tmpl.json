@@ -308,11 +308,8 @@
           "language": {
             "$ref": "#/components/schemas/Language"
           },
-          "pdfTemplateInputFile": {
-            "type": "string"
-          },
-          "testPersonalisationInputFile": {
-            "type": "string"
+          "files": {
+            "$ref": "#/components/schemas/Files"
           },
           "name": {
             "type": "string"
@@ -387,12 +384,55 @@
       "LetterType": {
         "type": "string",
         "enum": [
-          "AUDIO",
-          "BRAILLE",
-          "BSL",
-          "LARGE_PRINT",
-          "STANDARD"
+          "q1",
+          "q4",
+          "x0",
+          "x1",
+          "x3"
         ]
+      },
+      "VirusScanStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "FAILED",
+          "PASSED"
+        ]
+      },
+      "File": {
+        "type": "object",
+        "required": [
+          "fileName",
+          "virusScanStatus"
+        ],
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "currentVersion": {
+            "type": "string"
+          },
+          "virusScanStatus": {
+            "$ref": "#/components/schemas/VirusScanStatus"
+          }
+        }
+      },
+      "Files": {
+        "type": "object",
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/File"
+          },
+          "testDataCsv": {
+            "$ref":  "#/components/schemas/File"
+          },
+          "proofs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          }
+        }
       },
       "CreateTemplate": {
         "type": "object",

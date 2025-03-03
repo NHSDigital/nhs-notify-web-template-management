@@ -1,5 +1,10 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 import { Template, TemplateStatus, TemplateType } from '../types';
+import { randomUUID } from 'node:crypto';
 
 export const TemplateFactory = {
   createEmailTemplate: (
@@ -40,10 +45,20 @@ export const TemplateFactory = {
       owner,
       name,
       templateType: TemplateType.LETTER,
-      letterType: LetterType.STANDARD,
+      letterType: LetterType.X0,
       language: Language.EN,
-      pdfTemplateInputFile: 'file.pdf',
-      testPersonalisationInputFile: 'test-data.csv',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: randomUUID(),
+          virusScanStatus: VirusScanStatus.PENDING,
+        },
+        testDataCsv: {
+          fileName: 'test-data.csv',
+          currentVersion: randomUUID(),
+          virusScanStatus: VirusScanStatus.PENDING,
+        },
+      },
     });
   },
 

@@ -1,4 +1,8 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 export enum TemplateType {
   NHS_APP = 'NHS_APP',
@@ -28,6 +32,12 @@ export enum TemplateStatus {
   SUBMITTED = 'SUBMITTED',
 }
 
+type File = {
+  fileName: string;
+  currentVersion?: string;
+  virusScanStatus: VirusScanStatus;
+};
+
 export type Template = {
   createdAt: string;
   updatedAt: string;
@@ -40,7 +50,10 @@ export type Template = {
   templateStatus: TemplateStatus;
   letterType?: LetterType;
   language?: Language;
-  pdfTemplateInputFile?: string;
-  testPersonalisationInputFile?: string;
+  files?: {
+    pdfTemplate?: File;
+    testDataCsv: File;
+    proofs?: File[];
+  };
   owner: string;
 };

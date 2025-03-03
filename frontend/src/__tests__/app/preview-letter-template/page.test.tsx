@@ -10,7 +10,12 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  TemplateDTO,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -26,10 +31,20 @@ const templateDTO = {
   name: 'template-name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-  letterType: LetterType.STANDARD,
+  letterType: LetterType.X0,
   language: Language.EN,
-  pdfTemplateInputFile: 'template.pdf',
-  testPersonalisationInputFile: 'test-data.csv',
+  files: {
+    pdfTemplate: {
+      fileName: 'template.pdf',
+      currentVersion: 'saoj867b789',
+      virusScanStatus: VirusScanStatus.PASSED,
+    },
+    testDataCsv: {
+      fileName: 'test-data.csv',
+      currentVersion: '897asiahv87',
+      virusScanStatus: VirusScanStatus.FAILED,
+    },
+  },
 } satisfies TemplateDTO;
 
 const letterTemplate: LetterTemplate = {
@@ -99,13 +114,18 @@ describe('PreviewLetterTemplatePage', () => {
       letterType: undefined as unknown as LetterType,
     },
     {
-      description: 'a letter lacking pdfTemplateInputFile',
-      pdfTemplateInputFile: undefined as unknown as string,
+      description: 'a letter lacking pdfTemplate fileName',
+      files: {
+        pdfTemplate: {
+          fileName: undefined as unknown as string,
+          currentVersion: 'uuid',
+          virusScanStatus: VirusScanStatus.FAILED,
+        },
+      },
     },
     {
-      description:
-        'a letter where testPersonalisationInputFile is the wrong data type',
-      testPersonalisationInputFile: 9 as unknown as string,
+      description: 'a letter where files is the wrong data type',
+      files: [] as unknown as LetterTemplate['files'],
     },
   ])(
     'should redirect to invalid-template when template is $description',

@@ -8,6 +8,7 @@ import {
   $UpdateTemplateSchema,
   Language,
   LetterType,
+  VirusScanStatus,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -252,7 +253,7 @@ describe('templateClient', () => {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          letterType: LetterType.BSL,
+          letterType: LetterType.Q4,
           language: Language.FR,
           pdfTemplateInputFile: 'file.pdf',
           testPersonalisationInputFile: 'file.csv',
@@ -329,10 +330,20 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        letterType: LetterType.BSL,
-        language: Language.FRENCH,
-        pdfTemplateInputFile: 'file.pdf',
-        testPersonalisationInputFile: 'file.csv',
+        letterType: LetterType.Q4,
+        language: Language.FR,
+        files: {
+          pdfTemplate: {
+            fileName: 'file.pdf',
+            currentVersion: 'uuid',
+            virusScanStatus: VirusScanStatus.PENDING,
+          },
+          testDataCsv: {
+            fileName: 'file.csv',
+            currentVersion: 'uuid',
+            virusScanStatus: VirusScanStatus.PENDING,
+          },
+        },
       };
 
       listMock.mockResolvedValueOnce({

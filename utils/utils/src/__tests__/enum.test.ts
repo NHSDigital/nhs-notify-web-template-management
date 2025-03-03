@@ -34,13 +34,13 @@ describe('templateTypeDisplayMappings', () => {
 
 describe('letterTypeDisplayMappings', () => {
   const letterCases: [LetterType, Language, string][] = [
-    [LetterType.STANDARD, Language.EN, 'Standard letter'],
-    [LetterType.STANDARD, Language.BN, 'Letter - Bengali'],
-    [LetterType.STANDARD, Language.EL, 'Letter - Greek'],
-    [LetterType.BRAILLE, Language.EN, 'Braille letter'],
-    [LetterType.AUDIO, Language.EN, 'Audio CD letter'],
-    [LetterType.LARGE_PRINT, Language.EN, 'Large print letter'],
-    [LetterType.BSL, Language.EN, 'British Sign Language letter'],
+    [LetterType.X0, Language.EN, 'Standard letter'],
+    [LetterType.X0, Language.BN, 'Letter - Bengali'],
+    [LetterType.X0, Language.EL, 'Letter - Greek'],
+    [LetterType.Q1, Language.EN, 'Braille letter'],
+    [LetterType.X3, Language.EN, 'Audio CD letter'],
+    [LetterType.X1, Language.EN, 'Large print letter'],
+    [LetterType.Q4, Language.EN, 'British Sign Language letter'],
   ];
 
   test.each(letterCases)(

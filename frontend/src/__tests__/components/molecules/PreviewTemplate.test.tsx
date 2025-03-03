@@ -4,7 +4,11 @@ import {
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 describe('PreviewTemplate component', () => {
   it('matches not yet submitted snapshot', () => {
@@ -63,10 +67,20 @@ describe('PreviewTemplate component', () => {
           name: 'Example template',
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.LETTER,
-          letterType: LetterType.STANDARD,
+          letterType: LetterType.X0,
           language: Language.FR,
-          pdfTemplateInputFile: 'file.pdf',
-          testPersonalisationInputFile: 'file.csv',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+            testDataCsv: {
+              fileName: 'file.csv',
+              currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+          },
         }}
         additionalMetaFields={[
           {
@@ -90,9 +104,15 @@ describe('PreviewTemplate component', () => {
           name: 'Example template',
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.LETTER,
-          letterType: LetterType.STANDARD,
+          letterType: LetterType.X0,
           language: Language.FR,
-          pdfTemplateInputFile: 'file.pdf',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: VirusScanStatus.PENDING,
+            },
+          },
         }}
       />
     );

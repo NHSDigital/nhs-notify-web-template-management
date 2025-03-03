@@ -9,7 +9,11 @@ import {
   LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 
@@ -21,9 +25,19 @@ const initialState: LetterTemplate = {
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'template-name',
   language: Language.SQ,
-  letterType: LetterType.STANDARD,
-  pdfTemplateInputFile: 'file.pdf',
-  testPersonalisationInputFile: 'test-data.csv',
+  letterType: LetterType.X0,
+  files: {
+    pdfTemplate: {
+      fileName: 'file.pdf',
+      currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+      virusScanStatus: VirusScanStatus.PENDING,
+    },
+    testDataCsv: {
+      fileName: 'test-data.csv',
+      currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
+      virusScanStatus: VirusScanStatus.PENDING,
+    },
+  },
 };
 
 describe('reviewLetterTemplateAction server action', () => {

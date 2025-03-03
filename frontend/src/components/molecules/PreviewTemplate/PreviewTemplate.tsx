@@ -167,15 +167,15 @@ PreviewTemplate.Letter = ({ template }: { template: LetterTemplate }) => (
       {
         title: 'Template file',
         id: 'templatefile',
-        content: <Filename filename={template.pdfTemplateInputFile} />,
+        content: <Filename filename={template.files.pdfTemplate.fileName} />,
       },
-      ...(template.testPersonalisationInputFile
+      ...(template.files.testDataCsv
         ? [
             {
               title: 'Test personalisation file',
               id: 'testdatafile',
               content: (
-                <Filename filename={template.testPersonalisationInputFile} />
+                <Filename filename={template.files.testDataCsv.fileName} />
               ),
             },
           ]

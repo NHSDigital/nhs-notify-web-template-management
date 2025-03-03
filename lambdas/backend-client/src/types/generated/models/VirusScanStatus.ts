@@ -2,10 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum LetterType {
-    Q1 = 'q1',
-    Q4 = 'q4',
-    X0 = 'x0',
-    X1 = 'x1',
-    X3 = 'x3',
+export enum VirusScanStatus {
+    PENDING = 'PENDING',
+    FAILED = 'FAILED',
+    PASSED = 'PASSED',
 }

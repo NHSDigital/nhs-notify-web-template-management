@@ -789,9 +789,7 @@ exports[`Review letter form renders matches snapshot when navigating from manage
                   </svg>
                   <p
                     class="text"
-                  >
-                    test-data.csv
-                  </p>
+                  />
                 </div>
               </div>
             </div>

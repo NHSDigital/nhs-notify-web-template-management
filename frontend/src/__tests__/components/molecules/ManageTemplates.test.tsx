@@ -37,7 +37,7 @@ const manageTemplatesProps = {
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
-      letterType: LetterType.STANDARD,
+      letterType: LetterType.X0,
       language: Language.FR,
       pdfTemplateInputFile: 'file.pdf',
       testPersonalisationInputFile: 'file.csv',

@@ -78,7 +78,7 @@ describe('PreviewEmailTemplatePage', () => {
     {
       templateType: TemplateType.LETTER,
       name: 'template-name',
-      letterType: LetterType.STANDARD,
+      letterType: LetterType.X0,
       language: Language.EN,
       pdfTemplateInputFile: 'template.pdf',
       testPersonalisationInputFile: 'test-data.csv',

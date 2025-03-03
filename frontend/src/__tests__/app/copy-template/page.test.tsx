@@ -9,7 +9,12 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  TemplateDTO,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -39,10 +44,20 @@ describe('CopyTemplatePage', () => {
     name: 'template-name',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
-    letterType: LetterType.BSL,
+    letterType: LetterType.Q4,
     language: Language.FR,
-    pdfTemplateInputFile: 'file.pdf',
-    testPersonalisationInputFile: 'file.csv',
+    files: {
+      pdfTemplate: {
+        fileName: 'file.pdf',
+        currentVersion: '61C1267A-0F37-4E1D-831E-494DE2BECC8C',
+        virusScanStatus: VirusScanStatus.PASSED,
+      },
+      testDataCsv: {
+        fileName: 'file.csv',
+        currentVersion: 'A8A76934-70F4-4735-8314-51CE097130DB',
+        virusScanStatus: VirusScanStatus.PASSED,
+      },
+    },
   };
 
   it('should load page', async () => {
