@@ -130,7 +130,7 @@ test.describe('Preview Letter template Page', () => {
 
       const selectOptionErrorLink =
         previewLetterTemplatePage.errorSummary.locator(
-          '[href="#reviewLetterTemplateAction"]'
+          '[href="#previewLetterTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
@@ -138,7 +138,7 @@ test.describe('Preview Letter template Page', () => {
       await selectOptionErrorLink.click();
 
       await expect(
-        page.locator('#reviewLetterTemplateAction')
+        page.locator('#previewLetterTemplateAction')
       ).toBeInViewport();
     });
   });

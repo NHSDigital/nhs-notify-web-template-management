@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import {
   NHSAppTemplate,
   PageComponentProps,
@@ -30,7 +30,10 @@ export function ViewNHSAppTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplate.NHSApp template={initialState} message={html} />
+            <PreviewTemplateDetails.NHSApp
+              template={initialState}
+              message={html}
+            />
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>

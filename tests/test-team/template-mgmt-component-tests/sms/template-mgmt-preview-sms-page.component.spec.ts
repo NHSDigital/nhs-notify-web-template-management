@@ -167,14 +167,14 @@ test.describe('Preview SMS message template Page', () => {
       await expect(previewSmsTemplatePage.errorSummary).toBeVisible();
 
       const selectOptionErrorLink = previewSmsTemplatePage.errorSummary.locator(
-        '[href="#reviewSMSTemplateAction"]'
+        '[href="#previewSMSTemplateAction"]'
       );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#reviewSMSTemplateAction')).toBeInViewport();
+      await expect(page.locator('#previewSMSTemplateAction')).toBeInViewport();
     });
   });
 });

@@ -7,21 +7,21 @@ const { templateId } = JSON.parse(
 
 const pageActions = [
   ...signInPageActions,
-  'wait for #review-letter-template-submit-button to be visible',
+  'wait for #preview-letter-template-submit-button to be visible',
 ];
 
-const reviewLetterTemplatePage = (baseUrl) => ({
+const previewLetterTemplatePage = (baseUrl) => ({
   name: 'preview-letter-template',
   url: `${baseUrl}/preview-letter-template/${templateId}`,
   actions: pageActions,
 });
 
-const reviewLetterTemplateErrorPage = (baseUrl) => ({
+const previewLetterTemplateErrorPage = (baseUrl) => ({
   name: 'preview-letter-template-error',
   url: `${baseUrl}/preview-letter-template/${templateId}`,
   actions: [
     ...pageActions,
-    'click element #review-letter-template-submit-button',
+    'click element #preview-letter-template-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
   ignore: [
@@ -31,6 +31,6 @@ const reviewLetterTemplateErrorPage = (baseUrl) => ({
 });
 
 module.exports = {
-  reviewLetterTemplatePage,
-  reviewLetterTemplateErrorPage,
+  previewLetterTemplatePage,
+  previewLetterTemplateErrorPage,
 };

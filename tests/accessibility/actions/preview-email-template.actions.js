@@ -8,21 +8,21 @@ const pageActions = [
   'set field #emailTemplateSubjectLine to example subject',
   'set field #emailTemplateMessage to example template message',
   'click element #create-email-template-submit-button',
-  'wait for #review-email-template-submit-button to be visible',
+  'wait for #preview-email-template-submit-button to be visible',
 ];
 
-const reviewEmailTemplatePage = (url) => ({
+const previewEmailTemplatePage = (url) => ({
   name: 'preview-email-app-template',
   url,
   actions: pageActions,
 });
 
-const reviewEmailTemplateErrorPage = (url) => ({
+const previewEmailTemplateErrorPage = (url) => ({
   name: 'preview-email-template-error',
   url,
   actions: [
     ...pageActions,
-    'click element #review-email-template-submit-button',
+    'click element #preview-email-template-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
   ignore: [
@@ -33,6 +33,6 @@ const reviewEmailTemplateErrorPage = (url) => ({
 
 module.exports = {
   pageActions,
-  reviewEmailTemplatePage,
-  reviewEmailTemplateErrorPage,
+  previewEmailTemplatePage,
+  previewEmailTemplateErrorPage,
 };

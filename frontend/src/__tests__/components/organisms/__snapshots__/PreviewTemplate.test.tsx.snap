@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewTemplate component matches error snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    NHS app message template
+  </div>
+  <div
+    aria-labelledby="error-summary-title"
+    class="nhsuk-error-summary"
+    role="alert"
+    tabindex="-1"
+  >
+    <h2
+      class="nhsuk-error-summary__title"
+      data-testid="error-summary"
+      id="error-summary-title"
+    />
+    <ul
+      class="nhsuk-list nhsuk-error-summary__list"
+    >
+      <li>
+        <a
+          href="#exampleError"
+        >
+          Example error
+        </a>
+      </li>
+    </ul>
+  </div>
+  Preview
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="preview-form"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="preview-example-form__legend"
+        >
+          Example heading
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-option-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-1"
+                id="preview-example-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-option-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-2"
+                id="preview-example-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="preview-form-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplate component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="notify-confirmation-panel nhsuk-heading-l"
+  >
+    NHS app message template
+  </div>
+  Preview
+  <form
+    action=""
+  >
+    <input
+      name="form-id"
+      readonly=""
+      type="hidden"
+      value="preview-form"
+    />
+    <input
+      name="csrf_token"
+      readonly=""
+      type="hidden"
+      value="no_token"
+    />
+    <div
+      class="nhsuk-form-group"
+    >
+      <fieldset
+        class="nhsuk-fieldset"
+      >
+        <legend
+          class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
+          data-testid="preview-example-form__legend"
+        >
+          Example heading
+        </legend>
+        <div
+          class="nhsuk-form-group"
+        >
+          <div
+            class="nhsuk-radios"
+            id="preview-example"
+          >
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-1-radio"
+                id="preview-example-option-1"
+                name="preview-example"
+                type="radio"
+                value="option-1"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-1"
+                id="preview-example-option-1--label"
+              >
+                option 1
+              </label>
+            </div>
+            <div
+              class="nhsuk-radios__item"
+            >
+              <input
+                class="nhsuk-radios__input"
+                data-testid="option-2-radio"
+                id="preview-example-option-2"
+                name="preview-example"
+                type="radio"
+                value="option-2"
+              />
+              <label
+                class="nhsuk-label nhsuk-radios__label"
+                for="preview-example-option-2"
+                id="preview-example-option-2--label"
+              >
+                option 2
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <button
+      aria-disabled="false"
+      class="nhsuk-button"
+      data-testid="submit-button"
+      id="preview-form-submit-button"
+      type="submit"
+    >
+      Continue
+    </button>
+  </form>
+</DocumentFragment>
+`;

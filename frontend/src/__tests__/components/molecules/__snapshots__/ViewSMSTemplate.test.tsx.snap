@@ -36,7 +36,7 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
         class="nhsuk-grid-column-full"
       >
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           Example template

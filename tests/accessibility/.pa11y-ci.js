@@ -4,20 +4,20 @@ const {
   chooseATemplatePageError,
   createNHSAppTemplatePage,
   createNHSAppTemplateErrorPage,
-  reviewNHSAppTemplatePage,
-  reviewNHSAppTemplateErrorPage,
+  previewNHSAppTemplatePage,
+  previewNHSAppTemplateErrorPage,
   submitNHSAppTemplatePage,
   createEmailTemplatePage,
   createLetterTemplatePage,
   createEmailTemplateErrorPage,
-  reviewEmailTemplatePage,
-  reviewEmailTemplateErrorPage,
-  reviewLetterTemplatePage,
-  reviewLetterTemplateErrorPage,
+  previewEmailTemplatePage,
+  previewEmailTemplateErrorPage,
+  previewLetterTemplatePage,
+  previewLetterTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
-  reviewTextMessageTemplatePage,
-  reviewTextMessageTemplateErrorPage,
+  previewTextMessageTemplatePage,
+  previewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
   submitEmailTemplatePage,
@@ -55,8 +55,8 @@ module.exports = {
     // NHS App journey
     performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
+    performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
@@ -65,8 +65,8 @@ module.exports = {
     // Text message journey
     performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
+    performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
     performCheck(
       viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
     ),
@@ -77,8 +77,8 @@ module.exports = {
     // Email journey
     performCheck(createEmailTemplatePage(chooseTemplateUrl)),
     performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewEmailTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
+    performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
     performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
@@ -86,8 +86,8 @@ module.exports = {
 
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewLetterTemplatePage(baseUrl)),
-    performCheck(reviewLetterTemplateErrorPage(baseUrl)),
+    performCheck(previewLetterTemplatePage(baseUrl)),
+    performCheck(previewLetterTemplateErrorPage(baseUrl)),
 
     performCheck({
       url: `${baseUrl}/invalid-template`,
