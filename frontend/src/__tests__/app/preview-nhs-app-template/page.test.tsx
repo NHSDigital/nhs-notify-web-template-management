@@ -78,8 +78,6 @@ describe('PreviewNhsAppTemplatePage', () => {
       name: 'template-name',
       letterType: LetterType.X0,
       language: Language.EN,
-      pdfTemplateInputFile: 'template.pdf',
-      testPersonalisationInputFile: 'test-data.csv',
     },
     {
       templateType: TemplateType.NHS_APP,

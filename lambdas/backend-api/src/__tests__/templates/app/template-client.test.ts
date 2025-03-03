@@ -255,8 +255,6 @@ describe('templateClient', () => {
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
           letterType: LetterType.Q4,
           language: Language.FR,
-          pdfTemplateInputFile: 'file.pdf',
-          testPersonalisationInputFile: 'file.csv',
           owner: 'owner',
           version: 1,
         },

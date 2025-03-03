@@ -1,4 +1,5 @@
 import {
+  Files,
   Language,
   LetterType,
   TemplateStatus,
@@ -18,6 +19,5 @@ export type DatabaseTemplate = {
   updatedAt: string;
   letterType?: LetterType;
   language?: Language;
-  pdfTemplateInputFile?: string;
-  testPersonalisationInputFile?: string;
+  files?: Files;
 };
