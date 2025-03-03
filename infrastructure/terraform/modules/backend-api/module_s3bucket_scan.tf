@@ -50,8 +50,8 @@ data "aws_iam_policy_document" "s3bucket_pdf_template_scan" {
     effect  = "Deny"
     actions = ["s3:*"]
     resources = [
-      aws_s3_bucket.pdf_template_scan.arn,
-      "${aws_s3_bucket.pdf_template_scan.arn}/*",
+      module.s3bucket_pdf_template_scan.arn,
+      "${module.s3bucket_pdf_template_scan.arn}/*",
     ]
     principals {
       type        = "AWS"
