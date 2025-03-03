@@ -98,7 +98,7 @@ describe('PreviewTemplateDetails component', () => {
 
   it('renders letter template when testPersonalisationInputFile is not set', () => {
     const container = render(
-      <PreviewTemplate.Letter
+      <PreviewTemplateDetails.Letter
         template={{
           id: 'template-id',
           name: 'Example template',

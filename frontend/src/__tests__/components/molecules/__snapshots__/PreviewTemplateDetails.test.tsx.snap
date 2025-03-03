@@ -214,10 +214,10 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplate component renders letter template when testPersonalisationInputFile is not set 1`] = `
+exports[`PreviewTemplateDetails component renders letter template when testPersonalisationInputFile is not set 1`] = `
 <DocumentFragment>
   <h1
-    class="review__heading"
+    class="preview__heading"
     data-testid="preview-message__heading"
   >
     Example template
@@ -330,7 +330,7 @@ exports[`PreviewTemplate component renders letter template when testPersonalisat
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplate component renders without content preview 1`] = `
+exports[`PreviewTemplateDetails component renders without content preview 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
