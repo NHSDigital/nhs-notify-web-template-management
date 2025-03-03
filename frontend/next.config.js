@@ -25,7 +25,7 @@ const nextConfig = (phase) => {
     experimental: {
       serverActions: {
         allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
-        bodySizeLimit: '10mb',
+        bodySizeLimit: '6mb',
       },
     },
 
