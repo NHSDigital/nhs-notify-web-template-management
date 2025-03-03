@@ -20,7 +20,7 @@ const initialState: LetterTemplate = {
   templateType: TemplateType.LETTER,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'template-name',
-  language: Language.ALBANIAN,
+  language: Language.SQ,
   letterType: LetterType.STANDARD,
   pdfTemplateInputFile: 'file.pdf',
   testPersonalisationInputFile: 'test-data.csv',

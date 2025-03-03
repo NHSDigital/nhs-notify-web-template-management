@@ -77,7 +77,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       templateType: TemplateType.LETTER,
       name: 'template-name',
       letterType: LetterType.STANDARD,
-      language: Language.ENGLISH,
+      language: Language.EN,
       pdfTemplateInputFile: 'template.pdf',
       testPersonalisationInputFile: 'test-data.csv',
     },

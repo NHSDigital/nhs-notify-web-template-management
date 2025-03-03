@@ -27,7 +27,7 @@ const templateDTO = {
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   letterType: LetterType.STANDARD,
-  language: Language.ENGLISH,
+  language: Language.EN,
   pdfTemplateInputFile: 'template.pdf',
   testPersonalisationInputFile: 'test-data.csv',
 } satisfies TemplateDTO;

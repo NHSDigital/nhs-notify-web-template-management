@@ -64,7 +64,7 @@ describe('PreviewTemplate component', () => {
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.LETTER,
           letterType: LetterType.STANDARD,
-          language: Language.FRENCH,
+          language: Language.FR,
           pdfTemplateInputFile: 'file.pdf',
           testPersonalisationInputFile: 'file.csv',
         }}
@@ -91,7 +91,7 @@ describe('PreviewTemplate component', () => {
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.LETTER,
           letterType: LetterType.STANDARD,
-          language: Language.FRENCH,
+          language: Language.FR,
           pdfTemplateInputFile: 'file.pdf',
         }}
       />

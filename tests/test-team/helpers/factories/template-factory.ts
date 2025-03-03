@@ -41,7 +41,7 @@ export const TemplateFactory = {
       name,
       templateType: TemplateType.LETTER,
       letterType: LetterType.STANDARD,
-      language: Language.ENGLISH,
+      language: Language.EN,
       pdfTemplateInputFile: 'file.pdf',
       testPersonalisationInputFile: 'test-data.csv',
     });

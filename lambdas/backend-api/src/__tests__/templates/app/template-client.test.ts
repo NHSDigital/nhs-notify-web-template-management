@@ -253,7 +253,7 @@ describe('templateClient', () => {
           updatedAt: new Date().toISOString(),
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
           letterType: LetterType.BSL,
-          language: Language.FRENCH,
+          language: Language.FR,
           pdfTemplateInputFile: 'file.pdf',
           testPersonalisationInputFile: 'file.csv',
           owner: 'owner',
