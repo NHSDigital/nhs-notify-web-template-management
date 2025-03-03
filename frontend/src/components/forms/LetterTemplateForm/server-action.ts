@@ -4,7 +4,11 @@ import {
   Draft,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
-import { saveTemplate, createTemplate } from '@utils/form-actions';
+import {
+  saveTemplate,
+  createTemplate,
+  createLetterTemplate,
+} from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { Language, LetterType } from 'nhs-notify-backend-client';
 
@@ -71,7 +75,7 @@ export async function processFormActions(
 
   const savedTemplate = await ('id' in updatedTemplate
     ? saveTemplate(updatedTemplate)
-    : createTemplate(updatedTemplate));
+    : createLetterTemplate(updatedTemplate, pdf, csv));
 
   return redirect(
     `/preview-letter-template/${savedTemplate.id}?from=edit`,

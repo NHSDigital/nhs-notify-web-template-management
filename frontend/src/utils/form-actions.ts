@@ -28,6 +28,31 @@ export async function createTemplate(
   return data;
 }
 
+export async function createLetterTemplate(
+  template: CreateTemplate,
+  pdf: File,
+  csv?: File
+): Promise<TemplateDTO> {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await TemplateClient(token).createLetterTemplate(
+    template,
+    pdf,
+    csv
+  );
+
+  if (error) {
+    logger.error('Failed to create letter template', { error });
+    throw new Error('Failed to create new letter template');
+  }
+
+  return data;
+}
+
 export async function saveTemplate(template: Template): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 

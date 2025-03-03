@@ -14,8 +14,8 @@ module "create_letter_template_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    TEMPLATES_TABLE_NAME   = aws_dynamodb_table.templates.name
-    QUARANTINE_BUCKET_NAME = aws_s3_bucket.pdf_template_scan.bucket
+    TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
+    SCAN_BUCKET_NAME     = aws_s3_bucket.pdf_template_scan.bucket
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.create_letter_template_lambda_policy.json
