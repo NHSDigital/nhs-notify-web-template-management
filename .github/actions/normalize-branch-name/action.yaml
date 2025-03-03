@@ -9,10 +9,9 @@ runs:
     - id: normalize_branch_name
       shell: bash
       run: |
-        set +x
         branch=$(git rev-parse --abbrev-ref HEAD)
         stripped=$(echo $branch | sed -e 's/[^a-zA-Z0-9-]//g' | tr '[:upper:]' '[:lower:]')
         starting_from_jira_ref=$(echo $stripped | grep -Eo '\d{4,}.*')
         with_fallback=${starting_from_jira_ref:-$stripped}
         chopped=$(echo $with_fallback | head -c 15)
-        echo $chopped >> $GITHUB_OUTPUT
+        echo "normalized_branch_name=$chopped" >> $GITHUB_OUTPUT
