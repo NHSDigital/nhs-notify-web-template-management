@@ -12,7 +12,7 @@ runs:
         branch=$(git rev-parse --abbrev-ref HEAD)
         stripped=$(echo $branch | sed -e 's/[^a-zA-Z0-9-]//g' | tr '[:upper:]' '[:lower:]')
         echo $stripped
-        starting_from_jira_ref=$(echo $stripped | grep -Eo '\d{4,}.*')
+        starting_from_jira_ref=$(echo $stripped | grep -Eo '\d{4,}.*' || true)
         echo $starting_from_jira_ref
         with_fallback=${starting_from_jira_ref:-$stripped}
         chopped=$(echo $with_fallback | head -c 15)
