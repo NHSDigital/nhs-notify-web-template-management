@@ -3,6 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export type { BaseEmailTemplate } from './models/BaseEmailTemplate';
+export type { BaseLetterTemplate } from './models/BaseLetterTemplate';
+export type { BaseNHSAppTemplate } from './models/BaseNHSAppTemplate';
+export type { BaseSMSTemplate } from './models/BaseSMSTemplate';
+export type { BaseTemplate } from './models/BaseTemplate';
 export type { CreateTemplate } from './models/CreateTemplate';
 export type { Failure } from './models/Failure';
 export type { File } from './models/File';

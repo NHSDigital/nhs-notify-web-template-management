@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { TemplateType } from './TemplateType';
-export type CreateTemplate = {
-    templateType: TemplateType;
-    name: string;
-    message?: string;
-    subject?: string;
-};
+import type { BaseEmailTemplate } from './BaseEmailTemplate';
+import type { BaseLetterTemplate } from './BaseLetterTemplate';
+import type { BaseNHSAppTemplate } from './BaseNHSAppTemplate';
+import type { BaseSMSTemplate } from './BaseSMSTemplate';
+export type CreateTemplate = (BaseNHSAppTemplate | BaseEmailTemplate | BaseSMSTemplate | BaseLetterTemplate);
 

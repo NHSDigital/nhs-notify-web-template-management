@@ -6,6 +6,6 @@ import type { VirusScanStatus } from './VirusScanStatus';
 export type File = {
     fileName: string;
     currentVersion?: string;
-    virusScanStatus: VirusScanStatus;
+    virusScanStatus?: VirusScanStatus;
 };
 
