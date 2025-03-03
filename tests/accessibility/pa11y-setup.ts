@@ -40,9 +40,19 @@ const setup = async () => {
         language: 'ENGLISH',
         createdAt: new Date().toISOString(),
         name: 'pa11y_letter',
-        pdfTemplateInputFile: 'template.pdf',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: randomUUID(),
+            virusScanStatus: 'PENDING',
+          },
+          testDataCsv: {
+            fileName: 'test-data.csv',
+            currentVersion: randomUUID(),
+            virusScanStatus: 'PENDING',
+          },
+        },
         templateStatus: 'NOT_YET_SUBMITTED',
-        testPersonalisationInputFile: 'test-data.csv',
       },
     })
   );
