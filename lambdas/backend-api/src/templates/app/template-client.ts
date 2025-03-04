@@ -1,4 +1,4 @@
-import { logger, success, validate } from '@backend-api/utils/index';
+import { failure, logger, success, validate } from '@backend-api/utils/index';
 import {
   CreateTemplate,
   ITemplateClient,
@@ -7,6 +7,8 @@ import {
   UpdateTemplate,
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
+  TemplateType,
+  ErrorCase,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -14,7 +16,10 @@ import {
 } from '@backend-api/templates/infra';
 
 export class TemplateClient implements ITemplateClient {
-  constructor(private readonly _owner: string) {}
+  constructor(
+    private readonly _owner: string,
+    private readonly enableLetters: boolean
+  ) {}
 
   async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
     const log = logger.child({
@@ -93,6 +98,13 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
+    if (
+      getResult.data.templateType === TemplateType.LETTER &&
+      !this.enableLetters
+    ) {
+      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+    }
+
     return success(this.mapDatabaseObjectToDTO(getResult.data));
   }
 
@@ -113,9 +125,11 @@ export class TemplateClient implements ITemplateClient {
       return listResult;
     }
 
-    const templateDTOs = listResult.data.map((template) =>
-      this.mapDatabaseObjectToDTO(template)
-    );
+    const templateDTOs = listResult.data
+      .map((template) => this.mapDatabaseObjectToDTO(template))
+      .filter(
+        (t) => this.enableLetters || t.templateType !== TemplateType.LETTER
+      );
 
     return success(templateDTOs);
   }

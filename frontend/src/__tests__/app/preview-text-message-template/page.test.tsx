@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
-import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import {
   SMSTemplate,
   TemplateType,
@@ -10,11 +10,11 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewSMSTemplate');
+jest.mock('@forms/PreviewSMSTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,7 +23,7 @@ describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.SMS,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -31,7 +31,7 @@ describe('PreviewSMSTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
@@ -47,7 +47,7 @@ describe('PreviewSMSTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<ReviewSMSTemplate initialState={smsTemplate} />);
+    expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
@@ -70,6 +70,12 @@ describe('PreviewSMSTemplatePage', () => {
       templateType: TemplateType.NHS_APP,
       name: 'template-name',
       message: 'template-message',
+    },
+    {
+      templateType: TemplateType.LETTER,
+      name: 'template-name',
+      letterType: LetterType.X0,
+      language: Language.EN,
     },
     {
       templateType: TemplateType.SMS,

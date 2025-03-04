@@ -1,14 +1,10 @@
 import { z } from 'zod';
 import {
-  $Template,
   $EmailTemplate,
   $SMSTemplate,
   $NHSAppTemplate,
-  $ChannelTemplate,
-  $SubmittedChannelTemplate,
-  $SubmittedEmailTemplate,
-  $SubmittedSMSTemplate,
-  $SubmittedNHSAppTemplate,
+  $Template,
+  $LetterTemplate,
 } from './zod-validators';
 
 export type FormId =
@@ -26,25 +22,15 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
-export type Template = z.infer<typeof $Template>;
-
 export type EmailTemplate = z.infer<typeof $EmailTemplate>;
-
-export type SubmittedEmailTemplate = z.infer<typeof $SubmittedEmailTemplate>;
 
 export type SMSTemplate = z.infer<typeof $SMSTemplate>;
 
-export type SubmittedSMSTemplate = z.infer<typeof $SubmittedSMSTemplate>;
-
 export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
 
-export type SubmittedNHSAppTemplate = z.infer<typeof $SubmittedNHSAppTemplate>;
+export type LetterTemplate = z.infer<typeof $LetterTemplate>;
 
-export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
-
-export type SubmittedChannelTemplate = z.infer<
-  typeof $SubmittedChannelTemplate
->;
+export type Template = z.infer<typeof $Template>;
 
 export type Draft<T> = Omit<T, 'id'>;
 

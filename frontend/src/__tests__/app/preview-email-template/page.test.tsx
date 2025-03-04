@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
-import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import {
   EmailTemplate,
   TemplateType,
@@ -10,11 +10,11 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewEmailTemplate');
+jest.mock('@forms/PreviewEmailTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,7 +23,7 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -32,7 +32,7 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     const emailTemplate: EmailTemplate = {
       ...templateDTO,
@@ -49,7 +49,7 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<ReviewEmailTemplate initialState={emailTemplate} />);
+    expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
@@ -74,6 +74,12 @@ describe('PreviewEmailTemplatePage', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
+    },
+    {
+      templateType: TemplateType.LETTER,
+      name: 'template-name',
+      letterType: LetterType.X0,
+      language: Language.EN,
     },
     {
       templateType: TemplateType.EMAIL,

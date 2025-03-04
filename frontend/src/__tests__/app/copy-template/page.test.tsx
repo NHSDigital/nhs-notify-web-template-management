@@ -9,7 +9,12 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  TemplateDTO,
+  VirusScanStatus,
+} from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -21,7 +26,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 describe('CopyTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
-  const template: TemplateDTO = {
+  const template = {
     id: 'template-id',
     templateType: TemplateType.EMAIL,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -30,6 +35,29 @@ describe('CopyTemplatePage', () => {
     message: 'template-message',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
+  } satisfies TemplateDTO;
+
+  const letterTemplate: TemplateDTO = {
+    id: 'template-id',
+    templateType: TemplateType.LETTER,
+    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    name: 'template-name',
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
+    letterType: LetterType.Q4,
+    language: Language.FR,
+    files: {
+      pdfTemplate: {
+        fileName: 'file.pdf',
+        currentVersion: '61C1267A-0F37-4E1D-831E-494DE2BECC8C',
+        virusScanStatus: VirusScanStatus.PASSED,
+      },
+      testDataCsv: {
+        fileName: 'file.csv',
+        currentVersion: 'A8A76934-70F4-4735-8314-51CE097130DB',
+        virusScanStatus: VirusScanStatus.PASSED,
+      },
+    },
   };
 
   it('should load page', async () => {
@@ -45,6 +73,18 @@ describe('CopyTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
+    await CopyTemplatePage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  it('should redirect to invalid-template when the template is a letter', async () => {
+    getTemplateMock.mockResolvedValueOnce(letterTemplate);
+
     await CopyTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',

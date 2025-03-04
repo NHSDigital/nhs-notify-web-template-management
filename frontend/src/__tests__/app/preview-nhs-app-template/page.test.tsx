@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
+import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import {
   NHSAppTemplate,
   TemplateType,
@@ -10,11 +10,11 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate');
+jest.mock('@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,7 +23,7 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -31,7 +31,7 @@ describe('PreviewNhsAppTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     const nhsAppTemplate: NHSAppTemplate = {
       ...templateDTO,
@@ -48,7 +48,7 @@ describe('PreviewNhsAppTemplatePage', () => {
     });
 
     expect(page).toEqual(
-      <ReviewNHSAppTemplate initialState={nhsAppTemplate} />
+      <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );
   });
 
@@ -72,6 +72,12 @@ describe('PreviewNhsAppTemplatePage', () => {
       templateType: TemplateType.SMS,
       name: 'template-name',
       message: 'template-message',
+    },
+    {
+      templateType: TemplateType.LETTER,
+      name: 'template-name',
+      letterType: LetterType.X0,
+      language: Language.EN,
     },
     {
       templateType: TemplateType.NHS_APP,

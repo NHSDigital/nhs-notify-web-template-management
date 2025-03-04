@@ -46,6 +46,7 @@ describe('ManageTemplatesPage', () => {
 
     expect(screen.getByTestId('no-templates-available')).toBeInTheDocument();
   });
+
   test('renders the page with templates', async () => {
     jest.mocked(getTemplates).mockResolvedValue(mockTemplates);
     render(await ManageTemplatesPage());

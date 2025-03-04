@@ -1,6 +1,6 @@
 'use server';
 
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
+import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
@@ -17,7 +17,7 @@ const PreviewNhsAppTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewNHSAppTemplate initialState={validatedTemplate} />;
+  return <PreviewNHSAppTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewNhsAppTemplatePage;

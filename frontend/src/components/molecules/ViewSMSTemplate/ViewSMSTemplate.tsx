@@ -1,9 +1,9 @@
 'use client';
 
-import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import {
   PageComponentProps,
-  SubmittedSMSTemplate,
+  SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewSMSTemplate({
   initialState,
-}: Readonly<PageComponentProps<SubmittedSMSTemplate>>) {
+}: Readonly<PageComponentProps<SMSTemplate>>) {
   const templateMessage = initialState.message;
 
   const html = renderSMSMarkdown(templateMessage);
@@ -30,7 +30,10 @@ export function ViewSMSTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplate.Sms template={initialState} message={html} />
+            <PreviewTemplateDetails.Sms
+              template={initialState}
+              message={html}
+            />
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>

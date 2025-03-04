@@ -7,7 +7,7 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
-import { validateChannelTemplate } from '@utils/validate-template';
+import { validateNonSubmittedTemplate } from '@utils/validate-template';
 
 const DeleteTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
@@ -18,7 +18,7 @@ const DeleteTemplatePage = async (props: PageProps) => {
     return redirect('/manage-templates', RedirectType.push);
   }
 
-  const validatedTemplate = validateChannelTemplate(template);
+  const validatedTemplate = validateNonSubmittedTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

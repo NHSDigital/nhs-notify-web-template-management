@@ -17,6 +17,10 @@ const CopyTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  if (validatedTemplate.templateType === 'LETTER') {
+    return redirect('/invalid-template', RedirectType.replace);
+  }
+
   return <CopyTemplate template={validatedTemplate} />;
 };
 

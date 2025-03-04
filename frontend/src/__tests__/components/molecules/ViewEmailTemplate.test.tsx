@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import {
-  SubmittedEmailTemplate,
+  EmailTemplate,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 
@@ -16,7 +16,7 @@ describe('ViewEmailTemplate component', () => {
             templateStatus: TemplateStatus.SUBMITTED,
             subject: 'Example subject',
             message: 'Example message',
-          } as SubmittedEmailTemplate
+          } as EmailTemplate
         }
       />
     );

@@ -1,9 +1,9 @@
 'use client';
 
-import { PreviewTemplate } from '@molecules/PreviewTemplate';
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import {
+  NHSAppTemplate,
   PageComponentProps,
-  SubmittedNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
@@ -14,7 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewNHSAppTemplate({
   initialState,
-}: Readonly<PageComponentProps<SubmittedNHSAppTemplate>>) {
+}: Readonly<PageComponentProps<NHSAppTemplate>>) {
   const templateMessage = initialState.message;
 
   const html = renderNHSAppMarkdown(templateMessage);
@@ -30,7 +30,10 @@ export function ViewNHSAppTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplate.NHSApp template={initialState} message={html} />
+            <PreviewTemplateDetails.NHSApp
+              template={initialState}
+              message={html}
+            />
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>

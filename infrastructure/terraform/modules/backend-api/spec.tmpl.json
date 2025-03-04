@@ -289,7 +289,6 @@
           "templateType",
           "templateStatus",
           "name",
-          "message",
           "createdAt",
           "updatedAt"
         ],
@@ -302,6 +301,15 @@
           },
           "templateStatus": {
             "$ref": "#/components/schemas/TemplateStatus"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "files": {
+            "$ref": "#/components/schemas/Files"
           },
           "name": {
             "type": "string"
@@ -339,12 +347,98 @@
           "DELETED"
         ]
       },
+      "Language": {
+        "type": "string",
+        "enum": [
+          "ar",
+          "bg",
+          "bn",
+          "de",
+          "el",
+          "en",
+          "es",
+          "fa",
+          "fr",
+          "gu",
+          "hi",
+          "hu",
+          "it",
+          "ku",
+          "lt",
+          "lv",
+          "ne",
+          "pa",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sk",
+          "so",
+          "sq",
+          "ta",
+          "tr",
+          "ur",
+          "zh"
+        ]
+      },
+      "LetterType": {
+        "type": "string",
+        "enum": [
+          "q1",
+          "q4",
+          "x0",
+          "x1",
+          "x3"
+        ]
+      },
+      "VirusScanStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "FAILED",
+          "PASSED"
+        ]
+      },
+      "File": {
+        "type": "object",
+        "required": [
+          "fileName",
+          "virusScanStatus"
+        ],
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "currentVersion": {
+            "type": "string"
+          },
+          "virusScanStatus": {
+            "$ref": "#/components/schemas/VirusScanStatus"
+          }
+        }
+      },
+      "Files": {
+        "type": "object",
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/File"
+          },
+          "testDataCsv": {
+            "$ref":  "#/components/schemas/File"
+          },
+          "proofs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          }
+        }
+      },
       "CreateTemplate": {
         "type": "object",
         "required": [
           "templateType",
-          "name",
-          "message"
+          "name"
         ],
         "properties": {
           "templateType": {
@@ -366,7 +460,6 @@
         "required": [
           "templateStatus",
           "name",
-          "message",
           "templateType"
         ],
         "properties": {

@@ -13,7 +13,8 @@ module "list_template_lambda" {
   log_retention_in_days = var.log_retention_in_days
 
   environment_variables = {
-    TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
+    TEMPLATES_TABLE_NAME   = aws_dynamodb_table.templates.name
+    ENABLE_LETTERS_BACKEND = var.enable_letters
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.list_template_lambda_policy.json
