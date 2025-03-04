@@ -20,6 +20,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_zips"></a> [zips](#output\_zips) | n/a |
+
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->

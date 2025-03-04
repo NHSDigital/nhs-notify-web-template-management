@@ -2,7 +2,6 @@
 /*
  * TODO: REMOVE ESLINT DISABLE WHEN WE HAVE FOOTER LINK
  */
-import Link from 'next/link';
 import content from '@content/content';
 
 const footerContent = content.components.footer;
@@ -16,7 +15,18 @@ export function NHSNotifyFooter() {
             {footerContent.supportLinks}
           </h2>
           <div className='nhsuk-footer'>
-            <ul className='nhsuk-footer__list'>
+            <ul className='nhsuk-footer__list' data-testid='footer-links'>
+              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+                <a
+                  className='nhsuk-footer__list-item-link'
+                  href={footerContent.links.acceptableUsePolicy.url}
+                  data-testid='acceptable-use-policy-statement-link'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  {footerContent.links.acceptableUsePolicy.text}
+                </a>
+              </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
@@ -29,40 +39,37 @@ export function NHSNotifyFooter() {
                 </a>
               </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
-                <Link
+                <a
                   className='nhsuk-footer__list-item-link'
-                  href='#'
-                  data-testid='contact-us-link'
+                  href={footerContent.links.cookies.url}
+                  data-testid='cookies-statement-link'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
-                  {footerContent.links.contactUs}
-                </Link>
+                  {footerContent.links.cookies.text}
+                </a>
               </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
-                <Link
+                <a
                   className='nhsuk-footer__list-item-link'
-                  href='#'
-                  data-testid='cookies-link'
+                  href={footerContent.links.privacy.url}
+                  data-testid='privacy-statement-link'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
-                  {footerContent.links.cookies}
-                </Link>
+                  {footerContent.links.privacy.text}
+                </a>
               </li>
               <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
-                <Link
+                <a
                   className='nhsuk-footer__list-item-link'
-                  href='#'
-                  data-testid='privacy-policy-link'
+                  href={footerContent.links.termsAndConditions.url}
+                  data-testid='terms-and-conditions-statement-link'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
-                  {footerContent.links.privacyPolicy}
-                </Link>
-              </li>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
-                <Link
-                  className='nhsuk-footer__list-item-link'
-                  href='#'
-                  data-testid='terms-and-conditions-link'
-                >
-                  {footerContent.links.termsAndCondition}
-                </Link>
+                  {footerContent.links.termsAndConditions.text}
+                </a>
               </li>
             </ul>
             <p
