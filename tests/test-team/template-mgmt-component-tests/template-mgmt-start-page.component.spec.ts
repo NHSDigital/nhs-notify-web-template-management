@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
-import { assertFooterLinks, assertGoBackLinkNotPresent, assertNotifyBannerLink, assertSignOutLink, assertSkipToMainContent } from './template-mgmt-common.steps';
+import {
+  assertFooterLinks,
+  assertGoBackLinkNotPresent,
+  assertNotifyBannerLink,
+  assertSignOutLink,
+  assertSkipToMainContent,
+} from './template-mgmt-common.steps';
 
 test.describe('Start Page', () => {
   test('should land on start page when navigating to "/templates/create-and-submit-templates"', async ({
@@ -20,17 +26,17 @@ test.describe('Start Page', () => {
   });
 
   test('common page tests', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtStartPage(page),
-        baseURL,
-      };
-  
-      await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
-      await assertSignOutLink(props);
-      await assertFooterLinks(props);
-      await assertGoBackLinkNotPresent(props);
-    });
+    const props = {
+      page: new TemplateMgmtStartPage(page),
+      baseURL,
+    };
+
+    await assertSkipToMainContent(props);
+    await assertNotifyBannerLink(props);
+    await assertSignOutLink(props);
+    await assertFooterLinks(props);
+    await assertGoBackLinkNotPresent(props);
+  });
 
   test('should display correct list of template types', async ({ page }) => {
     const startPage = new TemplateMgmtStartPage(page);
