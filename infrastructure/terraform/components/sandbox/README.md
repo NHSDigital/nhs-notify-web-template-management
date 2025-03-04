@@ -30,7 +30,6 @@ No requirements.
 | <a name="output_cognito_user_pool_client_id"></a> [cognito\_user\_pool\_client\_id](#output\_cognito\_user\_pool\_client\_id) | n/a |
 | <a name="output_cognito_user_pool_id"></a> [cognito\_user\_pool\_id](#output\_cognito\_user\_pool\_id) | n/a |
 | <a name="output_templates_table_name"></a> [templates\_table\_name](#output\_templates\_table\_name) | n/a |
-
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
