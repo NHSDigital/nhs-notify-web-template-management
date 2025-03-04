@@ -115,11 +115,11 @@ export function assertFooterLinks({ page, id }: CommonStepsProps) {
   return test.step('when page loads, then Page Footer should have the correct links', async () => {
     await page.loadPage(id);
 
-    const promises = Object.values(expectedFooterLinks).map((linkSpec) => {
+    const promises = Object.values(expectedFooterLinks).map((linkSpec) =>
       expect(
         page.page.getByRole('link', { name: linkSpec.text })
-      ).toHaveAttribute('href', linkSpec.href);
-    });
+      ).toHaveAttribute('href', linkSpec.href)
+    );
 
     await Promise.all(promises);
   });
