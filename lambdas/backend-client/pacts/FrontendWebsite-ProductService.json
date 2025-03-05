@@ -1,0 +1,80 @@
+{
+  "consumer": {
+    "name": "FrontendWebsite"
+  },
+  "interactions": [
+    {
+      "description": "get all templates",
+      "providerState": "templates exist",
+      "request": {
+        "method": "GET",
+        "path": "/v1/templates"
+      },
+      "response": {
+        "body": {
+          "templates": [
+            {
+              "id": "id",
+              "message": "message",
+              "name": "name",
+              "templateStatus": "SUBMITTED",
+              "templateType": "NHS_APP"
+            }
+          ]
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "get template with ID 10",
+      "providerState": "template with ID 10 exists",
+      "request": {
+        "method": "GET",
+        "path": "/v1/template/10"
+      },
+      "response": {
+        "body": {
+          "template": {
+            "id": "id",
+            "message": "message",
+            "name": "name",
+            "templateStatus": "NOT_YET_SUBMITTED",
+            "templateType": "NHS_APP"
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "13.2.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  },
+  "provider": {
+    "name": "ProductService"
+  }
+}

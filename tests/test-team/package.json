@@ -23,5 +23,8 @@
     "generate-password": "^1.7.1",
     "nhs-notify-backend-client": "*",
     "nhs-notify-web-template-management-util-backend-config": "*"
+  },
+  "devDependencies": {
+    "@pact-foundation/pact": "13.1.4"
   }
 }

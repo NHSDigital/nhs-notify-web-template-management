@@ -52,5 +52,8 @@
     "lcov-result-merger": "^5.0.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2"
+  },
+  "dependencies": {
+    "@pact-foundation/pact": "^13.2.0"
   }
 }
