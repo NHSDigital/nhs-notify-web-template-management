@@ -23,8 +23,7 @@ exports[`renders component correctly 1`] = `
         </p>
         <form
           action="/no-action"
-          class="nhsuk-u-margin-right-3"
-          style="display: inline;"
+          class="nhsuk-u-margin-right-3 inline-form"
         >
           <input
             name="form-id"
@@ -48,7 +47,7 @@ exports[`renders component correctly 1`] = `
         </form>
         <form
           action="/yes-action"
-          style="display: inline;"
+          class="inline-form"
         >
           <input
             name="form-id"

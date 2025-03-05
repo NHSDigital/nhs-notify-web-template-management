@@ -95,6 +95,7 @@ export const EmailTemplateForm: FC<
                   error={templateNameError}
                   errorProps={{ id: 'emailTemplateName--error-message' }}
                   data-testid='emailTemplateName-input'
+                  autoComplete='off'
                 />
               </div>
               <div
@@ -114,6 +115,7 @@ export const EmailTemplateForm: FC<
                     id: 'emailTemplateSubjectLine--error-message',
                   }}
                   data-testid='emailTemplateSubjectLine-input'
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -126,6 +128,7 @@ export const EmailTemplateForm: FC<
                 error={templateMessageError}
                 errorProps={{ id: 'emailTemplateMessage--error-message' }}
                 data-testid='emailTemplateMessage-input'
+                autoComplete='off'
               />
               <NHSNotifyButton
                 type='submit'
@@ -135,11 +138,11 @@ export const EmailTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
             <MessageFormatting template={TemplateType.EMAIL} />
             <ChannelGuidance template={TemplateType.EMAIL} />
-          </div>
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

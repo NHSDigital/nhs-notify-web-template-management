@@ -89,6 +89,7 @@ export const NhsAppTemplateForm: FC<
                   onChange={nhsAppTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'nhsAppTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -101,6 +102,7 @@ export const NhsAppTemplateForm: FC<
                 defaultValue={nhsAppTemplateMessage}
                 error={templateMessageError}
                 errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
+                autoComplete='off'
               />
               <JsEnabled>
                 <p id='character-count'>
@@ -113,11 +115,11 @@ export const NhsAppTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
             <MessageFormatting template={TemplateType.NHS_APP} />
             <ChannelGuidance template={TemplateType.NHS_APP} />
-          </div>
+          </aside>
         </div>
       </NHSNotifyMain>
     </>
