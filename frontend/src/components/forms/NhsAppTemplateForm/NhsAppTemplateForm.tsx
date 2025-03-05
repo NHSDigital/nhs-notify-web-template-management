@@ -115,11 +115,11 @@ export const NhsAppTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
             <MessageFormatting template={TemplateType.NHS_APP} />
             <ChannelGuidance template={TemplateType.NHS_APP} />
-          </div>
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

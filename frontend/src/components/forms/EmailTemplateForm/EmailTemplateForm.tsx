@@ -138,11 +138,11 @@ export const EmailTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
             <MessageFormatting template={TemplateType.EMAIL} />
             <ChannelGuidance template={TemplateType.EMAIL} />
-          </div>
+          </aside>
         </div>
       </NHSNotifyMain>
     </>
