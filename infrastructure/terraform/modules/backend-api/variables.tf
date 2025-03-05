@@ -71,3 +71,8 @@ variable "enable_letters" {
   type        = bool
   description = "Enable letters feature flag"
 }
+
+variable "kms_key_arn" {
+  type        = string
+  description = "ARN of KMS Key used for encrypting application data"
+}

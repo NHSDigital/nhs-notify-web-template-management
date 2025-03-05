@@ -19,15 +19,13 @@ data "aws_iam_policy_document" "kms" {
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
 
   statement {
-    sid    = "AllowCloudWatchEncrypt"
+    sid    = "AllowServices"
     effect = "Allow"
 
     principals {
       type = "Service"
 
       identifiers = [
-        "logs.${var.region}.amazonaws.com",
-        "sns.amazonaws.com",
         "sqs.amazonaws.com",
       ]
     }
