@@ -89,6 +89,7 @@ export const NhsAppTemplateForm: FC<
                   onChange={nhsAppTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'nhsAppTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -101,6 +102,7 @@ export const NhsAppTemplateForm: FC<
                 defaultValue={nhsAppTemplateMessage}
                 error={templateMessageError}
                 errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
+                autoComplete='off'
               />
               <JsEnabled>
                 <p id='character-count'>

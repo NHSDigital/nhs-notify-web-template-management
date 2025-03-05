@@ -91,6 +91,7 @@ export const SmsTemplateForm: FC<
                   onChange={smsTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'smsTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -103,6 +104,7 @@ export const SmsTemplateForm: FC<
                 rows={10}
                 error={templateMessageError}
                 errorProps={{ id: 'smsTemplateMessage--error-message' }}
+                autoComplete='off'
               />
               <JsEnabled>
                 <p className='nhsuk-u-margin-bottom-0' id='character-count'>

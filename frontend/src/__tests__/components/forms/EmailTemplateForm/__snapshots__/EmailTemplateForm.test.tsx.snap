@@ -164,6 +164,7 @@ exports[`renders page one error 1`] = `
               </span>
               <input
                 aria-describedby="emailTemplateName--error-message"
+                autocomplete="off"
                 class="nhsuk-input nhsuk-input--error"
                 data-testid="emailTemplateName-input"
                 id="emailTemplateName"
@@ -184,6 +185,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
@@ -204,6 +206,7 @@ exports[`renders page one error 1`] = `
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
@@ -776,6 +779,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 aria-describedby="emailTemplateName--error-message"
+                autocomplete="off"
                 class="nhsuk-input nhsuk-input--error"
                 data-testid="emailTemplateName-input"
                 id="emailTemplateName"
@@ -810,6 +814,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 aria-describedby="emailTemplateSubjectLine--error-message"
+                autocomplete="off"
                 class="nhsuk-input nhsuk-input--error"
                 data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
@@ -842,6 +847,7 @@ exports[`renders page with multiple errors 1`] = `
             </span>
             <textarea
               aria-describedby="emailTemplateMessage--error-message"
+              autocomplete="off"
               class="nhsuk-textarea nhsuk-textarea--error"
               data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
@@ -1361,6 +1367,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 data-testid="emailTemplateName-input"
                 id="emailTemplateName"
@@ -1381,6 +1388,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
@@ -1401,6 +1409,7 @@ exports[`renders page with preloaded field values 1`] = `
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
@@ -1900,6 +1909,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 data-testid="emailTemplateName-input"
                 id="emailTemplateName"
@@ -1920,6 +1930,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 data-testid="emailTemplateSubjectLine-input"
                 id="emailTemplateSubjectLine"
@@ -1940,6 +1951,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               data-testid="emailTemplateMessage-input"
               id="emailTemplateMessage"
