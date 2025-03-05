@@ -199,7 +199,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -363,7 +363,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -546,7 +546,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -710,7 +710,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -929,7 +929,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1093,7 +1093,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -1254,7 +1254,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1418,7 +1418,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>

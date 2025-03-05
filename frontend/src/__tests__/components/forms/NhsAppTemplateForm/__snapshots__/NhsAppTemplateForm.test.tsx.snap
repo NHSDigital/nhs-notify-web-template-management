@@ -164,7 +164,7 @@ exports[`renders page 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -455,7 +455,7 @@ exports[`renders page 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -667,7 +667,7 @@ exports[`renders page one error 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -958,7 +958,7 @@ exports[`renders page one error 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -1184,7 +1184,7 @@ exports[`renders page with multiple errors 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1475,7 +1475,7 @@ exports[`renders page with multiple errors 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -1645,7 +1645,7 @@ exports[`renders page with preloaded field values 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1936,7 +1936,7 @@ exports[`renders page with preloaded field values 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -2084,7 +2084,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -2375,7 +2375,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
