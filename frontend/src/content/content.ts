@@ -21,14 +21,26 @@ const footer = {
   nhsEngland: 'NHS England',
   supportLinks: 'Support links',
   links: {
+    acceptableUsePolicy: {
+      text: 'Acceptable use policy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/acceptable-use-policy',
+    },
     accessibilityStatement: {
       text: 'Accessibility statement',
       url: '/accessibility',
     },
-    contactUs: 'Contact us',
-    cookies: 'Cookies',
-    privacyPolicy: 'Privacy policy',
-    termsAndCondition: 'Terms and conditions',
+    cookies: {
+      text: 'Cookies',
+      url: '/cookies',
+    },
+    privacy: {
+      text: 'Privacy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
+    },
+    termsAndConditions: {
+      text: 'Terms and conditions',
+      url: 'https://digital.nhs.uk/services/nhs-notify/terms-and-conditions',
+    },
   },
 };
 
