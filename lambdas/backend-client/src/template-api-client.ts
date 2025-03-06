@@ -66,8 +66,6 @@ export class TemplateApiClient implements ITemplateClient {
       };
     }
 
-    console.log('get template', response.data.template.templateStatus);
-
     return {
       data: response.data.template,
     };
@@ -83,8 +81,6 @@ export class TemplateApiClient implements ITemplateClient {
         error: response.error,
       };
     }
-
-    console.log('first template', response.data);
 
     return {
       data: response.data.templates,

@@ -8,7 +8,7 @@ import {
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
-const { eachLike, like } = MatchersV3;
+const { like } = MatchersV3;
 
 const provider = new PactV3({
   consumer: 'TemplateClient',
@@ -59,7 +59,7 @@ describe('API Pact test', () => {
         // make request to Pact mock server
         const templates = await client.listTemplates();
         console.log('Returned Templates', templates);
-        expect(templates.data[0]).toStrictEqual({
+        expect(templates.data?.[0]).toStrictEqual({
           id: 'id',
           name: 'name',
           message: 'message',
