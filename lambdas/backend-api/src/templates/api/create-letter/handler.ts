@@ -28,16 +28,12 @@ type FormParts = ReturnType<typeof multipart.parse>;
 
 export type CreateLetter = z.infer<typeof $CreateLetterTemplateSchema>;
 
-function parseData(event: APIGatewayProxyEvent): ApplicationResult<FormParts> {
-  try {
-    const bodyBuffer = Buffer.from(event.body || '', 'base64');
+function parseData(event: APIGatewayProxyEvent): FormParts {
+  const bodyBuffer = Buffer.from(event.body || '', 'base64');
 
-    const boundary = multipart.getBoundary(event.headers['Content-Type'] || '');
+  const boundary = multipart.getBoundary(event.headers['Content-Type'] || '');
 
-    return success(multipart.parse(bodyBuffer, boundary));
-  } catch (error) {
-    return failure(ErrorCase.VALIDATION_FAILED, 'Failed to parse body', error);
-  }
+  return multipart.parse(bodyBuffer, boundary);
 }
 
 function parseTemplate(formParts: FormParts): ApplicationResult<CreateLetter> {
@@ -82,22 +78,14 @@ export function createHandler({
 
     const formParts = parseData(event);
 
-    if (!formParts.data) {
-      return apiFailure(
-        formParts.error.code,
-        formParts.error.message,
-        formParts.error.actualError
-      );
-    }
-
-    if (formParts.data.length < 2 || formParts.data.length > 3) {
+    if (formParts.length < 2 || formParts.length > 3) {
       return apiFailure(
         ErrorCase.VALIDATION_FAILED,
-        `Unexpected number of formParts in form data: ${formParts.data.length}`
+        `Unexpected number of formParts in form data: ${formParts.length}`
       );
     }
 
-    const template = parseTemplate(formParts.data);
+    const template = parseTemplate(formParts);
 
     if (!template.data) {
       return apiFailure(
@@ -107,9 +95,9 @@ export function createHandler({
       );
     }
 
-    const testDataFilename = template.data.testPersonalisationInputFile;
+    const testDataFilename = template.data.files.testDataCsv?.fileName;
 
-    const pdfPart = formParts.data.find((part) => part.name === parts.PDF.name);
+    const pdfPart = formParts.find((part) => part.name === parts.PDF.name);
 
     if (!pdfPart || pdfPart.type !== parts.PDF.fileType || !pdfPart.filename) {
       return apiFailure(ErrorCase.VALIDATION_FAILED, 'Failed to find PDF data');
@@ -119,7 +107,7 @@ export function createHandler({
 
     const commands: PutObjectCommand[] = [];
 
-    const csvPart = formParts.data.find((part) => part.name === parts.CSV.name);
+    const csvPart = formParts.find((part) => part.name === parts.CSV.name);
 
     if (
       testDataFilename &&

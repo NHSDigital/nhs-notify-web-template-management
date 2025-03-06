@@ -22,34 +22,28 @@ const baseTemplate: CreateLetter = {
   name: 'template-name',
   letterType: LetterType.STANDARD,
   language: Language.ENGLISH,
-  pdfTemplateInputFile: 'template.pdf',
-  testPersonalisationInputFile: 'test-data.csv',
+  files: {
+    pdfTemplate: {
+      fileName: 'template.pdf',
+    },
+    testDataCsv: {
+      fileName: 'test-data.csv',
+    },
+  },
 };
 
 const user = '8B892046';
 const generatedId = '2DD85694';
 const quarantineBucketName = 'q-bucket';
 
-const setup = () => {
-  const s3Client = mockClient(S3Client);
-
-  const templateClient = mock<TemplateClient>();
-
-  const handler = createHandler({
-    s3Client: s3Client as unknown as S3Client,
-    templateClient,
-    generateId: () => generatedId,
-    quarantineBucketName,
-  });
-
-  return {
-    handler,
-    mocks: { s3Client, templateClient },
-  };
+const fixtures = {
+  pdf: readFileSync('src/__tests__/fixtures/template.pdf'),
+  csv: readFileSync('src/__tests__/fixtures/test-data.csv'),
 };
 
 const createMockFormData = (
   fileConfig: {
+    key: keyof typeof fixtures;
     partName: string;
     filename?: string;
     type?: string;
@@ -58,10 +52,7 @@ const createMockFormData = (
 ) => {
   const fd = new FormData();
   for (const file of fileConfig) {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const fileBuf = readFileSync(`src/__tests__/fixtures/${file.filename}`);
-
-    fd.append(file.partName, fileBuf, {
+    fd.append(file.partName, fixtures[file.key], {
       filename: file.filename,
       contentType: file.type,
     });
@@ -72,6 +63,24 @@ const createMockFormData = (
   return { data: fd, boundary: fd.getBoundary() };
 };
 
+const setup = () => {
+  const s3Client = mockClient(S3Client);
+
+  const templateClient = mock<TemplateClient>();
+
+  const handler = createHandler({
+    s3Client: s3Client as unknown as S3Client,
+    templateClient,
+    generateSuffixId: () => generatedId,
+    quarantineBucketName,
+  });
+
+  return {
+    handler,
+    mocks: { s3Client, templateClient },
+  };
+};
+
 describe('create-letter', () => {
   test('successfully validates multipart form input and forwards PDF and CSV', async () => {
     const { mocks, handler } = setup();
@@ -79,11 +88,17 @@ describe('create-letter', () => {
     const { data, boundary } = createMockFormData(
       [
         {
+          key: 'pdf',
           partName: 'letterPdf',
           filename: 'template.pdf',
           type: 'application/pdf',
         },
-        { partName: 'testCsv', filename: 'test-data.csv', type: 'text/csv' },
+        {
+          key: 'csv',
+          partName: 'testCsv',
+          filename: 'test-data.csv',
+          type: 'text/csv',
+        },
       ],
       baseTemplate
     );
@@ -112,8 +127,13 @@ describe('create-letter', () => {
     expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
       Key: `pdf-template/${user}/template__${generatedId}.pdf`,
       Bucket: quarantineBucketName,
-      Body: '',
-      Metadata: { 'test-data-csv': baseTemplate.testPersonalisationInputFile },
+      Body: fixtures.pdf,
+      Metadata: { 'test-data-csv': `test-data__${generatedId}.csv` },
+    });
+    expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+      Key: `test-data/${user}/test-data__${generatedId}.csv`,
+      Bucket: quarantineBucketName,
+      Body: fixtures.csv,
     });
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(

@@ -7,6 +7,26 @@ import {
 } from 'nhs-notify-backend-client';
 import { TemplateType, TemplateStatus } from './enum';
 
+enum VirusScanStatus {
+  'PENDING' = 'PENDING',
+  'FAILED' = 'FAILED',
+  'PASSED' = 'PASSED',
+}
+
+const $VirusScanStatus = z.nativeEnum(VirusScanStatus);
+
+const $File = z.object({
+  fileName: z.string(),
+  currentVersion: z.string().optional(),
+  virusScanStatus: $VirusScanStatus,
+});
+
+export const $Files = z.object({
+  pdfTemplate: $File,
+  testDataCsv: $File.optional(),
+  proofs: z.array($File).optional(),
+});
+
 const $TemplateBase = z.object({
   id: z.string(),
   templateType: z.nativeEnum(TemplateType),
@@ -54,8 +74,7 @@ export const $LetterTemplate = $TemplateBase.extend({
   templateType: z.literal(TemplateType.LETTER),
   letterType: z.nativeEnum(LetterType),
   language: z.nativeEnum(Language),
-  pdfTemplateInputFile: z.string(),
-  testPersonalisationInputFile: z.string().optional(),
+  files: $Files,
 });
 const $SubmittedLetterTemplate = $LetterTemplate.extend({
   templateStatus: z.literal(TemplateStatus.SUBMITTED),
