@@ -1,36 +1,59 @@
 import { z } from 'zod';
 import {
+  ChannelTemplate,
   CreateTemplate,
+  EmailProperties,
+  FileDetails,
+  Language,
+  LetterFiles,
+  LetterProperties,
+  LetterType,
+  NHSAppProperties,
+  SMSProperties,
   TemplateDTO,
   TemplateStatus,
   TemplateType,
   UpdateTemplate,
-} from 'nhs-notify-backend-client';
-import { schemaFor } from './schema-for';
+  VirusScanStatus,
+} from '../types/generated';
 import {
-  MAX_SMS_CHARACTER_LENGTH,
   MAX_EMAIL_CHARACTER_LENGTH,
   MAX_NHS_APP_CHARACTER_LENGTH,
+  MAX_SMS_CHARACTER_LENGTH,
   NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
+import { schemaFor } from './schema-for';
 
-const $BaseCreateTemplateSchema = schemaFor<CreateTemplate>()(
+const $VirusScanStatus = schemaFor<VirusScanStatus>()(
+  z.nativeEnum(VirusScanStatus)
+);
+
+const $FileDetails = schemaFor<FileDetails>()(
   z.object({
-    templateType: z.nativeEnum(TemplateType),
-    name: z.string().trim().min(1),
-    message: z.string().trim().min(1).optional(),
+    fileName: z.string().trim().min(1),
+    currentVersion: z.string().optional(),
+    virusScanStatus: $VirusScanStatus.optional(),
   })
 );
 
-export const $CreateSMSTemplateSchema = schemaFor<CreateTemplate>()(
-  $BaseCreateTemplateSchema.extend({
-    templateType: z.literal(TemplateType.SMS),
-    message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
+const $LetterFiles = schemaFor<LetterFiles>()(
+  z.object({
+    pdfTemplate: $FileDetails,
+    testDataCsv: $FileDetails.optional(),
+    proofs: z.array($FileDetails).optional(),
   })
 );
 
-export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
-  $BaseCreateTemplateSchema.extend({
+export const $EmailProperties = schemaFor<EmailProperties>()(
+  z.object({
+    templateType: z.literal(TemplateType.EMAIL),
+    subject: z.string().trim().min(1),
+    message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
+  })
+);
+
+export const $NHSAppProperties = schemaFor<NHSAppProperties>()(
+  z.object({
     templateType: z.literal(TemplateType.NHS_APP),
     message: z
       .string()
@@ -44,37 +67,66 @@ export const $CreateNhsAppTemplateSchema = schemaFor<CreateTemplate>()(
   })
 );
 
-export const $CreateEmailTemplateSchema = schemaFor<CreateTemplate>()(
-  $BaseCreateTemplateSchema.extend({
-    subject: z.string().trim().min(1),
-    templateType: z.literal(TemplateType.EMAIL),
-    message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
+export const $SMSProperties = schemaFor<SMSProperties>()(
+  z.object({
+    templateType: z.literal(TemplateType.SMS),
+    message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
-export const $CreateTemplateSchema = z.discriminatedUnion('templateType', [
-  $CreateSMSTemplateSchema,
-  $CreateNhsAppTemplateSchema,
-  $CreateEmailTemplateSchema,
-]);
+export const $LetterProperties = schemaFor<LetterProperties>()(
+  z.object({
+    templateType: z.literal(TemplateType.LETTER),
+    letterType: z.nativeEnum(LetterType),
+    language: z.nativeEnum(Language),
+    files: $LetterFiles,
+  })
+);
 
-const $UpdateTemplateFields = {
-  templateStatus: z.nativeEnum(TemplateStatus),
-};
-
-export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
+export const $ChannelTemplate = schemaFor<ChannelTemplate>()(
   z.discriminatedUnion('templateType', [
-    $CreateSMSTemplateSchema.extend($UpdateTemplateFields),
-    $CreateNhsAppTemplateSchema.extend($UpdateTemplateFields),
-    $CreateEmailTemplateSchema.extend($UpdateTemplateFields),
+    $NHSAppProperties,
+    $EmailProperties,
+    $SMSProperties,
+    $LetterProperties,
   ])
 );
 
-export const $TemplateDTOSchema = schemaFor<TemplateDTO>()(
-  $BaseCreateTemplateSchema.extend({
+export const $CreateTemplateSchema = schemaFor<CreateTemplate>()(
+  z.intersection(
+    $ChannelTemplate,
+    z.object({
+      name: z.string().trim().min(1),
+    })
+  )
+);
+
+export const $UpdateTemplateSchema = z.intersection(
+  $ChannelTemplate,
+  z.object({
+    name: z.string().trim().min(1),
+    templateStatus: z.nativeEnum(TemplateStatus),
+  })
+);
+
+export const $TemplateDTOSchema = z.intersection(
+  $ChannelTemplate,
+  z.object({
     id: z.string(),
+    name: z.string().trim().min(1),
     templateStatus: z.nativeEnum(TemplateStatus),
     createdAt: z.string(),
     updatedAt: z.string(),
   })
 );
+
+export const isCreateTemplateValid = (
+  input: unknown
+): CreateTemplate | undefined => $CreateTemplateSchema.safeParse(input).data;
+
+export const isUpdateTemplateValid = (
+  input: unknown
+): UpdateTemplate | undefined => $UpdateTemplateSchema.safeParse(input).data;
+
+export const isTemplateDTOValid = (input: unknown): TemplateDTO | undefined =>
+  $TemplateDTOSchema.safeParse(input).data;

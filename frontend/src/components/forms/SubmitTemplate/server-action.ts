@@ -3,8 +3,10 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
 import { z } from 'zod';
-import { validateTemplate } from '@utils/validate-template';
-import { TemplateStatus } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateStatus,
+  validateTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const $TemplateIdSchema = z.string();
@@ -27,7 +29,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   }
 
   try {
-    await saveTemplate({
+    await saveTemplate(validatedTemplate.id, {
       ...validatedTemplate,
       templateStatus: TemplateStatus.SUBMITTED,
     });

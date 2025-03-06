@@ -1,15 +1,12 @@
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import {
-  SMSTemplate,
-  Draft,
   TemplateType,
-  TemplateStatus,
+  CreateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
 const CreateSMSTemplatePage = async () => {
-  const initialState: Draft<SMSTemplate> = {
+  const initialState: CreateSMSTemplate = {
     templateType: TemplateType.SMS,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: '',
     message: '',
   };

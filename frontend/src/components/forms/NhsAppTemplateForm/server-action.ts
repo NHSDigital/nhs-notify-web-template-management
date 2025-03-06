@@ -1,7 +1,7 @@
 import {
   TemplateFormState,
   NHSAppTemplate,
-  Draft,
+  CreateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
@@ -18,9 +18,9 @@ const $CreateNhsAppTemplateSchema = z.object({
 });
 
 export async function processFormActions(
-  formState: TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>,
+  formState: TemplateFormState<NHSAppTemplate | CreateNHSAppTemplate>,
   formData: FormData
-): Promise<TemplateFormState<NHSAppTemplate | Draft<NHSAppTemplate>>> {
+): Promise<TemplateFormState<NHSAppTemplate | CreateNHSAppTemplate>> {
   const parsedForm = $CreateNhsAppTemplateSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
@@ -43,7 +43,7 @@ export async function processFormActions(
   };
 
   const savedTemplate = await ('id' in updatedTemplate
-    ? saveTemplate(updatedTemplate)
+    ? saveTemplate(updatedTemplate.id, updatedTemplate)
     : createTemplate(updatedTemplate));
 
   return redirect(

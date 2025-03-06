@@ -282,54 +282,6 @@
       }
     },
     "schemas": {
-      "TemplateDTO": {
-        "type": "object",
-        "required": [
-          "id",
-          "templateType",
-          "templateStatus",
-          "name",
-          "createdAt",
-          "updatedAt"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "templateType": {
-            "$ref": "#/components/schemas/TemplateType"
-          },
-          "templateStatus": {
-            "$ref": "#/components/schemas/TemplateStatus"
-          },
-          "letterType": {
-            "$ref": "#/components/schemas/LetterType"
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "files": {
-            "$ref": "#/components/schemas/Files"
-          },
-          "name": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "subject": {
-            "type": "string"
-          }
-        }
-      },
       "TemplateType": {
         "type": "string",
         "enum": [
@@ -399,11 +351,10 @@
           "PASSED"
         ]
       },
-      "File": {
+      "FileDetails": {
         "type": "object",
         "required": [
-          "fileName",
-          "virusScanStatus"
+          "fileName"
         ],
         "properties": {
           "fileName": {
@@ -417,35 +368,51 @@
           }
         }
       },
-      "Files": {
+      "LetterFiles": {
         "type": "object",
+        "required": [
+          "pdfTemplate"
+        ],
         "properties": {
           "pdfTemplate": {
-            "$ref": "#/components/schemas/File"
+            "$ref": "#/components/schemas/FileDetails"
           },
           "testDataCsv": {
-            "$ref":  "#/components/schemas/File"
+            "$ref": "#/components/schemas/FileDetails"
           },
           "proofs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/File"
+              "$ref": "#/components/schemas/FileDetails"
             }
           }
         }
       },
-      "CreateTemplate": {
+      "NHSAppProperties": {
         "type": "object",
         "required": [
           "templateType",
-          "name"
+          "message"
         ],
         "properties": {
           "templateType": {
             "$ref": "#/components/schemas/TemplateType"
           },
-          "name": {
+          "message": {
             "type": "string"
+          }
+        }
+      },
+      "EmailProperties": {
+        "type": "object",
+        "required": [
+          "templateType",
+          "message",
+          "subject"
+        ],
+        "properties": {
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
           },
           "message": {
             "type": "string"
@@ -455,32 +422,148 @@
           }
         }
       },
-      "UpdateTemplate": {
+      "SMSProperties": {
         "type": "object",
         "required": [
-          "templateStatus",
-          "name",
-          "templateType"
+          "templateType",
+          "message"
         ],
         "properties": {
-          "templateStatus": {
-            "$ref": "#/components/schemas/TemplateStatus"
-          },
-          "name": {
-            "type": "string"
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
           },
           "message": {
             "type": "string"
-          },
-          "subject": {
-            "type": "string"
-          },
-          "templateType": {
-            "$ref": "#/components/schemas/TemplateType",
-            "readOnly": true,
-            "description": "This value will never be updated. It is used to determine the type of template being validated."
           }
         }
+      },
+      "LetterProperties": {
+        "type": "object",
+        "required": [
+          "templateType",
+          "letterType",
+          "language",
+          "files"
+        ],
+        "properties": {
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
+          }
+        }
+      },
+      "ChannelTemplate": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/NHSAppProperties"
+          },
+          {
+            "$ref": "#/components/schemas/EmailProperties"
+          },
+          {
+            "$ref": "#/components/schemas/SMSProperties"
+          },
+          {
+            "$ref": "#/components/schemas/LetterProperties"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "templateType",
+          "mapping": {
+            "NHS_APP": "#/components/schemas/NHSAppProperties",
+            "EMAIL": "#/components/schemas/EmailProperties",
+            "SMS": "#/components/schemas/SMSProperties",
+            "LETTER": "#/components/schemas/LetterProperties"
+          }
+        }
+      },
+      "CreateTemplate": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ChannelTemplate"
+          },
+          {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "UpdateTemplate": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ChannelTemplate"
+          },
+          {
+            "type": "object",
+            "required": [
+              "name",
+              "templateStatus"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "templateStatus": {
+                "$ref": "#/components/schemas/TemplateStatus"
+              }
+            }
+          }
+        ]
+      },
+      "TemplateDTO": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ChannelTemplate"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "templateStatus",
+              "createdAt",
+              "updatedAt"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "templateStatus": {
+                "$ref": "#/components/schemas/TemplateStatus"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
       },
       "Success": {
         "type": "object",

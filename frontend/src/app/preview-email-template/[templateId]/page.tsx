@@ -1,10 +1,12 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateEmailTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
-import { validateEmailTemplate } from '@utils/validate-template';
 
 const PreviewEmailTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

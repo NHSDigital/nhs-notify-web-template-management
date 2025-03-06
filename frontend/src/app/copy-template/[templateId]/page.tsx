@@ -2,16 +2,16 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
-import { PageProps, $Template } from 'nhs-notify-web-template-management-utils';
+import { PageProps } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
-import { zodValidate } from '@utils/validate-template';
+import { isTemplateDTOValid } from 'nhs-notify-backend-client';
 
 const CopyTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = zodValidate($Template, template);
+  const validatedTemplate = isTemplateDTOValid(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);

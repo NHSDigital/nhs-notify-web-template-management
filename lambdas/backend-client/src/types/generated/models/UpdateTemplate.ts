@@ -2,16 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ChannelTemplate } from './ChannelTemplate';
 import type { TemplateStatus } from './TemplateStatus';
-import type { TemplateType } from './TemplateType';
-export type UpdateTemplate = {
-    templateStatus: TemplateStatus;
+export type UpdateTemplate = (ChannelTemplate & {
     name: string;
-    message?: string;
-    subject?: string;
-    /**
-     * This value will never be updated. It is used to determine the type of template being validated.
-     */
-    readonly templateType: TemplateType;
-};
+    templateStatus: TemplateStatus;
+});
 

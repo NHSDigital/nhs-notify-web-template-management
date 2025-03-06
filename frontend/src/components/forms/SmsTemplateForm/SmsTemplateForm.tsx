@@ -14,7 +14,7 @@ import {
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import {
-  Draft,
+  CreateSMSTemplate,
   PageComponentProps,
   SMSTemplate,
   TemplateType,
@@ -31,7 +31,7 @@ import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const SmsTemplateForm: FC<
-  PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
+  PageComponentProps<SMSTemplate | CreateSMSTemplate>
 > = ({ initialState }) => {
   const [state, action] = useActionState(processFormActions, initialState);
 

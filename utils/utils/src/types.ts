@@ -1,11 +1,11 @@
-import { z } from 'zod';
 import {
-  $EmailTemplate,
-  $SMSTemplate,
-  $NHSAppTemplate,
-  $Template,
-  $LetterTemplate,
-} from './zod-validators';
+  CreateTemplate,
+  EmailProperties,
+  LetterProperties,
+  NHSAppProperties,
+  SMSProperties,
+  TemplateDTO,
+} from 'nhs-notify-backend-client';
 
 export type FormId =
   | 'choose-a-template-type'
@@ -22,23 +22,21 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
-export type EmailTemplate = z.infer<typeof $EmailTemplate>;
-
-export type SMSTemplate = z.infer<typeof $SMSTemplate>;
-
-export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
-
-export type LetterTemplate = z.infer<typeof $LetterTemplate>;
-
-export type Template = z.infer<typeof $Template>;
-
-export type Draft<T> = Omit<T, 'id'>;
-
 export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type TemplateFormState<T = Template> = FormState & T;
+export type CreateNHSAppTemplate = CreateTemplate & NHSAppProperties;
+export type CreateEmailTemplate = CreateTemplate & EmailProperties;
+export type CreateSMSTemplate = CreateTemplate & SMSProperties;
+export type CreateLetterTemplate = CreateTemplate & LetterProperties;
+
+export type NHSAppTemplate = TemplateDTO & NHSAppProperties;
+export type EmailTemplate = TemplateDTO & EmailProperties;
+export type SMSTemplate = TemplateDTO & SMSProperties;
+export type LetterTemplate = TemplateDTO & LetterProperties;
+
+export type TemplateFormState<T = CreateTemplate | TemplateDTO> = FormState & T;
 
 export type PageProps = {
   params: Promise<{

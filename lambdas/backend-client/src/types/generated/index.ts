@@ -3,12 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export type { ChannelTemplate } from './models/ChannelTemplate';
 export type { CreateTemplate } from './models/CreateTemplate';
+export type { EmailProperties } from './models/EmailProperties';
 export type { Failure } from './models/Failure';
-export type { File } from './models/File';
-export type { Files } from './models/Files';
+export type { FileDetails } from './models/FileDetails';
 export { Language } from './models/Language';
+export type { LetterFiles } from './models/LetterFiles';
+export type { LetterProperties } from './models/LetterProperties';
 export { LetterType } from './models/LetterType';
+export type { NHSAppProperties } from './models/NHSAppProperties';
+export type { SMSProperties } from './models/SMSProperties';
 export type { Success } from './models/Success';
 export type { SuccessList } from './models/SuccessList';
 export type { TemplateDTO } from './models/TemplateDTO';

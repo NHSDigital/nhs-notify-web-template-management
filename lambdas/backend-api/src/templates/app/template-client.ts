@@ -9,6 +9,7 @@ import {
   $UpdateTemplateSchema,
   TemplateType,
   ErrorCase,
+  isTemplateDTOValid,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -50,7 +51,12 @@ export class TemplateClient implements ITemplateClient {
       return createResult;
     }
 
-    return success(this.mapDatabaseObjectToDTO(createResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
   async updateTemplate(
@@ -82,7 +88,12 @@ export class TemplateClient implements ITemplateClient {
       return updateResult;
     }
 
-    return success(this.mapDatabaseObjectToDTO(updateResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
   async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
@@ -105,15 +116,20 @@ export class TemplateClient implements ITemplateClient {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
-    return success(this.mapDatabaseObjectToDTO(getResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(getResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
-  ): TemplateDTO {
+  ): TemplateDTO | undefined {
     const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
 
-    return templateDTO;
+    return isTemplateDTOValid(templateDTO);
   }
 
   async listTemplates(): Promise<Result<TemplateDTO[]>> {
@@ -127,6 +143,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTOs = listResult.data
       .map((template) => this.mapDatabaseObjectToDTO(template))
+      .flatMap((t) => t ?? [])
       .filter(
         (t) => this.enableLetters || t.templateType !== TemplateType.LETTER
       );

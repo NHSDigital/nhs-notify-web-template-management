@@ -2,9 +2,11 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateSMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
-import { validateSMSTemplate } from '@utils/validate-template';
 
 const SubmitSmsTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

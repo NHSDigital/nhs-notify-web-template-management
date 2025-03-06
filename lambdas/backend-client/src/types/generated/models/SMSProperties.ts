@@ -2,10 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { File } from './File';
-export type Files = {
-    pdfTemplate?: File;
-    testDataCsv?: File;
-    proofs?: Array<File>;
+import { TemplateType } from './TemplateType';
+export type SMSProperties = {
+    templateType: TemplateType.SMS
+    message: string;
 };
 
