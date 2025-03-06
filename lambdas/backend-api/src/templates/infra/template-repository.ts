@@ -10,6 +10,8 @@ import {
   DynamoDBClient,
 } from '@aws-sdk/client-dynamodb';
 import {
+  DeleteCommand,
+  DeleteCommandInput,
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -254,9 +256,36 @@ const list = async (
     );
   }
 };
+
+const remove = async (
+  templateId: string,
+  owner: string
+): Promise<ApplicationResult<null>> => {
+  try {
+    const input: DeleteCommandInput = {
+      TableName: process.env.TEMPLATES_TABLE_NAME,
+      Key: {
+        owner,
+        id: templateId,
+      },
+    };
+
+    await client.send(new DeleteCommand(input));
+
+    return success(null);
+  } catch (error) {
+    return failure(
+      ErrorCase.DATABASE_FAILURE,
+      'Failed to delete template',
+      error
+    );
+  }
+};
+
 export const templateRepository = {
   get,
   create,
   update,
   list,
+  remove,
 };

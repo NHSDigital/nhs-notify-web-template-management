@@ -16,12 +16,12 @@ import {
 } from '@backend-api/templates/infra';
 
 export class TemplateClient implements ITemplateClient {
-  constructor(
-    private readonly _owner: string,
-    private readonly enableLetters: boolean
-  ) {}
+  constructor(private readonly enableLetters: boolean) {}
 
-  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
+  async createTemplate(
+    template: CreateTemplate,
+    owner: string
+  ): Promise<Result<TemplateDTO>> {
     const log = logger.child({
       template,
     });
@@ -39,7 +39,7 @@ export class TemplateClient implements ITemplateClient {
 
     const createResult = await templateRepository.create(
       validationResult.data,
-      this._owner
+      owner
     );
 
     if (createResult.error) {
@@ -55,7 +55,8 @@ export class TemplateClient implements ITemplateClient {
 
   async updateTemplate(
     templateId: string,
-    template: UpdateTemplate
+    template: UpdateTemplate,
+    owner: string
   ): Promise<Result<TemplateDTO>> {
     const log = logger.child({
       templateId,
@@ -73,7 +74,7 @@ export class TemplateClient implements ITemplateClient {
     const updateResult = await templateRepository.update(
       templateId,
       validationResult.data,
-      this._owner
+      owner
     );
 
     if (updateResult.error) {
@@ -85,12 +86,15 @@ export class TemplateClient implements ITemplateClient {
     return success(this.mapDatabaseObjectToDTO(updateResult.data));
   }
 
-  async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
+  async getTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDTO>> {
     const log = logger.child({
       templateId,
     });
 
-    const getResult = await templateRepository.get(templateId, this._owner);
+    const getResult = await templateRepository.get(templateId, owner);
 
     if (getResult.error) {
       log.error('Failed to get template', { getResult });
@@ -116,8 +120,8 @@ export class TemplateClient implements ITemplateClient {
     return templateDTO;
   }
 
-  async listTemplates(): Promise<Result<TemplateDTO[]>> {
-    const listResult = await templateRepository.list(this._owner);
+  async listTemplates(owner: string): Promise<Result<TemplateDTO[]>> {
+    const listResult = await templateRepository.list(owner);
 
     if (listResult.error) {
       logger.error('Failed to list templates', { listResult });
@@ -132,5 +136,13 @@ export class TemplateClient implements ITemplateClient {
       );
 
     return success(templateDTOs);
+  }
+
+  async deleteTemplate(templateId: string, owner: string): Promise<void> {
+    const deleteResult = await templateRepository.remove(templateId, owner);
+
+    if (deleteResult.error) {
+      logger.error('Failed to delete template', { deleteResult });
+    }
   }
 }

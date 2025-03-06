@@ -49,6 +49,7 @@ export class TemplateApiClient implements ITemplateClient {
     formData.append('template', JSON.stringify(template));
     formData.append('letterPdf', pdf);
     if (csv) formData.append('testCsv', csv);
+
     const response = await catchAxiosError(
       this._client.post<Success>('/v1/letter-template', formData, {
         headers: {

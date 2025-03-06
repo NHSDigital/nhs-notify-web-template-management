@@ -10,11 +10,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   }
 
   const client = new TemplateClient(
-    user,
     process.env.ENABLE_LETTERS_BACKEND === 'true'
   );
 
-  const { data, error } = await client.listTemplates();
+  const { data, error } = await client.listTemplates(user);
 
   if (error) {
     return apiFailure(error.code, error.message, error.details);

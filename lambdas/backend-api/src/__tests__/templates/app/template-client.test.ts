@@ -26,7 +26,7 @@ const listMock = jest.mocked(templateRepository.list);
 const validateMock = jest.mocked(validate);
 
 // letters feature flag is enabled
-const client = new TemplateClient('owner', true);
+const client = new TemplateClient(true);
 
 describe('templateClient', () => {
   beforeEach(jest.resetAllMocks);
@@ -46,7 +46,7 @@ describe('templateClient', () => {
         message: 'message',
       };
 
-      const result = await client.createTemplate(data);
+      const result = await client.createTemplate(data, 'owner');
 
       expect(validateMock).toHaveBeenCalledWith($CreateTemplateSchema, data);
 
@@ -76,7 +76,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await client.createTemplate(data);
+      const result = await client.createTemplate(data, 'owner');
 
       expect(createMock).toHaveBeenCalledWith(data, 'owner');
 
@@ -117,7 +117,7 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await client.createTemplate(data);
+      const result = await client.createTemplate(data, 'owner');
 
       expect(createMock).toHaveBeenCalledWith(data, 'owner');
 
@@ -143,7 +143,7 @@ describe('templateClient', () => {
         templateType: TemplateType.SMS,
       };
 
-      const result = await client.updateTemplate('id', data);
+      const result = await client.updateTemplate('id', data, 'owner');
 
       expect(validateMock).toHaveBeenCalledWith($UpdateTemplateSchema, data);
 
@@ -174,7 +174,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await client.updateTemplate('id', data);
+      const result = await client.updateTemplate('id', data, 'owner');
 
       expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
 
@@ -210,7 +210,7 @@ describe('templateClient', () => {
         data: { ...template, owner: 'owner', version: 1 },
       });
 
-      const result = await client.updateTemplate('id', data);
+      const result = await client.updateTemplate('id', data, 'owner');
 
       expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
 
@@ -229,7 +229,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await client.getTemplate('id');
+      const result = await client.getTemplate('id', 'owner');
 
       expect(getMock).toHaveBeenCalledWith('id', 'owner');
 
@@ -242,7 +242,7 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner', false);
+      const noLettersClient = new TemplateClient(false);
 
       getMock.mockResolvedValueOnce({
         data: {
@@ -261,7 +261,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await noLettersClient.getTemplate('id');
+      const result = await noLettersClient.getTemplate('id', 'owner');
 
       expect(getMock).toHaveBeenCalledWith('id', 'owner');
 
@@ -288,7 +288,7 @@ describe('templateClient', () => {
         data: { ...template, owner: 'owner', version: 1 },
       });
 
-      const result = await client.getTemplate('id');
+      const result = await client.getTemplate('id', 'owner');
 
       expect(getMock).toHaveBeenCalledWith('id', 'owner');
 
@@ -307,7 +307,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await client.listTemplates();
+      const result = await client.listTemplates('owner');
 
       expect(listMock).toHaveBeenCalledWith('owner');
 
@@ -320,7 +320,7 @@ describe('templateClient', () => {
     });
 
     test('filters out letters if the feature flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner', false);
+      const noLettersClient = new TemplateClient(false);
 
       const template: TemplateDTO = {
         id: 'id',
@@ -339,7 +339,7 @@ describe('templateClient', () => {
         data: [{ ...template, owner: 'owner', version: 1 }],
       });
 
-      const result = await noLettersClient.listTemplates();
+      const result = await noLettersClient.listTemplates('owner');
 
       expect(listMock).toHaveBeenCalledWith('owner');
 
@@ -363,7 +363,7 @@ describe('templateClient', () => {
         data: [{ ...template, owner: 'owner', version: 1 }],
       });
 
-      const result = await client.listTemplates();
+      const result = await client.listTemplates('owner');
 
       expect(listMock).toHaveBeenCalledWith('owner');
 
