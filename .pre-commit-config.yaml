@@ -1,10 +1,41 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
+- repo: local
+  hooks:
+  - id: scan-secrets
+    name: Scan secrets
+    entry: ./scripts/githooks/scan-secrets.sh
+    args: ["check=staged-changes"]
+    language: script
+    pass_filenames: false
+- repo: local
+  hooks:
+  - id: check-file-format
+    name: Check file format
+    entry: ./scripts/githooks/check-file-format.sh
+    args: ["check=staged-changes"]
+    language: script
+    pass_filenames: false
+- repo: local
+  hooks:
+  - id: check-markdown-format
+    name: Check Markdown format
+    entry: ./scripts/githooks/check-markdown-format.sh
+    args: ["check=staged-changes"]
+    language: script
+    pass_filenames: false
+- repo: local
+  hooks:
+  - id: check-english-usage
+    name: Check English usage
+    entry: ./scripts/githooks/check-english-usage.sh
+    args: ["check=staged-changes"]
+    language: script
+    pass_filenames: false
+- repo: local
+  hooks:
+  - id: lint-terraform
+    name: Lint Terraform
+    entry: ./scripts/githooks/check-terraform-format.sh
+    language: script
+    pass_filenames: false
+

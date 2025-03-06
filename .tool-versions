@@ -5,7 +5,9 @@ terraform 1.9.2
 vale 3.6.0
 tfsec 1.28.10
 nodejs 20.13.1
-
+python 3.9.18
+direnv 2.32.1
+make 4.4
 # ==============================================================================
 # The section below is reserved for Docker image versions.
 
