@@ -53,7 +53,7 @@ describe('API Pact test', () => {
         },
       });
 
-      await provider.executeTest(async (mockService) => {
+      await provider.executeTest(async (_) => {
         const client = TemplateClient(testToken);
 
         // make request to Pact mock server
@@ -97,7 +97,7 @@ describe('API Pact test', () => {
         },
       });
 
-      await provider.executeTest(async (mockService) => {
+      await provider.executeTest(async (_) => {
         const client = TemplateClient(testToken);
 
         // make request to Pact mock server
