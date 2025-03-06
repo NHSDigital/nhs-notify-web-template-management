@@ -5,7 +5,6 @@ import {
   CreateTemplate,
   isTemplateDTOValid,
   TemplateDTO,
-  UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
@@ -30,8 +29,7 @@ export async function createTemplate(
 }
 
 export async function saveTemplate(
-  templateId: string,
-  template: UpdateTemplate
+  template: TemplateDTO
 ): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
@@ -40,7 +38,7 @@ export async function saveTemplate(
   }
 
   const { data, error } = await TemplateClient(token).updateTemplate(
-    templateId,
+    template.id,
     template
   );
 

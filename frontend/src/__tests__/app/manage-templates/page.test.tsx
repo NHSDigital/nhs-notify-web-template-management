@@ -4,10 +4,10 @@ import ManageTemplatesPage from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
 import {
+  TemplateDTO,
   TemplateStatus,
   TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+} from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -18,7 +18,6 @@ const mockTemplates: TemplateDTO[] = [
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Template 1',
     message: 'Message',
-    subject: 'Subject Line',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
   },

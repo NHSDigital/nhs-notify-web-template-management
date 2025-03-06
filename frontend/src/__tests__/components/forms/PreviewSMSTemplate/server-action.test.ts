@@ -20,6 +20,8 @@ const initialState: SMSTemplate = {
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'template-name',
   message: 'template-message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewSmsTemplateAction server action', () => {

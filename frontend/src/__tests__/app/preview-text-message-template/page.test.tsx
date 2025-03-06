@@ -3,14 +3,20 @@
  */
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -61,47 +67,26 @@ describe('PreviewSMSTemplatePage', () => {
   });
 
   test.each([
+    EMAIL_TEMPLATE,
+    NHS_APP_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.LETTER,
-      name: 'template-name',
-      letterType: LetterType.X0,
-      language: Language.EN,
-    },
-    {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
+      ...SMS_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await PreviewSMSTemplatePage({
         params: Promise.resolve({

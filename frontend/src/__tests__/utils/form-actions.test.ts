@@ -2,10 +2,8 @@
  * @jest-environment node
  */
 import {
+  CreateNHSAppTemplate,
   NHSAppTemplate,
-  Draft,
-  TemplateType,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import {
   createTemplate,
@@ -15,7 +13,12 @@ import {
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { mockDeep } from 'jest-mock-extended';
-import { ITemplateClient } from 'nhs-notify-backend-client';
+import {
+  ITemplateClient,
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 const mockedTemplateClient = mockDeep<ITemplateClient>();
 const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
@@ -34,22 +37,20 @@ describe('form-actions', () => {
   test('createTemplate', async () => {
     const responseData = {
       id: 'id',
-      version: 1,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
+    const createTemplateInput: CreateNHSAppTemplate = {
       templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
     };
@@ -71,9 +72,8 @@ describe('form-actions', () => {
       },
     });
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
+    const createTemplateInput: CreateNHSAppTemplate = {
       templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
     };
@@ -91,9 +91,8 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
+    const createTemplateInput: CreateNHSAppTemplate = {
       templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
     };
@@ -112,7 +111,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -124,6 +123,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     const response = await saveTemplate(updateTemplateInput);
@@ -150,6 +151,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
@@ -172,6 +175,8 @@ describe('form-actions', () => {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
@@ -188,7 +193,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -235,7 +240,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDTO;
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: [responseData],
@@ -276,7 +281,7 @@ describe('form-actions', () => {
       name: 'Template',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',
-    };
+    } satisfies Partial<TemplateDTO>;
 
     const templates = [
       { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },

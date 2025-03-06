@@ -39,6 +39,8 @@ test('calls form action and redirects', async () => {
     message: 'template-message',
     templateType: TemplateType.NHS_APP,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await deleteTemplateYesAction(mockTemplate);

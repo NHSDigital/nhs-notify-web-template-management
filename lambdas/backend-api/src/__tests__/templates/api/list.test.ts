@@ -98,6 +98,7 @@ describe('Template API - List', () => {
       templateType: TemplateType.EMAIL,
       name: 'name',
       message: 'message',
+      subject: 'subject',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,

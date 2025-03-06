@@ -3,14 +3,10 @@
  */
 import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
-import {
-  EmailTemplate,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -19,7 +15,7 @@ jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const templateDTO = {
+const template: EmailTemplate = {
   id: 'template-id',
   templateType: TemplateType.EMAIL,
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -28,7 +24,7 @@ const templateDTO = {
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-} satisfies TemplateDTO;
+};
 
 describe('EditEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
@@ -49,7 +45,7 @@ describe('EditEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when template type is not EMAIL', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...templateDTO,
+      ...template,
       templateType: TemplateType.NHS_APP,
     });
 
@@ -65,10 +61,10 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
-    getTemplateMock.mockResolvedValueOnce(templateDTO);
+    getTemplateMock.mockResolvedValueOnce(template);
 
-    const emailTemplate: EmailTemplate = {
-      ...templateDTO,
+    const emailTemplate = {
+      ...template,
       subject: 'subject',
       templateType: TemplateType.EMAIL,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,

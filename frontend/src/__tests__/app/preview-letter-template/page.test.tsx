@@ -3,19 +3,22 @@
  */
 import PreviewLetterTemplatePage from '@app/preview-letter-template/[templateId]/page';
 import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
-import {
-  type LetterTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import {
   Language,
   LetterType,
   TemplateDTO,
+  TemplateStatus,
+  TemplateType,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -85,21 +88,15 @@ describe('PreviewLetterTemplatePage', () => {
   test.each([
     {
       description: 'an email',
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
+      ...EMAIL_TEMPLATE,
     },
     {
       description: 'an SMS',
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
+      ...SMS_TEMPLATE,
     },
     {
       description: 'an app message',
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
+      ...NHS_APP_TEMPLATE,
     },
     {
       description: 'a letter lacking language',

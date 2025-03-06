@@ -125,19 +125,26 @@ const attributeExpressionsFromMap = <T>(
 ) => Object.keys(channelSpecificAttributes).map((att) => `#${att} = :${att}`);
 
 const getChannelAttributeExpressions = (template: UpdateTemplate) => {
+  const expressions = [];
   if (template.templateType === TemplateType.NHS_APP) {
-    return attributeExpressionsFromMap<NHSAppProperties>(nhsAppAttributes);
+    expressions.push(
+      attributeExpressionsFromMap<NHSAppProperties>(nhsAppAttributes)
+    );
   }
   if (template.templateType === TemplateType.EMAIL) {
-    return attributeExpressionsFromMap<EmailProperties>(emailAttributes);
+    expressions.push(
+      attributeExpressionsFromMap<EmailProperties>(emailAttributes)
+    );
   }
   if (template.templateType === TemplateType.SMS) {
-    return attributeExpressionsFromMap<SMSProperties>(smsAttributes);
+    expressions.push(attributeExpressionsFromMap<SMSProperties>(smsAttributes));
   }
   if (template.templateType === TemplateType.LETTER) {
-    return attributeExpressionsFromMap<LetterProperties>(letterAttributes);
+    expressions.push(
+      attributeExpressionsFromMap<LetterProperties>(letterAttributes)
+    );
   }
-  return [];
+  return expressions;
 };
 
 const attributeNamesFromMap = <T>(
@@ -156,19 +163,22 @@ const attributeNamesFromMap = <T>(
 };
 
 const getChannelAttributeNames = (template: UpdateTemplate) => {
+  let names = {};
+
   if (template.templateType === TemplateType.NHS_APP) {
-    return attributeNamesFromMap<NHSAppProperties>(nhsAppAttributes);
+    names = attributeNamesFromMap<NHSAppProperties>(nhsAppAttributes);
   }
   if (template.templateType === TemplateType.EMAIL) {
-    return attributeNamesFromMap<EmailProperties>(emailAttributes);
+    names = attributeNamesFromMap<EmailProperties>(emailAttributes);
   }
   if (template.templateType === TemplateType.SMS) {
-    return attributeNamesFromMap<SMSProperties>(smsAttributes);
+    names = attributeNamesFromMap<SMSProperties>(smsAttributes);
   }
   if (template.templateType === TemplateType.LETTER) {
-    return attributeNamesFromMap<LetterProperties>(letterAttributes);
+    names = attributeNamesFromMap<LetterProperties>(letterAttributes);
   }
-  return [];
+
+  return names;
 };
 
 const attributeValuesFromMapAndTemplate = <T>(
@@ -188,31 +198,34 @@ const attributeValuesFromMapAndTemplate = <T>(
 };
 
 const getChannelAttributeValues = (template: UpdateTemplate) => {
+  let values = {};
+
   if (template.templateType === TemplateType.NHS_APP) {
-    return attributeValuesFromMapAndTemplate<NHSAppProperties>(
+    values = attributeValuesFromMapAndTemplate<NHSAppProperties>(
       nhsAppAttributes,
       template
     );
   }
   if (template.templateType === TemplateType.EMAIL) {
-    return attributeValuesFromMapAndTemplate<EmailProperties>(
+    values = attributeValuesFromMapAndTemplate<EmailProperties>(
       emailAttributes,
       template
     );
   }
   if (template.templateType === TemplateType.SMS) {
-    return attributeValuesFromMapAndTemplate<SMSProperties>(
+    values = attributeValuesFromMapAndTemplate<SMSProperties>(
       smsAttributes,
       template
     );
   }
   if (template.templateType === TemplateType.LETTER) {
-    return attributeValuesFromMapAndTemplate<LetterProperties>(
+    values = attributeValuesFromMapAndTemplate<LetterProperties>(
       letterAttributes,
       template
     );
   }
-  return [];
+
+  return values;
 };
 
 const update = async (

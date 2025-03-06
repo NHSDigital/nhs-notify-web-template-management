@@ -1,12 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import {
   Language,
   LetterType,
+  TemplateStatus,
+  TemplateType,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
 
@@ -20,6 +18,8 @@ describe('PreviewTemplateDetails component', () => {
           message: 'app message message',
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
           templateType: TemplateType.NHS_APP,
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[
@@ -44,6 +44,8 @@ describe('PreviewTemplateDetails component', () => {
           templateStatus: TemplateStatus.SUBMITTED,
           templateType: TemplateType.SMS,
           message: 'text message message',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[
@@ -81,6 +83,8 @@ describe('PreviewTemplateDetails component', () => {
               virusScanStatus: VirusScanStatus.PENDING,
             },
           },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         additionalMetaFields={[
           {
@@ -113,6 +117,8 @@ describe('PreviewTemplateDetails component', () => {
               virusScanStatus: VirusScanStatus.PENDING,
             },
           },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
       />
     );
@@ -129,6 +135,8 @@ describe('PreviewTemplateDetails component', () => {
           message: 'app message message',
           templateType: TemplateType.NHS_APP,
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[

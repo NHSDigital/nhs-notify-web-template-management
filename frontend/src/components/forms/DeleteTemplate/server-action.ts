@@ -10,7 +10,7 @@ export const deleteTemplateNoAction = async () => {
 export const deleteTemplateYesAction = async (
   template: TemplateDTO
 ): Promise<never> => {
-  await saveTemplate(template.id, {
+  await saveTemplate({
     ...template,
     templateStatus: TemplateStatus.DELETED,
   });

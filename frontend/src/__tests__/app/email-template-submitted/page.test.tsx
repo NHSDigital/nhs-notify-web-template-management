@@ -9,6 +9,7 @@ import {
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -30,7 +31,7 @@ describe('EmailTemplateSubmittedPage', () => {
       subject: 'subject',
       createdAt: 'today',
       updatedAt: 'today',
-    };
+    } satisfies TemplateDTO;
 
     getTemplateMock.mockResolvedValueOnce(template);
 

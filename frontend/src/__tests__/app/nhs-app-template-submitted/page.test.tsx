@@ -9,6 +9,7 @@ import {
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -27,7 +28,7 @@ describe('NhsAppTemplateSubmittedPage', () => {
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'example',
-    };
+    } satisfies Partial<TemplateDTO>;
 
     getTemplateMock.mockResolvedValueOnce({
       ...template,

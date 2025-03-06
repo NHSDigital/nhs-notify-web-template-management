@@ -45,6 +45,7 @@ describe('templateClient', () => {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
+        subject: 'subject',
       };
 
       const result = await client.createTemplate(data);
@@ -64,6 +65,7 @@ describe('templateClient', () => {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
+        subject: 'subject',
       };
 
       validateMock.mockResolvedValueOnce({
@@ -89,11 +91,54 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when created database template is invalid', async () => {
+      const data: CreateTemplate = {
+        templateType: TemplateType.EMAIL,
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+      };
+
+      const expectedTemplateDTO: TemplateDTO = {
+        ...data,
+        id: 'id',
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDTO,
+        owner: 'owner',
+        version: 1,
+      };
+
+      validateMock.mockResolvedValueOnce({
+        data,
+      });
+
+      createMock.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await client.createTemplate(data);
+
+      expect(createMock).toHaveBeenCalledWith(data, 'owner');
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
+    });
+
     test('should return created template', async () => {
       const data: CreateTemplate = {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
+        subject: 'subject',
       };
 
       const expectedTemplateDTO: TemplateDTO = {
@@ -187,6 +232,48 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when updated database template is invalid', async () => {
+      const data: UpdateTemplate = {
+        name: 'name',
+        message: 'message',
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateType: TemplateType.SMS,
+      };
+
+      const expectedTemplateDTO: TemplateDTO = {
+        ...data,
+        id: 'id',
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDTO,
+        owner: 'owner',
+        version: 1,
+      };
+
+      validateMock.mockResolvedValueOnce({
+        data,
+      });
+
+      updateMock.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await client.updateTemplate('id', data);
+
+      expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
+    });
+
     test('should return updated template', async () => {
       const data: UpdateTemplate = {
         name: 'name',
@@ -242,6 +329,40 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when database template is invalid', async () => {
+      const templateDTO: TemplateDTO = {
+        id: 'id',
+        templateType: TemplateType.EMAIL,
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+
+      const template: DatabaseTemplate = {
+        ...templateDTO,
+        owner: 'owner',
+        version: 1,
+      };
+
+      getMock.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await client.getTemplate('id');
+
+      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
+    });
+
     test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
       const noLettersClient = new TemplateClient('owner', false);
 
@@ -278,6 +399,7 @@ describe('templateClient', () => {
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
+        subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -357,12 +479,51 @@ describe('templateClient', () => {
       });
     });
 
+    test('should filter out invalid templates', async () => {
+      const template: TemplateDTO = {
+        id: 'id',
+        templateType: TemplateType.EMAIL,
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+      const template2: TemplateDTO = {
+        id: undefined as unknown as string,
+        templateType: TemplateType.EMAIL,
+        name: undefined as unknown as string,
+        message: 'message',
+        subject: 'subject',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      };
+
+      listMock.mockResolvedValueOnce({
+        data: [
+          { ...template, owner: 'owner', version: 1 },
+          { ...template2, owner: 'owner', version: 1 },
+        ],
+      });
+
+      const result = await client.listTemplates();
+
+      expect(listMock).toHaveBeenCalledWith('owner');
+
+      expect(result).toEqual({
+        data: [template],
+      });
+    });
+
     test('should return templates', async () => {
       const template: TemplateDTO = {
         id: 'id',
         templateType: TemplateType.EMAIL,
         name: 'name',
         message: 'message',
+        subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,

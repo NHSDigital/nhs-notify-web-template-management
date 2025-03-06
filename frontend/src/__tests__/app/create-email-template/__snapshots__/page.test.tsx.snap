@@ -7,7 +7,6 @@ exports[`CreateEmailTemplatePage should render CreateEmailTemplatePage 1`] = `
       "message": "",
       "name": "",
       "subject": "",
-      "templateStatus": "NOT_YET_SUBMITTED",
       "templateType": "EMAIL",
     }
   }

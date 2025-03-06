@@ -3,15 +3,13 @@ import {
   previewLetterTemplateAction,
 } from '@forms/PreviewLetterTemplate';
 import { redirect } from 'next/navigation';
-import {
-  TemplateType,
-  TemplateStatus,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
 import {
   Language,
   LetterType,
+  TemplateStatus,
+  TemplateType,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
 
@@ -38,6 +36,8 @@ const initialState: LetterTemplate = {
       virusScanStatus: VirusScanStatus.PENDING,
     },
   },
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewLetterTemplateAction server action', () => {

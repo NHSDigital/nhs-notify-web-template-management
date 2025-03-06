@@ -21,6 +21,8 @@ const initialState: EmailTemplate = {
   name: 'template-name',
   subject: 'template-subject',
   message: 'template-message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewEmailTemplateAction server action', () => {
