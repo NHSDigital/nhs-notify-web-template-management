@@ -57,7 +57,7 @@ export const LETTER_TEMPLATE: TemplateDTO = {
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   letterType: LetterType.X0,
-  language: Language.EN,
+  language: 'en',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',

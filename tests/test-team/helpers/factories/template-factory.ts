@@ -46,7 +46,7 @@ export const TemplateFactory = {
       name,
       templateType: 'LETTER',
       letterType: LetterType.X0,
-      language: Language.EN,
+      language: 'en',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',

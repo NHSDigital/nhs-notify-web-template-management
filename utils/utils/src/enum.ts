@@ -10,35 +10,35 @@ export { TemplateType, TemplateStatus };
 
 export const languageMapping = (language: Language) =>
   ({
-    [Language.AR]: 'Arabic',
-    [Language.BG]: 'Bulgarian',
-    [Language.BN]: 'Bengali',
-    [Language.DE]: 'German',
-    [Language.EL]: 'Greek',
-    [Language.EN]: 'English',
-    [Language.ES]: 'Spanish',
-    [Language.FA]: 'Persian',
-    [Language.FR]: 'French',
-    [Language.GU]: 'Gujurati',
-    [Language.HI]: 'Hindi',
-    [Language.HU]: 'Hungarian',
-    [Language.IT]: 'Italian',
-    [Language.KU]: 'Kurdish',
-    [Language.LT]: 'Lithuanian',
-    [Language.LV]: 'Latvian',
-    [Language.NE]: 'Nepali',
-    [Language.PA]: 'Punjabi',
-    [Language.PL]: 'Polish',
-    [Language.PT]: 'Portuguese',
-    [Language.RO]: 'Romanian',
-    [Language.RU]: 'Russian',
-    [Language.SK]: 'Slovak',
-    [Language.SO]: 'Somali',
-    [Language.SQ]: 'Albanian',
-    [Language.TA]: 'Tamil',
-    [Language.TR]: 'Turkish',
-    [Language.UR]: 'Urdu',
-    [Language.ZH]: 'Chinese',
+    ar: 'Arabic',
+    bg: 'Bulgarian',
+    bn: 'Bengali',
+    de: 'German',
+    el: 'Greek',
+    en: 'English',
+    es: 'Spanish',
+    fa: 'Persian',
+    fr: 'French',
+    gu: 'Gujurati',
+    hi: 'Hindi',
+    hu: 'Hungarian',
+    it: 'Italian',
+    ku: 'Kurdish',
+    lt: 'Lithuanian',
+    lv: 'Latvian',
+    ne: 'Nepali',
+    pa: 'Punjabi',
+    pl: 'Polish',
+    pt: 'Portuguese',
+    ro: 'Romanian',
+    ru: 'Russian',
+    sk: 'Slovak',
+    so: 'Somali',
+    sq: 'Albanian',
+    ta: 'Tamil',
+    tr: 'Turkish',
+    ur: 'Urdu',
+    zh: 'Chinese',
   })[language];
 const letterTypeMapping = (letterType: LetterType) =>
   ({
@@ -53,7 +53,7 @@ export const letterTypeDisplayMappings = (
   letterType: LetterType,
   language: Language
 ) =>
-  language === Language.EN
+  language === 'en'
     ? `${letterTypeMapping(letterType)} letter`
     : `Letter - ${languageMapping(language)}`;
 

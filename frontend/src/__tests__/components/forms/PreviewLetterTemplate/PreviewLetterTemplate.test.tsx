@@ -45,7 +45,7 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.EN,
+          language: 'en',
           letterType: LetterType.Q1,
           files: {
             pdfTemplate: {
@@ -73,7 +73,7 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.EN,
+          language: 'en',
           letterType: LetterType.Q1,
           files: {
             pdfTemplate: {
@@ -106,7 +106,7 @@ describe('Preview letter form renders', () => {
           },
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.DE,
+          language: 'de',
           letterType: LetterType.X3,
           files: {
             pdfTemplate: {
@@ -134,7 +134,7 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-email',
           id: 'template-id',
-          language: Language.HI,
+          language: 'hi',
           letterType: LetterType.X0,
           files: {
             pdfTemplate: {

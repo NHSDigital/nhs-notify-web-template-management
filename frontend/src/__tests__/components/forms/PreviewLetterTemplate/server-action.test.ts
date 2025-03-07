@@ -22,7 +22,7 @@ const initialState: LetterTemplate = {
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
-  language: Language.SQ,
+  language: 'sq',
   letterType: LetterType.X0,
   files: {
     pdfTemplate: {
