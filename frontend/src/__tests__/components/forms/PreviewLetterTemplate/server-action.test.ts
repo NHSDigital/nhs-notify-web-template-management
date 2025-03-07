@@ -28,12 +28,12 @@ const initialState: LetterTemplate = {
     pdfTemplate: {
       fileName: 'file.pdf',
       currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-      virusScanStatus: VirusScanStatus.PENDING,
+      virusScanStatus: 'PENDING',
     },
     testDataCsv: {
       fileName: 'test-data.csv',
       currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-      virusScanStatus: VirusScanStatus.PENDING,
+      virusScanStatus: 'PENDING',
     },
   },
   createdAt: '2025-01-13T10:19:25.579Z',

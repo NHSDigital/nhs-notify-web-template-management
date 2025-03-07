@@ -3,6 +3,7 @@ import {
   LetterType,
   TemplateStatus,
   TemplateType,
+  VirusScanStatus,
 } from './generated';
 
 export const TEMPLATE_TYPE_LIST = Object.keys({
@@ -57,3 +58,9 @@ export const LETTER_TYPE_LIST = Object.keys({
   x0: null,
   x1: null,
 } satisfies Record<LetterType, null>);
+
+export const VIRUS_SCAN_STATUS_LIST = Object.keys({
+  PENDING: null,
+  FAILED: null,
+  PASSED: null,
+} satisfies Record<VirusScanStatus, null>);

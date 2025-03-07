@@ -32,7 +32,7 @@ const $FileDetails = schemaFor<FileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
     currentVersion: z.string().optional(),
-    virusScanStatus: $VirusScanStatus.optional(),
+    virusScanStatus: $'optional'(),
   })
 );
 

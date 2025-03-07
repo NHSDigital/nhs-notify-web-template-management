@@ -54,12 +54,12 @@ const setup = async () => {
           pdfTemplate: {
             fileName: 'template.pdf',
             currentVersion: randomUUID(),
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
           testDataCsv: {
             fileName: 'test-data.csv',
             currentVersion: randomUUID(),
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
         },
         templateStatus: 'NOT_YET_SUBMITTED',

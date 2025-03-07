@@ -49,12 +49,12 @@ describe('CopyTemplatePage', () => {
       pdfTemplate: {
         fileName: 'file.pdf',
         currentVersion: '61C1267A-0F37-4E1D-831E-494DE2BECC8C',
-        virusScanStatus: VirusScanStatus.PASSED,
+        virusScanStatus: 'PASSED',
       },
       testDataCsv: {
         fileName: 'file.csv',
         currentVersion: 'A8A76934-70F4-4735-8314-51CE097130DB',
-        virusScanStatus: VirusScanStatus.PASSED,
+        virusScanStatus: 'PASSED',
       },
     },
   };
