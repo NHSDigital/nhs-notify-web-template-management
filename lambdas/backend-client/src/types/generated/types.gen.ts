@@ -76,57 +76,18 @@ export type BaseTemplate = {
 };
 
 export type CreateTemplate = BaseTemplate &
-  (
-    | ({
-        templateType?: 'NHS_APP';
-      } & NhsAppProperties)
-    | ({
-        templateType?: 'EMAIL';
-      } & EmailProperties)
-    | ({
-        templateType?: 'SMS';
-      } & SmsProperties)
-    | ({
-        templateType?: 'LETTER';
-      } & LetterProperties)
-  );
+  (NhsAppProperties | EmailProperties | SmsProperties | LetterProperties);
 
 export type UpdateTemplate = BaseTemplate & {
   templateStatus: TemplateStatus;
-} & (
-    | ({
-        templateType?: 'NHS_APP';
-      } & NhsAppProperties)
-    | ({
-        templateType?: 'EMAIL';
-      } & EmailProperties)
-    | ({
-        templateType?: 'SMS';
-      } & SmsProperties)
-    | ({
-        templateType?: 'LETTER';
-      } & LetterProperties)
-  );
+} & (NhsAppProperties | EmailProperties | SmsProperties | LetterProperties);
 
 export type TemplateDto = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
   createdAt: string;
   updatedAt: string;
-} & (
-    | ({
-        templateType?: 'NHS_APP';
-      } & NhsAppProperties)
-    | ({
-        templateType?: 'EMAIL';
-      } & EmailProperties)
-    | ({
-        templateType?: 'SMS';
-      } & SmsProperties)
-    | ({
-        templateType?: 'LETTER';
-      } & LetterProperties)
-  );
+} & (NhsAppProperties | EmailProperties | SmsProperties | LetterProperties);
 
 export type Success = {
   template: TemplateDto;

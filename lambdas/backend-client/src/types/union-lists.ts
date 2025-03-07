@@ -7,8 +7,8 @@ import {
 } from './generated';
 
 export const TEMPLATE_TYPE_LIST = Object.keys({
-  EMAIL: null,
   NHS_APP: null,
+  EMAIL: null,
   SMS: null,
   LETTER: null,
 } satisfies Record<TemplateType, null>) as TemplateType[];

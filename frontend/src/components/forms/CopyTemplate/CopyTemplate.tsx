@@ -9,12 +9,12 @@ import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { copyTemplateAction } from './server-action';
-import { TemplateDto, TemplateType } from 'nhs-notify-backend-client';
+import { TemplateType, ValidatedTemplateDto } from 'nhs-notify-backend-client';
 
 export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 
 type CopyTemplate = {
-  template: TemplateDto & { templateType: ValidCopyType };
+  template: ValidatedTemplateDto & { templateType: ValidCopyType };
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {

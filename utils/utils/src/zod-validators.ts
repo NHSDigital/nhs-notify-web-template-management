@@ -1,14 +1,13 @@
 import { z } from 'zod';
 import {
   $CreateTemplateSchema,
-  $EmailProperties,
-  $LetterProperties,
-  $NhsAppProperties,
-  $SmsProperties,
+  $EmailPropertiesWithType,
+  $LetterPropertiesWithType,
+  $NhsAppPropertiesWithType,
+  $SmsPropertiesWithType,
   $TemplateDtoSchema,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { logger } from './logger';
 
 export const zodValidate = <T extends z.Schema>(
   schema: T,
@@ -16,8 +15,7 @@ export const zodValidate = <T extends z.Schema>(
 ): z.infer<T> | undefined => {
   try {
     return schema.parse(obj);
-  } catch (error) {
-    logger.error(error);
+  } catch {
     return undefined;
   }
 };
@@ -38,11 +36,11 @@ export const $NonSubmittedTemplate = z.intersection(
 
 export const $CreateNHSAppTemplate = z.intersection(
   $CreateTemplateSchema,
-  $NhsAppProperties
+  $NhsAppPropertiesWithType
 );
 export const $NHSAppTemplate = z.intersection(
   $TemplateDtoSchema,
-  $NhsAppProperties
+  $NhsAppPropertiesWithType
 );
 export const $SubmittedNHSAppTemplate = z.intersection(
   $SubmittedTemplate,
@@ -51,11 +49,11 @@ export const $SubmittedNHSAppTemplate = z.intersection(
 
 export const $CreateEmailTemplate = z.intersection(
   $CreateTemplateSchema,
-  $EmailProperties
+  $EmailPropertiesWithType
 );
 export const $EmailTemplate = z.intersection(
   $TemplateDtoSchema,
-  $EmailProperties
+  $EmailPropertiesWithType
 );
 export const $SubmittedEmailTemplate = z.intersection(
   $SubmittedTemplate,
@@ -64,9 +62,12 @@ export const $SubmittedEmailTemplate = z.intersection(
 
 export const $CreateSMSTemplate = z.intersection(
   $CreateTemplateSchema,
-  $SmsProperties
+  $SmsPropertiesWithType
 );
-export const $SMSTemplate = z.intersection($TemplateDtoSchema, $SmsProperties);
+export const $SMSTemplate = z.intersection(
+  $TemplateDtoSchema,
+  $SmsPropertiesWithType
+);
 export const $SubmittedSMSTemplate = z.intersection(
   $SubmittedTemplate,
   $SMSTemplate
@@ -74,11 +75,11 @@ export const $SubmittedSMSTemplate = z.intersection(
 
 export const $CreateLetterTemplate = z.intersection(
   $CreateTemplateSchema,
-  $LetterProperties
+  $LetterPropertiesWithType
 );
 export const $LetterTemplate = z.intersection(
   $TemplateDtoSchema,
-  $LetterProperties
+  $LetterPropertiesWithType
 );
 export const $SubmittedLetterTemplate = z.intersection(
   $SubmittedTemplate,

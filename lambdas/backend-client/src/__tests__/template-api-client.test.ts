@@ -1,7 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { TemplateApiClient, TemplateClient } from '../template-api-client';
-import { TemplateStatus, TemplateType } from '../types/generated';
 
 const axiosMock = new MockAdapter(axios);
 

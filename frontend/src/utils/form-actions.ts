@@ -5,6 +5,7 @@ import {
   CreateTemplate,
   isTemplateDtoValid,
   TemplateDto,
+  ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
@@ -84,7 +85,9 @@ export async function getTemplates(): Promise<TemplateDto[]> {
 
   const sortedData = data
     .map((template) => isTemplateDtoValid(template))
-    .filter((template): template is TemplateDto => template !== undefined)
+    .filter(
+      (template): template is ValidatedTemplateDto => template !== undefined
+    )
     .sort((a, b) => {
       const aCreatedAt = a.createdAt;
       const bCreatedAt = b.createdAt;

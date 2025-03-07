@@ -26,15 +26,31 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type CreateNHSAppTemplate = CreateTemplate & NhsAppProperties;
-export type CreateEmailTemplate = CreateTemplate & EmailProperties;
-export type CreateSMSTemplate = CreateTemplate & SmsProperties;
-export type CreateLetterTemplate = CreateTemplate & LetterProperties;
+type NhsAppPropertiesWithType = NhsAppProperties & {
+  templateType: 'NHS_APP';
+};
 
-export type NHSAppTemplate = TemplateDto & NhsAppProperties;
-export type EmailTemplate = TemplateDto & EmailProperties;
-export type SMSTemplate = TemplateDto & SmsProperties;
-export type LetterTemplate = TemplateDto & LetterProperties;
+type EmailPropertiesWithType = EmailProperties & {
+  templateType: 'EMAIL';
+};
+
+type SmsPropertiesWithType = SmsProperties & {
+  templateType: 'SMS';
+};
+
+type LetterPropertiesWithType = LetterProperties & {
+  templateType: 'LETTER';
+};
+
+export type CreateNHSAppTemplate = CreateTemplate & NhsAppPropertiesWithType;
+export type CreateEmailTemplate = CreateTemplate & EmailPropertiesWithType;
+export type CreateSMSTemplate = CreateTemplate & SmsPropertiesWithType;
+export type CreateLetterTemplate = CreateTemplate & LetterPropertiesWithType;
+
+export type NHSAppTemplate = TemplateDto & NhsAppPropertiesWithType;
+export type EmailTemplate = TemplateDto & EmailPropertiesWithType;
+export type SMSTemplate = TemplateDto & SmsPropertiesWithType;
+export type LetterTemplate = TemplateDto & LetterPropertiesWithType;
 
 export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 
