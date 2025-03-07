@@ -374,7 +374,7 @@ describe('templateClient', () => {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           templateStatus: 'NOT_YET_SUBMITTED',
-          letterType: LetterType.Q4,
+          letterType: 'q4',
           language: 'fr',
           owner: 'owner',
           version: 1,
@@ -450,7 +450,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
-        letterType: LetterType.Q4,
+        letterType: 'q4',
         language: 'fr',
         files: {
           pdfTemplate: {

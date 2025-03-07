@@ -46,7 +46,7 @@ describe('Preview letter form renders', () => {
           name: 'test-template-letter',
           id: 'template-id',
           language: 'en',
-          letterType: LetterType.Q1,
+          letterType: 'q1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -74,7 +74,7 @@ describe('Preview letter form renders', () => {
           name: 'test-template-letter',
           id: 'template-id',
           language: 'en',
-          letterType: LetterType.Q1,
+          letterType: 'q1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -107,7 +107,7 @@ describe('Preview letter form renders', () => {
           name: 'test-template-letter',
           id: 'template-id',
           language: 'de',
-          letterType: LetterType.X3,
+          letterType: 'x3',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -135,7 +135,7 @@ describe('Preview letter form renders', () => {
           name: 'test-template-email',
           id: 'template-id',
           language: 'hi',
-          letterType: LetterType.X0,
+          letterType: 'x0',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',

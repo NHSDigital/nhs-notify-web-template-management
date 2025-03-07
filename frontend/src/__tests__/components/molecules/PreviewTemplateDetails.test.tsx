@@ -69,7 +69,7 @@ describe('PreviewTemplateDetails component', () => {
           name: 'Example template',
           templateStatus: 'SUBMITTED',
           templateType: 'LETTER',
-          letterType: LetterType.X0,
+          letterType: 'x0',
           language: 'fr',
           files: {
             pdfTemplate: {
@@ -108,7 +108,7 @@ describe('PreviewTemplateDetails component', () => {
           name: 'Example template',
           templateStatus: 'SUBMITTED',
           templateType: 'LETTER',
-          letterType: LetterType.X0,
+          letterType: 'x0',
           language: 'fr',
           files: {
             pdfTemplate: {
