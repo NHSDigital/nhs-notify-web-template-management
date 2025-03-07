@@ -30,7 +30,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 const templateDTO = {
   id: 'template-id',
   templateType: 'LETTER',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
@@ -53,7 +53,7 @@ const templateDTO = {
 const letterTemplate: LetterTemplate = {
   ...templateDTO,
   templateType: 'LETTER',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
 };
 
 describe('PreviewLetterTemplatePage', () => {

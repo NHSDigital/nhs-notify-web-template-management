@@ -28,7 +28,7 @@ function createTemplates(owner: string) {
       name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createEmailTemplate(
@@ -38,7 +38,7 @@ function createTemplates(owner: string) {
       name: 'test-template-email',
       subject: 'test-template-subject-line',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }

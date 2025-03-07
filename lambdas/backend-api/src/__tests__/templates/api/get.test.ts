@@ -119,7 +119,7 @@ describe('Template API - Get', () => {
       message: 'message',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce({

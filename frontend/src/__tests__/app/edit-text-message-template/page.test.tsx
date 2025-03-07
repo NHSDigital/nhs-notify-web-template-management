@@ -22,7 +22,7 @@ const redirectMock = jest.mocked(redirect);
 const templateDTO = {
   id: 'template-id',
   templateType: 'SMS',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
@@ -69,7 +69,7 @@ describe('EditSmsTemplatePage', () => {
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
       templateType: 'SMS',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     const page = await EditSmsTemplatePage({

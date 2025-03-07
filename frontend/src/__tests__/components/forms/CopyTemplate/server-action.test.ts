@@ -22,7 +22,7 @@ beforeAll(() => {
 test('submit form - validation error', async () => {
   const template: NHSAppTemplate = {
     id: 'template-id',
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
@@ -55,7 +55,7 @@ test('submit form - create email template from non-email template', async () => 
   const mockCreateTemplate = jest.mocked(createTemplate);
 
   const testTemplate: Omit<NHSAppTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
@@ -93,7 +93,7 @@ test('submit form - create email template from email template', async () => {
   const mockCreateTemplate = jest.mocked(createTemplate);
 
   const testTemplate: Omit<EmailTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'EMAIL',
     name: 'template-name',
     message: 'template-message',
@@ -132,7 +132,7 @@ test('submit form - create non-email template', async () => {
   const mockCreateTemplate = jest.mocked(createTemplate);
 
   const testTemplate: Omit<NHSAppTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',

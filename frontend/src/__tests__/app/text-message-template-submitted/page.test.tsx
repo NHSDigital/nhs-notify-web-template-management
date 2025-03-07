@@ -25,7 +25,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
     const template = {
       id: 'template-id',
       templateType: 'SMS',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
     } satisfies Partial<TemplateDTO>;

@@ -30,7 +30,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'SMS',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -40,7 +40,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
     const submittedSMSTemplate: SMSTemplate = {
       ...templateDTO,
       templateType: 'SMS',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -69,31 +69,31 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   test.each([
     {
       ...EMAIL_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...SMS_TEMPLATE,
       message: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...SMS_TEMPLATE,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, message is $message, and status is $templateStatus',

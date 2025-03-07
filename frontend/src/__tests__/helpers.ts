@@ -24,7 +24,7 @@ export const getMockFormData = (formData: Record<string, string>) =>
 export const NHS_APP_TEMPLATE: TemplateDTO = {
   id: 'template-id',
   templateType: 'NHS_APP',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
@@ -34,7 +34,7 @@ export const NHS_APP_TEMPLATE: TemplateDTO = {
 export const EMAIL_TEMPLATE: TemplateDTO = {
   id: 'template-id',
   templateType: 'EMAIL',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   message: 'message',
   subject: 'subject',
@@ -45,7 +45,7 @@ export const EMAIL_TEMPLATE: TemplateDTO = {
 export const SMS_TEMPLATE: TemplateDTO = {
   id: 'template-id',
   templateType: 'SMS',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
@@ -55,7 +55,7 @@ export const SMS_TEMPLATE: TemplateDTO = {
 export const LETTER_TEMPLATE: TemplateDTO = {
   id: 'template-id',
   templateType: 'LETTER',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
   letterType: LetterType.X0,
   language: Language.EN,
   files: {

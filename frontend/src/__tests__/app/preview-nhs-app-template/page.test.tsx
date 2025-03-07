@@ -32,7 +32,7 @@ describe('PreviewNhsAppTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -42,7 +42,7 @@ describe('PreviewNhsAppTemplatePage', () => {
     const nhsAppTemplate: NHSAppTemplate = {
       ...templateDTO,
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);

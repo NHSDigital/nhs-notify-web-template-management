@@ -27,7 +27,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createSmsTemplate(
@@ -36,7 +36,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }

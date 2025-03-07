@@ -56,7 +56,7 @@ export function PreviewTemplateDetails({
             <Col width='two-thirds' className={styles.col}>
               <Tag
                 color={
-                  template.templateStatus === TemplateStatus.SUBMITTED
+                  template.templateStatus === 'SUBMITTED'
                     ? 'grey'
                     : undefined
                 }

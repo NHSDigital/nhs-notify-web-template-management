@@ -25,7 +25,7 @@ describe('NhsAppTemplateSubmittedPage', () => {
     const template = {
       id: 'template-id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
     } satisfies Partial<TemplateDTO>;

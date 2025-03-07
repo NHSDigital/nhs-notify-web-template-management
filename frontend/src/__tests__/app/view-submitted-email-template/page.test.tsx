@@ -30,7 +30,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -42,7 +42,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       ...templateDTO,
       subject: 'template-subject-line',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -71,35 +71,35 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   test.each([
     {
       ...SMS_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...EMAIL_TEMPLATE,
       name: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...EMAIL_TEMPLATE,
       subject: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...EMAIL_TEMPLATE,
       message: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...EMAIL_TEMPLATE,
       message: null as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...EMAIL_TEMPLATE,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, subjectLine is $subject, message is $message, and status is $templateStatus',

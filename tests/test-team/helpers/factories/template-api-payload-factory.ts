@@ -66,7 +66,7 @@ export const TemplateAPIPayloadFactory = {
     template: T
   ): Output<UpdateTemplatePayload, T> {
     return {
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       ...createPayloadData(template.templateType),
       ...template,
     };

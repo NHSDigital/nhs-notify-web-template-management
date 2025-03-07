@@ -13,7 +13,7 @@ describe('ViewEmailTemplate component', () => {
           {
             id: 'template-id',
             name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
+            templateStatus: 'SUBMITTED',
             subject: 'Example subject',
             message: 'Example message',
           } as EmailTemplate

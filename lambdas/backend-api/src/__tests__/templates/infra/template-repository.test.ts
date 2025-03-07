@@ -63,7 +63,7 @@ const createTemplateProperties = {
 
 const updateTemplateProperties = {
   ...createTemplateProperties,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateStatus: 'NOT_YET_SUBMITTED',
 };
 
 const databaseTemplateProperties = {
@@ -148,7 +148,7 @@ describe('templateRepository', () => {
         Item: {
           id: 'abc-def-ghi-jkl-123',
           owner: 'real-owner',
-          templateStatus: TemplateStatus.DELETED,
+          templateStatus: 'DELETED',
         },
       });
 
@@ -329,7 +329,7 @@ describe('templateRepository', () => {
           'Fails when user tries to change templateType from SMS to EMAIL',
         Item: {
           templateType: { S: 'SMS' },
-          templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
+          templateStatus: { S: 'NOT_YET_SUBMITTED' },
         },
         code: 400,
         message: 'Can not change template templateType',
@@ -342,7 +342,7 @@ describe('templateRepository', () => {
           'Fails when user tries to update template when templateStatus is SUBMITTED',
         Item: {
           templateType: { S: 'EMAIL' },
-          templateStatus: { S: TemplateStatus.SUBMITTED },
+          templateStatus: { S: 'SUBMITTED' },
         },
         code: 400,
         message: 'Template with status SUBMITTED cannot be updated',
@@ -352,7 +352,7 @@ describe('templateRepository', () => {
           'Fails when user tries to update template when templateStatus is DELETED',
         Item: {
           templateType: { S: 'EMAIL' },
-          templateStatus: { S: TemplateStatus.DELETED },
+          templateStatus: { S: 'DELETED' },
         },
         code: 404,
         message: 'Template not found',
@@ -374,7 +374,7 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            templateStatus: TemplateStatus.SUBMITTED,
+            templateStatus: 'SUBMITTED',
             templateType: 'EMAIL',
           },
           'real-owner'
@@ -402,7 +402,7 @@ describe('templateRepository', () => {
           name: 'name',
           message: 'message',
           subject: 'subject',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'EMAIL',
         },
         'real-owner'
@@ -429,7 +429,7 @@ describe('templateRepository', () => {
           ...channelProperties,
           ...updateTemplateProperties,
           name: 'updated-name',
-          templateStatus: TemplateStatus.SUBMITTED,
+          templateStatus: 'SUBMITTED',
         };
 
         ddbMock
@@ -465,7 +465,7 @@ describe('templateRepository', () => {
       const updatedTemplate: UpdateTemplate = {
         name: 'updated-name',
         message: 'updated-message',
-        templateStatus: TemplateStatus.DELETED,
+        templateStatus: 'DELETED',
         templateType: 'NHS_APP',
       };
 

@@ -32,7 +32,7 @@ describe('PreviewEmailTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -44,7 +44,7 @@ describe('PreviewEmailTemplatePage', () => {
       ...templateDTO,
       subject: 'template-subject-line',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);

@@ -13,7 +13,7 @@ describe('ViewNHSAppTemplate component', () => {
           {
             id: 'template-id',
             name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
+            templateStatus: 'SUBMITTED',
             message: 'Example message',
           } as NHSAppTemplate
         }

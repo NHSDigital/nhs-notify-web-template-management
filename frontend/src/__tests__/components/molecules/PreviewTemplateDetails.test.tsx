@@ -16,7 +16,7 @@ describe('PreviewTemplateDetails component', () => {
           id: 'template-id',
           name: 'Example template',
           message: 'app message message',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'NHS_APP',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
@@ -41,7 +41,7 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
+          templateStatus: 'SUBMITTED',
           templateType: 'SMS',
           message: 'text message message',
           createdAt: '2025-01-13T10:19:25.579Z',
@@ -67,7 +67,7 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
+          templateStatus: 'SUBMITTED',
           templateType: 'LETTER',
           letterType: LetterType.X0,
           language: Language.FR,
@@ -106,7 +106,7 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
+          templateStatus: 'SUBMITTED',
           templateType: 'LETTER',
           letterType: LetterType.X0,
           language: Language.FR,
@@ -134,7 +134,7 @@ describe('PreviewTemplateDetails component', () => {
           name: 'Example template',
           message: 'app message message',
           templateType: 'NHS_APP',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateStatus: 'NOT_YET_SUBMITTED',
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
         }}

@@ -54,18 +54,18 @@ describe('letterTypeDisplayMappings', () => {
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
     expect(
-      templateStatusToDisplayMappings(TemplateStatus.NOT_YET_SUBMITTED)
+      templateStatusToDisplayMappings('NOT_YET_SUBMITTED')
     ).toEqual('Not yet submitted');
   });
 
   test('SUBMITTED', () => {
-    expect(templateStatusToDisplayMappings(TemplateStatus.SUBMITTED)).toEqual(
+    expect(templateStatusToDisplayMappings('SUBMITTED')).toEqual(
       'Submitted'
     );
   });
 
   test('DELETED', () => {
-    expect(templateStatusToDisplayMappings(TemplateStatus.DELETED)).toEqual('');
+    expect(templateStatusToDisplayMappings('DELETED')).toEqual('');
   });
 });
 

@@ -25,7 +25,7 @@ describe('PreviewEmailTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
@@ -37,7 +37,7 @@ describe('PreviewEmailTemplatePage', () => {
       ...templateDTO,
       subject: 'template-subject-line',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -64,7 +64,7 @@ describe('PreviewEmailTemplatePage', () => {
   test('should redirect to invalid-template when template is already submitted', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
       name: 'template-name',
       message: 'template-message',
@@ -84,7 +84,7 @@ describe('PreviewEmailTemplatePage', () => {
   test('should redirect to manage-templates when template is already deleted', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-      templateStatus: TemplateStatus.DELETED,
+      templateStatus: 'DELETED',
       templateType: 'NHS_APP',
       name: 'template-name',
       message: 'template-message',

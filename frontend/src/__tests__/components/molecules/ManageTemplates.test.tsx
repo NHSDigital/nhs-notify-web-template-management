@@ -18,7 +18,7 @@ const manageTemplatesProps: {
     {
       id: '1',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template 1',
       message: 'Message',
       createdAt: '2021-01-01T00:00:00.000Z',
@@ -27,7 +27,7 @@ const manageTemplatesProps: {
     {
       id: '2',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'Template 2',
       message: 'Message',
       createdAt: '2021-02-01T00:00:00.000Z',
@@ -36,7 +36,7 @@ const manageTemplatesProps: {
     {
       id: '3',
       templateType: 'LETTER',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: LetterType.X0,
@@ -59,7 +59,7 @@ describe('ManageTemplates component', () => {
   });
   it('matches snapshot with submitted status', () => {
     manageTemplatesProps.templateList[0].templateStatus =
-      TemplateStatus.SUBMITTED;
+      'SUBMITTED';
     const container = render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
