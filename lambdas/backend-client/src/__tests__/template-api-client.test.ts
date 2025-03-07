@@ -32,7 +32,7 @@ describe('TemplateAPIClient', () => {
     const result = await client.createTemplate({
       name: 'test',
       message: '<html></html>',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     expect(result.error).toEqual({
@@ -55,7 +55,7 @@ describe('TemplateAPIClient', () => {
         id: 'id',
         name: 'name',
         message: 'message',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     });
 
@@ -64,14 +64,14 @@ describe('TemplateAPIClient', () => {
     const result = await client.createTemplate({
       name: 'name',
       message: 'message',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     expect(result.data).toEqual({
       id: 'id',
       name: 'name',
       message: 'message',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     expect(result.error).toBeUndefined();
@@ -92,7 +92,7 @@ describe('TemplateAPIClient', () => {
       name: 'test',
       message: '<html></html>',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     expect(result.error).toEqual({
@@ -114,7 +114,7 @@ describe('TemplateAPIClient', () => {
       name: 'name',
       message: 'message',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onPost('/v1/template/real-id').reply(200, {
@@ -128,7 +128,7 @@ describe('TemplateAPIClient', () => {
       name: 'name',
       message: 'message',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     expect(result.data).toEqual(data);
@@ -168,7 +168,7 @@ describe('TemplateAPIClient', () => {
       name: 'name',
       message: 'message',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onGet('/v1/template/real-id').reply(200, {
@@ -211,7 +211,7 @@ describe('TemplateAPIClient', () => {
       name: 'name',
       message: 'message',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onGet('/v1/templates').reply(200, {

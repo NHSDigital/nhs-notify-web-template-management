@@ -26,7 +26,7 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       owner: user.userId,
     } as Template,

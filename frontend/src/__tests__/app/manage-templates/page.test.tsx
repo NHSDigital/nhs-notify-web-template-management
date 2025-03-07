@@ -14,7 +14,7 @@ const manageTemplatesContent = content.pages.manageTemplates;
 const mockTemplates: TemplateDTO[] = [
   {
     id: '1',
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'Template 1',
     message: 'Message',

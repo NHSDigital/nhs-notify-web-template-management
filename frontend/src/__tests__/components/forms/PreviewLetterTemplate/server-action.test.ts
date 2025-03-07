@@ -19,7 +19,7 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: LetterTemplate = {
   id: 'template-id',
-  templateType: TemplateType.LETTER,
+  templateType: 'LETTER',
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'template-name',
   language: Language.SQ,

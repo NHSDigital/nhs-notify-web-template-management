@@ -21,7 +21,7 @@ const redirectMock = jest.mocked(redirect);
 
 const templateDTO = {
   id: 'template-id',
-  templateType: TemplateType.SMS,
+  templateType: 'SMS',
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   message: 'message',
@@ -49,7 +49,7 @@ describe('EditSmsTemplatePage', () => {
   it('should redirect to invalid-template when template type is not SMS', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...templateDTO,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     await EditSmsTemplatePage({
@@ -68,7 +68,7 @@ describe('EditSmsTemplatePage', () => {
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 

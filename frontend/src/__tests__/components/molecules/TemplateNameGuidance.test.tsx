@@ -8,7 +8,7 @@ describe('TemplateNameGuidance component', () => {
 
   it('renders component correctly as TemplateNameGuidance', () => {
     const container = render(
-      <TemplateNameGuidance template={TemplateType.NHS_APP} />
+      <TemplateNameGuidance template={'NHS_APP'} />
     );
 
     expect(container.asFragment()).toMatchSnapshot();

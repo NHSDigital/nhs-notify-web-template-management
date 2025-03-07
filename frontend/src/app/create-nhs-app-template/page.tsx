@@ -6,7 +6,7 @@ import {
 
 const CreateNHSAppTemplatePage = async () => {
   const initialState: CreateNHSAppTemplate = {
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     name: '',
     message: '',
   };

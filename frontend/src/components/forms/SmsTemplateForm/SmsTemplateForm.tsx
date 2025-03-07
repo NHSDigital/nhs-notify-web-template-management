@@ -133,8 +133,8 @@ export const SmsTemplateForm: FC<
           </div>
           <div className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.SMS} />
-            <ChannelGuidance template={TemplateType.SMS} />
+            <MessageFormatting template={'SMS'} />
+            <ChannelGuidance template={'SMS'} />
           </div>
         </div>
       </NHSNotifyMain>

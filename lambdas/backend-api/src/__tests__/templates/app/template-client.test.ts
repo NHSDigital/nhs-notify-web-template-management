@@ -42,7 +42,7 @@ describe('templateClient', () => {
       });
 
       const data: CreateTemplate = {
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -62,7 +62,7 @@ describe('templateClient', () => {
 
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const data: CreateTemplate = {
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -93,7 +93,7 @@ describe('templateClient', () => {
 
     test('should return a failure result, when created database template is invalid', async () => {
       const data: CreateTemplate = {
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -135,7 +135,7 @@ describe('templateClient', () => {
 
     test('should return created template', async () => {
       const data: CreateTemplate = {
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -186,7 +186,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       };
 
       const result = await client.updateTemplate('id', data);
@@ -206,7 +206,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       };
 
       validateMock.mockResolvedValueOnce({
@@ -237,7 +237,7 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       };
 
       const expectedTemplateDTO: TemplateDTO = {
@@ -279,13 +279,13 @@ describe('templateClient', () => {
         name: 'name',
         message: 'message',
         templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       };
 
       const template: TemplateDTO = {
         ...data,
         id: 'id',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -332,7 +332,7 @@ describe('templateClient', () => {
     test('should return a failure result, when database template is invalid', async () => {
       const templateDTO: TemplateDTO = {
         id: 'id',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -369,7 +369,7 @@ describe('templateClient', () => {
       getMock.mockResolvedValueOnce({
         data: {
           id: 'id',
-          templateType: TemplateType.LETTER,
+          templateType: 'LETTER',
           name: 'name',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -396,7 +396,7 @@ describe('templateClient', () => {
     test('should return template', async () => {
       const template: TemplateDTO = {
         id: 'id',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -445,7 +445,7 @@ describe('templateClient', () => {
 
       const template: TemplateDTO = {
         id: 'id',
-        templateType: TemplateType.LETTER,
+        templateType: 'LETTER',
         name: 'name',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -482,7 +482,7 @@ describe('templateClient', () => {
     test('should filter out invalid templates', async () => {
       const template: TemplateDTO = {
         id: 'id',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
@@ -492,7 +492,7 @@ describe('templateClient', () => {
       };
       const template2: TemplateDTO = {
         id: undefined as unknown as string,
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: undefined as unknown as string,
         message: 'message',
         subject: 'subject',
@@ -520,7 +520,7 @@ describe('templateClient', () => {
     test('should return templates', async () => {
       const template: TemplateDTO = {
         id: 'id',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',

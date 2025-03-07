@@ -110,7 +110,7 @@ export class TemplateClient implements ITemplateClient {
     }
 
     if (
-      getResult.data.templateType === TemplateType.LETTER &&
+      getResult.data.templateType === 'LETTER' &&
       !this.enableLetters
     ) {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
@@ -145,7 +145,7 @@ export class TemplateClient implements ITemplateClient {
       .map((template) => this.mapDatabaseObjectToDTO(template))
       .flatMap((t) => t ?? [])
       .filter(
-        (t) => this.enableLetters || t.templateType !== TemplateType.LETTER
+        (t) => this.enableLetters || t.templateType !== 'LETTER'
       );
 
     return success(templateDTOs);

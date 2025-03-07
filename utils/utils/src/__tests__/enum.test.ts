@@ -12,23 +12,23 @@ import {
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeDisplayMappings(TemplateType.NHS_APP)).toEqual(
+    expect(templateTypeDisplayMappings('NHS_APP')).toEqual(
       'NHS App message'
     );
   });
 
   test('SMS', () => {
-    expect(templateTypeDisplayMappings(TemplateType.SMS)).toEqual(
+    expect(templateTypeDisplayMappings('SMS')).toEqual(
       'Text message (SMS)'
     );
   });
 
   test('EMAIL', () => {
-    expect(templateTypeDisplayMappings(TemplateType.EMAIL)).toEqual('Email');
+    expect(templateTypeDisplayMappings('EMAIL')).toEqual('Email');
   });
 
   test('LETTER', () => {
-    expect(templateTypeDisplayMappings(TemplateType.LETTER)).toEqual('Letter');
+    expect(templateTypeDisplayMappings('LETTER')).toEqual('Letter');
   });
 });
 
@@ -71,37 +71,37 @@ describe('templateStatusToDisplayMappings', () => {
 
 describe('templateTypeToUrlTextMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.NHS_APP)).toEqual(
+    expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual(
       'nhs-app'
     );
   });
 
   test('SMS', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.SMS)).toEqual(
+    expect(templateTypeToUrlTextMappings('SMS')).toEqual(
       'text-message'
     );
   });
 
   test('EMAIL', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.EMAIL)).toEqual('email');
+    expect(templateTypeToUrlTextMappings('EMAIL')).toEqual('email');
   });
 });
 
 describe('previewTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(previewTemplatePages(TemplateType.NHS_APP)).toEqual(
+    expect(previewTemplatePages('NHS_APP')).toEqual(
       'preview-nhs-app-template'
     );
   });
 
   test('SMS', () => {
-    expect(previewTemplatePages(TemplateType.SMS)).toEqual(
+    expect(previewTemplatePages('SMS')).toEqual(
       'preview-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(previewTemplatePages(TemplateType.EMAIL)).toEqual(
+    expect(previewTemplatePages('EMAIL')).toEqual(
       'preview-email-template'
     );
   });
@@ -109,19 +109,19 @@ describe('previewTemplatePages', () => {
 
 describe('viewSubmittedTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.NHS_APP)).toEqual(
+    expect(viewSubmittedTemplatePages('NHS_APP')).toEqual(
       'view-submitted-nhs-app-template'
     );
   });
 
   test('SMS', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.SMS)).toEqual(
+    expect(viewSubmittedTemplatePages('SMS')).toEqual(
       'view-submitted-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.EMAIL)).toEqual(
+    expect(viewSubmittedTemplatePages('EMAIL')).toEqual(
       'view-submitted-email-template'
     );
   });

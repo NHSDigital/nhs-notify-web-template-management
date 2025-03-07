@@ -87,7 +87,7 @@ export const EmailTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.EMAIL} />
+                <TemplateNameGuidance template={'EMAIL'} />
                 <TextInput
                   id='emailTemplateName'
                   onChange={emailTemplateNameHandler}
@@ -137,8 +137,8 @@ export const EmailTemplateForm: FC<
           </div>
           <div className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.EMAIL} />
-            <ChannelGuidance template={TemplateType.EMAIL} />
+            <MessageFormatting template={'EMAIL'} />
+            <ChannelGuidance template={'EMAIL'} />
           </div>
         </div>
       </NHSNotifyMain>

@@ -20,7 +20,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 const saveTemplateMock = jest.mocked(saveTemplate);
 
 const mockNhsAppTemplate = {
-  templateType: TemplateType.NHS_APP,
+  templateType: 'NHS_APP',
   templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
   name: 'name',
   message: 'body',

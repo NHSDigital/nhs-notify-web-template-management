@@ -24,7 +24,7 @@ describe('PreviewEmailTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
@@ -36,7 +36,7 @@ describe('PreviewEmailTemplatePage', () => {
     const emailTemplate: TemplateDTO = {
       ...templateDTO,
       subject: 'template-subject-line',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
@@ -65,7 +65,7 @@ describe('PreviewEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
       templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'template-name',
       message: 'template-message',
       createdAt: 'today',
@@ -85,7 +85,7 @@ describe('PreviewEmailTemplatePage', () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
       templateStatus: TemplateStatus.DELETED,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'template-name',
       message: 'template-message',
       createdAt: 'today',

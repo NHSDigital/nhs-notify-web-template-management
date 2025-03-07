@@ -18,7 +18,7 @@ const $CopyTemplate = z.object({
 
 type CopyTemplateActionState = FormState & {
   template: TemplateDTO & {
-    templateType: Exclude<TemplateType, TemplateType.LETTER>;
+    templateType: Exclude<TemplateType, 'LETTER'>;
   };
 };
 type CopyTemplateAction = (
@@ -44,15 +44,15 @@ export const copyTemplateAction: CopyTemplateAction = async (
   const newTemplateType = parsedForm.data.templateType;
   const { name, message } = formState.template;
   const subject =
-    formState.template.templateType === TemplateType.EMAIL
+    formState.template.templateType === 'EMAIL'
       ? formState.template.subject
       : 'Enter a subject line';
 
   const copyName = `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`;
 
   switch (newTemplateType) {
-    case TemplateType.NHS_APP:
-    case TemplateType.SMS: {
+    case 'NHS_APP':
+    case 'SMS': {
       await createTemplate({
         name: copyName,
         message,
@@ -61,7 +61,7 @@ export const copyTemplateAction: CopyTemplateAction = async (
 
       break;
     }
-    case TemplateType.EMAIL: {
+    case 'EMAIL': {
       await createTemplate({
         name: copyName,
         message,

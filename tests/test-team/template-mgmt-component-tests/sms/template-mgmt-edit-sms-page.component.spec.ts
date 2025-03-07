@@ -29,7 +29,7 @@ function createTemplates(owner: string) {
     ),
     noSmsTemplateType: TemplateFactory.create({
       id: 'no-sms-template-type-template',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       owner,
       name: 'no-sms-template-type-template',
     }),
@@ -225,7 +225,7 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
 
-      await editSmsTemplatePage.loadPage(templates.noSmsTemplateType.id);
+      await editSmsTemplatePage.loadPage(templates.noSms'id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

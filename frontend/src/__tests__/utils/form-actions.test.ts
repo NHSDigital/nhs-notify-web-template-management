@@ -37,7 +37,7 @@ describe('form-actions', () => {
   test('createTemplate', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -50,7 +50,7 @@ describe('form-actions', () => {
     });
 
     const createTemplateInput: CreateNHSAppTemplate = {
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -73,7 +73,7 @@ describe('form-actions', () => {
     });
 
     const createTemplateInput: CreateNHSAppTemplate = {
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -92,7 +92,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
     const createTemplateInput: CreateNHSAppTemplate = {
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -105,7 +105,7 @@ describe('form-actions', () => {
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -119,7 +119,7 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -147,7 +147,7 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -171,7 +171,7 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -187,7 +187,7 @@ describe('form-actions', () => {
   test('getTemplate', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -234,7 +234,7 @@ describe('form-actions', () => {
   test('getTemplates', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -276,7 +276,7 @@ describe('form-actions', () => {
 
   test('getTemplates - order by createdAt and then id', async () => {
     const baseTemplate = {
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'Template',
       message: 'Message',

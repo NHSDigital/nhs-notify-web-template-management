@@ -20,7 +20,7 @@ describe('Template schemas', () => {
         name: 'Test Template',
         message: 'a'.repeat(100_001),
         subject: 'Test Subject',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
@@ -28,7 +28,7 @@ describe('Template schemas', () => {
       data: {
         name: 'Test Template',
         message: 'a'.repeat(919),
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
@@ -36,7 +36,7 @@ describe('Template schemas', () => {
       data: {
         name: 'Test Template',
         message: 'a'.repeat(5001),
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -63,7 +63,7 @@ describe('Template schemas', () => {
         name: ' ',
         message: ' ',
         subject: ' ',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
@@ -71,7 +71,7 @@ describe('Template schemas', () => {
       data: {
         name: ' ',
         message: ' ',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
@@ -79,7 +79,7 @@ describe('Template schemas', () => {
       data: {
         name: ' ',
         message: ' ',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -95,7 +95,7 @@ describe('Template schemas', () => {
         },
       };
 
-      if (data.templateType === TemplateType.EMAIL) {
+      if (data.templateType === 'EMAIL') {
         Object.assign(errors.fieldErrors, {
           subject: [errorMessage],
         });
@@ -112,7 +112,7 @@ describe('Template schemas', () => {
         name: '',
         message: '',
         subject: '',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
@@ -120,7 +120,7 @@ describe('Template schemas', () => {
       data: {
         name: '',
         message: '',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
@@ -128,7 +128,7 @@ describe('Template schemas', () => {
       data: {
         name: '',
         message: '',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -144,7 +144,7 @@ describe('Template schemas', () => {
         },
       };
 
-      if (data.templateType === TemplateType.EMAIL) {
+      if (data.templateType === 'EMAIL') {
         Object.assign(errors.fieldErrors, {
           subject: [errorMessage],
         });
@@ -158,7 +158,7 @@ describe('Template schemas', () => {
     const result = $CreateTemplateSchema.safeParse({
       name: 'Test Template',
       message: 'a'.repeat(100_000),
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -180,7 +180,7 @@ describe('Template schemas', () => {
       const result = $CreateTemplateSchema.safeParse({
         name: 'Test Template',
         message,
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       });
 
       expect(result.error?.flatten()).toEqual(
@@ -205,21 +205,21 @@ describe('Template schemas', () => {
         ...commonFields,
         subject: 'Test Subject',
         message: 'This is a test template',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
       {
         ...commonFields,
         message: 'This is a test template',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
       {
         ...commonFields,
         message: 'This is a test template',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
       {
         ...commonFields,
-        templateType: TemplateType.LETTER,
+        templateType: 'LETTER',
         letterType: LetterType.X0,
         language: Language.EN,
         files: {
@@ -246,21 +246,21 @@ describe('Template schemas', () => {
         ...commonFields,
         subject: 'Test Subject',
         message: 'This is a test template',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
       {
         ...commonFields,
         message: 'This is a test template',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
       {
         ...commonFields,
         message: 'This is a test template',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
       {
         ...commonFields,
-        templateType: TemplateType.LETTER,
+        templateType: 'LETTER',
         letterType: LetterType.X0,
         language: Language.EN,
         files: {
@@ -280,7 +280,7 @@ describe('Template schemas', () => {
     const template: CreateTemplate = {
       name: 'Test Template',
       message: 'This is a test template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     };
 
     test('Should return template on pass', async () => {
@@ -303,7 +303,7 @@ describe('Template schemas', () => {
     const template: UpdateTemplate = {
       name: 'Test Template',
       message: 'This is a test template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
@@ -327,7 +327,7 @@ describe('Template schemas', () => {
     const template: TemplateDTO = {
       name: 'Test Template',
       message: 'This is a test template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       id: 'id',
       createdAt: '2025-01-13T10:19:25.579Z',

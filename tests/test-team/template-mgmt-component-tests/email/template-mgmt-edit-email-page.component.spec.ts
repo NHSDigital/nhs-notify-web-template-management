@@ -29,7 +29,7 @@ function createTemplates(owner: string) {
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       name: 'no-email-template-type-template',
       owner,
     }),
@@ -216,7 +216,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.noEmailTemplateType.id);
+      await editEmailTemplatePage.loadPage(templates.noEmail'id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

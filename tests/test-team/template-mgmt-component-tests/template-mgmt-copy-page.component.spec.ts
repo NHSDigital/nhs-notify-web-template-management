@@ -127,9 +127,9 @@ test.describe('Copy Template Page', () => {
 
   for (const sourceTemplateType of ['nhsApp', 'email', 'sms']) {
     for (const targetTemplateType of [
-      TemplateType.EMAIL,
-      TemplateType.NHS_APP,
-      TemplateType.SMS,
+      'EMAIL',
+      'NHS_APP',
+      'SMS',
     ]) {
       // eslint-disable-next-line no-loop-func
       test(`should copy ${sourceTemplateType} to ${targetTemplateType} template`, async ({
@@ -188,7 +188,7 @@ test.describe('Copy Template Page', () => {
 
         await expect(page.getByText(template.message)).toBeVisible();
 
-        if (targetTemplateType === TemplateType.EMAIL) {
+        if (targetTemplateType === 'EMAIL') {
           const expectedSubject = template.subject ?? 'Enter a subject line';
           await expect(page.getByText(expectedSubject)).toBeVisible();
         }

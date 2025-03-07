@@ -27,7 +27,7 @@ describe('CopyTemplatePage', () => {
 
   const template = {
     id: 'template-id',
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'template-name',
     subject: 'template-subject-line',
@@ -38,7 +38,7 @@ describe('CopyTemplatePage', () => {
 
   const letterTemplate: LetterTemplate = {
     id: 'template-id',
-    templateType: TemplateType.LETTER,
+    templateType: 'LETTER',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     name: 'template-name',
     createdAt: '2025-01-13T10:19:25.579Z',

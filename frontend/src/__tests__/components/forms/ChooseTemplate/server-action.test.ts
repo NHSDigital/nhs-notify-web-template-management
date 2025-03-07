@@ -32,7 +32,7 @@ test('submit form - no validation error', async () => {
   await chooseTemplateAction(
     {},
     getMockFormData({
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     })
   );
 

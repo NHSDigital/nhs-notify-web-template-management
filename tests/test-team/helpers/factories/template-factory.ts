@@ -16,7 +16,7 @@ export const TemplateFactory = {
       id,
       owner,
       name,
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       subject: '',
     });
   },
@@ -26,7 +26,7 @@ export const TemplateFactory = {
       id,
       owner,
       name: '',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
     });
   },
 
@@ -35,7 +35,7 @@ export const TemplateFactory = {
       id,
       owner,
       name: '',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
   },
 
@@ -44,7 +44,7 @@ export const TemplateFactory = {
       id,
       owner,
       name,
-      templateType: TemplateType.LETTER,
+      templateType: 'LETTER',
       letterType: LetterType.X0,
       language: Language.EN,
       files: {

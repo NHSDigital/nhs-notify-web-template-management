@@ -30,7 +30,7 @@ const generateViewTemplateLink = (template: TemplateDTO): string => {
 };
 
 const typeDisplayMappings = (template: TemplateDTO): string =>
-  template.templateType === TemplateType.LETTER &&
+  template.templateType === 'LETTER' &&
   'letterType' in template &&
   template.letterType &&
   'language' in template &&
@@ -97,7 +97,7 @@ export function ManageTemplates({
                   {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  {template.templateType === TemplateType.LETTER ? null : (
+                  {template.templateType === 'LETTER' ? null : (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link
                         href={`/copy-template/${template.id}`}

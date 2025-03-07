@@ -6,7 +6,7 @@ import {
 
 const CreateEmailTemplatePage = async () => {
   const initialState: CreateEmailTemplate = {
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
     name: '',
     subject: '',
     message: '',

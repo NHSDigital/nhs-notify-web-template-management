@@ -30,17 +30,17 @@ const ddbMock = mockClient(DynamoDBDocumentClient);
 const emailProperties: EmailProperties = {
   message: 'message',
   subject: 'pickles',
-  templateType: TemplateType.EMAIL,
+  templateType: 'EMAIL',
 };
 
 const smsProperties: SMSProperties = {
   message: 'message',
-  templateType: TemplateType.SMS,
+  templateType: 'SMS',
 };
 
 const nhsAppProperties: NHSAppProperties = {
   message: 'message',
-  templateType: TemplateType.NHS_APP,
+  templateType: 'NHS_APP',
 };
 
 const letterProperties: LetterProperties = {
@@ -54,7 +54,7 @@ const letterProperties: LetterProperties = {
       fileName: 'test.csv',
     },
   },
-  templateType: TemplateType.LETTER,
+  templateType: 'LETTER',
 };
 
 const createTemplateProperties = {
@@ -262,7 +262,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         {
-          templateType: TemplateType.EMAIL,
+          templateType: 'EMAIL',
           name: 'name',
           message: 'message',
           subject: 'pickles',
@@ -328,7 +328,7 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to change templateType from SMS to EMAIL',
         Item: {
-          templateType: { S: TemplateType.SMS },
+          templateType: { S: 'SMS' },
           templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
         },
         code: 400,
@@ -341,7 +341,7 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to update template when templateStatus is SUBMITTED',
         Item: {
-          templateType: { S: TemplateType.EMAIL },
+          templateType: { S: 'EMAIL' },
           templateStatus: { S: TemplateStatus.SUBMITTED },
         },
         code: 400,
@@ -351,7 +351,7 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to update template when templateStatus is DELETED',
         Item: {
-          templateType: { S: TemplateType.EMAIL },
+          templateType: { S: 'EMAIL' },
           templateStatus: { S: TemplateStatus.DELETED },
         },
         code: 404,
@@ -375,7 +375,7 @@ describe('templateRepository', () => {
             message: 'message',
             subject: 'subject',
             templateStatus: TemplateStatus.SUBMITTED,
-            templateType: TemplateType.EMAIL,
+            templateType: 'EMAIL',
           },
           'real-owner'
         );
@@ -403,7 +403,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'subject',
           templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          templateType: TemplateType.EMAIL,
+          templateType: 'EMAIL',
         },
         'real-owner'
       );
@@ -466,7 +466,7 @@ describe('templateRepository', () => {
         name: 'updated-name',
         message: 'updated-message',
         templateStatus: TemplateStatus.DELETED,
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       };
 
       ddbMock

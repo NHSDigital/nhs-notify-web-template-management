@@ -126,20 +126,20 @@ const attributeExpressionsFromMap = <T>(
 
 const getChannelAttributeExpressions = (template: UpdateTemplate) => {
   const expressions = [];
-  if (template.templateType === TemplateType.NHS_APP) {
+  if (template.templateType === 'NHS_APP') {
     expressions.push(
       attributeExpressionsFromMap<NHSAppProperties>(nhsAppAttributes)
     );
   }
-  if (template.templateType === TemplateType.EMAIL) {
+  if (template.templateType === 'EMAIL') {
     expressions.push(
       attributeExpressionsFromMap<EmailProperties>(emailAttributes)
     );
   }
-  if (template.templateType === TemplateType.SMS) {
+  if (template.templateType === 'SMS') {
     expressions.push(attributeExpressionsFromMap<SMSProperties>(smsAttributes));
   }
-  if (template.templateType === TemplateType.LETTER) {
+  if (template.templateType === 'LETTER') {
     expressions.push(
       attributeExpressionsFromMap<LetterProperties>(letterAttributes)
     );
@@ -165,16 +165,16 @@ const attributeNamesFromMap = <T>(
 const getChannelAttributeNames = (template: UpdateTemplate) => {
   let names = {};
 
-  if (template.templateType === TemplateType.NHS_APP) {
+  if (template.templateType === 'NHS_APP') {
     names = attributeNamesFromMap<NHSAppProperties>(nhsAppAttributes);
   }
-  if (template.templateType === TemplateType.EMAIL) {
+  if (template.templateType === 'EMAIL') {
     names = attributeNamesFromMap<EmailProperties>(emailAttributes);
   }
-  if (template.templateType === TemplateType.SMS) {
+  if (template.templateType === 'SMS') {
     names = attributeNamesFromMap<SMSProperties>(smsAttributes);
   }
-  if (template.templateType === TemplateType.LETTER) {
+  if (template.templateType === 'LETTER') {
     names = attributeNamesFromMap<LetterProperties>(letterAttributes);
   }
 
@@ -200,25 +200,25 @@ const attributeValuesFromMapAndTemplate = <T>(
 const getChannelAttributeValues = (template: UpdateTemplate) => {
   let values = {};
 
-  if (template.templateType === TemplateType.NHS_APP) {
+  if (template.templateType === 'NHS_APP') {
     values = attributeValuesFromMapAndTemplate<NHSAppProperties>(
       nhsAppAttributes,
       template
     );
   }
-  if (template.templateType === TemplateType.EMAIL) {
+  if (template.templateType === 'EMAIL') {
     values = attributeValuesFromMapAndTemplate<EmailProperties>(
       emailAttributes,
       template
     );
   }
-  if (template.templateType === TemplateType.SMS) {
+  if (template.templateType === 'SMS') {
     values = attributeValuesFromMapAndTemplate<SMSProperties>(
       smsAttributes,
       template
     );
   }
-  if (template.templateType === TemplateType.LETTER) {
+  if (template.templateType === 'LETTER') {
     values = attributeValuesFromMapAndTemplate<LetterProperties>(
       letterAttributes,
       template

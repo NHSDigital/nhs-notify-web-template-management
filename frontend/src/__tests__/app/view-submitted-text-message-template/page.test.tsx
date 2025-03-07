@@ -29,7 +29,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'template-message',
@@ -39,7 +39,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
 
     const submittedSMSTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.SUBMITTED,
     };
 

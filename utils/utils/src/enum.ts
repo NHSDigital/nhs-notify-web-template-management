@@ -59,10 +59,10 @@ export const letterTypeDisplayMappings = (
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'NHS App message',
-    [TemplateType.SMS]: 'Text message (SMS)',
-    [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: 'Letter',
+    NHS_APP: 'NHS App message',
+    SMS: 'Text message (SMS)',
+    EMAIL: 'Email',
+    LETTER: 'Letter',
   })[type];
 
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
@@ -74,10 +74,10 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
-    [TemplateType.NHS_APP]: 'nhs-app',
-    [TemplateType.SMS]: 'text-message',
-    [TemplateType.EMAIL]: 'email',
-    [TemplateType.LETTER]: 'letter',
+    NHS_APP: 'nhs-app',
+    SMS: 'text-message',
+    EMAIL: 'email',
+    LETTER: 'letter',
   })[type];
 
 export const previewTemplatePages = (type: TemplateType) =>
