@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { Template, TemplateType, TemplateStatus } from '../helpers/types';
+import { Template } from '../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,

@@ -9,7 +9,7 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { Template, TemplateStatus, TemplateType } from '../helpers/types';
+import { Template } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,

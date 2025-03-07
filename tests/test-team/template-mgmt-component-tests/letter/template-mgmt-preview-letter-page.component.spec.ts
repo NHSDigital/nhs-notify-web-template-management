@@ -11,7 +11,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
