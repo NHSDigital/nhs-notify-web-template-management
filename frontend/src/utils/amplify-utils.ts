@@ -16,7 +16,7 @@ export async function getAccessTokenServer(): Promise<string | undefined> {
   try {
     const { tokens } = await runWithAmplifyServerContext({
       nextServerContext: { cookies },
-      operation: fetchAuthSession,
+      operation: (spec) => fetchAuthSession(spec, { forceRefresh: true }),
     });
 
     return tokens?.accessToken?.toString();
