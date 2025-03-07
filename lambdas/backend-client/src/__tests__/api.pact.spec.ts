@@ -58,7 +58,6 @@ describe('API Pact test', () => {
 
         // make request to Pact mock server
         const templates = await client.listTemplates();
-        console.log('Returned Templates', templates);
         expect(templates.data?.[0]).toStrictEqual({
           id: 'id',
           name: 'name',
