@@ -1,14 +1,9 @@
 import {
   CreateTemplate,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
+  TemplateDto,
   UpdateTemplate,
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  Language,
-  LetterType,
-  VirusScanStatus,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -99,7 +94,7 @@ describe('templateClient', () => {
         subject: 'subject',
       };
 
-      const expectedTemplateDTO: TemplateDTO = {
+      const expectedTemplateDto: TemplateDto = {
         ...data,
         id: 'id',
         createdAt: undefined as unknown as string,
@@ -108,7 +103,7 @@ describe('templateClient', () => {
       };
 
       const template: DatabaseTemplate = {
-        ...expectedTemplateDTO,
+        ...expectedTemplateDto,
         owner: 'owner',
         version: 1,
       };
@@ -141,7 +136,7 @@ describe('templateClient', () => {
         subject: 'subject',
       };
 
-      const expectedTemplateDTO: TemplateDTO = {
+      const expectedTemplateDto: TemplateDto = {
         ...data,
         id: 'id',
         createdAt: new Date().toISOString(),
@@ -150,7 +145,7 @@ describe('templateClient', () => {
       };
 
       const template: DatabaseTemplate = {
-        ...expectedTemplateDTO,
+        ...expectedTemplateDto,
         owner: 'owner',
         version: 1,
       };
@@ -168,7 +163,7 @@ describe('templateClient', () => {
       expect(createMock).toHaveBeenCalledWith(data, 'owner');
 
       expect(result).toEqual({
-        data: expectedTemplateDTO,
+        data: expectedTemplateDto,
       });
     });
   });
@@ -240,7 +235,7 @@ describe('templateClient', () => {
         templateType: 'SMS',
       };
 
-      const expectedTemplateDTO: TemplateDTO = {
+      const expectedTemplateDto: TemplateDto = {
         ...data,
         id: 'id',
         createdAt: undefined as unknown as string,
@@ -249,7 +244,7 @@ describe('templateClient', () => {
       };
 
       const template: DatabaseTemplate = {
-        ...expectedTemplateDTO,
+        ...expectedTemplateDto,
         owner: 'owner',
         version: 1,
       };
@@ -282,7 +277,7 @@ describe('templateClient', () => {
         templateType: 'SMS',
       };
 
-      const template: TemplateDTO = {
+      const template: TemplateDto = {
         ...data,
         id: 'id',
         templateType: 'SMS',
@@ -330,7 +325,7 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when database template is invalid', async () => {
-      const templateDTO: TemplateDTO = {
+      const templateDTO: TemplateDto = {
         id: 'id',
         templateType: 'EMAIL',
         name: 'name',
@@ -394,7 +389,7 @@ describe('templateClient', () => {
     });
 
     test('should return template', async () => {
-      const template: TemplateDTO = {
+      const template: TemplateDto = {
         id: 'id',
         templateType: 'EMAIL',
         name: 'name',
@@ -443,7 +438,7 @@ describe('templateClient', () => {
     test('filters out letters if the feature flag is not enabled', async () => {
       const noLettersClient = new TemplateClient('owner', false);
 
-      const template: TemplateDTO = {
+      const template: TemplateDto = {
         id: 'id',
         templateType: 'LETTER',
         name: 'name',
@@ -480,7 +475,7 @@ describe('templateClient', () => {
     });
 
     test('should filter out invalid templates', async () => {
-      const template: TemplateDTO = {
+      const template: TemplateDto = {
         id: 'id',
         templateType: 'EMAIL',
         name: 'name',
@@ -490,7 +485,7 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
       };
-      const template2: TemplateDTO = {
+      const template2: TemplateDto = {
         id: undefined as unknown as string,
         templateType: 'EMAIL',
         name: undefined as unknown as string,
@@ -518,7 +513,7 @@ describe('templateClient', () => {
     });
 
     test('should return templates', async () => {
-      const template: TemplateDTO = {
+      const template: TemplateDto = {
         id: 'id',
         templateType: 'EMAIL',
         name: 'name',

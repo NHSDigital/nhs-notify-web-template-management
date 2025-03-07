@@ -6,11 +6,7 @@ import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
@@ -38,7 +34,7 @@ describe('PreviewEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     const emailTemplate: EmailTemplate = {
       ...templateDTO,

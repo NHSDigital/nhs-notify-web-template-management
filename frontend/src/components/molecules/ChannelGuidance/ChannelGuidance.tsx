@@ -1,4 +1,4 @@
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
+import { TemplateType } from 'nhs-notify-backend-client';
 import styles from './ChannelGuidance.module.scss';
 import content from '@content/content';
 

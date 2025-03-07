@@ -1,13 +1,15 @@
 import { redirect, RedirectType } from 'next/navigation';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 import {
   FormState,
-  TemplateType,
   templateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 
+const [firstTemplateType, ...remainingTemplateTypes] = TEMPLATE_TYPE_LIST;
+
 const $ChooseTemplate = z.object({
-  templateType: z.nativeEnum(TemplateType, {
+  templateType: z.enum([firstTemplateType, ...remainingTemplateTypes], {
     message: 'Select a template type',
   }),
 });

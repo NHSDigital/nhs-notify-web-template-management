@@ -3,7 +3,7 @@ import {
   CreateTemplate,
   Success,
   SuccessList,
-  TemplateDTO,
+  TemplateDto,
   UpdateTemplate,
 } from './types/generated';
 import { Result } from './types/result';
@@ -20,7 +20,7 @@ export class TemplateApiClient implements ITemplateClient {
     this._client = createAxiosClient(token);
   }
 
-  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
+  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       this._client.post<Success>('/v1/template', template)
     );
@@ -39,7 +39,7 @@ export class TemplateApiClient implements ITemplateClient {
   async updateTemplate(
     templateId: string,
     template: UpdateTemplate
-  ): Promise<Result<TemplateDTO>> {
+  ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       this._client.post<Success>(`/v1/template/${templateId}`, template)
     );
@@ -55,7 +55,7 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 
-  async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
+  async getTemplate(templateId: string): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
       this._client.get<Success>(`/v1/template/${templateId}`)
     );
@@ -71,7 +71,7 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 
-  async listTemplates(): Promise<Result<TemplateDTO[]>> {
+  async listTemplates(): Promise<Result<TemplateDto[]>> {
     const response = await catchAxiosError(
       this._client.get<SuccessList>('/v1/templates')
     );

@@ -5,11 +5,7 @@ import SubmitSmsTemplatePage from '@app/submit-text-message-template/[templateId
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import {
   EMAIL_TEMPLATE,
   LETTER_TEMPLATE,
@@ -34,7 +30,7 @@ describe('SubmitSmsTemplatePage', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
-    } satisfies Partial<TemplateDTO>;
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
       ...state,

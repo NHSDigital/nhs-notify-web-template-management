@@ -3,15 +3,11 @@ import { render, screen } from '@testing-library/react';
 import ManageTemplatesPage from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const mockTemplates: TemplateDTO[] = [
+const mockTemplates: TemplateDto[] = [
   {
     id: '1',
     templateType: 'NHS_APP',

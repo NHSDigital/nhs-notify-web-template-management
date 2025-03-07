@@ -1,15 +1,15 @@
-import { TemplateDTO, CreateTemplate, UpdateTemplate } from './generated';
+import { TemplateDto, CreateTemplate, UpdateTemplate } from './generated';
 import { Result } from './result';
 
 export interface ITemplateClient {
-  createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>>;
+  createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>>;
 
   updateTemplate(
     templateId: string,
     template: UpdateTemplate
-  ): Promise<Result<TemplateDTO>>;
+  ): Promise<Result<TemplateDto>>;
 
-  getTemplate(templateId: string): Promise<Result<TemplateDTO>>;
+  getTemplate(templateId: string): Promise<Result<TemplateDto>>;
 
-  listTemplates(): Promise<Result<TemplateDTO[]>>;
+  listTemplates(): Promise<Result<TemplateDto[]>>;
 }

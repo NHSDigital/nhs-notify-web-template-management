@@ -1,30 +1,25 @@
 import { render } from '@testing-library/react';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 
 describe('TemplateNameGuidance component', () => {
-  const templateTypes = Object.keys(TemplateType);
-
   it('renders component correctly as TemplateNameGuidance', () => {
-    const container = render(
-      <TemplateNameGuidance template={'NHS_APP'} />
-    );
+    const container = render(<TemplateNameGuidance template={'NHS_APP'} />);
 
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it.each(templateTypes)(
+  it.each(TEMPLATE_TYPE_LIST)(
     'should correctly display the template naming example when templateType is %s',
-    (templateType: string) => {
-      const templateTypeToUse = templateType as TemplateType;
+    (templateType) => {
       const expectedText =
         content.components.nameYourTemplate.templateNameDetailsExample[
-          templateTypeToUse
+          templateType
         ];
 
       const container = render(
-        <TemplateNameGuidance template={templateTypeToUse} />
+        <TemplateNameGuidance template={templateType} />
       );
 
       expect(

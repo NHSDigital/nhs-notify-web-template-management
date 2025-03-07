@@ -3,11 +3,7 @@ import {
   $FormSchema,
 } from '@forms/PreviewEmailTemplate';
 import { redirect } from 'next/navigation';
-import {
-  EmailTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
 
 jest.mock('next/navigation');

@@ -5,11 +5,7 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -27,7 +23,7 @@ const mockNhsAppTemplate = {
   id: '1',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-} satisfies TemplateDTO;
+} satisfies TemplateDto;
 
 describe('submitTemplate', () => {
   beforeEach(jest.resetAllMocks);
@@ -55,7 +51,7 @@ describe('submitTemplate', () => {
   it('should handle error when validating template', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-    } as unknown as TemplateDTO);
+    } as unknown as TemplateDto);
 
     const formData = getMockFormData({ templateId: '1' });
 

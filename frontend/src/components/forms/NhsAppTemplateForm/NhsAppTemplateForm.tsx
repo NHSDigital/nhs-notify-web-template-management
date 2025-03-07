@@ -19,7 +19,6 @@ import {
   CreateNHSAppTemplate,
   NHSAppTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';

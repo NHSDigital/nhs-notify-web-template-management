@@ -1,11 +1,6 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-  UpdateTemplate,
-} from 'nhs-notify-backend-client';
+import { TemplateDto, UpdateTemplate } from 'nhs-notify-backend-client';
 import { handler } from '@backend-api/templates/api/update';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 
@@ -131,7 +126,7 @@ describe('Template API - Update', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
       templateType: 'SMS',
     };
-    const response: TemplateDTO = {
+    const response: TemplateDto = {
       ...update,
       id: '1-2-3',
       templateType: 'SMS',

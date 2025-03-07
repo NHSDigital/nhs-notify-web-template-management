@@ -2,12 +2,12 @@ import {
   Failure,
   Success,
   SuccessList,
-  TemplateDTO,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 
 export const apiSuccess = (
   statusCode: number,
-  result: TemplateDTO | TemplateDTO[]
+  result: TemplateDto | TemplateDto[]
 ) => {
   if (Array.isArray(result)) {
     return {

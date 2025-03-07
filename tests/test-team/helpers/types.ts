@@ -1,15 +1,10 @@
 import {
   Language,
   LetterType,
+  TemplateStatus,
+  TemplateType,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
-
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-}
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
@@ -26,11 +21,6 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     EMAIL: 'email',
     LETTER: 'letter',
   })[type];
-
-export enum TemplateStatus {
-  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
-  SUBMITTED = 'SUBMITTED',
-}
 
 type File = {
   fileName: string;

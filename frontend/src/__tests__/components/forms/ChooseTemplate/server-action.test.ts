@@ -1,6 +1,5 @@
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 
 jest.mock('next/navigation');

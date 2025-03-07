@@ -1,23 +1,26 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  FormState,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TEMPLATE_TYPE_LIST,
+  TemplateDto,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+
+const [firstType, ...remainingTypes] = TEMPLATE_TYPE_LIST;
 
 const $CopyTemplate = z.object({
-  templateType: z.nativeEnum(TemplateType, {
+  templateType: z.enum([firstType, ...remainingTypes], {
     message: 'Select a template type',
   }),
 });
 
 type CopyTemplateActionState = FormState & {
-  template: TemplateDTO & {
+  template: TemplateDto & {
     templateType: Exclude<TemplateType, 'LETTER'>;
   };
 };

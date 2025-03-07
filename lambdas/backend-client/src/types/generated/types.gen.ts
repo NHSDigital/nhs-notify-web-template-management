@@ -52,23 +52,19 @@ export type LetterFiles = {
 };
 
 export type NhsAppProperties = {
-  templateType: TemplateType;
   message: string;
 };
 
 export type EmailProperties = {
-  templateType: TemplateType;
   message: string;
   subject: string;
 };
 
 export type SmsProperties = {
-  templateType: TemplateType;
   message: string;
 };
 
 export type LetterProperties = {
-  templateType: TemplateType;
   letterType: LetterType;
   language: Language;
   files: LetterFiles;

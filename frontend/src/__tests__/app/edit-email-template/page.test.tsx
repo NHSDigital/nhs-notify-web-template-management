@@ -5,7 +5,6 @@ import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
@@ -66,7 +65,7 @@ describe('EditEmailTemplatePage', () => {
     const emailTemplate = {
       ...template,
       subject: 'subject',
-      templateType: 'EMAIL',
+      templateType: 'EMAIL' as const,
       templateStatus: 'NOT_YET_SUBMITTED',
     };
 

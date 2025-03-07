@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const componentProps = {
   template: 'SMS',

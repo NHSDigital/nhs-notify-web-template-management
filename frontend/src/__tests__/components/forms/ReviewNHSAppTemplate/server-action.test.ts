@@ -4,8 +4,6 @@ import { getMockFormData } from '@testhelpers';
 import {
   NHSAppTemplate,
   TemplateFormState,
-  TemplateType,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');

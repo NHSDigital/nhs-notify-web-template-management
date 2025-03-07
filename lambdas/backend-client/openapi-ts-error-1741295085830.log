@@ -1,0 +1,16 @@
+Cannot find module '@hey-api/openapi-ts'
+Require stack:
+- /Users/clare.jones/workspace/nhs-notify-web-template-management/lambdas/backend-client/openapi-ts.config.ts
+Error: Cannot find module '@hey-api/openapi-ts'
+Require stack:
+- /Users/clare.jones/workspace/nhs-notify-web-template-management/lambdas/backend-client/openapi-ts.config.ts
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1070:15)
+    at Function.resolve (node:internal/modules/helpers:127:19)
+    at jitiResolve (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:187220)
+    at jitiRequire (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:189288)
+    at import (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:199778)
+    at /Users/clare.jones/workspace/nhs-notify-web-template-management/lambdas/backend-client/openapi-ts.config.ts:1:220
+    at eval_evalModule (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:196325)
+    at jitiRequire (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:190233)
+    at Function.import (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/jiti/dist/jiti.cjs:1:199778)
+    at resolveConfig (/Users/clare.jones/.npm/_npx/a3521d5d8f143c4a/node_modules/c12/dist/shared/c12.CLRr5qYj.cjs:360:43)

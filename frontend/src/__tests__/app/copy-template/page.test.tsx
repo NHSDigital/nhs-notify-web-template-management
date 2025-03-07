@@ -5,14 +5,7 @@ import CopyTemplatePage from '@app/copy-template/[templateId]/page';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  Language,
-  LetterType,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
@@ -34,7 +27,7 @@ describe('CopyTemplatePage', () => {
     message: 'template-message',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
-  } satisfies TemplateDTO;
+  } satisfies TemplateDto;
 
   const letterTemplate: LetterTemplate = {
     id: 'template-id',

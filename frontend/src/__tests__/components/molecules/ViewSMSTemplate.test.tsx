@@ -1,9 +1,6 @@
 import { render } from '@testing-library/react';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
-import {
-  SMSTemplate,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 
 describe('ViewNHSAppTemplate component', () => {
   it('matches submitted snapshot', () => {

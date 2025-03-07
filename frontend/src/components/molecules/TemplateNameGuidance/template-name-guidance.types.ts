@@ -1,5 +1,5 @@
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 export type TemplateNameGuidanceType = {
-  template: keyof typeof TemplateType;
+  template: TemplateType;
 };

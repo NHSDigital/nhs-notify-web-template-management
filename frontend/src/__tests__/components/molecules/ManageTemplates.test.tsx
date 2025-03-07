@@ -1,18 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import content from '@content/content';
-import {
-  LetterType,
-  Language,
-  TemplateType,
-  TemplateStatus,
-  TemplateDTO,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
 const manageTemplatesProps: {
-  templateList: TemplateDTO[];
+  templateList: TemplateDto[];
 } = {
   templateList: [
     {
@@ -58,8 +52,7 @@ describe('ManageTemplates component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('matches snapshot with submitted status', () => {
-    manageTemplatesProps.templateList[0].templateStatus =
-      'SUBMITTED';
+    manageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
     const container = render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();

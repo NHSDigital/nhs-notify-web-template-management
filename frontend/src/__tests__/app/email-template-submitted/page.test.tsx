@@ -2,14 +2,10 @@
  * @jest-environment node
  */
 import EmailTemplateSubmittedPage from '@app/email-template-submitted/[templateId]/page';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -31,7 +27,7 @@ describe('EmailTemplateSubmittedPage', () => {
       subject: 'subject',
       createdAt: 'today',
       updatedAt: 'today',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     getTemplateMock.mockResolvedValueOnce(template);
 

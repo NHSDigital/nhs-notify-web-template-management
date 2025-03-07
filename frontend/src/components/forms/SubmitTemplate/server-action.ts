@@ -3,10 +3,7 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
 import { z } from 'zod';
-import {
-  TemplateStatus,
-  validateTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const $TemplateIdSchema = z.string();

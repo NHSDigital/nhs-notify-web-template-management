@@ -5,16 +5,8 @@ import SubmitEmailTemplatePage from '@app/submit-email-template/[templateId]/pag
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
-import {
-  EMAIL_TEMPLATE,
-  NHS_APP_TEMPLATE,
-  SMS_TEMPLATE,
-} from '../../helpers';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -34,7 +26,7 @@ describe('SubmitEmailTemplatePage', () => {
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
-    } satisfies Partial<TemplateDTO>;
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
       ...state,

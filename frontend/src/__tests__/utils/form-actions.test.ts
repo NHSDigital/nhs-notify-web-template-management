@@ -13,12 +13,7 @@ import {
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { mockDeep } from 'jest-mock-extended';
-import {
-  ITemplateClient,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
 
 const mockedTemplateClient = mockDeep<ITemplateClient>();
 const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
@@ -43,7 +38,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -111,7 +106,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -193,7 +188,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -240,7 +235,7 @@ describe('form-actions', () => {
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: [responseData],
@@ -281,7 +276,7 @@ describe('form-actions', () => {
       name: 'Template',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',
-    } satisfies Partial<TemplateDTO>;
+    } satisfies Partial<TemplateDto>;
 
     const templates = [
       { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },

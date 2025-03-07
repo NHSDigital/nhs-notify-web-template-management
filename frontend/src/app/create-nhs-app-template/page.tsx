@@ -1,8 +1,5 @@
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
-import {
-  TemplateType,
-  CreateNHSAppTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { CreateNHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 
 const CreateNHSAppTemplatePage = async () => {
   const initialState: CreateNHSAppTemplate = {

@@ -17,7 +17,6 @@ import {
   CreateSMSTemplate,
   PageComponentProps,
   SMSTemplate,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { FC, useActionState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';

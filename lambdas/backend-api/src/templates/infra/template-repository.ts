@@ -4,10 +4,8 @@ import {
   EmailProperties,
   ErrorCase,
   LetterProperties,
-  NHSAppProperties,
-  SMSProperties,
-  TemplateStatus,
-  TemplateType,
+  NhsAppProperties,
+  SmsProperties,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
@@ -97,24 +95,20 @@ const create = async (
   }
 };
 
-const nhsAppAttributes: Record<keyof NHSAppProperties, null> = {
-  templateType: null,
+const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
   message: null,
 };
 
 const emailAttributes: Record<keyof EmailProperties, null> = {
-  templateType: null,
   message: null,
   subject: null,
 };
 
-const smsAttributes: Record<keyof SMSProperties, null> = {
-  templateType: null,
+const smsAttributes: Record<keyof SmsProperties, null> = {
   message: null,
 };
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
-  templateType: null,
   letterType: null,
   language: null,
   files: null,
@@ -128,7 +122,7 @@ const getChannelAttributeExpressions = (template: UpdateTemplate) => {
   const expressions = [];
   if (template.templateType === 'NHS_APP') {
     expressions.push(
-      attributeExpressionsFromMap<NHSAppProperties>(nhsAppAttributes)
+      attributeExpressionsFromMap<NhsAppProperties>(nhsAppAttributes)
     );
   }
   if (template.templateType === 'EMAIL') {
@@ -137,7 +131,7 @@ const getChannelAttributeExpressions = (template: UpdateTemplate) => {
     );
   }
   if (template.templateType === 'SMS') {
-    expressions.push(attributeExpressionsFromMap<SMSProperties>(smsAttributes));
+    expressions.push(attributeExpressionsFromMap<SmsProperties>(smsAttributes));
   }
   if (template.templateType === 'LETTER') {
     expressions.push(
@@ -166,13 +160,13 @@ const getChannelAttributeNames = (template: UpdateTemplate) => {
   let names = {};
 
   if (template.templateType === 'NHS_APP') {
-    names = attributeNamesFromMap<NHSAppProperties>(nhsAppAttributes);
+    names = attributeNamesFromMap<NhsAppProperties>(nhsAppAttributes);
   }
   if (template.templateType === 'EMAIL') {
     names = attributeNamesFromMap<EmailProperties>(emailAttributes);
   }
   if (template.templateType === 'SMS') {
-    names = attributeNamesFromMap<SMSProperties>(smsAttributes);
+    names = attributeNamesFromMap<SmsProperties>(smsAttributes);
   }
   if (template.templateType === 'LETTER') {
     names = attributeNamesFromMap<LetterProperties>(letterAttributes);
@@ -201,7 +195,7 @@ const getChannelAttributeValues = (template: UpdateTemplate) => {
   let values = {};
 
   if (template.templateType === 'NHS_APP') {
-    values = attributeValuesFromMapAndTemplate<NHSAppProperties>(
+    values = attributeValuesFromMapAndTemplate<NhsAppProperties>(
       nhsAppAttributes,
       template
     );
@@ -213,7 +207,7 @@ const getChannelAttributeValues = (template: UpdateTemplate) => {
     );
   }
   if (template.templateType === 'SMS') {
-    values = attributeValuesFromMapAndTemplate<SMSProperties>(
+    values = attributeValuesFromMapAndTemplate<SmsProperties>(
       smsAttributes,
       template
     );
@@ -244,6 +238,7 @@ const update = async (
     '#name': 'name',
     '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
+    '#templateType': 'templateType',
     ...getChannelAttributeNames(template),
   };
 
@@ -289,10 +284,7 @@ const update = async (
     return success(response.Attributes as DatabaseTemplate);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
-      if (
-        !error.Item ||
-        error.Item.templateStatus.S === 'DELETED'
-      ) {
+      if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
           `Template not found`,
