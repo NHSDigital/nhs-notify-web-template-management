@@ -460,29 +460,18 @@
           }
         }
       },
-      "ChannelTemplate": {
+      "BaseTemplate": {
         "type": "object",
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/NHSAppProperties"
-          },
-          {
-            "$ref": "#/components/schemas/EmailProperties"
-          },
-          {
-            "$ref": "#/components/schemas/SMSProperties"
-          },
-          {
-            "$ref": "#/components/schemas/LetterProperties"
-          }
+        "required": [
+          "templateType",
+          "name"
         ],
-        "discriminator": {
-          "propertyName": "templateType",
-          "mapping": {
-            "NHS_APP": "#/components/schemas/NHSAppProperties",
-            "EMAIL": "#/components/schemas/EmailProperties",
-            "SMS": "#/components/schemas/SMSProperties",
-            "LETTER": "#/components/schemas/LetterProperties"
+        "properties": {
+          "templateType": {
+            "$ref": "#/components/schemas/TemplateType"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -490,16 +479,30 @@
         "type": "object",
         "allOf": [
           {
-            "$ref": "#/components/schemas/ChannelTemplate"
+            "$ref": "#/components/schemas/BaseTemplate"
           },
           {
-            "type": "object",
-            "required": [
-              "name"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NHSAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/SMSProperties"
+              },
+              {
+                "$ref": "#/components/schemas/LetterProperties"
+              }
             ],
-            "properties": {
-              "name": {
-                "type": "string"
+            "discriminator": {
+              "propertyName": "templateType",
+              "mapping": {
+                "NHS_APP": "#/components/schemas/NHSAppProperties",
+                "EMAIL": "#/components/schemas/EmailProperties",
+                "SMS": "#/components/schemas/SMSProperties",
+                "LETTER": "#/components/schemas/LetterProperties"
               }
             }
           }
@@ -509,20 +512,41 @@
         "type": "object",
         "allOf": [
           {
-            "$ref": "#/components/schemas/ChannelTemplate"
+            "$ref": "#/components/schemas/BaseTemplate"
           },
           {
             "type": "object",
             "required": [
-              "name",
               "templateStatus"
             ],
             "properties": {
-              "name": {
-                "type": "string"
-              },
               "templateStatus": {
                 "$ref": "#/components/schemas/TemplateStatus"
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NHSAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/SMSProperties"
+              },
+              {
+                "$ref": "#/components/schemas/LetterProperties"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "templateType",
+              "mapping": {
+                "NHS_APP": "#/components/schemas/NHSAppProperties",
+                "EMAIL": "#/components/schemas/EmailProperties",
+                "SMS": "#/components/schemas/SMSProperties",
+                "LETTER": "#/components/schemas/LetterProperties"
               }
             }
           }
@@ -532,22 +556,18 @@
         "type": "object",
         "allOf": [
           {
-            "$ref": "#/components/schemas/ChannelTemplate"
+            "$ref": "#/components/schemas/BaseTemplate"
           },
           {
             "type": "object",
             "required": [
               "id",
-              "name",
               "templateStatus",
               "createdAt",
               "updatedAt"
             ],
             "properties": {
               "id": {
-                "type": "string"
-              },
-              "name": {
                 "type": "string"
               },
               "templateStatus": {
@@ -560,6 +580,31 @@
               "updatedAt": {
                 "type": "string",
                 "format": "date-time"
+              }
+            }
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NHSAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/SMSProperties"
+              },
+              {
+                "$ref": "#/components/schemas/LetterProperties"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "templateType",
+              "mapping": {
+                "NHS_APP": "#/components/schemas/NHSAppProperties",
+                "EMAIL": "#/components/schemas/EmailProperties",
+                "SMS": "#/components/schemas/SMSProperties",
+                "LETTER": "#/components/schemas/LetterProperties"
               }
             }
           }
