@@ -17,7 +17,7 @@ const manageTemplatesProps: {
   templateList: [
     {
       id: '1',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'Template 1',
       message: 'Message',
@@ -26,7 +26,7 @@ const manageTemplatesProps: {
     },
     {
       id: '2',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 2',
       message: 'Message',
@@ -35,7 +35,7 @@ const manageTemplatesProps: {
     },
     {
       id: '3',
-      templateType: TemplateType.LETTER,
+      templateType: 'LETTER',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',

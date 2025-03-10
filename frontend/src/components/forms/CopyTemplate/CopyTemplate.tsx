@@ -22,9 +22,9 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
   const [state, action] = useActionState(copyTemplateAction, { template });
 
   const options = [
-    TemplateType.NHS_APP,
-    TemplateType.EMAIL,
-    TemplateType.SMS,
+    'NHS_APP',
+    'EMAIL',
+    'SMS',
   ].map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),

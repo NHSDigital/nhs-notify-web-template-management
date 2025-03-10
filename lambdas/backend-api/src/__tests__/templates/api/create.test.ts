@@ -102,7 +102,7 @@ describe('Template API - Create', () => {
     const create: CreateTemplate = {
       name: 'updated-name',
       message: 'message',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
     };
     const response: TemplateDTO = {
       ...create,

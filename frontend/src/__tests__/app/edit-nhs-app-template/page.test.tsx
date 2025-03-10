@@ -26,7 +26,7 @@ describe('EditNhsAppTemplatePage', () => {
   test('page loads', async () => {
     const template = {
       id: 'template-id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'name',
       message: 'message',
@@ -36,7 +36,7 @@ describe('EditNhsAppTemplatePage', () => {
 
     const nhsAppTemplate: NHSAppTemplate = {
       ...template,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 

@@ -19,7 +19,6 @@ import {
   CreateEmailTemplate,
   EmailTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -87,7 +86,7 @@ export const EmailTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.EMAIL} />
+                <TemplateNameGuidance template={'EMAIL'} />
                 <TextInput
                   id='emailTemplateName'
                   onChange={emailTemplateNameHandler}
@@ -140,8 +139,8 @@ export const EmailTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.EMAIL} />
-            <ChannelGuidance template={TemplateType.EMAIL} />
+            <MessageFormatting template={'EMAIL'} />
+            <ChannelGuidance template={'EMAIL'} />
           </aside>
         </div>
       </NHSNotifyMain>

@@ -21,7 +21,7 @@ function createTemplates(owner: string) {
   return {
     email: TemplateFactory.create({
       owner,
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.SUBMITTED,
       id: 'valid-email-template',
       name: 'test-template-email',
@@ -30,7 +30,7 @@ function createTemplates(owner: string) {
     }),
     'text-message': TemplateFactory.create({
       owner,
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.SUBMITTED,
       id: 'valid-sms-template',
       name: 'test-template-sms',
@@ -38,7 +38,7 @@ function createTemplates(owner: string) {
     }),
     'nhs-app': TemplateFactory.create({
       owner,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.SUBMITTED,
       id: 'valid-nhs-app-template',
       name: 'test-template-nhs-app',

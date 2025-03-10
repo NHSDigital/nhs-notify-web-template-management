@@ -6,7 +6,7 @@ import {
 
 const CreateSMSTemplatePage = async () => {
   const initialState: CreateSMSTemplate = {
-    templateType: TemplateType.SMS,
+    templateType: 'SMS',
     name: '',
     message: '',
   };

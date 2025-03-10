@@ -37,7 +37,7 @@ test('calls form action and redirects', async () => {
     id: 'template-id',
     name: 'template-name',
     message: 'template-message',
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     createdAt: 'today',
     updatedAt: 'today',

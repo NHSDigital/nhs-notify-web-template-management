@@ -46,7 +46,7 @@ const $LetterFiles = schemaFor<LetterFiles>()(
 
 export const $EmailProperties = schemaFor<EmailProperties>()(
   z.object({
-    templateType: z.literal(TemplateType.EMAIL),
+    templateType: z.literal('EMAIL'),
     subject: z.string().trim().min(1),
     message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
   })
@@ -54,7 +54,7 @@ export const $EmailProperties = schemaFor<EmailProperties>()(
 
 export const $NHSAppProperties = schemaFor<NHSAppProperties>()(
   z.object({
-    templateType: z.literal(TemplateType.NHS_APP),
+    templateType: z.literal('NHS_APP'),
     message: z
       .string()
       .trim()
@@ -69,14 +69,14 @@ export const $NHSAppProperties = schemaFor<NHSAppProperties>()(
 
 export const $SMSProperties = schemaFor<SMSProperties>()(
   z.object({
-    templateType: z.literal(TemplateType.SMS),
+    templateType: z.literal('SMS'),
     message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
 export const $LetterProperties = schemaFor<LetterProperties>()(
   z.object({
-    templateType: z.literal(TemplateType.LETTER),
+    templateType: z.literal('LETTER'),
     letterType: z.nativeEnum(LetterType),
     language: z.nativeEnum(Language),
     files: $LetterFiles,

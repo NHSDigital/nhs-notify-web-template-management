@@ -30,7 +30,7 @@ describe('SubmitSmsTemplatePage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',

@@ -31,7 +31,7 @@ describe('PreviewSMSTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'template-name',
       message: 'template-message',
@@ -41,7 +41,7 @@ describe('PreviewSMSTemplatePage', () => {
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 

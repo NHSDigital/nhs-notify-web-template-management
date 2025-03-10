@@ -15,13 +15,13 @@ import { JSX } from 'react';
 const messageFormattingContent = content.components.messageFormatting;
 
 const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
-  [TemplateType.NHS_APP]: [
+  NHS_APP: [
     LineBreaksAndParagraphs(),
     Headings(),
     BoldText(),
     LinksAndUrlsMarkdown(),
   ],
-  [TemplateType.EMAIL]: [
+  EMAIL: [
     LineBreaksAndParagraphs(),
     Headings(),
     BulletList(),
@@ -29,8 +29,8 @@ const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
     HorizontalRule(),
     LinksAndUrlsMarkdown(),
   ],
-  [TemplateType.SMS]: [LinksAndUrlsNoMarkdown()],
-  [TemplateType.LETTER]: [],
+  SMS: [LinksAndUrlsNoMarkdown()],
+  LETTER: [],
 };
 
 export function MessageFormatting({ template }: { template: TemplateType }) {

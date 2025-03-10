@@ -114,7 +114,7 @@ describe('Template API - Get', () => {
   test('should return template', async () => {
     const template: TemplateDTO = {
       id: 'id',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       name: 'name',
       message: 'message',
       createdAt: new Date().toISOString(),

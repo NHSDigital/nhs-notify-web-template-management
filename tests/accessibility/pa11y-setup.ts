@@ -44,7 +44,7 @@ const setup = async () => {
       TableName: process.env.TEMPLATES_TABLE_NAME,
       Item: {
         owner: userId,
-        templateType: TemplateType.LETTER,
+        templateType: 'LETTER',
         id: templateId,
         letterType: LetterType.X0,
         language: Language.EN,

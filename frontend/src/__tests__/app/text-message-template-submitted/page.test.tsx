@@ -24,7 +24,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'example',

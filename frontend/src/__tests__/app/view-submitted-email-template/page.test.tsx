@@ -29,7 +29,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       subject: 'template-subject-line',
@@ -41,7 +41,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     const submittedEmailTemplate: EmailTemplate = {
       ...templateDTO,
       subject: 'template-subject-line',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       templateStatus: TemplateStatus.SUBMITTED,
     };
 

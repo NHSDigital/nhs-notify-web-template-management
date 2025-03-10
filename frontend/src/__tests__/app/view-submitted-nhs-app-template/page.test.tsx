@@ -29,7 +29,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'template-name',
       message: 'template-message',
@@ -39,7 +39,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
 
     const submittedNHSAppTemplate: NHSAppTemplate = {
       ...templateDTO,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       templateStatus: TemplateStatus.SUBMITTED,
     };
 

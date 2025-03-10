@@ -23,7 +23,7 @@ test('submit form - validation error', async () => {
   const template: NHSAppTemplate = {
     id: 'template-id',
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
     createdAt: 'today',
@@ -56,7 +56,7 @@ test('submit form - create email template from non-email template', async () => 
 
   const testTemplate: Omit<NHSAppTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
     createdAt: 'today',
@@ -71,7 +71,7 @@ test('submit form - create email template from non-email template', async () => 
       },
     },
     getMockFormData({
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     })
   );
 
@@ -84,7 +84,7 @@ test('submit form - create email template from non-email template', async () => 
     message: testTemplate.message,
     subject: 'Enter a subject line',
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
   });
 });
 
@@ -94,7 +94,7 @@ test('submit form - create email template from email template', async () => {
 
   const testTemplate: Omit<EmailTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
     name: 'template-name',
     message: 'template-message',
     subject: 'template-subject',
@@ -110,7 +110,7 @@ test('submit form - create email template from email template', async () => {
       },
     },
     getMockFormData({
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     })
   );
 
@@ -123,7 +123,7 @@ test('submit form - create email template from email template', async () => {
     message: testTemplate.message,
     subject: testTemplate.subject,
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
   });
 });
 
@@ -133,7 +133,7 @@ test('submit form - create non-email template', async () => {
 
   const testTemplate: Omit<NHSAppTemplate, 'id'> = {
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
     createdAt: 'today',
@@ -148,7 +148,7 @@ test('submit form - create non-email template', async () => {
       },
     },
     getMockFormData({
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     })
   );
 
@@ -160,6 +160,6 @@ test('submit form - create non-email template', async () => {
   expect(mockCreateTemplate).toHaveBeenCalledWith({
     message: testTemplate.message,
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
   });
 });

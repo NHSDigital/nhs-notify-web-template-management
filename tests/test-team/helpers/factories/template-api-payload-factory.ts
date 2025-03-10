@@ -41,7 +41,7 @@ type Output<T extends TemplatePayload, U extends Record<string, unknown>> = T &
 const createPayloadData = (templateType: unknown) => ({
   name: faker.word.noun(),
   message: faker.word.words(5),
-  ...(templateType === TemplateType.EMAIL && {
+  ...(templateType === 'EMAIL' && {
     subject: faker.word.interjection(),
   }),
 });
