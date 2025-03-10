@@ -1,10 +1,6 @@
 import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
-import {
-  EmailTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/EmailTemplateForm/server-action';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';

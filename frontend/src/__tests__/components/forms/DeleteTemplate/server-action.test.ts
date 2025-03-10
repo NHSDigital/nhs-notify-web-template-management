@@ -3,11 +3,7 @@ import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
 } from '@forms/DeleteTemplate/server-action';
-import {
-  NHSAppTemplate,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { saveTemplate } from '@utils/form-actions';
 
 jest.mock('next/navigation');

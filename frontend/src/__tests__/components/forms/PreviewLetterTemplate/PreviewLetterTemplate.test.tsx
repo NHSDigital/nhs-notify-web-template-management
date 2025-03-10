@@ -8,11 +8,6 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 jest.mock('@forms/PreviewLetterTemplate/server-actions');
 

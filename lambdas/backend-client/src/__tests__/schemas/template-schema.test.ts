@@ -1,13 +1,9 @@
 import {
   CreateTemplate,
   isCreateTemplateValid,
-  isTemplateDTOValid,
+  isTemplateDtoValid,
   isUpdateTemplateValid,
-  Language,
-  LetterType,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
+  TemplateDto,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { $CreateTemplateSchema, $UpdateTemplateSchema } from '../../schemas';
@@ -323,8 +319,8 @@ describe('Template schemas', () => {
     });
   });
 
-  describe('isTemplateDTOValid', () => {
-    const template: TemplateDTO = {
+  describe('isTemplateDtoValid', () => {
+    const template: TemplateDto = {
       name: 'Test Template',
       message: 'This is a test template',
       templateType: 'NHS_APP',
@@ -335,13 +331,13 @@ describe('Template schemas', () => {
     };
 
     test('Should return template on pass', async () => {
-      const result = isTemplateDTOValid(template);
+      const result = isTemplateDtoValid(template);
 
       expect(result).toEqual(template);
     });
 
     test('Should return undefined on fail', async () => {
-      const result = isTemplateDTOValid({
+      const result = isTemplateDtoValid({
         ...template,
         name: undefined,
       });

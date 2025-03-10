@@ -1,9 +1,4 @@
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
-import { Template, TemplateStatus, TemplateType } from '../types';
+import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
 export const TemplateFactory = {

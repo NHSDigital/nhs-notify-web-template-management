@@ -4,16 +4,7 @@ import { TestUserClient } from './test-user-client';
 import { generate } from 'generate-password';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import {
-  LetterTemplate,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import {
-  Language,
-  LetterType,
-  TemplateStatus,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 const setup = async () => {
   const testEmail = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
@@ -49,6 +40,7 @@ const setup = async () => {
         letterType: 'x0',
         language: 'en',
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         name: 'pa11y_letter',
         files: {
           pdfTemplate: {

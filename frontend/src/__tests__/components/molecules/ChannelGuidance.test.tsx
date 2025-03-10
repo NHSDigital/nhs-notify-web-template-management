@@ -1,18 +1,12 @@
 import { render } from '@testing-library/react';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 
 describe('ChannelGuidance component', () => {
-  const templateTypes = Object.values(TemplateType);
-
-  it.each(templateTypes)(
+  it.each(TEMPLATE_TYPE_LIST)(
     'should correctly render the component for templateType %s',
     (templateType: string) => {
-      const templateTypeToUse = templateType as TemplateType;
-
-      const container = render(
-        <ChannelGuidance template={templateTypeToUse} />
-      );
+      const container = render(<ChannelGuidance template={templateType} />);
 
       expect(container.asFragment()).toMatchSnapshot();
     }

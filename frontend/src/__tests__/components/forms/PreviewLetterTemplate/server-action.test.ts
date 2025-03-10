@@ -5,13 +5,6 @@ import {
 import { redirect } from 'next/navigation';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
-import {
-  Language,
-  LetterType,
-  TemplateStatus,
-  TemplateType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 

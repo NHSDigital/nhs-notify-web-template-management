@@ -5,9 +5,6 @@ import {
   Language,
 } from 'nhs-notify-backend-client';
 
-// eslint-disable-next-line unicorn/prefer-export-from
-export { TemplateType, TemplateStatus };
-
 export const languageMapping = (language: Language) =>
   ({
     ar: 'Arabic',

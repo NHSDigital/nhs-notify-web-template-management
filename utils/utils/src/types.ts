@@ -2,9 +2,9 @@ import {
   CreateTemplate,
   EmailProperties,
   LetterProperties,
-  NHSAppProperties,
-  SMSProperties,
-  TemplateDTO,
+  NhsAppProperties,
+  SmsProperties,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 
 export type FormId =
@@ -26,17 +26,17 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type CreateNHSAppTemplate = CreateTemplate & NHSAppProperties;
+export type CreateNHSAppTemplate = CreateTemplate & NhsAppProperties;
 export type CreateEmailTemplate = CreateTemplate & EmailProperties;
-export type CreateSMSTemplate = CreateTemplate & SMSProperties;
+export type CreateSMSTemplate = CreateTemplate & SmsProperties;
 export type CreateLetterTemplate = CreateTemplate & LetterProperties;
 
-export type NHSAppTemplate = TemplateDTO & NHSAppProperties;
-export type EmailTemplate = TemplateDTO & EmailProperties;
-export type SMSTemplate = TemplateDTO & SMSProperties;
-export type LetterTemplate = TemplateDTO & LetterProperties;
+export type NHSAppTemplate = TemplateDto & NhsAppProperties;
+export type EmailTemplate = TemplateDto & EmailProperties;
+export type SMSTemplate = TemplateDto & SmsProperties;
+export type LetterTemplate = TemplateDto & LetterProperties;
 
-export type TemplateFormState<T = CreateTemplate | TemplateDTO> = FormState & T;
+export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 
 export type PageProps = {
   params: Promise<{

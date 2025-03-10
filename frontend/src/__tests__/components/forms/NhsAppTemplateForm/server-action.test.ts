@@ -2,8 +2,6 @@ import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import {
   NHSAppTemplate,
-  TemplateType,
-  TemplateStatus,
   CreateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';

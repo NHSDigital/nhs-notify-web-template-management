@@ -1,12 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
-import {
-  Language,
-  LetterType,
-  TemplateStatus,
-  TemplateType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 describe('PreviewTemplateDetails component', () => {
   it('matches not yet submitted snapshot', () => {

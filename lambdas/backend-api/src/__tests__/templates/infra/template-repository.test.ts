@@ -8,15 +8,10 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
-  CreateTemplate,
   EmailProperties,
-  Language,
   LetterProperties,
-  LetterType,
-  NHSAppProperties,
-  SMSProperties,
-  TemplateStatus,
-  TemplateType,
+  NhsAppProperties,
+  SmsProperties,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -30,17 +25,14 @@ const ddbMock = mockClient(DynamoDBDocumentClient);
 const emailProperties: EmailProperties = {
   message: 'message',
   subject: 'pickles',
-  templateType: 'EMAIL',
 };
 
-const smsProperties: SMSProperties = {
+const smsProperties: SmsProperties = {
   message: 'message',
-  templateType: 'SMS',
 };
 
-const nhsAppProperties: NHSAppProperties = {
+const nhsAppProperties: NhsAppProperties = {
   message: 'message',
-  templateType: 'NHS_APP',
 };
 
 const letterProperties: LetterProperties = {
@@ -54,7 +46,6 @@ const letterProperties: LetterProperties = {
       fileName: 'test.csv',
     },
   },
-  templateType: 'LETTER',
 };
 
 const createTemplateProperties = {
@@ -63,7 +54,7 @@ const createTemplateProperties = {
 
 const updateTemplateProperties = {
   ...createTemplateProperties,
-  templateStatus: 'NOT_YET_SUBMITTED',
+  templateStatus: 'NOT_YET_SUBMITTED' as const,
 };
 
 const databaseTemplateProperties = {
@@ -76,21 +67,25 @@ const databaseTemplateProperties = {
 };
 
 const emailTemplate: DatabaseTemplate = {
+  templateType: 'EMAIL',
   ...emailProperties,
   ...databaseTemplateProperties,
 };
 
 const smsTemplate: DatabaseTemplate = {
+  templateType: 'SMS',
   ...smsProperties,
   ...databaseTemplateProperties,
 };
 
 const nhsAppTemplate: DatabaseTemplate = {
+  templateType: 'NHS_APP',
   ...nhsAppProperties,
   ...databaseTemplateProperties,
 };
 
 const letterTemplate: DatabaseTemplate = {
+  templateType: 'LETTER',
   ...letterProperties,
   ...databaseTemplateProperties,
 };
@@ -280,10 +275,10 @@ describe('templateRepository', () => {
     });
 
     test.each([
-      emailProperties,
-      smsProperties,
-      nhsAppProperties,
-      letterProperties,
+      { templateType: 'EMAIL' as const, ...emailProperties },
+      { templateType: 'SMS' as const, ...smsProperties },
+      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
+      { templateType: 'LETTER' as const, ...letterProperties },
     ])(
       'should create template of type $templateType',
       async (channelProperties) => {
@@ -418,10 +413,10 @@ describe('templateRepository', () => {
     });
 
     test.each([
-      emailProperties,
-      smsProperties,
-      nhsAppProperties,
-      letterProperties,
+      { templateType: 'EMAIL' as const, ...emailProperties },
+      { templateType: 'SMS' as const, ...smsProperties },
+      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
+      { templateType: 'LETTER' as const, ...letterProperties },
     ])(
       'should update template of type $templateType with name',
       async (channelProperties) => {

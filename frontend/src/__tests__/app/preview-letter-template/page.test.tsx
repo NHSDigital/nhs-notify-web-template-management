@@ -6,19 +6,8 @@ import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLette
 import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  Language,
-  LetterType,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
-import {
-  EMAIL_TEMPLATE,
-  NHS_APP_TEMPLATE,
-  SMS_TEMPLATE,
-} from '../../helpers';
+import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -48,7 +37,7 @@ const templateDTO = {
       virusScanStatus: 'FAILED',
     },
   },
-} satisfies TemplateDTO;
+} satisfies TemplateDto;
 
 const letterTemplate: LetterTemplate = {
   ...templateDTO,
@@ -116,7 +105,7 @@ describe('PreviewLetterTemplatePage', () => {
         pdfTemplate: {
           fileName: undefined as unknown as string,
           currentVersion: 'uuid',
-          virusScanStatus: 'FAILED',
+          virusScanStatus: 'FAILED' as const,
         },
       },
     },

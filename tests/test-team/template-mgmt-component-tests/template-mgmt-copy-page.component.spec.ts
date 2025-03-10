@@ -126,11 +126,7 @@ test.describe('Copy Template Page', () => {
   });
 
   for (const sourceTemplateType of ['nhsApp', 'email', 'sms']) {
-    for (const targetTemplateType of [
-      'EMAIL',
-      'NHS_APP',
-      'SMS',
-    ]) {
+    for (const targetTemplateType of ['EMAIL', 'NHS_APP', 'SMS']) {
       // eslint-disable-next-line no-loop-func
       test(`should copy ${sourceTemplateType} to ${targetTemplateType} template`, async ({
         page,

@@ -1,9 +1,5 @@
 import { mockDeep } from 'jest-mock-extended';
-import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
-import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
   for (const item of list) {
@@ -21,7 +17,7 @@ export const getMockFormData = (formData: Record<string, string>) =>
     get: (key: string) => formData[key],
   });
 
-export const NHS_APP_TEMPLATE: TemplateDTO = {
+export const NHS_APP_TEMPLATE: TemplateDto = {
   id: 'template-id',
   templateType: 'NHS_APP',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -31,7 +27,7 @@ export const NHS_APP_TEMPLATE: TemplateDTO = {
   updatedAt: '2025-01-13T10:19:25.579Z',
 } as const;
 
-export const EMAIL_TEMPLATE: TemplateDTO = {
+export const EMAIL_TEMPLATE: TemplateDto = {
   id: 'template-id',
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -42,7 +38,7 @@ export const EMAIL_TEMPLATE: TemplateDTO = {
   updatedAt: '2025-01-13T10:19:25.579Z',
 } as const;
 
-export const SMS_TEMPLATE: TemplateDTO = {
+export const SMS_TEMPLATE: TemplateDto = {
   id: 'template-id',
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',
@@ -52,7 +48,7 @@ export const SMS_TEMPLATE: TemplateDTO = {
   updatedAt: '2025-01-13T10:19:25.579Z',
 } as const;
 
-export const LETTER_TEMPLATE: TemplateDTO = {
+export const LETTER_TEMPLATE: TemplateDto = {
   id: 'template-id',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',

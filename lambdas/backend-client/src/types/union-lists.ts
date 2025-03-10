@@ -11,13 +11,13 @@ export const TEMPLATE_TYPE_LIST = Object.keys({
   NHS_APP: null,
   SMS: null,
   LETTER: null,
-} satisfies Record<TemplateType, null>);
+} satisfies Record<TemplateType, null>) as TemplateType[];
 
 export const TEMPLATE_STATUS_LIST = Object.keys({
   NOT_YET_SUBMITTED: null,
   SUBMITTED: null,
   DELETED: null,
-} satisfies Record<TemplateStatus, null>);
+} satisfies Record<TemplateStatus, null>) as TemplateStatus[];
 
 export const LANGUAGE_LIST = Object.keys({
   ar: null,
@@ -49,7 +49,7 @@ export const LANGUAGE_LIST = Object.keys({
   tr: null,
   ur: null,
   zh: null,
-} satisfies Record<Language, null>);
+} satisfies Record<Language, null>) as Language[];
 
 export const LETTER_TYPE_LIST = Object.keys({
   x3: null,
@@ -57,10 +57,10 @@ export const LETTER_TYPE_LIST = Object.keys({
   q4: null,
   x0: null,
   x1: null,
-} satisfies Record<LetterType, null>);
+} satisfies Record<LetterType, null>) as LetterType[];
 
 export const VIRUS_SCAN_STATUS_LIST = Object.keys({
   PENDING: null,
   FAILED: null,
   PASSED: null,
-} satisfies Record<VirusScanStatus, null>);
+} satisfies Record<VirusScanStatus, null>) as VirusScanStatus[];

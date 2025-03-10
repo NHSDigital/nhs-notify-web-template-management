@@ -3,13 +3,12 @@ import {
   CreateTemplate,
   ITemplateClient,
   Result,
-  TemplateDTO,
+  TemplateDto,
   UpdateTemplate,
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  TemplateType,
   ErrorCase,
-  isTemplateDTOValid,
+  isTemplateDtoValid,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -22,7 +21,7 @@ export class TemplateClient implements ITemplateClient {
     private readonly enableLetters: boolean
   ) {}
 
-  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
+  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>> {
     const log = logger.child({
       template,
     });
@@ -62,7 +61,7 @@ export class TemplateClient implements ITemplateClient {
   async updateTemplate(
     templateId: string,
     template: UpdateTemplate
-  ): Promise<Result<TemplateDTO>> {
+  ): Promise<Result<TemplateDto>> {
     const log = logger.child({
       templateId,
       template,
@@ -96,7 +95,7 @@ export class TemplateClient implements ITemplateClient {
     return success(templateDTO);
   }
 
-  async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
+  async getTemplate(templateId: string): Promise<Result<TemplateDto>> {
     const log = logger.child({
       templateId,
     });
@@ -109,10 +108,7 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
-    if (
-      getResult.data.templateType === 'LETTER' &&
-      !this.enableLetters
-    ) {
+    if (getResult.data.templateType === 'LETTER' && !this.enableLetters) {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
@@ -126,13 +122,13 @@ export class TemplateClient implements ITemplateClient {
 
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
-  ): TemplateDTO | undefined {
+  ): TemplateDto | undefined {
     const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
 
-    return isTemplateDTOValid(templateDTO);
+    return isTemplateDtoValid(templateDTO);
   }
 
-  async listTemplates(): Promise<Result<TemplateDTO[]>> {
+  async listTemplates(): Promise<Result<TemplateDto[]>> {
     const listResult = await templateRepository.list(this._owner);
 
     if (listResult.error) {
@@ -144,9 +140,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTOs = listResult.data
       .map((template) => this.mapDatabaseObjectToDTO(template))
       .flatMap((t) => t ?? [])
-      .filter(
-        (t) => this.enableLetters || t.templateType !== 'LETTER'
-      );
+      .filter((t) => this.enableLetters || t.templateType !== 'LETTER');
 
     return success(templateDTOs);
   }

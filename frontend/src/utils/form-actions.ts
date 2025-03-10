@@ -3,15 +3,15 @@
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
   CreateTemplate,
-  isTemplateDTOValid,
-  TemplateDTO,
+  isTemplateDtoValid,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 export async function createTemplate(
   template: CreateTemplate
-): Promise<TemplateDTO> {
+): Promise<TemplateDto> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -29,8 +29,8 @@ export async function createTemplate(
 }
 
 export async function saveTemplate(
-  template: TemplateDTO
-): Promise<TemplateDTO> {
+  template: TemplateDto
+): Promise<TemplateDto> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -52,7 +52,7 @@ export async function saveTemplate(
 
 export async function getTemplate(
   templateId: string
-): Promise<TemplateDTO | undefined> {
+): Promise<TemplateDto | undefined> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -68,7 +68,7 @@ export async function getTemplate(
   return data;
 }
 
-export async function getTemplates(): Promise<TemplateDTO[]> {
+export async function getTemplates(): Promise<TemplateDto[]> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -83,8 +83,8 @@ export async function getTemplates(): Promise<TemplateDTO[]> {
   }
 
   const sortedData = data
-    .map((template) => isTemplateDTOValid(template))
-    .filter((template): template is TemplateDTO => template !== undefined)
+    .map((template) => isTemplateDtoValid(template))
+    .filter((template): template is TemplateDto => template !== undefined)
     .sort((a, b) => {
       const aCreatedAt = a.createdAt;
       const bCreatedAt = b.createdAt;

@@ -6,16 +6,8 @@ import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplat
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
-import {
-  EMAIL_TEMPLATE,
-  NHS_APP_TEMPLATE,
-  SMS_TEMPLATE,
-} from '../../helpers';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -36,7 +28,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     const submittedEmailTemplate: EmailTemplate = {
       ...templateDTO,
@@ -71,35 +63,35 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   test.each([
     {
       ...SMS_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...NHS_APP_TEMPLATE,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...EMAIL_TEMPLATE,
       name: undefined as unknown as string,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...EMAIL_TEMPLATE,
       subject: undefined as unknown as string,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...EMAIL_TEMPLATE,
       message: undefined as unknown as string,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...EMAIL_TEMPLATE,
       message: null as unknown as string,
-      templateStatus: 'SUBMITTED',
+      templateStatus: 'SUBMITTED' as const,
     },
     {
       ...EMAIL_TEMPLATE,
-      templateStatus: 'NOT_YET_SUBMITTED',
+      templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, subjectLine is $subject, message is $message, and status is $templateStatus',

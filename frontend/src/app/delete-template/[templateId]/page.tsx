@@ -2,7 +2,6 @@
 
 import {
   PageProps,
-  TemplateStatus,
   validateNonSubmittedTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';

@@ -2,9 +2,7 @@ import { Language, LetterType } from 'nhs-notify-backend-client';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
-  TemplateStatus,
   templateStatusToDisplayMappings,
-  TemplateType,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   viewSubmittedTemplatePages,
@@ -12,15 +10,11 @@ import {
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeDisplayMappings('NHS_APP')).toEqual(
-      'NHS App message'
-    );
+    expect(templateTypeDisplayMappings('NHS_APP')).toEqual('NHS App message');
   });
 
   test('SMS', () => {
-    expect(templateTypeDisplayMappings('SMS')).toEqual(
-      'Text message (SMS)'
-    );
+    expect(templateTypeDisplayMappings('SMS')).toEqual('Text message (SMS)');
   });
 
   test('EMAIL', () => {
@@ -53,15 +47,13 @@ describe('letterTypeDisplayMappings', () => {
 
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
-    expect(
-      templateStatusToDisplayMappings('NOT_YET_SUBMITTED')
-    ).toEqual('Not yet submitted');
+    expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(
+      'Not yet submitted'
+    );
   });
 
   test('SUBMITTED', () => {
-    expect(templateStatusToDisplayMappings('SUBMITTED')).toEqual(
-      'Submitted'
-    );
+    expect(templateStatusToDisplayMappings('SUBMITTED')).toEqual('Submitted');
   });
 
   test('DELETED', () => {
@@ -71,15 +63,11 @@ describe('templateStatusToDisplayMappings', () => {
 
 describe('templateTypeToUrlTextMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual(
-      'nhs-app'
-    );
+    expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual('nhs-app');
   });
 
   test('SMS', () => {
-    expect(templateTypeToUrlTextMappings('SMS')).toEqual(
-      'text-message'
-    );
+    expect(templateTypeToUrlTextMappings('SMS')).toEqual('text-message');
   });
 
   test('EMAIL', () => {
@@ -89,9 +77,7 @@ describe('templateTypeToUrlTextMappings', () => {
 
 describe('previewTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(previewTemplatePages('NHS_APP')).toEqual(
-      'preview-nhs-app-template'
-    );
+    expect(previewTemplatePages('NHS_APP')).toEqual('preview-nhs-app-template');
   });
 
   test('SMS', () => {
@@ -101,9 +87,7 @@ describe('previewTemplatePages', () => {
   });
 
   test('EMAIL', () => {
-    expect(previewTemplatePages('EMAIL')).toEqual(
-      'preview-email-template'
-    );
+    expect(previewTemplatePages('EMAIL')).toEqual('preview-email-template');
   });
 });
 

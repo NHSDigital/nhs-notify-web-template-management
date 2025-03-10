@@ -3,8 +3,6 @@ import { getMockFormData } from '@testhelpers';
 import {
   EmailTemplate,
   NHSAppTemplate,
-  TemplateStatus,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { createTemplate } from '@utils/form-actions';
@@ -54,9 +52,8 @@ test('submit form - create email template from non-email template', async () => 
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
+  const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
-    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
     createdAt: 'today',
@@ -67,6 +64,7 @@ test('submit form - create email template from non-email template', async () => 
     {
       template: {
         ...testTemplate,
+        templateType: 'NHS_APP' as const,
         id: 'template-id',
       },
     },
@@ -92,9 +90,8 @@ test('submit form - create email template from email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<EmailTemplate, 'id'> = {
+  const testTemplate: Omit<EmailTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
-    templateType: 'EMAIL',
     name: 'template-name',
     message: 'template-message',
     subject: 'template-subject',
@@ -106,6 +103,7 @@ test('submit form - create email template from email template', async () => {
     {
       template: {
         ...testTemplate,
+        templateType: 'EMAIL',
         id: 'template-id',
       },
     },
@@ -131,9 +129,8 @@ test('submit form - create non-email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
+  const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
-    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
     createdAt: 'today',
@@ -144,6 +141,7 @@ test('submit form - create non-email template', async () => {
     {
       template: {
         ...testTemplate,
+        templateType: 'NHS_APP',
         id: 'template-id',
       },
     },

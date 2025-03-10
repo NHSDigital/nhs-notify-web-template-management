@@ -1,4 +1,3 @@
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import {
   BoldText,
@@ -11,6 +10,7 @@ import {
   NumberedList,
 } from './formats';
 import { JSX } from 'react';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 const messageFormattingContent = content.components.messageFormatting;
 

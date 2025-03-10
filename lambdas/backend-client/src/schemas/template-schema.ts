@@ -1,20 +1,15 @@
 import { z } from 'zod';
 import {
-  ChannelTemplate,
+  BaseTemplate,
   CreateTemplate,
   EmailProperties,
   FileDetails,
-  Language,
   LetterFiles,
   LetterProperties,
-  LetterType,
-  NHSAppProperties,
-  SMSProperties,
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
+  NhsAppProperties,
+  SmsProperties,
+  TemplateDto,
   UpdateTemplate,
-  VirusScanStatus,
 } from '../types/generated';
 import {
   MAX_EMAIL_CHARACTER_LENGTH,
@@ -23,16 +18,29 @@ import {
   NHS_APP_DISALLOWED_CHARACTERS,
 } from './constants';
 import { schemaFor } from './schema-for';
+import {
+  LANGUAGE_LIST,
+  LETTER_TYPE_LIST,
+  TEMPLATE_STATUS_LIST,
+  TEMPLATE_TYPE_LIST,
+  VIRUS_SCAN_STATUS_LIST,
+} from '../types/union-lists';
 
-const $VirusScanStatus = schemaFor<VirusScanStatus>()(
-  z.nativeEnum(VirusScanStatus)
-);
+const [firstTemplateType, ...remainingTemplateTypes] = TEMPLATE_TYPE_LIST;
+const [firstTemplateStatus, ...remainingTemplateStatuses] =
+  TEMPLATE_STATUS_LIST;
+const [firstLanguage, ...remainingLanguages] = LANGUAGE_LIST;
+const [firstLetterType, ...remainingLetterTypes] = LETTER_TYPE_LIST;
+const [firstVirusScanStatus, ...remainingVirusScanStatus] =
+  VIRUS_SCAN_STATUS_LIST;
 
 const $FileDetails = schemaFor<FileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
     currentVersion: z.string().optional(),
-    virusScanStatus: $'optional'(),
+    virusScanStatus: z
+      .enum([firstVirusScanStatus, ...remainingVirusScanStatus])
+      .optional(),
   })
 );
 
@@ -46,15 +54,13 @@ const $LetterFiles = schemaFor<LetterFiles>()(
 
 export const $EmailProperties = schemaFor<EmailProperties>()(
   z.object({
-    templateType: z.literal('EMAIL'),
     subject: z.string().trim().min(1),
     message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
   })
 );
 
-export const $NHSAppProperties = schemaFor<NHSAppProperties>()(
+export const $NhsAppProperties = schemaFor<NhsAppProperties>()(
   z.object({
-    templateType: z.literal('NHS_APP'),
     message: z
       .string()
       .trim()
@@ -67,57 +73,79 @@ export const $NHSAppProperties = schemaFor<NHSAppProperties>()(
   })
 );
 
-export const $SMSProperties = schemaFor<SMSProperties>()(
+export const $SmsProperties = schemaFor<SmsProperties>()(
   z.object({
-    templateType: z.literal('SMS'),
     message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
 export const $LetterProperties = schemaFor<LetterProperties>()(
   z.object({
-    templateType: z.literal('LETTER'),
-    letterType: z.nativeEnum(LetterType),
-    language: z.nativeEnum(Language),
+    letterType: z.enum([firstLetterType, ...remainingLetterTypes]),
+    language: z.enum([firstLanguage, ...remainingLanguages]),
     files: $LetterFiles,
   })
 );
 
-export const $ChannelTemplate = schemaFor<ChannelTemplate>()(
-  z.discriminatedUnion('templateType', [
-    $NHSAppProperties,
-    $EmailProperties,
-    $SMSProperties,
-    $LetterProperties,
-  ])
+export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
+  z.object({
+    name: z.string().trim().min(1),
+    templateType: z.enum([firstTemplateType, ...remainingTemplateTypes]),
+  })
+);
+
+const $EmailPropertiesWithType = $EmailProperties.merge(
+  z.object({ templateType: z.literal('EMAIL') })
+);
+const $NhsAppPropertiesWithType = $NhsAppProperties.merge(
+  z.object({ templateType: z.literal('NHS_APP') })
+);
+const $SmsPropertiesWithType = $SmsProperties.merge(
+  z.object({ templateType: z.literal('SMS') })
+);
+const $LetterPropertiesWithType = $LetterProperties.merge(
+  z.object({ templateType: z.literal('LETTER') })
 );
 
 export const $CreateTemplateSchema = schemaFor<CreateTemplate>()(
-  z.intersection(
-    $ChannelTemplate,
-    z.object({
-      name: z.string().trim().min(1),
-    })
-  )
+  z.union([
+    $BaseTemplateSchema.merge($EmailPropertiesWithType),
+    $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
+    $BaseTemplateSchema.merge($SmsPropertiesWithType),
+    $BaseTemplateSchema.merge($LetterPropertiesWithType),
+  ])
 );
 
-export const $UpdateTemplateSchema = z.intersection(
-  $ChannelTemplate,
-  z.object({
-    name: z.string().trim().min(1),
-    templateStatus: z.nativeEnum(TemplateStatus),
+const $UpdateTemplateFields = z
+  .object({
+    templateStatus: z.enum([firstTemplateStatus, ...remainingTemplateStatuses]),
   })
+  .merge($BaseTemplateSchema);
+
+export const $UpdateTemplateSchema = schemaFor<UpdateTemplate>()(
+  z.union([
+    $UpdateTemplateFields.merge($EmailPropertiesWithType),
+    $UpdateTemplateFields.merge($NhsAppPropertiesWithType),
+    $UpdateTemplateFields.merge($SmsPropertiesWithType),
+    $UpdateTemplateFields.merge($LetterPropertiesWithType),
+  ])
 );
 
-export const $TemplateDTOSchema = z.intersection(
-  $ChannelTemplate,
-  z.object({
-    id: z.string(),
-    name: z.string().trim().min(1),
-    templateStatus: z.nativeEnum(TemplateStatus),
-    createdAt: z.string(),
-    updatedAt: z.string(),
+const $TemplateDtoFields = z
+  .object({
+    id: z.string().trim().min(1),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
   })
+  .merge($UpdateTemplateFields);
+
+export const $TemplateDtoSchema = schemaFor<TemplateDto>()(
+  z.union([
+    $TemplateDtoFields.merge($EmailPropertiesWithType),
+    $TemplateDtoFields.merge($NhsAppPropertiesWithType),
+    $TemplateDtoFields.merge($SmsPropertiesWithType),
+    $TemplateDtoFields.merge($LetterPropertiesWithType),
+  ])
 );
 
 export const isCreateTemplateValid = (
@@ -128,5 +156,5 @@ export const isUpdateTemplateValid = (
   input: unknown
 ): UpdateTemplate | undefined => $UpdateTemplateSchema.safeParse(input).data;
 
-export const isTemplateDTOValid = (input: unknown): TemplateDTO | undefined =>
-  $TemplateDTOSchema.safeParse(input).data;
+export const isTemplateDtoValid = (input: unknown): TemplateDto | undefined =>
+  $TemplateDtoSchema.safeParse(input).data;

@@ -5,11 +5,7 @@ import EditSmsTemplatePage from '@app/edit-text-message-template/[templateId]/pa
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
@@ -27,7 +23,7 @@ const templateDTO = {
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-} satisfies TemplateDTO;
+} satisfies TemplateDto;
 
 describe('EditSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);

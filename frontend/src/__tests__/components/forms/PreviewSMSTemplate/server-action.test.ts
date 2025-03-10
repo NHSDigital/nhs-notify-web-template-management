@@ -3,11 +3,7 @@ import {
   $FormSchema,
 } from '@forms/PreviewSMSTemplate';
 import { redirect } from 'next/navigation';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
 
 jest.mock('next/navigation');

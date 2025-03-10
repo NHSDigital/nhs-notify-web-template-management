@@ -1,5 +1,4 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const header = {
   serviceName: 'Notify',

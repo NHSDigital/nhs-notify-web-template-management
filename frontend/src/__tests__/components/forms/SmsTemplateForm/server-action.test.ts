@@ -3,11 +3,7 @@ import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -74,7 +70,7 @@ describe('CreateSmsTemplate server actions', () => {
       ...initialState,
       name: 'template-name',
       message: 'template-message',
-    } as TemplateDTO);
+    } as TemplateDto);
 
     await processFormActions(
       initialState,
@@ -104,7 +100,7 @@ describe('CreateSmsTemplate server actions', () => {
       id: 'new-template-id',
       name: 'template-name',
       message: 'template-message',
-    } as TemplateDTO);
+    } as TemplateDto);
 
     await processFormActions(
       initialDraftState,

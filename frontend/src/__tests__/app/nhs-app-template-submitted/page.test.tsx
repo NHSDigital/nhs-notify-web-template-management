@@ -2,14 +2,10 @@
  * @jest-environment node
  */
 import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -28,7 +24,7 @@ describe('NhsAppTemplateSubmittedPage', () => {
       templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
-    } satisfies Partial<TemplateDTO>;
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValueOnce({
       ...template,
