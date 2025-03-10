@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import JsCookie from 'js-cookie';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
-export default function Page() {
+export const SignOut = ({ children }: { children: React.ReactNode }) => {
   const { signOut, authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   useEffect(() => {
@@ -17,7 +17,17 @@ export default function Page() {
 
   return (
     <NHSNotifyMain>
-      <p>{authStatus === 'authenticated' ? 'Signing Out' : 'Signed Out'}</p>
+      <Suspense fallback={<p>Loading...</p>}>
+        {authStatus === 'authenticated' ? <p>Signing out</p> : children}
+      </Suspense>
     </NHSNotifyMain>
+  );
+};
+
+export default function Page() {
+  return (
+    <SignOut>
+      <p>Signed Out</p>
+    </SignOut>
   );
 }
