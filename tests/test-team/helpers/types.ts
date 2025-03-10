@@ -19,7 +19,7 @@ type File = {
 };
 
 type TypeSpecificProperties = {
-  message: string;
+  message?: string;
   subject?: string;
   letterType?: string;
   language?: string;

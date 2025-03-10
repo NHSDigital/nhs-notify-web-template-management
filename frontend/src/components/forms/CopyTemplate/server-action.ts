@@ -7,8 +7,8 @@ import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
 import {
   TEMPLATE_TYPE_LIST,
-  TemplateDto,
   TemplateType,
+  ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 
 const [firstType, ...remainingTypes] = TEMPLATE_TYPE_LIST;
@@ -20,7 +20,7 @@ const $CopyTemplate = z.object({
 });
 
 type CopyTemplateActionState = FormState & {
-  template: TemplateDto & {
+  template: ValidatedTemplateDto & {
     templateType: Exclude<TemplateType, 'LETTER'>;
   };
 };

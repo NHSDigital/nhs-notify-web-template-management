@@ -128,7 +128,7 @@ test.describe('POST /v1/template/:templateId', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL' | 'LETTER'",
       },
     });
   });
@@ -171,7 +171,7 @@ test.describe('POST /v1/template/:templateId', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL' | 'LETTER'",
       },
     });
   });

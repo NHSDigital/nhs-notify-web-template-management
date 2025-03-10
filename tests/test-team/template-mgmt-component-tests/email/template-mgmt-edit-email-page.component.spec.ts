@@ -16,7 +16,7 @@ import {
 
 function createTemplates(owner: string) {
   return {
-    empty: TemplateFactory.createEmailTemplate('empty-email-template', owner),
+    edit: TemplateFactory.createEmailTemplate('empty-email-template', owner),
     submit: TemplateFactory.createEmailTemplate('submit-email-template', owner),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       'submit-and-return-create-email-template',
@@ -64,10 +64,10 @@ test.describe('Edit Email message template Page', () => {
   }) => {
     const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-    await editEmailTemplatePage.loadPage(templates.empty.id);
+    await editEmailTemplatePage.loadPage(templates.edit.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-email-template/${templates.empty.id}`
+      `${baseURL}/templates/edit-email-template/${templates.edit.id}`
     );
 
     await expect(editEmailTemplatePage.pageHeader).toHaveText(
@@ -79,7 +79,7 @@ test.describe('Edit Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtEditEmailPage(page),
-        id: templates.empty.id,
+        id: templates.edit.id,
         baseURL,
       };
 
@@ -127,7 +127,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.edit.id);
 
       await editEmailTemplatePage.messageFormatting.assertDetailsOpen([
         editEmailTemplatePage.messageFormatting.lineBreaksAndParagraphs,
@@ -170,7 +170,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.edit.id);
 
       await editEmailTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -236,7 +236,11 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.nameInput.fill('');
+
+      await editEmailTemplatePage.subjectLineInput.fill('');
+
+      await editEmailTemplatePage.messageTextArea.fill('');
 
       await editEmailTemplatePage.clickSaveAndPreviewButton();
 
@@ -272,7 +276,9 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.edit.id);
+
+      await editEmailTemplatePage.nameInput.fill('');
 
       await editEmailTemplatePage.subjectLineInput.fill(
         'template-subject-line'
@@ -300,9 +306,11 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.edit.id);
 
       await editEmailTemplatePage.nameInput.fill('template-name');
+
+      await editEmailTemplatePage.subjectLineInput.fill('');
 
       await editEmailTemplatePage.messageTextArea.fill('template-message');
 
@@ -327,13 +335,15 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.edit.id);
 
       await editEmailTemplatePage.nameInput.fill('template-name');
 
       await editEmailTemplatePage.subjectLineInput.fill(
         'template-subject-line'
       );
+
+      await editEmailTemplatePage.messageTextArea.fill('');
 
       await editEmailTemplatePage.clickSaveAndPreviewButton();
 

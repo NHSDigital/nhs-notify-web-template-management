@@ -12,7 +12,7 @@ import {
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
-  UpdateTemplate,
+  ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { DatabaseTemplate, templateRepository } from '../../../templates/infra';
@@ -420,7 +420,7 @@ describe('templateRepository', () => {
     ])(
       'should update template of type $templateType with name',
       async (channelProperties) => {
-        const updatedTemplate: UpdateTemplate = {
+        const updatedTemplate: ValidatedUpdateTemplate = {
           ...channelProperties,
           ...updateTemplateProperties,
           name: 'updated-name',
@@ -457,7 +457,7 @@ describe('templateRepository', () => {
     );
 
     test('should update template to deleted state', async () => {
-      const updatedTemplate: UpdateTemplate = {
+      const updatedTemplate: ValidatedUpdateTemplate = {
         name: 'updated-name',
         message: 'updated-message',
         templateStatus: 'DELETED',

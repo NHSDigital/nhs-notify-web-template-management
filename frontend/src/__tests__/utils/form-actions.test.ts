@@ -283,29 +283,14 @@ describe('form-actions', () => {
       { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '09', createdAt: '' },
-      { ...baseTemplate, id: '10', createdAt: '' },
       { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '07', createdAt: '' },
       { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
     ];
 
     // 06 is the newest, 08 is the oldest.
-    // Templates without a createdAt, 07, 09 and 10, go at the end.
     // 01 - 05 all have the same createdAt.
-    const expectedOrder = [
-      '06',
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '08',
-      '07',
-      '09',
-      '10',
-    ];
+    const expectedOrder = ['06', '01', '02', '03', '04', '05', '08'];
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: templates,

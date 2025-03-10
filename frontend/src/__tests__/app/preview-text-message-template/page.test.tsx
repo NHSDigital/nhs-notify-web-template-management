@@ -80,7 +80,7 @@ describe('PreviewSMSTemplatePage', () => {
       message: null as unknown as string,
     },
   ])(
-    'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
+    'should redirect to invalid-template when template is $templateType and name is $name and message is $message',
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 

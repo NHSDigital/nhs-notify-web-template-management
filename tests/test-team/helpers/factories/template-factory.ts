@@ -5,14 +5,15 @@ export const TemplateFactory = {
   createEmailTemplate: (
     id: string,
     owner: string,
-    name: string = ''
+    name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
       id,
       owner,
       name,
       templateType: 'EMAIL',
-      subject: '',
+      message: 'test-message',
+      subject: 'test-subject',
     });
   },
 
@@ -20,8 +21,9 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
-      name: '',
+      name: 'test',
       templateType: 'SMS',
+      message: 'test-message',
     });
   },
 
@@ -29,8 +31,9 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
-      name: '',
+      name: 'test-name',
       templateType: 'NHS_APP',
+      message: 'test-message',
     });
   },
 
@@ -70,7 +73,6 @@ export const TemplateFactory = {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      message: '',
       ...template,
     };
   },

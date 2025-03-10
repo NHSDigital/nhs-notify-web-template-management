@@ -479,16 +479,7 @@
               {
                 "$ref": "#/components/schemas/LetterProperties"
               }
-            ],
-            "discriminator": {
-              "propertyName": "templateType",
-              "mapping": {
-                "NHS_APP": "#/components/schemas/NhsAppProperties",
-                "EMAIL": "#/components/schemas/EmailProperties",
-                "SMS": "#/components/schemas/SmsProperties",
-                "LETTER": "#/components/schemas/LetterProperties"
-              }
-            }
+            ]
           }
         ]
       },
@@ -523,16 +514,7 @@
               {
                 "$ref": "#/components/schemas/LetterProperties"
               }
-            ],
-            "discriminator": {
-              "propertyName": "templateType",
-              "mapping": {
-                "NHS_APP": "#/components/schemas/NhsAppProperties",
-                "EMAIL": "#/components/schemas/EmailProperties",
-                "SMS": "#/components/schemas/SmsProperties",
-                "LETTER": "#/components/schemas/LetterProperties"
-              }
-            }
+            ]
           }
         ]
       },
@@ -581,16 +563,7 @@
               {
                 "$ref": "#/components/schemas/LetterProperties"
               }
-            ],
-            "discriminator": {
-              "propertyName": "templateType",
-              "mapping": {
-                "NHS_APP": "#/components/schemas/NhsAppProperties",
-                "EMAIL": "#/components/schemas/EmailProperties",
-                "SMS": "#/components/schemas/SmsProperties",
-                "LETTER": "#/components/schemas/LetterProperties"
-              }
-            }
+            ]
           }
         ]
       },

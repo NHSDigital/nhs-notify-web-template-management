@@ -5,7 +5,7 @@ import { mockDeep } from 'jest-mock-extended';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CopyTemplate, ValidCopyType } from '@forms/CopyTemplate/CopyTemplate';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { ValidatedTemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 
@@ -32,7 +32,9 @@ describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
     const container = render(
       <CopyTemplate
-        template={mockDeep<TemplateDto & { templateType: ValidCopyType }>()}
+        template={mockDeep<
+          ValidatedTemplateDto & { templateType: ValidCopyType }
+        >()}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();
@@ -82,7 +84,9 @@ describe('Choose template page', () => {
 
     const container = render(
       <CopyTemplate
-        template={mockDeep<TemplateDto & { templateType: ValidCopyType }>()}
+        template={mockDeep<
+          ValidatedTemplateDto & { templateType: ValidCopyType }
+        >()}
       />
     );
     expect(container.asFragment()).toMatchSnapshot();

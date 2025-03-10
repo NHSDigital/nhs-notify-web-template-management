@@ -7,6 +7,7 @@ import {
   NhsAppProperties,
   SmsProperties,
   UpdateTemplate,
+  ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
   ConditionalCheckFailedException,
@@ -191,7 +192,7 @@ const attributeValuesFromMapAndTemplate = <T>(
   return attributeValues;
 };
 
-const getChannelAttributeValues = (template: UpdateTemplate) => {
+const getChannelAttributeValues = (template: ValidatedUpdateTemplate) => {
   let values = {};
 
   if (template.templateType === 'NHS_APP') {
@@ -224,7 +225,7 @@ const getChannelAttributeValues = (template: UpdateTemplate) => {
 
 const update = async (
   templateId: string,
-  template: UpdateTemplate,
+  template: ValidatedUpdateTemplate,
   owner: string
 ): Promise<ApplicationResult<DatabaseTemplate>> => {
   const updateExpression = [

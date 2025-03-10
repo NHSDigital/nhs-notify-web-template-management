@@ -181,7 +181,7 @@ test.describe('Copy Template Page', () => {
           `/templates/preview-${templateTypeToUrlTextMappings[targetTemplateType]}-template/${newTemplateId}`
         );
 
-        await expect(page.getByText(template.message)).toBeVisible();
+        await expect(page.getByText(template.message || '')).toBeVisible();
 
         if (targetTemplateType === 'EMAIL') {
           const expectedSubject = template.subject ?? 'Enter a subject line';
