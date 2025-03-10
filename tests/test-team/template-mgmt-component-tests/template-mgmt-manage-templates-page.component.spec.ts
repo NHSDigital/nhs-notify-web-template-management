@@ -26,7 +26,7 @@ function createTemplates(owner: string) {
       message: 'test example message',
       subject: 'test example subject',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-11T11:11:11.111Z',
     }),
     emailNotYetSubmitted: TemplateFactory.create({
@@ -37,7 +37,7 @@ function createTemplates(owner: string) {
       message: 'test example message',
       subject: 'test example subject',
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-11T10:10:10.100Z',
     }),
     smsSubmitted: TemplateFactory.create({
@@ -46,7 +46,7 @@ function createTemplates(owner: string) {
       name: 'sms-submitted_manage-templates-page',
       message: 'test example message',
       templateType: 'SMS',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-10T11:11:11.111Z',
     }),
     smsNotYetSubmitted: TemplateFactory.create({
@@ -55,7 +55,7 @@ function createTemplates(owner: string) {
       name: 'sms-not-yet-submitted_manage-templates-page',
       message: 'test example message',
       templateType: 'SMS',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-10T10:10:10.100Z',
     }),
     nhsAppSubmitted: TemplateFactory.create({
@@ -64,7 +64,7 @@ function createTemplates(owner: string) {
       name: 'nhs-app-submitted_manage-templates-page',
       message: 'test example message',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-09T11:11:11.111Z',
     }),
     nhsAppNotYetSubmitted: TemplateFactory.create({
@@ -73,7 +73,7 @@ function createTemplates(owner: string) {
       name: 'nhs-app-not-yet-submitted_manage-templates-page',
       message: 'test example message',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-09T10:10:10.100Z',
     }),
   };

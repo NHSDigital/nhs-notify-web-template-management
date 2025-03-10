@@ -54,7 +54,7 @@ const get = async (
 
     const item = response.Item as DatabaseTemplate;
 
-    if (item.templateStatus === TemplateStatus.DELETED) {
+    if (item.templateStatus === 'DELETED') {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
@@ -74,7 +74,7 @@ const create = async (
     id: uuidv4(),
     owner,
     version: 1,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     createdAt: date,
     updatedAt: date,
   };
@@ -251,12 +251,12 @@ const update = async (
     ':name': template.name,
     ':templateStatus': template.templateStatus,
     ':updateAt': new Date().toISOString(),
-    ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
+    ':not_yet_submitted': 'NOT_YET_SUBMITTED',
     ':templateType': template.templateType,
     ...getChannelAttributeValues(template),
   };
 
-  if (template.templateStatus === TemplateStatus.DELETED) {
+  if (template.templateStatus === 'DELETED') {
     updateExpression.push('#ttl = :ttl');
     expressionAttributeNames = {
       ...expressionAttributeNames,
@@ -291,7 +291,7 @@ const update = async (
     if (error instanceof ConditionalCheckFailedException) {
       if (
         !error.Item ||
-        error.Item.templateStatus.S === TemplateStatus.DELETED
+        error.Item.templateStatus.S === 'DELETED'
       ) {
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
@@ -300,7 +300,7 @@ const update = async (
         );
       }
 
-      if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
+      if (error.Item.templateStatus.S !== 'NOT_YET_SUBMITTED') {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
           `Template with status ${error.Item.templateStatus.S} cannot be updated`,
@@ -341,7 +341,7 @@ const list = async (
       },
       ExpressionAttributeValues: {
         ':owner': owner,
-        ':deletedStatus': TemplateStatus.DELETED,
+        ':deletedStatus': 'DELETED',
       },
       FilterExpression: '#status <> :deletedStatus',
     };

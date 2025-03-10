@@ -128,7 +128,7 @@ describe('Template API - Update', () => {
     const update: UpdateTemplate = {
       name: 'updated-name',
       message: 'message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       templateType: 'SMS',
     };
     const response: TemplateDTO = {

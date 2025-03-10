@@ -15,7 +15,7 @@ const mockTemplates: TemplateDTO[] = [
   {
     id: '1',
     templateType: 'NHS_APP',
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Template 1',
     message: 'Message',
     createdAt: '2025-01-13T10:19:25.579Z',

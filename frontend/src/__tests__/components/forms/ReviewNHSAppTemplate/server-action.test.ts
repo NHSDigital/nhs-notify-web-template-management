@@ -16,7 +16,7 @@ describe('previewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
     templateType: 'NHS_APP',
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Example name',
     message: 'Example message',
     validationError: undefined,

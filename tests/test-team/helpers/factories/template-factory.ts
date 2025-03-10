@@ -71,7 +71,7 @@ export const TemplateFactory = {
     }
   ): Template => {
     return {
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

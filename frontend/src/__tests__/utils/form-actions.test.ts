@@ -38,7 +38,7 @@ describe('form-actions', () => {
     const responseData = {
       id: 'id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -106,7 +106,7 @@ describe('form-actions', () => {
     const responseData = {
       id: 'id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -120,7 +120,7 @@ describe('form-actions', () => {
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -148,7 +148,7 @@ describe('form-actions', () => {
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -172,7 +172,7 @@ describe('form-actions', () => {
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -188,7 +188,7 @@ describe('form-actions', () => {
     const responseData = {
       id: 'id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -235,7 +235,7 @@ describe('form-actions', () => {
     const responseData = {
       id: 'id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -277,7 +277,7 @@ describe('form-actions', () => {
   test('getTemplates - order by createdAt and then id', async () => {
     const baseTemplate = {
       templateType: 'SMS',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',

@@ -30,7 +30,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
@@ -40,7 +40,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
     const submittedNHSAppTemplate: NHSAppTemplate = {
       ...templateDTO,
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -69,39 +69,39 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   test.each([
     {
       ...EMAIL_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...SMS_TEMPLATE,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
       message: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
       name: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     {
       ...NHS_APP_TEMPLATE,
       name: 'template-name',
       message: 'template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, message is $message, and status is $templateStatus',

@@ -31,7 +31,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   try {
     await saveTemplate({
       ...validatedTemplate,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     });
   } catch (error) {
     logger.error('Failed to submit template', {

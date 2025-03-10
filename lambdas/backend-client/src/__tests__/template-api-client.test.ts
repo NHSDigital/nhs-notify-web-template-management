@@ -91,7 +91,7 @@ describe('TemplateAPIClient', () => {
     const result = await client.updateTemplate('real-id', {
       name: 'test',
       message: '<html></html>',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
     });
 
@@ -113,7 +113,7 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
     };
 
@@ -127,7 +127,7 @@ describe('TemplateAPIClient', () => {
     const result = await client.updateTemplate('real-id', {
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
     });
 
@@ -167,7 +167,7 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
     };
 
@@ -210,7 +210,7 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
     };
 

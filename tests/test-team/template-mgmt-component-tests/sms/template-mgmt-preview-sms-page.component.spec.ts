@@ -27,7 +27,7 @@ async function createTemplates() {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       templateType: 'SMS',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {

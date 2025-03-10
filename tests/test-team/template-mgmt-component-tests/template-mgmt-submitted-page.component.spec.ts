@@ -22,7 +22,7 @@ function createTemplates(owner: string) {
     email: TemplateFactory.create({
       owner,
       templateType: 'EMAIL',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       id: 'valid-email-template',
       name: 'test-template-email',
       subject: 'test-template-subject',
@@ -31,7 +31,7 @@ function createTemplates(owner: string) {
     'text-message': TemplateFactory.create({
       owner,
       templateType: 'SMS',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       id: 'valid-sms-template',
       name: 'test-template-sms',
       message: 'test example content',
@@ -39,7 +39,7 @@ function createTemplates(owner: string) {
     'nhs-app': TemplateFactory.create({
       owner,
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       id: 'valid-nhs-app-template',
       name: 'test-template-nhs-app',
       message: 'test example content',

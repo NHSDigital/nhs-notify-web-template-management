@@ -22,7 +22,7 @@ import {
 const manageTemplatesContent = content.pages.manageTemplates;
 
 const generateViewTemplateLink = (template: TemplateDTO): string => {
-  if (template.templateStatus === TemplateStatus.SUBMITTED) {
+  if (template.templateStatus === 'SUBMITTED') {
     return `/${viewSubmittedTemplatePages(template.templateType)}/${template.id}`;
   }
 
@@ -83,7 +83,7 @@ export function ManageTemplates({
                 <Table.Cell>
                   <Tag
                     color={
-                      template.templateStatus === TemplateStatus.SUBMITTED
+                      template.templateStatus === 'SUBMITTED'
                         ? 'grey'
                         : undefined
                     }
@@ -108,7 +108,7 @@ export function ManageTemplates({
                     </p>
                   )}
                   {template.templateStatus ===
-                  TemplateStatus.NOT_YET_SUBMITTED ? (
+                  'NOT_YET_SUBMITTED' ? (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link href={`/delete-template/${template.id}`}>
                         {manageTemplatesContent.tableHeadings.action.delete}

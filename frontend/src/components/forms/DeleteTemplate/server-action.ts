@@ -12,7 +12,7 @@ export const deleteTemplateYesAction = async (
 ): Promise<never> => {
   await saveTemplate({
     ...template,
-    templateStatus: TemplateStatus.DELETED,
+    templateStatus: 'DELETED',
   });
 
   redirect('/manage-templates', RedirectType.push);

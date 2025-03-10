@@ -67,9 +67,9 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
 
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
-    [TemplateStatus.NOT_YET_SUBMITTED]: 'Not yet submitted',
-    [TemplateStatus.SUBMITTED]: 'Submitted',
-    [TemplateStatus.DELETED]: '', // will not be shown in the UI
+    NOT_YET_SUBMITTED: 'Not yet submitted',
+    SUBMITTED: 'Submitted',
+    DELETED: '', // will not be shown in the UI
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>

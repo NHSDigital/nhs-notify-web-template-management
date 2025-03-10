@@ -26,14 +26,14 @@ export const zodValidate = <T extends z.Schema>(
 export const $SubmittedTemplate = z.intersection(
   $TemplateDTOSchema,
   z.object({
-    templateStatus: z.literal(TemplateStatus.SUBMITTED),
+    templateStatus: z.literal('SUBMITTED'),
   })
 );
 
 export const $NonSubmittedTemplate = z.intersection(
   $TemplateDTOSchema,
   z.object({
-    templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
+    templateStatus: z.literal('NOT_YET_SUBMITTED'),
   })
 );
 

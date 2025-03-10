@@ -104,7 +104,7 @@ describe('templateClient', () => {
         id: 'id',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       const template: DatabaseTemplate = {
@@ -146,7 +146,7 @@ describe('templateClient', () => {
         id: 'id',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       const template: DatabaseTemplate = {
@@ -185,7 +185,7 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -205,7 +205,7 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -236,7 +236,7 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -245,7 +245,7 @@ describe('templateClient', () => {
         id: 'id',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       const template: DatabaseTemplate = {
@@ -278,7 +278,7 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -338,7 +338,7 @@ describe('templateClient', () => {
         subject: 'subject',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       const template: DatabaseTemplate = {
@@ -373,7 +373,7 @@ describe('templateClient', () => {
           name: 'name',
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateStatus: 'NOT_YET_SUBMITTED',
           letterType: LetterType.Q4,
           language: Language.FR,
           owner: 'owner',
@@ -402,7 +402,7 @@ describe('templateClient', () => {
         subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       getMock.mockResolvedValueOnce({
@@ -449,7 +449,7 @@ describe('templateClient', () => {
         name: 'name',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         letterType: LetterType.Q4,
         language: Language.FR,
         files: {
@@ -488,7 +488,7 @@ describe('templateClient', () => {
         subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
       const template2: TemplateDTO = {
         id: undefined as unknown as string,
@@ -498,7 +498,7 @@ describe('templateClient', () => {
         subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       listMock.mockResolvedValueOnce({
@@ -526,7 +526,7 @@ describe('templateClient', () => {
         subject: 'subject',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       };
 
       listMock.mockResolvedValueOnce({

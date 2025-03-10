@@ -62,7 +62,7 @@ const setup = async () => {
             virusScanStatus: VirusScanStatus.PENDING,
           },
         },
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       } satisfies LetterTemplate & { owner: string },
     })
   );

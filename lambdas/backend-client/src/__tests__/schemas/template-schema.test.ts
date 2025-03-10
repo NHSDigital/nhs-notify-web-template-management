@@ -238,7 +238,7 @@ describe('Template schemas', () => {
   describe('$UpdateTemplateSchema', () => {
     const commonFields = {
       name: 'Test Template',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     };
 
     test.each([
@@ -304,7 +304,7 @@ describe('Template schemas', () => {
       name: 'Test Template',
       message: 'This is a test template',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     test('Should return template on pass', async () => {
@@ -328,7 +328,7 @@ describe('Template schemas', () => {
       name: 'Test Template',
       message: 'This is a test template',
       templateType: 'NHS_APP',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       id: 'id',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',

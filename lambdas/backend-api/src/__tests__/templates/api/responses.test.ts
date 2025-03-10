@@ -12,7 +12,7 @@ describe('responses', () => {
       name: 'name',
       message: 'message',
       subject: 'subject',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
       templateType: 'EMAIL',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

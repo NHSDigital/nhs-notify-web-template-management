@@ -38,7 +38,7 @@ test('calls form action and redirects', async () => {
     name: 'template-name',
     message: 'template-message',
     templateType: 'NHS_APP',
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     createdAt: 'today',
     updatedAt: 'today',
   };
@@ -47,7 +47,7 @@ test('calls form action and redirects', async () => {
 
   expect(mockSaveTemplate).toHaveBeenCalledWith({
     ...mockTemplate,
-    templateStatus: TemplateStatus.DELETED,
+    templateStatus: 'DELETED',
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(

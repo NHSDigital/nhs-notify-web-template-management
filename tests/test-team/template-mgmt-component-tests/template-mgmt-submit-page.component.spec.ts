@@ -44,7 +44,7 @@ async function createTemplates() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateType: 'EMAIL',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {
@@ -76,7 +76,7 @@ async function createTemplates() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateType: 'SMS',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {
@@ -108,7 +108,7 @@ async function createTemplates() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateType: 'NHS_APP',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {

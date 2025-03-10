@@ -31,7 +31,7 @@ describe('SubmitSmsTemplatePage', () => {
     const state = {
       id: 'template-id',
       templateType: 'SMS',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
     } satisfies Partial<TemplateDTO>;
