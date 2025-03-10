@@ -1,15 +1,11 @@
 'use server';
 
-import { jwtDecode } from 'jwt-decode';
 import { createHmac, randomBytes } from 'node:crypto';
 import { cookies } from 'next/headers';
+import type { JWT } from 'aws-amplify/auth';
+import { jwtDecode } from 'jwt-decode';
 import { getEnvironmentVariable } from './get-environment-variable';
 import { getAccessTokenServer } from './amplify-utils';
-
-export const getCsrfFormValue = async () => {
-  const cookieStore = await cookies();
-  return cookieStore.get('csrf_token')?.value ?? 'no_token';
-};
 
 export const getSessionId = async () => {
   const accessToken = await getAccessTokenServer();
@@ -18,15 +14,15 @@ export const getSessionId = async () => {
     throw new Error('Could not get access token');
   }
 
-  const jwt = jwtDecode(accessToken);
+  const jwt = jwtDecode<JWT['payload']>(accessToken);
 
-  const sessionId = jwt.jti;
+  const sessionId = jwt.origin_jti;
 
   if (!sessionId) {
     throw new Error('Could not get session ID');
   }
 
-  return sessionId;
+  return sessionId.toString();
 };
 
 export const generateCsrf = async () => {
@@ -41,12 +37,6 @@ export const generateCsrf = async () => {
     .digest('hex');
 
   const csrfToken = `${hash}.${salt}`;
-
-  const cookieStore = await cookies();
-  cookieStore.set('csrf_token', csrfToken, {
-    httpOnly: true,
-    secure: true,
-  });
 
   return csrfToken;
 };

@@ -1,32 +1,23 @@
 'use client';
 
-import React, { Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import JsCookie from 'js-cookie';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { Redirect } from '../page.dev';
 
-export const SignOut = ({ children }: { children: React.ReactNode }) => {
+export default function Page() {
   const { signOut, authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
-      signOut();
+      signOut({ global: true });
+      JsCookie.remove('csrf_token');
     }
   }, [authStatus, signOut]);
 
   return (
     <NHSNotifyMain>
-      <Suspense fallback={<p>Loading...</p>}>
-        {authStatus === 'authenticated' ? <p>Signing out</p> : children}
-      </Suspense>
+      <p>{authStatus === 'authenticated' ? 'Signing Out' : 'Signed Out'}</p>
     </NHSNotifyMain>
-  );
-};
-
-export default function Page() {
-  return (
-    <SignOut>
-      <Redirect />
-    </SignOut>
   );
 }

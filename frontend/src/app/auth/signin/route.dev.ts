@@ -12,7 +12,10 @@ export const GET = async (request: Request) => {
   const resJson = { csrfToken };
 
   const cookieStore = await cookies();
-  cookieStore.set('csrf_token', csrfToken);
+  cookieStore.set('csrf_token', csrfToken, {
+    secure: true,
+    sameSite: 'strict',
+  });
 
   return Response.json(resJson, {
     status: 302,

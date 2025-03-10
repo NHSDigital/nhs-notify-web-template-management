@@ -4,7 +4,6 @@ import {
   getSessionId,
   verifyCsrfToken,
   verifyCsrfTokenFull,
-  getCsrfFormValue,
 } from '@utils/csrf-utils';
 import { cookies } from 'next/headers';
 import { sign } from 'jsonwebtoken';
@@ -26,7 +25,7 @@ class MockHmac {
 
 const mockJwt = sign(
   {
-    jti: 'jti',
+    origin_jti: 'jti',
   },
   'key'
 );
@@ -52,34 +51,6 @@ afterAll(() => {
   process.env = OLD_ENV;
 });
 
-describe('getCsrfFormValue', () => {
-  test('cookie is present', async () => {
-    jest.mocked(cookies).mockResolvedValue(
-      mockDeep<ReadonlyRequestCookies>({
-        get: (_: string) => ({
-          name: 'csrf_token',
-          value: 'token',
-        }),
-      })
-    );
-
-    const csrfToken = await getCsrfFormValue();
-
-    expect(csrfToken).toEqual('token');
-  });
-  test('cookie is not present', async () => {
-    jest.mocked(cookies).mockResolvedValue(
-      mockDeep<ReadonlyRequestCookies>({
-        get: (_: string) => undefined,
-      })
-    );
-
-    const csrfToken = await getCsrfFormValue();
-
-    expect(csrfToken).toEqual('no_token');
-  });
-});
-
 describe('getSessionId', () => {
   test('errors when access token not found', async () => {
     jest.mocked(getAccessTokenServer).mockResolvedValue(undefined);
@@ -92,7 +63,7 @@ describe('getSessionId', () => {
   test('errors when session ID not found', async () => {
     const mockEmptyJwt = sign(
       {
-        jti: undefined,
+        origin_jti: undefined,
       },
       'key'
     );
@@ -145,6 +116,12 @@ describe('verifyCsrfTokenFull', () => {
     const formData = mockDeep<FormData>();
 
     jest.mocked(getAccessTokenServer).mockResolvedValue(mockJwt);
+
+    jest.mocked(cookies).mockResolvedValue(
+      mockDeep<ReadonlyRequestCookies>({
+        get: (_: string): undefined => {},
+      })
+    );
 
     await expect(() => verifyCsrfTokenFull(formData)).rejects.toThrow(
       'missing CSRF cookie'

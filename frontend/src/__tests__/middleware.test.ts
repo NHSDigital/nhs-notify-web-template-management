@@ -20,7 +20,7 @@ afterAll(() => {
 });
 
 describe('middleware function', () => {
-  it('If route is not registered in midleware, respond with 404', async () => {
+  it('If route is not registered in middleware, respond with 404', async () => {
     const url = new URL('https://url.com/manage-templates/does-not-exist');
     const request = new NextRequest(url);
     const response = await middleware(request);
@@ -31,13 +31,18 @@ describe('middleware function', () => {
   it('if request path is protected, and no access token is obtained, redirect to auth page', async () => {
     const url = new URL('https://url.com/manage-templates');
     const request = new NextRequest(url);
+    request.cookies.set('csrf_token', 'some-csrf-value');
+
     const response = await middleware(request);
+
+    expect(getTokenMock).toHaveBeenCalledWith({ forceRefresh: true });
 
     expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe(
       'https://url.com/auth?redirect=%2Ftemplates%2Fmanage-templates'
     );
     expect(response.headers.get('Content-Type')).toBe('text/html');
+    expect(response.cookies.get('csrf_token')?.value).toEqual('');
   });
 
   it('if request path is protected, and access token is obtained, respond with CSP', async () => {

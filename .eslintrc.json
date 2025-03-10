@@ -67,7 +67,8 @@
         "devDependencies": [
           "jest.config.ts",
           "jest.setup.ts",
-          "**/__tests__/**"
+          "**/__tests__/**",
+          "**/*.dev.[jt]s?(x)"
         ]
       }
     ],
