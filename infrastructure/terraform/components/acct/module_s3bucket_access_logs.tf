@@ -1,7 +1,7 @@
-module "s3bucket_backup_reports" {
+module "s3bucket_access_logs" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v1.0.8"
 
-  name = "backup-reports"
+  name = "access-logs"
 
   aws_account_id = var.aws_account_id
   region         = var.region
@@ -35,12 +35,8 @@ module "s3bucket_backup_reports" {
   ]
 
   policy_documents = [
-    data.aws_iam_policy_document.s3bucket_backup_reports.json
+    data.aws_iam_policy_document.s3bucket_access_logs.json
   ]
-
-  bucket_logging_target = {
-    bucket = module.s3bucket_access_logs.id
-  }
 
   public_access = {
     block_public_acls       = true
@@ -51,11 +47,11 @@ module "s3bucket_backup_reports" {
 
 
   default_tags = {
-    Name = "AWS Backup Reports for enabled environments"
+    Name = "S3 bucket access logs"
   }
 }
 
-data "aws_iam_policy_document" "s3bucket_backup_reports" {
+data "aws_iam_policy_document" "s3bucket_access_logs" {
   statement {
     sid    = "DontAllowNonSecureConnection"
     effect = "Deny"
@@ -65,8 +61,8 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
     ]
 
     resources = [
-      module.s3bucket_backup_reports.arn,
-      "${module.s3bucket_backup_reports.arn}/*",
+      module.s3bucket_access_logs.arn,
+      "${module.s3bucket_access_logs.arn}/*",
     ]
 
     principals {
@@ -96,11 +92,11 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
     ]
 
     resources = [
-      module.s3bucket_backup_reports.arn,
+      module.s3bucket_lambda_artefacts.arn,
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [
         "arn:aws:iam::${var.aws_account_id}:root"
       ]
@@ -116,11 +112,11 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
     ]
 
     resources = [
-      "${module.s3bucket_backup_reports.arn}/*",
+      "${module.s3bucket_lambda_artefacts.arn}/*",
     ]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [
         "arn:aws:iam::${var.aws_account_id}:root"
       ]
@@ -128,21 +124,22 @@ data "aws_iam_policy_document" "s3bucket_backup_reports" {
   }
 
   statement {
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
+    sid    = "AllowS3AccessLogging"
+    effect = "Allow"
+
+    actions = [
+      "s3:PutObject",
+    ]
+
     resources = [
-      "${module.s3bucket_backup_reports.arn}/*",
+      "${module.s3bucket_access_logs.arn}/*",
     ]
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${var.aws_account_id}:role/aws-service-role/reports.backup.amazonaws.com/AWSServiceRoleForBackupReports"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values = [
-        "bucket-owner-full-control"
+      type = "Service"
+
+      identifiers = [
+        "logging.s3.amazonaws.com",
       ]
     }
   }
