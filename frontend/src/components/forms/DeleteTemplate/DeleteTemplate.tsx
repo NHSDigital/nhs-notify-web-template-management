@@ -10,6 +10,7 @@ import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
 } from './server-action';
+import concatClassNames from '@utils/concat-class-names';
 
 type DeleteTemplateProps = {
   template: Template;
@@ -36,15 +37,17 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
             action={noAction}
             formId='delete-template-no'
             formAttributes={{
-              className: 'nhsuk-u-margin-right-3',
-              style: { display: 'inline' },
+              className: concatClassNames(
+                'nhsuk-u-margin-right-3',
+                'inline-form'
+              ),
             }}
           >
             <NHSNotifyButton secondary>{noButtonText}</NHSNotifyButton>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
             action={yesAction}
-            formAttributes={{ style: { display: 'inline' } }}
+            formAttributes={{ className: 'inline-form' }}
             formId='delete-template-yes'
           >
             <NHSNotifyButton className='nhsuk-button--warning'>
