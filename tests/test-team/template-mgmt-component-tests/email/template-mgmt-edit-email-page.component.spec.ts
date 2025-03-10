@@ -9,7 +9,6 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -216,7 +215,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.noEmail'id');
+      await editEmailTemplatePage.loadPage(templates.noEmailTemplateType.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

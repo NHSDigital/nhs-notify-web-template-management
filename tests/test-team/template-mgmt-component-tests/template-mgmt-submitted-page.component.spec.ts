@@ -8,7 +8,7 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { TemplateType, TemplateStatus, Template } from '../helpers/types';
+import { Template } from '../helpers/types';
 import {
   createAuthHelper,
   TestUserId,

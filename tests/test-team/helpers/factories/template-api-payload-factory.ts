@@ -1,16 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { CreateTemplate, UpdateTemplate } from 'nhs-notify-backend-client';
-
-type CreateTemplatePayload = Omit<CreateTemplate, 'templateType'> & {
-  templateType: string;
-};
-type UpdateTemplatePayload = Omit<
-  UpdateTemplate,
-  'templateType' | 'templateStatus'
-> & {
-  templateType: string;
-  templateStatus: string;
-};
+import { CreateTemplatePayload, UpdateTemplatePayload } from '../types';
 
 type TemplatePayload = CreateTemplatePayload | UpdateTemplatePayload;
 

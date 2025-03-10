@@ -11,7 +11,6 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import {
   Template,
-  TemplateType,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
 } from '../helpers/types';
@@ -137,7 +136,7 @@ test.describe('Copy Template Page', () => {
         const template = templates[sourceTemplateType];
         await copyTemplatePage.loadPage(template.id);
         await copyTemplatePage.checkRadioButton(
-          templateTypeDisplayMappings(targetTemplateType)
+          templateTypeDisplayMappings[targetTemplateType]
         );
         await copyTemplatePage.clickContinueButton();
 
@@ -147,7 +146,7 @@ test.describe('Copy Template Page', () => {
           .getByRole('row')
           .filter({
             has: page.getByText(
-              `Type ${templateTypeDisplayMappings(targetTemplateType)}`,
+              `Type ${templateTypeDisplayMappings[targetTemplateType]}`,
               { exact: true }
             ),
           })
@@ -179,7 +178,7 @@ test.describe('Copy Template Page', () => {
         });
 
         await copyTemplatePage.navigateTo(
-          `/templates/preview-${templateTypeToUrlTextMappings(targetTemplateType)}-template/${newTemplateId}`
+          `/templates/preview-${templateTypeToUrlTextMappings[targetTemplateType]}-template/${newTemplateId}`
         );
 
         await expect(page.getByText(template.message)).toBeVisible();

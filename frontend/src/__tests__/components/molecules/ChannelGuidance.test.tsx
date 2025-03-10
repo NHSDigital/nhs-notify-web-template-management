@@ -5,7 +5,7 @@ import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 describe('ChannelGuidance component', () => {
   it.each(TEMPLATE_TYPE_LIST)(
     'should correctly render the component for templateType %s',
-    (templateType: string) => {
+    (templateType) => {
       const container = render(<ChannelGuidance template={templateType} />);
 
       expect(container.asFragment()).toMatchSnapshot();

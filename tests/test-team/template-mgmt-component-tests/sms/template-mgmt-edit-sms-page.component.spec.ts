@@ -9,7 +9,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -225,7 +225,7 @@ test.describe('Edit SMS message template Page', () => {
     }) => {
       const editSmsTemplatePage = new TemplateMgmtEditSmsPage(page);
 
-      await editSmsTemplatePage.loadPage(templates.noSms'id');
+      await editSmsTemplatePage.loadPage(templates.noSmsTemplateType.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
