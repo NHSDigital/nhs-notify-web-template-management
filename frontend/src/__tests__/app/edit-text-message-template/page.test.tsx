@@ -3,14 +3,14 @@
  */
 import EditSmsTemplatePage from '@app/edit-text-message-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');

@@ -1,15 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
-import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { LetterType, Language } from 'nhs-notify-backend-client';
+import {
+  LetterType,
+  Language,
+  TemplateType,
+  TemplateStatus,
+  TemplateDTO,
+} from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const manageTemplatesProps = {
+const manageTemplatesProps: {
+  templateList: TemplateDTO[];
+} = {
   templateList: [
     {
       id: '1',
@@ -17,7 +21,6 @@ const manageTemplatesProps = {
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
       name: 'Template 1',
       message: 'Message',
-      subject: 'Subject Line',
       createdAt: '2021-01-01T00:00:00.000Z',
       updatedAt: '2021-01-01T00:00:00.000Z',
     },
@@ -27,7 +30,6 @@ const manageTemplatesProps = {
       templateStatus: TemplateStatus.SUBMITTED,
       name: 'Template 2',
       message: 'Message',
-      subject: 'Subject Line',
       createdAt: '2021-02-01T00:00:00.000Z',
       updatedAt: '2021-02-01T00:00:00.000Z',
     },
@@ -40,6 +42,11 @@ const manageTemplatesProps = {
       letterType: LetterType.X0,
       language: Language.FR,
       updatedAt: '2021-02-01T00:00:00.000Z',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+        },
+      },
     },
   ],
 };

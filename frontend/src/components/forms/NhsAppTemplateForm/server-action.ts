@@ -43,7 +43,7 @@ export async function processFormActions(
   };
 
   const savedTemplate = await ('id' in updatedTemplate
-    ? saveTemplate(updatedTemplate.id, updatedTemplate)
+    ? saveTemplate(updatedTemplate)
     : createTemplate(updatedTemplate));
 
   return redirect(

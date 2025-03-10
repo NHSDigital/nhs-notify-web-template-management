@@ -29,7 +29,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   }
 
   try {
-    await saveTemplate(validatedTemplate.id, {
+    await saveTemplate({
       ...validatedTemplate,
       templateStatus: TemplateStatus.SUBMITTED,
     });

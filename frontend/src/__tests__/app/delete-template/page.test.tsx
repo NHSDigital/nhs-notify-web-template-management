@@ -4,7 +4,6 @@
 import DeleteTemplatePage from '@app/delete-template/[templateId]/page';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
 import {
-  EmailTemplate,
   TemplateType,
   TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
@@ -34,7 +33,7 @@ describe('PreviewEmailTemplatePage', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDTO;
 
-    const emailTemplate: EmailTemplate = {
+    const emailTemplate: TemplateDTO = {
       ...templateDTO,
       subject: 'template-subject-line',
       templateType: TemplateType.EMAIL,

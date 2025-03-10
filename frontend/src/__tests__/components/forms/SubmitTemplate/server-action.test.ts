@@ -6,10 +6,10 @@ import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
 import {
-  TemplateType,
+  TemplateDTO,
   TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -27,7 +27,7 @@ const mockNhsAppTemplate = {
   id: '1',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-};
+} satisfies TemplateDTO;
 
 describe('submitTemplate', () => {
   beforeEach(jest.resetAllMocks);

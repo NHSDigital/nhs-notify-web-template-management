@@ -1,13 +1,13 @@
 import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/SmsTemplateForm/server-action';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');

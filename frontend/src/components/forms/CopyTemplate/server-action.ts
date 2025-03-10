@@ -2,13 +2,13 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  Template,
   FormState,
   TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 const $CopyTemplate = z.object({
   templateType: z.nativeEnum(TemplateType, {
@@ -17,7 +17,9 @@ const $CopyTemplate = z.object({
 });
 
 type CopyTemplateActionState = FormState & {
-  template: Template;
+  template: TemplateDTO & {
+    templateType: Exclude<TemplateType, TemplateType.LETTER>;
+  };
 };
 type CopyTemplateAction = (
   formState: CopyTemplateActionState,
@@ -40,23 +42,37 @@ export const copyTemplateAction: CopyTemplateAction = async (
   }
 
   const newTemplateType = parsedForm.data.templateType;
-  const {
-    name,
-    id: _1,
-    createdAt: _2,
-    ...baseTemplateAttributes
-  } = formState.template;
+  const { name, message } = formState.template;
+  const subject =
+    formState.template.templateType === TemplateType.EMAIL
+      ? formState.template.subject
+      : 'Enter a subject line';
 
-  await createTemplate({
-    ...baseTemplateAttributes,
-    name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
-    templateType: newTemplateType,
-    ...(parsedForm.data.templateType === TemplateType.EMAIL && {
-      subject:
-        ('subject' in formState.template && formState.template.subject) ||
-        'Enter a subject line',
-    }),
-  });
+  const copyName = `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`;
+
+  switch (newTemplateType) {
+    case TemplateType.NHS_APP:
+    case TemplateType.SMS: {
+      await createTemplate({
+        name: copyName,
+        message,
+        templateType: newTemplateType,
+      });
+
+      break;
+    }
+    case TemplateType.EMAIL: {
+      await createTemplate({
+        name: copyName,
+        message,
+        templateType: newTemplateType,
+        subject,
+      });
+
+      break;
+    }
+    // no default
+  }
 
   return redirect(`/manage-templates`, RedirectType.push);
 };

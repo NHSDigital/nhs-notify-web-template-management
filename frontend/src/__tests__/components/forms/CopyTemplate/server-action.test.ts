@@ -26,6 +26,8 @@ test('submit form - validation error', async () => {
     templateType: TemplateType.NHS_APP,
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   const response = await copyTemplateAction(
@@ -57,6 +59,8 @@ test('submit form - create email template from non-email template', async () => 
     templateType: TemplateType.NHS_APP,
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
@@ -77,7 +81,7 @@ test('submit form - create email template from non-email template', async () => 
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
     subject: 'Enter a subject line',
     name: 'COPY (2022-01-01 09:00:00): template-name',
     templateType: TemplateType.EMAIL,
@@ -94,6 +98,8 @@ test('submit form - create email template from email template', async () => {
     name: 'template-name',
     message: 'template-message',
     subject: 'template-subject',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
@@ -114,7 +120,8 @@ test('submit form - create email template from email template', async () => {
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
+    subject: testTemplate.subject,
     name: 'COPY (2022-01-01 09:00:00): template-name',
     templateType: TemplateType.EMAIL,
   });
@@ -129,6 +136,8 @@ test('submit form - create non-email template', async () => {
     templateType: TemplateType.NHS_APP,
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
@@ -149,7 +158,7 @@ test('submit form - create non-email template', async () => {
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
     name: 'COPY (2022-01-01 09:00:00): template-name',
     templateType: TemplateType.NHS_APP,
   });

@@ -3,18 +3,17 @@
  */
 import CopyTemplatePage from '@app/copy-template/[templateId]/page';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import {
   Language,
   LetterType,
   TemplateDTO,
+  TemplateStatus,
+  TemplateType,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -37,7 +36,7 @@ describe('CopyTemplatePage', () => {
     updatedAt: '2025-01-13T10:19:25.579Z',
   } satisfies TemplateDTO;
 
-  const letterTemplate: TemplateDTO = {
+  const letterTemplate: LetterTemplate = {
     id: 'template-id',
     templateType: TemplateType.LETTER,
     templateStatus: TemplateStatus.NOT_YET_SUBMITTED,

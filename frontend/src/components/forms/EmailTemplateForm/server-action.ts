@@ -2,7 +2,6 @@ import {
   CreateEmailTemplate,
   EmailTemplate,
   TemplateFormState,
-  UpdateEmailTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate, saveTemplate } from '@utils/form-actions';
@@ -52,7 +51,7 @@ export async function processFormActions(
   };
 
   const savedTemplate = await ('id' in updatedTemplate
-    ? saveTemplate(updatedTemplate.id, updatedTemplate)
+    ? saveTemplate(updatedTemplate)
     : createTemplate(updatedTemplate));
 
   return redirect(

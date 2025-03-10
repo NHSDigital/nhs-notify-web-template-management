@@ -3,14 +3,19 @@
  */
 import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -63,50 +68,37 @@ describe('ViewSubmittedSMSTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
+      ...EMAIL_TEMPLATE,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
+      ...NHS_APP_TEMPLATE,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
+      ...SMS_TEMPLATE,
       message: undefined as unknown as string,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
+      ...SMS_TEMPLATE,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, message is $message, and status is $templateStatus',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await ViewSubmittedSMSTemplatePage({
         params: Promise.resolve({

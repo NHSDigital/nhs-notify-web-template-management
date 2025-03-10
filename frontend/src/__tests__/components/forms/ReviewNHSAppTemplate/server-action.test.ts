@@ -20,6 +20,8 @@ describe('previewNhsAppTemplateAction', () => {
     name: 'Example name',
     message: 'Example message',
     validationError: undefined,
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
   };
 
   beforeEach(() => jest.clearAllMocks());
@@ -30,11 +32,7 @@ describe('previewNhsAppTemplateAction', () => {
     const newState = previewNhsAppTemplateAction(currentState, formData);
 
     expect(newState).toEqual({
-      id: 'template-id',
-      templateType: 'NHS_APP',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      name: 'Example name',
-      message: 'Example message',
+      ...currentState,
       validationError: {
         fieldErrors: {
           previewNHSAppTemplateAction: ['Select an option'],

@@ -8,6 +8,13 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
+  CreateTemplate,
+  EmailProperties,
+  Language,
+  LetterProperties,
+  LetterType,
+  NHSAppProperties,
+  SMSProperties,
   TemplateStatus,
   TemplateType,
   UpdateTemplate,
@@ -20,17 +27,72 @@ jest.mock('node:crypto');
 const uuidMock = jest.mocked(uuidv4);
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-const template: DatabaseTemplate = {
-  id: 'abc-def-ghi-jkl-123',
-  owner: 'real-owner',
-  name: 'name',
+const emailProperties: EmailProperties = {
   message: 'message',
   subject: 'pickles',
   templateType: TemplateType.EMAIL,
+};
+
+const smsProperties: SMSProperties = {
+  message: 'message',
+  templateType: TemplateType.SMS,
+};
+
+const nhsAppProperties: NHSAppProperties = {
+  message: 'message',
+  templateType: TemplateType.NHS_APP,
+};
+
+const letterProperties: LetterProperties = {
+  letterType: LetterType.X0,
+  language: Language.EN,
+  files: {
+    pdfTemplate: {
+      fileName: 'template.pdf',
+    },
+    testDataCsv: {
+      fileName: 'test.csv',
+    },
+  },
+  templateType: TemplateType.LETTER,
+};
+
+const createTemplateProperties = {
+  name: 'name',
+};
+
+const updateTemplateProperties = {
+  ...createTemplateProperties,
+  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+};
+
+const databaseTemplateProperties = {
+  ...updateTemplateProperties,
+  id: 'abc-def-ghi-jkl-123',
+  owner: 'real-owner',
   version: 1,
   createdAt: '2024-12-27T00:00:00.000Z',
   updatedAt: '2024-12-27T00:00:00.000Z',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+};
+
+const emailTemplate: DatabaseTemplate = {
+  ...emailProperties,
+  ...databaseTemplateProperties,
+};
+
+const smsTemplate: DatabaseTemplate = {
+  ...smsProperties,
+  ...databaseTemplateProperties,
+};
+
+const nhsAppTemplate: DatabaseTemplate = {
+  ...nhsAppProperties,
+  ...databaseTemplateProperties,
+};
+
+const letterTemplate: DatabaseTemplate = {
+  ...letterProperties,
+  ...databaseTemplateProperties,
 };
 
 describe('templateRepository', () => {
@@ -127,7 +189,7 @@ describe('templateRepository', () => {
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
-          Item: template,
+          Item: emailTemplate,
         });
 
       const response = await templateRepository.get(
@@ -136,7 +198,7 @@ describe('templateRepository', () => {
       );
 
       expect(response).toEqual({
-        data: template,
+        data: emailTemplate,
       });
     });
   });
@@ -181,13 +243,13 @@ describe('templateRepository', () => {
           },
         })
         .resolves({
-          Items: [template],
+          Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
         });
 
       const response = await templateRepository.list('real-owner');
 
       expect(response).toEqual({
-        data: [template],
+        data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
       });
     });
   });
@@ -217,30 +279,42 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should create template', async () => {
-      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
+    test.each([
+      emailProperties,
+      smsProperties,
+      nhsAppProperties,
+      letterProperties,
+    ])(
+      'should create template of type $templateType',
+      async (channelProperties) => {
+        uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
-      ddbMock
-        .on(PutCommand, {
-          TableName: 'templates',
-          Item: template,
-        })
-        .resolves({});
+        ddbMock
+          .on(PutCommand, {
+            TableName: 'templates',
+            Item: {
+              ...channelProperties,
+              ...databaseTemplateProperties,
+            },
+          })
+          .resolves({});
 
-      const response = await templateRepository.create(
-        {
-          templateType: TemplateType.EMAIL,
-          name: 'name',
-          message: 'message',
-          subject: 'pickles',
-        },
-        'real-owner'
-      );
+        const response = await templateRepository.create(
+          {
+            ...channelProperties,
+            ...createTemplateProperties,
+          },
+          'real-owner'
+        );
 
-      expect(response).toEqual({
-        data: template,
-      });
-    });
+        expect(response).toEqual({
+          data: {
+            ...channelProperties,
+            ...databaseTemplateProperties,
+          },
+        });
+      }
+    );
   });
 
   describe('update', () => {
@@ -343,40 +417,49 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update template with subject', async () => {
-      const updatedTemplate: UpdateTemplate = {
-        name: 'updated-name',
-        message: 'updated-message',
-        subject: 'updated-subject',
-        templateStatus: TemplateStatus.SUBMITTED,
-        templateType: TemplateType.EMAIL,
-      };
+    test.each([
+      emailProperties,
+      smsProperties,
+      nhsAppProperties,
+      letterProperties,
+    ])(
+      'should update template of type $templateType with name',
+      async (channelProperties) => {
+        const updatedTemplate: UpdateTemplate = {
+          ...channelProperties,
+          ...updateTemplateProperties,
+          name: 'updated-name',
+          templateStatus: TemplateStatus.SUBMITTED,
+        };
 
-      ddbMock
-        .on(UpdateCommand, {
-          TableName: 'templates',
-          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-        })
-        .resolves({
-          Attributes: {
-            ...template,
+        ddbMock
+          .on(UpdateCommand, {
+            TableName: 'templates',
+            Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+          })
+          .resolves({
+            Attributes: {
+              ...channelProperties,
+              ...databaseTemplateProperties,
+              ...updatedTemplate,
+            },
+          });
+
+        const response = await templateRepository.update(
+          'abc-def-ghi-jkl-123',
+          updatedTemplate,
+          'real-owner'
+        );
+
+        expect(response).toEqual({
+          data: {
+            ...channelProperties,
+            ...databaseTemplateProperties,
             ...updatedTemplate,
           },
         });
-
-      const response = await templateRepository.update(
-        'abc-def-ghi-jkl-123',
-        updatedTemplate,
-        'real-owner'
-      );
-
-      expect(response).toEqual({
-        data: {
-          ...template,
-          ...updatedTemplate,
-        },
-      });
-    });
+      }
+    );
 
     test('should update template to deleted state', async () => {
       const updatedTemplate: UpdateTemplate = {
@@ -393,7 +476,7 @@ describe('templateRepository', () => {
         })
         .resolves({
           Attributes: {
-            ...template,
+            ...emailTemplate,
             ...updatedTemplate,
           },
         });
@@ -406,7 +489,7 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         data: {
-          ...template,
+          ...emailTemplate,
           ...updatedTemplate,
         },
       });

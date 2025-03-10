@@ -11,6 +11,7 @@ describe('responses', () => {
       id: '1',
       name: 'name',
       message: 'message',
+      subject: 'subject',
       templateStatus: TemplateStatus.SUBMITTED,
       templateType: TemplateType.EMAIL,
       createdAt: new Date().toISOString(),

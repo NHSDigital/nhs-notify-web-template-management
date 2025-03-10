@@ -2,15 +2,16 @@
  * @jest-environment node
  */
 import { redirect } from 'next/navigation';
-import {
-  TemplateType,
-  TemplateStatus,
-  NHSAppTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 jest.mock('@utils/form-actions');
@@ -23,7 +24,7 @@ describe('EditNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
-    const templateDTO = {
+    const template = {
       id: 'template-id',
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -34,12 +35,12 @@ describe('EditNhsAppTemplatePage', () => {
     } satisfies TemplateDTO;
 
     const nhsAppTemplate: NHSAppTemplate = {
-      ...templateDTO,
+      ...template,
       templateType: TemplateType.NHS_APP,
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
     };
 
-    getTemplateMock.mockResolvedValueOnce(templateDTO);
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const page = await EditNhsAppTemplatePage({
       params: Promise.resolve({
@@ -62,23 +63,10 @@ describe('EditNhsAppTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  const invalidTemplateTypes: TemplateType[] = [
-    TemplateType.EMAIL,
-    TemplateType.SMS,
-  ];
-
-  test.each(invalidTemplateTypes)(
-    'should render invalid template, when template type is %p',
-    async (templateType) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateType,
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        name: 'name',
-        message: 'message',
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+  test.each([EMAIL_TEMPLATE, SMS_TEMPLATE, LETTER_TEMPLATE])(
+    'should render invalid template, when template type is $templateType',
+    async (template) => {
+      getTemplateMock.mockResolvedValueOnce(template);
 
       await EditNhsAppTemplatePage({
         params: Promise.resolve({

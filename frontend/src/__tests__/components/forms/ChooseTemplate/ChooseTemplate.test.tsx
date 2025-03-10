@@ -3,10 +3,8 @@
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
-import {
-  TemplateFormState,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 

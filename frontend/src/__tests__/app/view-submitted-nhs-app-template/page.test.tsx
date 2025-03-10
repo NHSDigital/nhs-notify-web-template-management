@@ -3,14 +3,19 @@
  */
 import ViewSubmittedNHSAppTemplatePage from '@app/view-submitted-nhs-app-template/[templateId]/page';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
-import {
-  NHSAppTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -63,43 +68,37 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
+      ...EMAIL_TEMPLATE,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
+      ...SMS_TEMPLATE,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
+      ...NHS_APP_TEMPLATE,
       message: undefined as unknown as string,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
       templateStatus: TemplateStatus.SUBMITTED,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: 'template-name',
       message: 'template-message',
       templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
@@ -107,12 +106,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, message is $message, and status is $templateStatus',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await ViewSubmittedNHSAppTemplatePage({
         params: Promise.resolve({
