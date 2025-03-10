@@ -26,6 +26,11 @@ resource "aws_iam_role_policy_attachment" "amplify_amplify" {
   policy_arn = aws_iam_policy.amplify.arn
 }
 
+resource "aws_iam_role_policy_attachment" "amplify_execution" {
+  role       = aws_iam_role.amplify.name
+  policy_arn = aws_iam_policy.amplify.arn
+}
+
 resource "aws_iam_policy" "amplify" {
   name        = "${local.csi}-amplify"
   description = "Amplify "
