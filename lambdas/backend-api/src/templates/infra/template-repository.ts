@@ -1,5 +1,4 @@
 import {
-  CreateTemplate,
   EmailProperties,
   ErrorCase,
   LetterProperties,
@@ -7,6 +6,7 @@ import {
   SmsProperties,
   TemplateStatus,
   UpdateTemplate,
+  ValidatedCreateTemplate,
   ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -80,7 +80,7 @@ export class TemplateRepository {
   }
 
   async create(
-    template: CreateTemplate,
+    template: ValidatedCreateTemplate,
     owner: string,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -111,7 +111,7 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: UpdateTemplate,
+    template: ValidatedUpdateTemplate,
     owner: string,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {

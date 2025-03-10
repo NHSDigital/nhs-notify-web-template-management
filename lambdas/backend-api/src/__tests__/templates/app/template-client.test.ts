@@ -46,14 +46,11 @@ describe('templateClient', () => {
       const data = {
         templateType: 'EMAIL',
         name: 'name',
-        message: 'message',
+        message: undefined,
         subject: 'subject',
-      };
+      } as unknown as CreateTemplate;
 
-      const result = await templateClient.createTemplate(
-        data as unknown as CreateTemplate,
-        owner
-      );
+      const result = await templateClient.createTemplate(data, owner);
 
       expect(result).toEqual({
         error: expect.objectContaining({

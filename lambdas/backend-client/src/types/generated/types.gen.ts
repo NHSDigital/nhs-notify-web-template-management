@@ -2,7 +2,12 @@
 
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
-export type TemplateStatus = 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED';
+export type TemplateStatus =
+  | 'NOT_YET_SUBMITTED'
+  | 'SUBMITTED'
+  | 'DELETED'
+  | 'PENDING_UPLOAD'
+  | 'PENDING_VALIDATION';
 
 export type Language =
   | 'ar'
@@ -201,6 +206,36 @@ export type PostV1TemplateResponses = {
 
 export type PostV1TemplateResponse =
   PostV1TemplateResponses[keyof PostV1TemplateResponses];
+
+export type PostV1LetterTemplateData = {
+  /**
+   * Letter template to create
+   */
+  body: unknown;
+  path?: never;
+  query?: never;
+  url: '/v1/letter-template';
+};
+
+export type PostV1LetterTemplateErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1LetterTemplateError =
+  PostV1LetterTemplateErrors[keyof PostV1LetterTemplateErrors];
+
+export type PostV1LetterTemplateResponses = {
+  /**
+   * 201 response
+   */
+  201: Success;
+};
+
+export type PostV1LetterTemplateResponse =
+  PostV1LetterTemplateResponses[keyof PostV1LetterTemplateResponses];
 
 export type GetV1TemplatesData = {
   body?: never;
