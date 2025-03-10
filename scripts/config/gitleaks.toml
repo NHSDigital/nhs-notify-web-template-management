@@ -17,3 +17,4 @@ regexes = [
 
 [allowlist]
 paths = ['''.terraform.lock.hcl''', '''poetry.lock''', '''yarn.lock''']
+commits = ["b19d88d1d92b0530f065feefcf25d8cdd82a876a"]
