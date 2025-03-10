@@ -6,10 +6,8 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 
-const [firstTemplateType, ...remainingTemplateTypes] = TEMPLATE_TYPE_LIST;
-
 const $ChooseTemplate = z.object({
-  templateType: z.enum([firstTemplateType, ...remainingTemplateTypes], {
+  templateType: z.enum(TEMPLATE_TYPE_LIST, {
     message: 'Select a template type',
   }),
 });

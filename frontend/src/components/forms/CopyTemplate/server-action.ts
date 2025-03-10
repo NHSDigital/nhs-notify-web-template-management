@@ -11,10 +11,8 @@ import {
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 
-const [firstType, ...remainingTypes] = TEMPLATE_TYPE_LIST;
-
 const $CopyTemplate = z.object({
-  templateType: z.enum([firstType, ...remainingTypes], {
+  templateType: z.enum(TEMPLATE_TYPE_LIST, {
     message: 'Select a template type',
   }),
 });

@@ -24,7 +24,7 @@ import {
   TEMPLATE_STATUS_LIST,
   TEMPLATE_TYPE_LIST,
   VIRUS_SCAN_STATUS_LIST,
-} from '../types/union-lists';
+} from './union-lists';
 
 export type EmailPropertiesWithType = EmailProperties & {
   templateType: 'EMAIL';
@@ -59,21 +59,11 @@ export type ValidatedTemplateDto = TemplateDto &
     | LetterPropertiesWithType
   );
 
-const [firstTemplateType, ...remainingTemplateTypes] = TEMPLATE_TYPE_LIST;
-const [firstTemplateStatus, ...remainingTemplateStatuses] =
-  TEMPLATE_STATUS_LIST;
-const [firstLanguage, ...remainingLanguages] = LANGUAGE_LIST;
-const [firstLetterType, ...remainingLetterTypes] = LETTER_TYPE_LIST;
-const [firstVirusScanStatus, ...remainingVirusScanStatus] =
-  VIRUS_SCAN_STATUS_LIST;
-
 const $FileDetails = schemaFor<FileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
     currentVersion: z.string().optional(),
-    virusScanStatus: z
-      .enum([firstVirusScanStatus, ...remainingVirusScanStatus])
-      .optional(),
+    virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST).optional(),
   })
 );
 
@@ -114,8 +104,8 @@ const $SmsProperties = schemaFor<SmsProperties>()(
 
 const $LetterProperties = schemaFor<LetterProperties>()(
   z.object({
-    letterType: z.enum([firstLetterType, ...remainingLetterTypes]),
-    language: z.enum([firstLanguage, ...remainingLanguages]),
+    letterType: z.enum(LETTER_TYPE_LIST),
+    language: z.enum(LANGUAGE_LIST),
     files: $LetterFiles,
   })
 );
@@ -123,7 +113,7 @@ const $LetterProperties = schemaFor<LetterProperties>()(
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
     name: z.string().trim().min(1),
-    templateType: z.enum([firstTemplateType, ...remainingTemplateTypes]),
+    templateType: z.enum(TEMPLATE_TYPE_LIST),
   })
 );
 
@@ -145,8 +135,8 @@ export const $CreateTemplateSchema = schemaFor<
   ValidatedCreateTemplate
 >()(
   z.discriminatedUnion('templateType', [
-    $BaseTemplateSchema.merge($EmailPropertiesWithType),
     $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
+    $BaseTemplateSchema.merge($EmailPropertiesWithType),
     $BaseTemplateSchema.merge($SmsPropertiesWithType),
     $BaseTemplateSchema.merge($LetterPropertiesWithType),
   ])
@@ -154,7 +144,7 @@ export const $CreateTemplateSchema = schemaFor<
 
 const $UpdateTemplateFields = z
   .object({
-    templateStatus: z.enum([firstTemplateStatus, ...remainingTemplateStatuses]),
+    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
   })
   .merge($BaseTemplateSchema);
 
@@ -163,8 +153,8 @@ export const $UpdateTemplateSchema = schemaFor<
   ValidatedUpdateTemplate
 >()(
   z.discriminatedUnion('templateType', [
-    $UpdateTemplateFields.merge($EmailPropertiesWithType),
     $UpdateTemplateFields.merge($NhsAppPropertiesWithType),
+    $UpdateTemplateFields.merge($EmailPropertiesWithType),
     $UpdateTemplateFields.merge($SmsPropertiesWithType),
     $UpdateTemplateFields.merge($LetterPropertiesWithType),
   ])
@@ -183,8 +173,8 @@ export const $TemplateDtoSchema = schemaFor<
   ValidatedTemplateDto
 >()(
   z.discriminatedUnion('templateType', [
-    $TemplateDtoFields.merge($EmailPropertiesWithType),
     $TemplateDtoFields.merge($NhsAppPropertiesWithType),
+    $TemplateDtoFields.merge($EmailPropertiesWithType),
     $TemplateDtoFields.merge($SmsPropertiesWithType),
     $TemplateDtoFields.merge($LetterPropertiesWithType),
   ])

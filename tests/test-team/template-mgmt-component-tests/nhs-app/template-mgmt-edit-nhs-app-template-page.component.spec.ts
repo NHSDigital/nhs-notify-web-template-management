@@ -17,8 +17,8 @@ import {
 
 function createTemplates(owner: string) {
   return {
-    editTemplateData: TemplateFactory.createNhsAppTemplate(
-      'edit-nhs-app-template',
+    valid: TemplateFactory.createNhsAppTemplate(
+      'valid-nhs-app-template',
       owner
     ),
     submit: TemplateFactory.createNhsAppTemplate(
@@ -52,10 +52,10 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
       'Edit NHS App message template'
@@ -65,7 +65,7 @@ test.describe('Edit NHS App Template Page', () => {
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
       page: new TemplateMgmtEditNhsAppPage(page),
-      id: templates.editTemplateData.id,
+      id: templates.valid.id,
       baseURL,
     };
 
@@ -82,18 +82,18 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
       'Edit NHS App message template'
     );
-    await editTemplatePage.clickSaveAndPreviewButton();
-    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await page.locator('[id="nhsAppTemplateName"]').fill('');
     await page.locator('[id="nhsAppTemplateMessage"]').fill('');
+    await editTemplatePage.clickSaveAndPreviewButton();
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
     ).toHaveText(['Enter a template name', 'Enter a template message']);
@@ -127,10 +127,10 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
       'Edit NHS App message template'
@@ -151,10 +151,10 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
     await expect(editTemplatePage.pageHeader).toHaveText(
       'Edit NHS App message template'
@@ -176,10 +176,10 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
     await page
@@ -194,10 +194,10 @@ test.describe('Edit NHS App Template Page', () => {
   }) => {
     const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
 
-    await editTemplatePage.loadPage(templates.editTemplateData.id);
+    await editTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+      `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
     );
 
     await page.locator('[id="nhsAppTemplateName"]').fill('NHS Testing 123');
@@ -229,9 +229,9 @@ test.describe('Edit NHS App Template Page', () => {
       baseURL,
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-      await editTemplatePage.loadPage(templates.editTemplateData.id);
+      await editTemplatePage.loadPage(templates.valid.id);
       await expect(page).toHaveURL(
-        `${baseURL}/templates/edit-nhs-app-template/${templates.editTemplateData.id}`
+        `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
       );
 
       await page.locator(`${section} > summary`).click();
@@ -265,7 +265,7 @@ test.describe('Edit NHS App Template Page', () => {
       baseURL,
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
-      await editTemplatePage.loadPage('empty-nhs-app-template');
+      await editTemplatePage.loadPage('valid-nhs-app-template');
       const newTabPromise = page.waitForEvent('popup');
       await page.getByRole('link', { name }).click();
       const newTab = await newTabPromise;
