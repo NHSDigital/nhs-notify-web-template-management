@@ -51,12 +51,12 @@ export const TemplateFactory = {
         pdfTemplate: {
           fileName: 'file.pdf',
           currentVersion: randomUUID(),
-          virusScanStatus: VirusScanStatus.PENDING,
+          virusScanStatus: 'PENDING',
         },
         testDataCsv: {
           fileName: 'test-data.csv',
           currentVersion: randomUUID(),
-          virusScanStatus: VirusScanStatus.PENDING,
+          virusScanStatus: 'PENDING',
         },
       },
     });

@@ -51,7 +51,7 @@ describe('Preview letter form renders', () => {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}
@@ -79,12 +79,12 @@ describe('Preview letter form renders', () => {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}
@@ -112,12 +112,12 @@ describe('Preview letter form renders', () => {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}
@@ -140,12 +140,12 @@ describe('Preview letter form renders', () => {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}

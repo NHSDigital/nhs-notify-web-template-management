@@ -456,12 +456,12 @@ describe('templateClient', () => {
           pdfTemplate: {
             fileName: 'file.pdf',
             currentVersion: 'uuid',
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
           testDataCsv: {
             fileName: 'file.csv',
             currentVersion: 'uuid',
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
         },
       };

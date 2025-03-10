@@ -40,12 +40,12 @@ const templateDTO = {
     pdfTemplate: {
       fileName: 'template.pdf',
       currentVersion: 'saoj867b789',
-      virusScanStatus: VirusScanStatus.PASSED,
+      virusScanStatus: 'PASSED',
     },
     testDataCsv: {
       fileName: 'test-data.csv',
       currentVersion: '897asiahv87',
-      virusScanStatus: VirusScanStatus.FAILED,
+      virusScanStatus: 'FAILED',
     },
   },
 } satisfies TemplateDTO;
@@ -116,7 +116,7 @@ describe('PreviewLetterTemplatePage', () => {
         pdfTemplate: {
           fileName: undefined as unknown as string,
           currentVersion: 'uuid',
-          virusScanStatus: VirusScanStatus.FAILED,
+          virusScanStatus: 'FAILED',
         },
       },
     },
