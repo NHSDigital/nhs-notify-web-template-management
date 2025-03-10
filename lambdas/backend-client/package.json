@@ -9,14 +9,13 @@
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
     "typecheck": "tsc --noEmit",
-    "generate-dependencies": "npx @hey-api/openapi-ts -i ../../infrastructure/terraform/modules/backend-api/spec.tmpl.json -o ./src/types/generated -c @hey-api/client-fetch"
+    "generate-dependencies": "npx @hey-api/openapi-ts"
   },
   "files": [
     "src/index.ts"
   ],
   "types": "src/index.ts",
   "dependencies": {
-    "@hey-api/client-fetch": "^0.8.3",
     "axios": "^1.7.9",
     "axios-retry": "^4.5.0",
     "zod": "^3.24.1"
