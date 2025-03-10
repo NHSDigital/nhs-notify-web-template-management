@@ -1,4 +1,9 @@
-import { Language, TemplateStatus, TemplateType } from './generated';
+import {
+  Language,
+  LetterType,
+  TemplateStatus,
+  TemplateType,
+} from './generated';
 
 export const TEMPLATE_TYPE_LIST = Object.keys({
   EMAIL: null,
@@ -44,3 +49,11 @@ export const LANGUAGE_LIST = Object.keys({
   ur: null,
   zh: null,
 } satisfies Record<Language, null>);
+
+export const LETTER_TYPE_LIST = Object.keys({
+  x3: null,
+  q1: null,
+  q4: null,
+  x0: null,
+  x1: null,
+} satisfies Record<LetterType, null>);

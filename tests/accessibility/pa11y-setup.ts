@@ -46,7 +46,7 @@ const setup = async () => {
         owner: userId,
         templateType: 'LETTER',
         id: templateId,
-        letterType: LetterType.X0,
+        letterType: 'x0',
         language: 'en',
         createdAt: new Date().toISOString(),
         name: 'pa11y_letter',

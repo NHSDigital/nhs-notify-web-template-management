@@ -42,11 +42,11 @@ export const languageMapping = (language: Language) =>
   })[language];
 const letterTypeMapping = (letterType: LetterType) =>
   ({
-    [LetterType.X3]: 'Audio CD',
-    [LetterType.Q1]: 'Braille',
-    [LetterType.Q4]: 'British Sign Language',
-    [LetterType.X0]: 'Standard',
-    [LetterType.X1]: 'Large print',
+    x3: 'Audio CD',
+    q1: 'Braille',
+    q4: 'British Sign Language',
+    x0: 'Standard',
+    x1: 'Large print',
   })[letterType];
 
 export const letterTypeDisplayMappings = (

@@ -44,7 +44,7 @@ const nhsAppProperties: NHSAppProperties = {
 };
 
 const letterProperties: LetterProperties = {
-  letterType: LetterType.X0,
+  letterType: 'x0',
   language: 'en',
   files: {
     pdfTemplate: {

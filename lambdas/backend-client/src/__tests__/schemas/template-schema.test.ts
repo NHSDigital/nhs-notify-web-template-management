@@ -220,7 +220,7 @@ describe('Template schemas', () => {
       {
         ...commonFields,
         templateType: 'LETTER',
-        letterType: LetterType.X0,
+        letterType: 'x0',
         language: 'en',
         files: {
           pdfTemplate: {
@@ -261,7 +261,7 @@ describe('Template schemas', () => {
       {
         ...commonFields,
         templateType: 'LETTER',
-        letterType: LetterType.X0,
+        letterType: 'x0',
         language: 'en',
         files: {
           pdfTemplate: {

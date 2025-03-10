@@ -39,7 +39,7 @@ const manageTemplatesProps: {
       templateStatus: 'SUBMITTED',
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
-      letterType: LetterType.X0,
+      letterType: 'x0',
       language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
       files: {
