@@ -47,7 +47,7 @@ const setup = async () => {
         templateType: 'LETTER',
         id: templateId,
         letterType: LetterType.X0,
-        language: Language.EN,
+        language: 'en',
         createdAt: new Date().toISOString(),
         name: 'pa11y_letter',
         files: {

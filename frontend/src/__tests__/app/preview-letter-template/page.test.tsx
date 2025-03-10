@@ -35,7 +35,7 @@ const templateDTO = {
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
   letterType: LetterType.X0,
-  language: Language.EN,
+  language: 'en',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',

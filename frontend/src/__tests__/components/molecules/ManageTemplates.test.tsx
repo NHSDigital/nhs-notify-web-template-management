@@ -40,7 +40,7 @@ const manageTemplatesProps: {
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
       letterType: LetterType.X0,
-      language: Language.FR,
+      language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
       files: {
         pdfTemplate: {
