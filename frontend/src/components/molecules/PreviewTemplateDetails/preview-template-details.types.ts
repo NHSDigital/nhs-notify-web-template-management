@@ -1,4 +1,4 @@
-import { Template } from 'nhs-notify-web-template-management-utils';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 type PreviewTemplateHeadingsType =
   | 'Id'
@@ -8,7 +8,7 @@ type PreviewTemplateHeadingsType =
   | 'Message';
 
 export type PreviewTemplateDetailsProps = {
-  template: Template;
+  template: TemplateDTO;
   templateTypeText: string;
   additionalMetaFields?: {
     title: string;

@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { VirusScanStatus } from './VirusScanStatus';
-export type File = {
+export type FileDetails = {
     fileName: string;
     currentVersion?: string;
-    virusScanStatus: VirusScanStatus;
+    virusScanStatus?: VirusScanStatus;
 };
 

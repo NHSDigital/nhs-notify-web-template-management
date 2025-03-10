@@ -2,11 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { TemplateType } from './TemplateType';
-export type CreateTemplate = {
-    templateType: TemplateType;
+import type { ChannelTemplate } from './ChannelTemplate';
+export type CreateTemplate = (ChannelTemplate & {
     name: string;
-    message?: string;
-    subject?: string;
-};
+});
 

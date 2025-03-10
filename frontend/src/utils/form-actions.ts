@@ -2,10 +2,11 @@
 
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
-  Template,
-  isTemplateValid,
-} from 'nhs-notify-web-template-management-utils';
-import { CreateTemplate, TemplateDTO } from 'nhs-notify-backend-client';
+  CreateTemplate,
+  isTemplateDTOValid,
+  TemplateDTO,
+  UpdateTemplate,
+} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
@@ -28,7 +29,10 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(template: Template): Promise<TemplateDTO> {
+export async function saveTemplate(
+  templateId: string,
+  template: UpdateTemplate
+): Promise<TemplateDTO> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -36,7 +40,7 @@ export async function saveTemplate(template: Template): Promise<TemplateDTO> {
   }
 
   const { data, error } = await TemplateClient(token).updateTemplate(
-    template.id,
+    templateId,
     template
   );
 
@@ -81,7 +85,7 @@ export async function getTemplates(): Promise<TemplateDTO[]> {
   }
 
   const sortedData = data
-    .map((template) => isTemplateValid(template))
+    .map((template) => isTemplateDTOValid(template))
     .filter((template): template is TemplateDTO => template !== undefined)
     .sort((a, b) => {
       const aCreatedAt = a.createdAt;

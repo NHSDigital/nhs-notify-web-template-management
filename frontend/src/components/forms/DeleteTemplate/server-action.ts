@@ -1,18 +1,16 @@
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  Template,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateStatus } from 'nhs-notify-web-template-management-utils';
 import { saveTemplate } from '@utils/form-actions';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 export const deleteTemplateNoAction = async () => {
   redirect('/manage-templates', RedirectType.push);
 };
 
 export const deleteTemplateYesAction = async (
-  template: Template
+  template: TemplateDTO
 ): Promise<never> => {
-  await saveTemplate({
+  await saveTemplate(template.id, {
     ...template,
     templateStatus: TemplateStatus.DELETED,
   });

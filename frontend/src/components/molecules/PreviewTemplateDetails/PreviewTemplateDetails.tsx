@@ -173,6 +173,13 @@ PreviewTemplateDetails.Letter = ({
         id: 'templatefile',
         content: <Filename filename={template.files.pdfTemplate.fileName} />,
       },
+      {
+        title: 'Test personalisation file',
+        id: 'testdatafile',
+        content: (
+          <Filename filename={template.files.testDataCsv?.fileName || ''} />
+        ),
+      },
       ...(template.files.testDataCsv
         ? [
             {

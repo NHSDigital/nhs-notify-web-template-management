@@ -6,16 +6,16 @@ import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NH
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import content from '@content/content';
 import {
-  Template,
   TemplateType,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { copyTemplateAction } from './server-action';
+import { TemplateDTO } from 'nhs-notify-backend-client';
 
 type CopyTemplate = {
-  template: Template;
+  template: TemplateDTO;
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {

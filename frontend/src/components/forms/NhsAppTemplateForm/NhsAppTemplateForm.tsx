@@ -16,7 +16,7 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  Draft,
+  CreateNHSAppTemplate,
   NHSAppTemplate,
   PageComponentProps,
   TemplateType,
@@ -29,7 +29,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const NhsAppTemplateForm: FC<
-  PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
+  PageComponentProps<NHSAppTemplate | CreateNHSAppTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,

@@ -3,11 +3,11 @@
 import {
   PageProps,
   TemplateStatus,
+  validateNonSubmittedTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { DeleteTemplate } from '@forms/DeleteTemplate/DeleteTemplate';
-import { validateNonSubmittedTemplate } from '@utils/validate-template';
 
 const DeleteTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

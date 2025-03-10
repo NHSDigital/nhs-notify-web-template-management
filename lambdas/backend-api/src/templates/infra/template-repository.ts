@@ -1,8 +1,13 @@
 import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   CreateTemplate,
+  EmailProperties,
   ErrorCase,
+  LetterProperties,
+  NHSAppProperties,
+  SMSProperties,
   TemplateStatus,
+  TemplateType,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
@@ -92,6 +97,124 @@ const create = async (
   }
 };
 
+const nhsAppAttributes: Record<keyof NHSAppProperties, null> = {
+  templateType: null,
+  message: null,
+};
+
+const emailAttributes: Record<keyof EmailProperties, null> = {
+  templateType: null,
+  message: null,
+  subject: null,
+};
+
+const smsAttributes: Record<keyof SMSProperties, null> = {
+  templateType: null,
+  message: null,
+};
+
+const letterAttributes: Record<keyof LetterProperties, null> = {
+  templateType: null,
+  letterType: null,
+  language: null,
+  files: null,
+};
+
+const attributeExpressionsFromMap = <T>(
+  channelSpecificAttributes: Record<keyof T, null>
+) => Object.keys(channelSpecificAttributes).map((att) => `#${att} = :${att}`);
+
+const getChannelAttributeExpressions = (template: UpdateTemplate) => {
+  if (template.templateType === TemplateType.NHS_APP) {
+    return attributeExpressionsFromMap<NHSAppProperties>(nhsAppAttributes);
+  }
+  if (template.templateType === TemplateType.EMAIL) {
+    return attributeExpressionsFromMap<EmailProperties>(emailAttributes);
+  }
+  if (template.templateType === TemplateType.SMS) {
+    return attributeExpressionsFromMap<SMSProperties>(smsAttributes);
+  }
+  if (template.templateType === TemplateType.LETTER) {
+    return attributeExpressionsFromMap<LetterProperties>(letterAttributes);
+  }
+  return [];
+};
+
+const attributeNamesFromMap = <T>(
+  channelSpecificAttributes: Record<keyof T, null>
+) => {
+  let attributeNames = {};
+
+  for (const att in channelSpecificAttributes) {
+    attributeNames = {
+      ...attributeNames,
+      [`#${att}`]: att,
+    };
+  }
+
+  return attributeNames;
+};
+
+const getChannelAttributeNames = (template: UpdateTemplate) => {
+  if (template.templateType === TemplateType.NHS_APP) {
+    return attributeNamesFromMap<NHSAppProperties>(nhsAppAttributes);
+  }
+  if (template.templateType === TemplateType.EMAIL) {
+    return attributeNamesFromMap<EmailProperties>(emailAttributes);
+  }
+  if (template.templateType === TemplateType.SMS) {
+    return attributeNamesFromMap<SMSProperties>(smsAttributes);
+  }
+  if (template.templateType === TemplateType.LETTER) {
+    return attributeNamesFromMap<LetterProperties>(letterAttributes);
+  }
+  return [];
+};
+
+const attributeValuesFromMapAndTemplate = <T>(
+  channelSpecificAttributes: Record<keyof T, null>,
+  template: T
+) => {
+  let attributeValues = {};
+
+  for (const att in channelSpecificAttributes) {
+    attributeValues = {
+      ...attributeValues,
+      [`:${att}`]: template[att],
+    };
+  }
+
+  return attributeValues;
+};
+
+const getChannelAttributeValues = (template: UpdateTemplate) => {
+  if (template.templateType === TemplateType.NHS_APP) {
+    return attributeValuesFromMapAndTemplate<NHSAppProperties>(
+      nhsAppAttributes,
+      template
+    );
+  }
+  if (template.templateType === TemplateType.EMAIL) {
+    return attributeValuesFromMapAndTemplate<EmailProperties>(
+      emailAttributes,
+      template
+    );
+  }
+  if (template.templateType === TemplateType.SMS) {
+    return attributeValuesFromMapAndTemplate<SMSProperties>(
+      smsAttributes,
+      template
+    );
+  }
+  if (template.templateType === TemplateType.LETTER) {
+    return attributeValuesFromMapAndTemplate<LetterProperties>(
+      letterAttributes,
+      template
+    );
+  }
+  return [];
+};
+
 const update = async (
   templateId: string,
   template: UpdateTemplate,
@@ -101,13 +224,14 @@ const update = async (
     '#name = :name',
     '#updatedAt = :updateAt',
     '#templateStatus = :templateStatus',
+    ...getChannelAttributeExpressions(template),
   ];
 
   let expressionAttributeNames: Record<string, string> = {
     '#name': 'name',
     '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
-    '#templateType': 'templateType',
+    ...getChannelAttributeNames(template),
   };
 
   let expressionAttributeValues: Record<string, string | number> = {
@@ -116,31 +240,8 @@ const update = async (
     ':updateAt': new Date().toISOString(),
     ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
     ':templateType': template.templateType,
+    ...getChannelAttributeValues(template),
   };
-
-  if (template.message) {
-    updateExpression.push('#message = :message');
-    expressionAttributeNames = {
-      ...expressionAttributeNames,
-      '#message': 'message',
-    };
-    expressionAttributeValues = {
-      ...expressionAttributeValues,
-      ':message': template.message,
-    };
-  }
-
-  if (template.subject) {
-    updateExpression.push('#subject = :subject');
-    expressionAttributeNames = {
-      ...expressionAttributeNames,
-      '#subject': 'subject',
-    };
-    expressionAttributeValues = {
-      ...expressionAttributeValues,
-      ':subject': template.subject,
-    };
-  }
 
   if (template.templateStatus === TemplateStatus.DELETED) {
     updateExpression.push('#ttl = :ttl');

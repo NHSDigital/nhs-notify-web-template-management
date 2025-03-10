@@ -9,12 +9,15 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
-  TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO, TemplateType } from 'nhs-notify-backend-client';
+import {
+  TemplateDTO,
+  TemplateStatus,
+  TemplateType,
+} from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
