@@ -1,26 +1,24 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto } from 'nhs-notify-backend-client';
-import { handler } from '@backend-api/templates/api/get';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/get';
 
-jest.mock('@backend-api/templates/app/template-client');
+const setup = () => {
+  const templateClient = mock<ITemplateClient>();
 
-const getTemplateMock = jest.spyOn(TemplateClient.prototype, 'getTemplate');
+  const handler = createHandler({ templateClient });
 
-const OLD_ENV = { ...process.env };
+  return { handler, mocks: { templateClient } };
+};
 
 describe('Template API - Get', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.ENABLE_LETTERS_BACKEND = 'true';
-  });
-
-  afterAll(() => {
-    process.env = OLD_ENV;
   });
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
       pathParameters: { templateId: '1' },
@@ -36,10 +34,12 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(getTemplateMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.getTemplate).not.toHaveBeenCalled();
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
       pathParameters: { templateId: undefined },
@@ -55,11 +55,13 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(getTemplateMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.getTemplate).not.toHaveBeenCalled();
   });
 
   test('should return error when getting template fails', async () => {
-    getTemplateMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.getTemplate.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -81,33 +83,12 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
-    expect(getTemplateMock).toHaveBeenCalledWith('1');
-  });
-
-  test('creates template client with letter flag value', async () => {
-    process.env.ENABLE_LETTERS_BACKEND = 'false';
-
-    getTemplateMock.mockResolvedValueOnce({
-      error: {
-        code: 500,
-        message: 'Internal server error',
-      },
-    });
-
-    await handler(
-      mock<APIGatewayProxyEvent>({
-        requestContext: { authorizer: { user: 'sub' } },
-        pathParameters: { templateId: '1' },
-      }),
-      mock<Context>(),
-      jest.fn()
-    );
-
-    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', 'sub');
   });
 
   test('should return template', async () => {
+    const { handler, mocks } = setup();
+
     const template: TemplateDto = {
       id: 'id',
       templateType: 'EMAIL',
@@ -119,7 +100,7 @@ describe('Template API - Get', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
     };
 
-    getTemplateMock.mockResolvedValueOnce({
+    mocks.templateClient.getTemplate.mockResolvedValueOnce({
       data: template,
     });
 
@@ -135,7 +116,6 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
-    expect(getTemplateMock).toHaveBeenCalledWith('1');
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', 'sub');
   });
 });

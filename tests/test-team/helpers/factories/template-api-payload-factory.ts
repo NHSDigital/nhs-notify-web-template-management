@@ -1,5 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { CreateTemplatePayload, UpdateTemplatePayload } from '../types';
+import {
+  pdfLetterMultipart,
+  type PdfUploadPartSpec,
+} from 'nhs-notify-web-template-management-test-helper-utils';
 
 type TemplatePayload = CreateTemplatePayload | UpdateTemplatePayload;
 
@@ -13,46 +17,105 @@ type MandatoryTemplateFields<
   K extends keyof T,
 > = Pick<T, K>;
 
-type Input<T extends TemplatePayload> = MandatoryTemplateFields<
+type TemplateInput<T extends TemplatePayload> = MandatoryTemplateFields<
   T,
   'templateType'
 > &
   OptionalTemplateFields<T>;
 
-type Output<T extends TemplatePayload, U extends Record<string, unknown>> = T &
-  U;
+type TemplateOutput<
+  T extends TemplatePayload,
+  U extends Record<string, unknown>,
+> = T & U;
 
-const createPayloadData = (templateType: unknown) => ({
+const createTemplateBaseData = (templateType: unknown) => ({
   name: faker.word.noun(),
   message: faker.word.words(5),
   ...(templateType === 'EMAIL' && {
     subject: faker.word.interjection(),
   }),
+  ...(templateType === 'LETTER' && {
+    language: 'en',
+    letterType: 'x0',
+  }),
 });
 
 export const TemplateAPIPayloadFactory = {
   /**
-   * Returns a request body payload to be used with an API request to create a new template
+   * Returns a request body payload to be used with an API request to create a new non-letter template
    */
-  getCreateTemplatePayload<T extends Input<CreateTemplatePayload>>(
+  getCreateTemplatePayload<T extends TemplateInput<CreateTemplatePayload>>(
     template: T
-  ): Output<CreateTemplatePayload, T> {
+  ): TemplateOutput<CreateTemplatePayload, T> {
     return {
-      ...createPayloadData(template.templateType),
+      ...createTemplateBaseData(template.templateType),
       ...template,
     };
   },
 
   /**
-   * Returns a request body payload to be used with an API request to update a template
+   * Returns a request body payload to be used with an API request to update a non-letter template
    */
-  getUpdateTemplatePayload<T extends Input<UpdateTemplatePayload>>(
+  getUpdateTemplatePayload<T extends TemplateInput<UpdateTemplatePayload>>(
     template: T
-  ): Output<UpdateTemplatePayload, T> {
+  ): TemplateOutput<UpdateTemplatePayload, T> {
     return {
       templateStatus: 'NOT_YET_SUBMITTED',
-      ...createPayloadData(template.templateType),
+      ...createTemplateBaseData(template.templateType),
       ...template,
+    };
+  },
+
+  /**
+   * Returns a request body payload to be used with an API request to create a new letter template
+   */
+  async getCreateLetterTemplatePayload<
+    T extends TemplateInput<CreateTemplatePayload>,
+  >(
+    template: T,
+    uploadSpec: PdfUploadPartSpec[]
+  ): Promise<{
+    templateData: TemplateOutput<CreateTemplatePayload, T>;
+    multipart: Buffer;
+    contentType: string;
+  }> {
+    const templateData = {
+      ...createTemplateBaseData(template.templateType),
+      ...template,
+    };
+
+    const multipartData = await pdfLetterMultipart(uploadSpec, templateData);
+
+    return {
+      templateData,
+      ...multipartData,
+    };
+  },
+
+  /**
+   * Returns a request body payload to be used with an API request to update a letter template
+   */
+  async getUpdateLetterTemplatePayload<
+    T extends TemplateInput<UpdateTemplatePayload>,
+  >(
+    template: T,
+    uploadSpec: PdfUploadPartSpec[]
+  ): Promise<{
+    templateData: TemplateOutput<UpdateTemplatePayload, T>;
+    multipart: Buffer;
+    contentType: string;
+  }> {
+    const templateData = {
+      templateStatus: 'NOT_YET_SUBMITTED',
+      ...createTemplateBaseData(template.templateType),
+      ...template,
+    };
+
+    const multipartData = await pdfLetterMultipart(uploadSpec, templateData);
+
+    return {
+      templateData,
+      ...multipartData,
     };
   },
 };

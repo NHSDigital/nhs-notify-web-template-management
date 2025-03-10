@@ -2,60 +2,70 @@ import {
   CreateTemplate,
   TemplateDto,
   UpdateTemplate,
-  $CreateTemplateSchema,
-  $UpdateTemplateSchema,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
-  templateRepository,
+  TemplateRepository,
 } from '@backend-api/templates/infra';
-import { validate } from '@backend-api/utils/validate';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { mock } from 'jest-mock-extended';
+import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
 
-jest.mock('@backend-api/templates/infra');
-jest.mock('@backend-api/utils/validate');
+const owner = '58890285E473';
+const id = 'E1F5088E5B77';
 
-const createMock = jest.mocked(templateRepository.create);
-const updateMock = jest.mocked(templateRepository.update);
-const getMock = jest.mocked(templateRepository.get);
-const listMock = jest.mocked(templateRepository.list);
-const validateMock = jest.mocked(validate);
+const setup = () => {
+  const enableLetters = true;
 
-// letters feature flag is enabled
-const client = new TemplateClient('owner', true);
+  const templateRepository = mock<TemplateRepository>();
+
+  const letterUploadRepository = mock<LetterUploadRepository>();
+
+  const generateId = () => id;
+
+  const templateClient = new TemplateClient(
+    enableLetters,
+    templateRepository,
+    letterUploadRepository,
+    generateId
+  );
+
+  return {
+    templateClient,
+    mocks: { templateRepository, letterUploadRepository, generateId },
+  };
+};
 
 describe('templateClient', () => {
   beforeEach(jest.resetAllMocks);
 
   describe('createTemplate', () => {
     test('should return a failure result, when template data is invalid', async () => {
-      validateMock.mockResolvedValueOnce({
-        error: {
-          code: 400,
-          message: 'Bad request',
-        },
-      });
+      const { templateClient } = setup();
 
-      const data: CreateTemplate = {
+      const data = {
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
         subject: 'subject',
       };
 
-      const result = await client.createTemplate(data);
-
-      expect(validateMock).toHaveBeenCalledWith($CreateTemplateSchema, data);
+      const result = await templateClient.createTemplate(
+        data as unknown as CreateTemplate,
+        owner
+      );
 
       expect(result).toEqual({
-        error: {
+        error: expect.objectContaining({
           code: 400,
-          message: 'Bad request',
-        },
+          message: 'Request failed validation',
+        }),
       });
     });
 
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: CreateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
@@ -63,20 +73,20 @@ describe('templateClient', () => {
         subject: 'subject',
       };
 
-      validateMock.mockResolvedValueOnce({
-        data,
-      });
-
-      createMock.mockResolvedValueOnce({
+      mocks.templateRepository.create.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
         },
       });
 
-      const result = await client.createTemplate(data);
+      const result = await templateClient.createTemplate(data, owner);
 
-      expect(createMock).toHaveBeenCalledWith(data, 'owner');
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        data,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         error: {
@@ -87,6 +97,8 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when created database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: CreateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
@@ -96,7 +108,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id: 'id',
+        id,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -104,21 +116,21 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: 'owner',
+        owner,
         version: 1,
       };
 
-      validateMock.mockResolvedValueOnce({
-        data,
-      });
-
-      createMock.mockResolvedValueOnce({
+      mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
       });
 
-      const result = await client.createTemplate(data);
+      const result = await templateClient.createTemplate(data, owner);
 
-      expect(createMock).toHaveBeenCalledWith(data, 'owner');
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        data,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         error: {
@@ -129,6 +141,8 @@ describe('templateClient', () => {
     });
 
     test('should return created template', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: CreateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
@@ -138,7 +152,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id: 'id',
+        id,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -146,21 +160,21 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: 'owner',
+        owner,
         version: 1,
       };
 
-      validateMock.mockResolvedValueOnce({
-        data,
-      });
-
-      createMock.mockResolvedValueOnce({
+      mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
       });
 
-      const result = await client.createTemplate(data);
+      const result = await templateClient.createTemplate(data, owner);
 
-      expect(createMock).toHaveBeenCalledWith(data, 'owner');
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        data,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         data: expectedTemplateDto,
@@ -170,33 +184,31 @@ describe('templateClient', () => {
 
   describe('updateTemplate', () => {
     test('should return a failure result, when template data is invalid', async () => {
-      validateMock.mockResolvedValueOnce({
-        error: {
-          code: 400,
-          message: 'Bad request',
-        },
-      });
+      const { templateClient } = setup();
 
-      const data: UpdateTemplate = {
+      const data = {
         name: 'name',
-        message: 'message',
         templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
-      const result = await client.updateTemplate('id', data);
-
-      expect(validateMock).toHaveBeenCalledWith($UpdateTemplateSchema, data);
+      const result = await templateClient.updateTemplate(
+        id,
+        data as unknown as UpdateTemplate,
+        owner
+      );
 
       expect(result).toEqual({
-        error: {
+        error: expect.objectContaining({
           code: 400,
-          message: 'Bad request',
-        },
+          message: 'Request failed validation',
+        }),
       });
     });
 
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
@@ -204,20 +216,21 @@ describe('templateClient', () => {
         templateType: 'SMS',
       };
 
-      validateMock.mockResolvedValueOnce({
-        data,
-      });
-
-      updateMock.mockResolvedValueOnce({
+      mocks.templateRepository.update.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
         },
       });
 
-      const result = await client.updateTemplate('id', data);
+      const result = await templateClient.updateTemplate(id, data, owner);
 
-      expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
+      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+        id,
+        data,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         error: {
@@ -228,6 +241,8 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when updated database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
@@ -237,7 +252,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id: 'id',
+        id,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -245,21 +260,22 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner: 'owner',
+        owner,
         version: 1,
       };
 
-      validateMock.mockResolvedValueOnce({
-        data,
-      });
-
-      updateMock.mockResolvedValueOnce({
+      mocks.templateRepository.update.mockResolvedValueOnce({
         data: template,
       });
 
-      const result = await client.updateTemplate('id', data);
+      const result = await templateClient.updateTemplate(id, data, owner);
 
-      expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
+      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+        id,
+        data,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         error: {
@@ -270,6 +286,8 @@ describe('templateClient', () => {
     });
 
     test('should return updated template', async () => {
+      const { templateClient, mocks } = setup();
+
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
@@ -279,23 +297,24 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         ...data,
-        id: 'id',
+        id,
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
-      validateMock.mockResolvedValueOnce({
+      mocks.templateRepository.update.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
+      });
+
+      const result = await templateClient.updateTemplate(id, data, owner);
+
+      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+        id,
         data,
-      });
-
-      updateMock.mockResolvedValueOnce({
-        data: { ...template, owner: 'owner', version: 1 },
-      });
-
-      const result = await client.updateTemplate('id', data);
-
-      expect(updateMock).toHaveBeenCalledWith('id', data, 'owner');
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
 
       expect(result).toEqual({
         data: template,
@@ -305,16 +324,18 @@ describe('templateClient', () => {
 
   describe('getTemplate', () => {
     test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
-      getMock.mockResolvedValueOnce({
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
         },
       });
 
-      const result = await client.getTemplate('id');
+      const result = await templateClient.getTemplate(id, owner);
 
-      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
 
       expect(result).toEqual({
         error: {
@@ -325,8 +346,10 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
       const templateDTO: TemplateDto = {
-        id: 'id',
+        id: id,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -338,17 +361,17 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...templateDTO,
-        owner: 'owner',
+        owner,
         version: 1,
       };
 
-      getMock.mockResolvedValueOnce({
+      mocks.templateRepository.get.mockResolvedValueOnce({
         data: template,
       });
 
-      const result = await client.getTemplate('id');
+      const result = await templateClient.getTemplate(id, owner);
 
-      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
 
       expect(result).toEqual({
         error: {
@@ -359,11 +382,18 @@ describe('templateClient', () => {
     });
 
     test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner', false);
+      const { mocks } = setup();
 
-      getMock.mockResolvedValueOnce({
+      const noLettersClient = new TemplateClient(
+        false,
+        mocks.templateRepository,
+        mocks.letterUploadRepository,
+        mocks.generateId
+      );
+
+      mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
-          id: 'id',
+          id: id,
           templateType: 'LETTER',
           name: 'name',
           createdAt: new Date().toISOString(),
@@ -371,14 +401,14 @@ describe('templateClient', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'q4',
           language: 'fr',
-          owner: 'owner',
+          owner,
           version: 1,
         },
       });
 
-      const result = await noLettersClient.getTemplate('id');
+      const result = await noLettersClient.getTemplate(id, owner);
 
-      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
 
       expect(result).toEqual({
         error: {
@@ -389,8 +419,10 @@ describe('templateClient', () => {
     });
 
     test('should return template', async () => {
+      const { templateClient, mocks } = setup();
+
       const template: TemplateDto = {
-        id: 'id',
+        id: id,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -400,13 +432,13 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      getMock.mockResolvedValueOnce({
-        data: { ...template, owner: 'owner', version: 1 },
+      mocks.templateRepository.get.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
       });
 
-      const result = await client.getTemplate('id');
+      const result = await templateClient.getTemplate(id, owner);
 
-      expect(getMock).toHaveBeenCalledWith('id', 'owner');
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
 
       expect(result).toEqual({
         data: template,
@@ -416,16 +448,18 @@ describe('templateClient', () => {
 
   describe('listTemplates', () => {
     test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
-      listMock.mockResolvedValueOnce({
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.list.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
         },
       });
 
-      const result = await client.listTemplates();
+      const result = await templateClient.listTemplates(owner);
 
-      expect(listMock).toHaveBeenCalledWith('owner');
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
 
       expect(result).toEqual({
         error: {
@@ -436,10 +470,17 @@ describe('templateClient', () => {
     });
 
     test('filters out letters if the feature flag is not enabled', async () => {
-      const noLettersClient = new TemplateClient('owner', false);
+      const { mocks } = setup();
+
+      const noLettersClient = new TemplateClient(
+        false,
+        mocks.templateRepository,
+        mocks.letterUploadRepository,
+        mocks.generateId
+      );
 
       const template: TemplateDto = {
-        id: 'id',
+        id: id,
         templateType: 'LETTER',
         name: 'name',
         createdAt: new Date().toISOString(),
@@ -461,13 +502,13 @@ describe('templateClient', () => {
         },
       };
 
-      listMock.mockResolvedValueOnce({
-        data: [{ ...template, owner: 'owner', version: 1 }],
+      mocks.templateRepository.list.mockResolvedValueOnce({
+        data: [{ ...template, owner, version: 1 }],
       });
 
-      const result = await noLettersClient.listTemplates();
+      const result = await noLettersClient.listTemplates(owner);
 
-      expect(listMock).toHaveBeenCalledWith('owner');
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
 
       expect(result).toEqual({
         data: [],
@@ -475,8 +516,10 @@ describe('templateClient', () => {
     });
 
     test('should filter out invalid templates', async () => {
+      const { templateClient, mocks } = setup();
+
       const template: TemplateDto = {
-        id: 'id',
+        id: id,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -496,16 +539,16 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      listMock.mockResolvedValueOnce({
+      mocks.templateRepository.list.mockResolvedValueOnce({
         data: [
-          { ...template, owner: 'owner', version: 1 },
-          { ...template2, owner: 'owner', version: 1 },
+          { ...template, owner, version: 1 },
+          { ...template2, owner, version: 1 },
         ],
       });
 
-      const result = await client.listTemplates();
+      const result = await templateClient.listTemplates(owner);
 
-      expect(listMock).toHaveBeenCalledWith('owner');
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
 
       expect(result).toEqual({
         data: [template],
@@ -513,8 +556,10 @@ describe('templateClient', () => {
     });
 
     test('should return templates', async () => {
+      const { templateClient, mocks } = setup();
+
       const template: TemplateDto = {
-        id: 'id',
+        id: id,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -524,13 +569,13 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      listMock.mockResolvedValueOnce({
-        data: [{ ...template, owner: 'owner', version: 1 }],
+      mocks.templateRepository.list.mockResolvedValueOnce({
+        data: [{ ...template, owner, version: 1 }],
       });
 
-      const result = await client.listTemplates();
+      const result = await templateClient.listTemplates(owner);
 
-      expect(listMock).toHaveBeenCalledWith('owner');
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
 
       expect(result).toEqual({
         data: [template],

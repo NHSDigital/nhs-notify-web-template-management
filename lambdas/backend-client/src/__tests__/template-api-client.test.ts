@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient, TemplateClient } from '../template-api-client';
+import { TemplateApiClient, templateClient } from '../template-api-client';
 
 const axiosMock = new MockAdapter(axios);
 
@@ -9,12 +9,6 @@ const testToken = 'abc';
 describe('TemplateAPIClient', () => {
   beforeEach(() => {
     axiosMock.reset();
-  });
-
-  test('TemplateClient should construct TemplateApiClient', () => {
-    const result = TemplateClient(testToken);
-
-    expect(result).toBeTruthy();
   });
 
   test('createTemplate - should return error', async () => {
@@ -26,13 +20,16 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.createTemplate({
-      name: 'test',
-      message: '<html></html>',
-      templateType: 'NHS_APP',
-    });
+    const result = await client.createTemplate(
+      {
+        name: 'test',
+        message: '<html></html>',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.error).toEqual({
       code: 400,
@@ -58,13 +55,16 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.createTemplate({
-      name: 'name',
-      message: 'message',
-      templateType: 'NHS_APP',
-    });
+    const result = await client.createTemplate(
+      {
+        name: 'name',
+        message: 'message',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.data).toEqual({
       id: 'id',
@@ -85,14 +85,18 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.updateTemplate('real-id', {
-      name: 'test',
-      message: '<html></html>',
-      templateStatus: 'SUBMITTED',
-      templateType: 'NHS_APP',
-    });
+    const result = await client.updateTemplate(
+      'real-id',
+      {
+        name: 'test',
+        message: '<html></html>',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.error).toEqual({
       code: 400,
@@ -121,14 +125,18 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.updateTemplate('real-id', {
-      name: 'name',
-      message: 'message',
-      templateStatus: 'SUBMITTED',
-      templateType: 'NHS_APP',
-    });
+    const result = await client.updateTemplate(
+      'real-id',
+      {
+        name: 'name',
+        message: 'message',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.data).toEqual(data);
 
@@ -144,9 +152,9 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.getTemplate('real-id');
+    const result = await client.getTemplate('real-id', testToken);
 
     expect(result.error).toEqual({
       code: 404,
@@ -175,9 +183,9 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.getTemplate('real-id');
+    const result = await client.getTemplate('real-id', testToken);
 
     expect(result.data).toEqual(data);
 
@@ -190,9 +198,9 @@ describe('TemplateAPIClient', () => {
       technicalMessage: 'Internal server error',
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.listTemplates();
+    const result = await client.listTemplates(testToken);
 
     expect(result.error).toEqual({
       code: 500,
@@ -218,9 +226,9 @@ describe('TemplateAPIClient', () => {
       templates: [data],
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.listTemplates();
+    const result = await client.listTemplates(testToken);
 
     expect(result.data).toEqual([data]);
 

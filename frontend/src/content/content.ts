@@ -434,6 +434,15 @@ const templateFormNhsApp = {
   backLinkText: 'Back to choose a template type',
 };
 
+const templateFormLetter = {
+  backLinkText: 'Back to choose a template type',
+  errorHeading: 'There is a problem',
+  pageHeading: 'Upload a letter template',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
+  buttonText: 'Save and upload',
+};
+
 const templateFormEmail = {
   pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
@@ -515,6 +524,7 @@ const content = {
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,
+    templateFormLetter,
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
