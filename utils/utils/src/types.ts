@@ -52,6 +52,19 @@ export type EmailTemplate = TemplateDto & EmailPropertiesWithType;
 export type SMSTemplate = TemplateDto & SmsPropertiesWithType;
 export type LetterTemplate = TemplateDto & LetterPropertiesWithType;
 
+export type CreateLetterTemplateWithFiles = Omit<
+  CreateLetterTemplate,
+  'files'
+> & {
+  pdf?: File;
+  csv?: File;
+};
+
+export type LetterTemplateWithFiles = Omit<LetterTemplate, 'files'> & {
+  pdf?: File;
+  csv?: File;
+};
+
 export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 
 export type PageProps = {
