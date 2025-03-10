@@ -13,14 +13,12 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 });
 
 export async function getAccessTokenServer(): Promise<string | undefined> {
-  try {
-    const { tokens } = await runWithAmplifyServerContext({
-      nextServerContext: { cookies },
-      operation: (spec) => fetchAuthSession(spec, { forceRefresh: true }),
-    });
+  const session = await runWithAmplifyServerContext({
+    nextServerContext: { cookies },
+    operation: (spec) => fetchAuthSession(spec, { forceRefresh: true }),
+  }).catch(() => {
+    /* no-op */
+  });
 
-    return tokens?.accessToken?.toString();
-  } catch {
-    // no-op
-  }
+  return session?.tokens?.accessToken?.toString();
 }
