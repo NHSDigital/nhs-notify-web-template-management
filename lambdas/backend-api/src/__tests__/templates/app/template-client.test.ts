@@ -953,7 +953,7 @@ describe('templateClient', () => {
         false,
         mocks.templateRepository,
         mocks.letterUploadRepository,
-        mocks.generateId
+        mocks.generateVersionId
       );
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1047,7 +1047,7 @@ describe('templateClient', () => {
         false,
         mocks.templateRepository,
         mocks.letterUploadRepository,
-        mocks.generateId
+        mocks.generateVersionId
       );
 
       const template: TemplateDto = {

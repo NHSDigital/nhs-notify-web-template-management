@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient, templateClient } from '../template-api-client';
+import { TemplateApiClient } from '../template-api-client';
 
 const axiosMock = new MockAdapter(axios);
 
@@ -71,6 +71,91 @@ describe('TemplateAPIClient', () => {
       name: 'name',
       message: 'message',
       templateType: 'NHS_APP',
+    });
+
+    expect(result.error).toBeUndefined();
+  });
+
+  test('createLetterTemplate - should return error', async () => {
+    axiosMock.onPost('/v1/letter-template').reply(400, {
+      statusCode: 400,
+      technicalMessage: 'Bad request',
+      details: {
+        message: 'Invalid request',
+      },
+    });
+
+    const client = new TemplateApiClient();
+
+    const result = await client.createLetterTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+        files: { pdfTemplate: { fileName: 'template.pdf' } },
+      },
+      testToken,
+      new File(['pdf'], 'template.pdf', { type: 'application/pdf' })
+    );
+
+    expect(result.error).toEqual({
+      code: 400,
+      message: 'Bad request',
+      details: {
+        message: 'Invalid request',
+      },
+    });
+
+    expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(1);
+  });
+
+  test('createLetterTemplate - should return template', async () => {
+    axiosMock.onPost('/v1/letter-template').reply(201, {
+      statusCode: 201,
+      template: {
+        id: 'id',
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+        files: {
+          pdfTemplate: { fileName: 'template.pdf' },
+          testDataCsv: { fileName: 'test-data.csv' },
+        },
+      },
+    });
+
+    const client = new TemplateApiClient();
+
+    const result = await client.createLetterTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+        files: {
+          pdfTemplate: { fileName: 'template.pdf' },
+          testDataCsv: { fileName: 'test-data.csv' },
+        },
+      },
+      testToken,
+      new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),
+      new File(['pdf'], 'test-data.csv', { type: 'test/csv' })
+    );
+
+    expect(result.data).toEqual({
+      id: 'id',
+      name: 'test',
+      templateType: 'LETTER',
+      language: 'de',
+      letterType: 'q1',
+      files: {
+        pdfTemplate: { fileName: 'template.pdf' },
+        testDataCsv: { fileName: 'test-data.csv' },
+      },
     });
 
     expect(result.error).toBeUndefined();

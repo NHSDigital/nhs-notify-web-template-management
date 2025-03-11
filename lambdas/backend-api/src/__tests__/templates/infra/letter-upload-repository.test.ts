@@ -1,21 +1,16 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
-import type { Logger } from '@backend-api/utils/logger';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
-import { mock } from 'jest-mock-extended';
 
 const quarantineBucketName = 'q_bucket';
 
 const setup = () => {
   const s3Client = mockClient(S3Client);
 
-  const logger = mock<Logger>();
-
   const letterUploadRepository = new LetterUploadRepository(
     s3Client as unknown as S3Client,
-    quarantineBucketName,
-    logger
+    quarantineBucketName
   );
 
   return { letterUploadRepository, mocks: { s3Client } };

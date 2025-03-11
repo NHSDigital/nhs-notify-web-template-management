@@ -70,6 +70,7 @@ export class TemplateApiClient implements ITemplateClient {
         error: response.error,
       };
     }
+
     return {
       data: response.data.template,
     };
