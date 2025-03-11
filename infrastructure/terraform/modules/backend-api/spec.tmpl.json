@@ -506,7 +506,7 @@
           }
         }
       },
-      "CreateUpdateLetterProperties": {
+      "LetterProperties": {
         "type": "object",
         "required": [
           "letterType",
@@ -518,32 +518,11 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
+          },
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
           }
         }
-      },
-      "LetterProperties": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CreateUpdateLetterProperties"
-          },
-          {
-            "type": "object",
-            "required": [
-              "files"
-            ],
-            "properties": {
-              "letterType": {
-                "$ref": "#/components/schemas/LetterType"
-              },
-              "language": {
-                "$ref": "#/components/schemas/Language"
-              },
-              "files": {
-                "$ref": "#/components/schemas/LetterFiles"
-              }
-            }
-          }
-        ]
       },
       "BaseTemplate": {
         "type": "object",
@@ -578,7 +557,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateUpdateLetterProperties"
+                "$ref": "#/components/schemas/LetterProperties"
               }
             ]
           }
@@ -613,7 +592,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateUpdateLetterProperties"
+                "$ref": "#/components/schemas/LetterProperties"
               }
             ]
           }
