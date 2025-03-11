@@ -67,7 +67,7 @@ const $FileDetails = schemaFor<FileDetails>()(
   })
 );
 
-const $LetterFiles = schemaFor<LetterFiles>()(
+export const $LetterFiles = schemaFor<LetterFiles>()(
   z.object({
     pdfTemplate: $FileDetails,
     testDataCsv: $FileDetails.optional(),
@@ -106,7 +106,7 @@ const $LetterProperties = schemaFor<LetterProperties>()(
   z.object({
     letterType: z.enum(LETTER_TYPE_LIST),
     language: z.enum(LANGUAGE_LIST),
-    files: $LetterFiles,
+    files: $LetterFiles.optional(),
   })
 );
 

@@ -87,14 +87,6 @@ curl --location 'https://<apig_id>.execute-api.eu-west-2.amazonaws.com/<env>/v1/
   "templateType": "LETTER",
   "name": "<string>",
   "letterType": "x0",
-  "language": "en",
-  "files": {
-    "pdfTemplate": {
-      "fileName": "<string>"
-    },
-    "testDataCsv": {
-      "fileName": "<string>"
-    }
-  }
+  "language": "en"
 }'
 ```

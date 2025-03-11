@@ -185,33 +185,30 @@ describe('templateClient', () => {
     test('should return created template', async () => {
       const { templateClient, mocks } = setup();
 
-      const initialFiles: LetterFiles = {
-        pdfTemplate: { fileName: 'template.pdf' },
-        testDataCsv: { fileName: 'test-data.csv' },
-      };
+      const pdfFilename = 'template.pdf';
+      const csvFilename = 'test-data.csv';
 
       const data: CreateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: initialFiles,
       };
 
-      const pdf = new File(['pdf'], 'template.pdf', {
+      const pdf = new File(['pdf'], pdfFilename, {
         type: 'application/pdf',
       });
 
-      const csv = new File(['csv'], 'test-data.csv', { type: 'text/csv' });
+      const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
 
       const filesWithVerions: LetterFiles = {
         pdfTemplate: {
-          fileName: initialFiles.pdfTemplate.fileName,
+          fileName: pdfFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
         testDataCsv: {
-          fileName: initialFiles.testDataCsv!.fileName,
+          fileName: csvFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -298,8 +295,7 @@ describe('templateClient', () => {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
-        letterType: 'x0',
-        files: undefined,
+        letterType: undefined,
       } as unknown as CreateTemplate;
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -316,7 +312,7 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: { files: 'Required, Required' },
+          details: { letterType: 'Required, Required' },
         }),
       });
 
@@ -348,9 +344,6 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          files: {
-            pdfTemplate: { fileName: 'template.pdf' },
-          },
         };
 
         const result = await templateClient.createLetterTemplate(
@@ -395,10 +388,6 @@ describe('templateClient', () => {
           name: 'name',
           language: 'en',
           letterType: 'x0',
-          files: {
-            pdfTemplate: { fileName: 'template.pdf' },
-            testDataCsv: { fileName: 'data.csv' },
-          },
         };
 
         const pdf = new File(['pdf'], 'template.pdf', {
@@ -426,16 +415,11 @@ describe('templateClient', () => {
     test('should return a failure result when intial template creation fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const initialFiles: LetterFiles = {
-        pdfTemplate: { fileName: 'template.pdf' },
-      };
-
       const data: CreateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: initialFiles,
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -444,7 +428,7 @@ describe('templateClient', () => {
 
       const filesWithVerions: LetterFiles = {
         pdfTemplate: {
-          fileName: initialFiles.pdfTemplate.fileName,
+          fileName: 'template.pdf',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -493,16 +477,11 @@ describe('templateClient', () => {
     test('should return a failure result when initially created database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
-      const initialFiles: LetterFiles = {
-        pdfTemplate: { fileName: 'template.pdf' },
-      };
-
       const data: CreateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: initialFiles,
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -535,16 +514,11 @@ describe('templateClient', () => {
     test('should return a failure result when failing to upload letter files', async () => {
       const { templateClient, mocks } = setup();
 
-      const initialFiles: LetterFiles = {
-        pdfTemplate: { fileName: 'template.pdf' },
-      };
-
       const data: CreateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: initialFiles,
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -553,7 +527,7 @@ describe('templateClient', () => {
 
       const filesWithVerions: LetterFiles = {
         pdfTemplate: {
-          fileName: initialFiles.pdfTemplate.fileName,
+          fileName: 'template.pdf',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -633,16 +607,11 @@ describe('templateClient', () => {
     test('should return a failure result when final update fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const initialFiles: LetterFiles = {
-        pdfTemplate: { fileName: 'template.pdf' },
-      };
-
       const data: CreateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: initialFiles,
       };
 
       const pdf = new File(['pdf'], 'template.pdf', {
@@ -651,7 +620,7 @@ describe('templateClient', () => {
 
       const filesWithVerions: LetterFiles = {
         pdfTemplate: {
-          fileName: initialFiles.pdfTemplate.fileName,
+          fileName: 'template.pdf',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },

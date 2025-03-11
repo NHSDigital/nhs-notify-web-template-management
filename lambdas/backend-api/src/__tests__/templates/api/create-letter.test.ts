@@ -34,14 +34,6 @@ describe('create-letter', () => {
     name: 'template-name',
     letterType: 'x0',
     language: 'en',
-    files: {
-      pdfTemplate: {
-        fileName: 'template.pdf',
-      },
-      testDataCsv: {
-        fileName: 'test-data.csv',
-      },
-    },
   };
 
   const pdf = new File(['letterPdf'], 'template.pdf', {
@@ -56,6 +48,9 @@ describe('create-letter', () => {
   test('successfully handles multipart form input and forwards PDF and CSV', async () => {
     const { handler, mocks } = setup();
 
+    const pdfFilename = 'template.pdf';
+    const csvFilename = 'data.csv';
+
     const { contentType, multipart } = await pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
@@ -63,14 +58,14 @@ describe('create-letter', () => {
           _type: 'file',
           partName: 'letterPdf',
           file: pdf,
-          fileName: 'template.pdf',
+          fileName: pdfFilename,
           fileType: 'application/pdf',
         },
         {
           _type: 'file',
           partName: 'testCsv',
           file: csv,
-          fileName: 'test-data.csv',
+          fileName: csvFilename,
           fileType: 'text/csv',
         },
       ],
@@ -95,12 +90,12 @@ describe('create-letter', () => {
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
-          fileName: initialTemplate.files.pdfTemplate.fileName,
+          fileName: pdfFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
         testDataCsv: {
-          fileName: initialTemplate.files.testDataCsv!.fileName,
+          fileName: csvFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -163,7 +158,7 @@ describe('create-letter', () => {
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
-          fileName: initialTemplate.files.pdfTemplate.fileName,
+          fileName: 'template.pdf',
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -217,7 +212,7 @@ describe('create-letter', () => {
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
       body: undefined,
-      headers: { 'Content-Type': undefined },
+      headers: { 'Content-Type': undefined, 'content-type': undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
