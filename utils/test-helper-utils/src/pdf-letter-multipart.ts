@@ -17,7 +17,7 @@ export type PdfUploadPartSpec = TemplatePart | FilePart;
 
 export async function pdfLetterMultipart(
   parts: PdfUploadPartSpec[],
-  template: Record<string, unknown> | string
+  template?: Record<string, unknown> | string
 ): Promise<{
   contentType: string;
   multipart: Buffer;

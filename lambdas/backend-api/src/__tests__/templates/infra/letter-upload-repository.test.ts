@@ -1,6 +1,7 @@
-import { S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
 import type { Logger } from '@backend-api/utils/logger';
+import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { mock } from 'jest-mock-extended';
 
@@ -25,47 +26,98 @@ describe('LetterUploadRepository', () => {
   const owner = '3A1F94D78582';
   const versionId = 'A6C177531604';
 
+  const pdfBytes = new Blob(['pdf_data']);
+  const csvBytes = new Blob(['csv_data']);
+  const pdfFilename = 'template.pdf';
+  const csvFilename = 'test-data.csv';
+
+  const pdf = new File([pdfBytes], pdfFilename, {
+    type: 'application/pdf',
+  });
+  const csv = new File([csvBytes], csvFilename, {
+    type: 'text/csv',
+  });
+
   test('uploads both PDF template and test data CSV', async () => {
-    const { letterUploadRepository } = setup();
+    const { letterUploadRepository, mocks } = setup();
 
-    await letterUploadRepository.upload(templateId, owner, versionId);
+    await letterUploadRepository.upload(templateId, owner, versionId, pdf, csv);
 
-    expect(1).toBe(1);
+    expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 2);
+
+    expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+      Bucket: quarantineBucketName,
+      Key: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+      Body: new Uint8Array(await pdfBytes.arrayBuffer()),
+      Metadata: {
+        owner,
+        'template-id': templateId,
+        'user-filename': pdfFilename,
+        'version-id': versionId,
+        'test-data-provided': 'true',
+      },
+    });
+
+    expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+      Bucket: quarantineBucketName,
+      Key: `test-data/${owner}/${templateId}/${versionId}.csv`,
+      Body: new Uint8Array(await csvBytes.arrayBuffer()),
+      Metadata: {
+        owner,
+        'template-id': templateId,
+        'user-filename': csvFilename,
+        'version-id': versionId,
+      },
+    });
+  });
+
+  test('uploads both PDF template when test data CSV is not present', async () => {
+    const { letterUploadRepository, mocks } = setup();
+    await letterUploadRepository.upload(templateId, owner, versionId, pdf);
+
+    expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 1);
+
+    expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+      Bucket: quarantineBucketName,
+      Key: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+      Body: new Uint8Array(await pdfBytes.arrayBuffer()),
+      Metadata: {
+        owner,
+        'template-id': templateId,
+        'user-filename': pdfFilename,
+        'version-id': versionId,
+      },
+    });
+  });
+
+  test('returns errors when upload fails', async () => {
+    const { letterUploadRepository, mocks } = setup();
+
+    mocks.s3Client.on(PutObjectCommand).rejects('could not upload');
+
+    const result = await letterUploadRepository.upload(
+      templateId,
+      owner,
+      versionId,
+      pdf,
+      csv
+    );
+
+    expect(result).toEqual({
+      error: {
+        actualError: expect.objectContaining({
+          message: 'Failed to upload letter files',
+          cause: [
+            expect.objectContaining({ message: 'could not upload' }),
+            expect.objectContaining({ message: 'could not upload' }),
+          ],
+        }),
+        code: 500,
+        details: undefined,
+        message: 'Failed to upload letter files',
+      },
+    });
+
+    expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 2);
   });
 });
-
-// expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 2);
-
-// expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
-//   Key: `pdf-template/${user}/${templateId}/${versionId}.pdf`,
-//   Bucket: quarantineBucketName,
-//   Body: pdfBuffer,
-//   Metadata: {
-//     'test-data-csv': 'true',
-//     owner: user,
-//     'version-id': versionId,
-//     'template-id': templateId,
-//     'user-filename': 'template.pdf',
-//   },
-// });
-
-// expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
-//   Key: `test-data/${user}/${templateId}/${versionId}.csv`,
-//   Bucket: quarantineBucketName,
-//   Body: csvBuffer,
-//   Metadata: {
-//     owner: user,
-//     'version-id': versionId,
-//     'template-id': templateId,
-//     'user-filename': 'test-data.csv',
-//   },
-// });
-
-// expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
-//   templateId,
-//   {
-//     ...templateWithFileVersions,
-//     templateStatus: 'PENDING_VALIDATION',
-//   },
-//   user
-// );

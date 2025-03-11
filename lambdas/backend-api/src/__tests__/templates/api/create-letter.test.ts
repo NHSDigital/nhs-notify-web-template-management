@@ -47,7 +47,7 @@ describe('create-letter', () => {
   const pdf = new File(['letterPdf'], 'template.pdf', {
     type: 'application/pdf',
   });
-  const csv = new File(['testCsv'], 'template.pdf', {
+  const csv = new File(['testCsv'], 'test-data.csv', {
     type: 'text/csv',
   });
 
