@@ -33,7 +33,7 @@ No requirements.
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
-| <a name="module_s3bucket_pdf_template_quarantine"></a> [s3bucket\_pdf\_template\_scan](#module\_s3bucket\_pdf\_template\_scan) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
+| <a name="module_s3bucket_pdf_template_quarantine"></a> [s3bucket\_pdf\_template\_quarantine](#module\_s3bucket\_pdf\_template\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | ../lambda-function | n/a |
 ## Outputs
 

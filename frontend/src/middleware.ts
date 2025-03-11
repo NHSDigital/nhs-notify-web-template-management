@@ -11,7 +11,6 @@ const protectedPaths = [
   /^\/create-letter-template$/,
   /^\/delete-template\/[^/]+$/,
   /^\/edit-email-template\/[^/]+$/,
-  /^\/edit-letter-template\/[^/]+$/,
   /^\/edit-nhs-app-template\/[^/]+$/,
   /^\/edit-text-message-template\/[^/]+$/,
   /^\/email-template-submitted\/[^/]+$/,
