@@ -1,26 +1,31 @@
 'use server';
 
-import { generateCsrf } from '@utils/csrf-utils';
 import { cookies } from 'next/headers';
-import { getBasePath } from '@utils/get-base-path';
+import { getSessionId } from '@utils/amplify-utils';
+import { generateSessionCsrfToken } from '@utils/csrf-utils';
+import { NextRequest, NextResponse } from 'next/server';
 
-export const GET = async (request: Request) => {
-  const redirectPath = new URL(request.url).searchParams.get('redirect') ?? '/';
+export const GET = async (request: NextRequest) => {
+  const url = request.nextUrl.clone();
 
-  const csrfToken = await generateCsrf();
-
-  const resJson = { csrfToken };
-
+  const sessionId = await getSessionId();
   const cookieStore = await cookies();
-  cookieStore.set('csrf_token', csrfToken, {
-    secure: true,
-    sameSite: 'strict',
-  });
 
-  return Response.json(resJson, {
-    status: 302,
-    headers: {
-      Location: `${getBasePath()}${redirectPath}`,
-    },
-  });
+  if (sessionId) {
+    const csrfToken = await generateSessionCsrfToken(sessionId);
+
+    cookieStore.set('csrf_token', csrfToken, {
+      sameSite: 'strict',
+      secure: true,
+    });
+
+    const redirectPath = request.nextUrl.searchParams.get('redirect') ?? '/';
+    url.pathname = redirectPath;
+    url.searchParams.delete('redirect');
+  } else {
+    url.pathname = '/auth';
+    cookieStore.delete('csrf_token');
+  }
+
+  return NextResponse.redirect(url);
 };

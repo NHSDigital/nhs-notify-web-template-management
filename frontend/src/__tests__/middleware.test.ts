@@ -35,7 +35,7 @@ describe('middleware function', () => {
 
     const response = await middleware(request);
 
-    expect(getTokenMock).toHaveBeenCalledWith({ forceRefresh: true });
+    expect(getTokenMock).toHaveBeenCalled();
 
     expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe(

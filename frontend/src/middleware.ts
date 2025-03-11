@@ -90,7 +90,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const token = await getAccessTokenServer({ forceRefresh: true });
+  const token = await getAccessTokenServer();
 
   if (!token) {
     const redirectResponse = NextResponse.redirect(
