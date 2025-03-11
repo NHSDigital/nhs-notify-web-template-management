@@ -515,7 +515,6 @@ const content = {
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,
-    templateFormLetter,
     templateFormSms,
     templateSubmitted,
     viewSubmittedTemplate,
