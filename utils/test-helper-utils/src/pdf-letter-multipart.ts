@@ -17,7 +17,7 @@ export type PdfUploadPartSpec = TemplatePart | FilePart;
 
 export async function pdfLetterMultipart(
   parts: PdfUploadPartSpec[],
-  template: Record<string, unknown>
+  template: Record<string, unknown> | string
 ): Promise<{
   contentType: string;
   multipart: Buffer;
@@ -25,7 +25,10 @@ export async function pdfLetterMultipart(
   const fd = new FormData();
   for (const part of parts) {
     if (part._type === 'json') {
-      fd.append(part.partName, JSON.stringify(template));
+      fd.append(
+        part.partName,
+        typeof template === 'string' ? template : JSON.stringify(template)
+      );
     }
 
     if (part._type === 'file') {

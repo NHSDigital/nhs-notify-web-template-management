@@ -5,12 +5,8 @@
  * Note that there is a unit test against these to guard against duplicates
  */
 import {
-  EmailProperties,
   Language,
-  LetterProperties,
   LetterType,
-  NhsAppProperties,
-  SmsProperties,
   TemplateStatus,
   TemplateType,
   VirusScanStatus,
