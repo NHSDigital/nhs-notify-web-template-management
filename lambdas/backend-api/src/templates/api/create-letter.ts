@@ -19,7 +19,8 @@ export function createHandler({
     }
 
     const base64body = Buffer.from(event.body ?? '', 'base64');
-    const contentType = event.headers['Content-Type'] ?? 'none';
+    const contentType =
+      event.headers['Content-Type'] ?? event.headers['content-type'] ?? 'none';
 
     const { error: getLetterPartsError, data: letterParts } =
       getLetterUploadParts(base64body, contentType);

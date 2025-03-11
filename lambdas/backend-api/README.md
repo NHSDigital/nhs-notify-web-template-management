@@ -72,3 +72,29 @@ curl --location 'https://<apig_id>.execute-api.eu-west-2.amazonaws.com/main/v1/t
   "subject": "<string>"
 }'
 ```
+
+### POST - /v1/letter-template - Create a letter template
+
+Will create a single letter template. The CSV form part is optional.
+
+```bash
+curl --location 'https://<apig_id>.execute-api.eu-west-2.amazonaws.com/<env>/v1/letter-template' \
+--header 'Accept: application/json' \
+--header 'Authorization: ••••••' \
+--form 'letterPdf=@<path_to_pdf>;type=application/pdf;filename=<string>' \
+--form 'testCsv=@<path_to_csv>;type=text/csv;filename=<string>' \
+--form 'template={
+  "templateType": "LETTER",
+  "name": "<string>",
+  "letterType": "x0",
+  "language": "en",
+  "files": {
+    "pdfTemplate": {
+      "fileName": "<string>"
+    },
+    "testDataCsv": {
+      "fileName": "<string>"
+    }
+  }
+}'
+```

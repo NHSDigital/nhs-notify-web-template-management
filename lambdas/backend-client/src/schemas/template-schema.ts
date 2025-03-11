@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   BaseTemplate,
   CreateTemplate,
+  CreateUpdateLetterProperties,
   EmailProperties,
   FileDetails,
   LetterFiles,
@@ -37,19 +38,24 @@ export type LetterPropertiesWithType = LetterProperties & {
   templateType: 'LETTER';
 };
 
+export type CreateUpdateLetterPropertiesWithType =
+  CreateUpdateLetterProperties & {
+    templateType: 'LETTER';
+  };
+
 export type ValidatedCreateTemplate = CreateTemplate &
   (
     | EmailPropertiesWithType
     | NhsAppPropertiesWithType
     | SmsPropertiesWithType
-    | LetterPropertiesWithType
+    | CreateUpdateLetterPropertiesWithType
   );
 export type ValidatedUpdateTemplate = UpdateTemplate &
   (
     | EmailPropertiesWithType
     | NhsAppPropertiesWithType
     | SmsPropertiesWithType
-    | LetterPropertiesWithType
+    | CreateUpdateLetterPropertiesWithType
   );
 export type ValidatedTemplateDto = TemplateDto &
   (
@@ -102,12 +108,19 @@ const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-const $LetterProperties = schemaFor<LetterProperties>()(
+const $CreateUpdateLetterProperties = schemaFor<CreateUpdateLetterProperties>()(
   z.object({
     letterType: z.enum(LETTER_TYPE_LIST),
     language: z.enum(LANGUAGE_LIST),
-    files: $LetterFiles,
   })
+);
+
+const $LetterProperties = schemaFor<LetterProperties>()(
+  $CreateUpdateLetterProperties.merge(
+    z.object({
+      files: $LetterFiles,
+    })
+  )
 );
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
@@ -130,6 +143,11 @@ export const $LetterPropertiesWithType = $LetterProperties.merge(
   z.object({ templateType: z.literal('LETTER') })
 );
 
+export const $CreateUpdateLetterPropertiesWithType =
+  $CreateUpdateLetterProperties.merge(
+    z.object({ templateType: z.literal('LETTER') })
+  );
+
 export const $CreateTemplateSchema = schemaFor<
   CreateTemplate,
   ValidatedCreateTemplate
@@ -138,7 +156,7 @@ export const $CreateTemplateSchema = schemaFor<
     $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
     $BaseTemplateSchema.merge($EmailPropertiesWithType),
     $BaseTemplateSchema.merge($SmsPropertiesWithType),
-    $BaseTemplateSchema.merge($LetterPropertiesWithType),
+    $BaseTemplateSchema.merge($CreateUpdateLetterPropertiesWithType),
   ])
 );
 

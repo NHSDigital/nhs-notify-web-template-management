@@ -8,12 +8,8 @@ import { randomUUID } from 'node:crypto';
 
 export function createContainer() {
   const enableLetters = process.env.ENABLE_LETTERS_BACKEND === 'true';
-  const quarantineBucket = process.env.QUARANTINE_BUCKET_NAME;
+  const quarantineBucket = process.env.QUARANTINE_BUCKET_NAME || 'unset';
   const templatesTableName = process.env.TEMPLATES_TABLE_NAME;
-
-  if (!quarantineBucket) {
-    throw new Error('process.env.QUARANTINE_BUCKET_NAME is undefined');
-  }
 
   if (!templatesTableName) {
     throw new Error('process.env.QUARANTINE_BUCKET_NAME is undefined');
