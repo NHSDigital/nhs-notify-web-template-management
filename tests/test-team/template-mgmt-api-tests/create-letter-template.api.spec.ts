@@ -84,7 +84,7 @@ test.describe('POST /v1/template', () => {
   test.describe('LETTER templates', () => {
     test('returns 201 if input is valid', async ({ request }) => {
       const { templateData, multipart, contentType } =
-        await TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },

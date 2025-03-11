@@ -3,10 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const getFile = (directory: string, filename: string) =>
-  new File(
-    [readFileSync(path.resolve(__dirname, directory, filename))],
-    filename
-  );
+  readFileSync(path.resolve(__dirname, directory, filename));
 
 export const pdfUploadFixtures = {
   withPersonalisation: {

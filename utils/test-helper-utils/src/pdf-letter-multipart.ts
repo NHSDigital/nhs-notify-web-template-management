@@ -8,20 +8,20 @@ type TemplatePart = {
 type FilePart = {
   _type: 'file';
   partName: string;
-  file: File;
+  file: Buffer;
   fileName?: string;
   fileType?: string;
 };
 
 export type PdfUploadPartSpec = TemplatePart | FilePart;
 
-export async function pdfLetterMultipart(
+export function pdfLetterMultipart(
   parts: PdfUploadPartSpec[],
   template?: Record<string, unknown> | string
-): Promise<{
+): {
   contentType: string;
   multipart: Buffer;
-}> {
+} {
   const fd = new FormData();
   for (const part of parts) {
     if (part._type === 'json') {
@@ -32,9 +32,7 @@ export async function pdfLetterMultipart(
     }
 
     if (part._type === 'file') {
-      const buf = Buffer.from(await part.file.bytes());
-
-      fd.append(part.partName, buf, {
+      fd.append(part.partName, part.file, {
         filename: part.fileName,
         contentType: part.fileType,
       });

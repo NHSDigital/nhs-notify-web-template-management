@@ -10,15 +10,11 @@ describe('getLetterUploadParts', () => {
     language: 'en',
   };
 
-  test('parses a multipart letter event', async () => {
-    const pdf = new File(['letterPdf'], 'template.pdf', {
-      type: 'application/pdf',
-    });
-    const csv = new File(['testCsv'], 'test-data.csv', {
-      type: 'text/csv',
-    });
+  const pdf = Buffer.from('letterPdf');
+  const csv = Buffer.from('testCsv');
 
-    const { multipart, contentType } = await pdfLetterMultipart(
+  test('parses a multipart letter event', () => {
+    const { multipart, contentType } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -42,17 +38,18 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       data: {
         template: initialTemplate,
-        pdf,
-        csv,
+        pdf: new File(['letterPdf'], 'template.pdf', {
+          type: 'application/pdf',
+        }),
+        csv: new File(['testCsv'], 'test-data.csv', {
+          type: 'text/csv',
+        }),
       },
     });
   });
 
-  test('defaults filenames to empty strings', async () => {
-    const pdf = new File(['letterPdf'], '');
-    const csv = new File(['testCsv'], '');
-
-    const { multipart, contentType } = await pdfLetterMultipart(
+  test('defaults filenames to empty strings', () => {
+    const { multipart, contentType } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -74,30 +71,26 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       data: {
         template: initialTemplate,
-        pdf,
-        csv,
+        pdf: new File(['letterPdf'], ''),
+        csv: new File(['testCsv'], ''),
       },
     });
   });
 
-  test('returns default blank file object for PDF when expected file parts are not present', async () => {
-    const { multipart, contentType } = await pdfLetterMultipart(
+  test('returns default blank file object for PDF when expected file parts are not present', () => {
+    const { multipart, contentType } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
           _type: 'file',
           partName: 'unexpected',
-          file: new File([], 't.pdf', {
-            type: 'application/pdf',
-          }),
+          file: Buffer.from(''),
           fileType: 'application/pdf',
         },
         {
           _type: 'file',
           partName: 'another_unexpected',
-          file: new File([], 't.csv', {
-            type: 'text/csv',
-          }),
+          file: Buffer.from(''),
           fileType: 'text/csv',
         },
       ],
@@ -112,25 +105,21 @@ describe('getLetterUploadParts', () => {
     });
   });
 
-  test('returns failure result when template part cannot be parsed as JSON', async () => {
-    const { multipart, contentType } = await pdfLetterMultipart(
+  test('returns failure result when template part cannot be parsed as JSON', () => {
+    const { multipart, contentType } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
           _type: 'file',
           partName: 'letterPdf',
-          file: new File([], 't.csv', {
-            type: 'text/csv',
-          }),
+          file: Buffer.from(''),
           fileName: 't.pdf',
           fileType: 'application/pdf',
         },
         {
           _type: 'file',
           partName: 'testCsv',
-          file: new File([], 't.csv', {
-            type: 'text/csv',
-          }),
+          file: Buffer.from(''),
           fileName: 't.csv',
           fileType: 'text/csv',
         },
@@ -146,23 +135,19 @@ describe('getLetterUploadParts', () => {
     });
   });
 
-  test('returns failure result when template part is missing', async () => {
-    const { multipart, contentType } = await pdfLetterMultipart([
+  test('returns failure result when template part is missing', () => {
+    const { multipart, contentType } = pdfLetterMultipart([
       {
         _type: 'file',
         partName: 'letterPdf',
-        file: new File([], 't.pdf', {
-          type: 'application/pdf',
-        }),
+        file: Buffer.from(''),
         fileName: 't.pdf',
         fileType: 'application/pdf',
       },
       {
         _type: 'file',
         partName: 'testCsv',
-        file: new File([], 't.csv', {
-          type: 'text/csv',
-        }),
+        file: Buffer.from(''),
         fileName: 't.csv',
         fileType: 'text/csv',
       },
@@ -176,14 +161,12 @@ describe('getLetterUploadParts', () => {
     });
   });
 
-  test('returns failure result when number of parts is not 2 or 3', async () => {
-    const { multipart, contentType } = await pdfLetterMultipart([
+  test('returns failure result when number of parts is not 2 or 3', () => {
+    const { multipart, contentType } = pdfLetterMultipart([
       {
         _type: 'file',
         partName: 'testCsv',
-        file: new File(['testCsv'], 'test-data.csv', {
-          type: 'text/csv',
-        }),
+        file: Buffer.from(''),
         fileName: 'test-data.csv',
         fileType: 'text/csv',
       },

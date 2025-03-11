@@ -69,22 +69,22 @@ export const TemplateAPIPayloadFactory = {
   /**
    * Returns a request body payload to be used with an API request to create a new letter template
    */
-  async getCreateLetterTemplatePayload<
+  getCreateLetterTemplatePayload<
     T extends TemplateInput<CreateTemplatePayload>,
   >(
     template: T,
     uploadSpec: PdfUploadPartSpec[]
-  ): Promise<{
+  ): {
     templateData: TemplateOutput<CreateTemplatePayload, T>;
     multipart: Buffer;
     contentType: string;
-  }> {
+  } {
     const templateData = {
       ...createTemplateBaseData(template.templateType),
       ...template,
     };
 
-    const multipartData = await pdfLetterMultipart(uploadSpec, templateData);
+    const multipartData = pdfLetterMultipart(uploadSpec, templateData);
 
     return {
       templateData,
@@ -95,23 +95,23 @@ export const TemplateAPIPayloadFactory = {
   /**
    * Returns a request body payload to be used with an API request to update a letter template
    */
-  async getUpdateLetterTemplatePayload<
+  getUpdateLetterTemplatePayload<
     T extends TemplateInput<UpdateTemplatePayload>,
   >(
     template: T,
     uploadSpec: PdfUploadPartSpec[]
-  ): Promise<{
+  ): {
     templateData: TemplateOutput<UpdateTemplatePayload, T>;
     multipart: Buffer;
     contentType: string;
-  }> {
+  } {
     const templateData = {
       templateStatus: 'NOT_YET_SUBMITTED',
       ...createTemplateBaseData(template.templateType),
       ...template,
     };
 
-    const multipartData = await pdfLetterMultipart(uploadSpec, templateData);
+    const multipartData = pdfLetterMultipart(uploadSpec, templateData);
 
     return {
       templateData,

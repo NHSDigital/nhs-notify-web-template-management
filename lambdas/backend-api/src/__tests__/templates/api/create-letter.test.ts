@@ -36,12 +36,8 @@ describe('create-letter', () => {
     language: 'en',
   };
 
-  const pdf = new File(['letterPdf'], 'template.pdf', {
-    type: 'application/pdf',
-  });
-  const csv = new File(['testCsv'], 'test-data.csv', {
-    type: 'text/csv',
-  });
+  const pdf = Buffer.from('letterPdf');
+  const csv = Buffer.from('testCsv');
 
   const versionId = '2DD85694';
 
@@ -50,8 +46,10 @@ describe('create-letter', () => {
 
     const pdfFilename = 'template.pdf';
     const csvFilename = 'data.csv';
+    const pdfType = 'application/pdf';
+    const csvType = 'text/csv';
 
-    const { contentType, multipart } = await pdfLetterMultipart(
+    const { contentType, multipart } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -59,14 +57,14 @@ describe('create-letter', () => {
           partName: 'letterPdf',
           file: pdf,
           fileName: pdfFilename,
-          fileType: 'application/pdf',
+          fileType: pdfType,
         },
         {
           _type: 'file',
           partName: 'testCsv',
           file: csv,
           fileName: csvFilename,
-          fileType: 'text/csv',
+          fileType: csvType,
         },
       ],
       initialTemplate
@@ -118,23 +116,26 @@ describe('create-letter', () => {
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       user,
-      pdf,
-      csv
+      new File([pdf], pdfFilename, { type: pdfType }),
+      new File([csv], csvFilename, { type: csvType })
     );
   });
 
   test('successfully handles multipart form input without test data', async () => {
     const { handler, mocks } = setup();
 
-    const { contentType, multipart } = await pdfLetterMultipart(
+    const pdfFilename = 'template.pdf';
+    const pdfType = 'application/pdf';
+
+    const { contentType, multipart } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
           _type: 'file',
           partName: 'letterPdf',
           file: pdf,
-          fileName: 'template.pdf',
-          fileType: 'application/pdf',
+          fileName: pdfFilename,
+          fileType: pdfType,
         },
       ],
       initialTemplate
@@ -158,7 +159,7 @@ describe('create-letter', () => {
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
-          fileName: 'template.pdf',
+          fileName: pdfFilename,
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
@@ -181,7 +182,7 @@ describe('create-letter', () => {
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       user,
-      pdf,
+      new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );
   });
@@ -231,7 +232,7 @@ describe('create-letter', () => {
   test('returns 400 - Invalid request when template within multipart input cannot be parsed as JSON', async () => {
     const { handler, mocks } = setup();
 
-    const { contentType, multipart } = await pdfLetterMultipart(
+    const { contentType, multipart } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
@@ -290,7 +291,7 @@ describe('create-letter', () => {
     async ({ parts }) => {
       const { handler } = setup();
 
-      const { multipart, contentType } = await pdfLetterMultipart(
+      const { multipart, contentType } = pdfLetterMultipart(
         parts,
         initialTemplate
       );
@@ -317,15 +318,18 @@ describe('create-letter', () => {
   test('should return error when creating template fails', async () => {
     const { handler, mocks } = setup();
 
-    const { contentType, multipart } = await pdfLetterMultipart(
+    const pdfFilename = 't.pdf';
+    const pdfType = 'application/pdf';
+
+    const { contentType, multipart } = pdfLetterMultipart(
       [
         { _type: 'json', partName: 'template' },
         {
           _type: 'file',
           partName: 'letterPdf',
           file: pdf,
-          fileName: 'template.pdf',
-          fileType: 'application/pdf',
+          fileName: pdfFilename,
+          fileType: pdfType,
         },
       ],
       initialTemplate
@@ -359,7 +363,7 @@ describe('create-letter', () => {
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       user,
-      pdf,
+      new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );
   });
