@@ -1,6 +1,9 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import { CreateTemplate, ITemplateClient } from 'nhs-notify-backend-client';
+import type {
+  CreateTemplate,
+  ITemplateClient,
+} from 'nhs-notify-backend-client';
 import { getLetterUploadParts } from '../app/get-letter-upload-parts';
 
 export function createHandler({
@@ -16,17 +19,13 @@ export function createHandler({
     }
 
     const base64body = Buffer.from(event.body ?? '', 'base64');
-    const contentType = event.headers['Content-Type'] ?? '';
+    const contentType = event.headers['Content-Type'] ?? 'none';
 
     const { error: getLetterPartsError, data: letterParts } =
       getLetterUploadParts(base64body, contentType);
 
     if (getLetterPartsError) {
-      return apiFailure(
-        getLetterPartsError.code,
-        getLetterPartsError.message,
-        getLetterPartsError.details
-      );
+      return apiFailure(getLetterPartsError.code, getLetterPartsError.message);
     }
 
     const { template, pdf, csv } = letterParts;

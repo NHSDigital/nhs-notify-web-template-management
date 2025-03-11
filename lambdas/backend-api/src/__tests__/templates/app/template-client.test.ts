@@ -1,5 +1,6 @@
 import {
   CreateTemplate,
+  LetterFiles,
   TemplateDto,
   UpdateTemplate,
 } from 'nhs-notify-backend-client';
@@ -12,7 +13,8 @@ import { mock } from 'jest-mock-extended';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
 
 const owner = '58890285E473';
-const id = 'E1F5088E5B77';
+const templateId = 'E1F5088E5B77';
+const versionId = '28FD472A93A6';
 
 const setup = () => {
   const enableLetters = true;
@@ -21,18 +23,18 @@ const setup = () => {
 
   const letterUploadRepository = mock<LetterUploadRepository>();
 
-  const generateId = () => id;
+  const generateVersionId = jest.fn(() => versionId);
 
   const templateClient = new TemplateClient(
     enableLetters,
     templateRepository,
     letterUploadRepository,
-    generateId
+    generateVersionId
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository, generateId },
+    mocks: { templateRepository, letterUploadRepository, generateVersionId },
   };
 };
 
@@ -105,7 +107,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id,
+        id: templateId,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -149,7 +151,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id,
+        id: templateId,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -179,6 +181,102 @@ describe('templateClient', () => {
     });
   });
 
+  describe('createLetterTemplate', () => {
+    test('should return created template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const initialFiles: LetterFiles = {
+        pdfTemplate: { fileName: 'template.pdf' },
+        testDataCsv: { fileName: 'test-data.csv' },
+      };
+
+      const data: CreateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        files: initialFiles,
+      };
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+      const csv = new File(['csv'], 'test-data.csv', { type: 'text/csv' });
+
+      const filesWithVerions: LetterFiles = {
+        pdfTemplate: {
+          fileName: initialFiles.pdfTemplate.fileName,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: initialFiles.testDataCsv!.fileName,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+      };
+
+      const dataWithFiles: CreateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        files: filesWithVerions,
+      };
+
+      const expectedTemplateDto: TemplateDto = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'PENDING_VALIDATION',
+        files: filesWithVerions,
+      };
+
+      const initialCreatedTemplate: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        templateStatus: 'PENDING_UPLOAD',
+        owner,
+        version: 1,
+      };
+
+      const finalTemplate: DatabaseTemplate = {
+        ...initialCreatedTemplate,
+        templateStatus: 'PENDING_VALIDATION',
+        updatedAt: new Date().toISOString(),
+      };
+
+      mocks.generateVersionId.mockReturnValueOnce(versionId);
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: initialCreatedTemplate,
+      });
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
+
+      mocks.templateRepository.update.mockResolvedValueOnce({
+        data: finalTemplate,
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        owner,
+        pdf,
+        csv
+      );
+
+      expect(result).toEqual({
+        data: expectedTemplateDto,
+      });
+
+      expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+        dataWithFiles,
+        owner,
+        'PENDING_UPLOAD'
+      );
+    });
+  });
+
   describe('updateTemplate', () => {
     test('should return a failure result, when template data is invalid', async () => {
       const { templateClient } = setup();
@@ -190,7 +288,7 @@ describe('templateClient', () => {
       };
 
       const result = await templateClient.updateTemplate(
-        id,
+        templateId,
         data as unknown as UpdateTemplate,
         owner
       );
@@ -220,10 +318,14 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.updateTemplate(id, data, owner);
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        owner
+      );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
-        id,
+        templateId,
         data,
         owner,
         'NOT_YET_SUBMITTED'
@@ -249,7 +351,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id,
+        id: templateId,
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -265,10 +367,14 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.updateTemplate(id, data, owner);
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        owner
+      );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
-        id,
+        templateId,
         data,
         owner,
         'NOT_YET_SUBMITTED'
@@ -294,7 +400,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         ...data,
-        id,
+        id: templateId,
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -304,10 +410,14 @@ describe('templateClient', () => {
         data: { ...template, owner, version: 1 },
       });
 
-      const result = await templateClient.updateTemplate(id, data, owner);
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        owner
+      );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
-        id,
+        templateId,
         data,
         owner,
         'NOT_YET_SUBMITTED'
@@ -330,9 +440,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.getTemplate(id, owner);
+      const result = await templateClient.getTemplate(templateId, owner);
 
-      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
 
       expect(result).toEqual({
         error: {
@@ -346,7 +459,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const templateDTO: TemplateDto = {
-        id: id,
+        id: templateId,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -366,9 +479,12 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.getTemplate(id, owner);
+      const result = await templateClient.getTemplate(templateId, owner);
 
-      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
 
       expect(result).toEqual({
         error: {
@@ -390,7 +506,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         data: {
-          id: id,
+          id: templateId,
           templateType: 'LETTER',
           name: 'name',
           createdAt: new Date().toISOString(),
@@ -403,9 +519,12 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await noLettersClient.getTemplate(id, owner);
+      const result = await noLettersClient.getTemplate(templateId, owner);
 
-      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
 
       expect(result).toEqual({
         error: {
@@ -419,7 +538,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
-        id: id,
+        id: templateId,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -433,9 +552,12 @@ describe('templateClient', () => {
         data: { ...template, owner, version: 1 },
       });
 
-      const result = await templateClient.getTemplate(id, owner);
+      const result = await templateClient.getTemplate(templateId, owner);
 
-      expect(mocks.templateRepository.get).toHaveBeenCalledWith(id, owner);
+      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
 
       expect(result).toEqual({
         data: template,
@@ -477,7 +599,7 @@ describe('templateClient', () => {
       );
 
       const template: TemplateDto = {
-        id: id,
+        id: templateId,
         templateType: 'LETTER',
         name: 'name',
         createdAt: new Date().toISOString(),
@@ -516,7 +638,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
-        id: id,
+        id: templateId,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -556,7 +678,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
-        id: id,
+        id: templateId,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',

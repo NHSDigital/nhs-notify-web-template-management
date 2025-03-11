@@ -5,6 +5,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { S3Client } from '@aws-sdk/client-s3';
 import { LetterUploadRepository } from './infra/letter-upload-repository';
 import { randomUUID } from 'node:crypto';
+import { logger } from '../logger';
 
 export function createContainer() {
   const enableLetters = process.env.ENABLE_LETTERS_BACKEND === 'true';
@@ -49,5 +50,5 @@ export function createContainer() {
     generateId
   );
 
-  return { templateClient };
+  return { templateClient, logger };
 }

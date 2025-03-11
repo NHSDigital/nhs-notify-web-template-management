@@ -1,11 +1,13 @@
 import { ErrorCase } from 'nhs-notify-backend-client';
 import { ApplicationResult, failure, success } from '../../utils';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import type { Logger } from '@backend-api/utils/logger';
 
 export class LetterUploadRepository {
   constructor(
     private readonly client: S3Client,
-    private readonly bucketName: string
+    private readonly bucketName: string,
+    private readonly logger: Logger
   ) {}
 
   async upload(
