@@ -750,6 +750,38 @@ describe('templateClient', () => {
         'PENDING_UPLOAD'
       );
     });
+
+    test('should return a failure result when letters feature flag is not enabled', async () => {
+      const { mocks } = setup();
+
+      const client = new TemplateClient(
+        false,
+        mocks.templateRepository,
+        mocks.letterUploadRepository,
+        mocks.generateVersionId
+      );
+
+      const data: CreateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+
+      const result = await client.createLetterTemplate(data, owner, pdf);
+
+      expect(result).toEqual({
+        code: 400,
+        message: 'request failed validation',
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+      expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
+    });
   });
 
   describe('updateTemplate', () => {

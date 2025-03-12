@@ -84,6 +84,10 @@ export class TemplateClient implements ITemplateClient {
       template,
     });
 
+    if (!this.enableLetters) {
+      return failure(ErrorCase.VALIDATION_FAILED, 'Request failed validation');
+    }
+
     const templateValidationResult = await validate(
       $CreateLetterTemplate,
       template
