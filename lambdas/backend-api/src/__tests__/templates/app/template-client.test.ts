@@ -222,26 +222,27 @@ describe('templateClient', () => {
         files: filesWithVerions,
       };
 
-      const expectedTemplateDto: TemplateDto = {
-        ...dataWithFiles,
-        id: templateId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateStatus: 'PENDING_VALIDATION',
-      };
+      const creationTime = '2025-03-12T08:41:08.805Z';
 
       const initialCreatedTemplate: DatabaseTemplate = {
-        ...expectedTemplateDto,
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: creationTime,
+        updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
         owner,
         version: 1,
       };
 
+      const updateTime = '2025-03-12T08:41:33.666Z';
+
       const finalTemplate: DatabaseTemplate = {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
-        updatedAt: new Date().toISOString(),
+        updatedAt: updateTime,
       };
+
+      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
 
       mocks.generateVersionId.mockReturnValueOnce(versionId);
 
@@ -263,7 +264,7 @@ describe('templateClient', () => {
       );
 
       expect(result).toEqual({
-        data: expectedTemplateDto,
+        data: expectedDto,
       });
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
