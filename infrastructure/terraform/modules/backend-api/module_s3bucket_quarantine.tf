@@ -23,10 +23,6 @@ module "s3bucket_pdf_template_quarantine" {
     }
   ]
 
-  notification_events = {
-    eventbridge = true
-  }
-
   policy_documents = [
     data.aws_iam_policy_document.s3bucket_pdf_template_quarantine.json
   ]

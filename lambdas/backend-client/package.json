@@ -28,6 +28,7 @@
     "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.24.0",
     "jest-mock-extended": "^4.0.0-beta1",
+    "nhs-notify-web-template-management-utils": "^0.0.1",
     "typescript": "^5.5.4"
   }
 }
