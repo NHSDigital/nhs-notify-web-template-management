@@ -4,7 +4,6 @@ const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 const amplifyConfig = require('./amplify_outputs.json');
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/templates';
-const domain = process.env.NOTIFY_DOMAIN_NAME ?? 'localhost:3000';
 
 const nextConfig = (phase) => {
   const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
@@ -20,12 +19,6 @@ const nextConfig = (phase) => {
 
     sassOptions: {
       quietDeps: true,
-    },
-
-    experimental: {
-      serverActions: {
-        allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
-      },
     },
 
     async redirects() {
