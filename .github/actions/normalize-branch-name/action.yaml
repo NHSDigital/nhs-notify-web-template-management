@@ -2,7 +2,7 @@ name: "Normalize branch name"
 description: "Normalize branch name"
 outputs:
   normalized_branch_name:
-    description: 14 character branch identifier (0000-yourbranch)
+    description: 14 character branch identifier (0000-thebranch)
     value: ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
 runs:
   using: "composite"

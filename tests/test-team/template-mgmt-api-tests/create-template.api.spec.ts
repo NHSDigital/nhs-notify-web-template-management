@@ -75,6 +75,33 @@ test.describe('POST /v1/template', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS''",
+      },
+    });
+  });
+
+  test('returns 400 if the template is a letter', async ({ request }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'en',
+        }),
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateType:
           "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER'",
       },
     });
