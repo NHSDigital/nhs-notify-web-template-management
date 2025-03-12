@@ -1,8 +1,8 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import type {
-  CreateTemplate,
-  ITemplateClient,
+import {
+  type CreateTemplate,
+  type ITemplateClient,
 } from 'nhs-notify-backend-client';
 import { getLetterUploadParts } from '../app/get-letter-upload-parts';
 
@@ -27,7 +27,7 @@ export function createHandler({
       getLetterUploadParts(base64body, contentType);
 
     if (getLetterPartsError) {
-      return apiFailure(getLetterPartsError.code, getLetterPartsError.message);
+      return apiFailure(400, getLetterPartsError.message);
     }
 
     const { template, pdf, csv } = letterParts;

@@ -62,8 +62,8 @@ export type ValidatedTemplateDto = TemplateDto &
 const $FileDetails = schemaFor<FileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
-    currentVersion: z.string().optional(),
-    virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST).optional(),
+    currentVersion: z.string(),
+    virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
   })
 );
 

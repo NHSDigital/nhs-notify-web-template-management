@@ -130,7 +130,7 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
         code: 400,
-        message: 'Invalid request',
+        message: 'Template is unavailable or cannot be parsed',
       },
     });
   });
@@ -156,7 +156,7 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
         code: 400,
-        message: 'Invalid request',
+        message: 'Template is unavailable or cannot be parsed',
       },
     });
   });
@@ -175,7 +175,7 @@ describe('getLetterUploadParts', () => {
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
         code: 400,
-        message: 'Invalid request',
+        message: 'Unexpected number of form parts in form data: 1',
       },
     });
   });

@@ -221,6 +221,8 @@ describe('Template schemas', () => {
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',
+            currentVersion: '123',
+            virusScanStatus: 'FAILED',
           },
         },
       },
@@ -262,6 +264,8 @@ describe('Template schemas', () => {
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',
+            currentVersion: '57d8yds',
+            virusScanStatus: 'PASSED',
           },
         },
       },

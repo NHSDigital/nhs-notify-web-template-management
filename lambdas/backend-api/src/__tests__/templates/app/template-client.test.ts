@@ -355,7 +355,7 @@ describe('templateClient', () => {
         expect(result).toEqual({
           error: expect.objectContaining({
             code: 400,
-            message: 'Failed to identify PDF data',
+            message: 'Failed to identify or validate PDF data',
           }),
         });
 
@@ -404,7 +404,7 @@ describe('templateClient', () => {
         expect(result).toEqual({
           error: expect.objectContaining({
             code: 400,
-            message: 'Failed to identify CSV data',
+            message: 'Failed to validate CSV data',
           }),
         });
 

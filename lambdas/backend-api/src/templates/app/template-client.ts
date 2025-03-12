@@ -94,14 +94,14 @@ export class TemplateClient implements ITemplateClient {
     if (pdf.type !== LETTER_MULTIPART.PDF.fileType || !pdf.name) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
-        'Failed to identify PDF data'
+        'Failed to identify or validate PDF data'
       );
     }
 
     if (csv && (csv.type !== LETTER_MULTIPART.CSV.fileType || !csv.name)) {
       return failure(
         ErrorCase.VALIDATION_FAILED,
-        'Failed to identify CSV data'
+        'Failed to validate CSV data'
       );
     }
 

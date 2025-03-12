@@ -52,9 +52,13 @@ const letterProperties: LetterProperties = {
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
+      currentVersion: 'a',
+      virusScanStatus: 'PENDING',
     },
     testDataCsv: {
       fileName: 'test.csv',
+      currentVersion: 'a',
+      virusScanStatus: 'PENDING',
     },
   },
 };

@@ -93,7 +93,6 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
         language: 'de',
         letterType: 'q1',
-        files: { pdfTemplate: { fileName: 'template.pdf' } },
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' })
@@ -122,8 +121,16 @@ describe('TemplateAPIClient', () => {
         language: 'de',
         letterType: 'q1',
         files: {
-          pdfTemplate: { fileName: 'template.pdf' },
-          testDataCsv: { fileName: 'test-data.csv' },
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: '32ADDAB01170',
+            virusScanStatus: 'PENDING',
+          },
+          testDataCsv: {
+            fileName: 'test-data.csv',
+            currentVersion: 'DAB2A04B66FD',
+            virusScanStatus: 'PENDING',
+          },
         },
       },
     });
@@ -136,14 +143,10 @@ describe('TemplateAPIClient', () => {
         templateType: 'LETTER',
         language: 'de',
         letterType: 'q1',
-        files: {
-          pdfTemplate: { fileName: 'template.pdf' },
-          testDataCsv: { fileName: 'test-data.csv' },
-        },
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),
-      new File(['pdf'], 'test-data.csv', { type: 'test/csv' })
+      new File(['csv'], 'test-data.csv', { type: 'test/csv' })
     );
 
     expect(result.data).toEqual({
@@ -153,8 +156,16 @@ describe('TemplateAPIClient', () => {
       language: 'de',
       letterType: 'q1',
       files: {
-        pdfTemplate: { fileName: 'template.pdf' },
-        testDataCsv: { fileName: 'test-data.csv' },
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: '32ADDAB01170',
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: 'test-data.csv',
+          currentVersion: 'DAB2A04B66FD',
+          virusScanStatus: 'PENDING',
+        },
       },
     });
 

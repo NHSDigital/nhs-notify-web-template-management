@@ -12,7 +12,10 @@ export function getLetterUploadParts(
   const formParts = parseMultipart(base64body, boundary);
 
   if (formParts.length < 2 || formParts.length > 3) {
-    return failure(ErrorCase.VALIDATION_FAILED, 'Invalid request');
+    return failure(
+      ErrorCase.VALIDATION_FAILED,
+      `Unexpected number of form parts in form data: ${formParts.length}`
+    );
   }
 
   const pdfPart = formParts.find(
@@ -36,7 +39,10 @@ export function getLetterUploadParts(
   try {
     template = JSON.parse(templatePart ?? '');
   } catch {
-    return failure(ErrorCase.VALIDATION_FAILED, 'Invalid request');
+    return failure(
+      ErrorCase.VALIDATION_FAILED,
+      'Template is unavailable or cannot be parsed'
+    );
   }
 
   const csvPart = formParts.find(

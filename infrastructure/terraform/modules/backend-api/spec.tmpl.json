@@ -435,7 +435,9 @@
       "FileDetails": {
         "type": "object",
         "required": [
-          "fileName"
+          "fileName",
+          "currentVersion",
+          "virusScanStatus"
         ],
         "properties": {
           "fileName": {

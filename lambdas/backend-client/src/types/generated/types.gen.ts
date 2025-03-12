@@ -46,8 +46,8 @@ export type VirusScanStatus = 'PENDING' | 'FAILED' | 'PASSED';
 
 export type FileDetails = {
   fileName: string;
-  currentVersion?: string;
-  virusScanStatus?: VirusScanStatus;
+  currentVersion: string;
+  virusScanStatus: VirusScanStatus;
 };
 
 export type LetterFiles = {

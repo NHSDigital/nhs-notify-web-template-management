@@ -222,7 +222,7 @@ describe('create-letter', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
+        technicalMessage: 'Unexpected number of form parts in form data: 0',
       }),
     });
 
@@ -260,7 +260,7 @@ describe('create-letter', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
+        technicalMessage: 'Template is unavailable or cannot be parsed',
       }),
     });
 
@@ -288,7 +288,7 @@ describe('create-letter', () => {
 
   test.each(invalidMultipartLengthCases)(
     'returns 400 - Invalid request when multipart input has number of parts ($count) other than two or three',
-    async ({ parts }) => {
+    async ({ parts, count }) => {
       const { handler } = setup();
 
       const { multipart, contentType } = pdfLetterMultipart(
@@ -309,7 +309,7 @@ describe('create-letter', () => {
         statusCode: 400,
         body: JSON.stringify({
           statusCode: 400,
-          technicalMessage: 'Invalid request',
+          technicalMessage: `Unexpected number of form parts in form data: ${count}`,
         }),
       });
     }
