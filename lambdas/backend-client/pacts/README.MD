@@ -1,11 +1,9 @@
-# Contracts
+# pacts
 This folder comntains the consumer cretaed contracts (pacts) these are created from lambdas/backend-client/src/__tests__/api.pact.spec.ts
 
-
-
 # Verifier
-
-This runs against the api /lambdas/backend-api/src/__tests__/templates/api/api.pact.test.ts.
+This is a unit test which runs against
+This runs against the api /lambdas/backend-api/src/__tests__/templates/api/api.pact.test.ts and verifies the pacts generated from the client.
 
 
 # Bi-directional contract testing

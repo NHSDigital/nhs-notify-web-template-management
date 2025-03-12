@@ -1,4 +1,5 @@
 import { Verifier } from '@pact-foundation/pact';
+import * as path from 'path';
 
 describe('Pact Verification', () => {
   it('should validate the expectations of the consumer', async () => {
@@ -9,10 +10,18 @@ describe('Pact Verification', () => {
           latest: true,
         },
       ],
+      pactUrls: [
+        path.resolve(
+          __dirname,
+          '../../backend-client/pacts/TemplateClient-TemplateService.json'
+        ),
+      ],
       providerBaseUrl: 'http://localhost:8080',
-      pactBrokerUrl: process.env.PACT_BROKER_URL || 'http://127.0.0.1:8000',
+      pactBrokerUrl:
+        process.env.PACT_BROKER_BASE_URL || 'http://127.0.0.1:8000',
       pactBrokerUsername: process.env.PACT_BROKER_USERNAME || 'pact_workshop',
       pactBrokerPassword: process.env.PACT_BROKER_PASSWORD || 'pact_workshop',
+      // pactBrokerToken: process.env.PACT_BROKER_TOKEN,
       publishVerificationResult: true,
       providerVersion: '1.0.0',
     };
@@ -20,7 +29,5 @@ describe('Pact Verification', () => {
     const verifier = new Verifier(opts);
 
     await verifier.verifyProvider();
-
-    throw error;
   });
 });
