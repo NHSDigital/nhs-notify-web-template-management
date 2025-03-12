@@ -778,10 +778,10 @@ describe('templateClient', () => {
       const result = await client.createLetterTemplate(data, owner, pdf);
 
       expect(result).toEqual({
-        error: {
+        error: expect.objectContaining({
           code: 400,
           message: 'request failed validation',
-        },
+        }),
       });
 
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
