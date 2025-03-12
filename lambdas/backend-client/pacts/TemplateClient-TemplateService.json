@@ -7,6 +7,14 @@
       "description": "get all templates",
       "providerState": "templates exist",
       "request": {
+        "headers": {
+          "Authorization": "Bearer 2019-01-14T11:34:18.045Z"
+        },
+        "matchingRules": {
+          "$.header.Authorization": {
+            "match": "type"
+          }
+        },
         "method": "GET",
         "path": "/v1/templates"
       },
@@ -37,6 +45,14 @@
       "description": "get template with ID 10",
       "providerState": "template  with ID 10 exists",
       "request": {
+        "headers": {
+          "Authorization": "Bearer 2019-01-14T11:34:18.045Z"
+        },
+        "matchingRules": {
+          "$.header.Authorization": {
+            "match": "type"
+          }
+        },
         "method": "GET",
         "path": "/v1/template/10"
       },
@@ -64,7 +80,7 @@
   ],
   "metadata": {
     "pact-js": {
-      "version": "13.2.0"
+      "version": "13.1.4"
     },
     "pactRust": {
       "ffi": "0.4.22",

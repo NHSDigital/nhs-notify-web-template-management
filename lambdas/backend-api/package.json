@@ -6,13 +6,18 @@
     "test:unit": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pact:publish": "",
+    "pact:publish1": "../../pact/bin/pactflow publish-provider-contract ../../infrastructure/terraform/modules/backend-api/spec.tmpl.json --provider=TemplateService  --provider-app-version=1.0.0 --broker-base-url=https://nhs-england-notify.pactflow.io --content-type application/yaml --branch $(git rev-parse --abbrev-ref HEAD)",
+    "generate-dependencies": "npx openapi-typescript-codegen --exportCore false --exportServices false --input ../../infrastructure/terraform/modules/backend-api/spec.tmpl.json --output ./src/types/generated"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.699.0",
     "@aws-sdk/client-dynamodb": "^3.696.0",
     "@aws-sdk/client-ses": "^3.699.0",
     "@aws-sdk/lib-dynamodb": "^3.698.0",
+    "@pact-foundation/pact": "13.1.4",
+    "@pact-foundation/pact-cli": "16.0.1",
     "handlebars": "^4.7.8",
     "html-entities": "^2.5.2",
     "jsonwebtoken": "^9.0.2",

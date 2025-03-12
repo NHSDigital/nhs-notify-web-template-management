@@ -22,6 +22,8 @@ node_modules
 /.pnp
 .pnp.js
 
+/pact
+
 # testing
 /coverage
 

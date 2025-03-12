@@ -5,6 +5,7 @@ import {
   MatchersV3,
   SpecificationVersion,
 } from '@pact-foundation/pact';
+
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
@@ -33,7 +34,11 @@ describe('API Pact test', () => {
         withRequest: {
           method: 'GET',
           path: '/v1/templates',
+          headers: {
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+          },
         },
+
         willRespondWith: {
           status: 200,
           headers: {
@@ -78,6 +83,9 @@ describe('API Pact test', () => {
         withRequest: {
           method: 'GET',
           path: '/v1/template/10',
+          headers: {
+            Authorization: like('Bearer 2019-01-14T11:34:18.045Z'),
+          },
         },
         willRespondWith: {
           status: 200,
