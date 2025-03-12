@@ -19,6 +19,7 @@ import {
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import { $CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
+import z from 'zod';
 
 export class TemplateClient implements ITemplateClient {
   constructor(
@@ -34,7 +35,13 @@ export class TemplateClient implements ITemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ template });
 
-    const validationResult = await validate($CreateTemplateSchema, template);
+    const validationResult = await validate(
+      z.intersection(
+        $CreateTemplateSchema,
+        z.object({ templateType: z.enum(['EMAIL', 'NHSAPP', 'SMS']) })
+      ),
+      template
+    );
 
     if (validationResult.error) {
       log.error('Request failed validation', {

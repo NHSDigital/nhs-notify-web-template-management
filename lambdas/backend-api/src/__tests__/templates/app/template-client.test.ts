@@ -62,6 +62,27 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result when attempting to create a letter', async () => {
+      const { templateClient } = setup();
+
+      const data: CreateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        letterType: 'x0',
+        language: 'en',
+      };
+
+      const result = await templateClient.createTemplate(data, owner);
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: {},
+        }),
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -314,6 +335,38 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: { letterType: 'Required, Required' },
+        }),
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
+    test('should return a failure result, when attempting to create a non-letter', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateTemplate = {
+        templateType: 'NHS_APP',
+        name: 'name',
+        message: 'app message',
+      };
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        owner,
+        pdf
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: expect.objectContaining({
+            templateType: `Invalid literal value, expected "LETTER"`,
+          }),
         }),
       });
 
