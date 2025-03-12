@@ -78,7 +78,10 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: {},
+          details: {
+            templateType:
+              "Invalid enum value. Expected 'EMAIL' | 'NHSAPP' | 'SMS', received 'LETTER'",
+          },
         }),
       });
     });
@@ -775,8 +778,10 @@ describe('templateClient', () => {
       const result = await client.createLetterTemplate(data, owner, pdf);
 
       expect(result).toEqual({
-        code: 400,
-        message: 'request failed validation',
+        error: {
+          code: 400,
+          message: 'request failed validation',
+        },
       });
 
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();

@@ -91,31 +91,4 @@ export const TemplateAPIPayloadFactory = {
       ...multipartData,
     };
   },
-
-  /**
-   * Returns a request body payload to be used with an API request to update a letter template
-   */
-  getUpdateLetterTemplatePayload<
-    T extends TemplateInput<UpdateTemplatePayload>,
-  >(
-    template: T,
-    uploadSpec: PdfUploadPartSpec[]
-  ): {
-    templateData: TemplateOutput<UpdateTemplatePayload, T>;
-    multipart: Buffer;
-    contentType: string;
-  } {
-    const templateData = {
-      templateStatus: 'NOT_YET_SUBMITTED',
-      ...createTemplateBaseData(template.templateType),
-      ...template,
-    };
-
-    const multipartData = pdfLetterMultipart(uploadSpec, templateData);
-
-    return {
-      templateData,
-      ...multipartData,
-    };
-  },
 };
