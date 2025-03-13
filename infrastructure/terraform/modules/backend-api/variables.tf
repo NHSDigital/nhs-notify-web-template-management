@@ -76,3 +76,8 @@ variable "enable_letters" {
   type        = bool
   description = "Enable letters feature flag"
 }
+
+variable "shared_kms_key_arn" {
+    type        = string
+  description = "KMS key for the app component"
+}

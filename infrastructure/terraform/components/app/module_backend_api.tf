@@ -12,6 +12,8 @@ module "backend_api" {
   csi_global            = local.csi_global
   log_retention_in_days = var.log_retention_in_days
 
+  shared_kms_key_arn = module.kms.key_arn
+
   cognito_config = jsondecode(aws_ssm_parameter.cognito_config.value)
 
   enable_backup = var.destination_vault_arn != null ? true : false

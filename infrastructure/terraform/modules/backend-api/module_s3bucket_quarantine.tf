@@ -9,7 +9,7 @@ module "s3bucket_pdf_template_quarantine" {
   environment    = var.environment
   component      = var.component
 
-  kms_key_arn = aws_kms_key.s3.arn
+  kms_key_arn = var.shared_kms_key_arn
 
   versioning = false
 
@@ -23,33 +23,7 @@ module "s3bucket_pdf_template_quarantine" {
     }
   ]
 
-  policy_documents = [
-    data.aws_iam_policy_document.s3bucket_pdf_template_quarantine.json
-  ]
-
   default_tags = {
     Name = "Quarantine for files pending virus scan"
-  }
-}
-
-data "aws_iam_policy_document" "s3bucket_pdf_template_quarantine" {
-  statement {
-    effect  = "Deny"
-    actions = ["s3:*"]
-    resources = [
-      module.s3bucket_pdf_template_quarantine.arn,
-      "${module.s3bucket_pdf_template_quarantine.arn}/*",
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values = [
-        false
-      ]
-    }
   }
 }

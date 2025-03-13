@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "create_letter_template_lambda_policy" {
 
     resources = [
       aws_kms_key.dynamo.arn,
-      aws_kms_key.s3.arn
+      var.shared_kms_key_arn
     ]
   }
 
