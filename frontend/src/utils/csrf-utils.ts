@@ -1,37 +1,13 @@
 'use server';
 
-import { jwtDecode } from 'jwt-decode';
 import { createHmac, randomBytes } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { getEnvironmentVariable } from './get-environment-variable';
-import { getAccessTokenServer } from './amplify-utils';
+import { getSessionId } from './amplify-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
-export const getCsrfFormValue = async () => {
-  const cookieStore = await cookies();
-  return cookieStore.get('csrf_token')?.value ?? 'no_token';
-};
-
-export const getSessionId = async () => {
-  const accessToken = await getAccessTokenServer();
-
-  if (!accessToken) {
-    throw new Error('Could not get access token');
-  }
-
-  const jwt = jwtDecode(accessToken);
-
-  const sessionId = jwt.jti;
-
-  if (!sessionId) {
-    throw new Error('Could not get session ID');
-  }
-
-  return sessionId;
-};
-
-export const generateCsrf = async () => {
+export const generateSessionCsrfToken = async (sessionId: string) => {
   const secret = getEnvironmentVariable('CSRF_SECRET');
-  const sessionId = await getSessionId();
 
   const salt = randomBytes(8).toString('hex');
 
@@ -41,12 +17,6 @@ export const generateCsrf = async () => {
     .digest('hex');
 
   const csrfToken = `${hash}.${salt}`;
-
-  const cookieStore = await cookies();
-  cookieStore.set('csrf_token', csrfToken, {
-    httpOnly: true,
-    secure: true,
-  });
 
   return csrfToken;
 };
@@ -66,14 +36,21 @@ export const verifyCsrfToken = async (
   return expectedHmac === hmac;
 };
 
-export const verifyCsrfTokenFull = async (formData: FormData) => {
+export const verifyFormCsrfToken = async (formData: FormData) => {
   const secret = getEnvironmentVariable('CSRF_SECRET');
   const sessionId = await getSessionId();
+
+  if (!sessionId) {
+    logger.error('Unauthenticated');
+    return false;
+  }
+
   const cookieStore = await cookies();
   const csrfTokenCookie = cookieStore.get('csrf_token');
 
   if (!csrfTokenCookie) {
-    throw new Error('missing CSRF cookie');
+    logger.error('missing CSRF cookie');
+    return false;
   }
 
   const csrfTokenCookieValue = csrfTokenCookie.value;
@@ -81,11 +58,13 @@ export const verifyCsrfTokenFull = async (formData: FormData) => {
   const csrfTokenFormField = formData.get('csrf_token');
 
   if (!csrfTokenFormField) {
-    throw new Error('missing CSRF form field');
+    logger.error('missing CSRF form field');
+    return false;
   }
 
   if (csrfTokenFormField !== csrfTokenCookieValue) {
-    throw new Error('CSRF mismatch');
+    logger.error('CSRF mismatch');
+    return false;
   }
 
   const formVerification = await verifyCsrfToken(
@@ -95,7 +74,8 @@ export const verifyCsrfTokenFull = async (formData: FormData) => {
   );
 
   if (!formVerification) {
-    throw new Error('CSRF error');
+    logger.error('CSRF error');
+    return false;
   }
 
   return true;
