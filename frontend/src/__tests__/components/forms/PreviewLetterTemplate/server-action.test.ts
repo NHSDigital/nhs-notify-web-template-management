@@ -3,17 +3,8 @@ import {
   previewLetterTemplateAction,
 } from '@forms/PreviewLetterTemplate';
 import { redirect } from 'next/navigation';
-import {
-  TemplateType,
-  TemplateStatus,
-  LetterTemplate,
-} from 'nhs-notify-web-template-management-utils';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
 
@@ -21,23 +12,25 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: LetterTemplate = {
   id: 'template-id',
-  templateType: TemplateType.LETTER,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
-  language: Language.SQ,
-  letterType: LetterType.X0,
+  language: 'sq',
+  letterType: 'x0',
   files: {
     pdfTemplate: {
       fileName: 'file.pdf',
       currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-      virusScanStatus: VirusScanStatus.PENDING,
+      virusScanStatus: 'PENDING',
     },
     testDataCsv: {
       fileName: 'test-data.csv',
       currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-      virusScanStatus: VirusScanStatus.PENDING,
+      virusScanStatus: 'PENDING',
     },
   },
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewLetterTemplateAction server action', () => {

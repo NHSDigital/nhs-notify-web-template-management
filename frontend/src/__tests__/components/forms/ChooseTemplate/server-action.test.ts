@@ -1,6 +1,5 @@
 import { chooseTemplateAction } from '@forms/ChooseTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 
 jest.mock('next/navigation');
@@ -32,7 +31,7 @@ test('submit form - no validation error', async () => {
   await chooseTemplateAction(
     {},
     getMockFormData({
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     })
   );
 

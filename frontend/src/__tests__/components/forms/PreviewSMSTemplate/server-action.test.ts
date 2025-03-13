@@ -3,11 +3,7 @@ import {
   $FormSchema,
 } from '@forms/PreviewSMSTemplate';
 import { redirect } from 'next/navigation';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
 
 jest.mock('next/navigation');
@@ -16,10 +12,12 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: SMSTemplate = {
   id: 'template-id',
-  templateType: TemplateType.SMS,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'SMS',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
   message: 'template-message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewSmsTemplateAction server action', () => {

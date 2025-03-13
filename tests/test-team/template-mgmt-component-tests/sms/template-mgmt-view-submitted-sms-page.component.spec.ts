@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateMgmtViewSubmittedSmsPage } from '../../pages/sms/template-mgmt-view-submitted-sms-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import { Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
@@ -27,7 +27,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createSmsTemplate(
@@ -36,7 +36,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }

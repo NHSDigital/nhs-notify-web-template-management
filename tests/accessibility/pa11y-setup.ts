@@ -4,16 +4,7 @@ import { TestUserClient } from './test-user-client';
 import { generate } from 'generate-password';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import {
-  LetterTemplate,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import {
-  Language,
-  LetterType,
-  TemplateStatus,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 const setup = async () => {
   const testEmail = `nhs-notify-automated-test-accessibility-test-${randomUUID()}@nhs.net`;
@@ -44,25 +35,26 @@ const setup = async () => {
       TableName: process.env.TEMPLATES_TABLE_NAME,
       Item: {
         owner: userId,
-        templateType: TemplateType.LETTER,
+        templateType: 'LETTER',
         id: templateId,
-        letterType: LetterType.X0,
-        language: Language.EN,
+        letterType: 'x0',
+        language: 'en',
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         name: 'pa11y_letter',
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',
             currentVersion: randomUUID(),
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
           testDataCsv: {
             fileName: 'test-data.csv',
             currentVersion: randomUUID(),
-            virusScanStatus: VirusScanStatus.PENDING,
+            virusScanStatus: 'PENDING',
           },
         },
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateStatus: 'NOT_YET_SUBMITTED',
       } satisfies LetterTemplate & { owner: string },
     })
   );

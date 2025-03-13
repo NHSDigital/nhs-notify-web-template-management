@@ -3,14 +3,16 @@
  */
 import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
-import {
-  EmailTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { Language, LetterType, TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -25,20 +27,20 @@ describe('PreviewEmailTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    } satisfies TemplateDTO;
+    } satisfies TemplateDto;
 
     const emailTemplate: EmailTemplate = {
       ...templateDTO,
       subject: 'template-subject-line',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -63,58 +65,29 @@ describe('PreviewEmailTemplatePage', () => {
   });
 
   test.each([
+    SMS_TEMPLATE,
+    NHS_APP_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.LETTER,
-      name: 'template-name',
-      letterType: LetterType.X0,
-      language: Language.EN,
-    },
-    {
-      templateType: TemplateType.EMAIL,
+      ...EMAIL_TEMPLATE,
       name: undefined as unknown as string,
-      subject: 'template-subject-line',
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
+      ...EMAIL_TEMPLATE,
       subject: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      subject: 'template-subject-line',
+      ...EMAIL_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      subject: 'template-subject-line',
+      ...EMAIL_TEMPLATE,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await PreviewEmailTemplatePage({
         params: Promise.resolve({

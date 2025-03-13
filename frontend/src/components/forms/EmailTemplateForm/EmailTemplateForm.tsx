@@ -16,10 +16,9 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  Draft,
+  CreateEmailTemplate,
   EmailTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -28,7 +27,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const EmailTemplateForm: FC<
-  PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
+  PageComponentProps<CreateEmailTemplate | EmailTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
@@ -87,7 +86,7 @@ export const EmailTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.EMAIL} />
+                <TemplateNameGuidance template={'EMAIL'} />
                 <TextInput
                   id='emailTemplateName'
                   onChange={emailTemplateNameHandler}
@@ -140,8 +139,8 @@ export const EmailTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.EMAIL} />
-            <ChannelGuidance template={TemplateType.EMAIL} />
+            <MessageFormatting template={'EMAIL'} />
+            <ChannelGuidance template={'EMAIL'} />
           </aside>
         </div>
       </NHSNotifyMain>

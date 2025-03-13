@@ -8,11 +8,6 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 jest.mock('@forms/PreviewLetterTemplate/server-actions');
 
@@ -45,13 +40,13 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.EN,
-          letterType: LetterType.Q1,
+          language: 'en',
+          letterType: 'q1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: undefined,
           },
@@ -74,18 +69,18 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.EN,
-          letterType: LetterType.Q1,
+          language: 'en',
+          letterType: 'q1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}
@@ -107,18 +102,18 @@ describe('Preview letter form renders', () => {
           },
           name: 'test-template-letter',
           id: 'template-id',
-          language: Language.DE,
-          letterType: LetterType.X3,
+          language: 'de',
+          letterType: 'x3',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}
@@ -135,18 +130,18 @@ describe('Preview letter form renders', () => {
           validationError: undefined,
           name: 'test-template-email',
           id: 'template-id',
-          language: Language.HI,
-          letterType: LetterType.X0,
+          language: 'hi',
+          letterType: 'x0',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'test-data.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
         })}

@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {
