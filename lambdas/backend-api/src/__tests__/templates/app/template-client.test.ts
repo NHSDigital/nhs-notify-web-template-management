@@ -79,8 +79,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid enum value. Expected 'EMAIL' | 'NHS_APP' | 'SMS', received 'LETTER'",
+            templateType: 'Cannot create LETTER template',
           },
         }),
       });
@@ -835,8 +834,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid enum value. Expected 'EMAIL' | 'SMS' | 'NHS_APP', received 'LETTER'",
+            templateType: 'Cannot update LETTER template',
           },
         }),
       });

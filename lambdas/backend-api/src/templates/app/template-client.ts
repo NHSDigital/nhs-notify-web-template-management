@@ -35,13 +35,12 @@ export class TemplateClient implements ITemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ template });
 
-    const validationResult = await validate(
-      z.intersection(
-        $CreateTemplateSchema,
-        z.object({ templateType: z.enum(['EMAIL', 'NHS_APP', 'SMS']) })
-      ),
-      template
+    const validationSchema = $CreateTemplateSchema.refine(
+      ({ templateType }) => templateType !== 'LETTER',
+      { message: 'Cannot create LETTER template', path: ['templateType'] }
     );
+
+    const validationResult = await validate(validationSchema, template);
 
     if (validationResult.error) {
       log.error('Request failed validation', {
@@ -196,9 +195,9 @@ export class TemplateClient implements ITemplateClient {
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
-    const validationSchema = z.intersection(
-      $UpdateTemplateSchema,
-      z.object({ templateType: z.enum(['EMAIL', 'SMS', 'NHS_APP']) })
+    const validationSchema = $UpdateTemplateSchema.refine(
+      ({ templateType }) => templateType !== 'LETTER',
+      { message: 'Cannot update LETTER template', path: ['templateType'] }
     );
 
     return this.update(
