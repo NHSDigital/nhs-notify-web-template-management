@@ -16,6 +16,7 @@ module "create_letter_template_lambda" {
   environment_variables = {
     TEMPLATES_TABLE_NAME   = aws_dynamodb_table.templates.name
     QUARANTINE_BUCKET_NAME = module.s3bucket_pdf_template_quarantine.bucket
+    ENABLE_LETTERS_BACKEND = var.enable_letters
   }
 
   execution_role_policy_document = data.aws_iam_policy_document.create_letter_template_lambda_policy.json

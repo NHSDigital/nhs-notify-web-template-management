@@ -85,10 +85,12 @@ describe('LetterUploadRepository', () => {
     });
   });
 
-  test('returns errors when upload fails', async () => {
+  test('returns error when upload fails', async () => {
     const { letterUploadRepository, mocks } = setup();
 
-    mocks.s3Client.on(PutObjectCommand).rejects('could not upload');
+    const err = new Error('could not upload');
+
+    mocks.s3Client.on(PutObjectCommand).rejects(err);
 
     const result = await letterUploadRepository.upload(
       templateId,
@@ -100,13 +102,7 @@ describe('LetterUploadRepository', () => {
 
     expect(result).toEqual({
       error: {
-        actualError: expect.objectContaining({
-          message: 'Failed to upload letter files',
-          cause: [
-            expect.objectContaining({ message: 'could not upload' }),
-            expect.objectContaining({ message: 'could not upload' }),
-          ],
-        }),
+        actualError: err,
         code: 500,
         details: undefined,
         message: 'Failed to upload letter files',

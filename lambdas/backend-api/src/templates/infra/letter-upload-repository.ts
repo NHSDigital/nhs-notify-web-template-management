@@ -1,7 +1,6 @@
 import { ErrorCase } from 'nhs-notify-backend-client';
 import { ApplicationResult, failure, success } from '../../utils';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { logger } from '../../logger';
 
 export class LetterUploadRepository {
   constructor(
@@ -47,20 +46,7 @@ export class LetterUploadRepository {
     }
 
     try {
-      const result = await Promise.allSettled(
-        commands.map((cmd) => this.client.send(cmd))
-      );
-
-      const failed = result.flatMap((r) =>
-        r.status === 'rejected' ? [r.reason] : []
-      );
-
-      if (failed.length > 0) {
-        logger.info('rethrow');
-
-        throw new Error('Failed to upload letter files', { cause: failed });
-      }
-
+      await Promise.all(commands.map((cmd) => this.client.send(cmd)));
       return success(null);
     } catch (error) {
       return failure(

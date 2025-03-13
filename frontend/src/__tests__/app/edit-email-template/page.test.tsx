@@ -14,7 +14,7 @@ jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const template: EmailTemplate = {
+const template = {
   id: 'template-id',
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',

@@ -80,7 +80,7 @@ describe('templateClient', () => {
           message: 'Request failed validation',
           details: {
             templateType:
-              "Invalid enum value. Expected 'EMAIL' | 'NHSAPP' | 'SMS', received 'LETTER'",
+              "Invalid enum value. Expected 'EMAIL' | 'NHS_APP' | 'SMS', received 'LETTER'",
           },
         }),
       });

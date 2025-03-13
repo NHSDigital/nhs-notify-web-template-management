@@ -38,7 +38,7 @@ export class TemplateClient implements ITemplateClient {
     const validationResult = await validate(
       z.intersection(
         $CreateTemplateSchema,
-        z.object({ templateType: z.enum(['EMAIL', 'NHSAPP', 'SMS']) })
+        z.object({ templateType: z.enum(['EMAIL', 'NHS_APP', 'SMS']) })
       ),
       template
     );
@@ -46,7 +46,6 @@ export class TemplateClient implements ITemplateClient {
     if (validationResult.error) {
       log.error('Request failed validation', {
         validationResult,
-        template,
       });
 
       return validationResult;
@@ -96,7 +95,6 @@ export class TemplateClient implements ITemplateClient {
     if (templateValidationResult.error) {
       log.error('Request failed validation', {
         validationResult: templateValidationResult,
-        template,
       });
 
       return templateValidationResult;
