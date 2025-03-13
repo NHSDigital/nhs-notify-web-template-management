@@ -24,18 +24,24 @@ export function pdfLetterMultipart(
 } {
   const fd = new FormData();
   for (const part of parts) {
-    if (part._type === 'json') {
-      fd.append(
-        part.partName,
-        typeof template === 'string' ? template : JSON.stringify(template)
-      );
-    }
-
-    if (part._type === 'file') {
-      fd.append(part.partName, part.file, {
-        filename: part.fileName,
-        contentType: part.fileType,
-      });
+    switch (part._type) {
+      case 'json': {
+        fd.append(
+          part.partName,
+          typeof template === 'string' ? template : JSON.stringify(template)
+        );
+        break;
+      }
+      case 'file': {
+        fd.append(part.partName, part.file, {
+          filename: part.fileName,
+          contentType: part.fileType,
+        });
+        break;
+      }
+      default: {
+        throw new Error(`unknown part type ${part}`);
+      }
     }
   }
 
