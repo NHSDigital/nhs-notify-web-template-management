@@ -3,18 +3,10 @@
  */
 import CopyTemplatePage from '@app/copy-template/[templateId]/page';
 import { CopyTemplate } from '@forms/CopyTemplate/CopyTemplate';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  Language,
-  LetterType,
-  TemplateDTO,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -28,34 +20,34 @@ describe('CopyTemplatePage', () => {
 
   const template = {
     id: 'template-id',
-    templateType: TemplateType.EMAIL,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'EMAIL',
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
     subject: 'template-subject-line',
     message: 'template-message',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
-  } satisfies TemplateDTO;
+  } satisfies TemplateDto;
 
-  const letterTemplate: TemplateDTO = {
+  const letterTemplate: LetterTemplate = {
     id: 'template-id',
-    templateType: TemplateType.LETTER,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'LETTER',
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
-    letterType: LetterType.Q4,
-    language: Language.FR,
+    letterType: 'q4',
+    language: 'fr',
     files: {
       pdfTemplate: {
         fileName: 'file.pdf',
         currentVersion: '61C1267A-0F37-4E1D-831E-494DE2BECC8C',
-        virusScanStatus: VirusScanStatus.PASSED,
+        virusScanStatus: 'PASSED',
       },
       testDataCsv: {
         fileName: 'file.csv',
         currentVersion: 'A8A76934-70F4-4735-8314-51CE097130DB',
-        virusScanStatus: VirusScanStatus.PASSED,
+        virusScanStatus: 'PASSED',
       },
     },
   };

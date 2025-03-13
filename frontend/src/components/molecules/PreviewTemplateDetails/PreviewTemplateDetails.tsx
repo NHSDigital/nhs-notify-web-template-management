@@ -6,7 +6,6 @@ import {
   type LetterTemplate,
   type SMSTemplate,
   NHSAppTemplate,
-  TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
@@ -56,9 +55,7 @@ export function PreviewTemplateDetails({
             <Col width='two-thirds' className={styles.col}>
               <Tag
                 color={
-                  template.templateStatus === TemplateStatus.SUBMITTED
-                    ? 'grey'
-                    : undefined
+                  template.templateStatus === 'SUBMITTED' ? 'grey' : undefined
                 }
               >
                 {templateStatusToDisplayMappings(template.templateStatus)}

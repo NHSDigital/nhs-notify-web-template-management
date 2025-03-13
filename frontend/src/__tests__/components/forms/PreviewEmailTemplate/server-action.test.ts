@@ -3,11 +3,7 @@ import {
   $FormSchema,
 } from '@forms/PreviewEmailTemplate';
 import { redirect } from 'next/navigation';
-import {
-  EmailTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getMockFormData } from '@testhelpers';
 
 jest.mock('next/navigation');
@@ -16,11 +12,13 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: EmailTemplate = {
   id: 'template-id',
-  templateType: TemplateType.EMAIL,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'EMAIL',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
   subject: 'template-subject',
   message: 'template-message',
+  createdAt: '2025-01-13T10:19:25.579Z',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 };
 
 describe('previewEmailTemplateAction server action', () => {

@@ -5,10 +5,13 @@ import SubmitSmsTemplatePage from '@app/submit-text-message-template/[templateId
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -23,11 +26,11 @@ describe('SubmitSmsTemplatePage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
-    };
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
       ...state,
@@ -64,41 +67,26 @@ describe('SubmitSmsTemplatePage', () => {
   });
 
   test.each([
+    EMAIL_TEMPLATE,
+    NHS_APP_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
+      ...SMS_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await SubmitSmsTemplatePage({
         params: Promise.resolve({

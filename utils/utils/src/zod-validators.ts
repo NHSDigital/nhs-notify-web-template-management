@@ -1,103 +1,114 @@
 import { z } from 'zod';
 import {
-  $TemplateDTOSchema,
-  Language,
-  LetterType,
-  TemplateDTO,
-  VirusScanStatus,
+  $CreateTemplateSchema,
+  $EmailPropertiesWithType,
+  $LetterPropertiesWithType,
+  $NhsAppPropertiesWithType,
+  $SmsPropertiesWithType,
+  $TemplateDtoSchema,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
-import { TemplateType, TemplateStatus } from './enum';
 
-const $TemplateBase = z.object({
-  id: z.string(),
-  templateType: z.nativeEnum(TemplateType),
-  templateStatus: z.nativeEnum(TemplateStatus),
-  name: z.string(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
-});
+export const zodValidate = <T extends z.Schema>(
+  schema: T,
+  obj: unknown
+): z.infer<T> | undefined => {
+  try {
+    return schema.parse(obj);
+  } catch {
+    return undefined;
+  }
+};
 
-const $VirusScanStatus = z.nativeEnum(VirusScanStatus);
+export const $SubmittedTemplate = z.intersection(
+  $TemplateDtoSchema,
+  z.object({
+    templateStatus: z.literal('SUBMITTED'),
+  })
+);
 
-const $File = z.object({
-  fileName: z.string(),
-  currentVersion: z.string().optional(),
-  virusScanStatus: $VirusScanStatus,
-});
+export const $NonSubmittedTemplate = z.intersection(
+  $TemplateDtoSchema,
+  z.object({
+    templateStatus: z.literal('NOT_YET_SUBMITTED'),
+  })
+);
 
-const $Files = z.object({
-  pdfTemplate: $File,
-  testDataCsv: $File.optional(),
-  proofs: z.array($File).optional(),
-});
+export const $CreateNHSAppTemplate = z.intersection(
+  $CreateTemplateSchema,
+  $NhsAppPropertiesWithType
+);
+export const $NHSAppTemplate = z.intersection(
+  $TemplateDtoSchema,
+  $NhsAppPropertiesWithType
+);
+export const $SubmittedNHSAppTemplate = z.intersection(
+  $SubmittedTemplate,
+  $NHSAppTemplate
+);
 
-export const $EmailTemplate = $TemplateBase.extend({
-  templateType: z.literal(TemplateType.EMAIL),
-  subject: z.string(),
-  message: z.string(),
-});
-export const $SubmittedEmailTemplate = $EmailTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.SUBMITTED),
-});
-export const $NonSubmittedEmailTemplate = $EmailTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
-});
+export const $CreateEmailTemplate = z.intersection(
+  $CreateTemplateSchema,
+  $EmailPropertiesWithType
+);
+export const $EmailTemplate = z.intersection(
+  $TemplateDtoSchema,
+  $EmailPropertiesWithType
+);
+export const $SubmittedEmailTemplate = z.intersection(
+  $SubmittedTemplate,
+  $EmailTemplate
+);
 
-export const $NHSAppTemplate = $TemplateBase.extend({
-  templateType: z.literal(TemplateType.NHS_APP),
-  message: z.string(),
-});
-export const $SubmittedNHSAppTemplate = $NHSAppTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.SUBMITTED),
-});
-export const $NonSubmittedNHSAppTemplate = $NHSAppTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
-});
+export const $CreateSMSTemplate = z.intersection(
+  $CreateTemplateSchema,
+  $SmsPropertiesWithType
+);
+export const $SMSTemplate = z.intersection(
+  $TemplateDtoSchema,
+  $SmsPropertiesWithType
+);
+export const $SubmittedSMSTemplate = z.intersection(
+  $SubmittedTemplate,
+  $SMSTemplate
+);
 
-export const $SMSTemplate = $TemplateBase.extend({
-  templateType: z.literal(TemplateType.SMS),
-  message: z.string(),
-});
-export const $SubmittedSMSTemplate = $SMSTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.SUBMITTED),
-});
-const $NonSubmittedSMSTemplate = $SMSTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
-});
+export const $CreateLetterTemplate = z.intersection(
+  $CreateTemplateSchema,
+  $LetterPropertiesWithType
+);
+export const $LetterTemplate = z.intersection(
+  $TemplateDtoSchema,
+  $LetterPropertiesWithType
+);
+export const $SubmittedLetterTemplate = z.intersection(
+  $SubmittedTemplate,
+  $LetterTemplate
+);
 
-export const $LetterTemplate = $TemplateBase.extend({
-  templateType: z.literal(TemplateType.LETTER),
-  letterType: z.nativeEnum(LetterType),
-  language: z.nativeEnum(Language),
-  files: $Files,
-});
-const $SubmittedLetterTemplate = $LetterTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.SUBMITTED),
-});
-const $NonSubmittedLetterTemplate = $LetterTemplate.extend({
-  templateStatus: z.literal(TemplateStatus.NOT_YET_SUBMITTED),
-});
+export const validateNHSAppTemplate = (template?: TemplateDto) =>
+  zodValidate($NHSAppTemplate, template);
 
-export const $Template = z.discriminatedUnion('templateType', [
-  $NHSAppTemplate,
-  $EmailTemplate,
-  $SMSTemplate,
-  $LetterTemplate,
-]);
+export const validateSMSTemplate = (template?: TemplateDto) =>
+  zodValidate($SMSTemplate, template);
 
-export const $SubmittedTemplate = z.discriminatedUnion('templateType', [
-  $SubmittedNHSAppTemplate,
-  $SubmittedEmailTemplate,
-  $SubmittedSMSTemplate,
-  $SubmittedLetterTemplate,
-]);
+export const validateEmailTemplate = (template?: TemplateDto) =>
+  zodValidate($EmailTemplate, template);
 
-export const $NonSubmittedTemplate = z.discriminatedUnion('templateType', [
-  $NonSubmittedNHSAppTemplate,
-  $NonSubmittedEmailTemplate,
-  $NonSubmittedSMSTemplate,
-  $NonSubmittedLetterTemplate,
-]);
+export const validateLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($LetterTemplate, template);
 
-export const isTemplateValid = (input: unknown): TemplateDTO | undefined =>
-  $TemplateDTOSchema.safeParse(input).data;
+export const validateSubmittedEmailTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedEmailTemplate, template);
+
+export const validateSubmittedSMSTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedSMSTemplate, template);
+
+export const validateSubmittedNHSAppTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedNHSAppTemplate, template);
+
+export const validateTemplate = (template?: TemplateDto) =>
+  zodValidate($TemplateDtoSchema, template);
+
+export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
+  zodValidate($NonSubmittedTemplate, template);
