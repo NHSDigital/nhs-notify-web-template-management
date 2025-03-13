@@ -177,9 +177,10 @@ export class TemplateClient implements ITemplateClient {
       templateStatus: 'PENDING_VALIDATION',
     };
 
-    const updateTemplateResult = await this.updateTemplate(
+    const updateTemplateResult = await this.update(
       templateDTO.id,
       update,
+      $UpdateTemplateSchema,
       owner,
       'PENDING_UPLOAD'
     );
@@ -195,38 +196,18 @@ export class TemplateClient implements ITemplateClient {
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const validationSchema = z.intersection(
+      $UpdateTemplateSchema,
+      z.object({ templateType: z.enum(['EMAIL', 'SMS', 'NHS_APP']) })
+    );
+
+    return this.update(
       templateId,
       template,
-    });
-
-    const validationResult = await validate($UpdateTemplateSchema, template);
-
-    if (validationResult.error) {
-      log.error('Invalid template', { validationResult });
-
-      return validationResult;
-    }
-
-    const updateResult = await this.templateRepository.update(
-      templateId,
-      validationResult.data,
+      validationSchema,
       owner,
       expectedStatus
     );
-
-    if (updateResult.error) {
-      log.error('Failed to update template', { updateResult });
-
-      return updateResult;
-    }
-
-    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
-    if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
-    }
-
-    return success(templateDTO);
   }
 
   async getTemplate(
@@ -257,14 +238,6 @@ export class TemplateClient implements ITemplateClient {
     return success(templateDTO);
   }
 
-  private mapDatabaseObjectToDTO(
-    databaseTemplate: DatabaseTemplate
-  ): TemplateDto | undefined {
-    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
-
-    return isTemplateDtoValid(templateDTO);
-  }
-
   async listTemplates(owner: string): Promise<Result<TemplateDto[]>> {
     const listResult = await this.templateRepository.list(owner);
 
@@ -280,5 +253,54 @@ export class TemplateClient implements ITemplateClient {
       .filter((t) => this.enableLetters || t.templateType !== 'LETTER');
 
     return success(templateDTOs);
+  }
+
+  private async update(
+    templateId: string,
+    template: UpdateTemplate,
+    validationSchema: z.Schema,
+    owner: string,
+    expectedStatus: TemplateStatus
+  ): Promise<Result<TemplateDto>> {
+    const log = logger.child({
+      templateId,
+      template,
+    });
+
+    const validationResult = await validate(validationSchema, template);
+
+    if (validationResult.error) {
+      log.error('Invalid template', { validationResult });
+
+      return validationResult;
+    }
+
+    const updateResult = await this.templateRepository.update(
+      templateId,
+      validationResult.data,
+      owner,
+      expectedStatus
+    );
+
+    if (updateResult.error) {
+      log.error('Failed to update template', { updateResult });
+
+      return updateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
+  }
+
+  private mapDatabaseObjectToDTO(
+    databaseTemplate: DatabaseTemplate
+  ): TemplateDto | undefined {
+    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
+
+    return isTemplateDtoValid(templateDTO);
   }
 }
