@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {

@@ -3,11 +3,7 @@ import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
 } from '@forms/DeleteTemplate/server-action';
-import {
-  NHSAppTemplate,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { saveTemplate } from '@utils/form-actions';
 
 jest.mock('next/navigation');
@@ -37,15 +33,17 @@ test('calls form action and redirects', async () => {
     id: 'template-id',
     name: 'template-name',
     message: 'template-message',
-    templateType: TemplateType.NHS_APP,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'NHS_APP',
+    templateStatus: 'NOT_YET_SUBMITTED',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await deleteTemplateYesAction(mockTemplate);
 
   expect(mockSaveTemplate).toHaveBeenCalledWith({
     ...mockTemplate,
-    templateStatus: TemplateStatus.DELETED,
+    templateStatus: 'DELETED',
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(
