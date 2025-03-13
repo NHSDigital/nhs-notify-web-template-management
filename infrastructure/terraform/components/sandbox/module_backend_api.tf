@@ -15,4 +15,6 @@ module "backend_api" {
   }
 
   enable_letters = true
+
+  kms_key_arn = module.kms.key_arn
 }
