@@ -1,6 +1,7 @@
 import { ErrorCase } from 'nhs-notify-backend-client';
 import { ApplicationResult, failure, success } from '../../utils';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { logger } from '../../logger';
 
 export class LetterUploadRepository {
   constructor(
@@ -55,6 +56,8 @@ export class LetterUploadRepository {
       );
 
       if (failed.length > 0) {
+        logger.info('rethrow');
+
         throw new Error('Failed to upload letter files', { cause: failed });
       }
 

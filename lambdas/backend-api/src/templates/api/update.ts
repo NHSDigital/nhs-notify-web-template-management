@@ -18,6 +18,10 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
+    if ('templateType' in dto && dto.templateType === 'LETTER') {
+      return apiFailure(400, 'Invalid request');
+    }
+
     const { data, error } = await templateClient.updateTemplate(
       templateId,
       dto,

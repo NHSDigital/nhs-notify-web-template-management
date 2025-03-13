@@ -80,6 +80,45 @@ describe('Template API - Update', () => {
     );
   });
 
+  test('should return 400 - Invalid request when attempting to update a letter', async () => {
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.updateTemplate.mockResolvedValueOnce({
+      error: {
+        code: 400,
+        message: 'Validation failed',
+        details: {
+          templateType: 'Required',
+        },
+      },
+      data: undefined,
+    });
+
+    const event = mock<APIGatewayProxyEvent>({
+      requestContext: { authorizer: { user: 'sub' } },
+      pathParameters: { templateId: '1-2-3' },
+      body: JSON.stringify({
+        templateType: 'LETTER',
+        name: 'name',
+        letterType: 'x0',
+        language: 'en',
+        templateStatus: 'SUBMITTED',
+      } satisfies UpdateTemplate),
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 400,
+      body: JSON.stringify({
+        statusCode: 400,
+        technicalMessage: 'Invalid request',
+      }),
+    });
+
+    expect(mocks.templateClient.updateTemplate).not.toHaveBeenCalled();
+  });
+
   test('should return 400 - Invalid request when, no templateId', async () => {
     const { handler, mocks } = setup();
 

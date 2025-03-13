@@ -780,7 +780,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: expect.objectContaining({
           code: 400,
-          message: 'request failed validation',
+          message: 'Request failed validation',
         }),
       });
 
