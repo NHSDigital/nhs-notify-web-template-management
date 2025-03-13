@@ -79,5 +79,5 @@ variable "enable_letters" {
 
 variable "shared_kms_key_arn" {
     type        = string
-  description = "KMS key for the app component"
+  description = "Shared KMS key ARN"
 }
