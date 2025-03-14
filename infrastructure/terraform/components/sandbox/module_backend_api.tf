@@ -18,5 +18,6 @@ module "backend_api" {
 
   enable_letters = true
 
-  kms_key_arn = data.aws_kms_key.sandbox.arn
+  kms_key_arn          = data.aws_kms_key.sandbox.arn
+  dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
 }
