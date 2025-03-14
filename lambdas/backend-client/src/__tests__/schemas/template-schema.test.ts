@@ -1,4 +1,5 @@
 import {
+  $CreateNonLetterSchema,
   CreateTemplate,
   isCreateTemplateValid,
   isTemplateDtoValid,
@@ -150,6 +151,27 @@ describe('Template schemas', () => {
     }
   );
 
+  test('$CreateNonLetterSchema should fail when input is a letter', () => {
+    const letter: CreateTemplate = {
+      templateType: 'LETTER',
+      letterType: 'q1',
+      language: 'ar',
+      name: 'letter',
+    };
+
+    const result = $CreateNonLetterSchema.safeParse(letter);
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          templateType: [
+            "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+          ],
+        },
+      })
+    );
+  });
+
   test('$EmailTemplateFields - should fail validation, when no subject', async () => {
     const result = $CreateTemplateSchema.safeParse({
       name: 'Test Template',
@@ -218,13 +240,6 @@ describe('Template schemas', () => {
         templateType: 'LETTER',
         letterType: 'x0',
         language: 'en',
-        files: {
-          pdfTemplate: {
-            fileName: 'template.pdf',
-            currentVersion: '123',
-            virusScanStatus: 'FAILED',
-          },
-        },
       },
     ])('should pass validation %p', async (template) => {
       const result = $CreateTemplateSchema.safeParse(template);

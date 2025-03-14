@@ -141,7 +141,7 @@ export const $LetterPropertiesWithType = $LetterProperties.merge(
   z.object({ templateType: z.literal('LETTER') })
 );
 
-export const $CreateNonLetter = schemaFor<
+export const $CreateNonLetterSchema = schemaFor<
   Exclude<CreateTemplate, { templateType: 'LETTER' }>,
   Exclude<ValidatedCreateTemplate, { templateType: 'LETTER' }>
 >()(

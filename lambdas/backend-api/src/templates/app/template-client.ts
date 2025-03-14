@@ -10,7 +10,7 @@ import {
   isTemplateDtoValid,
   LetterFiles,
   TemplateStatus,
-  $CreateNonLetter,
+  $CreateNonLetterSchema,
   $UpdateNonLetter,
 } from 'nhs-notify-backend-client';
 import {
@@ -36,7 +36,7 @@ export class TemplateClient implements ITemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ template });
 
-    const validationResult = await validate($CreateNonLetter, template);
+    const validationResult = await validate($CreateNonLetterSchema, template);
 
     if (validationResult.error) {
       log.error('Request failed validation', {
