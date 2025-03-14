@@ -74,5 +74,11 @@ variable "enable_letters" {
 
 variable "kms_key_arn" {
   type        = string
-  description = "ARN of KMS Key used for encrypting application data"
+  description = "KMS Key ARN"
+}
+
+variable "dynamodb_kms_key_arn" {
+  type        = string
+  description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
+  default     = ""
 }

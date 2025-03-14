@@ -6,9 +6,9 @@ module "backend_api" {
   aws_account_id        = var.aws_account_id
   region                = var.region
   group                 = var.group
+  component             = var.component
   csi                   = local.csi
   log_retention_in_days = var.log_retention_in_days
-  kms_key_arn           = module.kms.key_arn
 
   cognito_config = {
     USER_POOL_ID        = aws_cognito_user_pool.sandbox.id
@@ -16,4 +16,7 @@ module "backend_api" {
   }
 
   enable_letters = true
+
+  kms_key_arn          = data.aws_kms_key.sandbox.arn
+  dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
 }

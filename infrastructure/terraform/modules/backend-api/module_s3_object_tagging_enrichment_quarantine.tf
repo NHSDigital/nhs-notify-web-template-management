@@ -4,7 +4,7 @@ module "object_tagging_enrichment_quarantine" {
   id     = "quarantine"
 
   source_bucket = {
-    name = aws_s3_bucket.pdf_template_scan.id
+    name = module.s3bucket_quarantine.id
   }
 
   kms_key_arn = var.kms_key_arn
