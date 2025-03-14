@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { Template, TemplateType, TemplateStatus } from '../helpers/types';
+import { Template } from '../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
@@ -43,8 +43,8 @@ async function createTemplates() {
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateType: TemplateType.EMAIL,
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateType: 'EMAIL',
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {
@@ -75,8 +75,8 @@ async function createTemplates() {
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateType: TemplateType.SMS,
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateType: 'SMS',
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {
@@ -107,8 +107,8 @@ async function createTemplates() {
         version: 1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        templateType: TemplateType.NHS_APP,
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+        templateType: 'NHS_APP',
+        templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
       submit: {

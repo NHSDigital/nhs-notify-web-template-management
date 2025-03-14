@@ -1,21 +1,5 @@
 import { faker } from '@faker-js/faker';
-import {
-  CreateTemplate,
-  TemplateStatus,
-  TemplateType,
-  UpdateTemplate,
-} from 'nhs-notify-backend-client';
-
-type CreateTemplatePayload = Omit<CreateTemplate, 'templateType'> & {
-  templateType: string;
-};
-type UpdateTemplatePayload = Omit<
-  UpdateTemplate,
-  'templateType' | 'templateStatus'
-> & {
-  templateType: string;
-  templateStatus: string;
-};
+import { CreateTemplatePayload, UpdateTemplatePayload } from '../types';
 
 type TemplatePayload = CreateTemplatePayload | UpdateTemplatePayload;
 
@@ -41,7 +25,7 @@ type Output<T extends TemplatePayload, U extends Record<string, unknown>> = T &
 const createPayloadData = (templateType: unknown) => ({
   name: faker.word.noun(),
   message: faker.word.words(5),
-  ...(templateType === TemplateType.EMAIL && {
+  ...(templateType === 'EMAIL' && {
     subject: faker.word.interjection(),
   }),
 });
@@ -66,7 +50,7 @@ export const TemplateAPIPayloadFactory = {
     template: T
   ): Output<UpdateTemplatePayload, T> {
     return {
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       ...createPayloadData(template.templateType),
       ...template,
     };

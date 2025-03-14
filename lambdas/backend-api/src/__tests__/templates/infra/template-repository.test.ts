@@ -8,9 +8,11 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
-  TemplateStatus,
-  TemplateType,
-  UpdateTemplate,
+  EmailProperties,
+  LetterProperties,
+  NhsAppProperties,
+  SmsProperties,
+  ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { DatabaseTemplate, templateRepository } from '../../../templates/infra';
@@ -20,17 +22,72 @@ jest.mock('node:crypto');
 const uuidMock = jest.mocked(uuidv4);
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-const template: DatabaseTemplate = {
-  id: 'abc-def-ghi-jkl-123',
-  owner: 'real-owner',
-  name: 'name',
+const emailProperties: EmailProperties = {
   message: 'message',
   subject: 'pickles',
-  templateType: TemplateType.EMAIL,
+};
+
+const smsProperties: SmsProperties = {
+  message: 'message',
+};
+
+const nhsAppProperties: NhsAppProperties = {
+  message: 'message',
+};
+
+const letterProperties: LetterProperties = {
+  letterType: 'x0',
+  language: 'en',
+  files: {
+    pdfTemplate: {
+      fileName: 'template.pdf',
+    },
+    testDataCsv: {
+      fileName: 'test.csv',
+    },
+  },
+};
+
+const createTemplateProperties = {
+  name: 'name',
+};
+
+const updateTemplateProperties = {
+  ...createTemplateProperties,
+  templateStatus: 'NOT_YET_SUBMITTED' as const,
+};
+
+const databaseTemplateProperties = {
+  ...updateTemplateProperties,
+  id: 'abc-def-ghi-jkl-123',
+  owner: 'real-owner',
   version: 1,
   createdAt: '2024-12-27T00:00:00.000Z',
   updatedAt: '2024-12-27T00:00:00.000Z',
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+};
+
+const emailTemplate: DatabaseTemplate = {
+  templateType: 'EMAIL',
+  ...emailProperties,
+  ...databaseTemplateProperties,
+};
+
+const smsTemplate: DatabaseTemplate = {
+  templateType: 'SMS',
+  ...smsProperties,
+  ...databaseTemplateProperties,
+};
+
+const nhsAppTemplate: DatabaseTemplate = {
+  templateType: 'NHS_APP',
+  ...nhsAppProperties,
+  ...databaseTemplateProperties,
+};
+
+const letterTemplate: DatabaseTemplate = {
+  templateType: 'LETTER',
+  ...letterProperties,
+  ...databaseTemplateProperties,
 };
 
 describe('templateRepository', () => {
@@ -86,7 +143,7 @@ describe('templateRepository', () => {
         Item: {
           id: 'abc-def-ghi-jkl-123',
           owner: 'real-owner',
-          templateStatus: TemplateStatus.DELETED,
+          templateStatus: 'DELETED',
         },
       });
 
@@ -127,7 +184,7 @@ describe('templateRepository', () => {
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
-          Item: template,
+          Item: emailTemplate,
         });
 
       const response = await templateRepository.get(
@@ -136,7 +193,7 @@ describe('templateRepository', () => {
       );
 
       expect(response).toEqual({
-        data: template,
+        data: emailTemplate,
       });
     });
   });
@@ -181,13 +238,13 @@ describe('templateRepository', () => {
           },
         })
         .resolves({
-          Items: [template],
+          Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
         });
 
       const response = await templateRepository.list('real-owner');
 
       expect(response).toEqual({
-        data: [template],
+        data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
       });
     });
   });
@@ -200,7 +257,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         {
-          templateType: TemplateType.EMAIL,
+          templateType: 'EMAIL',
           name: 'name',
           message: 'message',
           subject: 'pickles',
@@ -217,30 +274,42 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should create template', async () => {
-      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
+    test.each([
+      { templateType: 'EMAIL' as const, ...emailProperties },
+      { templateType: 'SMS' as const, ...smsProperties },
+      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
+      { templateType: 'LETTER' as const, ...letterProperties },
+    ])(
+      'should create template of type $templateType',
+      async (channelProperties) => {
+        uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
 
-      ddbMock
-        .on(PutCommand, {
-          TableName: 'templates',
-          Item: template,
-        })
-        .resolves({});
+        ddbMock
+          .on(PutCommand, {
+            TableName: 'templates',
+            Item: {
+              ...channelProperties,
+              ...databaseTemplateProperties,
+            },
+          })
+          .resolves({});
 
-      const response = await templateRepository.create(
-        {
-          templateType: TemplateType.EMAIL,
-          name: 'name',
-          message: 'message',
-          subject: 'pickles',
-        },
-        'real-owner'
-      );
+        const response = await templateRepository.create(
+          {
+            ...channelProperties,
+            ...createTemplateProperties,
+          },
+          'real-owner'
+        );
 
-      expect(response).toEqual({
-        data: template,
-      });
-    });
+        expect(response).toEqual({
+          data: {
+            ...channelProperties,
+            ...databaseTemplateProperties,
+          },
+        });
+      }
+    );
   });
 
   describe('update', () => {
@@ -254,8 +323,8 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to change templateType from SMS to EMAIL',
         Item: {
-          templateType: { S: TemplateType.SMS },
-          templateStatus: { S: TemplateStatus.NOT_YET_SUBMITTED },
+          templateType: { S: 'SMS' },
+          templateStatus: { S: 'NOT_YET_SUBMITTED' },
         },
         code: 400,
         message: 'Can not change template templateType',
@@ -267,8 +336,8 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to update template when templateStatus is SUBMITTED',
         Item: {
-          templateType: { S: TemplateType.EMAIL },
-          templateStatus: { S: TemplateStatus.SUBMITTED },
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'SUBMITTED' },
         },
         code: 400,
         message: 'Template with status SUBMITTED cannot be updated',
@@ -277,8 +346,8 @@ describe('templateRepository', () => {
         testName:
           'Fails when user tries to update template when templateStatus is DELETED',
         Item: {
-          templateType: { S: TemplateType.EMAIL },
-          templateStatus: { S: TemplateStatus.DELETED },
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'DELETED' },
         },
         code: 404,
         message: 'Template not found',
@@ -300,8 +369,8 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            templateStatus: TemplateStatus.SUBMITTED,
-            templateType: TemplateType.EMAIL,
+            templateStatus: 'SUBMITTED',
+            templateType: 'EMAIL',
           },
           'real-owner'
         );
@@ -328,8 +397,8 @@ describe('templateRepository', () => {
           name: 'name',
           message: 'message',
           subject: 'subject',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          templateType: TemplateType.EMAIL,
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'EMAIL',
         },
         'real-owner'
       );
@@ -343,47 +412,56 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should update template with subject', async () => {
-      const updatedTemplate: UpdateTemplate = {
-        name: 'updated-name',
-        message: 'updated-message',
-        subject: 'updated-subject',
-        templateStatus: TemplateStatus.SUBMITTED,
-        templateType: TemplateType.EMAIL,
-      };
+    test.each([
+      { templateType: 'EMAIL' as const, ...emailProperties },
+      { templateType: 'SMS' as const, ...smsProperties },
+      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
+      { templateType: 'LETTER' as const, ...letterProperties },
+    ])(
+      'should update template of type $templateType with name',
+      async (channelProperties) => {
+        const updatedTemplate: ValidatedUpdateTemplate = {
+          ...channelProperties,
+          ...updateTemplateProperties,
+          name: 'updated-name',
+          templateStatus: 'SUBMITTED',
+        };
 
-      ddbMock
-        .on(UpdateCommand, {
-          TableName: 'templates',
-          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-        })
-        .resolves({
-          Attributes: {
-            ...template,
+        ddbMock
+          .on(UpdateCommand, {
+            TableName: 'templates',
+            Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+          })
+          .resolves({
+            Attributes: {
+              ...channelProperties,
+              ...databaseTemplateProperties,
+              ...updatedTemplate,
+            },
+          });
+
+        const response = await templateRepository.update(
+          'abc-def-ghi-jkl-123',
+          updatedTemplate,
+          'real-owner'
+        );
+
+        expect(response).toEqual({
+          data: {
+            ...channelProperties,
+            ...databaseTemplateProperties,
             ...updatedTemplate,
           },
         });
-
-      const response = await templateRepository.update(
-        'abc-def-ghi-jkl-123',
-        updatedTemplate,
-        'real-owner'
-      );
-
-      expect(response).toEqual({
-        data: {
-          ...template,
-          ...updatedTemplate,
-        },
-      });
-    });
+      }
+    );
 
     test('should update template to deleted state', async () => {
-      const updatedTemplate: UpdateTemplate = {
+      const updatedTemplate: ValidatedUpdateTemplate = {
         name: 'updated-name',
         message: 'updated-message',
-        templateStatus: TemplateStatus.DELETED,
-        templateType: TemplateType.NHS_APP,
+        templateStatus: 'DELETED',
+        templateType: 'NHS_APP',
       };
 
       ddbMock
@@ -393,7 +471,7 @@ describe('templateRepository', () => {
         })
         .resolves({
           Attributes: {
-            ...template,
+            ...emailTemplate,
             ...updatedTemplate,
           },
         });
@@ -406,7 +484,7 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         data: {
-          ...template,
+          ...emailTemplate,
           ...updatedTemplate,
         },
       });
