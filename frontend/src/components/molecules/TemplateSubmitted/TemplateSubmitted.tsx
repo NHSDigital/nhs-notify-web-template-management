@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import PageTitle from '@hooks/page-title.hook';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 type TemplateSubmittedProps = {
   templateId: string;

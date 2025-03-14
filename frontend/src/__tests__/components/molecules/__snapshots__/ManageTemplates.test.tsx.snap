@@ -136,39 +136,35 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="/copy-template/1"
+                  id="copy-template-link-0"
                 >
-                  <a
-                    href="/copy-template/1"
-                    id="copy-template-link-0"
+                  <span
+                    class="nhsuk-u-visually-hidden"
                   >
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Template 1
-                    </span>
-                    Copy
-                  </a>
-                </p>
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                    Template 1
+                  </span>
+                  Copy
+                </a>
+              </p>
+              <p
+                class="nhsuk-u-margin-bottom-2"
+              >
+                <a
+                  href="/delete-template/1"
                 >
-                  <a
-                    href="/delete-template/1"
+                  <span
+                    class="nhsuk-u-visually-hidden"
                   >
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Template 1
-                    </span>
-                    Delete
-                  </a>
-                </p>
-              </div>
+                    Template 1
+                  </span>
+                  Delete
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -242,25 +238,21 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="/copy-template/2"
+                  id="copy-template-link-1"
                 >
-                  <a
-                    href="/copy-template/2"
-                    id="copy-template-link-1"
+                  <span
+                    class="nhsuk-u-visually-hidden"
                   >
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Template 2
-                    </span>
-                    Copy
-                  </a>
-                </p>
-              </div>
+                    Template 2
+                  </span>
+                  Copy
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -334,9 +326,6 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
-              />
             </td>
           </tr>
         </tbody>
@@ -482,25 +471,21 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="/copy-template/1"
+                  id="copy-template-link-0"
                 >
-                  <a
-                    href="/copy-template/1"
-                    id="copy-template-link-0"
+                  <span
+                    class="nhsuk-u-visually-hidden"
                   >
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Template 1
-                    </span>
-                    Copy
-                  </a>
-                </p>
-              </div>
+                    Template 1
+                  </span>
+                  Copy
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -574,25 +559,21 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
+              <p
+                class="nhsuk-u-margin-bottom-2"
               >
-                <p
-                  class="nhsuk-u-margin-bottom-2"
+                <a
+                  href="/copy-template/2"
+                  id="copy-template-link-1"
                 >
-                  <a
-                    href="/copy-template/2"
-                    id="copy-template-link-1"
+                  <span
+                    class="nhsuk-u-visually-hidden"
                   >
-                    <span
-                      class="nhsuk-u-visually-hidden"
-                    >
-                      Template 2
-                    </span>
-                    Copy
-                  </a>
-                </p>
-              </div>
+                    Template 2
+                  </span>
+                  Copy
+                </a>
+              </p>
             </td>
           </tr>
           <tr
@@ -666,9 +647,6 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <div
-                class="actionLinksWrapper"
-              />
             </td>
           </tr>
         </tbody>

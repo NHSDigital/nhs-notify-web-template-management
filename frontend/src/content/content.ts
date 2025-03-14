@@ -308,10 +308,10 @@ const error404 = {
 
 const submitTemplate = {
   pageTitle: {
-    [TemplateType.NHS_APP]: generatePageTitle('Submit NHS App template'),
-    [TemplateType.EMAIL]: generatePageTitle('Submit email template'),
-    [TemplateType.SMS]: generatePageTitle('Submit text template'),
-    [TemplateType.LETTER]: generatePageTitle('Submit letter template'),
+    NHS_APP: generatePageTitle('Submit NHS App template'),
+    EMAIL: generatePageTitle('Submit email template'),
+    SMS: generatePageTitle('Submit text template'),
+    LETTER: generatePageTitle('Submit letter template'),
   },
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
@@ -480,10 +480,10 @@ const templateFormSms = {
 
 const templateSubmitted = {
   pageTitle: {
-    [TemplateType.NHS_APP]: generatePageTitle('NHS App template submitted'),
-    [TemplateType.EMAIL]: generatePageTitle('Email template submitted'),
-    [TemplateType.SMS]: generatePageTitle('Text template submitted'),
-    [TemplateType.LETTER]: generatePageTitle('Letter template submitted'),
+    NHS_APP: generatePageTitle('NHS App template submitted'),
+    EMAIL: generatePageTitle('Email template submitted'),
+    SMS: generatePageTitle('Text template submitted'),
+    LETTER: generatePageTitle('Letter template submitted'),
   },
   pageHeading: 'Template submitted',
   templateNameHeading: 'Template name',

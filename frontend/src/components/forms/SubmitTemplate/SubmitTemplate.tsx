@@ -17,7 +17,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   goBackPath,
   submitPath,
   templateType,
-}) => {
+}: SubmitTemplatePageComponentProps) => {
   const {
     pageTitle,
     pageHeading,
