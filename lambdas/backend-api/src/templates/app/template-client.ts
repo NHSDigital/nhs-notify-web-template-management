@@ -3,12 +3,12 @@ import {
   CreateTemplate,
   ITemplateClient,
   Result,
-  TemplateDTO,
+  TemplateDto,
   UpdateTemplate,
   $CreateTemplateSchema,
   $UpdateTemplateSchema,
-  TemplateType,
   ErrorCase,
+  isTemplateDtoValid,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -21,7 +21,7 @@ export class TemplateClient implements ITemplateClient {
     private readonly enableLetters: boolean
   ) {}
 
-  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDTO>> {
+  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>> {
     const log = logger.child({
       template,
     });
@@ -50,13 +50,18 @@ export class TemplateClient implements ITemplateClient {
       return createResult;
     }
 
-    return success(this.mapDatabaseObjectToDTO(createResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
   async updateTemplate(
     templateId: string,
     template: UpdateTemplate
-  ): Promise<Result<TemplateDTO>> {
+  ): Promise<Result<TemplateDto>> {
     const log = logger.child({
       templateId,
       template,
@@ -82,10 +87,15 @@ export class TemplateClient implements ITemplateClient {
       return updateResult;
     }
 
-    return success(this.mapDatabaseObjectToDTO(updateResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
-  async getTemplate(templateId: string): Promise<Result<TemplateDTO>> {
+  async getTemplate(templateId: string): Promise<Result<TemplateDto>> {
     const log = logger.child({
       templateId,
     });
@@ -98,25 +108,27 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
-    if (
-      getResult.data.templateType === TemplateType.LETTER &&
-      !this.enableLetters
-    ) {
+    if (getResult.data.templateType === 'LETTER' && !this.enableLetters) {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
-    return success(this.mapDatabaseObjectToDTO(getResult.data));
+    const templateDTO = this.mapDatabaseObjectToDTO(getResult.data);
+    if (!templateDTO) {
+      return failure(ErrorCase.DATABASE_FAILURE, 'Error retrieving template');
+    }
+
+    return success(templateDTO);
   }
 
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
-  ): TemplateDTO {
+  ): TemplateDto | undefined {
     const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
 
-    return templateDTO;
+    return isTemplateDtoValid(templateDTO);
   }
 
-  async listTemplates(): Promise<Result<TemplateDTO[]>> {
+  async listTemplates(): Promise<Result<TemplateDto[]>> {
     const listResult = await templateRepository.list(this._owner);
 
     if (listResult.error) {
@@ -127,9 +139,8 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTOs = listResult.data
       .map((template) => this.mapDatabaseObjectToDTO(template))
-      .filter(
-        (t) => this.enableLetters || t.templateType !== TemplateType.LETTER
-      );
+      .flatMap((t) => t ?? [])
+      .filter((t) => this.enableLetters || t.templateType !== 'LETTER');
 
     return success(templateDTOs);
   }

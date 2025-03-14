@@ -1,7 +1,7 @@
 import {
-  TemplateFormState,
+  CreateEmailTemplate,
   EmailTemplate,
-  Draft,
+  TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate, saveTemplate } from '@utils/form-actions';
@@ -24,9 +24,9 @@ const $EmailTemplateFormSchema = z.object({
 });
 
 export async function processFormActions(
-  formState: TemplateFormState<EmailTemplate | Draft<EmailTemplate>>,
+  formState: TemplateFormState<CreateEmailTemplate | EmailTemplate>,
   formData: FormData
-): Promise<TemplateFormState<EmailTemplate | Draft<EmailTemplate>>> {
+): Promise<TemplateFormState<CreateEmailTemplate | EmailTemplate>> {
   const parsedForm = $EmailTemplateFormSchema.safeParse(
     Object.fromEntries(formData.entries())
   );

@@ -1,9 +1,6 @@
 import { render } from '@testing-library/react';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
-import {
-  NHSAppTemplate,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 
 describe('ViewNHSAppTemplate component', () => {
   it('matches submitted snapshot', () => {
@@ -13,7 +10,7 @@ describe('ViewNHSAppTemplate component', () => {
           {
             id: 'template-id',
             name: 'Example template',
-            templateStatus: TemplateStatus.SUBMITTED,
+            templateStatus: 'SUBMITTED',
             message: 'Example message',
           } as NHSAppTemplate
         }

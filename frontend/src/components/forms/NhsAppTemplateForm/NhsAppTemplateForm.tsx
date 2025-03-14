@@ -16,10 +16,9 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  Draft,
+  CreateNHSAppTemplate,
   NHSAppTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -29,7 +28,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const NhsAppTemplateForm: FC<
-  PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
+  PageComponentProps<NHSAppTemplate | CreateNHSAppTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
@@ -82,7 +81,7 @@ export const NhsAppTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.NHS_APP} />
+                <TemplateNameGuidance template={'NHS_APP'} />
                 <TextInput
                   id='nhsAppTemplateName'
                   defaultValue={nhsAppTemplateName}
@@ -117,8 +116,8 @@ export const NhsAppTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.NHS_APP} />
-            <ChannelGuidance template={TemplateType.NHS_APP} />
+            <MessageFormatting template={'NHS_APP'} />
+            <ChannelGuidance template={'NHS_APP'} />
           </aside>
         </div>
       </NHSNotifyMain>
