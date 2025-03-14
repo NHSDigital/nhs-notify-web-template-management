@@ -3,10 +3,8 @@
 import { useActionState } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ChooseTemplate } from '@forms/ChooseTemplate/ChooseTemplate';
-import {
-  TemplateFormState,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 
@@ -32,7 +30,7 @@ jest.mock('react', () => {
 describe('Choose template page', () => {
   it('selects one radio button at a time', () => {
     const container = render(
-      <ChooseTemplate templateTypes={Object.values(TemplateType)} />
+      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
     );
     expect(container.asFragment()).toMatchSnapshot();
 
@@ -81,7 +79,7 @@ describe('Choose template page', () => {
     jest.mocked(useActionState).mockImplementation(mockUseActionState);
 
     const container = render(
-      <ChooseTemplate templateTypes={Object.values(TemplateType)} />
+      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
     );
     expect(container.asFragment()).toMatchSnapshot();
   });

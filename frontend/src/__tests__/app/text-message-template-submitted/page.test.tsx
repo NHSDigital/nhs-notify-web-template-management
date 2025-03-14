@@ -2,13 +2,10 @@
  * @jest-environment node
  */
 import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -23,11 +20,11 @@ describe('TextMessageTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
-    };
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValueOnce({
       ...template,

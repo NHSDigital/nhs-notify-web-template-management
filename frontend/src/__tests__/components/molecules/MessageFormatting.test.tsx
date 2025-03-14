@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const componentProps = {
-  template: TemplateType.SMS,
+  template: 'SMS' as const,
 };
 
 describe('MessageFormatting component', () => {
@@ -19,7 +18,7 @@ describe('MessageFormatting component', () => {
   it('renders component correctly with APP related formatting', () => {
     const appFormattingProps = {
       ...componentProps,
-      template: TemplateType.NHS_APP,
+      template: 'NHS_APP' as const,
     };
     render(<MessageFormatting {...appFormattingProps} />);
 
@@ -37,7 +36,7 @@ describe('MessageFormatting component', () => {
   it('renders component correctly with EMAIL related formatting', () => {
     const emailFormattingProps = {
       ...componentProps,
-      template: TemplateType.EMAIL,
+      template: 'EMAIL' as const,
     };
     render(<MessageFormatting {...emailFormattingProps} />);
 

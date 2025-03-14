@@ -1,5 +1,4 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -374,15 +373,15 @@ const nameYourTemplate = {
     },
   ],
   templateNameDetailsExample: {
-    [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.LETTER]: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
+    NHS_APP: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
+    EMAIL: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
+    SMS: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    LETTER: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
   },
 };
 
 const channelGuidance = {
-  [TemplateType.NHS_APP]: {
+  NHS_APP: {
     heading: 'More about NHS App messages',
     guidanceLinks: [
       {
@@ -399,7 +398,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.EMAIL]: {
+  EMAIL: {
     heading: 'More about emails',
     guidanceLinks: [
       {
@@ -416,7 +415,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.SMS]: {
+  SMS: {
     heading: 'More about text messages',
     guidanceLinks: [
       {
@@ -433,7 +432,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.LETTER]: {
+  LETTER: {
     heading: 'More about letters',
     guidanceLinks: [],
   },

@@ -3,19 +3,11 @@
  */
 import PreviewLetterTemplatePage from '@app/preview-letter-template/[templateId]/page';
 import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
-import {
-  type LetterTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import {
-  Language,
-  LetterType,
-  TemplateDTO,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -26,31 +18,31 @@ const getTemplateMock = jest.mocked(getTemplate);
 
 const templateDTO = {
   id: 'template-id',
-  templateType: TemplateType.LETTER,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-  letterType: LetterType.X0,
-  language: Language.EN,
+  letterType: 'x0',
+  language: 'en',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
       currentVersion: 'saoj867b789',
-      virusScanStatus: VirusScanStatus.PASSED,
+      virusScanStatus: 'PASSED',
     },
     testDataCsv: {
       fileName: 'test-data.csv',
       currentVersion: '897asiahv87',
-      virusScanStatus: VirusScanStatus.FAILED,
+      virusScanStatus: 'FAILED',
     },
   },
-} satisfies TemplateDTO;
+} satisfies TemplateDto;
 
 const letterTemplate: LetterTemplate = {
   ...templateDTO,
-  templateType: TemplateType.LETTER,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
 };
 
 describe('PreviewLetterTemplatePage', () => {
@@ -85,21 +77,15 @@ describe('PreviewLetterTemplatePage', () => {
   test.each([
     {
       description: 'an email',
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
+      ...EMAIL_TEMPLATE,
     },
     {
       description: 'an SMS',
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
+      ...SMS_TEMPLATE,
     },
     {
       description: 'an app message',
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
+      ...NHS_APP_TEMPLATE,
     },
     {
       description: 'a letter lacking language',
@@ -119,7 +105,7 @@ describe('PreviewLetterTemplatePage', () => {
         pdfTemplate: {
           fileName: undefined as unknown as string,
           currentVersion: 'uuid',
-          virusScanStatus: VirusScanStatus.FAILED,
+          virusScanStatus: 'FAILED' as const,
         },
       },
     },
