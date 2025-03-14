@@ -7,8 +7,7 @@ module "kms" {
   project        = var.project
   region         = var.region
 
-  name                 = "main"
-  deletion_window      = var.kms_deletion_window
-  alias                = "alias/${local.csi}"
-  iam_delegation       = true
+  name            = "main"
+  deletion_window = var.kms_deletion_window
+  alias           = "alias/${local.csi}"
 }
