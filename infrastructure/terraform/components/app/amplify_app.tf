@@ -35,7 +35,6 @@ resource "aws_amplify_app" "main" {
     NEXT_PUBLIC_ENABLE_LETTERS               = var.enable_letters
     NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT = 120
     NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS     = 900
-    NOTIFY_DOMAIN_NAME                       = local.root_domain_name
     NOTIFY_ENVIRONMENT                       = var.environment
     NOTIFY_GROUP                             = var.group
     USER_POOL_CLIENT_ID                      = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_CLIENT_ID"]
