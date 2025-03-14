@@ -46,6 +46,7 @@ describe('SubmitEmailTemplatePage', () => {
       <SubmitTemplate
         templateName={state.name}
         templateId={state.id}
+        templateType={state.templateType}
         goBackPath='preview-email-template'
         submitPath='email-template-submitted'
       />
