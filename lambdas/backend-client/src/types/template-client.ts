@@ -2,14 +2,25 @@ import { TemplateDto, CreateTemplate, UpdateTemplate } from './generated';
 import { Result } from './result';
 
 export interface ITemplateClient {
-  createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>>;
+  createTemplate(
+    template: CreateTemplate,
+    owner: string
+  ): Promise<Result<TemplateDto>>;
+
+  createLetterTemplate(
+    template: CreateTemplate,
+    owner: string,
+    pdf: File,
+    csv?: File
+  ): Promise<Result<TemplateDto>>;
 
   updateTemplate(
     templateId: string,
-    template: UpdateTemplate
+    template: UpdateTemplate,
+    owner: string
   ): Promise<Result<TemplateDto>>;
 
-  getTemplate(templateId: string): Promise<Result<TemplateDto>>;
+  getTemplate(templateId: string, owner: string): Promise<Result<TemplateDto>>;
 
-  listTemplates(): Promise<Result<TemplateDto[]>>;
+  listTemplates(owner: string): Promise<Result<TemplateDto[]>>;
 }

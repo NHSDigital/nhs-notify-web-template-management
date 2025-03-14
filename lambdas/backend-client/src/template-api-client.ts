@@ -12,19 +12,59 @@ import {
   catchAxiosError,
   createAxiosClient,
 } from './axios-client';
+import { LETTER_MULTIPART } from './schemas/constants';
 
 export class TemplateApiClient implements ITemplateClient {
   private readonly _client: AxiosRetryClient;
 
-  constructor(token: string) {
-    this._client = createAxiosClient(token);
+  constructor() {
+    this._client = createAxiosClient();
   }
 
-  async createTemplate(template: CreateTemplate): Promise<Result<TemplateDto>> {
+  async createTemplate(
+    template: CreateTemplate,
+    token: string
+  ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<Success>('/v1/template', template)
+      this._client.post<Success>('/v1/template', template, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      })
     );
 
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.template,
+    };
+  }
+
+  async createLetterTemplate(
+    template: CreateTemplate,
+    token: string,
+    pdf: File,
+    csv?: File
+  ): Promise<Result<TemplateDto>> {
+    const formData = new FormData();
+    formData.append(LETTER_MULTIPART.TEMPLATE.name, JSON.stringify(template));
+    formData.append(LETTER_MULTIPART.PDF.name, pdf);
+
+    if (csv) formData.append(LETTER_MULTIPART.CSV.name, csv);
+
+    const response = await catchAxiosError(
+      this._client.post<Success>('/v1/letter-template', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token,
+        },
+      })
+    );
     if (response.error) {
       return {
         error: response.error,
@@ -38,10 +78,13 @@ export class TemplateApiClient implements ITemplateClient {
 
   async updateTemplate(
     templateId: string,
-    template: UpdateTemplate
+    template: UpdateTemplate,
+    token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<Success>(`/v1/template/${templateId}`, template)
+      this._client.post<Success>(`/v1/template/${templateId}`, template, {
+        headers: { Authorization: token },
+      })
     );
 
     if (response.error) {
@@ -55,9 +98,14 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 
-  async getTemplate(templateId: string): Promise<Result<TemplateDto>> {
+  async getTemplate(
+    templateId: string,
+    token: string
+  ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.get<Success>(`/v1/template/${templateId}`)
+      this._client.get<Success>(`/v1/template/${templateId}`, {
+        headers: { Authorization: token },
+      })
     );
 
     if (response.error) {
@@ -71,9 +119,11 @@ export class TemplateApiClient implements ITemplateClient {
     };
   }
 
-  async listTemplates(): Promise<Result<TemplateDto[]>> {
+  async listTemplates(token: string): Promise<Result<TemplateDto[]>> {
     const response = await catchAxiosError(
-      this._client.get<SuccessList>('/v1/templates')
+      this._client.get<SuccessList>('/v1/templates', {
+        headers: { Authorization: token },
+      })
     );
 
     if (response.error) {
@@ -88,4 +138,4 @@ export class TemplateApiClient implements ITemplateClient {
   }
 }
 
-export const TemplateClient = (token: string) => new TemplateApiClient(token);
+export const templateClient = new TemplateApiClient();

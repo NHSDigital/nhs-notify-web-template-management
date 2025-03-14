@@ -1,6 +1,7 @@
 import {
   CreateTemplate,
   EmailProperties,
+  LetterFiles,
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
@@ -50,7 +51,8 @@ export type CreateLetterTemplate = CreateTemplate & LetterPropertiesWithType;
 export type NHSAppTemplate = TemplateDto & NhsAppPropertiesWithType;
 export type EmailTemplate = TemplateDto & EmailPropertiesWithType;
 export type SMSTemplate = TemplateDto & SmsPropertiesWithType;
-export type LetterTemplate = TemplateDto & LetterPropertiesWithType;
+export type LetterTemplate = TemplateDto &
+  LetterPropertiesWithType & { files: LetterFiles };
 
 export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 

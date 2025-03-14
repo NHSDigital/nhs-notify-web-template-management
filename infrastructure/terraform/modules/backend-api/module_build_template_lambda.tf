@@ -4,6 +4,7 @@ module "build_template_lambda" {
   source_code_dir = "${local.lambdas_source_code_dir}/backend-api"
   entrypoints = [
     local.backend_lambda_entrypoints.create_template,
+    local.backend_lambda_entrypoints.create_letter_template,
     local.backend_lambda_entrypoints.get_template,
     local.backend_lambda_entrypoints.update_template,
     local.backend_lambda_entrypoints.list_template,

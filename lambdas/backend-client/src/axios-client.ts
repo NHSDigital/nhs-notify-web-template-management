@@ -7,12 +7,9 @@ import { Failure } from './types/generated';
 const isApplicationFailure = (error: any): error is Failure =>
   'technicalMessage' in error;
 
-export const createAxiosClient = (token: string) => {
+export const createAxiosClient = () => {
   const client = axios.create({
     baseURL: process.env.API_BASE_URL,
-    headers: {
-      Authorization: token,
-    },
   });
   axiosRetry(client, {
     retries: 3,

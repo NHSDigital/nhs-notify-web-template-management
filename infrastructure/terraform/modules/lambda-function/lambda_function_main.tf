@@ -6,6 +6,7 @@ resource "aws_lambda_function" "main" {
   source_code_hash = var.source_code_hash
   handler          = var.handler
   runtime          = var.runtime
+  memory_size      = var.memory_size
 
   environment {
     variables = var.environment_variables

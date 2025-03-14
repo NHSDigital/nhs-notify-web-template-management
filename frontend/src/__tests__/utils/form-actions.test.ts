@@ -12,16 +12,14 @@ import {
   getTemplates,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
-import { mockDeep } from 'jest-mock-extended';
-import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
-const mockedTemplateClient = mockDeep<ITemplateClient>();
+const mockedTemplateClient = jest.mocked(templateClient);
 const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/template-api-client', () => ({
-  TemplateClient: () => mockedTemplateClient,
-}));
+jest.mock('nhs-notify-backend-client/src/template-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -53,7 +51,8 @@ describe('form-actions', () => {
     const response = await createTemplate(createTemplateInput);
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput
+      createTemplateInput,
+      'token'
     );
 
     expect(response).toEqual(responseData);
@@ -78,7 +77,8 @@ describe('form-actions', () => {
     );
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput
+      createTemplateInput,
+      'token'
     );
   });
 
@@ -126,7 +126,8 @@ describe('form-actions', () => {
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
-      updateTemplateInput
+      updateTemplateInput,
+      'token'
     );
 
     expect(response).toEqual(responseData);
@@ -156,7 +157,8 @@ describe('form-actions', () => {
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
-      updateTemplateInput
+      updateTemplateInput,
+      'token'
     );
   });
 
@@ -196,7 +198,10 @@ describe('form-actions', () => {
 
     const response = await getTemplate('id');
 
-    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith(
+      'id',
+      'token'
+    );
 
     expect(response).toEqual(responseData);
   });
@@ -212,7 +217,10 @@ describe('form-actions', () => {
 
     const response = await getTemplate('id');
 
-    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith(
+      'id',
+      'token'
+    );
 
     expect(response).toEqual(undefined);
   });
@@ -243,7 +251,7 @@ describe('form-actions', () => {
 
     const response = await getTemplates();
 
-    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith();
+    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token');
 
     expect(response).toEqual([responseData]);
   });

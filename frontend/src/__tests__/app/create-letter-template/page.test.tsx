@@ -3,8 +3,17 @@
  */
 import CreateLetterTemplatePage from '@app/create-letter-template/page';
 
+const OLD_ENV = { ...process.env };
+
 describe('CreateLetterTemplatePage', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'true';
+  });
+
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
 
   it('should render CreateLetterTemplatePage', async () => {
     const page = await CreateLetterTemplatePage();

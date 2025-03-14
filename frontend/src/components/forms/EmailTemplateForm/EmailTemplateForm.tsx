@@ -139,8 +139,8 @@ export const EmailTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={'EMAIL'} />
-            <ChannelGuidance template={'EMAIL'} />
+            <MessageFormatting template='EMAIL' />
+            <ChannelGuidance template='EMAIL' />
           </aside>
         </div>
       </NHSNotifyMain>

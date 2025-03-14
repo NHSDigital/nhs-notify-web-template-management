@@ -30,6 +30,7 @@ No requirements.
 | <a name="module_authorizer_lambda"></a> [authorizer\_lambda](#module\_authorizer\_lambda) | ../lambda-function | n/a |
 | <a name="module_build_template_client"></a> [build\_template\_client](#module\_build\_template\_client) | ../typescript-build-zip | n/a |
 | <a name="module_build_template_lambda"></a> [build\_template\_lambda](#module\_build\_template\_lambda) | ../typescript-build-zip | n/a |
+| <a name="module_create_letter_template_lambda"></a> [create\_letter\_template\_lambda](#module\_create\_letter\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |

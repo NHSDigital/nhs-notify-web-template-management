@@ -1,26 +1,24 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto } from 'nhs-notify-backend-client';
-import { handler } from '@backend-api/templates/api/list';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/list';
 
-jest.mock('@backend-api/templates/app/template-client');
+const setup = () => {
+  const templateClient = mock<ITemplateClient>();
 
-const listTemplatesMock = jest.spyOn(TemplateClient.prototype, 'listTemplates');
+  const handler = createHandler({ templateClient });
 
-const OLD_ENV = { ...process.env };
+  return { handler, mocks: { templateClient } };
+};
 
 describe('Template API - List', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    process.env.ENABLE_LETTERS_BACKEND = 'true';
-  });
-
-  afterAll(() => {
-    process.env = OLD_ENV;
   });
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
     });
@@ -35,11 +33,13 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(listTemplatesMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.listTemplates).not.toHaveBeenCalled();
   });
 
   test('should return error when listing templates fails', async () => {
-    listTemplatesMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -61,34 +61,12 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
-
-    expect(listTemplatesMock).toHaveBeenCalled();
-  });
-
-  test('creates template client with letter flag value', async () => {
-    process.env.ENABLE_LETTERS_BACKEND = 'false';
-
-    listTemplatesMock.mockResolvedValueOnce({
-      error: {
-        code: 500,
-        message: 'Internal server error',
-      },
-    });
-
-    await handler(
-      mock<APIGatewayProxyEvent>({
-        requestContext: { authorizer: { user: 'sub' } },
-        pathParameters: { templateId: '1' },
-      }),
-      mock<Context>(),
-      jest.fn()
-    );
-
-    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
   });
 
   test('should return template', async () => {
+    const { handler, mocks } = setup();
+
     const template: TemplateDto = {
       id: 'id',
       templateType: 'EMAIL',
@@ -100,7 +78,7 @@ describe('Template API - List', () => {
       templateStatus: 'NOT_YET_SUBMITTED',
     };
 
-    listTemplatesMock.mockResolvedValueOnce({
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
       data: [template],
     });
 
@@ -115,8 +93,6 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, templates: [template] }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', true);
-
-    expect(listTemplatesMock).toHaveBeenCalled();
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
   });
 });

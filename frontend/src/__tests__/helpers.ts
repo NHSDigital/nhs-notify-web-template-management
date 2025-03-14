@@ -57,6 +57,8 @@ export const LETTER_TEMPLATE: TemplateDto = {
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
+      currentVersion: '8ADED236B5AE',
+      virusScanStatus: 'PASSED',
     },
   },
   name: 'name',

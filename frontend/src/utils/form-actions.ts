@@ -8,7 +8,7 @@ import {
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 export async function createTemplate(
   template: CreateTemplate
@@ -19,7 +19,7 @@ export async function createTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await TemplateClient(token).createTemplate(template);
+  const { data, error } = await templateClient.createTemplate(template, token);
 
   if (error) {
     logger.error('Failed to create template', { error });
@@ -38,9 +38,10 @@ export async function saveTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await TemplateClient(token).updateTemplate(
+  const { data, error } = await templateClient.updateTemplate(
     template.id,
-    template
+    template,
+    token
   );
 
   if (error) {
@@ -60,7 +61,7 @@ export async function getTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await TemplateClient(token).getTemplate(templateId);
+  const { data, error } = await templateClient.getTemplate(templateId, token);
 
   if (error) {
     logger.error('Failed to get template', { error });
@@ -76,7 +77,7 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await TemplateClient(token).listTemplates();
+  const { data, error } = await templateClient.listTemplates(token);
 
   if (error) {
     logger.error('Failed to get templates', { error });

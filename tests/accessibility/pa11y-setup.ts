@@ -29,6 +29,7 @@ const setup = async () => {
   );
 
   const templateId = randomUUID();
+  const now = new Date().toISOString();
 
   await ddbDocClient.send(
     new PutCommand({
@@ -39,8 +40,8 @@ const setup = async () => {
         id: templateId,
         letterType: 'x0',
         language: 'en',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
         name: 'pa11y_letter',
         files: {
           pdfTemplate: {
