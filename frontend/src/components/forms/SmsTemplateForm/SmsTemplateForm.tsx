@@ -29,6 +29,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
+import PageTitle from '@hooks/page-title.hook';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
@@ -50,6 +51,7 @@ export const SmsTemplateForm: FC<
   const editMode = 'id' in initialState;
 
   const {
+    pageTitle,
     backLinkText,
     buttonText,
     errorHeading,
@@ -62,6 +64,8 @@ export const SmsTemplateForm: FC<
     templateNameHintText,
     templateNameLabelText,
   } = content.components.templateFormSms;
+
+  PageTitle(pageTitle);
 
   return (
     <>

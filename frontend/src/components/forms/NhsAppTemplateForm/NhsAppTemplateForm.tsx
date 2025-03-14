@@ -27,11 +27,13 @@ import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import PageTitle from '@hooks/page-title.hook';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
 > = ({ initialState }) => {
   const {
+    pageTitle,
     pageHeadingSuffix,
     errorHeading,
     buttonText,
@@ -41,6 +43,8 @@ export const NhsAppTemplateForm: FC<
     templateNameHintText,
     backLinkText,
   } = content.components.templateFormNhsApp;
+
+  PageTitle(pageTitle);
 
   const [state, action] = useActionState(processFormActions, initialState);
 

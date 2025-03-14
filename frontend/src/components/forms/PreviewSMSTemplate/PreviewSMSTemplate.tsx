@@ -15,14 +15,17 @@ import { renderSMSMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { previewSmsTemplateAction } from './server-actions';
+import PageTitle from '@hooks/page-title.hook';
 
 export function PreviewSMSTemplate({
   initialState,
 }: Readonly<PageComponentProps<SMSTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { sectionHeading, form, backLinkText } =
+  const { sectionHeading, form, backLinkText, pageTitle } =
     content.components.previewSMSTemplate;
+
+  PageTitle(pageTitle);
 
   const [state, action] = useActionState(
     previewSmsTemplateAction,

@@ -21,6 +21,7 @@ const SubmitNhsAppTemplatePage = async (props: PageProps) => {
     <SubmitTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      templateType={validatedTemplate.templateType}
       goBackPath='preview-nhs-app-template'
       submitPath='nhs-app-template-submitted'
     />

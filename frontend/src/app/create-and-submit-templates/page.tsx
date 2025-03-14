@@ -3,10 +3,12 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
+import PageTitle from '@hooks/page-title.hook';
 
 const homePageContent = content.pages.homePage;
 
 export default function HomePage() {
+  PageTitle(homePageContent.pageTitle);
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>

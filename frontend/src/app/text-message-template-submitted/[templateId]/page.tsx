@@ -17,9 +17,15 @@ const SmsTemplateSubmittedPage = async (props: TemplateSubmittedPageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const { id, name } = validatedTemplate;
+  const { id, name, templateType } = validatedTemplate;
 
-  return <TemplateSubmitted templateId={id} templateName={name} />;
+  return (
+    <TemplateSubmitted
+      templateId={id}
+      templateName={name}
+      templateType={templateType}
+    />
+  );
 };
 
 export default SmsTemplateSubmittedPage;

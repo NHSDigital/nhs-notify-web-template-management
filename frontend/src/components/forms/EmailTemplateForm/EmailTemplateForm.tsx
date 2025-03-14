@@ -26,11 +26,13 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import PageTitle from '@hooks/page-title.hook';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
 > = ({ initialState }) => {
   const {
+    pageTitle,
     pageHeadingSuffix,
     errorHeading,
     buttonText,
@@ -40,6 +42,8 @@ export const EmailTemplateForm: FC<
     templateNameHintText,
     backLinkText,
   } = content.components.templateFormEmail;
+
+  PageTitle(pageTitle);
 
   const [state, action] = useActionState(processFormActions, initialState);
 

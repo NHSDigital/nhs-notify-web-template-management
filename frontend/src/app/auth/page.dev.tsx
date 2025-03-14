@@ -9,6 +9,7 @@ import '@aws-amplify/ui-react/styles.css';
 import path from 'path';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import PageTitle from '@hooks/page-title.hook';
 
 const useRedirectPath = () => {
   const searchParams = useSearchParams();
@@ -43,6 +44,7 @@ const SignIn = () => {
 };
 
 export default function Page() {
+  PageTitle('Sign in - Create and submit templates - NHS Notify');
   return (
     <NHSNotifyMain>
       <Suspense fallback={<p>Loading...</p>}>
