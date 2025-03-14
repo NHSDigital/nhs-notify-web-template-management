@@ -2,7 +2,7 @@ name: "Normalize branch name"
 description: "Normalize branch name"
 outputs:
   normalized_branch_name:
-    description: 14 character branch identifier (0000-thebranch)
+    description: 10 character branch identifier (0000-branch)
     value: ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
 runs:
   using: "composite"
@@ -14,5 +14,5 @@ runs:
         stripped=$(echo $branch | sed -e 's/[^a-zA-Z0-9-]//g' | tr '[:upper:]' '[:lower:]')
         starting_from_jira_ref=$(echo $stripped | sed -n 's/.*\([0-9]\{4,\}.*\)/\1/p')
         with_fallback=${starting_from_jira_ref:-$stripped}
-        chopped=$(echo $with_fallback | head -c 14)
+        chopped=$(echo $with_fallback | head -c 10)
         echo "normalized_branch_name=$chopped" >> $GITHUB_OUTPUT
