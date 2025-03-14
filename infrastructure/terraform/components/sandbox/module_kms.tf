@@ -10,37 +10,5 @@ module "kms" {
   name                 = "main"
   deletion_window      = var.kms_deletion_window
   alias                = "alias/${local.csi}"
-  key_policy_documents = [data.aws_iam_policy_document.kms.json]
   iam_delegation       = true
-}
-
-data "aws_iam_policy_document" "kms" {
-  # '*' resource scope is permitted in access policies as as the resource is itself
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
-
-  statement {
-    sid    = "AllowCloudWatchEncrypt"
-    effect = "Allow"
-
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "logs.${var.region}.amazonaws.com",
-        "sns.amazonaws.com",
-      ]
-    }
-
-    actions = [
-      "kms:Encrypt*",
-      "kms:Decrypt*",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:Describe*"
-    ]
-
-    resources = [
-      "*",
-    ]
-  }
 }

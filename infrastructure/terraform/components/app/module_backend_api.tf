@@ -9,7 +9,6 @@ module "backend_api" {
   region                = var.region
   group                 = var.group
   csi                   = local.csi
-  csi_global            = local.csi_global
   log_retention_in_days = var.log_retention_in_days
 
   shared_kms_key_arn = module.kms.key_arn
