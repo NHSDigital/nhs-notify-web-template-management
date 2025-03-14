@@ -1,3 +1,3 @@
 locals {
-  csi = "${var.csi}-ote-${var.id}"
+  csi = "${var.source_csi}-ote-${var.id}"
 }
