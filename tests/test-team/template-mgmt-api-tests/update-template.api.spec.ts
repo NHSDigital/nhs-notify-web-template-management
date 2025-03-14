@@ -129,7 +129,7 @@ test.describe('POST /v1/template/:templateId', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });
@@ -172,7 +172,7 @@ test.describe('POST /v1/template/:templateId', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });
@@ -238,7 +238,8 @@ test.describe('POST /v1/template/:templateId', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        templateType: 'Cannot update LETTER template',
+        templateType:
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });

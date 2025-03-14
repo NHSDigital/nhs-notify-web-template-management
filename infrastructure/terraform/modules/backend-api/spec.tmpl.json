@@ -508,7 +508,7 @@
           }
         }
       },
-      "LetterProperties": {
+      "CreateLetterProperties": {
         "type": "object",
         "required": [
           "letterType",
@@ -520,11 +520,26 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
-          },
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
           }
         }
+      },
+      "LetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateLetterProperties"
+          },
+          {
+            "type": "object",
+            "required": [
+              "files"
+            ],
+            "properties": {
+              "files": {
+                "$ref": "#/components/schemas/LetterFiles"
+              }
+            }
+          }
+        ]
       },
       "BaseTemplate": {
         "type": "object",
@@ -559,7 +574,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/LetterProperties"
+                "$ref": "#/components/schemas/CreateLetterProperties"
               }
             ]
           }
@@ -594,7 +609,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/LetterProperties"
+                "$ref": "#/components/schemas/CreateLetterProperties"
               }
             ]
           }

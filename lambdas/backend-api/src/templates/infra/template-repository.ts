@@ -1,6 +1,7 @@
 import {
   EmailProperties,
   ErrorCase,
+  LetterFiles,
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
@@ -21,6 +22,10 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
+
+type WithAttachments<T> = T extends { templateType: 'LETTER' }
+  ? T & { files: LetterFiles }
+  : T;
 
 const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
   message: null,
@@ -80,7 +85,7 @@ export class TemplateRepository {
   }
 
   async create(
-    template: ValidatedCreateTemplate,
+    template: WithAttachments<ValidatedCreateTemplate>,
     owner: string,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -111,7 +116,7 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: ValidatedUpdateTemplate,
+    template: WithAttachments<ValidatedUpdateTemplate>,
     owner: string,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {

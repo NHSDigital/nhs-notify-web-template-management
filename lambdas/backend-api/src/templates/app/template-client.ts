@@ -10,7 +10,8 @@ import {
   isTemplateDtoValid,
   LetterFiles,
   TemplateStatus,
-  $CreateTemplateSchema,
+  $CreateNonLetter,
+  $UpdateNonLetter,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -35,12 +36,7 @@ export class TemplateClient implements ITemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ template });
 
-    const validationSchema = $CreateTemplateSchema.refine(
-      ({ templateType }) => templateType !== 'LETTER',
-      { message: 'Cannot create LETTER template', path: ['templateType'] }
-    );
-
-    const validationResult = await validate(validationSchema, template);
+    const validationResult = await validate($CreateNonLetter, template);
 
     if (validationResult.error) {
       log.error('Request failed validation', {
@@ -195,15 +191,10 @@ export class TemplateClient implements ITemplateClient {
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
-    const validationSchema = $UpdateTemplateSchema.refine(
-      ({ templateType }) => templateType !== 'LETTER',
-      { message: 'Cannot update LETTER template', path: ['templateType'] }
-    );
-
     return this.update(
       templateId,
       template,
-      validationSchema,
+      $UpdateNonLetter,
       owner,
       expectedStatus
     );

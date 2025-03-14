@@ -79,7 +79,8 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType: 'Cannot create LETTER template',
+            templateType:
+              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
           },
         }),
       });
@@ -237,7 +238,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate = {
+      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -490,7 +491,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate = {
+      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -589,7 +590,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate = {
+      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -682,7 +683,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate = {
+      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -834,7 +835,8 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType: 'Cannot update LETTER template',
+            templateType:
+              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
           },
         }),
       });
