@@ -23,7 +23,6 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_backend_api"></a> [backend\_api](#module\_backend\_api) | ../../modules/backend-api | n/a |
-| <a name="module_kms"></a> [kms](#module\_kms) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms | v1.0.8 |
 ## Outputs
 
 | Name | Description |
