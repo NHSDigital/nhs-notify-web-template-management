@@ -1,5 +1,5 @@
 locals {
-  csi        = "${var.csi}-${var.component}"
+  csi = "${var.csi}-${var.component}"
 
   lambdas_source_code_dir = abspath("${path.module}/../../../../lambdas")
 
@@ -22,4 +22,6 @@ locals {
     list_template          = "src/templates/list.ts"
     template_client        = "src/index.ts"
   }
+
+  dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
 }

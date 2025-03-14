@@ -72,7 +72,13 @@ variable "enable_letters" {
   description = "Enable letters feature flag"
 }
 
-variable "shared_kms_key_arn" {
-    type        = string
-  description = "Shared KMS key ARN"
+variable "kms_key_arn" {
+  type        = string
+  description = "KMS Key ARN"
+}
+
+variable "dynamodb_kms_key_arn" {
+  type        = string
+  description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
+  default     = ""
 }
