@@ -44,6 +44,7 @@ describe('NhsAppTemplateSubmittedPage', () => {
       <TemplateSubmitted
         templateId={template.id}
         templateName={template.name}
+        templateType={template.templateType}
       />
     );
   });

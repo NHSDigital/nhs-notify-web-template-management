@@ -23,6 +23,7 @@ const SubmitEmailTemplatePage = async (props: PageProps) => {
     <SubmitTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      templateType={validatedTemplate.templateType}
       goBackPath='preview-email-template'
       submitPath='email-template-submitted'
     />

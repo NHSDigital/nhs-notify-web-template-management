@@ -6,6 +6,7 @@ import {
   SmsProperties,
   TemplateDto,
 } from 'nhs-notify-backend-client';
+import { TemplateType } from 'nhs-notify-backend-client';
 
 export type FormId =
   | 'choose-a-template-type'
@@ -73,6 +74,7 @@ export type PageComponentProps<T> = {
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
   templateId: string;
+  templateType: TemplateType;
   goBackPath: string;
   submitPath: string;
 };

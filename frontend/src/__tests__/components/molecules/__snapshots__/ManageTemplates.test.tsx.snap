@@ -143,6 +143,11 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                   href="/copy-template/1"
                   id="copy-template-link-0"
                 >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Template 1
+                  </span>
                   Copy
                 </a>
               </p>
@@ -152,6 +157,11 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 <a
                   href="/delete-template/1"
                 >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Template 1
+                  </span>
                   Delete
                 </a>
               </p>
@@ -235,6 +245,11 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                   href="/copy-template/2"
                   id="copy-template-link-1"
                 >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Template 2
+                  </span>
                   Copy
                 </a>
               </p>
@@ -463,6 +478,11 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                   href="/copy-template/1"
                   id="copy-template-link-0"
                 >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Template 1
+                  </span>
                   Copy
                 </a>
               </p>
@@ -546,6 +566,11 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                   href="/copy-template/2"
                   id="copy-template-link-1"
                 >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Template 2
+                  </span>
                   Copy
                 </a>
               </p>

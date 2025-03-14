@@ -9,6 +9,7 @@ import content from '@content/content';
 import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
+import PageTitle from '@hooks/page-title.hook';
 import { TemplateType } from 'nhs-notify-backend-client';
 
 export const ChooseTemplate = ({
@@ -24,6 +25,7 @@ export const ChooseTemplate = ({
   }));
 
   const {
+    pageTitle,
     pageHeading,
     errorHeading,
     buttonText,
@@ -32,6 +34,8 @@ export const ChooseTemplate = ({
     learnMoreText,
     backLinkText,
   } = content.components.chooseTemplate;
+
+  PageTitle(pageTitle);
 
   return (
     <>

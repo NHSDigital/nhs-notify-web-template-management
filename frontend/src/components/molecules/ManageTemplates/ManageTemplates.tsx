@@ -99,6 +99,9 @@ export function ManageTemplates({
                         href={`/copy-template/${template.id}`}
                         id={`copy-template-link-${index}`}
                       >
+                        <span className='nhsuk-u-visually-hidden'>
+                          {template.name}
+                        </span>
                         {manageTemplatesContent.tableHeadings.action.copy}
                       </Link>
                     </p>
@@ -106,6 +109,9 @@ export function ManageTemplates({
                   {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link href={`/delete-template/${template.id}`}>
+                        <span className='nhsuk-u-visually-hidden'>
+                          {template.name}
+                        </span>
                         {manageTemplatesContent.tableHeadings.action.delete}
                       </Link>
                     </p>

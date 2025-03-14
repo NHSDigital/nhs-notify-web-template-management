@@ -1,5 +1,9 @@
 import { getBasePath } from '@utils/get-base-path';
 
+const generatePageTitle = (title: string): string => {
+  return `${title} - NHS Notify`;
+};
+
 const header = {
   serviceName: 'Notify',
   links: {
@@ -169,6 +173,7 @@ const mainLayout = {
 const backToAllTemplates = 'Back to all templates';
 
 const homePage = {
+  pageTitle: generatePageTitle('Create and submit templates'),
   pageHeading: 'Create and submit a template to NHS Notify',
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
@@ -215,6 +220,7 @@ const manageTemplates = {
 };
 
 const previewEmailTemplate = {
+  pageTitle: generatePageTitle('Preview email template'),
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -243,6 +249,7 @@ const previewLetterTemplate = {
 };
 
 const previewNHSAppTemplate = {
+  pageTitle: generatePageTitle('Preview NHS App message template'),
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -257,6 +264,7 @@ const previewNHSAppTemplate = {
 };
 
 const previewSMSTemplate = {
+  pageTitle: generatePageTitle('Preview text message template'),
   sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
@@ -299,6 +307,12 @@ const error404 = {
 };
 
 const submitTemplate = {
+  pageTitle: {
+    NHS_APP: generatePageTitle('Submit NHS App template'),
+    EMAIL: generatePageTitle('Submit email template'),
+    SMS: generatePageTitle('Submit text template'),
+    LETTER: generatePageTitle('Submit letter template'),
+  },
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
   warningCalloutText:
@@ -328,6 +342,7 @@ const copyTemplate = {
 };
 
 const chooseTemplate = {
+  pageTitle: generatePageTitle('Choose a template type'),
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
@@ -424,6 +439,7 @@ const channelGuidance = {
 };
 
 const templateFormNhsApp = {
+  pageTitle: generatePageTitle('Create NHS App message template'),
   pageHeadingSuffix: 'NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
@@ -435,6 +451,7 @@ const templateFormNhsApp = {
 };
 
 const templateFormEmail = {
+  pageTitle: generatePageTitle('Create email template'),
   pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
@@ -446,6 +463,7 @@ const templateFormEmail = {
 };
 
 const templateFormSms = {
+  pageTitle: generatePageTitle('Create text message template'),
   pageHeadingSuffix: 'text message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
@@ -461,6 +479,12 @@ const templateFormSms = {
 };
 
 const templateSubmitted = {
+  pageTitle: {
+    NHS_APP: generatePageTitle('NHS App template submitted'),
+    EMAIL: generatePageTitle('Email template submitted'),
+    SMS: generatePageTitle('Text template submitted'),
+    LETTER: generatePageTitle('Letter template submitted'),
+  },
   pageHeading: 'Template submitted',
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',

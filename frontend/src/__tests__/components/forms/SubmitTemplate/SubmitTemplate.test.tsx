@@ -24,6 +24,7 @@ describe('SubmitTemplate component', () => {
       <SubmitTemplate
         templateId='template-id'
         templateName='template-name'
+        templateType='SMS'
         goBackPath='example'
         submitPath='example-submit'
       />
