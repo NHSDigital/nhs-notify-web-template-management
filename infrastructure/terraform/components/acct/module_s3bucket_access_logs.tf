@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      module.s3bucket_lambda_artefacts.arn,
+      module.s3bucket_access_logs.arn,
     ]
 
     principals {
@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "s3bucket_access_logs" {
     ]
 
     resources = [
-      "${module.s3bucket_lambda_artefacts.arn}/*",
+      "${module.s3bucket_access_logs.arn}/*",
     ]
 
     principals {
