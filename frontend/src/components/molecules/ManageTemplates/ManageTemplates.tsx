@@ -9,25 +9,24 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
-  TemplateStatus,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO, TemplateType } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const generateViewTemplateLink = (template: TemplateDTO): string => {
-  if (template.templateStatus === TemplateStatus.SUBMITTED) {
+const generateViewTemplateLink = (template: TemplateDto): string => {
+  if (template.templateStatus === 'SUBMITTED') {
     return `/${viewSubmittedTemplatePages(template.templateType)}/${template.id}`;
   }
 
   return `/${previewTemplatePages(template.templateType)}/${template.id}`;
 };
 
-const typeDisplayMappings = (template: TemplateDTO): string =>
-  template.templateType === TemplateType.LETTER &&
+const typeDisplayMappings = (template: TemplateDto): string =>
+  template.templateType === 'LETTER' &&
   'letterType' in template &&
   template.letterType &&
   'language' in template &&
@@ -38,7 +37,7 @@ const typeDisplayMappings = (template: TemplateDTO): string =>
 export function ManageTemplates({
   templateList,
 }: {
-  templateList: TemplateDTO[];
+  templateList: TemplateDto[];
 }) {
   return (
     <div className='nhsuk-grid-row'>
@@ -80,7 +79,7 @@ export function ManageTemplates({
                 <Table.Cell>
                   <Tag
                     color={
-                      template.templateStatus === TemplateStatus.SUBMITTED
+                      template.templateStatus === 'SUBMITTED'
                         ? 'grey'
                         : undefined
                     }
@@ -94,7 +93,7 @@ export function ManageTemplates({
                   {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  {template.templateType === TemplateType.LETTER ? null : (
+                  {template.templateType === 'LETTER' ? null : (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link
                         href={`/copy-template/${template.id}`}
@@ -104,8 +103,7 @@ export function ManageTemplates({
                       </Link>
                     </p>
                   )}
-                  {template.templateStatus ===
-                  TemplateStatus.NOT_YET_SUBMITTED ? (
+                  {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
                     <p className='nhsuk-u-margin-bottom-2'>
                       <Link href={`/delete-template/${template.id}`}>
                         {manageTemplatesContent.tableHeadings.action.delete}

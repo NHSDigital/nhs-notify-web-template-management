@@ -1,59 +1,53 @@
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
+export const templateTypeDisplayMappings: Record<string, string> = {
+  NHS_APP: 'NHS App message',
+  SMS: 'Text message (SMS)',
+  EMAIL: 'Email',
+  LETTER: 'Letter',
+};
 
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-  LETTER = 'LETTER',
-}
-
-export const templateTypeDisplayMappings = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'NHS App message',
-    [TemplateType.SMS]: 'Text message (SMS)',
-    [TemplateType.EMAIL]: 'Email',
-    [TemplateType.LETTER]: 'Letter',
-  })[type];
-
-export const templateTypeToUrlTextMappings = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'nhs-app',
-    [TemplateType.SMS]: 'text-message',
-    [TemplateType.EMAIL]: 'email',
-    [TemplateType.LETTER]: 'letter',
-  })[type];
-
-export enum TemplateStatus {
-  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
-  SUBMITTED = 'SUBMITTED',
-}
+export const templateTypeToUrlTextMappings: Record<string, string> = {
+  NHS_APP: 'nhs-app',
+  SMS: 'text-message',
+  EMAIL: 'email',
+  LETTER: 'letter',
+};
 
 type File = {
   fileName: string;
   currentVersion?: string;
-  virusScanStatus: VirusScanStatus;
+  virusScanStatus: string;
 };
 
-export type Template = {
-  createdAt: string;
-  updatedAt: string;
-  id: string;
-  version: number;
-  name: string;
-  message: string;
+type TypeSpecificProperties = {
+  message?: string;
   subject?: string;
-  templateType: TemplateType;
-  templateStatus: TemplateStatus;
-  letterType?: LetterType;
-  language?: Language;
+  letterType?: string;
+  language?: string;
   files?: {
     pdfTemplate?: File;
     testDataCsv: File;
     proofs?: File[];
   };
+};
+
+export type CreateTemplatePayload = TypeSpecificProperties & {
+  name: string;
+  templateType: string;
+};
+
+export type UpdateTemplatePayload = TypeSpecificProperties & {
+  name: string;
+  templateType: string;
+  templateStatus: string;
+};
+
+export type Template = TypeSpecificProperties & {
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  version: number;
+  name: string;
+  templateType: string;
+  templateStatus: string;
   owner: string;
 };

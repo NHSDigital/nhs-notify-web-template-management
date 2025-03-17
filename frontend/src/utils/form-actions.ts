@@ -2,16 +2,17 @@
 
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import {
-  Template,
-  isTemplateValid,
-} from 'nhs-notify-web-template-management-utils';
-import { CreateTemplate, TemplateDTO } from 'nhs-notify-backend-client';
+  CreateTemplate,
+  isTemplateDtoValid,
+  TemplateDto,
+  ValidatedTemplateDto,
+} from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 export async function createTemplate(
   template: CreateTemplate
-): Promise<TemplateDTO> {
+): Promise<TemplateDto> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -28,7 +29,9 @@ export async function createTemplate(
   return data;
 }
 
-export async function saveTemplate(template: Template): Promise<TemplateDTO> {
+export async function saveTemplate(
+  template: TemplateDto
+): Promise<TemplateDto> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -50,7 +53,7 @@ export async function saveTemplate(template: Template): Promise<TemplateDTO> {
 
 export async function getTemplate(
   templateId: string
-): Promise<TemplateDTO | undefined> {
+): Promise<TemplateDto | undefined> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -66,7 +69,7 @@ export async function getTemplate(
   return data;
 }
 
-export async function getTemplates(): Promise<TemplateDTO[]> {
+export async function getTemplates(): Promise<TemplateDto[]> {
   const token = await getAccessTokenServer();
 
   if (!token) {
@@ -81,8 +84,10 @@ export async function getTemplates(): Promise<TemplateDTO[]> {
   }
 
   const sortedData = data
-    .map((template) => isTemplateValid(template))
-    .filter((template): template is TemplateDTO => template !== undefined)
+    .map((template) => isTemplateDtoValid(template))
+    .filter(
+      (template): template is ValidatedTemplateDto => template !== undefined
+    )
     .sort((a, b) => {
       const aCreatedAt = a.createdAt;
       const bCreatedAt = b.createdAt;

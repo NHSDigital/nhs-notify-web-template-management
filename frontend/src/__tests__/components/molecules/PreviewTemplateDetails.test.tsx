@@ -1,14 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
-import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import {
-  Language,
-  LetterType,
-  VirusScanStatus,
-} from 'nhs-notify-backend-client';
 
 describe('PreviewTemplateDetails component', () => {
   it('matches not yet submitted snapshot', () => {
@@ -18,8 +9,10 @@ describe('PreviewTemplateDetails component', () => {
           id: 'template-id',
           name: 'Example template',
           message: 'app message message',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          templateType: TemplateType.NHS_APP,
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'NHS_APP',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[
@@ -41,9 +34,11 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
-          templateType: TemplateType.SMS,
+          templateStatus: 'SUBMITTED',
+          templateType: 'SMS',
           message: 'text message message',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[
@@ -65,22 +60,24 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
-          templateType: TemplateType.LETTER,
-          letterType: LetterType.X0,
-          language: Language.FR,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'fr',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
             testDataCsv: {
               fileName: 'file.csv',
               currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         additionalMetaFields={[
           {
@@ -102,17 +99,19 @@ describe('PreviewTemplateDetails component', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
-          templateStatus: TemplateStatus.SUBMITTED,
-          templateType: TemplateType.LETTER,
-          letterType: LetterType.X0,
-          language: Language.FR,
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'fr',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
-              virusScanStatus: VirusScanStatus.PENDING,
+              virusScanStatus: 'PENDING',
             },
           },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
       />
     );
@@ -127,8 +126,10 @@ describe('PreviewTemplateDetails component', () => {
           id: 'template-id',
           name: 'Example template',
           message: 'app message message',
-          templateType: TemplateType.NHS_APP,
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+          templateType: 'NHS_APP',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
         }}
         templateTypeText='Channel template'
         contentPreview={[

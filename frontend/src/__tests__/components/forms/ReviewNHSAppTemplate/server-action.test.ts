@@ -4,8 +4,6 @@ import { getMockFormData } from '@testhelpers';
 import {
   NHSAppTemplate,
   TemplateFormState,
-  TemplateType,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');
@@ -15,11 +13,13 @@ const redirectMock = jest.mocked(redirect);
 describe('previewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
-    templateType: TemplateType.NHS_APP,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'NHS_APP',
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Example name',
     message: 'Example message',
     validationError: undefined,
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
   };
 
   beforeEach(() => jest.clearAllMocks());
@@ -30,11 +30,7 @@ describe('previewNhsAppTemplateAction', () => {
     const newState = previewNhsAppTemplateAction(currentState, formData);
 
     expect(newState).toEqual({
-      id: 'template-id',
-      templateType: 'NHS_APP',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      name: 'Example name',
-      message: 'Example message',
+      ...currentState,
       validationError: {
         fieldErrors: {
           previewNHSAppTemplateAction: ['Select an option'],

@@ -1,15 +1,9 @@
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
-import {
-  EmailTemplate,
-  Draft,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { CreateEmailTemplate } from 'nhs-notify-web-template-management-utils';
 
 const CreateEmailTemplatePage = async () => {
-  const initialState: Draft<EmailTemplate> = {
-    templateType: TemplateType.EMAIL,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  const initialState: CreateEmailTemplate = {
+    templateType: 'EMAIL',
     name: '',
     subject: '',
     message: '',

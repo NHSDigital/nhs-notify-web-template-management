@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { TemplateType } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
@@ -29,7 +28,7 @@ function createTemplates(owner: string) {
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
       owner,
       name: 'no-email-template-type-template-name',
     }),

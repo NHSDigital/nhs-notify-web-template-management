@@ -1,5 +1,5 @@
 import {
-  Files,
+  LetterFiles,
   Language,
   LetterType,
   TemplateStatus,
@@ -19,5 +19,5 @@ export type DatabaseTemplate = {
   updatedAt: string;
   letterType?: LetterType;
   language?: Language;
-  files?: Files;
+  files?: LetterFiles;
 };
