@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "aws_backup_errors" {
   name          = "${local.csi}-aws-backup-errors"
-  description = "Forwards AWS Backup state changes to Custom Event Bus in Observability Account"
+  description = "Forward AWS Backup state changes to Custom Event Bus in Observability Account"
 
   event_pattern = jsonencode({
     source      = ["aws.backup"],
