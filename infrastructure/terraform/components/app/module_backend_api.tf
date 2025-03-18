@@ -8,6 +8,7 @@ module "backend_api" {
   aws_account_id        = var.aws_account_id
   region                = var.region
   group                 = var.group
+  component             = var.component
   csi                   = local.csi
   log_retention_in_days = var.log_retention_in_days
   kms_key_arn           = module.kms.key_arn
