@@ -1,19 +1,19 @@
-module "lambda_get_object_tags" {
+module "lambda_get_s3_object_tags" {
   source      = "../lambda-function"
   description = "Get S3 Object Tags"
 
-  function_name    = "${local.csi}-get-object-tags"
-  filename         = module.build_get_object_tags_lambda.zips["src/get-object-tag.ts"].path
-  source_code_hash = module.build_get_object_tags_lambda.zips["src/get-object-tag.ts"].base64sha256 // todo: create this lambda
+  function_name    = "${local.csi}-get-s3-object-tags"
+  filename         = module.build_get_object_tags_lambda.zips["src/get-s3-object-tags.ts"].path
+  source_code_hash = module.build_get_object_tags_lambda.zips["src/get-s3-object-tags.ts"].base64sha256 // todo: create this lambda
   runtime          = "nodejs20.x"
-  handler          = "get-object-tags.handler"
+  handler          = "get-s3-object-tags.handler"
 
   log_retention_in_days = var.log_retention_in_days
 
-  execution_role_policy_document = data.aws_iam_policy_document.get_template_lambda_policy.json
+  execution_role_policy_document = data.aws_iam_policy_document.get_s3_object_tags.json
 }
 
-data "aws_iam_policy_document" "get_template_lambda_policy" {
+data "aws_iam_policy_document" "get_s3_object_tags" {
   statement {
     sid    = "AllowSQS"
     effect = "Allow"

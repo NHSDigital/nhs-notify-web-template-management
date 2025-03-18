@@ -5,7 +5,7 @@ resource "aws_pipes_pipe" "tags_added" {
 
   source     = module.sqs_tags_added.sqs_queue_arn
   target     = var.target_event_bus_arn
-  enrichment = module.lambda_get_object_tags.function_arn
+  enrichment = module.lambda_get_s3_object_tags.function_arn
 
   target_parameters {
     eventbridge_event_bus_parameters {
@@ -14,22 +14,74 @@ resource "aws_pipes_pipe" "tags_added" {
       resources   = [var.source_bucket.arn]
     }
   }
+}
 
-  # unsupported apparently
-  # kms_key_identifier = var.kms_key_arn
+resource "aws_iam_role" "pipe" {
+  name               = "${local.csi}-pipe"
+  description        = "Role used by Pipes enrich S3 tagging events"
+  assume_role_policy = data.aws_iam_policy_document.pipe_trust_policy.json
+}
 
-  # do we need this?
-  log_configuration {
-    include_execution_data = ["ALL"]
-    level                  = "INFO"
-    cloudwatch_logs_log_destination {
-      log_group_arn = aws_cloudwatch_log_group.pipe.arn
+resource "aws_iam_role_policy" "pipe" {
+  role   = aws_iam_role.pipe.id
+  policy = data.aws_iam_policy_document.pipe.json
+}
+
+data "aws_iam_policy_document" "pipe_trust_policy" {
+  version = "2012-10-17"
+
+  statement {
+    sid     = "PipesAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+
+      identifiers = ["pipes.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.aws_account_id]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_pipes_pipe.tags_added.arn]
     }
   }
 }
 
-resource "aws_cloudwatch_log_group" "pipe" {
-  name              = "/aws/pipes/${local.csi}-tags-added"
-  retention_in_days = var.log_retention_in_days
-  kms_key_id        = var.kms_key_arn
+data "aws_iam_policy_document" "pipe" {
+  version = "2012-10-17"
+
+  statement {
+    sid    = "AllowSqsSource"
+    effect = "Allow"
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+    ]
+    resources = [aws_sqs_queue.tags_added.arn]
+  }
+
+  statement {
+    sid       = "AllowLambdaEnrich"
+    effect    = "Allow"
+    actions   = ["lambda:InvokeFunction"]
+    resources = [module.lambda_get_object_tags.function_arn]
+  }
+
+  statement {
+    sid     = "AllowEventBusTarget"
+    effect  = "Allow"
+    actions = ["events:PutEvent"]
+    resources = [
+      var.target_event_bus_arn
+    ]
+  }
 }

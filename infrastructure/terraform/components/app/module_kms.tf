@@ -28,7 +28,6 @@ data "aws_iam_policy_document" "kms" {
       identifiers = [
         "logs.${var.region}.amazonaws.com",
         "sns.amazonaws.com",
-        "sqs.amazonaws.com",
       ]
     }
 
