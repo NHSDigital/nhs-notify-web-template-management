@@ -17,5 +17,4 @@ module "backend_api" {
   enable_backup = var.destination_vault_arn != null ? true : false
 
   enable_letters = var.enable_letters
-
 }

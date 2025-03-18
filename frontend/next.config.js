@@ -22,12 +22,6 @@ const nextConfig = (phase) => {
       quietDeps: true,
     },
 
-    experimental: {
-      serverActions: {
-        allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
-      },
-    },
-
     async redirects() {
       return [
         {
