@@ -20,8 +20,9 @@
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.4.3",
     "@aws-amplify/ui-react": "^6.9.1",
-    "clsx": "^2.1.1",
     "aws-amplify": "^6.12.3",
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
