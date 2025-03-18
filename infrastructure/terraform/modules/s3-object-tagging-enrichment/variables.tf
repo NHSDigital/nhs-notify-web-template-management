@@ -35,6 +35,12 @@ variable "source_csi" {
   description = "CSI from the parent component"
 }
 
+variable "module" {
+  type        = string
+  description = "Name of the module"
+  default     = "ote"
+}
+
 variable "id" {
   type        = string
   description = "ID for the module instance"
