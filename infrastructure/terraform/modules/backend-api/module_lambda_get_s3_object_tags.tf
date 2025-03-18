@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "get_s3_object_tags" {
       "s3:GetObjectVersionTagging",
     ]
 
-    resources = ["${var.source_bucket.arn}/*"]
+    resources = ["${module.s3bucket_quarantine.arn}/*"]
   }
 }
 
