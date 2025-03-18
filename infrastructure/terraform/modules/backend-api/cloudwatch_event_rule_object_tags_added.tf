@@ -7,7 +7,7 @@ resource "aws_cloudwatch_event_rule" "tags_added" {
     detailType = ["Object Tags Added"]
     detail = {
       bucket = {
-        name = [var.source_bucket.name]
+        name = [module.s3bucket_quarantine.id]
       }
     }
   })

@@ -6,7 +6,6 @@ module "sqs_tags_added" {
   environment    = var.environment
   project        = var.project
   region         = var.region
-  module         = "ote"
   name           = var.id
 
   sqs_kms_key_arn = var.kms_key_arn

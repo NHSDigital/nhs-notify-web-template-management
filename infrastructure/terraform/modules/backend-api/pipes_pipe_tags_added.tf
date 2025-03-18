@@ -4,14 +4,14 @@ resource "aws_pipes_pipe" "tags_added" {
   role_arn = aws_iam_role.pipe.arn
 
   source     = module.sqs_tags_added.sqs_queue_arn
-  target     = var.target_event_bus_arn
+  target     = data.aws_cloudwatch_event_bus.default.arn
   enrichment = module.lambda_get_s3_object_tags.function_arn
 
   target_parameters {
     eventbridge_event_bus_parameters {
       detail_type = "object-tags-enriched"
-      source      = var.output_event_source
-      resources   = [var.source_bucket.arn]
+      source      = "templates.${var.environment}.${var.project}"
+      resources   = [module.s3bucket_quarantine.arn]
     }
   }
 }
@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "pipe" {
     effect  = "Allow"
     actions = ["events:PutEvent"]
     resources = [
-      var.target_event_bus_arn
+      data.aws_cloudwatch_event_bus.default.arn
     ]
   }
 }

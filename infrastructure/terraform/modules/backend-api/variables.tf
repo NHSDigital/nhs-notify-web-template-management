@@ -28,14 +28,13 @@ variable "group" {
 }
 
 
+##
+# tfscaffold variables specific to this component
+##
+
 variable "component" {
   type        = string
-  description = "The variable encapsulating the name of the component"
-}
-
-variable "module" {
-  type        = string
-  description = "The variable encapsulating the name of this module"
+  description = "The variable encapsulating the name of this component"
   default     = "api"
 }
 
