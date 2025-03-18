@@ -66,14 +66,14 @@ data "aws_iam_policy_document" "pipe" {
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes",
     ]
-    resources = [aws_sqs_queue.tags_added.arn]
+    resources = [module.sqs_tags_added.sqs_queue_arn]
   }
 
   statement {
     sid       = "AllowLambdaEnrich"
     effect    = "Allow"
     actions   = ["lambda:InvokeFunction"]
-    resources = [module.lambda_get_object_tags.function_arn]
+    resources = [module.lambda_get_s3_object_tags.function_arn]
   }
 
   statement {

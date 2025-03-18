@@ -3,8 +3,8 @@ module "lambda_get_s3_object_tags" {
   description = "Get S3 Object Tags"
 
   function_name    = "${local.csi}-get-s3-object-tags"
-  filename         = module.build_get_object_tags_lambda.zips["src/get-s3-object-tags.ts"].path
-  source_code_hash = module.build_get_object_tags_lambda.zips["src/get-s3-object-tags.ts"].base64sha256 // todo: create this lambda
+  filename         = module.build_get_s3_object_tags_lambda.zips["src/get-s3-object-tags.ts"].path
+  source_code_hash = module.build_get_s3_object_tags_lambda.zips["src/get-s3-object-tags.ts"].base64sha256 // todo: create this lambda
   runtime          = "nodejs20.x"
   handler          = "get-s3-object-tags.handler"
 

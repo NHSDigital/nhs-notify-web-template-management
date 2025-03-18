@@ -13,7 +13,7 @@ module "object_tagging_enrichment_quarantine" {
   source_csi = local.csi
 
   source_bucket = {
-    name = module.s3bucket_quarantine.arn
+    arn  = module.s3bucket_quarantine.arn
     name = module.s3bucket_quarantine.id
   }
 

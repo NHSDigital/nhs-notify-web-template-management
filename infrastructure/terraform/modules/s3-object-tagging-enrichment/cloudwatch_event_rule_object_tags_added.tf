@@ -15,5 +15,5 @@ resource "aws_cloudwatch_event_rule" "tags_added" {
 
 resource "aws_cloudwatch_event_target" "tags_added" {
   rule = aws_cloudwatch_event_rule.tags_added.name
-  arn  = aws_sqs_queue.tags_added.arn
+  arn  = module.sqs_tags_added.sqs_queue_arn
 }
