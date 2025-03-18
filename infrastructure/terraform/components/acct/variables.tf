@@ -71,6 +71,11 @@ variable "initial_cli_secrets_provision_override" {
   #  ... -a apply -- -var initial_cli_secrets_provision_override={\"github_pat\":\"l0ngstr1ng"}
 }
 
+variable "observability_account_id" {
+  type        = string
+  description = "The Observability Account ID that needs access"
+}
+
 variable "kms_deletion_window" {
   type        = string
   description = "When a kms key is deleted, how long should it wait in the pending deletion state?"
@@ -82,3 +87,4 @@ variable "support_sandbox_environments" {
   description = "Does this account support dev sandbox environments?"
   default     = false
 }
+
