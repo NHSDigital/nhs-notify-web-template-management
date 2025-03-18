@@ -35,7 +35,6 @@ No requirements.
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_lambda_get_s3_object_tags"></a> [lambda\_get\_s3\_object\_tags](#module\_lambda\_get\_s3\_object\_tags) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
-| <a name="module_object_tagging_enrichment_quarantine"></a> [object\_tagging\_enrichment\_quarantine](#module\_object\_tagging\_enrichment\_quarantine) | ../s3-object-tagging-enrichment | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_sqs_tags_added"></a> [sqs\_tags\_added](#module\_sqs\_tags\_added) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
