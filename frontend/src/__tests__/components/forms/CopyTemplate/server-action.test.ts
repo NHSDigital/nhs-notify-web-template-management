@@ -3,8 +3,6 @@ import { getMockFormData } from '@testhelpers';
 import {
   EmailTemplate,
   NHSAppTemplate,
-  TemplateStatus,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { createTemplate } from '@utils/form-actions';
@@ -22,10 +20,12 @@ beforeAll(() => {
 test('submit form - validation error', async () => {
   const template: NHSAppTemplate = {
     id: 'template-id',
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+    templateStatus: 'NOT_YET_SUBMITTED',
+    templateType: 'NHS_APP',
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   const response = await copyTemplateAction(
@@ -52,22 +52,24 @@ test('submit form - create email template from non-email template', async () => 
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+  const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
     {
       template: {
         ...testTemplate,
+        templateType: 'NHS_APP' as const,
         id: 'template-id',
       },
     },
     getMockFormData({
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     })
   );
 
@@ -77,10 +79,10 @@ test('submit form - create email template from non-email template', async () => 
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
     subject: 'Enter a subject line',
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
   });
 });
 
@@ -88,23 +90,25 @@ test('submit form - create email template from email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<EmailTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.EMAIL,
+  const testTemplate: Omit<EmailTemplate, 'id' | 'templateType'> = {
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
     message: 'template-message',
     subject: 'template-subject',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
     {
       template: {
         ...testTemplate,
+        templateType: 'EMAIL',
         id: 'template-id',
       },
     },
     getMockFormData({
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     })
   );
 
@@ -114,9 +118,10 @@ test('submit form - create email template from email template', async () => {
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
+    subject: testTemplate.subject,
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.EMAIL,
+    templateType: 'EMAIL',
   });
 });
 
@@ -124,22 +129,24 @@ test('submit form - create non-email template', async () => {
   const mockRedirect = jest.mocked(redirect);
   const mockCreateTemplate = jest.mocked(createTemplate);
 
-  const testTemplate: Omit<NHSAppTemplate, 'id'> = {
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-    templateType: TemplateType.NHS_APP,
+  const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
     message: 'template-message',
+    createdAt: 'today',
+    updatedAt: 'today',
   };
 
   await copyTemplateAction(
     {
       template: {
         ...testTemplate,
+        templateType: 'NHS_APP',
         id: 'template-id',
       },
     },
     getMockFormData({
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     })
   );
 
@@ -149,8 +156,8 @@ test('submit form - create non-email template', async () => {
   );
 
   expect(mockCreateTemplate).toHaveBeenCalledWith({
-    ...testTemplate,
+    message: testTemplate.message,
     name: 'COPY (2022-01-01 09:00:00): template-name',
-    templateType: TemplateType.NHS_APP,
+    templateType: 'NHS_APP',
   });
 });

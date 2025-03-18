@@ -1,9 +1,13 @@
 import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   CreateTemplate,
+  EmailProperties,
   ErrorCase,
-  TemplateStatus,
+  LetterProperties,
+  NhsAppProperties,
+  SmsProperties,
   UpdateTemplate,
+  ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
   ConditionalCheckFailedException,
@@ -49,7 +53,7 @@ const get = async (
 
     const item = response.Item as DatabaseTemplate;
 
-    if (item.templateStatus === TemplateStatus.DELETED) {
+    if (item.templateStatus === 'DELETED') {
       return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
     }
 
@@ -69,7 +73,7 @@ const create = async (
     id: uuidv4(),
     owner,
     version: 1,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateStatus: 'NOT_YET_SUBMITTED',
     createdAt: date,
     updatedAt: date,
   };
@@ -92,15 +96,143 @@ const create = async (
   }
 };
 
+const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
+  message: null,
+};
+
+const emailAttributes: Record<keyof EmailProperties, null> = {
+  message: null,
+  subject: null,
+};
+
+const smsAttributes: Record<keyof SmsProperties, null> = {
+  message: null,
+};
+
+const letterAttributes: Record<keyof LetterProperties, null> = {
+  letterType: null,
+  language: null,
+  files: null,
+};
+
+const attributeExpressionsFromMap = <T>(
+  channelSpecificAttributes: Record<keyof T, null>
+) => Object.keys(channelSpecificAttributes).map((att) => `#${att} = :${att}`);
+
+const getChannelAttributeExpressions = (template: UpdateTemplate) => {
+  const expressions = [];
+  if (template.templateType === 'NHS_APP') {
+    expressions.push(
+      attributeExpressionsFromMap<NhsAppProperties>(nhsAppAttributes)
+    );
+  }
+  if (template.templateType === 'EMAIL') {
+    expressions.push(
+      attributeExpressionsFromMap<EmailProperties>(emailAttributes)
+    );
+  }
+  if (template.templateType === 'SMS') {
+    expressions.push(attributeExpressionsFromMap<SmsProperties>(smsAttributes));
+  }
+  if (template.templateType === 'LETTER') {
+    expressions.push(
+      attributeExpressionsFromMap<LetterProperties>(letterAttributes)
+    );
+  }
+  return expressions;
+};
+
+const attributeNamesFromMap = <T>(
+  channelSpecificAttributes: Record<keyof T, null>
+) => {
+  let attributeNames = {};
+
+  for (const att in channelSpecificAttributes) {
+    attributeNames = {
+      ...attributeNames,
+      [`#${att}`]: att,
+    };
+  }
+
+  return attributeNames;
+};
+
+const getChannelAttributeNames = (template: UpdateTemplate) => {
+  let names = {};
+
+  if (template.templateType === 'NHS_APP') {
+    names = attributeNamesFromMap<NhsAppProperties>(nhsAppAttributes);
+  }
+  if (template.templateType === 'EMAIL') {
+    names = attributeNamesFromMap<EmailProperties>(emailAttributes);
+  }
+  if (template.templateType === 'SMS') {
+    names = attributeNamesFromMap<SmsProperties>(smsAttributes);
+  }
+  if (template.templateType === 'LETTER') {
+    names = attributeNamesFromMap<LetterProperties>(letterAttributes);
+  }
+
+  return names;
+};
+
+const attributeValuesFromMapAndTemplate = <T>(
+  channelSpecificAttributes: Record<keyof T, null>,
+  template: T
+) => {
+  let attributeValues = {};
+
+  for (const att in channelSpecificAttributes) {
+    attributeValues = {
+      ...attributeValues,
+      [`:${att}`]: template[att],
+    };
+  }
+
+  return attributeValues;
+};
+
+const getChannelAttributeValues = (template: ValidatedUpdateTemplate) => {
+  let values = {};
+
+  if (template.templateType === 'NHS_APP') {
+    values = attributeValuesFromMapAndTemplate<NhsAppProperties>(
+      nhsAppAttributes,
+      template
+    );
+  }
+  if (template.templateType === 'EMAIL') {
+    values = attributeValuesFromMapAndTemplate<EmailProperties>(
+      emailAttributes,
+      template
+    );
+  }
+  if (template.templateType === 'SMS') {
+    values = attributeValuesFromMapAndTemplate<SmsProperties>(
+      smsAttributes,
+      template
+    );
+  }
+  if (template.templateType === 'LETTER') {
+    values = attributeValuesFromMapAndTemplate<LetterProperties>(
+      letterAttributes,
+      template
+    );
+  }
+
+  return values;
+};
+
 const update = async (
   templateId: string,
-  template: UpdateTemplate,
+  template: ValidatedUpdateTemplate,
   owner: string
 ): Promise<ApplicationResult<DatabaseTemplate>> => {
   const updateExpression = [
     '#name = :name',
     '#updatedAt = :updateAt',
     '#templateStatus = :templateStatus',
+    ...getChannelAttributeExpressions(template),
   ];
 
   let expressionAttributeNames: Record<string, string> = {
@@ -108,41 +240,19 @@ const update = async (
     '#templateStatus': 'templateStatus',
     '#updatedAt': 'updatedAt',
     '#templateType': 'templateType',
+    ...getChannelAttributeNames(template),
   };
 
   let expressionAttributeValues: Record<string, string | number> = {
     ':name': template.name,
     ':templateStatus': template.templateStatus,
     ':updateAt': new Date().toISOString(),
-    ':not_yet_submitted': TemplateStatus.NOT_YET_SUBMITTED,
+    ':not_yet_submitted': 'NOT_YET_SUBMITTED',
     ':templateType': template.templateType,
+    ...getChannelAttributeValues(template),
   };
 
-  if (template.message) {
-    updateExpression.push('#message = :message');
-    expressionAttributeNames = {
-      ...expressionAttributeNames,
-      '#message': 'message',
-    };
-    expressionAttributeValues = {
-      ...expressionAttributeValues,
-      ':message': template.message,
-    };
-  }
-
-  if (template.subject) {
-    updateExpression.push('#subject = :subject');
-    expressionAttributeNames = {
-      ...expressionAttributeNames,
-      '#subject': 'subject',
-    };
-    expressionAttributeValues = {
-      ...expressionAttributeValues,
-      ':subject': template.subject,
-    };
-  }
-
-  if (template.templateStatus === TemplateStatus.DELETED) {
+  if (template.templateStatus === 'DELETED') {
     updateExpression.push('#ttl = :ttl');
     expressionAttributeNames = {
       ...expressionAttributeNames,
@@ -175,10 +285,7 @@ const update = async (
     return success(response.Attributes as DatabaseTemplate);
   } catch (error) {
     if (error instanceof ConditionalCheckFailedException) {
-      if (
-        !error.Item ||
-        error.Item.templateStatus.S === TemplateStatus.DELETED
-      ) {
+      if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
         return failure(
           ErrorCase.TEMPLATE_NOT_FOUND,
           `Template not found`,
@@ -186,7 +293,7 @@ const update = async (
         );
       }
 
-      if (error.Item.templateStatus.S !== TemplateStatus.NOT_YET_SUBMITTED) {
+      if (error.Item.templateStatus.S !== 'NOT_YET_SUBMITTED') {
         return failure(
           ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
           `Template with status ${error.Item.templateStatus.S} cannot be updated`,
@@ -227,7 +334,7 @@ const list = async (
       },
       ExpressionAttributeValues: {
         ':owner': owner,
-        ':deletedStatus': TemplateStatus.DELETED,
+        ':deletedStatus': 'DELETED',
       },
       FilterExpression: '#status <> :deletedStatus',
     };

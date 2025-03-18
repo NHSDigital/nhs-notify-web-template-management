@@ -1,45 +1,46 @@
 import { render, screen } from '@testing-library/react';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
-import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
-import { LetterType, Language } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const manageTemplatesProps = {
+const manageTemplatesProps: {
+  templateList: TemplateDto[];
+} = {
   templateList: [
     {
       id: '1',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template 1',
       message: 'Message',
-      subject: 'Subject Line',
       createdAt: '2021-01-01T00:00:00.000Z',
       updatedAt: '2021-01-01T00:00:00.000Z',
     },
     {
       id: '2',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
       name: 'Template 2',
       message: 'Message',
-      subject: 'Subject Line',
       createdAt: '2021-02-01T00:00:00.000Z',
       updatedAt: '2021-02-01T00:00:00.000Z',
     },
     {
       id: '3',
-      templateType: TemplateType.LETTER,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'LETTER',
+      templateStatus: 'SUBMITTED',
       name: 'Template 3',
       createdAt: '2021-02-01T00:00:00.000Z',
-      letterType: LetterType.X0,
-      language: Language.FR,
+      letterType: 'x0',
+      language: 'fr',
       updatedAt: '2021-02-01T00:00:00.000Z',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+        },
+      },
     },
   ],
 };
@@ -51,8 +52,7 @@ describe('ManageTemplates component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('matches snapshot with submitted status', () => {
-    manageTemplatesProps.templateList[0].templateStatus =
-      TemplateStatus.SUBMITTED;
+    manageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
     const container = render(<ManageTemplates {...manageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
