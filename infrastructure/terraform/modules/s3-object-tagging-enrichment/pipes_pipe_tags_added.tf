@@ -47,11 +47,11 @@ data "aws_iam_policy_document" "pipe_trust_policy" {
       values   = [var.aws_account_id]
     }
 
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceArn"
-      values   = [aws_pipes_pipe.tags_added.arn]
-    }
+    # condition {
+    #   test     = "StringEquals"
+    #   variable = "aws:SourceArn"
+    #   values   = [aws_pipes_pipe.tags_added.arn]
+    # }
   }
 }
 
