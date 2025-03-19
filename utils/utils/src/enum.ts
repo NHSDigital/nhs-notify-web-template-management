@@ -67,6 +67,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     NOT_YET_SUBMITTED: 'Not yet submitted',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
+    PENDING_UPLOAD: 'Processing',
+    PENDING_VALIDATION: 'Processing',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>

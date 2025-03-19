@@ -14,4 +14,14 @@ module "s3bucket_quarantine" {
   notification_events = {
     eventbridge = true
   }
+
+  lifecycle_rules = [
+    {
+      enabled = true
+
+      expiration = {
+        days = 1
+      }
+    }
+  ]
 }

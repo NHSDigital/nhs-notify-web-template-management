@@ -9,7 +9,8 @@
     "tests/accessibility",
     "tests/test-team",
     "utils/utils",
-    "utils/backend-config"
+    "utils/backend-config",
+    "utils/test-helper-utils"
   ],
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",

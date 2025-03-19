@@ -39,6 +39,8 @@ const manageTemplatesProps: {
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
+          currentVersion: '8BAC',
+          virusScanStatus: 'PASSED',
         },
       },
     },
