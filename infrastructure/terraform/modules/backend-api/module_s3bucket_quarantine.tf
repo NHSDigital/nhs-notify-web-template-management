@@ -10,4 +10,14 @@ module "s3bucket_quarantine" {
   component      = var.component
 
   kms_key_arn = var.kms_key_arn
+
+  lifecycle_rules = [
+    {
+      enabled = true
+
+      expiration = {
+        days = 1
+      }
+    }
+  ]
 }

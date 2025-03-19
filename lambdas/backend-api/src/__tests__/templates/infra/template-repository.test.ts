@@ -1,4 +1,3 @@
-import { randomUUID as uuidv4 } from 'node:crypto';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -15,12 +14,24 @@ import {
   ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { DatabaseTemplate, templateRepository } from '../../../templates/infra';
+import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
 
-jest.mock('node:crypto');
+const templateId = 'abc-def-ghi-jkl-123';
+const templatesTableName = 'templates';
 
-const uuidMock = jest.mocked(uuidv4);
-const ddbMock = mockClient(DynamoDBDocumentClient);
+const setup = () => {
+  const ddbDocClient = mockClient(DynamoDBDocumentClient);
+
+  const generateId = jest.fn(() => templateId);
+
+  const templateRepository = new TemplateRepository(
+    ddbDocClient as unknown as DynamoDBDocumentClient,
+    templatesTableName,
+    generateId
+  );
+
+  return { templateRepository, mocks: { ddbDocClient, generateId } };
+};
 
 const emailProperties: EmailProperties = {
   message: 'message',
@@ -41,9 +52,13 @@ const letterProperties: LetterProperties = {
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
+      currentVersion: 'a',
+      virusScanStatus: 'PENDING',
     },
     testDataCsv: {
       fileName: 'test.csv',
+      currentVersion: 'a',
+      virusScanStatus: 'PENDING',
     },
   },
 };
@@ -91,24 +106,13 @@ const letterTemplate: DatabaseTemplate = {
 };
 
 describe('templateRepository', () => {
-  const OLD_ENV = { ...process.env };
-
   beforeAll(() => {
-    process.env = {
-      ...OLD_ENV,
-      TEMPLATES_TABLE_NAME: 'templates',
-    };
     jest.useFakeTimers();
     jest.setSystemTime(new Date(2024, 11, 27));
   });
 
-  afterAll(() => {
-    process.env = OLD_ENV;
-  });
-
   beforeEach(() => {
     jest.resetAllMocks();
-    ddbMock.reset();
   });
 
   describe('get', () => {
@@ -118,9 +122,11 @@ describe('templateRepository', () => {
     ])(
       'should return not found error when, templateId and owner does not match database record',
       async ({ id, owner }) => {
-        ddbMock
+        const { templateRepository, mocks } = setup();
+
+        mocks.ddbDocClient
           .on(GetCommand, {
-            TableName: 'templates',
+            TableName: templatesTableName,
             Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
           })
           .resolves({
@@ -139,7 +145,9 @@ describe('templateRepository', () => {
     );
 
     test('should return not found error when template status is DELETED', async () => {
-      ddbMock.on(GetCommand).resolves({
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(GetCommand).resolves({
         Item: {
           id: 'abc-def-ghi-jkl-123',
           owner: 'real-owner',
@@ -161,7 +169,11 @@ describe('templateRepository', () => {
     });
 
     test('should error when unexpected error occurs', async () => {
-      ddbMock.on(GetCommand).rejects(new Error('InternalServerError'));
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
+        .on(GetCommand)
+        .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.get(
         'abc-def-ghi-jkl-123',
@@ -178,9 +190,11 @@ describe('templateRepository', () => {
     });
 
     test('should return template', async () => {
-      ddbMock
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
         .on(GetCommand, {
-          TableName: 'templates',
+          TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
@@ -200,7 +214,9 @@ describe('templateRepository', () => {
 
   describe('list', () => {
     test('should return an empty array when no items', async () => {
-      ddbMock.on(QueryCommand).resolves({
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
         Items: undefined,
       });
 
@@ -212,7 +228,11 @@ describe('templateRepository', () => {
     });
 
     test('should error when unexpected error occurs', async () => {
-      ddbMock.on(QueryCommand).rejects(new Error('InternalServerError'));
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.list('real-owner');
 
@@ -226,9 +246,11 @@ describe('templateRepository', () => {
     });
 
     test('should return templates', async () => {
-      ddbMock
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
         .on(QueryCommand, {
-          TableName: 'templates',
+          TableName: templatesTableName,
           KeyConditionExpression: '#owner = :owner',
           ExpressionAttributeNames: {
             '#owner': 'owner',
@@ -251,9 +273,13 @@ describe('templateRepository', () => {
 
   describe('create', () => {
     test('should return error when, unexpected error occurs', async () => {
-      uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
+      const { templateRepository, mocks } = setup();
 
-      ddbMock.on(PutCommand).rejects(new Error('InternalServerError'));
+      mocks.generateId.mockReturnValue('abc-def-ghi-jkl-123');
+
+      mocks.ddbDocClient
+        .on(PutCommand)
+        .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.create(
         {
@@ -282,11 +308,13 @@ describe('templateRepository', () => {
     ])(
       'should create template of type $templateType',
       async (channelProperties) => {
-        uuidMock.mockReturnValue('abc-def-ghi-jkl-123');
+        const { templateRepository, mocks } = setup();
 
-        ddbMock
+        mocks.generateId.mockReturnValue('abc-def-ghi-jkl-123');
+
+        mocks.ddbDocClient
           .on(PutCommand, {
-            TableName: 'templates',
+            TableName: templatesTableName,
             Item: {
               ...channelProperties,
               ...databaseTemplateProperties,
@@ -355,13 +383,15 @@ describe('templateRepository', () => {
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
       async ({ Item, code, message, details }) => {
+        const { templateRepository, mocks } = setup();
+
         const error = new ConditionalCheckFailedException({
           message: 'mocked',
           $metadata: { httpStatusCode: 400 },
           Item,
         });
 
-        ddbMock.on(UpdateCommand).rejects(error);
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
         const response = await templateRepository.update(
           'abc-def-ghi-jkl-123',
@@ -372,7 +402,8 @@ describe('templateRepository', () => {
             templateStatus: 'SUBMITTED',
             templateType: 'EMAIL',
           },
-          'real-owner'
+          'real-owner',
+          'NOT_YET_SUBMITTED'
         );
 
         expect(response).toEqual({
@@ -387,9 +418,11 @@ describe('templateRepository', () => {
     );
 
     test('should return error when, an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
       const error = new Error('mocked');
 
-      ddbMock.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
       const response = await templateRepository.update(
         'abc-def-ghi-jkl-123',
@@ -400,7 +433,8 @@ describe('templateRepository', () => {
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'EMAIL',
         },
-        'real-owner'
+        'real-owner',
+        'NOT_YET_SUBMITTED'
       );
 
       expect(response).toEqual({
@@ -420,6 +454,8 @@ describe('templateRepository', () => {
     ])(
       'should update template of type $templateType with name',
       async (channelProperties) => {
+        const { templateRepository, mocks } = setup();
+
         const updatedTemplate: ValidatedUpdateTemplate = {
           ...channelProperties,
           ...updateTemplateProperties,
@@ -427,9 +463,9 @@ describe('templateRepository', () => {
           templateStatus: 'SUBMITTED',
         };
 
-        ddbMock
+        mocks.ddbDocClient
           .on(UpdateCommand, {
-            TableName: 'templates',
+            TableName: templatesTableName,
             Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
           })
           .resolves({
@@ -443,7 +479,8 @@ describe('templateRepository', () => {
         const response = await templateRepository.update(
           'abc-def-ghi-jkl-123',
           updatedTemplate,
-          'real-owner'
+          'real-owner',
+          'NOT_YET_SUBMITTED'
         );
 
         expect(response).toEqual({
@@ -457,6 +494,8 @@ describe('templateRepository', () => {
     );
 
     test('should update template to deleted state', async () => {
+      const { templateRepository, mocks } = setup();
+
       const updatedTemplate: ValidatedUpdateTemplate = {
         name: 'updated-name',
         message: 'updated-message',
@@ -464,9 +503,9 @@ describe('templateRepository', () => {
         templateType: 'NHS_APP',
       };
 
-      ddbMock
+      mocks.ddbDocClient
         .on(UpdateCommand, {
-          TableName: 'templates',
+          TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({
@@ -479,7 +518,8 @@ describe('templateRepository', () => {
       const response = await templateRepository.update(
         'abc-def-ghi-jkl-123',
         updatedTemplate,
-        'real-owner'
+        'real-owner',
+        'NOT_YET_SUBMITTED'
       );
 
       expect(response).toEqual({

@@ -87,4 +87,3 @@ variable "support_sandbox_environments" {
   description = "Does this account support dev sandbox environments?"
   default     = false
 }
-

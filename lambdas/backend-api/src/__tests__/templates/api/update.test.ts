@@ -1,20 +1,26 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { TemplateDto, UpdateTemplate } from 'nhs-notify-backend-client';
-import { handler } from '@backend-api/templates/api/update';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import {
+  ITemplateClient,
+  TemplateDto,
+  UpdateTemplate,
+} from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/update';
 
-jest.mock('@backend-api/templates/app/template-client');
+const setup = () => {
+  const templateClient = mock<ITemplateClient>();
 
-const updateTemplateMock = jest.spyOn(
-  TemplateClient.prototype,
-  'updateTemplate'
-);
+  const handler = createHandler({ templateClient });
+
+  return { handler, mocks: { templateClient } };
+};
 
 describe('Template API - Update', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
       body: JSON.stringify({ name: 'test' }),
@@ -31,11 +37,13 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.updateTemplate).not.toHaveBeenCalled();
   });
 
   test('should return 400 - Invalid request when, no body', async () => {
-    updateTemplateMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Validation failed',
@@ -65,12 +73,16 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
-
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', {});
+    expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      {},
+      'sub'
+    );
   });
 
   test('should return 400 - Invalid request when, no templateId', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
       body: JSON.stringify({ name: 'test' }),
@@ -87,11 +99,13 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(updateTemplateMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.updateTemplate).not.toHaveBeenCalled();
   });
 
   test('should return error when updating template fails', async () => {
-    updateTemplateMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -114,12 +128,16 @@ describe('Template API - Update', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
-
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', { name: 'name' });
+    expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      { name: 'name' },
+      'sub'
+    );
   });
 
   test('should return template', async () => {
+    const { handler, mocks } = setup();
+
     const update: UpdateTemplate = {
       name: 'updated-name',
       message: 'message',
@@ -134,7 +152,7 @@ describe('Template API - Update', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    updateTemplateMock.mockResolvedValueOnce({
+    mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       data: response,
     });
 
@@ -151,8 +169,10 @@ describe('Template API - Update', () => {
       body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub', false);
-
-    expect(updateTemplateMock).toHaveBeenCalledWith('1-2-3', update);
+    expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
+      '1-2-3',
+      update,
+      'sub'
+    );
   });
 });
