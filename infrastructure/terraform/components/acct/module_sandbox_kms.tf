@@ -12,4 +12,6 @@ module "kms_sandbox" {
   name            = "sandbox"
   deletion_window = var.kms_deletion_window
   alias           = "alias/${local.csi}-sandbox"
+  iam_delegation  = true
 }
+
