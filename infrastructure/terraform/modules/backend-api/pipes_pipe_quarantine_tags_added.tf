@@ -14,6 +14,14 @@ resource "aws_pipes_pipe" "quarantine_tags_added" {
       resources   = [module.s3bucket_quarantine.arn]
     }
   }
+
+  log_configuration {
+    cloudwatch_logs_log_destination {
+      log_group_arn = aws_cloudwatch_log_group.quarantine_tags_added_pipe.arn
+    }
+    level                  = "ERROR"
+    include_execution_data = ["ALL"]
+  }
 }
 
 resource "aws_iam_role" "pipe" {
@@ -40,18 +48,6 @@ data "aws_iam_policy_document" "pipe_trust_policy" {
 
       identifiers = ["pipes.amazonaws.com"]
     }
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [var.aws_account_id]
-    }
-
-    # condition {
-    #   test     = "StringEquals"
-    #   variable = "aws:SourceArn"
-    #   values   = [aws_pipes_pipe.quarantine_tags_added.arn]
-    # }
   }
 }
 
@@ -93,4 +89,9 @@ data "aws_iam_policy_document" "pipe" {
       data.aws_cloudwatch_event_bus.default.arn
     ]
   }
+}
+
+resource "aws_cloudwatch_log_group" "quarantine_tags_added_pipe" {
+  name              = "/aws/vendedlogs/pipes/${local.csi}-quarantine-tags-added"
+  retention_in_days = var.log_retention_in_days
 }
