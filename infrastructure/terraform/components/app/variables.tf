@@ -192,8 +192,3 @@ variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"
 }
-
-variable "kms_key_arn" {
-  type        = string
-  description = "ARN of KMS Key used for encrypting application data"
-}
