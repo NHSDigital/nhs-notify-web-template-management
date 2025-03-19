@@ -22,6 +22,12 @@ const nextConfig = (phase) => {
       quietDeps: true,
     },
 
+    experimental: {
+      serverActions: {
+        allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
+      },
+    },
+
     async redirects() {
       return [
         {
