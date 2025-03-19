@@ -24,7 +24,7 @@ const nextConfig = (phase) => {
 
     experimental: {
       serverActions: {
-        allowedOrigins: ['*.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
+        allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
       },
     },
 
