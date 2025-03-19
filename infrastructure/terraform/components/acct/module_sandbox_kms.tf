@@ -12,5 +12,31 @@ module "kms_sandbox" {
   name            = "sandbox"
   deletion_window = var.kms_deletion_window
   alias           = "alias/${local.csi}-sandbox"
-  iam_delegation  = true
+  # key_policy_documents = [data.aws_iam_policy_document.kms_sandbox.json]
+  iam_delegation = true
+
 }
+
+# data "aws_iam_policy_document" "kms_sandbox" {
+#   statement {
+#     sid    = "AllowEventBridge"
+#     effect = "Allow"
+
+#     principals {
+#       type = "Service"
+
+#       identifiers = [
+#         "events.amazonaws.com",
+#       ]
+#     }
+
+#     actions = [
+#       "kms:Decrypt",
+#       "kms:GenerateDataKey",
+#     ]
+
+#     resources = [
+#       "*",
+#     ]
+#   }
+# }

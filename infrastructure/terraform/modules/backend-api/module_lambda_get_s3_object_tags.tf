@@ -4,8 +4,7 @@ module "lambda_get_s3_object_tags" {
 
   function_name    = "${local.csi}-get-s3-object-tags"
   filename         = module.build_get_s3_object_tags_lambda.zips["src/get-s3-object-tags.ts"].path
-  source_code_hash = module.build_get_s3_object_tags_lambda.zips["src/get-s3-object-tags.ts"].base64sha256 // todo: create this lambda
-  runtime          = "nodejs20.x"
+  source_code_hash = module.build_get_s3_object_tags_lambda.zips["src/get-s3-object-tags.ts"].base64sha256
   handler          = "get-s3-object-tags.handler"
 
   log_retention_in_days = var.log_retention_in_days
@@ -24,7 +23,7 @@ data "aws_iam_policy_document" "get_s3_object_tags" {
       "sqs:ReceiveMessage",
     ]
 
-    resources = [module.sqs_tags_added.sqs_queue_arn]
+    resources = [module.sqs_quarantine_tags_added.sqs_queue_arn]
   }
 
   statement {

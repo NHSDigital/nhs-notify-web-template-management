@@ -1,9 +1,9 @@
-resource "aws_pipes_pipe" "tags_added" {
-  name = "${local.csi}-tags-added"
+resource "aws_pipes_pipe" "quarantine_tags_added" {
+  name = "${local.csi}-quarantine-tags-added"
 
   role_arn = aws_iam_role.pipe.arn
 
-  source     = module.sqs_tags_added.sqs_queue_arn
+  source     = module.sqs_quarantine_tags_added.sqs_queue_arn
   target     = data.aws_cloudwatch_event_bus.default.arn
   enrichment = module.lambda_get_s3_object_tags.function_arn
 
@@ -18,7 +18,7 @@ resource "aws_pipes_pipe" "tags_added" {
 
 resource "aws_iam_role" "pipe" {
   name               = "${local.csi}-pipe"
-  description        = "Role used by Pipes enrich S3 tagging events"
+  description        = "Role used by Pipes enrich quarantine bucket tagging events"
   assume_role_policy = data.aws_iam_policy_document.pipe_trust_policy.json
 }
 
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "pipe_trust_policy" {
     # condition {
     #   test     = "StringEquals"
     #   variable = "aws:SourceArn"
-    #   values   = [aws_pipes_pipe.tags_added.arn]
+    #   values   = [aws_pipes_pipe.quarantine_tags_added.arn]
     # }
   }
 }
@@ -66,7 +66,16 @@ data "aws_iam_policy_document" "pipe" {
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes",
     ]
-    resources = [module.sqs_tags_added.sqs_queue_arn]
+    resources = [module.sqs_quarantine_tags_added.sqs_queue_arn]
+  }
+
+  statement {
+    sid    = "AllowKMSDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt"
+    ]
+    resources = [var.kms_key_arn]
   }
 
   statement {
@@ -79,7 +88,7 @@ data "aws_iam_policy_document" "pipe" {
   statement {
     sid     = "AllowEventBusTarget"
     effect  = "Allow"
-    actions = ["events:PutEvent"]
+    actions = ["events:PutEvents"]
     resources = [
       data.aws_cloudwatch_event_bus.default.arn
     ]
