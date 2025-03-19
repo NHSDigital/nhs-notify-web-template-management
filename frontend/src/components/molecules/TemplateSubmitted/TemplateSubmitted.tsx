@@ -3,22 +3,17 @@
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import PageTitle from '@hooks/page-title.hook';
-import { TemplateType } from 'nhs-notify-backend-client';
 
 type TemplateSubmittedProps = {
   templateId: string;
   templateName: string;
-  templateType: TemplateType;
 };
 
 export const TemplateSubmitted = ({
   templateId,
   templateName,
-  templateType,
 }: TemplateSubmittedProps) => {
   const {
-    pageTitle,
     backLinkText,
     pageHeading,
     templateNameHeading,
@@ -30,8 +25,6 @@ export const TemplateSubmitted = ({
     liveLinkText,
     liveText,
   } = content.components.templateSubmitted;
-
-  PageTitle(pageTitle[templateType]);
 
   return (
     <NHSNotifyMain>

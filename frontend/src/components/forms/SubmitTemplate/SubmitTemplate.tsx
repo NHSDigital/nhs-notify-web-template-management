@@ -9,17 +9,14 @@ import { getBasePath } from '@utils/get-base-path';
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import PageTitle from '@hooks/page-title.hook';
 
 export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
   templateId,
   goBackPath,
   submitPath,
-  templateType,
 }: SubmitTemplatePageComponentProps) => {
   const {
-    pageTitle,
     pageHeading,
     warningCalloutLabel,
     warningCalloutText,
@@ -32,8 +29,6 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   } = content.components.submitTemplate;
 
   const [_, action] = useActionState(submitTemplate, submitPath);
-
-  PageTitle(pageTitle[templateType]);
 
   return (
     <NHSNotifyMain>

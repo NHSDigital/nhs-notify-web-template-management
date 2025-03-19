@@ -48,7 +48,6 @@ describe('SubmitSmsTemplatePage', () => {
       <SubmitTemplate
         templateName={state.name}
         templateId={state.id}
-        templateType={state.templateType}
         goBackPath='preview-text-message-template'
         submitPath='text-message-template-submitted'
       />

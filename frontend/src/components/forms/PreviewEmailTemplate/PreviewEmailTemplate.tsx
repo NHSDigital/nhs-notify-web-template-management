@@ -15,17 +15,14 @@ import { useSearchParams } from 'next/navigation';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { previewEmailTemplateAction } from './server-actions';
-import PageTitle from '@hooks/page-title.hook';
 
 export function PreviewEmailTemplate({
   initialState,
 }: Readonly<PageComponentProps<EmailTemplate>>) {
   const searchParams = useSearchParams();
 
-  const { form, sectionHeading, backLinkText, pageTitle } =
+  const { form, sectionHeading, backLinkText } =
     content.components.previewEmailTemplate;
-
-  PageTitle(pageTitle);
 
   const [state, action] = useActionState(
     previewEmailTemplateAction,

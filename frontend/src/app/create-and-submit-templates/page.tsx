@@ -1,14 +1,15 @@
-'use client';
-
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import PageTitle from '@hooks/page-title.hook';
+import { Metadata } from 'next';
 
 const homePageContent = content.pages.homePage;
 
+export const metadata: Metadata = {
+  title: homePageContent.pageTitle,
+};
+
 export default function HomePage() {
-  PageTitle(homePageContent.pageTitle);
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>

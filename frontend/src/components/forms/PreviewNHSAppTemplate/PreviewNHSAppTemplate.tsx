@@ -15,7 +15,6 @@ import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { previewNhsAppTemplateAction } from './server-action';
-import PageTitle from '@hooks/page-title.hook';
 
 export function PreviewNHSAppTemplate({
   initialState,
@@ -31,15 +30,13 @@ export function PreviewNHSAppTemplate({
   const html = renderNHSAppMarkdown(message);
   const isFromEditPage = searchParams.get('from') === 'edit';
 
-  const { sectionHeading, form, backLinkText, pageTitle } =
+  const { sectionHeading, form, backLinkText } =
     content.components.previewNHSAppTemplate;
-
-  PageTitle(pageTitle);
 
   return (
     <>
       <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
-        Back to all templates
+        {backLinkText}
       </BackLink>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

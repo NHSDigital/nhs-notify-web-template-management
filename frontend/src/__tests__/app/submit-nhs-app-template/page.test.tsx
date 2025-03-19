@@ -47,7 +47,6 @@ describe('SubmitNhsAppTemplatePage', () => {
       <SubmitTemplate
         templateName={state.name}
         templateId={state.id}
-        templateType={state.templateType}
         goBackPath='preview-nhs-app-template'
         submitPath='nhs-app-template-submitted'
       />

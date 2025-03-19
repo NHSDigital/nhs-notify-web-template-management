@@ -74,7 +74,6 @@ export type PageComponentProps<T> = {
 export type SubmitTemplatePageComponentProps = {
   templateName: string;
   templateId: string;
-  templateType: TemplateType;
   goBackPath: string;
   submitPath: string;
 };
