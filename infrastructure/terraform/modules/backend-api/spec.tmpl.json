@@ -210,6 +210,85 @@
         }
       }
     },
+    "/v1/letter-template": {
+      "post": {
+        "summary": "Create a letter template",
+        "description": "Create a letter template",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Letter template to create",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "CreateLetterTemplate": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "$ref": "#/components/schemas/CreateTemplate"
+                    },
+                    "letterPdf": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "testCsv": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LETTER_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
     "/v1/templates": {
       "get": {
         "summary": "List all templates",
@@ -296,7 +375,9 @@
         "enum": [
           "NOT_YET_SUBMITTED",
           "SUBMITTED",
-          "DELETED"
+          "DELETED",
+          "PENDING_UPLOAD",
+          "PENDING_VALIDATION"
         ]
       },
       "Language": {
@@ -354,7 +435,9 @@
       "FileDetails": {
         "type": "object",
         "required": [
-          "fileName"
+          "fileName",
+          "currentVersion",
+          "virusScanStatus"
         ],
         "properties": {
           "fileName": {
@@ -425,12 +508,11 @@
           }
         }
       },
-      "LetterProperties": {
+      "CreateLetterProperties": {
         "type": "object",
         "required": [
           "letterType",
-          "language",
-          "files"
+          "language"
         ],
         "properties": {
           "letterType": {
@@ -438,11 +520,26 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
-          },
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
           }
         }
+      },
+      "LetterProperties": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateLetterProperties"
+          },
+          {
+            "type": "object",
+            "required": [
+              "files"
+            ],
+            "properties": {
+              "files": {
+                "$ref": "#/components/schemas/LetterFiles"
+              }
+            }
+          }
+        ]
       },
       "BaseTemplate": {
         "type": "object",
@@ -477,7 +574,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/LetterProperties"
+                "$ref": "#/components/schemas/CreateLetterProperties"
               }
             ]
           }
@@ -512,7 +609,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/LetterProperties"
+                "$ref": "#/components/schemas/CreateLetterProperties"
               }
             ]
           }

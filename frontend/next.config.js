@@ -24,7 +24,7 @@ const nextConfig = (phase) => {
 
     experimental: {
       serverActions: {
-        allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
+        allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
       },
     },
 
