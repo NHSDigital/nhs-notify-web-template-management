@@ -5,7 +5,9 @@ import { redirect } from 'next/navigation';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
-import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
+import EditNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/edit-nhs-app-template/[templateId]/page';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
@@ -17,6 +19,7 @@ const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('EditNhsAppTemplatePage', () => {
+  generateMetadata();
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {

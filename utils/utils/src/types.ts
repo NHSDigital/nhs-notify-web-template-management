@@ -6,7 +6,6 @@ import {
   SmsProperties,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { TemplateType } from 'nhs-notify-backend-client';
 
 export type FormId =
   | 'choose-a-template-type'

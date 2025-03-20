@@ -100,20 +100,18 @@ export function ManageTemplates({
                         <Link
                           href={`/copy-template/${template.id}`}
                           id={`copy-template-link-${index}`}
+                          aria-label={`${manageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
                         >
-                          <span className='nhsuk-u-visually-hidden'>
-                            {template.name}
-                          </span>
                           {manageTemplatesContent.tableHeadings.action.copy}
                         </Link>
                       </p>
                     )}
                     {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
                       <p className='nhsuk-u-margin-bottom-2'>
-                        <Link href={`/delete-template/${template.id}`}>
-                          <span className='nhsuk-u-visually-hidden'>
-                            {template.name}
-                          </span>
+                        <Link
+                          href={`/delete-template/${template.id}`}
+                          aria-label={`${manageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
+                        >
                           {manageTemplatesContent.tableHeadings.action.delete}
                         </Link>
                       </p>

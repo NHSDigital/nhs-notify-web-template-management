@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
+import PreviewEmailTemplatePage, {
+  generateMetadata,
+} from '@app/preview-email-template/[templateId]/page';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -25,6 +27,7 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',

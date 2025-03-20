@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import EmailTemplateSubmittedPage from '@app/email-template-submitted/[templateId]/page';
+import EmailTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/email-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -48,6 +50,7 @@ describe('EmailTemplateSubmittedPage', () => {
   });
 
   test('should handle invalid template', async () => {
+    generateMetadata();
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await EmailTemplateSubmittedPage({

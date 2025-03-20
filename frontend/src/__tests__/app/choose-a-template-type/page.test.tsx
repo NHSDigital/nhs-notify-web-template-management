@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/page';
+import ChooseATemplateTypePage, {
+  generateMetadata,
+} from '@app/choose-a-template-type/page';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation', () => ({
@@ -29,6 +31,7 @@ jest.mock('react', () => {
 });
 
 test('ChooseATemplateTypePage', async () => {
+  generateMetadata();
   const page = await ChooseATemplateTypePage();
 
   const container = render(page);
