@@ -7,7 +7,6 @@ describe('TemplateSubmitted component', () => {
       <TemplateSubmitted
         templateId='template-id'
         templateName='template-name'
-        templateType='SMS'
       />
     );
 
