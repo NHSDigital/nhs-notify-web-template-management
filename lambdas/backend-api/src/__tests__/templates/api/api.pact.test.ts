@@ -1,5 +1,5 @@
 import { Verifier } from '@pact-foundation/pact';
-import * as path from 'path';
+import path from 'node:path';
 
 describe('Pact Verification', () => {
   it('should validate the expectations of the consumer', async () => {
