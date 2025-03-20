@@ -48,6 +48,7 @@ describe('Preview letter form renders', () => {
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
               virusScanStatus: 'PENDING',
             },
+            testDataCsv: undefined,
           },
         })}
       />

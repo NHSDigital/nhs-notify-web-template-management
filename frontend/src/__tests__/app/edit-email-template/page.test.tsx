@@ -62,7 +62,7 @@ describe('EditEmailTemplatePage', () => {
   it('should render CreateEmailTemplatePage component when template is found', async () => {
     getTemplateMock.mockResolvedValueOnce(template);
 
-    const emailTemplate = {
+    const emailTemplate: EmailTemplate = {
       ...template,
       subject: 'subject',
       templateType: 'EMAIL' as const,

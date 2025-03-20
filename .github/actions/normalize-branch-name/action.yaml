@@ -2,11 +2,17 @@ name: "Normalize branch name"
 description: "Normalize branch name"
 outputs:
   normalized_branch_name:
+    description: 10 character branch identifier (0000-branch)
     value: ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
 runs:
   using: "composite"
   steps:
     - id: normalize_branch_name
       shell: bash
-      run: echo "normalized_branch_name=$(sed -e 's/[^a-zA-Z0-9-]//g' <<< $(git rev-parse --abbrev-ref HEAD) | tr '[:upper:]' '[:lower:]' | head -c 25)" >> $GITHUB_OUTPUT
-
+      run: |
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        stripped=$(echo $branch | sed -e 's/[^a-zA-Z0-9-]//g' | tr '[:upper:]' '[:lower:]')
+        starting_from_jira_ref=$(echo $stripped | sed -n 's/.*\([0-9]\{4,\}.*\)/\1/p')
+        with_fallback=${starting_from_jira_ref:-$stripped}
+        chopped=$(echo $with_fallback | head -c 10)
+        echo "normalized_branch_name=$chopped" >> $GITHUB_OUTPUT
