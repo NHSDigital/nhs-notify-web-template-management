@@ -113,6 +113,9 @@ export const validateSubmittedNHSAppTemplate = (template?: TemplateDto) =>
 export const validateTemplate = (template?: TemplateDto) =>
   zodValidate($TemplateDtoSchema, template);
 
+export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedLetterTemplate, template);
+
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);
 
