@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedEmailTemplatePage from '@app/view-submitted-email-template/[templateId]/page';
+import ViewSubmittedEmailTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-email-template/[templateId]/page';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -19,6 +21,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',

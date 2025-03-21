@@ -7,6 +7,16 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewNHSAppTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const ViewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

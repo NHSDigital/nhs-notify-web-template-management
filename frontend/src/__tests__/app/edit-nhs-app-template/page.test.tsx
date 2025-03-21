@@ -19,10 +19,10 @@ const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
 describe('EditNhsAppTemplatePage', () => {
-  generateMetadata();
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
+    generateMetadata();
     const template = {
       id: 'template-id',
       templateType: 'NHS_APP',

@@ -10,11 +10,11 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import content from '@content/content';
 
-const { pageTitle } = content.components.templateFormNhsApp;
+const { editPageTitle } = content.components.templateFormNhsApp;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: pageTitle,
+    title: editPageTitle,
   };
 }
 

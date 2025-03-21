@@ -199,6 +199,7 @@ const homePage = {
 };
 
 const manageTemplates = {
+  pageTitle: generatePageTitle('Message templates'),
   pageHeading: 'Message templates',
   emptyTemplates: 'You do not have any templates yet.',
   listOfTemplates: 'List of templates',
@@ -440,6 +441,7 @@ const channelGuidance = {
 
 const templateFormNhsApp = {
   pageTitle: generatePageTitle('Create NHS App message template'),
+  editPageTitle: generatePageTitle('Edit NHS App message template'),
   pageHeadingSuffix: 'NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
@@ -452,6 +454,7 @@ const templateFormNhsApp = {
 
 const templateFormEmail = {
   pageTitle: generatePageTitle('Create email template'),
+  editPageTitle: generatePageTitle('Edit email template'),
   pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
@@ -464,6 +467,7 @@ const templateFormEmail = {
 
 const templateFormSms = {
   pageTitle: generatePageTitle('Create text message template'),
+  editPageTitle: generatePageTitle('Edit text message template'),
   pageHeadingSuffix: 'text message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
