@@ -37,7 +37,7 @@ export const languageMapping = (language: Language) =>
     ur: 'Urdu',
     zh: 'Chinese',
   })[language];
-const letterTypeMapping = (letterType: LetterType) =>
+export const letterTypeMapping = (letterType: LetterType) =>
   ({
     x3: 'Audio CD',
     q1: 'Braille',

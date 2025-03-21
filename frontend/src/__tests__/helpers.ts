@@ -7,7 +7,7 @@ function* iteratorFromList<T>(list: T[]): IterableIterator<T> {
   }
 }
 
-export const getMockFormData = (formData: Record<string, string>) =>
+export const getMockFormData = (formData: Record<string, string | File>) =>
   mockDeep<FormData>({
     entries: jest.fn().mockImplementation(() => {
       const formDataEntries = Object.entries(formData);
