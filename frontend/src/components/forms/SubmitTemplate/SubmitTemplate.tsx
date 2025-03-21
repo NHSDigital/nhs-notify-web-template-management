@@ -15,7 +15,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateId,
   goBackPath,
   submitPath,
-}) => {
+}: SubmitTemplatePageComponentProps) => {
   const {
     pageHeading,
     warningCalloutLabel,

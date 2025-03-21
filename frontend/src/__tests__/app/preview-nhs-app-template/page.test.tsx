@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
+import PreviewNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/preview-nhs-app-template/[templateId]/page';
 import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -25,6 +27,7 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',

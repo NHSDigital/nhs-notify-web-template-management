@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
+import PreviewSMSTemplatePage, {
+  generateMetadata,
+} from '@app/preview-text-message-template/[templateId]/page';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -25,6 +27,7 @@ describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'SMS',

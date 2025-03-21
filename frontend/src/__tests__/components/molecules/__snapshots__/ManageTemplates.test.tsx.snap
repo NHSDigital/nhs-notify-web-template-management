@@ -136,25 +136,31 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <p
-                class="nhsuk-u-margin-bottom-2"
+              <div
+                class="actionLinksWrapper"
               >
-                <a
-                  href="/copy-template/1"
-                  id="copy-template-link-0"
+                <p
+                  class="nhsuk-u-margin-bottom-2"
                 >
-                  Copy
-                </a>
-              </p>
-              <p
-                class="nhsuk-u-margin-bottom-2"
-              >
-                <a
-                  href="/delete-template/1"
+                  <a
+                    aria-label="Copy Template 1"
+                    href="/copy-template/1"
+                    id="copy-template-link-0"
+                  >
+                    Copy
+                  </a>
+                </p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
                 >
-                  Delete
-                </a>
-              </p>
+                  <a
+                    aria-label="Delete Template 1"
+                    href="/delete-template/1"
+                  >
+                    Delete
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
           <tr
@@ -228,16 +234,21 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
-              <p
-                class="nhsuk-u-margin-bottom-2"
+              <div
+                class="actionLinksWrapper"
               >
-                <a
-                  href="/copy-template/2"
-                  id="copy-template-link-1"
+                <p
+                  class="nhsuk-u-margin-bottom-2"
                 >
-                  Copy
-                </a>
-              </p>
+                  <a
+                    aria-label="Copy Template 2"
+                    href="/copy-template/2"
+                    id="copy-template-link-1"
+                  >
+                    Copy
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
           <tr
@@ -311,6 +322,9 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               >
                 Action 
               </span>
+              <div
+                class="actionLinksWrapper"
+              />
             </td>
           </tr>
         </tbody>
@@ -456,16 +470,21 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <p
-                class="nhsuk-u-margin-bottom-2"
+              <div
+                class="actionLinksWrapper"
               >
-                <a
-                  href="/copy-template/1"
-                  id="copy-template-link-0"
+                <p
+                  class="nhsuk-u-margin-bottom-2"
                 >
-                  Copy
-                </a>
-              </p>
+                  <a
+                    aria-label="Copy Template 1"
+                    href="/copy-template/1"
+                    id="copy-template-link-0"
+                  >
+                    Copy
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
           <tr
@@ -539,16 +558,21 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
-              <p
-                class="nhsuk-u-margin-bottom-2"
+              <div
+                class="actionLinksWrapper"
               >
-                <a
-                  href="/copy-template/2"
-                  id="copy-template-link-1"
+                <p
+                  class="nhsuk-u-margin-bottom-2"
                 >
-                  Copy
-                </a>
-              </p>
+                  <a
+                    aria-label="Copy Template 2"
+                    href="/copy-template/2"
+                    id="copy-template-link-1"
+                  >
+                    Copy
+                  </a>
+                </p>
+              </div>
             </td>
           </tr>
           <tr
@@ -622,6 +646,9 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
               >
                 Action 
               </span>
+              <div
+                class="actionLinksWrapper"
+              />
             </td>
           </tr>
         </tbody>

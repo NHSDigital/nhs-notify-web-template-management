@@ -5,7 +5,9 @@ import { redirect } from 'next/navigation';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
-import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
+import EditNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/edit-nhs-app-template/[templateId]/page';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
 
@@ -20,6 +22,7 @@ describe('EditNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
+    generateMetadata();
     const template = {
       id: 'template-id',
       templateType: 'NHS_APP',

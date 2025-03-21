@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import EditSmsTemplatePage from '@app/edit-text-message-template/[templateId]/page';
+import EditSmsTemplatePage, {
+  generateMetadata,
+} from '@app/edit-text-message-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
@@ -60,6 +62,7 @@ describe('EditSmsTemplatePage', () => {
   });
 
   it('should render CreateSmsTemplate component when templateId is found', async () => {
+    generateMetadata();
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const smsTemplate: SMSTemplate = {

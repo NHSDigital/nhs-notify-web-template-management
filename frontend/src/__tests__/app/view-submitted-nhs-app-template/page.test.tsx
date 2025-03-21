@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedNHSAppTemplatePage from '@app/view-submitted-nhs-app-template/[templateId]/page';
+import ViewSubmittedNHSAppTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-nhs-app-template/[templateId]/page';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -19,6 +21,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',

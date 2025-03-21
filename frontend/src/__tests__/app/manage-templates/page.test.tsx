@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import ManageTemplatesPage from '@app/manage-templates/page';
+import ManageTemplatesPage, {
+  generateMetadata,
+} from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -26,6 +28,7 @@ describe('ManageTemplatesPage', () => {
     jest.resetAllMocks();
   });
   test('renders the page without templates', async () => {
+    generateMetadata();
     render(await ManageTemplatesPage());
 
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();

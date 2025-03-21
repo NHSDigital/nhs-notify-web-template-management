@@ -1,5 +1,6 @@
 'use server';
 
+import { Metadata } from 'next';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import {
   PageProps,
@@ -7,6 +8,15 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormNhsApp;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: editPageTitle,
+  };
+}
 
 const CreateNhsAppTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

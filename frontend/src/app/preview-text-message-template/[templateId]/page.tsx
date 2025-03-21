@@ -1,5 +1,6 @@
 'use server';
 
+import { Metadata } from 'next';
 import {
   PageProps,
   validateSMSTemplate,
@@ -7,6 +8,15 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const PreviewSMSTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

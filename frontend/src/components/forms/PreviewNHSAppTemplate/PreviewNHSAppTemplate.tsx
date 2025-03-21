@@ -36,7 +36,7 @@ export function PreviewNHSAppTemplate({
   return (
     <>
       <BackLink href={`${getBasePath()}/manage-templates`} id='back-link'>
-        Back to all templates
+        {backLinkText}
       </BackLink>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

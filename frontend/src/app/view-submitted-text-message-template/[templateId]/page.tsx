@@ -7,6 +7,16 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const ViewSubmittedSMSTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

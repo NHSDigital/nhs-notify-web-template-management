@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
+import SmsTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/text-message-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
@@ -18,6 +20,7 @@ describe('TextMessageTemplateSubmittedPage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
+    generateMetadata();
     const template = {
       id: 'template-id',
       templateType: 'SMS',

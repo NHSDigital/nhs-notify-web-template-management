@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import SubmitSmsTemplatePage from '@app/submit-text-message-template/[templateId]/page';
+import SubmitSmsTemplatePage, {
+  generateMetadata,
+} from '@app/submit-text-message-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
@@ -24,6 +26,7 @@ describe('SubmitSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
+    generateMetadata();
     const state = {
       id: 'template-id',
       templateType: 'SMS',

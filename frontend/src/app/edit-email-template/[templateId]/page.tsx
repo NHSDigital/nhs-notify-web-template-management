@@ -5,6 +5,16 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormEmail;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: editPageTitle,
+  };
+}
 
 const CreateEmailTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

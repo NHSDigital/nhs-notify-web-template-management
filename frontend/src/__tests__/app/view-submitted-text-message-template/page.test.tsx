@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
+import ViewSubmittedSMSTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
@@ -19,6 +21,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
+    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'SMS',

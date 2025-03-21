@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import SubmitEmailTemplatePage from '@app/submit-email-template/[templateId]/page';
+import SubmitEmailTemplatePage, {
+  generateMetadata,
+} from '@app/submit-email-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
@@ -19,6 +21,7 @@ describe('SubmitEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
+    generateMetadata();
     const state = {
       id: 'template-id',
       templateType: 'EMAIL',

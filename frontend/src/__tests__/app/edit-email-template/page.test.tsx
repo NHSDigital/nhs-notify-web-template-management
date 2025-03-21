@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
+import EditEmailTemplatePage, {
+  generateMetadata,
+} from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
@@ -60,6 +62,7 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
+    generateMetadata();
     getTemplateMock.mockResolvedValueOnce(template);
 
     const emailTemplate: EmailTemplate = {

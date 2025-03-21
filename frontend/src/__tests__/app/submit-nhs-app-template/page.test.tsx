@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[templateId]/page';
+import SubmitNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/submit-nhs-app-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
@@ -24,6 +26,7 @@ describe('SubmitNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
+    generateMetadata();
     const state = {
       id: 'template-id',
       templateType: 'NHS_APP',

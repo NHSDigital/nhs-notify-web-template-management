@@ -1,5 +1,6 @@
 'use server';
 
+import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import {
@@ -7,6 +8,15 @@ import {
   validateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle.SMS,
+  };
+}
 
 const SubmitSmsTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
