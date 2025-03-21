@@ -28,6 +28,8 @@ import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
 import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
 import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
+import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
+import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/temnplate-mgmt-template-submitted-letter-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -52,9 +54,11 @@ const protectedPages = [
   TemplateMgmtSubmitEmailPage,
   TemplateMgmtSubmitNhsAppPage,
   TemplateMgmtSubmitSmsPage,
+  TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedEmailPage,
   TemplateMgmtTemplateSubmittedNhsAppPage,
   TemplateMgmtTemplateSubmittedSmsPage,
+  TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtViewSubmittedEmailPage,
   TemplateMgmtViewSubmittedNhsAppPage,
   TemplateMgmtViewSubmittedSmsPage,
