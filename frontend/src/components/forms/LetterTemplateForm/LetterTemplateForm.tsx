@@ -13,16 +13,15 @@ import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import {
+  alphabeticalLanguageList,
+  alphabeticalLetterTypeList,
   CreateLetterTemplate,
-  languageMapping,
-  letterTypeMapping,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
 
@@ -115,9 +114,9 @@ export const LetterTemplateForm: FC<
                 error={templateLetterTypeError}
                 errorProps={{ id: 'letterTemplateLetterType--error-message' }}
               >
-                {LETTER_TYPE_LIST.map((type) => (
-                  <Select.Option key={`option-${type}`} value={type}>
-                    {letterTypeMapping(type)}
+                {alphabeticalLetterTypeList.map(([typeCode, typeName]) => (
+                  <Select.Option key={`option-${typeCode}`} value={typeCode}>
+                    {typeName}
                   </Select.Option>
                 ))}
               </Select>
@@ -130,9 +129,9 @@ export const LetterTemplateForm: FC<
                 error={templateLanguageError}
                 errorProps={{ id: 'letterTemplateLanguage--error-message' }}
               >
-                {LANGUAGE_LIST.map((language) => (
-                  <Select.Option key={`option-${language}`} value={language}>
-                    {languageMapping(language)}
+                {alphabeticalLanguageList.map(([langCode, langName]) => (
+                  <Select.Option key={`option-${langCode}`} value={langCode}>
+                    {langName}
                   </Select.Option>
                 ))}
               </Select>

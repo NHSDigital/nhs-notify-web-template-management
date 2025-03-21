@@ -8,17 +8,14 @@ import {
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
 
-const [firstLetterType, ...remainingLetterTypes] = LETTER_TYPE_LIST;
-const [firstLanguage, ...remainingLanguages] = LANGUAGE_LIST;
-
 const $CreateLetterTemplateSchema = z.object({
   letterTemplateName: z
     .string({ message: 'Enter a template name' })
     .min(1, { message: 'Enter a template name' }),
-  letterTemplateLetterType: z.enum([firstLetterType, ...remainingLetterTypes], {
+  letterTemplateLetterType: z.enum(LETTER_TYPE_LIST, {
     message: 'Choose a letter type',
   }),
-  letterTemplateLanguage: z.enum([firstLanguage, ...remainingLanguages], {
+  letterTemplateLanguage: z.enum(LANGUAGE_LIST, {
     message: 'Choose a language',
   }),
   letterTemplatePdf: z

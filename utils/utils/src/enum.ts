@@ -5,46 +5,54 @@ import {
   Language,
 } from 'nhs-notify-backend-client';
 
-export const languageMapping = (language: Language) =>
-  ({
-    ar: 'Arabic',
-    bg: 'Bulgarian',
-    bn: 'Bengali',
-    de: 'German',
-    el: 'Greek',
-    en: 'English',
-    es: 'Spanish',
-    fa: 'Persian',
-    fr: 'French',
-    gu: 'Gujurati',
-    hi: 'Hindi',
-    hu: 'Hungarian',
-    it: 'Italian',
-    ku: 'Kurdish',
-    lt: 'Lithuanian',
-    lv: 'Latvian',
-    ne: 'Nepali',
-    pa: 'Punjabi',
-    pl: 'Polish',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    ru: 'Russian',
-    sk: 'Slovak',
-    so: 'Somali',
-    sq: 'Albanian',
-    ta: 'Tamil',
-    tr: 'Turkish',
-    ur: 'Urdu',
-    zh: 'Chinese',
-  })[language];
+const languageMap: Record<Language, string> = {
+  ar: 'Arabic',
+  bg: 'Bulgarian',
+  bn: 'Bengali',
+  de: 'German',
+  el: 'Greek',
+  en: 'English',
+  es: 'Spanish',
+  fa: 'Persian',
+  fr: 'French',
+  gu: 'Gujurati',
+  hi: 'Hindi',
+  hu: 'Hungarian',
+  it: 'Italian',
+  ku: 'Kurdish',
+  lt: 'Lithuanian',
+  lv: 'Latvian',
+  ne: 'Nepali',
+  pa: 'Punjabi',
+  pl: 'Polish',
+  pt: 'Portuguese',
+  ro: 'Romanian',
+  ru: 'Russian',
+  sk: 'Slovak',
+  so: 'Somali',
+  sq: 'Albanian',
+  ta: 'Tamil',
+  tr: 'Turkish',
+  ur: 'Urdu',
+  zh: 'Chinese',
+};
+export const languageMapping = (language: Language) => languageMap[language];
+export const alphabeticalLanguageList = Object.entries(languageMap).sort(
+  ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
+);
+
+const letterTypeMap: Record<LetterType, string> = {
+  x3: 'Audio CD',
+  q1: 'Braille',
+  q4: 'British Sign Language',
+  x0: 'Standard',
+  x1: 'Large print',
+};
 export const letterTypeMapping = (letterType: LetterType) =>
-  ({
-    x3: 'Audio CD',
-    q1: 'Braille',
-    q4: 'British Sign Language',
-    x0: 'Standard',
-    x1: 'Large print',
-  })[letterType];
+  letterTypeMap[letterType];
+export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
+  ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
+);
 
 export const letterTypeDisplayMappings = (
   letterType: LetterType,

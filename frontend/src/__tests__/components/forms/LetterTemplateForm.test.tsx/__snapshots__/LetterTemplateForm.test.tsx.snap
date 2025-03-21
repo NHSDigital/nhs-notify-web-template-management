@@ -220,15 +220,15 @@ exports[`renders page one error 1`] = `
                 British Sign Language
               </option>
               <option
+                value="x1"
+              >
+                Large print
+              </option>
+              <option
                 selected=""
                 value="x0"
               >
                 Standard
-              </option>
-              <option
-                value="x1"
-              >
-                Large print
               </option>
             </select>
           </div>
@@ -255,9 +255,19 @@ exports[`renders page one error 1`] = `
               name="letterTemplateLanguage"
             >
               <option
+                value="sq"
+              >
+                Albanian
+              </option>
+              <option
                 value="ar"
               >
                 Arabic
+              </option>
+              <option
+                value="bn"
+              >
+                Bengali
               </option>
               <option
                 value="bg"
@@ -265,9 +275,20 @@ exports[`renders page one error 1`] = `
                 Bulgarian
               </option>
               <option
-                value="bn"
+                value="zh"
               >
-                Bengali
+                Chinese
+              </option>
+              <option
+                selected=""
+                value="en"
+              >
+                English
+              </option>
+              <option
+                value="fr"
+              >
+                French
               </option>
               <option
                 value="de"
@@ -278,27 +299,6 @@ exports[`renders page one error 1`] = `
                 value="el"
               >
                 Greek
-              </option>
-              <option
-                selected=""
-                value="en"
-              >
-                English
-              </option>
-              <option
-                value="es"
-              >
-                Spanish
-              </option>
-              <option
-                value="fa"
-              >
-                Persian
-              </option>
-              <option
-                value="fr"
-              >
-                French
               </option>
               <option
                 value="gu"
@@ -326,14 +326,14 @@ exports[`renders page one error 1`] = `
                 Kurdish
               </option>
               <option
-                value="lt"
-              >
-                Lithuanian
-              </option>
-              <option
                 value="lv"
               >
                 Latvian
+              </option>
+              <option
+                value="lt"
+              >
+                Lithuanian
               </option>
               <option
                 value="ne"
@@ -341,9 +341,9 @@ exports[`renders page one error 1`] = `
                 Nepali
               </option>
               <option
-                value="pa"
+                value="fa"
               >
-                Punjabi
+                Persian
               </option>
               <option
                 value="pl"
@@ -354,6 +354,11 @@ exports[`renders page one error 1`] = `
                 value="pt"
               >
                 Portuguese
+              </option>
+              <option
+                value="pa"
+              >
+                Punjabi
               </option>
               <option
                 value="ro"
@@ -376,9 +381,9 @@ exports[`renders page one error 1`] = `
                 Somali
               </option>
               <option
-                value="sq"
+                value="es"
               >
-                Albanian
+                Spanish
               </option>
               <option
                 value="ta"
@@ -394,11 +399,6 @@ exports[`renders page one error 1`] = `
                 value="ur"
               >
                 Urdu
-              </option>
-              <option
-                value="zh"
-              >
-                Chinese
               </option>
             </select>
           </div>
@@ -725,14 +725,14 @@ exports[`renders page with multiple errors 1`] = `
                 British Sign Language
               </option>
               <option
-                value="x0"
-              >
-                Standard
-              </option>
-              <option
                 value="x1"
               >
                 Large print
+              </option>
+              <option
+                value="x0"
+              >
+                Standard
               </option>
             </select>
           </div>
@@ -759,9 +759,19 @@ exports[`renders page with multiple errors 1`] = `
               name="letterTemplateLanguage"
             >
               <option
+                value="sq"
+              >
+                Albanian
+              </option>
+              <option
                 value="ar"
               >
                 Arabic
+              </option>
+              <option
+                value="bn"
+              >
+                Bengali
               </option>
               <option
                 value="bg"
@@ -769,9 +779,19 @@ exports[`renders page with multiple errors 1`] = `
                 Bulgarian
               </option>
               <option
-                value="bn"
+                value="zh"
               >
-                Bengali
+                Chinese
+              </option>
+              <option
+                value="en"
+              >
+                English
+              </option>
+              <option
+                value="fr"
+              >
+                French
               </option>
               <option
                 value="de"
@@ -782,26 +802,6 @@ exports[`renders page with multiple errors 1`] = `
                 value="el"
               >
                 Greek
-              </option>
-              <option
-                value="en"
-              >
-                English
-              </option>
-              <option
-                value="es"
-              >
-                Spanish
-              </option>
-              <option
-                value="fa"
-              >
-                Persian
-              </option>
-              <option
-                value="fr"
-              >
-                French
               </option>
               <option
                 value="gu"
@@ -829,14 +829,14 @@ exports[`renders page with multiple errors 1`] = `
                 Kurdish
               </option>
               <option
-                value="lt"
-              >
-                Lithuanian
-              </option>
-              <option
                 value="lv"
               >
                 Latvian
+              </option>
+              <option
+                value="lt"
+              >
+                Lithuanian
               </option>
               <option
                 value="ne"
@@ -844,9 +844,9 @@ exports[`renders page with multiple errors 1`] = `
                 Nepali
               </option>
               <option
-                value="pa"
+                value="fa"
               >
-                Punjabi
+                Persian
               </option>
               <option
                 value="pl"
@@ -857,6 +857,11 @@ exports[`renders page with multiple errors 1`] = `
                 value="pt"
               >
                 Portuguese
+              </option>
+              <option
+                value="pa"
+              >
+                Punjabi
               </option>
               <option
                 value="ro"
@@ -879,9 +884,9 @@ exports[`renders page with multiple errors 1`] = `
                 Somali
               </option>
               <option
-                value="sq"
+                value="es"
               >
-                Albanian
+                Spanish
               </option>
               <option
                 value="ta"
@@ -897,11 +902,6 @@ exports[`renders page with multiple errors 1`] = `
                 value="ur"
               >
                 Urdu
-              </option>
-              <option
-                value="zh"
-              >
-                Chinese
               </option>
             </select>
           </div>
@@ -1176,14 +1176,14 @@ exports[`renders page with preloaded field values 1`] = `
                 British Sign Language
               </option>
               <option
-                value="x0"
-              >
-                Standard
-              </option>
-              <option
                 value="x1"
               >
                 Large print
+              </option>
+              <option
+                value="x0"
+              >
+                Standard
               </option>
             </select>
           </div>
@@ -1210,10 +1210,20 @@ exports[`renders page with preloaded field values 1`] = `
               name="letterTemplateLanguage"
             >
               <option
+                value="sq"
+              >
+                Albanian
+              </option>
+              <option
                 selected=""
                 value="ar"
               >
                 Arabic
+              </option>
+              <option
+                value="bn"
+              >
+                Bengali
               </option>
               <option
                 value="bg"
@@ -1221,9 +1231,19 @@ exports[`renders page with preloaded field values 1`] = `
                 Bulgarian
               </option>
               <option
-                value="bn"
+                value="zh"
               >
-                Bengali
+                Chinese
+              </option>
+              <option
+                value="en"
+              >
+                English
+              </option>
+              <option
+                value="fr"
+              >
+                French
               </option>
               <option
                 value="de"
@@ -1234,26 +1254,6 @@ exports[`renders page with preloaded field values 1`] = `
                 value="el"
               >
                 Greek
-              </option>
-              <option
-                value="en"
-              >
-                English
-              </option>
-              <option
-                value="es"
-              >
-                Spanish
-              </option>
-              <option
-                value="fa"
-              >
-                Persian
-              </option>
-              <option
-                value="fr"
-              >
-                French
               </option>
               <option
                 value="gu"
@@ -1281,14 +1281,14 @@ exports[`renders page with preloaded field values 1`] = `
                 Kurdish
               </option>
               <option
-                value="lt"
-              >
-                Lithuanian
-              </option>
-              <option
                 value="lv"
               >
                 Latvian
+              </option>
+              <option
+                value="lt"
+              >
+                Lithuanian
               </option>
               <option
                 value="ne"
@@ -1296,9 +1296,9 @@ exports[`renders page with preloaded field values 1`] = `
                 Nepali
               </option>
               <option
-                value="pa"
+                value="fa"
               >
-                Punjabi
+                Persian
               </option>
               <option
                 value="pl"
@@ -1309,6 +1309,11 @@ exports[`renders page with preloaded field values 1`] = `
                 value="pt"
               >
                 Portuguese
+              </option>
+              <option
+                value="pa"
+              >
+                Punjabi
               </option>
               <option
                 value="ro"
@@ -1331,9 +1336,9 @@ exports[`renders page with preloaded field values 1`] = `
                 Somali
               </option>
               <option
-                value="sq"
+                value="es"
               >
-                Albanian
+                Spanish
               </option>
               <option
                 value="ta"
@@ -1349,11 +1354,6 @@ exports[`renders page with preloaded field values 1`] = `
                 value="ur"
               >
                 Urdu
-              </option>
-              <option
-                value="zh"
-              >
-                Chinese
               </option>
             </select>
           </div>

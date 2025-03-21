@@ -1,5 +1,7 @@
 import { Language, LetterType } from 'nhs-notify-backend-client';
 import {
+  alphabeticalLanguageList,
+  alphabeticalLetterTypeList,
   letterTypeDisplayMappings,
   previewTemplatePages,
   templateStatusToDisplayMappings,
@@ -43,6 +45,56 @@ describe('letterTypeDisplayMappings', () => {
       expect(letterTypeDisplayMappings(letterType, language)).toBe(expected);
     }
   );
+});
+
+describe('alphabeticalLetterTypeList', () => {
+  test('Alphabetical letter type list produced', () => {
+    console.log(alphabeticalLetterTypeList);
+    expect(alphabeticalLetterTypeList).toEqual([
+      ['x3', 'Audio CD'],
+      ['q1', 'Braille'],
+      ['q4', 'British Sign Language'],
+      ['x1', 'Large print'],
+      ['x0', 'Standard'],
+    ]);
+  });
+});
+
+describe('alphabeticalLanguageList', () => {
+  test('Alphabetical language list produced', () => {
+    console.log(alphabeticalLanguageList);
+    expect(alphabeticalLanguageList).toEqual([
+      ['sq', 'Albanian'],
+      ['ar', 'Arabic'],
+      ['bn', 'Bengali'],
+      ['bg', 'Bulgarian'],
+      ['zh', 'Chinese'],
+      ['en', 'English'],
+      ['fr', 'French'],
+      ['de', 'German'],
+      ['el', 'Greek'],
+      ['gu', 'Gujurati'],
+      ['hi', 'Hindi'],
+      ['hu', 'Hungarian'],
+      ['it', 'Italian'],
+      ['ku', 'Kurdish'],
+      ['lv', 'Latvian'],
+      ['lt', 'Lithuanian'],
+      ['ne', 'Nepali'],
+      ['fa', 'Persian'],
+      ['pl', 'Polish'],
+      ['pt', 'Portuguese'],
+      ['pa', 'Punjabi'],
+      ['ro', 'Romanian'],
+      ['ru', 'Russian'],
+      ['sk', 'Slovak'],
+      ['so', 'Somali'],
+      ['es', 'Spanish'],
+      ['ta', 'Tamil'],
+      ['tr', 'Turkish'],
+      ['ur', 'Urdu'],
+    ]);
+  });
 });
 
 describe('templateStatusToDisplayMappings', () => {
