@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import SubmitLetterTemplatePage, {
-  generateMetaData,
+  generateMetadata,
 } from '@app/submit-letter-template/[templateId]/page';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
 import { redirect } from 'next/navigation';
@@ -95,7 +95,7 @@ describe('SubmitLetterTemplatePage', () => {
   );
 
   test('should generate metadata', async () => {
-    const metadata = await generateMetaData();
+    const metadata = await generateMetadata();
 
     expect(metadata).toEqual({
       title: 'Submit letter template',
