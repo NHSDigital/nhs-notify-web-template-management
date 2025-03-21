@@ -1,7 +1,7 @@
 import {
+  CreateLetterProperties,
   CreateTemplate,
   EmailProperties,
-  LetterFiles,
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
@@ -27,32 +27,35 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-type NhsAppPropertiesWithType = NhsAppProperties & {
+type NhsAppType = {
   templateType: 'NHS_APP';
 };
 
-type EmailPropertiesWithType = EmailProperties & {
+type EmailType = {
   templateType: 'EMAIL';
 };
 
-type SmsPropertiesWithType = SmsProperties & {
+type SmsType = {
   templateType: 'SMS';
 };
 
-type LetterPropertiesWithType = LetterProperties & {
+type LetterType = {
   templateType: 'LETTER';
 };
 
-export type CreateNHSAppTemplate = CreateTemplate & NhsAppPropertiesWithType;
-export type CreateEmailTemplate = CreateTemplate & EmailPropertiesWithType;
-export type CreateSMSTemplate = CreateTemplate & SmsPropertiesWithType;
-export type CreateLetterTemplate = CreateTemplate & LetterPropertiesWithType;
+export type CreateNHSAppTemplate = CreateTemplate &
+  NhsAppProperties &
+  NhsAppType;
+export type CreateEmailTemplate = CreateTemplate & EmailProperties & EmailType;
+export type CreateSMSTemplate = CreateTemplate & SmsProperties & SmsType;
+export type CreateLetterTemplate = CreateTemplate &
+  CreateLetterProperties &
+  LetterType;
 
-export type NHSAppTemplate = TemplateDto & NhsAppPropertiesWithType;
-export type EmailTemplate = TemplateDto & EmailPropertiesWithType;
-export type SMSTemplate = TemplateDto & SmsPropertiesWithType;
-export type LetterTemplate = TemplateDto &
-  LetterPropertiesWithType & { files: LetterFiles };
+export type NHSAppTemplate = TemplateDto & NhsAppProperties & NhsAppType;
+export type EmailTemplate = TemplateDto & EmailProperties & EmailType;
+export type SMSTemplate = TemplateDto & SmsProperties & SmsType;
+export type LetterTemplate = TemplateDto & LetterProperties & LetterType;
 
 export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 

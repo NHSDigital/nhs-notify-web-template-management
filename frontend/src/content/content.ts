@@ -361,7 +361,7 @@ const nameYourTemplate = {
     NHS_APP: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
     EMAIL: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
     SMS: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    LETTER: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
+    LETTER: `For example, 'Letter - covid19 2023 - over 65s - version 3'`,
   },
 };
 
@@ -432,6 +432,32 @@ const templateFormNhsApp = {
   characterCountText: ' of 5000 characters',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+};
+
+const templateFormLetter = {
+  backLinkText: 'Back to choose a template type',
+  errorHeading: 'There is a problem',
+  pageHeading: 'Upload a letter template',
+  templateNameLabelText: 'Template name',
+  templateNameHintText: 'This will not be visible to recipients.',
+  templateTypeLabelText: 'Letter type',
+  templateTypeHintText: 'Choose the type of letter template you are uploading',
+  templateLanguageLabelText: 'Additional language',
+  templateLanguageHintText: 'Choose the language of this letter template',
+  templatePdfLabelText: 'Letter template PDF',
+  templatePdfHintText:
+    'Your letter must follow our letter specification and be no bigger than 5MB',
+  templatePdfGuidanceLink: '/using-nhs-notify/letter-templates',
+  templatePdfGuidanceLinkText:
+    'Learn how to create letter templates to our specification (opens in a new tab)',
+  templateCsvLabelText: 'Text personalisation CSV (optional)',
+  templateCsvHintText:
+    'If your letter template uses personalisation, upload your test personalisation data.',
+  templateCsvGuidanceLink:
+    '/using-nhs-notify/personalisation#providing-example-data',
+  templateCsvGuidanceLinkText:
+    'Learn how to provide test personalisation data (opens in a new tab)',
+  buttonText: 'Save and upload',
 };
 
 const templateFormEmail = {
@@ -514,6 +540,7 @@ const content = {
     previewSMSTemplate,
     submitTemplate,
     templateFormEmail,
+    templateFormLetter,
     templateFormNhsApp,
     templateFormSms,
     templateSubmitted,

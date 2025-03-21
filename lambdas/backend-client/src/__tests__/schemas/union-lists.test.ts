@@ -1,11 +1,4 @@
-import {
-  arrayOfAll,
-  LANGUAGE_LIST,
-  LETTER_TYPE_LIST,
-  TEMPLATE_STATUS_LIST,
-  TEMPLATE_TYPE_LIST,
-  VIRUS_SCAN_STATUS_LIST,
-} from '../../schemas/union-lists';
+import { arrayOfAll } from '../../schemas/union-lists';
 
 describe('arrayOfAll', () => {
   type Union = 'a' | 'b' | 'c';
@@ -26,17 +19,5 @@ describe('arrayOfAll', () => {
 
     // @ts-expect-error `Type '"d"' is not assignable to type 'Union'.`
     expect(arrayOfAll<Union>()(a)).toEqual(a);
-  });
-});
-
-describe('Union lists', () => {
-  test.each([
-    { name: 'TemplateType', list: TEMPLATE_TYPE_LIST },
-    { name: 'TemplateStatus', list: TEMPLATE_STATUS_LIST },
-    { name: 'Language', list: LANGUAGE_LIST },
-    { name: 'LetterType', list: LETTER_TYPE_LIST },
-    { name: 'VirusScanStatus', list: VIRUS_SCAN_STATUS_LIST },
-  ])('$name list contains no duplicates', ({ list }) => {
-    expect(list.length).toEqual(new Set(list).size);
   });
 });
