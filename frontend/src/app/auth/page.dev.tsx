@@ -8,7 +8,6 @@ import '@aws-amplify/ui-react/styles.css';
 // eslint-disable-next-line  unicorn/prefer-node-protocol
 import path from 'path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import PageTitle from '@hooks/page-title.hook';
 
 const useRedirectPath = () => {
   const searchParams = useSearchParams();
@@ -29,7 +28,6 @@ const SignIn = () => {
 };
 
 export default function Page() {
-  PageTitle('Sign in - Create and submit templates - NHS Notify');
   return (
     <NHSNotifyMain>
       <Suspense fallback={<p>Loading...</p>}>
