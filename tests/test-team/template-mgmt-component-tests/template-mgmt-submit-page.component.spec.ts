@@ -16,6 +16,7 @@ import {
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
 import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
+import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(TestUserId.User1);
@@ -133,6 +134,35 @@ async function createTemplates() {
         ...nhsAppFields,
       },
     },
+    letter: {
+      empty: {
+        id: 'submit-page-invalid-letter-template',
+        version: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateType: 'LETTER',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        owner: user.userId,
+      } as Template,
+      submit: TemplateFactory.createLetterTemplate(
+        'test-template-name',
+        user.userId,
+        'submit-letter-submit-template',
+        'PASSED'
+      ),
+      submitAndReturn: TemplateFactory.createLetterTemplate(
+        'test-template-name',
+        user.userId,
+        'submit-and-return-letter-template',
+        'PASSED'
+      ),
+      valid: TemplateFactory.createLetterTemplate(
+        'test-template-name',
+        user.userId,
+        'valid-letter-submit-template',
+        'PASSED'
+      ),
+    },
   };
 }
 
@@ -146,6 +176,7 @@ test.describe('Submit template Page', () => {
       ...Object.values(templates.email),
       ...Object.values(templates['text-message']),
       ...Object.values(templates['nhs-app']),
+      ...Object.values(templates.letter),
     ];
     await templateStorageHelper.seedTemplateData(templateList);
   });
@@ -169,6 +200,11 @@ test.describe('Submit template Page', () => {
       channelName: 'NHS App',
       channelIdentifier: 'nhs-app',
       PageModel: TemplateMgmtSubmitNhsAppPage,
+    },
+    {
+      channelName: 'Letter',
+      channelIdentifier: 'letter',
+      PageModel: TemplateMgmtSubmitLetterPage,
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
