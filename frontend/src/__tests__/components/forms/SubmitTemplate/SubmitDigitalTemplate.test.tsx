@@ -1,4 +1,4 @@
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
+import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import { render } from '@testing-library/react';
 
 jest.mock('@utils/amplify-utils');
@@ -18,10 +18,10 @@ jest.mock('@forms/SubmitTemplate/server-action', () => ({
   submitTemplate: '/action',
 }));
 
-describe('SubmitTemplate component', () => {
+describe('SubmitDigitalTemplate component', () => {
   it('should render', () => {
     const container = render(
-      <SubmitTemplate
+      <SubmitDigitalTemplate
         templateId='template-id'
         templateName='template-name'
         goBackPath='example'
