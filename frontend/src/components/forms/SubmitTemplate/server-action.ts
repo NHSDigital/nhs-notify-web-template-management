@@ -3,15 +3,14 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, saveTemplate } from '@utils/form-actions';
 import { z } from 'zod';
-import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-
-const $TemplateIdSchema = z.string();
+import { canSubmit } from './can-submit';
+import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 
 export async function submitTemplate(route: string, formData: FormData) {
-  const { success, data: templateId } = $TemplateIdSchema.safeParse(
-    formData.get('templateId')
-  );
+  const { success, data: templateId } = z
+    .string()
+    .safeParse(formData.get('templateId'));
 
   if (!success) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -21,7 +20,7 @@ export async function submitTemplate(route: string, formData: FormData) {
 
   const validatedTemplate = validateTemplate(template);
 
-  if (!validatedTemplate) {
+  if (!validatedTemplate || !canSubmit(validatedTemplate)) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 

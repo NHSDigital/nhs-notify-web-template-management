@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
+import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   PageProps,
   validateNHSAppTemplate,
@@ -20,7 +20,7 @@ const SubmitNhsAppTemplatePage = async (props: PageProps) => {
   }
 
   return (
-    <SubmitTemplate
+    <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-nhs-app-template'

@@ -10,7 +10,7 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
-export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
+export const SubmitDigitalTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
   templateId,
   goBackPath,

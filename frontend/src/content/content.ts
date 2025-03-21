@@ -318,6 +318,24 @@ const submitTemplate = {
   buttonText: 'Submit template',
 };
 
+const submitLetterTemplate = {
+  ...submitTemplate,
+  pageHeading: 'Submit',
+  submitChecklistHeading: 'Before you submit this template',
+  submitChecklistIntroduction: 'Check that the template you uploaded:',
+  submitChecklistParagraphs: [
+    'If you need to make further changes to this template, go back and upload an updated or different letter',
+  ],
+  afterSubmissionHeading: 'After you submit this template',
+  afterSubmissionText: [
+    'Our service team will send you a proof of this letter template by email.',
+    'This email will also tell you what you need todo next.',
+  ],
+  warningCalloutLabel: 'Important',
+  warningCalloutText:
+    "When you submit this template you will not be able to make further changes. If you still need to change this template after it's submitted, replace it with a new template.",
+};
+
 const copyTemplate = {
   pageHeading: 'Copy',
   radiosLabel: 'Choose a template type',
@@ -513,6 +531,7 @@ const content = {
     previewNHSAppTemplate,
     previewSMSTemplate,
     submitTemplate,
+    submitLetterTemplate,
     templateFormEmail,
     templateFormNhsApp,
     templateFormSms,

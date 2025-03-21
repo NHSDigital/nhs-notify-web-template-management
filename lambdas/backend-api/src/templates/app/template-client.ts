@@ -11,7 +11,6 @@ import {
   LetterFiles,
   TemplateStatus,
   $CreateNonLetterSchema,
-  $UpdateNonLetter,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -194,7 +193,7 @@ export class TemplateClient implements ITemplateClient {
     return this.update(
       templateId,
       template,
-      $UpdateNonLetter,
+      $UpdateTemplateSchema,
       owner,
       expectedStatus
     );
