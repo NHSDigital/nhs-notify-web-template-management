@@ -49,7 +49,6 @@ describe('letterTypeDisplayMappings', () => {
 
 describe('alphabeticalLetterTypeList', () => {
   test('Alphabetical letter type list produced', () => {
-    console.log(alphabeticalLetterTypeList);
     expect(alphabeticalLetterTypeList).toEqual([
       ['x3', 'Audio CD'],
       ['q1', 'Braille'],
@@ -62,7 +61,6 @@ describe('alphabeticalLetterTypeList', () => {
 
 describe('alphabeticalLanguageList', () => {
   test('Alphabetical language list produced', () => {
-    console.log(alphabeticalLanguageList);
     expect(alphabeticalLanguageList).toEqual([
       ['sq', 'Albanian'],
       ['ar', 'Arabic'],

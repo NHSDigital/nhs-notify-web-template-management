@@ -210,7 +210,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('createLetterTemplate - should thrown error when saving unexpectedly fails', async () => {
+  test('createLetterTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -244,7 +244,7 @@ describe('form-actions', () => {
     );
   });
 
-  test('createLetterTemplate - should thrown error when no token', async () => {
+  test('createLetterTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 

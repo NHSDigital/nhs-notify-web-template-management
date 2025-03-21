@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useActionState } from 'react';
+import { FC, useActionState, useState } from 'react';
 import {
   TextInput,
   HintText,
@@ -16,6 +16,7 @@ import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
   CreateLetterTemplate,
+  FormErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -24,6 +25,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
+import { $CreateLetterTemplateSchema } from './form-schema';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -50,6 +52,9 @@ export const LetterTemplateForm: FC<
   } = content.components.templateFormLetter;
 
   const [state, action] = useActionState(processFormActions, initialState);
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
 
   const [letterTemplateName, letterTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -61,19 +66,29 @@ export const LetterTemplateForm: FC<
     useTextInput<HTMLSelectElement>(state.language);
 
   const templateNameError =
-    state.validationError?.fieldErrors.letterTemplateName?.join(', ');
+    validationError?.fieldErrors.letterTemplateName?.join(', ');
 
   const templateLetterTypeError =
-    state.validationError?.fieldErrors.letterTemplateLetterType?.join(', ');
+    validationError?.fieldErrors.letterTemplateLetterType?.join(', ');
 
   const templateLanguageError =
-    state.validationError?.fieldErrors.letterTemplateLanguage?.join(', ');
+    validationError?.fieldErrors.letterTemplateLanguage?.join(', ');
 
   const templatePdfError =
-    state.validationError?.fieldErrors.letterTemplatePdf?.join(', ');
+    validationError?.fieldErrors.letterTemplatePdf?.join(', ');
 
   const templateCsvError =
-    state.validationError?.fieldErrors.letterTemplateCsv?.join(', ');
+    validationError?.fieldErrors.letterTemplateCsv?.join(', ');
+
+  const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
+    const validationResult = $CreateLetterTemplateSchema.safeParse(data);
+    if (!validationResult.success) {
+      event.preventDefault();
+      setValidationError(validationResult.error.flatten());
+    }
+  };
 
   return (
     <>
@@ -83,10 +98,14 @@ export const LetterTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <ZodErrorSummary
+              errorHeading={errorHeading}
+              state={{ validationError }}
+            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-letter-template'
+              formAttributes={{ onSubmit: validateForm }}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {pageHeading}
@@ -177,7 +196,10 @@ export const LetterTemplateForm: FC<
                   error={templateCsvError}
                 />
               </div>
-              <NHSNotifyButton id='create-letter-template-submit-button'>
+              <NHSNotifyButton
+                data-testid='submit-button'
+                id='create-letter-template-submit-button'
+              >
                 {buttonText}
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
