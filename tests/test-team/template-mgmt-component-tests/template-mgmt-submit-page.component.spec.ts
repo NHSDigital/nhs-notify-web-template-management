@@ -145,21 +145,21 @@ async function createTemplates() {
         owner: user.userId,
       } as Template,
       submit: TemplateFactory.createLetterTemplate(
-        'test-template-name',
-        user.userId,
         'submit-letter-submit-template',
+        user.userId,
+        'test-template-name',
         'PASSED'
       ),
       submitAndReturn: TemplateFactory.createLetterTemplate(
-        'test-template-name',
-        user.userId,
         'submit-and-return-letter-template',
+        user.userId,
+        'test-template-name',
         'PASSED'
       ),
       valid: TemplateFactory.createLetterTemplate(
-        'test-template-name',
-        user.userId,
         'valid-letter-submit-template',
+        user.userId,
+        'test-template-name',
         'PASSED'
       ),
     },
