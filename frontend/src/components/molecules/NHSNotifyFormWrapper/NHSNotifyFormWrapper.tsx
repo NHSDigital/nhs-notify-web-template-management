@@ -4,8 +4,9 @@ import {
   type FormHTMLAttributes,
   startTransition,
 } from 'react';
+import { redirect } from 'next/navigation';
 import { useCookies } from 'next-client-cookies';
-import { verifyCsrfTokenFull } from '@utils/csrf-utils';
+import { verifyFormCsrfToken } from '@utils/csrf-utils';
 import type { ServerAction } from 'nhs-notify-web-template-management-utils';
 
 export const csrfServerAction = (action: ServerAction) => {
@@ -14,7 +15,11 @@ export const csrfServerAction = (action: ServerAction) => {
   }
 
   return async (formData: FormData) => {
-    await verifyCsrfTokenFull(formData);
+    const valid = await verifyFormCsrfToken(formData);
+
+    if (!valid) {
+      return redirect('/auth/signout');
+    }
 
     return startTransition(() => {
       action(formData);

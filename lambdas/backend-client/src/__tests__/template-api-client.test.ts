@@ -1,7 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { TemplateApiClient, TemplateClient } from '../template-api-client';
-import { TemplateStatus, TemplateType } from '../types/generated';
+import { TemplateApiClient } from '../template-api-client';
 
 const axiosMock = new MockAdapter(axios);
 
@@ -10,12 +9,6 @@ const testToken = 'abc';
 describe('TemplateAPIClient', () => {
   beforeEach(() => {
     axiosMock.reset();
-  });
-
-  test('TemplateClient should construct TemplateApiClient', () => {
-    const result = TemplateClient(testToken);
-
-    expect(result).toBeTruthy();
   });
 
   test('createTemplate - should return error', async () => {
@@ -27,13 +20,16 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.createTemplate({
-      name: 'test',
-      message: '<html></html>',
-      templateType: TemplateType.NHS_APP,
-    });
+    const result = await client.createTemplate(
+      {
+        name: 'test',
+        message: '<html></html>',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.error).toEqual({
       code: 400,
@@ -55,23 +51,122 @@ describe('TemplateAPIClient', () => {
         id: 'id',
         name: 'name',
         message: 'message',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.createTemplate({
-      name: 'name',
-      message: 'message',
-      templateType: TemplateType.NHS_APP,
-    });
+    const result = await client.createTemplate(
+      {
+        name: 'name',
+        message: 'message',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.data).toEqual({
       id: 'id',
       name: 'name',
       message: 'message',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
+    });
+
+    expect(result.error).toBeUndefined();
+  });
+
+  test('createLetterTemplate - should return error', async () => {
+    axiosMock.onPost('/v1/letter-template').reply(400, {
+      statusCode: 400,
+      technicalMessage: 'Bad request',
+      details: {
+        message: 'Invalid request',
+      },
+    });
+
+    const client = new TemplateApiClient();
+
+    const result = await client.createLetterTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+      },
+      testToken,
+      new File(['pdf'], 'template.pdf', { type: 'application/pdf' })
+    );
+
+    expect(result.error).toEqual({
+      code: 400,
+      message: 'Bad request',
+      details: {
+        message: 'Invalid request',
+      },
+    });
+
+    expect(result.data).toBeUndefined();
+
+    expect(axiosMock.history.post.length).toBe(1);
+  });
+
+  test('createLetterTemplate - should return template', async () => {
+    axiosMock.onPost('/v1/letter-template').reply(201, {
+      statusCode: 201,
+      template: {
+        id: 'id',
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: '32ADDAB01170',
+            virusScanStatus: 'PENDING',
+          },
+          testDataCsv: {
+            fileName: 'test-data.csv',
+            currentVersion: 'DAB2A04B66FD',
+            virusScanStatus: 'PENDING',
+          },
+        },
+      },
+    });
+
+    const client = new TemplateApiClient();
+
+    const result = await client.createLetterTemplate(
+      {
+        name: 'test',
+        templateType: 'LETTER',
+        language: 'de',
+        letterType: 'q1',
+      },
+      testToken,
+      new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),
+      new File(['csv'], 'test-data.csv', { type: 'test/csv' })
+    );
+
+    expect(result.data).toEqual({
+      id: 'id',
+      name: 'test',
+      templateType: 'LETTER',
+      language: 'de',
+      letterType: 'q1',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: '32ADDAB01170',
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: 'test-data.csv',
+          currentVersion: 'DAB2A04B66FD',
+          virusScanStatus: 'PENDING',
+        },
+      },
     });
 
     expect(result.error).toBeUndefined();
@@ -86,14 +181,18 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.updateTemplate('real-id', {
-      name: 'test',
-      message: '<html></html>',
-      templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
-    });
+    const result = await client.updateTemplate(
+      'real-id',
+      {
+        name: 'test',
+        message: '<html></html>',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.error).toEqual({
       code: 400,
@@ -113,8 +212,8 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateStatus: 'SUBMITTED',
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onPost('/v1/template/real-id').reply(200, {
@@ -122,14 +221,18 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.updateTemplate('real-id', {
-      name: 'name',
-      message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
-    });
+    const result = await client.updateTemplate(
+      'real-id',
+      {
+        name: 'name',
+        message: 'message',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+      },
+      testToken
+    );
 
     expect(result.data).toEqual(data);
 
@@ -145,9 +248,9 @@ describe('TemplateAPIClient', () => {
       },
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.getTemplate('real-id');
+    const result = await client.getTemplate('real-id', testToken);
 
     expect(result.error).toEqual({
       code: 404,
@@ -167,8 +270,8 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateStatus: 'SUBMITTED',
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onGet('/v1/template/real-id').reply(200, {
@@ -176,9 +279,9 @@ describe('TemplateAPIClient', () => {
       template: data,
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.getTemplate('real-id');
+    const result = await client.getTemplate('real-id', testToken);
 
     expect(result.data).toEqual(data);
 
@@ -191,9 +294,9 @@ describe('TemplateAPIClient', () => {
       technicalMessage: 'Internal server error',
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.listTemplates();
+    const result = await client.listTemplates(testToken);
 
     expect(result.error).toEqual({
       code: 500,
@@ -210,8 +313,8 @@ describe('TemplateAPIClient', () => {
       id: 'id',
       name: 'name',
       message: 'message',
-      templateStatus: TemplateStatus.SUBMITTED,
-      templateType: TemplateType.NHS_APP,
+      templateStatus: 'SUBMITTED',
+      templateType: 'NHS_APP',
     };
 
     axiosMock.onGet('/v1/templates').reply(200, {
@@ -219,9 +322,9 @@ describe('TemplateAPIClient', () => {
       templates: [data],
     });
 
-    const client = new TemplateApiClient(testToken);
+    const client = new TemplateApiClient();
 
-    const result = await client.listTemplates();
+    const result = await client.listTemplates(testToken);
 
     expect(result.data).toEqual([data]);
 

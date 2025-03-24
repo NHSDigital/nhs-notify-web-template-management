@@ -1,23 +1,27 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { apiFailure, apiSuccess } from './responses';
+import type { ITemplateClient } from 'nhs-notify-backend-client';
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  const user = event.requestContext.authorizer?.user;
+export function createHandler({
+  templateClient,
+}: {
+  templateClient: ITemplateClient;
+}): APIGatewayProxyHandler {
+  return async function (event) {
+    const user = event.requestContext.authorizer?.user;
 
-  const templateId = event.pathParameters?.templateId;
+    const templateId = event.pathParameters?.templateId;
 
-  if (!user || !templateId) {
-    return apiFailure(400, 'Invalid request');
-  }
+    if (!user || !templateId) {
+      return apiFailure(400, 'Invalid request');
+    }
 
-  const client = new TemplateClient(user);
+    const { data, error } = await templateClient.getTemplate(templateId, user);
 
-  const { data, error } = await client.getTemplate(templateId);
+    if (error) {
+      return apiFailure(error.code, error.message, error.details);
+    }
 
-  if (error) {
-    return apiFailure(error.code, error.message, error.details);
-  }
-
-  return apiSuccess(200, data);
-};
+    return apiSuccess(200, data);
+  };
+}

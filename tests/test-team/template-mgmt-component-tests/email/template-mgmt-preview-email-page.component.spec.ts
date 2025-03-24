@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {
@@ -170,14 +170,16 @@ test.describe('Preview Email message template Page', () => {
 
       const selectOptionErrorLink =
         previewEmailTemplatePage.errorSummary.locator(
-          '[href="#reviewEmailTemplateAction"]'
+          '[href="#previewEmailTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#reviewEmailTemplateAction')).toBeInViewport();
+      await expect(
+        page.locator('#previewEmailTemplateAction')
+      ).toBeInViewport();
     });
   });
 });

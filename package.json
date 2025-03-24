@@ -5,9 +5,11 @@
     "lambdas/backend-api",
     "lambdas/backend-client",
     "frontend",
+    "tests/accessibility",
     "tests/test-team",
     "utils/utils",
-    "utils/backend-config"
+    "utils/backend-config",
+    "utils/test-helper-utils"
   ],
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",
@@ -17,14 +19,11 @@
     "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
     "generate-dependencies": "npm run generate-dependencies --workspaces --if-present",
     "start": "npm run start --workspace frontend",
-    "test:accessibility": "pa11y-ci -c ./tests/accessibility/.pa11y-ci.js",
     "test:unit": "npm run test:unit --workspaces",
     "typecheck": "npm run typecheck --workspaces",
     "lint": "npm run lint --workspaces",
     "lint:fix": "npm run lint:fix --workspaces",
-    "dev": "npm run dev --workspace frontend --if-present",
-    "create-test-user": "tsx ./tests/accessibility/create-test-user.ts",
-    "delete-test-user": "tsx ./tests/accessibility/delete-test-user.ts"
+    "dev": "npm run dev --workspace frontend --if-present"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
@@ -53,9 +52,6 @@
   "overrides": {
     "pretty-format": {
       "react-is": "19.0.0"
-    },
-    "pa11y-ci": {
-      "pa11y": "^8.0.0"
     },
     "react": "^19.0.0"
   }

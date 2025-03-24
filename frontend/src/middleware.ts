@@ -11,13 +11,14 @@ const protectedPaths = [
   /^\/create-letter-template$/,
   /^\/delete-template\/[^/]+$/,
   /^\/edit-email-template\/[^/]+$/,
-  /^\/edit-nhs-app-template/,
+  /^\/edit-nhs-app-template\/[^/]+$/,
   /^\/edit-text-message-template\/[^/]+$/,
   /^\/email-template-submitted\/[^/]+$/,
   /^\/invalid-template$/,
   /^\/manage-templates$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,
   /^\/preview-email-template\/[^/]+$/,
+  /^\/preview-letter-template\/[^/]+$/,
   /^\/preview-nhs-app-template\/[^/]+$/,
   /^\/preview-text-message-template\/[^/]+$/,
   /^\/submit-email-template\/[^/]+$/,
@@ -89,7 +90,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const token = await getAccessTokenServer();
+  const token = await getAccessTokenServer({ forceRefresh: true });
 
   if (!token) {
     const redirectResponse = NextResponse.redirect(
@@ -102,6 +103,8 @@ export async function middleware(request: NextRequest) {
     );
 
     redirectResponse.headers.set('Content-Type', 'text/html');
+
+    redirectResponse.cookies.delete('csrf_token');
 
     return redirectResponse;
   }

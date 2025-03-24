@@ -14,10 +14,9 @@ import {
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import {
-  Draft,
+  CreateSMSTemplate,
   PageComponentProps,
   SMSTemplate,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import { FC, useActionState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -31,7 +30,7 @@ import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const SmsTemplateForm: FC<
-  PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
+  PageComponentProps<SMSTemplate | CreateSMSTemplate>
 > = ({ initialState }) => {
   const [state, action] = useActionState(processFormActions, initialState);
 
@@ -91,6 +90,7 @@ export const SmsTemplateForm: FC<
                   onChange={smsTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'smsTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -103,6 +103,7 @@ export const SmsTemplateForm: FC<
                 rows={10}
                 error={templateMessageError}
                 errorProps={{ id: 'smsTemplateMessage--error-message' }}
+                autoComplete='off'
               />
               <JsEnabled>
                 <p className='nhsuk-u-margin-bottom-0' id='character-count'>
@@ -131,11 +132,11 @@ export const SmsTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.SMS} />
-            <ChannelGuidance template={TemplateType.SMS} />
-          </div>
+            <MessageFormatting template='SMS' />
+            <ChannelGuidance template='SMS' />
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

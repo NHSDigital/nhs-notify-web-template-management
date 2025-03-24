@@ -24,7 +24,7 @@ const nextConfig = (phase) => {
 
     experimental: {
       serverActions: {
-        allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
+        allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
       },
     },
 
@@ -41,6 +41,12 @@ const nextConfig = (phase) => {
           destination: '/auth/inactive',
           permanent: false,
           basePath: false,
+        },
+        {
+          source: `${basePath}/auth/signout`,
+          destination: '/auth/signout',
+          basePath: false,
+          permanent: false,
         },
       ];
     },

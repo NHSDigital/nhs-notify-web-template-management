@@ -17,10 +17,10 @@ export class TemplateMgmtPreviewNhsAppPage extends TemplateMgmtPreviewBasePage {
   constructor(page: Page) {
     super(page);
     this.editRadioOption = page.locator(
-      '[id="reviewNHSAppTemplateAction-nhsapp-edit"]'
+      '[id="previewNHSAppTemplateAction-nhsapp-edit"]'
     );
     this.submitRadioOption = page.locator(
-      '[id="reviewNHSAppTemplateAction-nhsapp-submit"]'
+      '[id="previewNHSAppTemplateAction-nhsapp-submit"]'
     );
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.messageText = page.locator('[id="preview-content-message"]');

@@ -1,5 +1,4 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
 const header = {
   serviceName: 'Notify',
@@ -21,14 +20,26 @@ const footer = {
   nhsEngland: 'NHS England',
   supportLinks: 'Support links',
   links: {
+    acceptableUsePolicy: {
+      text: 'Acceptable use policy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/acceptable-use-policy',
+    },
     accessibilityStatement: {
       text: 'Accessibility statement',
       url: '/accessibility',
     },
-    contactUs: 'Contact us',
-    cookies: 'Cookies',
-    privacyPolicy: 'Privacy policy',
-    termsAndCondition: 'Terms and conditions',
+    cookies: {
+      text: 'Cookies',
+      url: '/cookies',
+    },
+    privacy: {
+      text: 'Privacy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
+    },
+    termsAndConditions: {
+      text: 'Terms and conditions',
+      url: 'https://digital.nhs.uk/services/nhs-notify/terms-and-conditions',
+    },
   },
 };
 
@@ -155,6 +166,8 @@ const mainLayout = {
   description: 'Template management',
 };
 
+const backToAllTemplates = 'Back to all templates';
+
 const homePage = {
   pageHeading: 'Create and submit a template to NHS Notify',
   text1:
@@ -201,7 +214,7 @@ const manageTemplates = {
   },
 };
 
-const reviewEmailTemplate = {
+const previewEmailTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -212,9 +225,24 @@ const reviewEmailTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
-const reviewNHSAppTemplate = {
+const previewLetterTemplate = {
+  sectionHeading: 'Template saved',
+  form: {
+    errorHeading: 'There is a problem',
+    pageHeading: 'What would you like to do next?',
+    options: [
+      { id: 'letter-edit', text: 'Edit template' },
+      { id: 'letter-submit', text: 'Submit template' },
+    ],
+    buttonText: 'Continue',
+  },
+  backLinkText: backToAllTemplates,
+};
+
+const previewNHSAppTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -225,9 +253,10 @@ const reviewNHSAppTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
-const reviewSMSTemplate = {
+const previewSMSTemplate = {
   sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
@@ -251,6 +280,7 @@ const reviewSMSTemplate = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
 const error404 = {
@@ -294,7 +324,7 @@ const copyTemplate = {
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const chooseTemplate = {
@@ -304,7 +334,7 @@ const chooseTemplate = {
   hint: 'Select one option',
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const nameYourTemplate = {
@@ -328,15 +358,15 @@ const nameYourTemplate = {
     },
   ],
   templateNameDetailsExample: {
-    [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.LETTER]: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
+    NHS_APP: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
+    EMAIL: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
+    SMS: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    LETTER: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
   },
 };
 
 const channelGuidance = {
-  [TemplateType.NHS_APP]: {
+  NHS_APP: {
     heading: 'More about NHS App messages',
     guidanceLinks: [
       {
@@ -353,7 +383,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.EMAIL]: {
+  EMAIL: {
     heading: 'More about emails',
     guidanceLinks: [
       {
@@ -370,7 +400,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.SMS]: {
+  SMS: {
     heading: 'More about text messages',
     guidanceLinks: [
       {
@@ -387,7 +417,7 @@ const channelGuidance = {
       },
     ],
   },
-  [TemplateType.LETTER]: {
+  LETTER: {
     heading: 'More about letters',
     guidanceLinks: [],
   },
@@ -441,7 +471,7 @@ const templateSubmitted = {
   liveHeading: "If you've already onboarded",
   liveText: "Once you've submitted all your templates",
   liveLinkText: 'raise a request with the service desk (opens in a new tab).',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
 const viewSubmittedTemplate = {
@@ -478,9 +508,10 @@ const content = {
     messageFormatting,
     nameYourTemplate,
     personalisation,
-    reviewEmailTemplate,
-    reviewNHSAppTemplate,
-    reviewSMSTemplate,
+    previewEmailTemplate,
+    previewLetterTemplate,
+    previewNHSAppTemplate,
+    previewSMSTemplate,
     submitTemplate,
     templateFormEmail,
     templateFormNhsApp,

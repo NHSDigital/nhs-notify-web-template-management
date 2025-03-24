@@ -1,7 +1,6 @@
 'use client';
 
 import { FC, useActionState } from 'react';
-import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -10,9 +9,11 @@ import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
 } from './server-action';
+import concatClassNames from '@utils/concat-class-names';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 type DeleteTemplateProps = {
-  template: ChannelTemplate;
+  template: TemplateDto;
 };
 
 export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
@@ -36,15 +37,17 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
             action={noAction}
             formId='delete-template-no'
             formAttributes={{
-              className: 'nhsuk-u-margin-right-3',
-              style: { display: 'inline' },
+              className: concatClassNames(
+                'nhsuk-u-margin-right-3',
+                'inline-form'
+              ),
             }}
           >
             <NHSNotifyButton secondary>{noButtonText}</NHSNotifyButton>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
             action={yesAction}
-            formAttributes={{ style: { display: 'inline' } }}
+            formAttributes={{ className: 'inline-form' }}
             formId='delete-template-yes'
           >
             <NHSNotifyButton className='nhsuk-button--warning'>

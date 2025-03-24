@@ -1,8 +1,8 @@
+import { Language, LetterType } from 'nhs-notify-backend-client';
 import {
+  letterTypeDisplayMappings,
   previewTemplatePages,
-  TemplateStatus,
   templateStatusToDisplayMappings,
-  TemplateType,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   viewSubmittedTemplatePages,
@@ -10,93 +10,102 @@ import {
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeDisplayMappings(TemplateType.NHS_APP)).toEqual(
-      'NHS App message'
-    );
+    expect(templateTypeDisplayMappings('NHS_APP')).toEqual('NHS App message');
   });
 
   test('SMS', () => {
-    expect(templateTypeDisplayMappings(TemplateType.SMS)).toEqual(
-      'Text message (SMS)'
-    );
+    expect(templateTypeDisplayMappings('SMS')).toEqual('Text message (SMS)');
   });
 
   test('EMAIL', () => {
-    expect(templateTypeDisplayMappings(TemplateType.EMAIL)).toEqual('Email');
+    expect(templateTypeDisplayMappings('EMAIL')).toEqual('Email');
   });
+
+  test('LETTER', () => {
+    expect(templateTypeDisplayMappings('LETTER')).toEqual('Letter');
+  });
+});
+
+describe('letterTypeDisplayMappings', () => {
+  const letterCases: [LetterType, Language, string][] = [
+    ['x0', 'en', 'Standard letter'],
+    ['x0', 'bn', 'Letter - Bengali'],
+    ['x0', 'el', 'Letter - Greek'],
+    ['q1', 'en', 'Braille letter'],
+    ['x3', 'en', 'Audio CD letter'],
+    ['x1', 'en', 'Large print letter'],
+    ['q4', 'en', 'British Sign Language letter'],
+  ];
+
+  test.each(letterCases)(
+    'letter type %s and language %s map to %s',
+    (letterType, language, expected) => {
+      expect(letterTypeDisplayMappings(letterType, language)).toBe(expected);
+    }
+  );
 });
 
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
-    expect(
-      templateStatusToDisplayMappings(TemplateStatus.NOT_YET_SUBMITTED)
-    ).toEqual('Not yet submitted');
-  });
-
-  test('SUBMITTED', () => {
-    expect(templateStatusToDisplayMappings(TemplateStatus.SUBMITTED)).toEqual(
-      'Submitted'
+    expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(
+      'Not yet submitted'
     );
   });
 
+  test('SUBMITTED', () => {
+    expect(templateStatusToDisplayMappings('SUBMITTED')).toEqual('Submitted');
+  });
+
   test('DELETED', () => {
-    expect(templateStatusToDisplayMappings(TemplateStatus.DELETED)).toEqual('');
+    expect(templateStatusToDisplayMappings('DELETED')).toEqual('');
   });
 });
 
 describe('templateTypeToUrlTextMappings', () => {
   test('NHS_APP', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.NHS_APP)).toEqual(
-      'nhs-app'
-    );
+    expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual('nhs-app');
   });
 
   test('SMS', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.SMS)).toEqual(
-      'text-message'
-    );
+    expect(templateTypeToUrlTextMappings('SMS')).toEqual('text-message');
   });
 
   test('EMAIL', () => {
-    expect(templateTypeToUrlTextMappings(TemplateType.EMAIL)).toEqual('email');
+    expect(templateTypeToUrlTextMappings('EMAIL')).toEqual('email');
   });
 });
 
 describe('previewTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(previewTemplatePages(TemplateType.NHS_APP)).toEqual(
-      'preview-nhs-app-template'
-    );
+    expect(previewTemplatePages('NHS_APP')).toEqual('preview-nhs-app-template');
   });
 
   test('SMS', () => {
-    expect(previewTemplatePages(TemplateType.SMS)).toEqual(
+    expect(previewTemplatePages('SMS')).toEqual(
       'preview-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(previewTemplatePages(TemplateType.EMAIL)).toEqual(
-      'preview-email-template'
-    );
+    expect(previewTemplatePages('EMAIL')).toEqual('preview-email-template');
   });
 });
 
 describe('viewSubmittedTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.NHS_APP)).toEqual(
+    expect(viewSubmittedTemplatePages('NHS_APP')).toEqual(
       'view-submitted-nhs-app-template'
     );
   });
 
   test('SMS', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.SMS)).toEqual(
+    expect(viewSubmittedTemplatePages('SMS')).toEqual(
       'view-submitted-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(viewSubmittedTemplatePages(TemplateType.EMAIL)).toEqual(
+    expect(viewSubmittedTemplatePages('EMAIL')).toEqual(
       'view-submitted-email-template'
     );
   });

@@ -16,10 +16,9 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  Draft,
+  CreateEmailTemplate,
   EmailTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
@@ -28,7 +27,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const EmailTemplateForm: FC<
-  PageComponentProps<EmailTemplate | Draft<EmailTemplate>>
+  PageComponentProps<CreateEmailTemplate | EmailTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
@@ -87,7 +86,7 @@ export const EmailTemplateForm: FC<
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.EMAIL} />
+                <TemplateNameGuidance template={'EMAIL'} />
                 <TextInput
                   id='emailTemplateName'
                   onChange={emailTemplateNameHandler}
@@ -95,6 +94,7 @@ export const EmailTemplateForm: FC<
                   error={templateNameError}
                   errorProps={{ id: 'emailTemplateName--error-message' }}
                   data-testid='emailTemplateName-input'
+                  autoComplete='off'
                 />
               </div>
               <div
@@ -114,6 +114,7 @@ export const EmailTemplateForm: FC<
                     id: 'emailTemplateSubjectLine--error-message',
                   }}
                   data-testid='emailTemplateSubjectLine-input'
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -126,6 +127,7 @@ export const EmailTemplateForm: FC<
                 error={templateMessageError}
                 errorProps={{ id: 'emailTemplateMessage--error-message' }}
                 data-testid='emailTemplateMessage-input'
+                autoComplete='off'
               />
               <NHSNotifyButton
                 type='submit'
@@ -135,11 +137,11 @@ export const EmailTemplateForm: FC<
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.EMAIL} />
-            <ChannelGuidance template={TemplateType.EMAIL} />
-          </div>
+            <MessageFormatting template='EMAIL' />
+            <ChannelGuidance template='EMAIL' />
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

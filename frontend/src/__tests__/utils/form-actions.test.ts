@@ -2,10 +2,8 @@
  * @jest-environment node
  */
 import {
+  CreateNHSAppTemplate,
   NHSAppTemplate,
-  Draft,
-  TemplateType,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 import {
   createTemplate,
@@ -14,16 +12,14 @@ import {
   getTemplates,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
-import { mockDeep } from 'jest-mock-extended';
-import { ITemplateClient } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
-const mockedTemplateClient = mockDeep<ITemplateClient>();
+const mockedTemplateClient = jest.mocked(templateClient);
 const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
 
 jest.mock('@utils/amplify-utils');
-jest.mock('nhs-notify-backend-client/src/template-api-client', () => ({
-  TemplateClient: () => mockedTemplateClient,
-}));
+jest.mock('nhs-notify-backend-client/src/template-api-client');
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -34,22 +30,20 @@ describe('form-actions', () => {
   test('createTemplate', async () => {
     const responseData = {
       id: 'id',
-      version: 1,
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    const createTemplateInput: CreateNHSAppTemplate = {
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -57,7 +51,8 @@ describe('form-actions', () => {
     const response = await createTemplate(createTemplateInput);
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput
+      createTemplateInput,
+      'token'
     );
 
     expect(response).toEqual(responseData);
@@ -71,9 +66,8 @@ describe('form-actions', () => {
       },
     });
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    const createTemplateInput: CreateNHSAppTemplate = {
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -83,7 +77,8 @@ describe('form-actions', () => {
     );
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput
+      createTemplateInput,
+      'token'
     );
   });
 
@@ -91,9 +86,8 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createTemplateInput: Draft<NHSAppTemplate> = {
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    const createTemplateInput: CreateNHSAppTemplate = {
+      templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
     };
@@ -106,13 +100,13 @@ describe('form-actions', () => {
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -120,17 +114,20 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     const response = await saveTemplate(updateTemplateInput);
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
-      updateTemplateInput
+      updateTemplateInput,
+      'token'
     );
 
     expect(response).toEqual(responseData);
@@ -146,10 +143,12 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
@@ -158,7 +157,8 @@ describe('form-actions', () => {
 
     expect(mockedTemplateClient.updateTemplate).toHaveBeenCalledWith(
       updateTemplateInput.id,
-      updateTemplateInput
+      updateTemplateInput,
+      'token'
     );
   });
 
@@ -168,10 +168,12 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'pickle',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     };
 
     await expect(saveTemplate(updateTemplateInput)).rejects.toThrow(
@@ -182,13 +184,13 @@ describe('form-actions', () => {
   test('getTemplate', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: responseData,
@@ -196,7 +198,10 @@ describe('form-actions', () => {
 
     const response = await getTemplate('id');
 
-    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith(
+      'id',
+      'token'
+    );
 
     expect(response).toEqual(responseData);
   });
@@ -212,7 +217,10 @@ describe('form-actions', () => {
 
     const response = await getTemplate('id');
 
-    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith('id');
+    expect(mockedTemplateClient.getTemplate).toHaveBeenCalledWith(
+      'id',
+      'token'
+    );
 
     expect(response).toEqual(undefined);
   });
@@ -229,13 +237,13 @@ describe('form-actions', () => {
   test('getTemplates', async () => {
     const responseData = {
       id: 'id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: [responseData],
@@ -243,7 +251,7 @@ describe('form-actions', () => {
 
     const response = await getTemplates();
 
-    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith();
+    expect(mockedTemplateClient.listTemplates).toHaveBeenCalledWith('token');
 
     expect(response).toEqual([responseData]);
   });
@@ -271,41 +279,26 @@ describe('form-actions', () => {
 
   test('getTemplates - order by createdAt and then id', async () => {
     const baseTemplate = {
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',
-    };
+    } satisfies Partial<TemplateDto>;
 
     const templates = [
       { ...baseTemplate, id: '06', createdAt: '2022-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '08', createdAt: '2020-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '05', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '02', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '09', createdAt: '' },
-      { ...baseTemplate, id: '10', createdAt: '' },
       { ...baseTemplate, id: '01', createdAt: '2021-01-01T00:00:00.000Z' },
-      { ...baseTemplate, id: '07', createdAt: '' },
       { ...baseTemplate, id: '03', createdAt: '2021-01-01T00:00:00.000Z' },
       { ...baseTemplate, id: '04', createdAt: '2021-01-01T00:00:00.000Z' },
     ];
 
     // 06 is the newest, 08 is the oldest.
-    // Templates without a createdAt, 07, 09 and 10, go at the end.
     // 01 - 05 all have the same createdAt.
-    const expectedOrder = [
-      '06',
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '08',
-      '07',
-      '09',
-      '10',
-    ];
+    const expectedOrder = ['06', '01', '02', '03', '04', '05', '08'];
 
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: templates,

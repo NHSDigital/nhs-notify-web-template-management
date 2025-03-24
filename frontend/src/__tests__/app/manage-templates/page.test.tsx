@@ -3,22 +3,17 @@ import { render, screen } from '@testing-library/react';
 import ManageTemplatesPage from '@app/manage-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
-import {
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
-const mockTemplates: TemplateDTO[] = [
+const mockTemplates: TemplateDto[] = [
   {
     id: '1',
-    templateType: TemplateType.NHS_APP,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'NHS_APP',
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Template 1',
     message: 'Message',
-    subject: 'Subject Line',
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
   },
@@ -46,6 +41,7 @@ describe('ManageTemplatesPage', () => {
 
     expect(screen.getByTestId('no-templates-available')).toBeInTheDocument();
   });
+
   test('renders the page with templates', async () => {
     jest.mocked(getTemplates).mockResolvedValue(mockTemplates);
     render(await ManageTemplatesPage());
