@@ -9,6 +9,6 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.4"
+    "@tsconfig/node20": "^20.1.5"
   }
 }
