@@ -276,7 +276,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
 
-      mocks.templateRepository.update.mockResolvedValueOnce({
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
         data: finalTemplate,
       });
 
@@ -305,11 +305,10 @@ describe('templateClient', () => {
         csv
       );
 
-      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        { ...dataWithFiles, templateStatus: 'PENDING_VALIDATION' },
-        owner,
-        'PENDING_UPLOAD'
+        'PENDING_VALIDATION',
+        owner
       );
     });
 
@@ -722,7 +721,7 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.templateRepository.update.mockResolvedValueOnce(updateErr);
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce(updateErr);
 
       const result = await templateClient.createLetterTemplate(
         data,
@@ -746,12 +745,103 @@ describe('templateClient', () => {
         undefined
       );
 
-      expect(mocks.templateRepository.update).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        { ...dataWithFiles, templateStatus: 'PENDING_VALIDATION' },
-        owner,
-        'PENDING_UPLOAD'
+        'PENDING_VALIDATION',
+        owner
       );
+    });
+
+    test('should return a failure result when final statusUpdate returns an invalid result', async () => {
+      const { templateClient, mocks } = setup();
+
+      const pdfFilename = 'template.pdf';
+      const csvFilename = 'test-data.csv';
+
+      const data: CreateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      const pdf = new File(['pdf'], pdfFilename, {
+        type: 'application/pdf',
+      });
+
+      const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
+
+      const filesWithVerions: LetterFiles = {
+        pdfTemplate: {
+          fileName: pdfFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: csvFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+      };
+
+      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        files: filesWithVerions,
+      };
+
+      const creationTime = '2025-03-12T08:41:08.805Z';
+
+      const initialCreatedTemplate: DatabaseTemplate = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+        templateStatus: 'PENDING_UPLOAD',
+        owner,
+        version: 1,
+      };
+
+      const updateTime = '2025-03-12T08:41:33.666Z';
+
+      const finalTemplate: DatabaseTemplate = {
+        ...initialCreatedTemplate,
+        templateStatus: 'PENDING_VALIDATION',
+        updatedAt: updateTime,
+      };
+
+      const { owner: _1, version: _2 } = finalTemplate;
+
+      mocks.generateVersionId.mockReturnValueOnce(versionId);
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: initialCreatedTemplate,
+      });
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: {
+          ...finalTemplate,
+          updatedAt: undefined as unknown as string,
+        },
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        owner,
+        pdf,
+        csv
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
     });
 
     test('should return a failure result when letters feature flag is not enabled', async () => {
@@ -813,13 +903,40 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result when attempting to update a letter', async () => {
+      const { templateClient } = setup();
+
+      const data: UpdateTemplate = {
+        name: 'name',
+        templateType: 'LETTER',
+        language: 'it',
+        letterType: 'q1',
+      };
+
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        owner
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: {
+            templateType:
+              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+          },
+        }),
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -857,7 +974,6 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -906,13 +1022,13 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
       const template: TemplateDto = {
         ...data,
         id: templateId,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -1210,6 +1326,156 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: [template],
+      });
+    });
+  });
+
+  describe('submitTemplate', () => {
+    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, owner);
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+    });
+
+    test('should return a failure result, when updated database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const expectedTemplateDto: TemplateDto = {
+        id: templateId,
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'SUBMITTED',
+        name: 'name',
+        message: 'message',
+        templateType: 'SMS',
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner,
+        version: 1,
+      };
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.submitTemplate(templateId, owner);
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
+    });
+
+    test('should return updated template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        name: 'name',
+        message: 'message',
+        templateStatus: 'SUBMITTED',
+        templateType: 'SMS',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      mocks.templateRepository.submit.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
+      });
+
+      const result = await templateClient.submitTemplate(templateId, owner);
+
+      expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
+  });
+
+  describe('deleteTemplate', () => {
+    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.delete.mockResolvedValueOnce({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+
+      const result = await templateClient.deleteTemplate(templateId, owner);
+
+      expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+    });
+
+    test('should return nothing when successful', async () => {
+      const { templateClient, mocks } = setup();
+
+      const template: TemplateDto = {
+        name: 'name',
+        message: 'message',
+        templateStatus: 'DELETED',
+        templateType: 'SMS',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      mocks.templateRepository.delete.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
+      });
+
+      const result = await templateClient.deleteTemplate(templateId, owner);
+
+      expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
+        templateId,
+        owner
+      );
+
+      expect(result).toEqual({
+        data: undefined,
       });
     });
   });

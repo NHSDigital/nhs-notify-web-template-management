@@ -92,7 +92,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const token = await getAccessTokenServer();
+  const token = await getAccessTokenServer({ forceRefresh: true });
 
   if (!token) {
     const redirectResponse = NextResponse.redirect(
@@ -105,6 +105,8 @@ export async function middleware(request: NextRequest) {
     );
 
     redirectResponse.headers.set('Content-Type', 'text/html');
+
+    redirectResponse.cookies.delete('csrf_token');
 
     return redirectResponse;
   }

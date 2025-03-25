@@ -42,6 +42,12 @@ const nextConfig = (phase) => {
           permanent: false,
           basePath: false,
         },
+        {
+          source: `${basePath}/auth/signout`,
+          destination: '/auth/signout',
+          basePath: false,
+          permanent: false,
+        },
       ];
     },
 
