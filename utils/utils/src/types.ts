@@ -83,3 +83,20 @@ export type SubmitTemplatePageComponentProps = {
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
+
+export type GuardDutyMalwareScanStatus =
+  | 'NO_THREATS_FOUND'
+  | 'THREATS_FOUND'
+  | 'UNSUPPORTED'
+  | 'ACCESS_DENIED'
+  | 'FAILED';
+
+export type GuardDutyMalwareScanStatusFailed = Exclude<
+  GuardDutyMalwareScanStatus,
+  'NO_THREATS_FOUND'
+>;
+
+export type GuardDutyMalwareScanStatusPassed = Extract<
+  GuardDutyMalwareScanStatus,
+  'NO_THREATS_FOUND'
+>;

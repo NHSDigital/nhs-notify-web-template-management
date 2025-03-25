@@ -1,8 +1,10 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
   "include": [
-    "src/*",
-    "src/**/*",
-    "../backend-config/src/backend-config.ts"
+    "../../lambdas/backend-client/src/schemas/src/*",
+    "../../lambdas/backend-client/src/schemas/src/**/*",
+    "../backend-config/src/backend-config.ts",
+    "src/__tests__/logger.test.ts",
+    "src/event-parsers.ts"
   ]
 }

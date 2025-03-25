@@ -114,3 +114,17 @@ export const validateTemplate = (template?: TemplateDto) =>
 
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);
+
+export const $GuardDutyMalwareScanStatus = z.enum([
+  'NO_THREATS_FOUND',
+  'THREATS_FOUND',
+  'UNSUPPORTED',
+  'ACCESS_DENIED',
+  'FAILED',
+]);
+
+export const $GuardDutyMalwareScanStatusFailed =
+  $GuardDutyMalwareScanStatus.exclude(['NO_THREATS_FOUND']);
+
+export const $GuardDutyMalwareScanStatusPassed =
+  $GuardDutyMalwareScanStatus.extract(['NO_THREATS_FOUND']);

@@ -1,41 +1,45 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import {
-  handler,
-  type S3ObjectTagsAddedNotificationEventDetail,
-  type SQSRecord,
-} from '../get-s3-object-tags';
-import {
   GetObjectTaggingCommand,
   HeadObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import {
+  makeS3ObjectTagsAddedNotificationEvent,
+  makeS3ObjectTagsAddedNotificationEventDetail,
+  makeSQSRecord,
+} from 'nhs-notify-web-template-management-test-helper-utils';
+import { handler } from '../get-s3-object-tags';
 
 const s3Mock = mockClient(S3Client);
-
-jest.mock('nhs-notify-web-template-management-utils/logger');
-
-const makeRecord = (
-  detail: S3ObjectTagsAddedNotificationEventDetail
-): SQSRecord => ({
-  body: JSON.stringify({ detail }),
-});
 
 beforeEach(() => {
   s3Mock.reset();
 });
 
 test('returns enriched s3 object details', async () => {
-  const event1Detail: S3ObjectTagsAddedNotificationEventDetail = {
+  const event1Detail = makeS3ObjectTagsAddedNotificationEventDetail({
     bucket: { name: 's3-bucket' },
     object: { key: 'object-key-1', 'version-id': 'version-1' },
-  };
+  });
 
-  const event2Detail: S3ObjectTagsAddedNotificationEventDetail = {
+  const event2Detail = makeS3ObjectTagsAddedNotificationEventDetail({
     bucket: { name: 's3-bucket' },
     object: { key: 'object-key-2', 'version-id': 'version-2' },
-  };
+  });
 
-  const records = [makeRecord(event1Detail), makeRecord(event2Detail)];
+  const records = [
+    makeSQSRecord({
+      body: JSON.stringify(
+        makeS3ObjectTagsAddedNotificationEvent({ detail: event1Detail })
+      ),
+    }),
+    makeSQSRecord({
+      body: JSON.stringify(
+        makeS3ObjectTagsAddedNotificationEvent({ detail: event2Detail })
+      ),
+    }),
+  ];
 
   s3Mock
     .on(HeadObjectCommand, {
@@ -90,18 +94,29 @@ test('returns enriched s3 object details', async () => {
   ]);
 });
 
-test('handles unset values', async () => {
-  const event1Detail: S3ObjectTagsAddedNotificationEventDetail = {
+test('handles unset tag and metadata values', async () => {
+  const event1Detail = makeS3ObjectTagsAddedNotificationEventDetail({
     bucket: { name: 's3-bucket' },
     object: { key: 'object-key-1', 'version-id': 'version-1' },
-  };
+  });
 
-  const event2Detail: S3ObjectTagsAddedNotificationEventDetail = {
+  const event2Detail = makeS3ObjectTagsAddedNotificationEventDetail({
     bucket: { name: 's3-bucket' },
     object: { key: 'object-key-2', 'version-id': 'version-2' },
-  };
+  });
 
-  const records = [makeRecord(event1Detail), makeRecord(event2Detail)];
+  const records = [
+    makeSQSRecord({
+      body: JSON.stringify(
+        makeS3ObjectTagsAddedNotificationEvent({ detail: event1Detail })
+      ),
+    }),
+    makeSQSRecord({
+      body: JSON.stringify(
+        makeS3ObjectTagsAddedNotificationEvent({ detail: event2Detail })
+      ),
+    }),
+  ];
 
   s3Mock
     .on(HeadObjectCommand, {

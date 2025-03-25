@@ -1,3 +1,5 @@
+import 'aws-sdk-client-mock-jest';
+import { randomUUID } from 'node:crypto';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -5,6 +7,7 @@ import {
   QueryCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { mockClient } from 'aws-sdk-client-mock';
 import {
   EmailProperties,
@@ -13,8 +16,11 @@ import {
   SmsProperties,
   ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
-import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
+
+jest.mock('nhs-notify-web-template-management-utils/logger');
+jest.mock('node:crypto');
 
 const templateId = 'abc-def-ghi-jkl-123';
 const templatesTableName = 'templates';
@@ -22,15 +28,12 @@ const templatesTableName = 'templates';
 const setup = () => {
   const ddbDocClient = mockClient(DynamoDBDocumentClient);
 
-  const generateId = jest.fn(() => templateId);
-
   const templateRepository = new TemplateRepository(
     ddbDocClient as unknown as DynamoDBDocumentClient,
-    templatesTableName,
-    generateId
+    templatesTableName
   );
 
-  return { templateRepository, mocks: { ddbDocClient, generateId } };
+  return { templateRepository, mocks: { ddbDocClient } };
 };
 
 const emailProperties: EmailProperties = {
@@ -113,6 +116,8 @@ describe('templateRepository', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    jest.mocked(randomUUID).mockReturnValue(templateId);
+    jest.mocked(logger).child.mockReturnThis();
   });
 
   describe('get', () => {
@@ -275,8 +280,6 @@ describe('templateRepository', () => {
     test('should return error when, unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.generateId.mockReturnValue('abc-def-ghi-jkl-123');
-
       mocks.ddbDocClient
         .on(PutCommand)
         .rejects(new Error('InternalServerError'));
@@ -309,8 +312,6 @@ describe('templateRepository', () => {
       'should create template of type $templateType',
       async (channelProperties) => {
         const { templateRepository, mocks } = setup();
-
-        mocks.generateId.mockReturnValue('abc-def-ghi-jkl-123');
 
         mocks.ddbDocClient
           .on(PutCommand, {
@@ -528,6 +529,111 @@ describe('templateRepository', () => {
           ...updatedTemplate,
         },
       });
+    });
+  });
+
+  describe('setLetterFileVirusScanStatus', () => {
+    it('updates the pdfTemplate field with the given status', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatus(
+        {
+          owner: 'template-owner',
+          id: 'template-id',
+        },
+        'pdfTemplate',
+        'pdf-version-id',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression: 'SET #files.#file.#status = :status',
+        ConditionExpression: '#files.#file.#version = :version',
+        ExpressionAttributeNames: {
+          '#file': 'pdfTemplate',
+          '#files': 'files',
+          '#status': 'templateStatus',
+          '#version': 'currentVersion',
+        },
+        ExpressionAttributeValues: {
+          ':status': 'PASSED',
+          ':version': 'pdf-version-id',
+        },
+      });
+    });
+
+    it('updates the testDataCsv field with the given status', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatus(
+        {
+          owner: 'template-owner',
+          id: 'template-id',
+        },
+        'testDataCsv',
+        'csv-version-id',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression: 'SET #files.#file.#status = :status',
+        ConditionExpression: '#files.#file.#version = :version',
+        ExpressionAttributeNames: {
+          '#file': 'testDataCsv',
+          '#files': 'files',
+          '#status': 'templateStatus',
+          '#version': 'currentVersion',
+        },
+        ExpressionAttributeValues: {
+          ':status': 'FAILED',
+          ':version': 'csv-version-id',
+        },
+      });
+    });
+
+    it('swallows ConditionalCheckFailedExceptions', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.rejects(
+        new ConditionalCheckFailedException({
+          $metadata: {},
+          message: 'Condition Check Failed',
+        })
+      );
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatus(
+          {
+            owner: 'template-owner',
+            id: 'template-id',
+          },
+          'testDataCsv',
+          'csv-version-id',
+          'FAILED'
+        )
+      ).resolves.not.toThrow();
+    });
+
+    it('raises other exceptions', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.rejects(new Error('Something went wrong'));
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatus(
+          {
+            owner: 'template-owner',
+            id: 'template-id',
+          },
+          'testDataCsv',
+          'csv-version-id',
+          'FAILED'
+        )
+      ).rejects.toThrow('Something went wrong');
     });
   });
 });

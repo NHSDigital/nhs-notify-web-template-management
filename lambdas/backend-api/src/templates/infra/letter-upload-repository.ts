@@ -2,6 +2,17 @@ import { ErrorCase } from 'nhs-notify-backend-client';
 import { ApplicationResult, failure, success } from '../../utils';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
+export type FileType = 'pdf-template' | 'test-data';
+
+export type LetterUploadMetadata = {
+  owner: string;
+  'user-filename': string;
+  'template-id': string;
+  'version-id': string;
+  'test-data-provided'?: 'true' | 'false';
+  'file-type': FileType;
+} & Record<string, string>;
+
 export class LetterUploadRepository {
   constructor(
     private readonly client: S3Client,
@@ -28,7 +39,14 @@ export class LetterUploadRepository {
         Bucket: this.bucketName,
         Key: pdfKey,
         Body: await pdf.bytes(),
-        Metadata: this.metadata(owner, pdf.name, templateId, versionId, !!csv),
+        Metadata: this.metadata(
+          owner,
+          pdf.name,
+          templateId,
+          versionId,
+          'pdf-template',
+          !!csv
+        ),
       }),
     ];
 
@@ -40,7 +58,13 @@ export class LetterUploadRepository {
           Bucket: this.bucketName,
           Key: csvKey,
           Body: await csv.bytes(),
-          Metadata: this.metadata(owner, csv.name, templateId, versionId),
+          Metadata: this.metadata(
+            owner,
+            csv.name,
+            templateId,
+            versionId,
+            'test-data'
+          ),
         })
       );
     }
@@ -58,7 +82,7 @@ export class LetterUploadRepository {
   }
 
   private key(
-    type: string,
+    type: FileType,
     owner: string,
     templateId: string,
     versionId: string,
@@ -72,14 +96,18 @@ export class LetterUploadRepository {
     userFilename: string,
     templateId: string,
     versionId: string,
+    type: FileType,
     hasTestData?: boolean
-  ) {
+  ): LetterUploadMetadata {
     return {
       owner,
+      'file-type': type,
       'user-filename': userFilename,
       'template-id': templateId,
       'version-id': versionId,
-      ...(hasTestData && { 'test-data-provided': 'true' }),
+      ...(hasTestData !== undefined && {
+        'test-data-provided': `${hasTestData}`,
+      }),
     };
   }
 }

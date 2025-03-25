@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors if the event has GuardDutyMalwareScanStatus object tag with value NO_THREATS_FOUND 1`] = `
+"[
+  {
+    "received": "NO_THREATS_FOUND",
+    "code": "invalid_enum_value",
+    "options": [
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
+      "FAILED"
+    ],
+    "path": [
+      "detail",
+      "object",
+      "tags",
+      "GuardDutyMalwareScanStatus"
+    ],
+    "message": "Invalid enum value. Expected 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'NO_THREATS_FOUND'"
+  }
+]"
+`;
+
+exports[`errors if the event has no GuardDutyMalwareScanStatus object tag 1`] = `
+"[
+  {
+    "expected": "'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "object",
+      "tags",
+      "GuardDutyMalwareScanStatus"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no bucket name 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "bucket",
+      "name"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no object key 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "object",
+      "key"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no object tags 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "object",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "object",
+      "tags"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no object version-id 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "object",
+      "version-id"
+    ],
+    "message": "Required"
+  }
+]"
+`;

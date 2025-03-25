@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import {
   EmailProperties,
   ErrorCase,
@@ -9,6 +10,7 @@ import {
   UpdateTemplate,
   ValidatedCreateTemplate,
   ValidatedUpdateTemplate,
+  VirusScanStatus,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -22,6 +24,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -46,11 +49,15 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   files: null,
 };
 
+type TemplateKey = {
+  owner: string;
+  id: string;
+};
+
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string,
-    private readonly generateId: () => string
+    private readonly templatesTableName: string
   ) {}
 
   async get(
@@ -92,7 +99,7 @@ export class TemplateRepository {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {
       ...template,
-      id: this.generateId(),
+      id: randomUUID(),
       owner,
       version: 1,
       templateStatus: initialStatus,
@@ -241,6 +248,40 @@ export class TemplateRepository {
       return success(items);
     } catch (error) {
       return failure(ErrorCase.IO_FAILURE, 'Failed to list templates', error);
+    }
+  }
+
+  async setLetterFileVirusScanStatus(
+    templateKey: TemplateKey,
+    fileType: Extract<keyof LetterFiles, 'pdfTemplate' | 'testDataCsv'>,
+    versionId: string,
+    status: VirusScanStatus
+  ) {
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression: 'SET #files.#file.#status = :status',
+          ExpressionAttributeNames: {
+            '#files': 'files',
+            '#file': fileType,
+            '#status': 'templateStatus',
+            '#version': 'currentVersion',
+          },
+          ExpressionAttributeValues: {
+            ':status': status,
+            ':version': versionId,
+          },
+          ConditionExpression: `#files.#file.#version = :version`,
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(error);
+      } else {
+        throw error;
+      }
     }
   }
 

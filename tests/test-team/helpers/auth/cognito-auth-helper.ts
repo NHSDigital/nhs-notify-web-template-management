@@ -69,7 +69,7 @@ export class CognitoAuthHelper {
     path.resolve(__dirname, '..', '..', '.auth', 'test-credentials.json')
   );
 
-  private client = new CognitoIdentityProviderClient();
+  private client = new CognitoIdentityProviderClient({});
 
   constructor(
     public runId: string,
@@ -132,9 +132,7 @@ export class CognitoAuthHelper {
       password: credential.password,
       getAccessToken: () => this.getAccessToken(id),
       async setUpdatedPassword(password) {
-        await CognitoAuthHelper.credentialsFile.set(runId, id, {
-          password,
-        });
+        await CognitoAuthHelper.credentialsFile.set(runId, id, { password });
         this.password = password;
       },
     };

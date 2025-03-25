@@ -4,7 +4,7 @@
     "lambdas/authorizer",
     "lambdas/backend-api",
     "lambdas/backend-client",
-    "lambdas/get-s3-object-tags",
+    "lambdas/virus-scan",
     "frontend",
     "tests/accessibility",
     "tests/test-team",
