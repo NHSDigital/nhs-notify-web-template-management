@@ -903,7 +903,6 @@ describe('templateClient', () => {
 
       const data: UpdateTemplate = {
         name: 'name',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'LETTER',
         language: 'it',
         letterType: 'q1',
@@ -933,7 +932,6 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -971,7 +969,6 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
@@ -1020,13 +1017,13 @@ describe('templateClient', () => {
       const data: UpdateTemplate = {
         name: 'name',
         message: 'message',
-        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
 
       const template: TemplateDto = {
         ...data,
         id: templateId,
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

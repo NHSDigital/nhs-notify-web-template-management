@@ -164,20 +164,14 @@ export const $CreateTemplateSchema = schemaFor<
   ])
 );
 
-const $UpdateTemplateFields = z
-  .object({
-    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
-  })
-  .merge($BaseTemplateSchema);
-
 export const $UpdateNonLetter = schemaFor<
   Exclude<UpdateTemplate, { templateType: 'LETTER' }>,
   Exclude<ValidatedUpdateTemplate, { templateType: 'LETTER' }>
 >()(
   z.discriminatedUnion('templateType', [
-    $UpdateTemplateFields.merge($NhsAppPropertiesWithType),
-    $UpdateTemplateFields.merge($EmailPropertiesWithType),
-    $UpdateTemplateFields.merge($SmsPropertiesWithType),
+    $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
+    $BaseTemplateSchema.merge($EmailPropertiesWithType),
+    $BaseTemplateSchema.merge($SmsPropertiesWithType),
   ])
 );
 
@@ -186,10 +180,10 @@ export const $UpdateTemplateSchema = schemaFor<
   ValidatedUpdateTemplate
 >()(
   z.discriminatedUnion('templateType', [
-    $UpdateTemplateFields.merge($NhsAppPropertiesWithType),
-    $UpdateTemplateFields.merge($EmailPropertiesWithType),
-    $UpdateTemplateFields.merge($SmsPropertiesWithType),
-    $UpdateTemplateFields.merge($LetterPropertiesWithType),
+    $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
+    $BaseTemplateSchema.merge($EmailPropertiesWithType),
+    $BaseTemplateSchema.merge($SmsPropertiesWithType),
+    $BaseTemplateSchema.merge($LetterPropertiesWithType),
   ])
 );
 
@@ -198,8 +192,9 @@ const $TemplateDtoFields = z
     id: z.string().trim().min(1),
     createdAt: z.string(),
     updatedAt: z.string(),
+    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
   })
-  .merge($UpdateTemplateFields);
+  .merge($BaseTemplateSchema);
 
 export const $TemplateDtoSchema = schemaFor<
   TemplateDto,

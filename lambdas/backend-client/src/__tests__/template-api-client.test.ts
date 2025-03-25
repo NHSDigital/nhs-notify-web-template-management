@@ -188,7 +188,6 @@ describe('TemplateAPIClient', () => {
       {
         name: 'test',
         message: '<html></html>',
-        templateStatus: 'SUBMITTED',
         templateType: 'NHS_APP',
       },
       testToken
@@ -228,7 +227,6 @@ describe('TemplateAPIClient', () => {
       {
         name: 'name',
         message: 'message',
-        templateStatus: 'SUBMITTED',
         templateType: 'NHS_APP',
       },
       testToken

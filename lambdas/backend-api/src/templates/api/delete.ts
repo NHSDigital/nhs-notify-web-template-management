@@ -1,5 +1,5 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
-import { apiFailure, apiSuccess } from './responses';
+import { apiFailure } from './responses';
 import { ITemplateClient } from 'nhs-notify-backend-client';
 
 export function createHandler({
@@ -16,15 +16,17 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.deleteTemplate(
-      templateId,
-      user
-    );
+    const { error } = await templateClient.deleteTemplate(templateId, user);
 
     if (error) {
       return apiFailure(error.code, error.message, error.details);
     }
 
-    return apiSuccess(204, data);
+    return {
+      statusCode: 204,
+      body: JSON.stringify({
+        statusCode: 204,
+      }),
+    };
   };
 }
