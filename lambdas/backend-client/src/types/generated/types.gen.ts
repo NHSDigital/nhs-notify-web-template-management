@@ -7,7 +7,8 @@ export type TemplateStatus =
   | 'SUBMITTED'
   | 'DELETED'
   | 'PENDING_UPLOAD'
-  | 'PENDING_VALIDATION';
+  | 'PENDING_VALIDATION'
+  | 'VIRUS_SCAN_FAILED';
 
 export type Language =
   | 'ar'

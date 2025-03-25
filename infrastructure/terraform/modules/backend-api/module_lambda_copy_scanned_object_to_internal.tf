@@ -56,4 +56,18 @@ data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
 
     resources = ["${module.s3bucket_internal.arn}/*"]
   }
+
+  statement {
+    sid    = "AllowKMSAccess"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey",
+    ]
+
+    resources = [
+      var.kms_key_arn
+    ]
+  }
 }

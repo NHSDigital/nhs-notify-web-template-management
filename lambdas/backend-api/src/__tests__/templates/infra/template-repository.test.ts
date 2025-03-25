@@ -41,13 +41,9 @@ const emailProperties: EmailProperties = {
   subject: 'pickles',
 };
 
-const smsProperties: SmsProperties = {
-  message: 'message',
-};
+const smsProperties: SmsProperties = { message: 'message' };
 
-const nhsAppProperties: NhsAppProperties = {
-  message: 'message',
-};
+const nhsAppProperties: NhsAppProperties = { message: 'message' };
 
 const letterProperties: LetterProperties = {
   letterType: 'x0',
@@ -66,9 +62,7 @@ const letterProperties: LetterProperties = {
   },
 };
 
-const createTemplateProperties = {
-  name: 'name',
-};
+const createTemplateProperties = { name: 'name' };
 
 const updateTemplateProperties = {
   ...createTemplateProperties,
@@ -141,10 +135,7 @@ describe('templateRepository', () => {
         const response = await templateRepository.get(id, owner);
 
         expect(response).toEqual({
-          error: {
-            code: 404,
-            message: 'Template not found',
-          },
+          error: { code: 404, message: 'Template not found' },
         });
       }
     );
@@ -166,10 +157,7 @@ describe('templateRepository', () => {
       );
 
       expect(response).toEqual({
-        error: {
-          code: 404,
-          message: 'Template not found',
-        },
+        error: { code: 404, message: 'Template not found' },
       });
     });
 
@@ -202,18 +190,14 @@ describe('templateRepository', () => {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
-        .resolves({
-          Item: emailTemplate,
-        });
+        .resolves({ Item: emailTemplate });
 
       const response = await templateRepository.get(
         'abc-def-ghi-jkl-123',
         'real-owner'
       );
 
-      expect(response).toEqual({
-        data: emailTemplate,
-      });
+      expect(response).toEqual({ data: emailTemplate });
     });
   });
 
@@ -221,15 +205,11 @@ describe('templateRepository', () => {
     test('should return an empty array when no items', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient.on(QueryCommand).resolves({
-        Items: undefined,
-      });
+      mocks.ddbDocClient.on(QueryCommand).resolves({ Items: undefined });
 
       const response = await templateRepository.list('real-owner');
 
-      expect(response).toEqual({
-        data: [],
-      });
+      expect(response).toEqual({ data: [] });
     });
 
     test('should error when unexpected error occurs', async () => {
@@ -257,12 +237,8 @@ describe('templateRepository', () => {
         .on(QueryCommand, {
           TableName: templatesTableName,
           KeyConditionExpression: '#owner = :owner',
-          ExpressionAttributeNames: {
-            '#owner': 'owner',
-          },
-          ExpressionAttributeValues: {
-            ':owner': 'real-owner',
-          },
+          ExpressionAttributeNames: { '#owner': 'owner' },
+          ExpressionAttributeValues: { ':owner': 'real-owner' },
         })
         .resolves({
           Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
@@ -316,26 +292,17 @@ describe('templateRepository', () => {
         mocks.ddbDocClient
           .on(PutCommand, {
             TableName: templatesTableName,
-            Item: {
-              ...channelProperties,
-              ...databaseTemplateProperties,
-            },
+            Item: { ...channelProperties, ...databaseTemplateProperties },
           })
           .resolves({});
 
         const response = await templateRepository.create(
-          {
-            ...channelProperties,
-            ...createTemplateProperties,
-          },
+          { ...channelProperties, ...createTemplateProperties },
           'real-owner'
         );
 
         expect(response).toEqual({
-          data: {
-            ...channelProperties,
-            ...databaseTemplateProperties,
-          },
+          data: { ...channelProperties, ...databaseTemplateProperties },
         });
       }
     );
@@ -343,11 +310,7 @@ describe('templateRepository', () => {
 
   describe('update', () => {
     test.each([
-      {
-        Item: undefined,
-        code: 404,
-        message: 'Template not found',
-      },
+      { Item: undefined, code: 404, message: 'Template not found' },
       {
         testName:
           'Fails when user tries to change templateType from SMS to EMAIL',
@@ -357,9 +320,7 @@ describe('templateRepository', () => {
         },
         code: 400,
         message: 'Can not change template templateType',
-        details: {
-          templateType: 'Expected SMS but got EMAIL',
-        },
+        details: { templateType: 'Expected SMS but got EMAIL' },
       },
       {
         testName:
@@ -408,12 +369,7 @@ describe('templateRepository', () => {
         );
 
         expect(response).toEqual({
-          error: {
-            code,
-            message,
-            actualError: error,
-            details,
-          },
+          error: { code, message, actualError: error, details },
         });
       }
     );
@@ -509,12 +465,7 @@ describe('templateRepository', () => {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
-        .resolves({
-          Attributes: {
-            ...emailTemplate,
-            ...updatedTemplate,
-          },
-        });
+        .resolves({ Attributes: { ...emailTemplate, ...updatedTemplate } });
 
       const response = await templateRepository.update(
         'abc-def-ghi-jkl-123',
@@ -524,23 +475,17 @@ describe('templateRepository', () => {
       );
 
       expect(response).toEqual({
-        data: {
-          ...emailTemplate,
-          ...updatedTemplate,
-        },
+        data: { ...emailTemplate, ...updatedTemplate },
       });
     });
   });
 
   describe('setLetterFileVirusScanStatus', () => {
-    it('updates the pdfTemplate field with the given status', async () => {
+    it('updates the virusScanStatus on the pdfTemplate field when the status is PASSED', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
-        {
-          owner: 'template-owner',
-          id: 'template-id',
-        },
+        { owner: 'template-owner', id: 'template-id' },
         'pdfTemplate',
         'pdf-version-id',
         'PASSED'
@@ -549,29 +494,85 @@ describe('templateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
-        UpdateExpression: 'SET #files.#file.#status = :status',
+        UpdateExpression: 'SET #files.#file.#scanStatus = :scanStatus',
         ConditionExpression: '#files.#file.#version = :version',
         ExpressionAttributeNames: {
           '#file': 'pdfTemplate',
           '#files': 'files',
-          '#status': 'templateStatus',
+          '#scanStatus': 'virusScanStatus',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
-          ':status': 'PASSED',
+          ':scanStatus': 'PASSED',
           ':version': 'pdf-version-id',
         },
       });
     });
 
-    it('updates the testDataCsv field with the given status', async () => {
+    it('updates the virusScanStatus on the testDataCsv field when the status is PASSED', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
-        {
-          owner: 'template-owner',
-          id: 'template-id',
+        { owner: 'template-owner', id: 'template-id' },
+        'testDataCsv',
+        'csv-version-id',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression: 'SET #files.#file.#scanStatus = :scanStatus',
+        ConditionExpression: '#files.#file.#version = :version',
+        ExpressionAttributeNames: {
+          '#file': 'testDataCsv',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#version': 'currentVersion',
         },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'PASSED',
+          ':version': 'csv-version-id',
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the pdfTemplate field and the overall template status when the status is FAILED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatus(
+        { owner: 'template-owner', id: 'template-id' },
+        'pdfTemplate',
+        'pdf-version-id',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #templateStatus = :templateStatusFailed',
+        ConditionExpression: '#files.#file.#version = :version',
+        ExpressionAttributeNames: {
+          '#file': 'pdfTemplate',
+          '#files': 'files',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#version': 'currentVersion',
+        },
+        ExpressionAttributeValues: {
+          ':scanStatus': 'FAILED',
+          ':templateStatusFailed': 'VIRUS_SCAN_FAILED',
+          ':version': 'pdf-version-id',
+        },
+      });
+    });
+
+    it('updates the virusScanStatus on the testDataCsv field and the overall template status when the status is FAILED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatus(
+        { owner: 'template-owner', id: 'template-id' },
         'testDataCsv',
         'csv-version-id',
         'FAILED'
@@ -580,16 +581,19 @@ describe('templateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
-        UpdateExpression: 'SET #files.#file.#status = :status',
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #templateStatus = :templateStatusFailed',
         ConditionExpression: '#files.#file.#version = :version',
         ExpressionAttributeNames: {
           '#file': 'testDataCsv',
           '#files': 'files',
-          '#status': 'templateStatus',
+          '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
-          ':status': 'FAILED',
+          ':scanStatus': 'FAILED',
+          ':templateStatusFailed': 'VIRUS_SCAN_FAILED',
           ':version': 'csv-version-id',
         },
       });
@@ -607,10 +611,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatus(
-          {
-            owner: 'template-owner',
-            id: 'template-id',
-          },
+          { owner: 'template-owner', id: 'template-id' },
           'testDataCsv',
           'csv-version-id',
           'FAILED'
@@ -625,10 +626,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatus(
-          {
-            owner: 'template-owner',
-            id: 'template-id',
-          },
+          { owner: 'template-owner', id: 'template-id' },
           'testDataCsv',
           'csv-version-id',
           'FAILED'

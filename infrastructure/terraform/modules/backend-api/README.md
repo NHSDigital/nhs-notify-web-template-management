@@ -28,18 +28,20 @@ No requirements.
 |------|--------|---------|
 | <a name="module_authorizer_build"></a> [authorizer\_build](#module\_authorizer\_build) | ../typescript-build-zip | n/a |
 | <a name="module_authorizer_lambda"></a> [authorizer\_lambda](#module\_authorizer\_lambda) | ../lambda-function | n/a |
-| <a name="module_build_get_s3_object_tags_lambda"></a> [build\_get\_s3\_object\_tags\_lambda](#module\_build\_get\_s3\_object\_tags\_lambda) | ../typescript-build-zip | n/a |
 | <a name="module_build_template_client"></a> [build\_template\_client](#module\_build\_template\_client) | ../typescript-build-zip | n/a |
 | <a name="module_build_template_lambda"></a> [build\_template\_lambda](#module\_build\_template\_lambda) | ../typescript-build-zip | n/a |
+| <a name="module_build_virus_scan_lambdas"></a> [build\_virus\_scan\_lambdas](#module\_build\_virus\_scan\_lambdas) | ../typescript-build-zip | n/a |
 | <a name="module_create_letter_template_lambda"></a> [create\_letter\_template\_lambda](#module\_create\_letter\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
+| <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | ../lambda-function | n/a |
+| <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | ../lambda-function | n/a |
 | <a name="module_lambda_get_s3_object_tags"></a> [lambda\_get\_s3\_object\_tags](#module\_lambda\_get\_s3\_object\_tags) | ../lambda-function | n/a |
+| <a name="module_lambda_set_file_virus_scan_status"></a> [lambda\_set\_file\_virus\_scan\_status](#module\_lambda\_set\_file\_virus\_scan\_status) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_sqs_quarantine_tags_added"></a> [sqs\_quarantine\_tags\_added](#module\_sqs\_quarantine\_tags\_added) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
-| <a name="module_sqs_virus_scan_complete"></a> [sqs\_virus\_scan\_complete](#module\_sqs\_virus\_scan\_complete) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_sqs_virus_scan_failed"></a> [sqs\_virus\_scan\_failed](#module\_sqs\_virus\_scan\_failed) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_sqs_virus_scan_passed"></a> [sqs\_virus\_scan\_passed](#module\_sqs\_virus\_scan\_passed) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | ../lambda-function | n/a |

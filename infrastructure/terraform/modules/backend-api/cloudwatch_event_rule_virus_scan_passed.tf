@@ -18,40 +18,39 @@ resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
   })
 }
 
-resource "aws_cloudwatch_event_target" "virus_scan_passed" {
+resource "aws_cloudwatch_event_target" "scan_passed_copy_object" {
   rule     = aws_cloudwatch_event_rule.virus_scan_passed.name
-  arn      = module.sqs_virus_scan_passed.sqs_queue_arn
-  role_arn = aws_iam_role.virus_scan_passed_to_sqs.arn
+  arn      = module.lambda_copy_scanned_object_to_internal.function_arn
+  role_arn = aws_iam_role.handle_scan_passed.arn
 }
 
-resource "aws_iam_role" "virus_scan_passed_to_sqs" {
-  name               = "${local.csi}-virus-scan-passed-to-sqs"
+resource "aws_cloudwatch_event_target" "scan_passed_set_file_status" {
+  rule     = aws_cloudwatch_event_rule.virus_scan_passed.name
+  arn      = module.lambda_set_file_virus_scan_status.function_arn
+  role_arn = aws_iam_role.handle_scan_passed.arn
+}
+
+resource "aws_iam_role" "handle_scan_passed" {
+  name               = "${local.csi}-virus-scan-passed"
   assume_role_policy = data.aws_iam_policy_document.events_assume_role.json
 }
 
-resource "aws_iam_role_policy" "virus_scan_passed_to_sqs" {
-  name   = "${local.csi}-virus-scan-passed-to-sqs"
-  role   = aws_iam_role.virus_scan_passed_to_sqs.id
-  policy = data.aws_iam_policy_document.virus_scan_passed_to_sqs.json
+resource "aws_iam_role_policy" "handle_scan_passed" {
+  name   = "${local.csi}-virus-scan-passed"
+  role   = aws_iam_role.handle_scan_passed.id
+  policy = data.aws_iam_policy_document.handle_scan_passed.json
 }
 
-data "aws_iam_policy_document" "virus_scan_passed_to_sqs" {
+data "aws_iam_policy_document" "handle_scan_passed" {
   version = "2012-10-17"
 
   statement {
-    sid       = "AllowSQSSendMessage"
-    effect    = "Allow"
-    actions   = ["sqs:SendMessage"]
-    resources = [module.sqs_virus_scan_passed.sqs_queue_arn]
-  }
-
-  statement {
-    sid    = "AllowKMS"
-    effect = "Allow"
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey"
+    sid     = "AllowLambdaInvoke"
+    effect  = "Allow"
+    actions = ["lambda:InvokeFunction"]
+    resources = [
+      module.lambda_copy_scanned_object_to_internal.function_arn,
+      module.lambda_set_file_virus_scan_status.function_arn,
     ]
-    resources = [var.kms_key_arn]
   }
 }

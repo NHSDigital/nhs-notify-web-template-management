@@ -26,7 +26,7 @@ resource "aws_cloudwatch_event_target" "scan_failed_delete_object" {
 
 resource "aws_cloudwatch_event_target" "scan_failed_set_file_status" {
   rule     = aws_cloudwatch_event_rule.virus_scan_failed.name
-  arn      = module.lambda_set_letter_file_virus_scan_status.function_arn
+  arn      = module.lambda_set_file_virus_scan_status.function_arn
   role_arn = aws_iam_role.handle_scan_failed.arn
 }
 
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "handle_scan_failed" {
     actions = ["lambda:InvokeFunction"]
     resources = [
       module.lambda_delete_failed_scanned_object.function_arn,
-      module.lambda_set_letter_file_virus_scan_status.function_arn,
+      module.lambda_set_file_virus_scan_status.function_arn,
     ]
   }
 }

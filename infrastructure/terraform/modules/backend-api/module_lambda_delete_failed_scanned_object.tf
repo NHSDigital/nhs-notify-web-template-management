@@ -18,7 +18,8 @@ data "aws_iam_policy_document" "delete_failed_scanned_object" {
     effect = "Allow"
 
     actions = [
-      "s3:DeleteObject"
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion"
     ]
 
     resources = ["${module.s3bucket_quarantine.arn}/*"]

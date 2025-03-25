@@ -39,9 +39,7 @@ const emailAttributes: Record<keyof EmailProperties, null> = {
   subject: null,
 };
 
-const smsAttributes: Record<keyof SmsProperties, null> = {
-  message: null,
-};
+const smsAttributes: Record<keyof SmsProperties, null> = { message: null };
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
   letterType: null,
@@ -49,10 +47,7 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   files: null,
 };
 
-type TemplateKey = {
-  owner: string;
-  id: string;
-};
+type TemplateKey = { owner: string; id: string };
 
 export class TemplateRepository {
   constructor(
@@ -68,10 +63,7 @@ export class TemplateRepository {
       const response = await this.client.send(
         new GetCommand({
           TableName: this.templatesTableName,
-          Key: {
-            id: templateId,
-            owner,
-          },
+          Key: { id: templateId, owner },
         })
       );
 
@@ -109,10 +101,7 @@ export class TemplateRepository {
 
     try {
       await this.client.send(
-        new PutCommand({
-          TableName: this.templatesTableName,
-          Item: entity,
-        })
+        new PutCommand({ TableName: this.templatesTableName, Item: entity })
       );
 
       return success(entity);
@@ -153,10 +142,7 @@ export class TemplateRepository {
 
     if (template.templateStatus === 'DELETED') {
       updateExpression.push('#ttl = :ttl');
-      expressionAttributeNames = {
-        ...expressionAttributeNames,
-        '#ttl': 'ttl',
-      };
+      expressionAttributeNames = { ...expressionAttributeNames, '#ttl': 'ttl' };
       expressionAttributeValues = {
         ...expressionAttributeValues,
         ':ttl': calculateTTL(),
@@ -165,10 +151,7 @@ export class TemplateRepository {
 
     const input: UpdateCommandInput = {
       TableName: this.templatesTableName,
-      Key: {
-        id: templateId,
-        owner,
-      },
+      Key: { id: templateId, owner },
       UpdateExpression: `SET ${updateExpression.join(', ')}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
@@ -257,22 +240,37 @@ export class TemplateRepository {
     versionId: string,
     status: VirusScanStatus
   ) {
+    const updates = ['#files.#file.#scanStatus = :scanStatus'];
+
+    const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
+      {
+        '#files': 'files',
+        '#file': fileType,
+        '#scanStatus': 'virusScanStatus',
+        '#version': 'currentVersion',
+      };
+
+    const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':scanStatus': status,
+        ':version': versionId,
+      };
+
+    if (status === 'FAILED') {
+      updates.push('#templateStatus = :templateStatusFailed');
+      ExpressionAttributeNames['#templateStatus'] = 'templateStatus';
+      ExpressionAttributeValues[':templateStatusFailed'] =
+        'VIRUS_SCAN_FAILED' as TemplateStatus;
+    }
+
     try {
       await this.client.send(
         new UpdateCommand({
           TableName: this.templatesTableName,
           Key: templateKey,
-          UpdateExpression: 'SET #files.#file.#status = :status',
-          ExpressionAttributeNames: {
-            '#files': 'files',
-            '#file': fileType,
-            '#status': 'templateStatus',
-            '#version': 'currentVersion',
-          },
-          ExpressionAttributeValues: {
-            ':status': status,
-            ':version': versionId,
-          },
+          UpdateExpression: `SET ${updates.join(' , ')}`,
+          ExpressionAttributeNames,
+          ExpressionAttributeValues,
           ConditionExpression: `#files.#file.#version = :version`,
         })
       );
@@ -324,10 +322,7 @@ export class TemplateRepository {
     let attributeNames = {};
 
     for (const att in channelSpecificAttributes) {
-      attributeNames = {
-        ...attributeNames,
-        [`#${att}`]: att,
-      };
+      attributeNames = { ...attributeNames, [`#${att}`]: att };
     }
 
     return attributeNames;
@@ -359,10 +354,7 @@ export class TemplateRepository {
     let attributeValues = {};
 
     for (const att in channelSpecificAttributes) {
-      attributeValues = {
-        ...attributeValues,
-        [`:${att}`]: template[att],
-      };
+      attributeValues = { ...attributeValues, [`:${att}`]: template[att] };
     }
 
     return attributeValues;
