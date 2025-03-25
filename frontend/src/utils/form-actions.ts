@@ -52,6 +52,43 @@ export async function saveTemplate(
   return data;
 }
 
+export async function setTemplateToSubmitted(
+  templateId: string
+): Promise<TemplateDto> {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateClient.submitTemplate(
+    templateId,
+    token
+  );
+
+  if (error) {
+    logger.error('Failed to save template', { error });
+    throw new Error('Failed to save template data');
+  }
+
+  return data;
+}
+
+export async function setTemplateToDeleted(templateId: string): Promise<void> {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { error } = await templateClient.deleteTemplate(templateId, token);
+
+  if (error) {
+    logger.error('Failed to save template', { error });
+    throw new Error('Failed to save template data');
+  }
+}
+
 export async function getTemplate(
   templateId: string
 ): Promise<TemplateDto | undefined> {

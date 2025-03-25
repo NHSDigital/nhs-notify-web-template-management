@@ -440,16 +440,12 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'NHS_APP',
-            templateStatus: 'SUBMITTED',
-          }),
         }
       );
 
@@ -505,13 +501,12 @@ test.describe('POST /v1/template/:templateId', () => {
         templateStatus: 'SUBMITTED',
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: submitData,
         }
       );
 
@@ -561,20 +556,16 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const deleteResponse = await request.post(
+      const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'NHS_APP',
-            templateStatus: 'DELETED',
-          }),
         }
       );
 
-      expect(deleteResponse.status()).toBe(200);
+      expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1023,16 +1014,12 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'SMS',
-            templateStatus: 'SUBMITTED',
-          }),
         }
       );
 
@@ -1088,13 +1075,12 @@ test.describe('POST /v1/template/:templateId', () => {
         templateStatus: 'SUBMITTED',
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: submitData,
         }
       );
 
@@ -1144,20 +1130,16 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const deleteResponse = await request.post(
+      const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'SMS',
-            templateStatus: 'DELETED',
-          }),
         }
       );
 
-      expect(deleteResponse.status()).toBe(200);
+      expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
@@ -1560,16 +1542,12 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'EMAIL',
-            templateStatus: 'SUBMITTED',
-          }),
         }
       );
 
@@ -1620,18 +1598,17 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const submitData = TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+      const submitData = TemplateAPIPayloadFactory.getCreateTemplatePayload({
         templateType: 'EMAIL',
         templateStatus: 'SUBMITTED',
       });
 
-      const submitResponse = await request.post(
-        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      const submitResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: submitData,
         }
       );
 
@@ -1682,20 +1659,16 @@ test.describe('POST /v1/template/:templateId', () => {
         owner: user1.userId,
       });
 
-      const deleteResponse = await request.post(
+      const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
           },
-          data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-            templateType: 'EMAIL',
-            templateStatus: 'DELETED',
-          }),
         }
       );
 
-      expect(deleteResponse.status()).toBe(200);
+      expect(deleteResponse.status()).toBe(204);
 
       const updateResponse = await request.post(
         `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,

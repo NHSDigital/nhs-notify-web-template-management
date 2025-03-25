@@ -20,6 +20,13 @@ export interface ITemplateClient {
     owner: string
   ): Promise<Result<TemplateDto>>;
 
+  submitTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>>;
+
+  deleteTemplate(templateId: string, owner: string): Promise<Result<void>>;
+
   getTemplate(templateId: string, owner: string): Promise<Result<TemplateDto>>;
 
   listTemplates(owner: string): Promise<Result<TemplateDto[]>>;
