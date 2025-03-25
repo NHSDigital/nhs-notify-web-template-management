@@ -86,14 +86,8 @@ export type BaseTemplate = {
 export type CreateTemplate = BaseTemplate &
   (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
 
-export type UpdateTemplate = BaseTemplate & {
-  templateStatus: TemplateStatus;
-} & (
-    | NhsAppProperties
-    | EmailProperties
-    | SmsProperties
-    | CreateLetterProperties
-  );
+export type UpdateTemplate = BaseTemplate &
+  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
 
 export type UpdateStatus = {
   templateStatus: TemplateStatus;

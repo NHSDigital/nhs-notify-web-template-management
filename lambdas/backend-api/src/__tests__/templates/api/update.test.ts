@@ -141,13 +141,13 @@ describe('Template API - Update', () => {
     const update: UpdateTemplate = {
       name: 'updated-name',
       message: 'message',
-      templateStatus: 'NOT_YET_SUBMITTED',
       templateType: 'SMS',
     };
     const response: TemplateDto = {
       ...update,
       id: '1-2-3',
       templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
