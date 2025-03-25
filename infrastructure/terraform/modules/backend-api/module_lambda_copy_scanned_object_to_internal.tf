@@ -2,18 +2,17 @@ module "lambda_copy_scanned_object_to_internal" {
   source      = "../lambda-function"
   description = "Copies quarantine files that have passed virus scan check to internal bucket"
 
-  function_name    = "${local.csi}-copy-scanned-object-to-internal"
-  filename         = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].path
-  source_code_hash = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].base64sha256
-  handler          = "copy-scanned-object-to-internal.handler"
+  dead_letter_target_arn         = module.sqs_virus_scan_passed_copy_object_dlq.sqs_queue_arn
+  execution_role_policy_document = data.aws_iam_policy_document.copy_scanned_object_to_internal.json
+  filename                       = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].path
+  function_name                  = "${local.csi}-copy-scanned-object-to-internal"
+  handler                        = "copy-scanned-object-to-internal.handler"
+  log_retention_in_days          = var.log_retention_in_days
+  source_code_hash               = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].base64sha256
 
   environment_variables = {
     TEMPLATES_INTERNAL_S3_BUCKET_NAME = module.s3bucket_internal.id
   }
-
-  log_retention_in_days = var.log_retention_in_days
-
-  execution_role_policy_document = data.aws_iam_policy_document.copy_scanned_object_to_internal.json
 }
 
 data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
@@ -68,6 +67,19 @@ data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
 
     resources = [
       var.kms_key_arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowSQSDLQ"
+    effect = "Allow"
+
+    actions = [
+      "sqs:SendMessage",
+    ]
+
+    resources = [
+      module.sqs_virus_scan_passed_copy_object_dlq.sqs_queue_arn,
     ]
   }
 }
