@@ -164,17 +164,16 @@ test.describe('GET /v1/template/:templateId', () => {
       owner: user1.userId,
     });
 
-    const deleteResponse = await request.post(
+    const deleteResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: { ...template, templateStatus: 'DELETED' },
       }
     );
 
-    expect(deleteResponse.status()).toBe(200);
+    expect(deleteResponse.status()).toBe(204);
 
     // exercise: make the GET request to retrieve the deleted template
     const response = await request.get(

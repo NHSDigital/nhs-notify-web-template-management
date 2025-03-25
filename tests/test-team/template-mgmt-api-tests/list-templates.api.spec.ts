@@ -170,20 +170,16 @@ test.describe('GET /v1/templates', () => {
 
     // delete template 1
 
-    const deleteResponse = await request.post(
+    const deleteResponse = await request.delete(
       `${process.env.API_BASE_URL}/v1/template/${created1.template.id}`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),
         },
-        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-          templateType: 'NHS_APP',
-          templateStatus: 'DELETED',
-        }),
       }
     );
 
-    expect(deleteResponse.status()).toBe(200);
+    expect(deleteResponse.status()).toBe(204);
 
     // exercise - request templates list
     const listResponse = await request.get(

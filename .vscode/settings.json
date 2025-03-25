@@ -1,11 +1,15 @@
 {
   "markdownlint.config": {
     "MD013": false,
-    "MD024": { "siblings_only": true },
+    "MD024": {
+      "siblings_only": true
+    },
     "MD033": false
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.codeActionsOnSave.mode": "problems"
+  "eslint.codeActionsOnSave.mode": "problems",
+  "jestrunner.jestPath": "/Users/benjamin.hansell/projects/nhs-notify-web-template-management/node_modules/jest/bin/jest.js",
+  "jestrunner.projectPath": "/Users/benjamin.hansell/projects/nhs-notify-web-template-management/frontend"
 }

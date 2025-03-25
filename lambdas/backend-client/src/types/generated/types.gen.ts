@@ -96,6 +96,10 @@ export type UpdateTemplate = BaseTemplate & {
     | CreateLetterProperties
   );
 
+export type UpdateStatus = {
+  templateStatus: TemplateStatus;
+};
+
 export type TemplateDto = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
@@ -118,6 +122,38 @@ export type Failure = {
   statusCode: number;
   details?: unknown;
 };
+
+export type DeleteV1TemplateByTemplateIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}';
+};
+
+export type DeleteV1TemplateByTemplateIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type DeleteV1TemplateByTemplateIdError =
+  DeleteV1TemplateByTemplateIdErrors[keyof DeleteV1TemplateByTemplateIdErrors];
+
+export type DeleteV1TemplateByTemplateIdResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type DeleteV1TemplateByTemplateIdResponse =
+  DeleteV1TemplateByTemplateIdResponses[keyof DeleteV1TemplateByTemplateIdResponses];
 
 export type GetV1TemplateByTemplateIdData = {
   body?: never;
@@ -272,6 +308,38 @@ export type GetV1TemplatesResponses = {
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
+
+export type PatchV1TemplateByTemplateIdSubmitData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/submit';
+};
+
+export type PatchV1TemplateByTemplateIdSubmitErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitError =
+  PatchV1TemplateByTemplateIdSubmitErrors[keyof PatchV1TemplateByTemplateIdSubmitErrors];
+
+export type PatchV1TemplateByTemplateIdSubmitResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitResponse =
+  PatchV1TemplateByTemplateIdSubmitResponses[keyof PatchV1TemplateByTemplateIdSubmitResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});

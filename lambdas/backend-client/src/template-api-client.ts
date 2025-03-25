@@ -136,6 +136,58 @@ export class TemplateApiClient implements ITemplateClient {
       data: response.data.templates,
     };
   }
+
+  async submitTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      this._client.patch<Success>(
+        `/v1/template/${templateId}/submit`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.template,
+    };
+  }
+
+  async deleteTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<void>> {
+    const response = await catchAxiosError(
+      this._client.delete<Success>(`/v1/template/${templateId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: owner,
+        },
+      })
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: undefined,
+    };
+  }
 }
 
 export const templateClient = new TemplateApiClient();
