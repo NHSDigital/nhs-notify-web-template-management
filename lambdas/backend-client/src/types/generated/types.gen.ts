@@ -97,6 +97,10 @@ export type UpdateStatus = {
   templateStatus: TemplateStatus;
 };
 
+export type UpdateStatus = {
+  templateStatus: TemplateStatus;
+};
+
 export type TemplateDto = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
