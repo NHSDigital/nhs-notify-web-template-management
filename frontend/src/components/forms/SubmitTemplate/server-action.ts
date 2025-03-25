@@ -4,7 +4,6 @@ import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { canSubmit } from './can-submit';
 import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 
 export async function submitTemplate(route: string, formData: FormData) {
@@ -20,7 +19,7 @@ export async function submitTemplate(route: string, formData: FormData) {
 
   const validatedTemplate = validateTemplate(template);
 
-  if (!validatedTemplate || !canSubmit(validatedTemplate)) {
+  if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
