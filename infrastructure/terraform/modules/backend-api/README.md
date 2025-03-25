@@ -33,6 +33,7 @@ No requirements.
 | <a name="module_build_virus_scan_lambdas"></a> [build\_virus\_scan\_lambdas](#module\_build\_virus\_scan\_lambdas) | ../typescript-build-zip | n/a |
 | <a name="module_create_letter_template_lambda"></a> [create\_letter\_template\_lambda](#module\_create\_letter\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | ../lambda-function | n/a |
+| <a name="module_delete_template_lambda"></a> [delete\_template\_lambda](#module\_delete\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | ../lambda-function | n/a |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | ../lambda-function | n/a |
