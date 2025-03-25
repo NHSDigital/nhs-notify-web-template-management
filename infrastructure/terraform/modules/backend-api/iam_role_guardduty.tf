@@ -34,6 +34,7 @@ data "aws_iam_policy_document" "guardduty_assumerole" {
   }
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "guardduty" {
   statement {
     sid    = "AllowManagedRuleToSendS3EventsToGuardDuty"
@@ -79,7 +80,6 @@ data "aws_iam_policy_document" "guardduty" {
     ]
 
     resources = [
-      #tfsec:ignore:aws-iam-no-policy-wildcards
       "${module.s3bucket_quarantine.arn}/*"
     ]
   }
@@ -126,7 +126,6 @@ data "aws_iam_policy_document" "guardduty" {
     ]
 
     resources = [
-      #tfsec:ignore:aws-iam-no-policy-wildcards
       "${module.s3bucket_quarantine.arn}/*"
     ]
   }
