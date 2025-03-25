@@ -93,6 +93,10 @@ export type CreateUpdateTemplate = BaseTemplate &
     | CreateUpdateLetterProperties
   );
 
+export type UpdateStatus = {
+  templateStatus: TemplateStatus;
+};
+
 export type TemplateDto = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
