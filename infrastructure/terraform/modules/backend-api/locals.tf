@@ -15,12 +15,13 @@ locals {
   })
 
   backend_lambda_entrypoints = {
-    create_template        = "src/templates/create.ts"
-    create_letter_template = "src/templates/create-letter.ts"
-    get_template           = "src/templates/get.ts"
-    update_template        = "src/templates/update.ts"
-    list_template          = "src/templates/list.ts"
-    template_client        = "src/index.ts"
+    create_template                   = "src/templates/create.ts"
+    create_letter_template            = "src/templates/create-letter.ts"
+    get_template                      = "src/templates/get.ts"
+    update_template                   = "src/templates/update.ts"
+    list_template                     = "src/templates/list.ts"
+    template_client                   = "src/index.ts"
+    set_letter_file_virus_scan_status = "src/set-letter-file-virus-scan-status.ts"
   }
 
   dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
