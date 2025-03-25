@@ -8,6 +8,9 @@ import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormEmail;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -62,7 +65,6 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
-    generateMetadata();
     getTemplateMock.mockResolvedValueOnce(template);
 
     const emailTemplate: EmailTemplate = {
@@ -78,6 +80,7 @@ describe('EditEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<EmailTemplateForm initialState={emailTemplate} />);

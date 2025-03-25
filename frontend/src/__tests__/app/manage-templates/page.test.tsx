@@ -28,9 +28,11 @@ describe('ManageTemplatesPage', () => {
     jest.resetAllMocks();
   });
   test('renders the page without templates', async () => {
-    generateMetadata();
     render(await ManageTemplatesPage());
 
+    expect(await generateMetadata()).toEqual({
+      title: manageTemplatesContent.pageTitle,
+    });
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('page-heading')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();

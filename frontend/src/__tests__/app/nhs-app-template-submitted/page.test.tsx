@@ -8,6 +8,9 @@ import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitte
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -20,7 +23,6 @@ describe('NhsAppTemplateSubmittedPage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    generateMetadata();
     const template = {
       id: 'template-id',
       templateType: 'NHS_APP',
@@ -41,6 +43,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.NHS_APP,
+    });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(

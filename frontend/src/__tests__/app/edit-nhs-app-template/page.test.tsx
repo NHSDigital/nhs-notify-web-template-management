@@ -10,6 +10,9 @@ import EditNhsAppTemplatePage, {
 } from '@app/edit-nhs-app-template/[templateId]/page';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormNhsApp;
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 jest.mock('@utils/form-actions');
@@ -22,7 +25,6 @@ describe('EditNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('page loads', async () => {
-    generateMetadata();
     const template = {
       id: 'template-id',
       templateType: 'NHS_APP',
@@ -47,6 +49,7 @@ describe('EditNhsAppTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
   });
 

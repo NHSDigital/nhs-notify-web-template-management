@@ -9,6 +9,9 @@ import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -21,7 +24,6 @@ describe('SubmitEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    generateMetadata();
     const state = {
       id: 'template-id',
       templateType: 'EMAIL',
@@ -43,6 +45,9 @@ describe('SubmitEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.EMAIL,
+    });
     expect(page).toEqual(
       <SubmitTemplate
         templateName={state.name}

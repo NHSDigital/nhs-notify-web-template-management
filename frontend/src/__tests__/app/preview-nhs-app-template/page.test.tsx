@@ -15,6 +15,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewNHSAppTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -27,7 +30,6 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'NHS_APP',
@@ -52,6 +54,9 @@ describe('PreviewNhsAppTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
       <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );

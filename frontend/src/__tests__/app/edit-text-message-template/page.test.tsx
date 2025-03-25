@@ -9,6 +9,9 @@ import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormSms;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -62,7 +65,6 @@ describe('EditSmsTemplatePage', () => {
   });
 
   it('should render CreateSmsTemplate component when templateId is found', async () => {
-    generateMetadata();
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const smsTemplate: SMSTemplate = {
@@ -77,6 +79,7 @@ describe('EditSmsTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<SmsTemplateForm initialState={smsTemplate} />);

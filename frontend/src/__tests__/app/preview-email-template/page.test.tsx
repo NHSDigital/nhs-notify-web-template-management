@@ -15,6 +15,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -27,7 +30,6 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    generateMetadata();
     const templateDTO = {
       id: 'template-id',
       templateType: 'EMAIL',
@@ -54,6 +56,9 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
   });
 

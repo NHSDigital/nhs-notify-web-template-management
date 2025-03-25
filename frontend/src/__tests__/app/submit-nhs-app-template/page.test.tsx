@@ -14,6 +14,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -26,7 +29,6 @@ describe('SubmitNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should load page', async () => {
-    generateMetadata();
     const state = {
       id: 'template-id',
       templateType: 'NHS_APP',
@@ -45,6 +47,10 @@ describe('SubmitNhsAppTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+    });
+
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.NHS_APP,
     });
     expect(page).toEqual(
       <SubmitTemplate
