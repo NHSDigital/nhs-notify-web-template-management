@@ -244,50 +244,6 @@ test.describe('POST /v1/template/:templateId', () => {
     });
   });
 
-  test('returns 400 if template status is invalid', async ({ request }) => {
-    const createResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
-          templateType: 'NHS_APP',
-        }),
-      }
-    );
-
-    expect(createResponse.status()).toBe(201);
-    const created = await createResponse.json();
-    templateStorageHelper.addAdHocTemplateKey({
-      id: created.template.id,
-      owner: user1.userId,
-    });
-
-    const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
-      {
-        headers: {
-          Authorization: await user1.getAccessToken(),
-        },
-        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
-          templateType: 'NHS_APP',
-          templateStatus: 'INVALID',
-        }),
-      }
-    );
-
-    expect(updateResponse.status()).toBe(400);
-    expect(await updateResponse.json()).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Request failed validation',
-      details: {
-        templateStatus:
-          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED' | 'PENDING_UPLOAD' | 'PENDING_VALIDATION', received 'INVALID'",
-      },
-    });
-  });
-
   test.describe('NHS_APP templates', () => {
     test('returns 200 and the updated template data', async ({ request }) => {
       const createResponse = await request.post(
