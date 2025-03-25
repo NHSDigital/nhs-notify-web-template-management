@@ -25,6 +25,7 @@ import {
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }

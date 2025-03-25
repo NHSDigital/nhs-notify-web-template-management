@@ -712,6 +712,17 @@
           }
         ]
       },
+      "UpdateStatus": {
+        "type": "object",
+        "required": [
+          "templateStatus"
+        ],
+        "properties": {
+          "templateStatus": {
+            "$ref": "#/components/schemas/TemplateStatus"
+          }
+        }
+      },
       "TemplateDto": {
         "type": "object",
         "allOf": [
