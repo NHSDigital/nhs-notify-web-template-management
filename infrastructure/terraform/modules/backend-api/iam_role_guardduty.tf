@@ -79,6 +79,7 @@ data "aws_iam_policy_document" "guardduty" {
     ]
 
     resources = [
+      #tfsec:ignore:aws-iam-no-policy-wildcards
       "${module.s3bucket_quarantine.arn}/*"
     ]
   }
@@ -125,6 +126,7 @@ data "aws_iam_policy_document" "guardduty" {
     ]
 
     resources = [
+      #tfsec:ignore:aws-iam-no-policy-wildcards
       "${module.s3bucket_quarantine.arn}/*"
     ]
   }

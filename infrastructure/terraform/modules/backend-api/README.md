@@ -42,8 +42,9 @@ No requirements.
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_sqs_quarantine_tags_added"></a> [sqs\_quarantine\_tags\_added](#module\_sqs\_quarantine\_tags\_added) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
-| <a name="module_sqs_virus_scan_failed"></a> [sqs\_virus\_scan\_failed](#module\_sqs\_virus\_scan\_failed) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
-| <a name="module_sqs_virus_scan_passed"></a> [sqs\_virus\_scan\_passed](#module\_sqs\_virus\_scan\_passed) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
+| <a name="module_sqs_virus_scan_failed_delete_object_dlq"></a> [sqs\_virus\_scan\_failed\_delete\_object\_dlq](#module\_sqs\_virus\_scan\_failed\_delete\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
+| <a name="module_sqs_virus_scan_passed_copy_object_dlq"></a> [sqs\_virus\_scan\_passed\_copy\_object\_dlq](#module\_sqs\_virus\_scan\_passed\_copy\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
+| <a name="module_sqs_virus_scan_set_file_status_dlq"></a> [sqs\_virus\_scan\_set\_file\_status\_dlq](#module\_sqs\_virus\_scan\_set\_file\_status\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | ../lambda-function | n/a |
 ## Outputs
 
