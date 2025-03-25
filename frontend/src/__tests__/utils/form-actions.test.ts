@@ -491,7 +491,7 @@ describe('form-actions', () => {
       const responseData = {
         id: 'id',
         templateType: 'NHS_APP',
-        templateStatus: 'SUBMITTED',
+        templateStatus: 'NOT_YET_SUBMITTED',
         name: 'name',
         message: 'message',
         createdAt: '2025-01-13T10:19:25.579Z',
