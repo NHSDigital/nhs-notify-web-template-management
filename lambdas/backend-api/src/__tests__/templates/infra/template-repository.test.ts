@@ -362,7 +362,6 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            templateStatus: 'SUBMITTED',
             templateType: 'EMAIL',
           },
           'real-owner',
@@ -388,7 +387,6 @@ describe('templateRepository', () => {
           name: 'name',
           message: 'message',
           subject: 'subject',
-          templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'EMAIL',
         },
         'real-owner',
@@ -418,7 +416,6 @@ describe('templateRepository', () => {
           ...channelProperties,
           ...updateTemplateProperties,
           name: 'updated-name',
-          templateStatus: 'SUBMITTED',
         };
 
         mocks.ddbDocClient

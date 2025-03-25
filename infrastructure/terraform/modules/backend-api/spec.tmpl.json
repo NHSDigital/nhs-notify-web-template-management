@@ -716,17 +716,6 @@
             "$ref": "#/components/schemas/BaseTemplate"
           },
           {
-            "type": "object",
-            "required": [
-              "templateStatus"
-            ],
-            "properties": {
-              "templateStatus": {
-                "$ref": "#/components/schemas/TemplateStatus"
-              }
-            }
-          },
-          {
             "oneOf": [
               {
                 "$ref": "#/components/schemas/NhsAppProperties"
