@@ -5,9 +5,14 @@ import { redirect } from 'next/navigation';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
-import EditNhsAppTemplatePage from '@app/edit-nhs-app-template/[templateId]/page';
+import EditNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/edit-nhs-app-template/[templateId]/page';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, LETTER_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormNhsApp;
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 jest.mock('@utils/form-actions');
@@ -44,6 +49,7 @@ describe('EditNhsAppTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(page).toEqual(<NhsAppTemplateForm initialState={nhsAppTemplate} />);
   });
 
