@@ -7,6 +7,8 @@ declare global {
       NEXT_PUBLIC_ENABLE_LETTERS: string;
       PLAYWRIGHT_RUN_ID: string;
       TEMPLATES_TABLE_NAME: string;
+      TEMPLATES_INTERNAL_BUCKET_NAME: string;
+      TEMPLATES_QUARANTINE_BUCKET_NAME: string;
     }
   }
 

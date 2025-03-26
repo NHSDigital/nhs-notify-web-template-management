@@ -39,6 +39,7 @@ export class LetterUploadRepository {
         Bucket: this.bucketName,
         Key: pdfKey,
         Body: await pdf.bytes(),
+        ChecksumAlgorithm: 'SHA256',
         Metadata: this.metadata(
           owner,
           pdf.name,
@@ -58,6 +59,7 @@ export class LetterUploadRepository {
           Bucket: this.bucketName,
           Key: csvKey,
           Body: await csv.bytes(),
+          ChecksumAlgorithm: 'SHA256',
           Metadata: this.metadata(
             owner,
             csv.name,

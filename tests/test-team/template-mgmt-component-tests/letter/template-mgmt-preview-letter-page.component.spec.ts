@@ -30,13 +30,11 @@ async function createTemplates() {
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
-    valid: {
-      ...TemplateFactory.createLetterTemplate(
-        'valid-letter-preview-template',
-        user.userId,
-        'test-template-letter'
-      ),
-    },
+    valid: TemplateFactory.createLetterTemplate(
+      'valid-letter-preview-template',
+      user.userId,
+      'test-template-letter'
+    ),
   };
 }
 

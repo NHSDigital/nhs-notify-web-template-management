@@ -195,7 +195,7 @@ test.describe('POST /v1/template/:templateId', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
           },
         ]
       );
