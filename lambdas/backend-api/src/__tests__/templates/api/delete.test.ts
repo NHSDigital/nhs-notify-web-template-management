@@ -88,7 +88,7 @@ describe('Template API - Delete', () => {
     );
   });
 
-  test('should return template', async () => {
+  test('should return no content', async () => {
     const { handler, mocks } = setup();
 
     mocks.templateClient.deleteTemplate.mockResolvedValueOnce({
