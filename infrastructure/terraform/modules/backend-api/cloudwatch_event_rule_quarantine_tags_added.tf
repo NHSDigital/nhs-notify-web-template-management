@@ -9,6 +9,12 @@ resource "aws_cloudwatch_event_rule" "quarantine_tags_added" {
       bucket = {
         name = [module.s3bucket_quarantine.id]
       }
+      object = {
+        key = [
+          { prefix = "pdf-template/" },
+          { prefix = "test-data/" },
+        ]
+      }
     }
   })
 }

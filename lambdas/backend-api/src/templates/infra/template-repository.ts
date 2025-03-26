@@ -260,7 +260,7 @@ export class TemplateRepository {
       updates.push('#templateStatus = :templateStatusFailed');
       ExpressionAttributeNames['#templateStatus'] = 'templateStatus';
       ExpressionAttributeValues[':templateStatusFailed'] =
-        'VIRUS_SCAN_FAILED' as TemplateStatus;
+        'VIRUS_SCAN_FAILED' satisfies TemplateStatus;
     }
 
     try {

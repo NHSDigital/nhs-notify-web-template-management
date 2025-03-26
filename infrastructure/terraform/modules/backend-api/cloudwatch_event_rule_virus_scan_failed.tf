@@ -11,7 +11,7 @@ resource "aws_cloudwatch_event_rule" "virus_scan_failed" {
       }
       object = {
         tags = {
-          GuardDutyMalwareScanStatus = ["THREATS_FOUND", "UNSUPPORTED", "ACCESS_DENIED", "FAILED"]
+          GuardDutyMalwareScanStatus = [{ anything-but = "NO_THREATS_FOUND" }]
         }
       }
     }
