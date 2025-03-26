@@ -7,7 +7,7 @@ exports[`Preview letter form renders matches error snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -314,7 +314,7 @@ exports[`Preview letter form renders matches error snapshot 1`] = `
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
@@ -332,7 +332,7 @@ exports[`Preview letter form renders matches snapshot when navigating from edit 
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -602,7 +602,7 @@ exports[`Preview letter form renders matches snapshot when navigating from edit 
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
@@ -620,7 +620,7 @@ exports[`Preview letter form renders matches snapshot when navigating from manag
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -846,7 +846,7 @@ exports[`Preview letter form renders matches snapshot when navigating from manag
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>

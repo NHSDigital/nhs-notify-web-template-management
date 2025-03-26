@@ -17,7 +17,7 @@ export function assertBackToAllTemplatesTopLink({
 
     await page.clickBackToAllTemplatesTopLink();
 
-    await expect(page.page).toHaveURL(`${baseURL}/templates/manage-templates`);
+    await expect(page.page).toHaveURL(`${baseURL}/templates/message-templates`);
   });
 }
 
@@ -31,6 +31,6 @@ export function assertBackToAllTemplatesBottomLink({
 
     await page.clickBackToAllTemplatesTopLink();
 
-    await expect(page.page).toHaveURL(`${baseURL}/templates/manage-templates`);
+    await expect(page.page).toHaveURL(`${baseURL}/templates/message-templates`);
   });
 }

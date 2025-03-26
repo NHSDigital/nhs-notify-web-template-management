@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { randomUUID } from 'node:crypto';
-import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
+import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import {
   assertFooterLinks,
   assertGoBackLinkNotPresent,
@@ -22,7 +22,7 @@ function createTemplates(owner: string) {
       id: randomUUID(),
       owner,
       version: 1,
-      name: 'email-submitted_manage-templates-page',
+      name: 'email-submitted_message-templates-page',
       message: 'test example message',
       subject: 'test example subject',
       templateType: 'EMAIL',
@@ -33,7 +33,7 @@ function createTemplates(owner: string) {
       id: randomUUID(),
       owner,
       version: 1,
-      name: 'email-not-yet-submitted_manage-templates-page',
+      name: 'email-not-yet-submitted_message-templates-page',
       message: 'test example message',
       subject: 'test example subject',
       templateType: 'EMAIL',
@@ -43,7 +43,7 @@ function createTemplates(owner: string) {
     smsSubmitted: TemplateFactory.create({
       id: randomUUID(),
       owner,
-      name: 'sms-submitted_manage-templates-page',
+      name: 'sms-submitted_message-templates-page',
       message: 'test example message',
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
@@ -52,7 +52,7 @@ function createTemplates(owner: string) {
     smsNotYetSubmitted: TemplateFactory.create({
       id: randomUUID(),
       owner,
-      name: 'sms-not-yet-submitted_manage-templates-page',
+      name: 'sms-not-yet-submitted_message-templates-page',
       message: 'test example message',
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -61,7 +61,7 @@ function createTemplates(owner: string) {
     nhsAppSubmitted: TemplateFactory.create({
       id: randomUUID(),
       owner,
-      name: 'nhs-app-submitted_manage-templates-page',
+      name: 'nhs-app-submitted_message-templates-page',
       message: 'test example message',
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
@@ -70,7 +70,7 @@ function createTemplates(owner: string) {
     nhsAppNotYetSubmitted: TemplateFactory.create({
       id: randomUUID(),
       owner,
-      name: 'nhs-app-not-yet-submitted_manage-templates-page',
+      name: 'nhs-app-not-yet-submitted_message-templates-page',
       message: 'test example message',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -95,7 +95,7 @@ test.describe('Manage templates page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new ManageTemplatesPage(page),
+      page: new MessageTemplatesPage(page),
       baseURL,
     };
 
@@ -110,36 +110,36 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
-    await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    await expect(manageTemplatesPage.pageHeader).toHaveText(
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
+    await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
+    await expect(messageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
     );
-    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
+    await expect(messageTemplatesPage.createTemplateButton).toBeVisible();
   });
 
   test('Submitted template items have correct status indicator', async ({
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const email = page.locator(
-      'tr:has-text("email-submitted_manage-templates-page")'
+      'tr:has-text("email-submitted_message-templates-page")'
     );
     await expect(email.getByText('Submitted', { exact: true })).toBeVisible();
 
     const sms = page.locator(
-      'tr:has-text("sms-submitted_manage-templates-page")'
+      'tr:has-text("sms-submitted_message-templates-page")'
     );
     await expect(sms.getByText('Submitted', { exact: true })).toBeVisible();
 
     const nhsapp = page.locator(
-      'tr:has-text("nhs-app-submitted_manage-templates-page")'
+      'tr:has-text("nhs-app-submitted_message-templates-page")'
     );
     await expect(nhsapp.getByText('Submitted', { exact: true })).toBeVisible();
   });
@@ -148,27 +148,27 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const email = page.locator(
-      'tr:has-text("email-not-yet-submitted_manage-templates-page")'
+      'tr:has-text("email-not-yet-submitted_message-templates-page")'
     );
     await expect(
       email.getByText('Not yet submitted', { exact: true })
     ).toBeVisible();
 
     const sms = page.locator(
-      'tr:has-text("sms-not-yet-submitted_manage-templates-page")'
+      'tr:has-text("sms-not-yet-submitted_message-templates-page")'
     );
     await expect(
       sms.getByText('Not yet submitted', { exact: true })
     ).toBeVisible();
 
     const nhsapp = page.locator(
-      'tr:has-text("nhs-app-not-yet-submitted_manage-templates-page")'
+      'tr:has-text("nhs-app-not-yet-submitted_message-templates-page")'
     );
     await expect(
       nhsapp.getByText('Not yet submitted', { exact: true })
@@ -179,14 +179,14 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
-    await expect(manageTemplatesPage.pageHeader).toHaveText(
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
+    await expect(messageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
     );
-    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
-    await manageTemplatesPage.clickCreateTemplateButton();
+    await expect(messageTemplatesPage.createTemplateButton).toBeVisible();
+    await messageTemplatesPage.clickCreateTemplateButton();
     await expect(page).toHaveURL('/templates/choose-a-template-type');
   });
 
@@ -194,13 +194,13 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const templatePreviewLink = page.getByText(
-      'email-not-yet-submitted_manage-templates-page'
+      'email-not-yet-submitted_message-templates-page'
     );
 
     await expect(templatePreviewLink).toHaveAttribute(
@@ -217,22 +217,22 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const templatePreviewLink = page.getByText(
-      'email-submitted_manage-templates-page'
+      'email-submitted_message-templates-page'
     );
 
     await expect(templatePreviewLink).toHaveAttribute(
       'href',
-      `/templates/view-submitted-email-template/${templates.emailSubmitted.id}`
+      `/templates/preview-submitted-email-template/${templates.emailSubmitted.id}`
     );
     await templatePreviewLink.click();
     await expect(page).toHaveURL(
-      new RegExp('/templates/view-submitted-email-template/')
+      new RegExp('/templates/preview-submitted-email-template/')
     );
   });
 
@@ -240,13 +240,13 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const templateRow = page.locator(
-      'tr:has-text("email-submitted_manage-templates-page")'
+      'tr:has-text("email-submitted_message-templates-page")'
     );
     const templateCopyLink = templateRow.getByText('Copy');
 
@@ -264,13 +264,13 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const templateRow = page.locator(
-      'tr:has-text("email-not-yet-submitted_manage-templates-page")'
+      'tr:has-text("email-not-yet-submitted_message-templates-page")'
     );
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
 
@@ -284,13 +284,13 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const templateRow = page.locator(
-      'tr:has-text("email-submitted_manage-templates-page")'
+      'tr:has-text("email-submitted_message-templates-page")'
     );
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
     await expect(templateDeleteLink).toBeHidden();
@@ -300,18 +300,18 @@ test.describe('Manage templates page', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
 
     const expectedOrder = [
-      'email-submitted_manage-templates-page',
-      'email-not-yet-submitted_manage-templates-page',
-      'sms-submitted_manage-templates-page',
-      'sms-not-yet-submitted_manage-templates-page',
-      'nhs-app-submitted_manage-templates-page',
-      'nhs-app-not-yet-submitted_manage-templates-page',
+      'email-submitted_message-templates-page',
+      'email-not-yet-submitted_message-templates-page',
+      'sms-submitted_message-templates-page',
+      'sms-not-yet-submitted_message-templates-page',
+      'nhs-app-submitted_message-templates-page',
+      'nhs-app-not-yet-submitted_message-templates-page',
     ];
 
     const rows = page.locator('tr');

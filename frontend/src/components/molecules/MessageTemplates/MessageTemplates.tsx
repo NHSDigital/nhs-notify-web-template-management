@@ -14,9 +14,9 @@ import {
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import style from './ManageTemplates.module.scss';
+import style from './MessageTemplates.module.scss';
 
-const manageTemplatesContent = content.pages.manageTemplates;
+const messageTemplatesContent = content.pages.messageTemplates;
 
 const generateViewTemplateLink = (template: TemplateDto): string => {
   if (template.templateStatus === 'SUBMITTED') {
@@ -35,7 +35,7 @@ const typeDisplayMappings = (template: TemplateDto): string =>
     ? letterTypeDisplayMappings(template.letterType, template.language)
     : templateTypeDisplayMappings(template.templateType);
 
-export function ManageTemplates({
+export function MessageTemplates({
   templateList,
 }: {
   templateList: TemplateDto[];
@@ -44,7 +44,7 @@ export function ManageTemplates({
     <div className='nhsuk-grid-row'>
       <div className='nhsuk-grid-column-full'>
         <Table
-          caption={manageTemplatesContent.listOfTemplates}
+          caption={messageTemplatesContent.listOfTemplates}
           data-testid='manage-template-table'
           id='manage-template-table'
           responsive
@@ -52,19 +52,19 @@ export function ManageTemplates({
           <Table.Head role='rowgroup'>
             <Table.Row>
               <Table.Cell data-testid='manage-template-table-header-template-name'>
-                {manageTemplatesContent.tableHeadings.name}
+                {messageTemplatesContent.tableHeadings.name}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-type'>
-                {manageTemplatesContent.tableHeadings.type}
+                {messageTemplatesContent.tableHeadings.type}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-status'>
-                {manageTemplatesContent.tableHeadings.status}
+                {messageTemplatesContent.tableHeadings.status}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-template-date-created'>
-                {manageTemplatesContent.tableHeadings.dateCreated}
+                {messageTemplatesContent.tableHeadings.dateCreated}
               </Table.Cell>
               <Table.Cell data-testid='manage-template-table-header-action'>
-                {manageTemplatesContent.tableHeadings.action.text}
+                {messageTemplatesContent.tableHeadings.action.text}
               </Table.Cell>
             </Table.Row>
           </Table.Head>
@@ -100,9 +100,9 @@ export function ManageTemplates({
                         <Link
                           href={`/copy-template/${template.id}`}
                           id={`copy-template-link-${index}`}
-                          aria-label={`${manageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
+                          aria-label={`${messageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
                         >
-                          {manageTemplatesContent.tableHeadings.action.copy}
+                          {messageTemplatesContent.tableHeadings.action.copy}
                         </Link>
                       </p>
                     )}
@@ -110,9 +110,9 @@ export function ManageTemplates({
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
                           href={`/delete-template/${template.id}`}
-                          aria-label={`${manageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
+                          aria-label={`${messageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
                         >
-                          {manageTemplatesContent.tableHeadings.action.delete}
+                          {messageTemplatesContent.tableHeadings.action.delete}
                         </Link>
                       </p>
                     ) : null}
