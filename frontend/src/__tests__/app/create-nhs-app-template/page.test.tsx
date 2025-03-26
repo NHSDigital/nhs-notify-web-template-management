@@ -1,7 +1,12 @@
 /**
  * @jest-environment node
  */
-import CreateNHSAppTemplatePage from '@app/create-nhs-app-template/page';
+import CreateNHSAppTemplatePage, {
+  generateMetadata,
+} from '@app/create-nhs-app-template/page';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateFormNhsApp;
 
 jest.mock('@forms/NhsAppTemplateForm/NhsAppTemplateForm');
 
@@ -11,6 +16,7 @@ describe('CreateNHSAppTemplatePage', () => {
   it('should render CreateNHSAppTemplatePage', async () => {
     const page = await CreateNHSAppTemplatePage();
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
     expect(page).toMatchSnapshot();
   });
 });

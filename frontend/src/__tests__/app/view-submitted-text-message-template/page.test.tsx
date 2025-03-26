@@ -1,13 +1,18 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
+import ViewSubmittedSMSTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -43,6 +48,9 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
       <ViewSMSTemplate initialState={submittedSMSTemplate} />
     );

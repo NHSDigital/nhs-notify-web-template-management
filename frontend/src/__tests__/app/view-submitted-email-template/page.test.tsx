@@ -1,13 +1,18 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedEmailTemplatePage from '@app/view-submitted-email-template/[templateId]/page';
+import ViewSubmittedEmailTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-email-template/[templateId]/page';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -45,6 +50,9 @@ describe('ViewSubmittedEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
       <ViewEmailTemplate initialState={submittedEmailTemplate} />
     );

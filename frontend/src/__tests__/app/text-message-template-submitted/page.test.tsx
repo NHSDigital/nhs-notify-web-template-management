@@ -1,11 +1,16 @@
 /**
  * @jest-environment node
  */
-import SmsTemplateSubmittedPage from '@app/text-message-template-submitted/[templateId]/page';
+import SmsTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/text-message-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -38,6 +43,9 @@ describe('TextMessageTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.SMS,
+    });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(

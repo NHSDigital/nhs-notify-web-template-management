@@ -32,7 +32,7 @@ function createTemplates(owner: string) {
       owner,
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
-      id: 'valid-sms-template',
+      id: 'valid-text-message-template',
       name: 'test-template-sms',
       message: 'test example content',
     }),

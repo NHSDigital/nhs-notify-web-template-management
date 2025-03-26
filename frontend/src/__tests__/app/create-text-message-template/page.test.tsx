@@ -1,7 +1,12 @@
 /**
  * @jest-environment node
  */
-import CreateSMSTemplatePage from '@app/create-text-message-template/page';
+import CreateSMSTemplatePage, {
+  generateMetadata,
+} from '@app/create-text-message-template/page';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateFormSms;
 
 jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
 
@@ -11,6 +16,7 @@ describe('CreateSMSTemplatePage', () => {
   it('should render CreateSMSTemplatePage', async () => {
     const page = await CreateSMSTemplatePage();
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
     expect(page).toMatchSnapshot();
   });
 });
