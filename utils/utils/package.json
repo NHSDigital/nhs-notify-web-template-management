@@ -18,7 +18,6 @@
     "nhs-notify-backend-client": "*"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.4",
-    "@types/aws-lambda": "^8.10.148"
+    "@tsconfig/node20": "^20.1.4"
   }
 }

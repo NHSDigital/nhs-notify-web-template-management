@@ -3,8 +3,6 @@
   "include": [
     "../../lambdas/backend-client/src/schemas/src/*",
     "../../lambdas/backend-client/src/schemas/src/**/*",
-    "../backend-config/src/backend-config.ts",
-    "src/__tests__/logger.test.ts",
-    "src/event-parsers.ts"
+    "../backend-config/src/backend-config.ts"
   ]
 }
