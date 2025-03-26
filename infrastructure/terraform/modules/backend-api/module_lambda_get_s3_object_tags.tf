@@ -13,30 +13,6 @@ module "lambda_get_s3_object_tags" {
 }
 
 data "aws_iam_policy_document" "get_s3_object_tags" {
-  # TODO: should this be here? Not on the pipe?
-  # statement {
-  #   sid    = "AllowSQS"
-  #   effect = "Allow"
-
-  #   actions = [
-  #     "sqs:DeleteMessage",
-  #     "sqs:GetQueueAttributes",
-  #     "sqs:ReceiveMessage",
-  #   ]
-
-  #   resources = [module.sqs_quarantine_tags_added.sqs_queue_arn]
-  # }
-
-  # statement {
-  #   sid    = "AllowKMS"
-  #   effect = "Allow"
-
-  #   actions = [
-  #     "kms:Decrypt",
-  #   ]
-
-  #   resources = [var.kms_key_arn]
-  # }
 
   statement {
     sid    = "AllowS3Read"
