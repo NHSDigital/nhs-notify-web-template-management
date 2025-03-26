@@ -29,6 +29,32 @@ export async function createTemplate(
   return data;
 }
 
+export async function createLetterTemplate(
+  template: CreateTemplate,
+  pdf: File,
+  csv: File
+) {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateClient.createLetterTemplate(
+    template,
+    token,
+    pdf,
+    csv?.size > 0 ? csv : undefined
+  );
+
+  if (error) {
+    logger.error('Failed to create letter template', { error });
+    throw new Error('Failed to create new letter template');
+  }
+
+  return data;
+}
+
 export async function saveTemplate(
   template: TemplateDto
 ): Promise<TemplateDto> {

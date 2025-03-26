@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 import {
+  CreateLetterTemplate,
   CreateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -12,6 +13,7 @@ import {
   getTemplates,
   setTemplateToDeleted,
   setTemplateToSubmitted,
+  createLetterTemplate,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -97,6 +99,174 @@ describe('form-actions', () => {
     await expect(createTemplate(createTemplateInput)).rejects.toThrow(
       'Failed to get access token'
     );
+  });
+
+  test('createLetterTemplate', async () => {
+    const responseData = {
+      templateType: 'LETTER',
+      id: 'new-template-id',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'template-name',
+      letterType: 'q1',
+      language: 'ar',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: 'pdf-version',
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: 'sample.csv',
+          currentVersion: 'csv-version',
+          virusScanStatus: 'PASSED',
+        },
+      },
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+    } satisfies TemplateDto;
+
+    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+      data: responseData,
+    });
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File(['file contents'], 'sample.csv', {
+      type: 'text/csv',
+    });
+
+    const response = await createLetterTemplate(
+      createLetterTemplateInput,
+      pdf,
+      csv
+    );
+
+    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
+      createLetterTemplateInput,
+      'token',
+      pdf,
+      csv
+    );
+
+    expect(response).toEqual(responseData);
+  });
+
+  test('createLetterTemplate accepts empty csv', async () => {
+    const responseData = {
+      templateType: 'LETTER',
+      id: 'new-template-id',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'template-name',
+      letterType: 'q1',
+      language: 'ar',
+      files: {
+        pdfTemplate: {
+          fileName: 'template.pdf',
+          currentVersion: 'pdf-version',
+          virusScanStatus: 'PENDING',
+        },
+      },
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+    } satisfies TemplateDto;
+
+    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+      data: responseData,
+    });
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File([], '', {
+      type: 'text/csv',
+    });
+
+    const response = await createLetterTemplate(
+      createLetterTemplateInput,
+      pdf,
+      csv
+    );
+
+    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
+      createLetterTemplateInput,
+      'token',
+      pdf,
+      undefined
+    );
+
+    expect(response).toEqual(responseData);
+  });
+
+  test('createLetterTemplate - should throw error when saving unexpectedly fails', async () => {
+    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+      error: {
+        code: 400,
+        message: 'Bad request',
+      },
+    });
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File(['file contents'], 'sample.csv', {
+      type: 'text/csv',
+    });
+
+    await expect(
+      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+    ).rejects.toThrow('Failed to create new letter template');
+
+    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
+      createLetterTemplateInput,
+      'token',
+      pdf,
+      csv
+    );
+  });
+
+  test('createLetterTemplate - should throw error when no token', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File(['file contents'], 'sample.csv', {
+      type: 'text/csv',
+    });
+
+    await expect(
+      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+    ).rejects.toThrow('Failed to get access token');
   });
 
   test('saveTemplate', async () => {
