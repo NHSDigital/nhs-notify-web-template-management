@@ -1,18 +1,17 @@
 resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
   name        = "${local.csi}-virus-scan-passed"
-  description = "Forwards enriched events to SQS from quarantine bucket where GuardDuty virus scan has passed with no threats"
+  description = "Forwards enriched events from quarantine bucket where GuardDuty virus scan has passed with no threats"
 
   event_pattern = jsonencode({
     source      = ["templates.${var.environment}.${var.project}"]
-    detail-type = ["object-tags-enriched"]
+    detail-type = ["quarantine-scan-result-enriched"]
     detail = {
-      bucket = {
-        name = [module.s3bucket_quarantine.id]
+      s3ObjectDetails = {
+        bucketName = [module.s3bucket_quarantine.id]
+        objectKey  = [{ prefix = "pdf-template/" }, { prefix = "test-data/" }]
       }
-      object = {
-        tags = {
-          GuardDutyMalwareScanStatus = ["NO_THREATS_FOUND"]
-        }
+      scanResultDetails = {
+        scanResultStatus = ["NO_THREATS_FOUND"]
       }
     }
   })

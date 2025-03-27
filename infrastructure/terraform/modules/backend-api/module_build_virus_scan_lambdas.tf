@@ -6,6 +6,6 @@ module "build_virus_scan_lambdas" {
   entrypoints = [
     "src/copy-scanned-object-to-internal.ts",
     "src/delete-failed-scanned-object.ts",
-    "src/get-s3-object-tags.ts"
+    "src/enrich-guardduty-scan-result.ts"
   ]
 }

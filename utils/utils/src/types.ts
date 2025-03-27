@@ -1,3 +1,4 @@
+import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
   CreateLetterProperties,
   CreateTemplate,
@@ -85,11 +86,7 @@ export type SubmitTemplatePageComponentProps = {
 export type ServerAction = string | ((payload: FormData) => void);
 
 export type GuardDutyMalwareScanStatus =
-  | 'NO_THREATS_FOUND'
-  | 'THREATS_FOUND'
-  | 'UNSUPPORTED'
-  | 'ACCESS_DENIED'
-  | 'FAILED';
+  GuardDutyScanResultNotificationEventDetail['scanResultDetails']['scanResultStatus'];
 
 export type GuardDutyMalwareScanStatusFailed = Exclude<
   GuardDutyMalwareScanStatus,

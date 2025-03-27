@@ -4,15 +4,14 @@ resource "aws_cloudwatch_event_rule" "virus_scan_failed" {
 
   event_pattern = jsonencode({
     source      = ["templates.${var.environment}.${var.project}"]
-    detail-type = ["object-tags-enriched"]
+    detail-type = ["quarantine-scan-result-enriched"]
     detail = {
-      bucket = {
-        name = [module.s3bucket_quarantine.id]
+      s3ObjectDetails = {
+        bucketName = [module.s3bucket_quarantine.id]
+        objectKey  = [{ prefix = "pdf-template/" }, { prefix = "test-data/" }]
       }
-      object = {
-        tags = {
-          GuardDutyMalwareScanStatus = [{ anything-but = "NO_THREATS_FOUND" }]
-        }
+      scanResultDetails = {
+        scanResultStatus = [{ anything-but = "NO_THREATS_FOUND" }]
       }
     }
   })

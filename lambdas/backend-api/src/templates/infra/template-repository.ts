@@ -240,27 +240,34 @@ export class TemplateRepository {
     versionId: string,
     status: VirusScanStatus
   ) {
-    const updates = ['#files.#file.#scanStatus = :scanStatus'];
+    const updates = [
+      '#files.#file.#scanStatus = :scanStatus',
+      '#updatedAt = :updatedAt',
+    ];
 
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
         '#file': fileType,
         '#scanStatus': 'virusScanStatus',
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
         '#version': 'currentVersion',
       };
 
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
       {
         ':scanStatus': status,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
         ':version': versionId,
+        ':updatedAt': new Date().toISOString(),
       };
 
     if (status === 'FAILED') {
-      updates.push('#templateStatus = :templateStatusFailed');
-      ExpressionAttributeNames['#templateStatus'] = 'templateStatus';
       ExpressionAttributeValues[':templateStatusFailed'] =
         'VIRUS_SCAN_FAILED' satisfies TemplateStatus;
+      updates.push('#templateStatus = :templateStatusFailed');
     }
 
     try {
@@ -271,7 +278,7 @@ export class TemplateRepository {
           UpdateExpression: `SET ${updates.join(' , ')}`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
-          ConditionExpression: `#files.#file.#version = :version`,
+          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
         })
       );
     } catch (error) {

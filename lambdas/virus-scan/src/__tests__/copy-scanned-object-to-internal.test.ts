@@ -1,7 +1,7 @@
 import 'aws-sdk-client-mock-jest';
 import { CopyObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import { makeObjectTagsEnrichedEvent } from 'nhs-notify-web-template-management-test-helper-utils';
+import { makeQuarantineScanResultEnrichedEvent } from 'nhs-notify-web-template-management-test-helper-utils';
 import { handler } from '../copy-scanned-object-to-internal';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 
@@ -21,13 +21,15 @@ afterAll(() => {
 it('copies the scanned file to the internal s3 bucket', async () => {
   const { mocks } = setup();
 
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        'version-id': 's3-version-id',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
+        versionId: 's3-version-id',
+      },
+      scanResultDetails: {
+        scanResultStatus: 'NO_THREATS_FOUND',
       },
     },
   });
@@ -49,11 +51,12 @@ it('errors if the event has no bucket name', async () => {
   await expect(
     handler({
       detail: {
-        bucket: {},
-        object: {
-          key: 'template.pdf',
-          'version-id': 's3-version-id',
-          tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+        s3ObjectDetails: {
+          objectKey: 'template.pdf',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
         },
       },
     })
@@ -68,10 +71,12 @@ it('errors if the event has no object key', async () => {
   await expect(
     handler({
       detail: {
-        bucket: { name: 'quarantine-bucket' },
-        object: {
-          'version-id': 's3-version-id',
-          tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
         },
       },
     })
@@ -86,10 +91,12 @@ it('errors if the event has no object version-id', async () => {
   await expect(
     handler({
       detail: {
-        bucket: { name: 'quarantine-bucket' },
-        object: {
-          key: 'template.pdf',
-          tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: 'template.pdf',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
         },
       },
     })
@@ -98,33 +105,18 @@ it('errors if the event has no object version-id', async () => {
   expect(mocks.s3).not.toHaveReceivedAnyCommand();
 });
 
-it('errors if the event has no object tags', async () => {
+it('errors if the event has no scanResultStatus', async () => {
   const { mocks } = setup();
 
   await expect(
     handler({
       detail: {
-        bucket: { name: 'quarantine-bucket' },
-        object: { key: 'template.pdf', 'version-id': 's3-version-id' },
-      },
-    })
-  ).rejects.toThrowErrorMatchingSnapshot();
-
-  expect(mocks.s3).not.toHaveReceivedAnyCommand();
-});
-
-it('errors if the event has no GuardDutyMalwareScanStatus object tag', async () => {
-  const { mocks } = setup();
-
-  await expect(
-    handler({
-      detail: {
-        bucket: { name: 'quarantine-bucket' },
-        object: {
-          key: 'template.pdf',
-          'version-id': 's3-version-id',
-          tags: {},
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: 'template.pdf',
+          versionId: 's3-version-id',
         },
+        scanResultDetails: {},
       },
     })
   ).rejects.toThrowErrorMatchingSnapshot();
@@ -140,11 +132,13 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
     await expect(
       handler({
         detail: {
-          bucket: { name: 'quarantine-bucket' },
-          object: {
-            key: 'template.pdf',
-            'version-id': 's3-version-id',
-            tags: { GuardDutyMalwareScanStatus: status },
+          s3ObjectDetails: {
+            bucketName: 'quarantine-bucket',
+            objectKey: 'template.pdf',
+            versionId: 's3-version-id',
+          },
+          scanResultDetails: {
+            scanResultStatus: status,
           },
         },
       })

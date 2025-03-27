@@ -1,8 +1,8 @@
 import { createHash, randomUUID } from 'node:crypto';
 import type {
   EventBridgeEvent,
-  S3ObjectTagsAddedNotificationEvent,
-  S3ObjectTagsAddedNotificationEventDetail,
+  GuardDutyScanResultNotificationEvent,
+  GuardDutyScanResultNotificationEventDetail,
   SQSRecord,
 } from 'aws-lambda';
 
@@ -36,7 +36,7 @@ type MakeEventBridgeEventParams<
     source: TSource;
   };
 
-export const makeEventBridgeEvent = <
+const makeEventBridgeEvent = <
   TDetailType extends string,
   TDetail,
   TSource extends string,
@@ -52,86 +52,123 @@ export const makeEventBridgeEvent = <
   ...event,
 });
 
-type MakeS3ObjectTagsAddedNotificationEventParams = Omit<
+type MakeGuardDutyMalwareScanResultNotificationEventParams = Omit<
   MakeEventBridgeEventParams<
-    'Object Tags Added',
-    S3ObjectTagsAddedNotificationEventDetail,
-    'aws.s3'
+    'GuardDuty Malware Protection Object Scan Result',
+    GuardDutyScanResultNotificationEventDetail,
+    'aws.guardduty'
   >,
   'detail-type' | 'source'
 >;
 
-export const makeS3ObjectTagsAddedNotificationEvent = (
-  event: MakeS3ObjectTagsAddedNotificationEventParams
-): S3ObjectTagsAddedNotificationEvent =>
+export const makeGuardDutyMalwareScanResultNotificationEvent = (
+  event: MakeGuardDutyMalwareScanResultNotificationEventParams
+): GuardDutyScanResultNotificationEvent =>
   makeEventBridgeEvent({
     ...event,
-    source: 'aws.s3',
-    'detail-type': 'Object Tags Added',
+    source: 'aws.guardduty',
+    'detail-type': 'GuardDuty Malware Protection Object Scan Result',
   });
 
-type MakeS3ObjectTagsAddedNotificationEventDetailParams = Partial<
-  Omit<S3ObjectTagsAddedNotificationEventDetail, 'object'>
-> &
-  Pick<S3ObjectTagsAddedNotificationEventDetail, 'bucket'> & {
-    object: Partial<S3ObjectTagsAddedNotificationEventDetail['object']> &
-      Pick<S3ObjectTagsAddedNotificationEventDetail['object'], 'key'>;
-  };
+type MakeGuardDutyMalwareScanResultNotificationEventDetailParams = Partial<
+  Omit<
+    GuardDutyScanResultNotificationEventDetail,
+    's3ObjectDetails' | 'scanResultDetails'
+  >
+> & {
+  s3ObjectDetails: Partial<
+    GuardDutyScanResultNotificationEventDetail['s3ObjectDetails']
+  > &
+    Pick<
+      GuardDutyScanResultNotificationEventDetail['s3ObjectDetails'],
+      'objectKey' | 'bucketName'
+    >;
+} & Partial<{
+    scanResultDetails: Partial<
+      GuardDutyScanResultNotificationEventDetail['scanResultDetails']
+    >;
+  }>;
 
-export const makeS3ObjectTagsAddedNotificationEventDetail = (
-  detail: MakeS3ObjectTagsAddedNotificationEventDetailParams
-): S3ObjectTagsAddedNotificationEventDetail => ({
-  version: '0',
-  'request-id': randomUUID(),
-  requester: randomUUID(),
-  'source-ip-address': '0.0.0.0',
+export const makeGuardDutyMalwareScanResultNotificationEventDetail = (
+  detail: MakeGuardDutyMalwareScanResultNotificationEventDetailParams
+): GuardDutyScanResultNotificationEventDetail => ({
+  schemaVersion: '1.0',
+  scanStatus: 'COMPLETED',
+  resourceType: 'S3_OBJECT',
   ...detail,
-  object: { etag: randomUUID(), 'version-id': randomUUID(), ...detail.object },
+  s3ObjectDetails: {
+    eTag: randomUUID(),
+    s3Throttled: false,
+    versionId: randomUUID(),
+    ...detail.s3ObjectDetails,
+  },
+  scanResultDetails: {
+    scanResultStatus: 'NO_THREATS_FOUND',
+    threats: null,
+    ...detail.scanResultDetails,
+  },
 });
 
-type ObjectTagsEnrichedEventDetail =
-  S3ObjectTagsAddedNotificationEventDetail & {
-    object: S3ObjectTagsAddedNotificationEventDetail['object'] & {
-      tags: Record<string, string>;
+type QuarantineScanResultEnrichedEventDetail =
+  GuardDutyScanResultNotificationEventDetail & {
+    s3ObjectDetails: GuardDutyScanResultNotificationEventDetail['s3ObjectDetails'] & {
       metadata: Record<string, string>;
     };
   };
 
-type MakeObjectTagsEnrichedEventDetailInput = Partial<
-  Omit<ObjectTagsEnrichedEventDetail, 'object'>
-> &
-  Pick<ObjectTagsEnrichedEventDetail, 'bucket'> & {
-    object: Partial<ObjectTagsEnrichedEventDetail['object']> &
-      Pick<ObjectTagsEnrichedEventDetail['object'], 'key'>;
-  };
+type MakeQuarantineScanResultEnrichedEventDetailInput = Partial<
+  Omit<
+    QuarantineScanResultEnrichedEventDetail,
+    's3ObjectDetails' | 'scanResultDetails'
+  >
+> & {
+  s3ObjectDetails: Partial<
+    QuarantineScanResultEnrichedEventDetail['s3ObjectDetails']
+  > &
+    Pick<
+      QuarantineScanResultEnrichedEventDetail['s3ObjectDetails'],
+      'objectKey' | 'bucketName'
+    >;
+} & Partial<{
+    scanResultDetails: Partial<
+      QuarantineScanResultEnrichedEventDetail['scanResultDetails']
+    >;
+  }>;
 
-type MakeObjectTagsEnrichedEventParams = Omit<
+type MakeQuarantineScanResultEnrichedEventParams = Omit<
   MakeEventBridgeEventParams<
-    'object-tags-enriched',
-    ObjectTagsEnrichedEventDetail
+    'quarantine-scan-result-enriched',
+    QuarantineScanResultEnrichedEventDetail
   >,
   'detail-type' | 'source' | 'detail'
-> & { detail: MakeObjectTagsEnrichedEventDetailInput };
+> & { detail: MakeQuarantineScanResultEnrichedEventDetailInput };
 
-export const makeObjectTagsEnrichedEvent = (
-  event: MakeObjectTagsEnrichedEventParams
-): EventBridgeEvent<'object-tags-enriched', ObjectTagsEnrichedEventDetail> =>
+export const makeQuarantineScanResultEnrichedEvent = (
+  event: MakeQuarantineScanResultEnrichedEventParams
+): EventBridgeEvent<
+  'quarantine-scan-result-enriched',
+  QuarantineScanResultEnrichedEventDetail
+> =>
   makeEventBridgeEvent({
     ...event,
-    'detail-type': 'object-tags-enriched',
+    'detail-type': 'quarantine-scan-result-enriched',
     source: 'templates.test.nhs-notify',
     detail: {
-      version: '0',
-      'request-id': randomUUID(),
-      requester: randomUUID(),
-      'source-ip-address': '0.0.0.0',
+      schemaVersion: '1.0',
+      scanStatus: 'COMPLETED',
+      resourceType: 'S3_OBJECT',
       ...event.detail,
-      object: {
-        etag: randomUUID(),
-        'version-id': randomUUID(),
-        tags: {},
+      s3ObjectDetails: {
+        eTag: randomUUID(),
+        s3Throttled: false,
+        versionId: randomUUID(),
         metadata: {},
-        ...event.detail.object,
+        ...event.detail.s3ObjectDetails,
+      },
+      scanResultDetails: {
+        scanResultStatus: 'NO_THREATS_FOUND',
+        threats: null,
+        ...event.detail.scanResultDetails,
       },
     },
   });

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errors if event object has invalid GuardDutyMalwareScanStatus tag value 1`] = `
+exports[`errors if event object has invalid scan result status 1`] = `
 "[
   {
     "received": "UNKNOWN_STATUS",
@@ -14,16 +14,15 @@ exports[`errors if event object has invalid GuardDutyMalwareScanStatus tag value
     ],
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Invalid enum value. Expected 'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'UNKNOWN_STATUS'"
   }
 ]"
 `;
 
-exports[`errors if event object has no GuardDutyMalwareScanStatus tag 1`] = `
+exports[`errors if event object has no scan result status 1`] = `
 "[
   {
     "expected": "'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
@@ -31,9 +30,8 @@ exports[`errors if event object has no GuardDutyMalwareScanStatus tag 1`] = `
     "code": "invalid_type",
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Required"
   }
@@ -51,7 +49,7 @@ exports[`errors if event object metadata has invalid file-type 1`] = `
     ],
     "path": [
       "detail",
-      "object",
+      "s3ObjectDetails",
       "metadata",
       "file-type"
     ],
@@ -68,7 +66,7 @@ exports[`errors if event object metadata has no file-type 1`] = `
     "code": "invalid_type",
     "path": [
       "detail",
-      "object",
+      "s3ObjectDetails",
       "metadata",
       "file-type"
     ],
@@ -85,7 +83,7 @@ exports[`errors if event object metadata has no owner 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "object",
+      "s3ObjectDetails",
       "metadata",
       "owner"
     ],
@@ -102,7 +100,7 @@ exports[`errors if event object metadata has no template-id 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "object",
+      "s3ObjectDetails",
       "metadata",
       "template-id"
     ],
@@ -119,7 +117,7 @@ exports[`errors if event object metadata has no version-id 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "object",
+      "s3ObjectDetails",
       "metadata",
       "version-id"
     ],

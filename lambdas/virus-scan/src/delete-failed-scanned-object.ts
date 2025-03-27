@@ -7,11 +7,13 @@ import { z } from 'zod';
 
 type DeleteFailedScannedObjectLambdaInput = {
   detail: {
-    bucket: { name: string };
-    object: {
-      key: string;
-      'version-id': string;
-      tags: { GuardDutyMalwareScanStatus: GuardDutyMalwareScanStatusFailed };
+    s3ObjectDetails: {
+      bucketName: string;
+      objectKey: string;
+      versionId: string;
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatusFailed;
     };
   };
 };
@@ -19,25 +21,29 @@ type DeleteFailedScannedObjectLambdaInput = {
 const $DeleteFailedScannedObjectLambdaInput: z.ZodType<DeleteFailedScannedObjectLambdaInput> =
   z.object({
     detail: z.object({
-      bucket: z.object({ name: z.string() }),
-      object: z.object({
-        key: z.string(),
-        'version-id': z.string(),
-        tags: z.object({
-          GuardDutyMalwareScanStatus: $GuardDutyMalwareScanStatusFailed,
-        }),
+      s3ObjectDetails: z.object({
+        bucketName: z.string(),
+        objectKey: z.string(),
+        versionId: z.string(),
+      }),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatusFailed,
       }),
     }),
   });
 
 export const handler = async (event: unknown) => {
-  const { detail } = $DeleteFailedScannedObjectLambdaInput.parse(event);
+  const {
+    detail: {
+      s3ObjectDetails: { bucketName, objectKey, versionId },
+    },
+  } = $DeleteFailedScannedObjectLambdaInput.parse(event);
 
   await new S3Client({}).send(
     new DeleteObjectCommand({
-      Bucket: detail.bucket.name,
-      Key: detail.object.key,
-      VersionId: detail.object['version-id'],
+      Bucket: bucketName,
+      Key: objectKey,
+      VersionId: versionId,
     })
   );
 };

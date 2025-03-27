@@ -8,12 +8,14 @@ import type { LetterUploadMetadata } from '../infra/letter-upload-repository';
 
 type SetLetterFileVirusScanStatusLambdaInput = {
   detail: {
-    object: {
+    s3ObjectDetails: {
       metadata: Omit<
         LetterUploadMetadata,
         'user-filename' | 'test-data-provided'
       >;
-      tags: { GuardDutyMalwareScanStatus: GuardDutyMalwareScanStatus };
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatus;
     };
   };
 };
@@ -21,16 +23,16 @@ type SetLetterFileVirusScanStatusLambdaInput = {
 const $SetLetterFileVirusScanStatusLambdaInput: z.ZodType<SetLetterFileVirusScanStatusLambdaInput> =
   z.object({
     detail: z.object({
-      object: z.object({
+      s3ObjectDetails: z.object({
         metadata: z.object({
           owner: z.string(),
           'template-id': z.string(),
           'version-id': z.string(),
           'file-type': z.enum(['pdf-template', 'test-data']),
         }),
-        tags: z.object({
-          GuardDutyMalwareScanStatus: $GuardDutyMalwareScanStatus,
-        }),
+      }),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatus,
       }),
     }),
   });
@@ -40,7 +42,8 @@ export const createHandler =
   async (event: unknown) => {
     const {
       detail: {
-        object: { metadata, tags },
+        s3ObjectDetails: { metadata },
+        scanResultDetails: { scanResultStatus },
       },
     } = $SetLetterFileVirusScanStatusLambdaInput.parse(event);
 
@@ -48,8 +51,6 @@ export const createHandler =
       { owner: metadata.owner, id: metadata['template-id'] },
       metadata['file-type'] === 'pdf-template' ? 'pdfTemplate' : 'testDataCsv',
       metadata['version-id'],
-      tags.GuardDutyMalwareScanStatus === 'NO_THREATS_FOUND'
-        ? 'PASSED'
-        : 'FAILED'
+      scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED'
     );
   };

@@ -7,11 +7,13 @@ import { z } from 'zod';
 
 type CopyScannedObjectToInternalLambdaInput = {
   detail: {
-    bucket: { name: string };
-    object: {
-      key: string;
-      'version-id': string;
-      tags: { GuardDutyMalwareScanStatus: GuardDutyMalwareScanStatusPassed };
+    s3ObjectDetails: {
+      bucketName: string;
+      objectKey: string;
+      versionId: string;
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatusPassed;
     };
   };
 };
@@ -19,25 +21,29 @@ type CopyScannedObjectToInternalLambdaInput = {
 const $CopyScannedObjectToInternalLambdaInput: z.ZodType<CopyScannedObjectToInternalLambdaInput> =
   z.object({
     detail: z.object({
-      bucket: z.object({ name: z.string() }),
-      object: z.object({
-        key: z.string(),
-        'version-id': z.string(),
-        tags: z.object({
-          GuardDutyMalwareScanStatus: $GuardDutyMalwareScanStatusPassed,
-        }),
+      s3ObjectDetails: z.object({
+        bucketName: z.string(),
+        objectKey: z.string(),
+        versionId: z.string(),
+      }),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatusPassed,
       }),
     }),
   });
 
 export const handler = async (event: unknown) => {
-  const { detail } = $CopyScannedObjectToInternalLambdaInput.parse(event);
+  const {
+    detail: {
+      s3ObjectDetails: { bucketName, objectKey, versionId },
+    },
+  } = $CopyScannedObjectToInternalLambdaInput.parse(event);
 
   await new S3Client({}).send(
     new CopyObjectCommand({
-      CopySource: `/${detail.bucket.name}/${detail.object.key}?versionId=${detail.object['version-id']}`,
+      CopySource: `/${bucketName}/${objectKey}?versionId=${versionId}`,
       Bucket: process.env.TEMPLATES_INTERNAL_S3_BUCKET_NAME,
-      Key: detail.object.key,
+      Key: objectKey,
       MetadataDirective: 'COPY',
       TaggingDirective: 'COPY',
     })

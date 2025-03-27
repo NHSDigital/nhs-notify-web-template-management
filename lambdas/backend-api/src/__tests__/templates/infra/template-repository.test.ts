@@ -494,16 +494,23 @@ describe('templateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
-        UpdateExpression: 'SET #files.#file.#scanStatus = :scanStatus',
-        ConditionExpression: '#files.#file.#version = :version',
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#file': 'pdfTemplate',
           '#files': 'files',
           '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'PASSED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
         },
       });
@@ -522,16 +529,23 @@ describe('templateRepository', () => {
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
-        UpdateExpression: 'SET #files.#file.#scanStatus = :scanStatus',
-        ConditionExpression: '#files.#file.#version = :version',
+        UpdateExpression:
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#file': 'testDataCsv',
           '#files': 'files',
           '#scanStatus': 'virusScanStatus',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'PASSED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'csv-version-id',
         },
       });
@@ -551,18 +565,23 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #templateStatus = :templateStatusFailed',
-        ConditionExpression: '#files.#file.#version = :version',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#file': 'pdfTemplate',
           '#files': 'files',
           '#scanStatus': 'virusScanStatus',
           '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'FAILED',
+          ':templateStatusDeleted': 'DELETED',
           ':templateStatusFailed': 'VIRUS_SCAN_FAILED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'pdf-version-id',
         },
       });
@@ -582,18 +601,23 @@ describe('templateRepository', () => {
         TableName: 'templates',
         Key: { id: 'template-id', owner: 'template-owner' },
         UpdateExpression:
-          'SET #files.#file.#scanStatus = :scanStatus , #templateStatus = :templateStatusFailed',
-        ConditionExpression: '#files.#file.#version = :version',
+          'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
           '#file': 'testDataCsv',
           '#files': 'files',
           '#scanStatus': 'virusScanStatus',
           '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
           '#version': 'currentVersion',
         },
         ExpressionAttributeValues: {
           ':scanStatus': 'FAILED',
+          ':templateStatusDeleted': 'DELETED',
           ':templateStatusFailed': 'VIRUS_SCAN_FAILED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
           ':version': 'csv-version-id',
         },
       });

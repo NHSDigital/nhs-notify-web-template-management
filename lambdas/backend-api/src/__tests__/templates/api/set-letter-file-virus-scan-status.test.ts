@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended';
-import { makeObjectTagsEnrichedEvent } from 'nhs-notify-web-template-management-test-helper-utils';
+import { makeQuarantineScanResultEnrichedEvent } from 'nhs-notify-web-template-management-test-helper-utils';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRepository } from '../../../templates/infra';
 import { createHandler } from '../../..//templates/api/set-letter-file-virus-scan-status';
@@ -13,12 +13,11 @@ function setup() {
 it('sets the virus scan status on pdf files identified by file metadata', async () => {
   const { handler, mocks } = setup();
 
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
@@ -26,6 +25,7 @@ it('sets the virus scan status on pdf files identified by file metadata', async 
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -44,12 +44,11 @@ it('sets the virus scan status on pdf files identified by file metadata', async 
 it('sets the virus scan status on csv files identified by file metadata', async () => {
   const { handler, mocks } = setup();
 
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'test-data.csv',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'test-data.csv',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
@@ -57,6 +56,7 @@ it('sets the virus scan status on csv files identified by file metadata', async 
           'file-type': 'test-data',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -77,12 +77,11 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
   async (status) => {
     const { handler, mocks } = setup();
 
-    const event = makeObjectTagsEnrichedEvent({
+    const event = makeQuarantineScanResultEnrichedEvent({
       detail: {
-        bucket: { name: 'quarantine-bucket' },
-        object: {
-          key: 'template.pdf',
-          tags: { GuardDutyMalwareScanStatus: status },
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: 'template.pdf',
           metadata: {
             owner: 'template-owner',
             'template-id': 'template-id',
@@ -90,6 +89,7 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
             'file-type': 'pdf-template',
           },
         },
+        scanResultDetails: { scanResultStatus: status },
       },
     });
 
@@ -108,18 +108,18 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
 
 it('errors if event object metadata has no owner', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           'template-id': 'template-id',
           'version-id': 'template-version',
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -132,18 +132,18 @@ it('errors if event object metadata has no owner', async () => {
 
 it('errors if event object metadata has no template-id', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'version-id': 'template-version',
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -156,18 +156,18 @@ it('errors if event object metadata has no template-id', async () => {
 
 it('errors if event object metadata has no version-id', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -180,18 +180,18 @@ it('errors if event object metadata has no version-id', async () => {
 
 it('errors if event object metadata has no file-type', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
           'version-id': 'template-version',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -204,12 +204,11 @@ it('errors if event object metadata has no file-type', async () => {
 
 it('errors if event object metadata has invalid file-type', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = makeQuarantineScanResultEnrichedEvent({
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'NO_THREATS_FOUND' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
@@ -217,6 +216,7 @@ it('errors if event object metadata has invalid file-type', async () => {
           'file-type': 'unknown-file-type',
         },
       },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
     },
   });
 
@@ -227,14 +227,13 @@ it('errors if event object metadata has invalid file-type', async () => {
   ).not.toHaveBeenCalled();
 });
 
-it('errors if event object has no GuardDutyMalwareScanStatus tag', async () => {
+it('errors if event object has no scan result status', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = {
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: {},
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
@@ -242,8 +241,9 @@ it('errors if event object has no GuardDutyMalwareScanStatus tag', async () => {
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: {},
     },
-  });
+  };
 
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
 
@@ -252,14 +252,13 @@ it('errors if event object has no GuardDutyMalwareScanStatus tag', async () => {
   ).not.toHaveBeenCalled();
 });
 
-it('errors if event object has invalid GuardDutyMalwareScanStatus tag value', async () => {
+it('errors if event object has invalid scan result status', async () => {
   const { handler, mocks } = setup();
-  const event = makeObjectTagsEnrichedEvent({
+  const event = {
     detail: {
-      bucket: { name: 'quarantine-bucket' },
-      object: {
-        key: 'template.pdf',
-        tags: { GuardDutyMalwareScanStatus: 'UNKNOWN_STATUS' },
+      s3ObjectDetails: {
+        bucketName: 'quarantine-bucket',
+        objectKey: 'template.pdf',
         metadata: {
           owner: 'template-owner',
           'template-id': 'template-id',
@@ -267,8 +266,9 @@ it('errors if event object has invalid GuardDutyMalwareScanStatus tag value', as
           'file-type': 'pdf-template',
         },
       },
+      scanResultDetails: { scanResultStatus: 'UNKNOWN_STATUS' },
     },
-  });
+  };
 
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
 

@@ -1,22 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errors if the event has no GuardDutyMalwareScanStatus object tag 1`] = `
-"[
-  {
-    "expected": "'NO_THREATS_FOUND'",
-    "received": "undefined",
-    "code": "invalid_type",
-    "path": [
-      "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
 exports[`errors if the event has no bucket name 1`] = `
 "[
   {
@@ -25,8 +8,8 @@ exports[`errors if the event has no bucket name 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "bucket",
-      "name"
+      "s3ObjectDetails",
+      "bucketName"
     ],
     "message": "Required"
   }
@@ -41,24 +24,8 @@ exports[`errors if the event has no object key 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "object",
-      "key"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has no object tags 1`] = `
-"[
-  {
-    "code": "invalid_type",
-    "expected": "object",
-    "received": "undefined",
-    "path": [
-      "detail",
-      "object",
-      "tags"
+      "s3ObjectDetails",
+      "objectKey"
     ],
     "message": "Required"
   }
@@ -73,8 +40,24 @@ exports[`errors if the event has no object version-id 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "object",
-      "version-id"
+      "s3ObjectDetails",
+      "versionId"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no scanResultStatus 1`] = `
+"[
+  {
+    "expected": "'NO_THREATS_FOUND'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Required"
   }
@@ -91,9 +74,8 @@ exports[`errors if the event has object tag GuardDutyMalwareScanStatus with valu
     ],
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'ACCESS_DENIED'"
   }
@@ -110,9 +92,8 @@ exports[`errors if the event has object tag GuardDutyMalwareScanStatus with valu
     ],
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'FAILED'"
   }
@@ -129,9 +110,8 @@ exports[`errors if the event has object tag GuardDutyMalwareScanStatus with valu
     ],
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'THREATS_FOUND'"
   }
@@ -148,9 +128,8 @@ exports[`errors if the event has object tag GuardDutyMalwareScanStatus with valu
     ],
     "path": [
       "detail",
-      "object",
-      "tags",
-      "GuardDutyMalwareScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'UNSUPPORTED'"
   }
