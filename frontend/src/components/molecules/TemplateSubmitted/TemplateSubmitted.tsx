@@ -63,7 +63,7 @@ export const TemplateSubmitted = ({
           </p>
           <hr className='nhsuk-section-break--visible' />
           <p>
-            <Link id='go-back-link' href='/manage-templates'>
+            <Link id='go-back-link' href='/message-templates'>
               {backLinkText}
             </Link>
           </p>

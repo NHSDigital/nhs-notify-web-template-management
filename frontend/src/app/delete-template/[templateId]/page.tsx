@@ -14,7 +14,7 @@ const DeleteTemplatePage = async (props: PageProps) => {
   const template = await getTemplate(templateId);
 
   if (template?.templateStatus === 'DELETED') {
-    return redirect('/manage-templates', RedirectType.push);
+    return redirect('/message-templates', RedirectType.push);
   }
 
   const validatedTemplate = validateNonSubmittedTemplate(template);

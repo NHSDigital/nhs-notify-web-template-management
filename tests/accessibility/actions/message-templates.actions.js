@@ -5,13 +5,13 @@ const pageActions = [
   'wait for element #create-template-button to be visible',
 ];
 
-const manageTemplatesPage = (url) => ({
-  name: 'manage-templates',
+const messageTemplatesPage = (url) => ({
+  name: 'message-templates',
   url,
   actions: pageActions,
 });
 
 module.exports = {
   pageActions,
-  manageTemplatesPage,
+  messageTemplatesPage,
 };

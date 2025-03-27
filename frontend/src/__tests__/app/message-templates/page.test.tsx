@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import ManageTemplatesPage, {
+import MessageTemplatesPage, {
   generateMetadata,
-} from '@app/manage-templates/page';
+} from '@app/message-templates/page';
 import content from '@content/content';
 import { getTemplates } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
-const manageTemplatesContent = content.pages.manageTemplates;
+const messageTemplatesContent = content.pages.messageTemplates;
 
 const mockTemplates: TemplateDto[] = [
   {
@@ -23,25 +23,25 @@ const mockTemplates: TemplateDto[] = [
 
 jest.mock('@utils/form-actions');
 
-describe('ManageTemplatesPage', () => {
+describe('MessageTemplatesPage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
   test('renders the page without templates', async () => {
-    render(await ManageTemplatesPage());
+    render(await MessageTemplatesPage());
 
     expect(await generateMetadata()).toEqual({
-      title: manageTemplatesContent.pageTitle,
+      title: messageTemplatesContent.pageTitle,
     });
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('page-heading')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveAttribute(
       'href',
-      manageTemplatesContent.createTemplateButton.url
+      messageTemplatesContent.createTemplateButton.url
     );
     expect(screen.getByRole('button')).toHaveTextContent(
-      manageTemplatesContent.createTemplateButton.text
+      messageTemplatesContent.createTemplateButton.text
     );
 
     expect(screen.getByTestId('no-templates-available')).toBeInTheDocument();
@@ -49,17 +49,17 @@ describe('ManageTemplatesPage', () => {
 
   test('renders the page with templates', async () => {
     jest.mocked(getTemplates).mockResolvedValue(mockTemplates);
-    render(await ManageTemplatesPage());
+    render(await MessageTemplatesPage());
 
     expect(screen.getByTestId('page-content-wrapper')).toBeInTheDocument();
     expect(screen.getByTestId('page-heading')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveAttribute(
       'href',
-      manageTemplatesContent.createTemplateButton.url
+      messageTemplatesContent.createTemplateButton.url
     );
     expect(screen.getByRole('button')).toHaveTextContent(
-      manageTemplatesContent.createTemplateButton.text
+      messageTemplatesContent.createTemplateButton.text
     );
 
     expect(screen.getByTestId('manage-template-table')).toBeInTheDocument();

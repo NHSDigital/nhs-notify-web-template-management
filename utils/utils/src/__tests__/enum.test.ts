@@ -144,19 +144,19 @@ describe('previewTemplatePages', () => {
 describe('viewSubmittedTemplatePages', () => {
   test('NHS_APP', () => {
     expect(viewSubmittedTemplatePages('NHS_APP')).toEqual(
-      'view-submitted-nhs-app-template'
+      'preview-submitted-nhs-app-template'
     );
   });
 
   test('SMS', () => {
     expect(viewSubmittedTemplatePages('SMS')).toEqual(
-      'view-submitted-text-message-template'
+      'preview-submitted-text-message-template'
     );
   });
 
   test('EMAIL', () => {
     expect(viewSubmittedTemplatePages('EMAIL')).toEqual(
-      'view-submitted-email-template'
+      'preview-submitted-email-template'
     );
   });
 });

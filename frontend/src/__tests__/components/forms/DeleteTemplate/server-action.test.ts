@@ -20,7 +20,7 @@ test('redirects', async () => {
   await deleteTemplateNoAction();
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/manage-templates',
+    '/message-templates',
     RedirectType.push
   );
 });
@@ -47,7 +47,7 @@ test('calls form action and redirects', async () => {
   });
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/manage-templates',
+    '/message-templates',
     RedirectType.push
   );
 });

@@ -7,7 +7,7 @@ exports[`Choose template page renders error component 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -191,7 +191,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg

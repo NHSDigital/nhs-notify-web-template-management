@@ -194,11 +194,11 @@ const homePage = {
   text7: 'You can access this tool by signing in with your Care Identity.',
   linkButton: {
     text: 'Start now',
-    url: `${getBasePath()}/manage-templates`,
+    url: `${getBasePath()}/message-templates`,
   },
 };
 
-const manageTemplates = {
+const messageTemplates = {
   pageTitle: generatePageTitle('Message templates'),
   pageHeading: 'Message templates',
   emptyTemplates: 'You do not have any templates yet.',
@@ -577,7 +577,7 @@ const content = {
   pages: {
     homePage,
     error404,
-    manageTemplates,
+    messageTemplates,
   },
 };
 

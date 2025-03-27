@@ -3,7 +3,7 @@
  */
 import ViewSubmittedSMSTemplatePage, {
   generateMetadata,
-} from '@app/view-submitted-text-message-template/[templateId]/page';
+} from '@app/preview-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';

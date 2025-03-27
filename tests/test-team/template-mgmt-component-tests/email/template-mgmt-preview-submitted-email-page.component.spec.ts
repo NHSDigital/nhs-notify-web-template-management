@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedEmailPage } from '../../pages/email/template-mgmt-view-submitted-email-page';
+import { TemplateMgmtViewSubmittedEmailPage } from '../../pages/email/template-mgmt-preview-submitted-email-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -67,7 +67,7 @@ test.describe('View submitted Email message template Page', () => {
     await viewSubmittedEmailTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/view-submitted-email-template/${templates.valid.id}`
+      `${baseURL}/templates/preview-submitted-email-template/${templates.valid.id}`
     );
 
     await expect(viewSubmittedEmailTemplatePage.pageHeader).toContainText(
