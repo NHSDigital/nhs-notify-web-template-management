@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import SubmitSmsTemplatePage from '@app/submit-text-message-template/[templateId]/page';
+import SubmitSmsTemplatePage, {
+  generateMetadata,
+} from '@app/submit-text-message-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
@@ -12,6 +14,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -44,6 +49,9 @@ describe('SubmitSmsTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.SMS,
+    });
     expect(page).toEqual(
       <SubmitTemplate
         templateName={state.name}

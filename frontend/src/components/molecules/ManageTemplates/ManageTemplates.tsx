@@ -14,6 +14,7 @@ import {
   viewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import style from './ManageTemplates.module.scss';
 
 const manageTemplatesContent = content.pages.manageTemplates;
 
@@ -93,23 +94,29 @@ export function ManageTemplates({
                   {format(`${template.createdAt}`, 'HH:mm')}
                 </Table.Cell>
                 <Table.Cell>
-                  {template.templateType === 'LETTER' ? null : (
-                    <p className='nhsuk-u-margin-bottom-2'>
-                      <Link
-                        href={`/copy-template/${template.id}`}
-                        id={`copy-template-link-${index}`}
-                      >
-                        {manageTemplatesContent.tableHeadings.action.copy}
-                      </Link>
-                    </p>
-                  )}
-                  {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
-                    <p className='nhsuk-u-margin-bottom-2'>
-                      <Link href={`/delete-template/${template.id}`}>
-                        {manageTemplatesContent.tableHeadings.action.delete}
-                      </Link>
-                    </p>
-                  ) : null}
+                  <div className={style.actionLinksWrapper}>
+                    {template.templateType === 'LETTER' ? null : (
+                      <p className='nhsuk-u-margin-bottom-2'>
+                        <Link
+                          href={`/copy-template/${template.id}`}
+                          id={`copy-template-link-${index}`}
+                          aria-label={`${manageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
+                        >
+                          {manageTemplatesContent.tableHeadings.action.copy}
+                        </Link>
+                      </p>
+                    )}
+                    {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
+                      <p className='nhsuk-u-margin-bottom-2'>
+                        <Link
+                          href={`/delete-template/${template.id}`}
+                          aria-label={`${manageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
+                        >
+                          {manageTemplatesContent.tableHeadings.action.delete}
+                        </Link>
+                      </p>
+                    ) : null}
+                  </div>
                 </Table.Cell>
               </Table.Row>
             ))}

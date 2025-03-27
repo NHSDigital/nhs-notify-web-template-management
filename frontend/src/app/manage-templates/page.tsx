@@ -3,6 +3,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
 import { getTemplates } from '@utils/form-actions';
+import { Metadata } from 'next';
 
 // Note: force this page to be dynamically rendered
 // This is because Next defaults this page as a static rendered page
@@ -12,6 +13,12 @@ import { getTemplates } from '@utils/form-actions';
 export const dynamic = 'force-dynamic';
 
 const manageTemplatesContent = content.pages.manageTemplates;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: manageTemplatesContent.pageTitle,
+  };
+}
 
 export default async function ManageTemplatesPage() {
   const availableTemplateList = await getTemplates();

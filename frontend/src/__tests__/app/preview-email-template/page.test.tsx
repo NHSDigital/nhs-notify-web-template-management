@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
+import PreviewEmailTemplatePage, {
+  generateMetadata,
+} from '@app/preview-email-template/[templateId]/page';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -13,6 +15,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -51,6 +56,9 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
   });
 

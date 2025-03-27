@@ -1,6 +1,11 @@
 import { render } from '@testing-library/react';
-import ChooseATemplateTypePage from '@app/choose-a-template-type/page';
+import ChooseATemplateTypePage, {
+  generateMetadata,
+} from '@app/choose-a-template-type/page';
 import { TemplateFormState } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { pageTitle } = content.components.chooseTemplate;
 
 jest.mock('next/navigation', () => ({
   redirect: () => {
@@ -33,6 +38,7 @@ test('ChooseATemplateTypePage', async () => {
 
   const container = render(page);
 
+  expect(await generateMetadata()).toEqual({ title: pageTitle });
   expect(container.asFragment()).toMatchSnapshot();
 });
 

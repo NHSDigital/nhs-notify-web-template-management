@@ -1,11 +1,16 @@
 /**
  * @jest-environment node
  */
-import EmailTemplateSubmittedPage from '@app/email-template-submitted/[templateId]/page';
+import EmailTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/email-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -56,6 +61,7 @@ describe('EmailTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle.EMAIL });
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template');
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
+import PreviewSMSTemplatePage, {
+  generateMetadata,
+} from '@app/preview-text-message-template/[templateId]/page';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -13,6 +15,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -49,6 +54,9 @@ describe('PreviewSMSTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
   });
 
