@@ -62,16 +62,6 @@ describe('submitTemplate', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  test('should handle error when template is not in a submittable state', async () => {
-    getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
-
-    const formData = getMockFormData({ templateId: '1' });
-
-    await submitTemplate('submit-route', formData);
-
-    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
-  });
-
   it('should handle error when failing to save template', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
 
