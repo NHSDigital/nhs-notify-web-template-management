@@ -2,7 +2,6 @@
  * @jest-environment node
  */
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
-import { canSubmit } from '@forms/SubmitTemplate/can-submit';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
@@ -11,12 +10,10 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
 jest.mock('@utils/amplify-utils');
-jest.mock('@forms/SubmitTemplate/can-submit');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 const setTemplateToSubmittedMock = jest.mocked(setTemplateToSubmitted);
-const canSubmitMock = jest.mocked(canSubmit);
 
 const mockNhsAppTemplate = {
   templateType: 'NHS_APP',
@@ -31,7 +28,6 @@ const mockNhsAppTemplate = {
 describe('submitTemplate', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    canSubmitMock.mockReturnValue(true);
   });
 
   it('should redirect when templateId from form is invalid', async () => {
@@ -68,8 +64,6 @@ describe('submitTemplate', () => {
 
   test('should handle error when template is not in a submittable state', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
-
-    canSubmitMock.mockReturnValueOnce(false);
 
     const formData = getMockFormData({ templateId: '1' });
 
