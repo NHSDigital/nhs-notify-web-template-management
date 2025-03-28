@@ -33,7 +33,7 @@ export class SimulatePassedValidation implements IUseCase<Template> {
         ].join(', '),
         ExpressionAttributeValues: {
           ':virusScanStatus': 'PASSED',
-          ':readyForSubmissionStatus': 'NOT_YET_SYBMITTED',
+          ':readyForSubmissionStatus': 'NOT_YET_SUBMITTED',
         },
         ReturnValues: 'ALL_NEW',
       })
