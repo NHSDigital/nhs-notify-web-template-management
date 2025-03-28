@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors if event object has invalid scan result status 1`] = `
+"[
+  {
+    "received": "UNKNOWN_STATUS",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND",
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
+      "FAILED"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'UNKNOWN_STATUS'"
+  }
+]"
+`;
+
+exports[`errors if event object has no scan result status 1`] = `
+"[
+  {
+    "expected": "'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if event object metadata has invalid file-type 1`] = `
+"[
+  {
+    "received": "unknown-file-type",
+    "code": "invalid_enum_value",
+    "options": [
+      "pdf-template",
+      "test-data"
+    ],
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "metadata",
+      "file-type"
+    ],
+    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data', received 'unknown-file-type'"
+  }
+]"
+`;
+
+exports[`errors if event object metadata has no file-type 1`] = `
+"[
+  {
+    "expected": "'pdf-template' | 'test-data'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "metadata",
+      "file-type"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if event object metadata has no owner 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "metadata",
+      "owner"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if event object metadata has no template-id 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "metadata",
+      "template-id"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if event object metadata has no version-id 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "metadata",
+      "version-id"
+    ],
+    "message": "Required"
+  }
+]"
+`;

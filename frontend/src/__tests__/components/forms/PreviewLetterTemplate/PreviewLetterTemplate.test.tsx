@@ -57,6 +57,31 @@ describe('Preview letter form renders', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+          validationError: undefined,
+          name: 'test-template-letter',
+          id: 'template-id',
+          templateStatus: 'VIRUS_SCAN_FAILED',
+          language: 'en',
+          letterType: 'q1',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'FAILED',
+            },
+            testDataCsv: undefined,
+          },
+        })}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('matches snapshot when navigating from edit screen', () => {
     const mockSearchParams = new Map([['from', 'edit']]);
     (useSearchParams as jest.Mock).mockImplementation(() => ({

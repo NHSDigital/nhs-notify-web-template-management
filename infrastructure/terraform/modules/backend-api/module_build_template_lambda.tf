@@ -8,6 +8,7 @@ module "build_template_lambda" {
     local.backend_lambda_entrypoints.get_template,
     local.backend_lambda_entrypoints.update_template,
     local.backend_lambda_entrypoints.list_template,
+    local.backend_lambda_entrypoints.set_file_virus_scan_status,
   ]
 }
 

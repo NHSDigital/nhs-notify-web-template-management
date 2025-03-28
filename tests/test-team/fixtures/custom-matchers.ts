@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 expect.extend({
   /**
    * Asserts that a value is parsable as a date, and is roughly within the given range.
-   * Roughly means that the received value can be be within 1 second either side of the range.
+   * "Roughly" means that the received value can be within 1 second either side of the range.
    * This helps deal with local machines being out of sync with remote servers
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

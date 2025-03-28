@@ -12,6 +12,11 @@ import 'whatwg-fetch';
 
 Object.assign(global, { TextDecoder, TextEncoder });
 
+Object.assign(global, {
+  // eslint-disable-next-line unicorn/prefer-structured-clone
+  structuredClone: (val: unknown) => JSON.parse(JSON.stringify(val)),
+});
+
 createMocks();
 
 // set feature flag

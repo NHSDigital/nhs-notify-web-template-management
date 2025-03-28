@@ -1,3 +1,6 @@
+import { randomUUID } from 'node:crypto';
+import { mock } from 'jest-mock-extended';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
   CreateTemplate,
   LetterFiles,
@@ -9,12 +12,14 @@ import {
   TemplateRepository,
 } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
-import { mock } from 'jest-mock-extended';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
+
+jest.mock('node:crypto');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const owner = '58890285E473';
 const templateId = 'E1F5088E5B77';
-const versionId = '28FD472A93A6';
+const versionId = '28F-D4-72-A93-A6';
 
 const setup = () => {
   const enableLetters = true;
@@ -23,23 +28,24 @@ const setup = () => {
 
   const letterUploadRepository = mock<LetterUploadRepository>();
 
-  const generateVersionId = jest.fn(() => versionId);
-
   const templateClient = new TemplateClient(
     enableLetters,
     templateRepository,
-    letterUploadRepository,
-    generateVersionId
+    letterUploadRepository
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository, generateVersionId },
+    mocks: { templateRepository, letterUploadRepository },
   };
 };
 
 describe('templateClient', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.mocked(randomUUID).mockReturnValue(versionId);
+    jest.mocked(logger).child.mockReturnThis();
+  });
 
   describe('createTemplate', () => {
     test('should return a failure result, when template data is invalid', async () => {
@@ -267,8 +273,6 @@ describe('templateClient', () => {
       };
 
       const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
-
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -499,8 +503,6 @@ describe('templateClient', () => {
         files: filesWithVerions,
       };
 
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
-
       const templateRepoFailure = {
         error: {
           actualError: new Error('ddb err'),
@@ -544,8 +546,6 @@ describe('templateClient', () => {
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
       });
-
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: {} as unknown as DatabaseTemplate,
@@ -612,8 +612,6 @@ describe('templateClient', () => {
         owner,
         version: 1,
       };
-
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -706,8 +704,6 @@ describe('templateClient', () => {
         version: 1,
       };
 
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
-
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
       });
@@ -760,8 +756,7 @@ describe('templateClient', () => {
       const client = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.generateVersionId
+        mocks.letterUploadRepository
       );
 
       const data: CreateTemplate = {
@@ -1041,8 +1036,7 @@ describe('templateClient', () => {
       const noLettersClient = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.generateVersionId
+        mocks.letterUploadRepository
       );
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1135,8 +1129,7 @@ describe('templateClient', () => {
       const noLettersClient = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.generateVersionId
+        mocks.letterUploadRepository
       );
 
       const template: TemplateDto = {

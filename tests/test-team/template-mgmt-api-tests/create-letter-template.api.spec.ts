@@ -38,14 +38,14 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf,
+            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
           },
           {
             _type: 'file',
             partName: 'testCsv',
             fileName: 'test-data.csv',
             fileType: 'text/csv',
-            file: pdfUploadFixtures.withPersonalisation.csv,
+            file: pdfUploadFixtures.withPersonalisation.csv.open(),
           },
         ]
       );
@@ -128,7 +128,7 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
           },
         ]
       );
@@ -262,7 +262,7 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
           },
         ]
       );
@@ -310,7 +310,7 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf,
+            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
           },
         ]
       );
@@ -358,14 +358,14 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'UNEXPECTED',
             fileName: 'template.pdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf,
+            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
           },
           {
             _type: 'file',
             partName: 'testCsv',
             fileName: 'test-data.csv',
             fileType: 'text/csv',
-            file: pdfUploadFixtures.withPersonalisation.csv,
+            file: pdfUploadFixtures.withPersonalisation.csv.open(),
           },
         ]
       );
@@ -410,7 +410,7 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileName: 'template.pdf',
             fileType: 'UNEXPECTED',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
           },
         ]
       );
@@ -452,7 +452,7 @@ test.describe('POST /v1/letter-template', () => {
             _type: 'file',
             partName: 'letterPdf',
             fileType: 'application/pdf',
-            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
           },
         ]
       );
@@ -497,12 +497,12 @@ test.describe('POST /v1/letter-template', () => {
             partName: 'letterPdf',
             fileType: 'application/pdf',
             fileName: 'template.pdf',
-            file: pdfUploadFixtures.withPersonalisation.pdf,
+            file: pdfUploadFixtures.withPersonalisation.pdf.open(),
           },
           {
             _type: 'file',
             partName: 'testCsv',
-            file: pdfUploadFixtures.withPersonalisation.csv,
+            file: pdfUploadFixtures.withPersonalisation.csv.open(),
           },
         ]
       );

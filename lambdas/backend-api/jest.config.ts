@@ -1,6 +1,7 @@
 import { baseJestConfig } from 'nhs-notify-web-template-management-utils';
 import { pathsToModuleNameMapper } from 'ts-jest';
 import { compilerOptions } from './tsconfig.json';
+import { Config } from 'jest';
 
 const moduleNameMapperDefaults = pathsToModuleNameMapper(
   compilerOptions.paths,
@@ -9,11 +10,13 @@ const moduleNameMapperDefaults = pathsToModuleNameMapper(
   }
 );
 
-const jestConfig = {
+const jestConfig: Config = {
   ...baseJestConfig,
   moduleNameMapper: moduleNameMapperDefaults,
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  prettierPath: null,
+  coveragePathIgnorePatterns: ['/test-utils/'],
 };
 
 export default jestConfig;

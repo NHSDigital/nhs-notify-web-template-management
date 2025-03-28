@@ -4,6 +4,7 @@
     "lambdas/authorizer",
     "lambdas/backend-api",
     "lambdas/backend-client",
+    "lambdas/virus-scan",
     "frontend",
     "tests/accessibility",
     "tests/test-team",
