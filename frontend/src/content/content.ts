@@ -236,6 +236,7 @@ const previewEmailTemplate = {
 };
 
 const previewLetterTemplate = {
+  pageTitle: generatePageTitle('Preview letter template'),
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
