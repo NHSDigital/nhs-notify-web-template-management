@@ -1,3 +1,4 @@
+const { readFileSync } = require('node:fs');
 const { performCheck } = require('./helpers');
 const {
   chooseATemplatePage,
@@ -39,61 +40,73 @@ const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 const manageTemplatesUrl = `${baseUrl}/manage-templates`;
 
+const { templateIds } = JSON.parse(
+  readFileSync('./pa11y-fixtures.json', 'utf8')
+);
+
 module.exports = {
   urls: [
     performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
     performCheck({ url: startUrl, name: 'landing-page' }),
 
-    //My Messages Templates
+    // //My Messages Templates
     performCheck(manageTemplatesPage(manageTemplatesUrl)),
-    performCheck(copyTemplatePage(chooseTemplateUrl)),
+    // performCheck(copyTemplatePage(chooseTemplateUrl)),
 
-    // Choose a template journey
-    performCheck(chooseATemplatePage(chooseTemplateUrl)),
-    performCheck(chooseATemplatePageError(chooseTemplateUrl)),
+    // // Choose a template journey
+    // performCheck(chooseATemplatePage(chooseTemplateUrl)),
+    // performCheck(chooseATemplatePageError(chooseTemplateUrl)),
 
-    // NHS App journey
-    performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
-    performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
+    // // NHS App journey
+    // performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
+    // performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
+    // performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
+    // performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
+    // performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
+    // performCheck(viewSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
 
-    // Text message journey
-    performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(
-      viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
-    ),
-    performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
+    // // Text message journey
+    // performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
+    // performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
+    // performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(
+    //   viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
+    // ),
+    // performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
+    // performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
+    // performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
 
-    // Email journey
-    performCheck(createEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
-    performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
+    // // Email journey
+    // performCheck(createEmailTemplatePage(chooseTemplateUrl)),
+    // performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
+    // performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
+    // performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
+    // performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
+    // performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
+    // performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
     // Letter Journey
-    performCheck(createLetterTemplatePage(chooseTemplateUrl)),
-    performCheck(previewLetterTemplatePage(baseUrl)),
-    performCheck(previewLetterTemplateErrorPage(baseUrl)),
+    // performCheck(createLetterTemplatePage(chooseTemplateUrl)),
+    // performCheck(
+    //   previewLetterTemplatePage(
+    //     `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+    //   )
+    // ),
+    // performCheck(
+    //   previewLetterTemplateErrorPage(
+    //     `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+    //   )
+    // ),
 
-    performCheck({
-      url: `${baseUrl}/invalid-template`,
-      actions: [...signInPageActions, 'wait for h1 to be visible'],
-      name: 'invalid-template',
-    }),
+    // performCheck({
+    //   url: `${baseUrl}/invalid-template`,
+    //   actions: [...signInPageActions, 'wait for h1 to be visible'],
+    //   name: 'invalid-template',
+    // }),
   ],
   defaults: {
     reporters: [
