@@ -283,7 +283,7 @@ test.describe('POST /v1/template/:templateId', () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateStatus:
-          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED' | 'PENDING_UPLOAD' | 'PENDING_VALIDATION', received 'INVALID'",
+          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED' | 'PENDING_UPLOAD' | 'PENDING_VALIDATION | 'VIRUS_SCAN_FAILED', received 'INVALID'",
       },
     });
   });
