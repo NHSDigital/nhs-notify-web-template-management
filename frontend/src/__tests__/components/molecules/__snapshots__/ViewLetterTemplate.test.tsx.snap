@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
+exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/message-templates"
+      href="/templates/manage-templates"
     >
       <svg
         aria-hidden="true"
@@ -44,28 +44,32 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <dl
-            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          <div
+            class="preview"
           >
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-grid-row preview__row"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
               >
-                Template ID
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
+                <div
+                  class="preview__col_heading"
+                >
+                  Template ID
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
               >
                 template-id
-              </dd>
+              </div>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-grid-row preview__row"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
               >
                 <div
                   class="preview__col_heading"
@@ -76,61 +80,71 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
               <div
                 class="nhsuk-grid-column-two-thirds col"
               >
-                NHS App message
+                Standard letter
               </div>
             </div>
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-grid-row preview__row"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
               >
-                Status
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
+                <div
+                  class="preview__col_heading"
+                >
+                  Status
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
                 >
                   Submitted
                 </strong>
-              </dd>
+              </div>
             </div>
-          </dl>
-          <dl
-            class="nhsuk-summary-list preview"
-          >
             <div
-              class="nhsuk-summary-list__row"
+              class="nhsuk-grid-row preview__row"
             >
-              <dt
-                class="nhsuk-summary-list__key"
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
               >
                 <div
-                  data-testid="preview__heading-0"
-                  id="preview-heading-message"
+                  class="preview__col_heading"
                 >
-                  Message
+                  Template file
                 </div>
-              </dt>
-              <dd
-                class="nhsuk-summary-list__value"
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
               >
                 <div
-                  class="preview__content"
-                  data-testid="preview__content-0"
-                  id="preview-content-message"
+                  class="container"
                 >
-                  <p>
-                    Example message
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
                   </p>
-                  
-
                 </div>
-              </dd>
+              </div>
             </div>
-          </dl>
+          </div>
         </div>
         <p>
           This template cannot be edited because it has been submitted.
@@ -140,7 +154,7 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
         </p>
         <p>
           <a
-            href="/message-templates"
+            href="/manage-templates"
           >
             Back to all templates
           </a>

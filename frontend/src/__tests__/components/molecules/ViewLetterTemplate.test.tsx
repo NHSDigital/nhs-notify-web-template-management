@@ -1,0 +1,34 @@
+import { render } from '@testing-library/react';
+import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
+
+describe('ViewLetterTemplate component', () => {
+  it('matches submitted snapshot', () => {
+    const container = render(
+      <ViewLetterTemplate
+        initialState={
+          {
+            templateType: 'LETTER',
+            id: 'template-id',
+            name: 'Example template',
+            templateStatus: 'SUBMITTED',
+            message: 'Example message',
+            createdAt: '2025-03-28T12:30:54.684Z',
+            updatedAt: '2025-03-28T12:31:54.684Z',
+            letterType: 'x0',
+            language: 'en',
+            files: {
+              pdfTemplate: {
+                fileName: 'file.pdf',
+                currentVersion: 'a',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          } satisfies LetterTemplate
+        }
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+});
