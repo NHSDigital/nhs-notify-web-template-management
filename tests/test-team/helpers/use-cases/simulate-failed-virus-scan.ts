@@ -6,7 +6,7 @@ import { Template } from '../types';
 type Config = {
   templateId: string;
   templateOwner: string;
-  path:
+  filePath:
     | 'files.pdfTemplate.virusScanStatus'
     | 'files.testDataCsv.virusScanStatus';
 };
@@ -29,9 +29,10 @@ export class SimulateFailedVirusScan implements IUseCase<Template> {
           owner: this.#config.templateOwner,
           id: this.#config.templateId,
         },
-        UpdateExpression: `SET ${this.#config.path} = :virusScanStatus`,
+        UpdateExpression: `SET ${this.#config.filePath} = :virusScanStatus, templateStatus = :virusScanStatusFailedTemplateStatus`,
         ExpressionAttributeValues: {
           ':virusScanStatus': 'FAILED',
+          ':virusScanStatusFailedTemplateStatus': 'VIRUS_SCAN_FAILED',
         },
         ReturnValues: 'ALL_NEW',
       })

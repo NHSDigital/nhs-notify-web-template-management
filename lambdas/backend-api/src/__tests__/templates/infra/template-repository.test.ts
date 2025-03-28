@@ -458,39 +458,55 @@ describe('templateRepository', () => {
       },
       {
         testName:
-          'Fails when user tries to update template when templateStatus is SUBMITTED',
-        Item: {
-          templateType: { S: 'EMAIL' },
-          templateStatus: { S: 'SUBMITTED' },
-        },
+          'Fails when user tries to submit template when templateStatus is SUBMITTED',
+        Item: marshall({
+          templateType: 'EMAIL',
+          templateStatus: 'SUBMITTED',
+        }),
         code: 400,
         message: 'Template with status SUBMITTED cannot be updated',
       },
       {
         testName:
-          'Fails when user tries to update template when templateStatus is DELETED',
-        Item: {
-          templateType: { S: 'EMAIL' },
-          templateStatus: { S: 'DELETED' },
-        },
+          'Fails when user tries to submit template when templateStatus is not NOT_YET_SUBMITTED',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'PENDING_UPLOAD',
+        }),
+        code: 400,
+        message: 'Template cannot be submitted',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is DELETED',
+        Item: marshall({
+          templateType: 'EMAIL',
+          templateStatus: 'DELETED',
+        }),
         code: 404,
         message: 'Template not found',
       },
       {
         testName:
-          'Fails when user tries to update a letter template when any virusScanStatus is NOT PASSED',
-        Item: {
-          templateType: { S: 'LETTER' },
-          templateStatus: { S: 'NOT_YET_SUBMITTED' },
-          ...marshall({
-            files: {
-              pdfTemplate: { virusScanStatus: 'PASSED' },
-              testDataCsv: { virusScanStatus: 'FAILED' },
+          'Fails when user tries to submit a letter template when any virusScanStatus is not PASSED',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          files: {
+            pdfTemplate: {
+              virusScanStatus: 'PASSED',
+              currentVersion: 'a',
+              fileName: 'pdf.pdf',
             },
-          }),
-        },
+            testDataCsv: {
+              virusScanStatus: 'FAILED',
+              currentVersion: 'a',
+              fileName: 'csv.csv',
+            },
+          },
+        }),
         code: 400,
-        message: 'Virus scan not complete cannot submit template.',
+        message: 'Template cannot be submitted',
       },
     ])(
       'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',

@@ -9,7 +9,7 @@ import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-pay
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import {
   UseCaseOrchestrator,
-  SimulatePassedVirusScan,
+  SimulatePassedValidation,
 } from '../helpers/use-cases';
 
 test.describe('DELETE /v1/template/:templateId', () => {
@@ -143,13 +143,6 @@ test.describe('DELETE /v1/template/:templateId', () => {
 
       expect(response.status(), debug).toBe(201);
 
-      await orchestrator.send(
-        new SimulatePassedVirusScan({
-          templateId: createResult.template.id,
-          templateOwner: user1.userId,
-        })
-      );
-
       const deleteResponse = await request.delete(
         `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}`,
         {
@@ -215,7 +208,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       expect(response.status(), debug).toBe(201);
 
       await orchestrator.send(
-        new SimulatePassedVirusScan({
+        new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
         })
