@@ -25,7 +25,7 @@ resource "aws_pipes_pipe" "quarantine_scan_enrichment" {
 }
 
 resource "aws_iam_role" "quarantine_scan_enrichment_pipe" {
-  name               = "${local.csi}-quarantine_scan_enrichment-pipe"
+  name               = "${local.csi}-quarantine-scan-enrich-pipe"
   description        = "Role used by Pipes enrich quarantine bucket scan complete events"
   assume_role_policy = data.aws_iam_policy_document.pipe_trust_policy.json
 }
