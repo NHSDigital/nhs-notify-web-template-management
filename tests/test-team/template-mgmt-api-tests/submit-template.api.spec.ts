@@ -11,7 +11,7 @@ import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-f
 import {
   UseCaseOrchestrator,
   SimulateFailedVirusScan,
-  SimulatePassedVirusScan,
+  SimulatePassedValidation,
 } from '../helpers/use-cases';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
@@ -146,7 +146,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       });
 
       await orchestrator.send(
-        new SimulatePassedVirusScan({
+        new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
         })
@@ -241,7 +241,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(createResponse.status(), debug).toBe(201);
 
       await orchestrator.send(
-        new SimulatePassedVirusScan({
+        new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
         })
@@ -282,7 +282,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       });
     });
 
-    test('returns 400 - cannot submit a when files virusScanStatus is NOT PASSED', async ({
+    test('returns 400 - cannot submit a template when status is not NOT_YET_SUBMITTED', async ({
       request,
     }) => {
       const { multipart, contentType } =
@@ -338,14 +338,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         new SimulateFailedVirusScan({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
-          path: 'files.pdfTemplate.virusScanStatus',
+          filePath: 'files.pdfTemplate.virusScanStatus',
         })
       );
 
       expect(
-        failedVirusScanUpdate.files?.pdfTemplate?.virusScanStatus,
+        failedVirusScanUpdate.templateStatus,
         JSON.stringify(failedVirusScanUpdate, null, 2)
-      ).toBe('FAILED');
+      ).toBe('VIRUS_SCAN_FAILED');
 
       const submitResponse = await request.patch(
         `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}/submit`,
@@ -362,7 +362,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       expect(submitResult).toEqual({
         statusCode: 400,
-        technicalMessage: 'Virus scan not complete cannot submit template.',
+        technicalMessage: 'Template cannot be submitted',
       });
     });
 

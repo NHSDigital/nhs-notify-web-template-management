@@ -25,7 +25,6 @@ import {
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -204,12 +203,14 @@ export class TemplateRepository {
 
     const expressionAttributeValues: Record<string, string> = {
       ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
+      ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
       ':passed': 'PASSED' satisfies VirusScanStatus,
     };
 
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
+      '#templateStatus = :notYetSubmitted',
     ];
 
     try {
@@ -225,20 +226,11 @@ export class TemplateRepository {
       return result;
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException && error.Item) {
-        const template = unmarshall(error.Item);
-
-        const virusScanStatuses = [
-          String(template?.files?.pdfTemplate?.virusScanStatus),
-          String(template?.files?.testDataCsv?.virusScanStatus),
-        ];
-
-        if (virusScanStatuses.some((status) => status !== 'PASSED')) {
-          return failure(
-            ErrorCase.VIRUS_SCAN_NOT_COMPLETE,
-            'Virus scan not complete cannot submit template.',
-            error
-          );
-        }
+        return failure(
+          ErrorCase.CANNOT_SUBMIT,
+          'Template cannot be submitted',
+          error
+        );
       }
 
       return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
