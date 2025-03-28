@@ -12,7 +12,7 @@ import {
 import {
   assertBackToAllTemplatesBottomLink,
   assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-view-submitted-common.steps';
+} from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
   TestUserId,

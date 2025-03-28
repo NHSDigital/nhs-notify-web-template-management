@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedEmailPage } from '../../pages/email/template-mgmt-preview-submitted-email-page';
+import { TemplateMgmtPreviewSubmittedLetterPage } from '../../pages/email/template-mgmt-preview-submitted-letter-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -21,29 +21,27 @@ import {
 function createTemplates(owner: string) {
   return {
     valid: {
-      ...TemplateFactory.createEmailTemplate(
+      ...TemplateFactory.createLetterTemplate(
         'valid-email-template-view-submitted',
-        owner
+        owner,
+        'valid-email-template-view-submitted'
       ),
-      name: 'test-template-email',
-      subject: 'test-template-subject-line',
-      message: 'test-template-message',
+      name: 'test-template-letter',
       templateStatus: 'SUBMITTED',
     },
     invalid: {
-      ...TemplateFactory.createEmailTemplate(
-        'invalid-email-template-view-submitted',
-        owner
+      ...TemplateFactory.createLetterTemplate(
+        'invalid-letter-template-preview-submitted',
+        owner,
+        'invalid-letter-template-preview-submitted'
       ),
-      name: 'test-template-email',
-      subject: 'test-template-subject-line',
-      message: 'test-template-message',
+      name: 'test-template-letter',
       templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }
 
-test.describe('View submitted Email message template Page', () => {
+test.describe('View submitted Letter message template Page', () => {
   let templates: Record<string, Template>;
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -61,32 +59,24 @@ test.describe('View submitted Email message template Page', () => {
     page,
     baseURL,
   }) => {
-    const viewSubmittedEmailTemplatePage =
-      new TemplateMgmtViewSubmittedEmailPage(page);
+    const previewSubmittedLetterTemplatePage =
+      new TemplateMgmtViewSubmittedLetterPage(page);
 
-    await viewSubmittedEmailTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedLetterTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/preview-submitted-email-template/${templates.valid.id}`
+      `${baseURL}/templates/view-submitted-letter-template/${templates.valid.id}`
     );
 
-    await expect(viewSubmittedEmailTemplatePage.pageHeader).toContainText(
-      'test-template-email'
-    );
-
-    await expect(viewSubmittedEmailTemplatePage.subjectLineText).toHaveText(
-      'test-template-subject-line'
-    );
-
-    await expect(viewSubmittedEmailTemplatePage.messageText).toHaveText(
-      'test-template-message'
+    await expect(previewSubmittedLetterTemplatePage.pageHeader).toContainText(
+      'test-template-letter'
     );
   });
 
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedEmailPage(page),
+        page: new TemplateMgmtViewSubmittedLetterPage(page),
         id: templates.valid.id,
         baseURL,
       };
@@ -105,10 +95,10 @@ test.describe('View submitted Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedEmailTemplatePage =
-        new TemplateMgmtViewSubmittedEmailPage(page);
+      const previewSubmittedLetterTemplatePage =
+        new TemplateMgmtPreviewSubmittedLetterPage(page);
 
-      await viewSubmittedEmailTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedLetterTemplatePage.loadPage(templates.invalid.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -117,10 +107,10 @@ test.describe('View submitted Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedEmailTemplatePage =
-        new TemplateMgmtViewSubmittedEmailPage(page);
+      const previewSubmittedLetterTemplatePage =
+        new TemplateMgmtPreviewSubmittedLetterPage(page);
 
-      await viewSubmittedEmailTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedLetterTemplatePage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

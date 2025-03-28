@@ -1,35 +1,36 @@
 import { test, expect } from '@playwright/test';
 import { glob } from 'glob';
 import { execSync } from 'node:child_process';
-import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
-import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
-import { TemplateMgmtPreviewNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-nhs-app-page';
-import { TemplateMgmtViewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
-import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms-page';
-import { TemplateMgmtPreviewSmsPage } from '../pages/sms/template-mgmt-preview-sms-page';
-import { TemplateMgmtViewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
-import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
-import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
-import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
+import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
+import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
+import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
+import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
+import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms-page';
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
-import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
-import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
-import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
-import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
-import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
-import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
 import { TemplateMgmtEditEmailPage } from '../pages/email/template-mgmt-edit-email-page';
 import { TemplateMgmtEditNhsAppPage } from '../pages/nhs-app/template-mgmt-edit-nhs-app-page';
 import { TemplateMgmtEditSmsPage } from '../pages/sms/template-mgmt-edit-sms-page';
 import { TemplateMgmtInvalidTemplatePage } from '../pages/template-mgmt-invalid-tempate-page';
-import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
-import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dynamic';
-import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
+import { TemplateMgmtPreviewNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-nhs-app-page';
+import { TemplateMgmtPreviewSmsPage } from '../pages/sms/template-mgmt-preview-sms-page';
+import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
+import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/email/template-mgmt-preview-submitted-letter-page';
+import { TemplateMgmtPreviewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
+import { TemplateMgmtPreviewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
+import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
+import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
-import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/temnplate-mgmt-template-submitted-letter-page';
+import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
+import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
+import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
+import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
+import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
+import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -52,16 +53,17 @@ const protectedPages = [
   TemplateMgmtPreviewNhsAppPage,
   TemplateMgmtPreviewSmsPage,
   TemplateMgmtSubmitEmailPage,
+  TemplateMgmtSubmitLetterPage,
   TemplateMgmtSubmitNhsAppPage,
   TemplateMgmtSubmitSmsPage,
-  TemplateMgmtSubmitLetterPage,
   TemplateMgmtTemplateSubmittedEmailPage,
+  TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtTemplateSubmittedNhsAppPage,
   TemplateMgmtTemplateSubmittedSmsPage,
-  TemplateMgmtTemplateSubmittedLetterPage,
-  TemplateMgmtViewSubmittedEmailPage,
-  TemplateMgmtViewSubmittedNhsAppPage,
-  TemplateMgmtViewSubmittedSmsPage,
+  TemplateMgmtPreviewSubmittedEmailPage,
+  TemplateMgmtPreviewSubmittedLetterPage,
+  TemplateMgmtPreviewSubmittedNhsAppPage,
+  TemplateMgmtPreviewSubmittedSmsPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

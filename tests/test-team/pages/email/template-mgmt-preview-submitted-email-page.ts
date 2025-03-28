@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtViewSubmitedBasePage } from '../template-mgmt-view-submitted-base-page';
+import { TemplateMgmtPreviewSubmitedBasePage } from '../template-mgmt-preview-submitted-base-page';
 
-export class TemplateMgmtViewSubmittedEmailPage extends TemplateMgmtViewSubmitedBasePage {
+export class TemplateMgmtPreviewSubmittedEmailPage extends TemplateMgmtPreviewSubmitedBasePage {
   static readonly pageUrlSegment = 'preview-submitted-email-template';
 
   public readonly subjectLineText: Locator;

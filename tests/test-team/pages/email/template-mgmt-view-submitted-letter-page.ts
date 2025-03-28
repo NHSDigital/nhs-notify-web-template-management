@@ -1,16 +1,13 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtPreviewSubmitedBasePage } from '../template-mgmt-preview-submitted-base-page';
 
-export class TemplateMgmtPreviewSubmittedNhsAppPage extends TemplateMgmtPreviewSubmitedBasePage {
-  static readonly pageUrlSegment = 'preview-submitted-nhs-app-template';
-
-  public readonly messageText: Locator;
+export class TemplateMgmtViewSubmittedLetterPage extends TemplateMgmtPreviewSubmitedBasePage {
+  static readonly pageUrlSegment = 'view-submitted-letter-template';
 
   public readonly submitTemplateButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.messageText = page.locator('[id="preview-content-message"]');
     this.submitTemplateButton = page.locator('[id="submit-template-button"]');
   }
 
