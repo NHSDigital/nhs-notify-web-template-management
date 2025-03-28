@@ -3,6 +3,7 @@ import {
   TemplateStatus,
   LetterType,
   Language,
+  VIRUS_SCAN_STATUS_LIST,
 } from 'nhs-notify-backend-client';
 
 const languageMap: Record<Language, string> = {
@@ -77,6 +78,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     DELETED: '', // will not be shown in the UI
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
+    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
