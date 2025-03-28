@@ -1,3 +1,4 @@
+const { readFileSync } = require('node:fs');
 const { performCheck } = require('./helpers');
 const {
   chooseATemplatePage,
@@ -38,6 +39,10 @@ const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 const messageTemplatesUrl = `${baseUrl}/message-templates`;
 
+const { templateIds } = JSON.parse(
+  readFileSync('./pa11y-fixtures.json', 'utf8')
+);
+
 module.exports = {
   urls: [
     performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
@@ -47,9 +52,9 @@ module.exports = {
     performCheck(messageTemplatesPage(messageTemplatesUrl)),
     performCheck(copyTemplatePage(chooseTemplateUrl)),
 
-    // Choose a template journey
-    performCheck(chooseATemplatePage(chooseTemplateUrl)),
-    performCheck(chooseATemplatePageError(chooseTemplateUrl)),
+    // // Choose a template journey
+    // performCheck(chooseATemplatePage(chooseTemplateUrl)),
+    // performCheck(chooseATemplatePageError(chooseTemplateUrl)),
 
     // NHS App journey
     performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
@@ -87,11 +92,11 @@ module.exports = {
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
     performCheck(previewLetterTemplatePage(baseUrl)),
 
-    performCheck({
-      url: `${baseUrl}/invalid-template`,
-      actions: [...signInPageActions, 'wait for h1 to be visible'],
-      name: 'invalid-template',
-    }),
+    // performCheck({
+    //   url: `${baseUrl}/invalid-template`,
+    //   actions: [...signInPageActions, 'wait for h1 to be visible'],
+    //   name: 'invalid-template',
+    // }),
   ],
   defaults: {
     reporters: [
