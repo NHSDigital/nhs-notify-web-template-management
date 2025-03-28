@@ -17,7 +17,7 @@
   "types": "src/index.ts",
   "dependencies": {
     "@hey-api/openapi-ts": "^0.64.10",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
     "zod": "^3.24.1"
   },
