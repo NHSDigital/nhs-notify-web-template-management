@@ -16,20 +16,24 @@ const {
   previewLetterTemplatePage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
+  letterTemplateSubmittedPage,
   previewTextMessageTemplatePage,
   previewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
   submitEmailTemplatePage,
+  submitLetterTemplatePage,
   emailTemplateSubmittedPage,
-  NhsAppTemplateSubmittedPage,
   messageTemplatesPage,
+  nhsAppTemplateSubmittedPage,
   viewNotYetSubmittedEmailTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
+  viewNotYetSubmittedLetterTemplatePage,
   viewSubmittedEmailTemplatePage,
   viewSubmittedNHSAppTemplatePage,
   viewSubmittedTextMessageTemplatePage,
+  viewSubmittedLetterTemplatePage,
   copyTemplatePage,
   signInPageActions,
 } = require('./actions');
@@ -52,9 +56,9 @@ module.exports = {
     performCheck(messageTemplatesPage(messageTemplatesUrl)),
     performCheck(copyTemplatePage(chooseTemplateUrl)),
 
-    // // Choose a template journey
-    // performCheck(chooseATemplatePage(chooseTemplateUrl)),
-    // performCheck(chooseATemplatePageError(chooseTemplateUrl)),
+    // Choose a template journey
+    performCheck(chooseATemplatePage(chooseTemplateUrl)),
+    performCheck(chooseATemplatePageError(chooseTemplateUrl)),
 
     // NHS App journey
     performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
@@ -90,13 +94,35 @@ module.exports = {
 
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
-    performCheck(previewLetterTemplatePage(baseUrl)),
+    performCheck(
+      previewLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+      )
+    ),
+    performCheck(
+      previewLetterTemplateErrorPage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+      )
+    ),
+    performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
+    performCheck(
+      submitLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+      )
+    ),
+    performCheck(
+      letterTemplateSubmittedPage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+      )
+    ),
+    performCheck(viewSubmittedLetterTemplatePage(messageTemplatesUrl)),
 
-    // performCheck({
-    //   url: `${baseUrl}/invalid-template`,
-    //   actions: [...signInPageActions, 'wait for h1 to be visible'],
-    //   name: 'invalid-template',
-    // }),
+    // Non-existent template
+    performCheck({
+      url: `${baseUrl}/invalid-template`,
+      actions: [...signInPageActions, 'wait for h1 to be visible'],
+      name: 'invalid-template',
+    }),
   ],
   defaults: {
     reporters: [

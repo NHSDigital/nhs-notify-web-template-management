@@ -26,6 +26,7 @@ const protectedPaths = [
   /^\/submit-nhs-app-template\/[^/]+$/,
   /^\/submit-text-message-template\/[^/]+$/,
   /^\/submit-letter-template\/[^/]+$/,
+  /^\/letter-template-submitted\/[^/]+$/,
   /^\/text-message-template-submitted\/[^/]+$/,
   /^\/preview-submitted-email-template\/[^/]+$/,
   /^\/preview-submitted-letter-template\/[^/]+$/,

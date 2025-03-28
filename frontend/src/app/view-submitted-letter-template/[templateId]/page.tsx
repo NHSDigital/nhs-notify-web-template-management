@@ -2,13 +2,13 @@
 
 import {
   PageProps,
-  validateLetterTemplate,
+  validateSubmittedLetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
+import { Metadata } from 'next';
 import content from '@content/content';
-import type { Metadata } from 'next';
+import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -18,18 +18,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const PreviewLetterTemplatePage = async (props: PageProps) => {
+const ViewSubmittedLetterTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
 
-  const validatedTemplate = validateLetterTemplate(template);
+  const validatedTemplate = validateSubmittedLetterTemplate(template);
 
   if (!validatedTemplate) {
-    return redirect('/invalid-template', RedirectType.replace);
+    redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate template={validatedTemplate} />;
+  return <ViewLetterTemplate initialState={validatedTemplate} />;
 };
 
-export default PreviewLetterTemplatePage;
+export default ViewSubmittedLetterTemplatePage;

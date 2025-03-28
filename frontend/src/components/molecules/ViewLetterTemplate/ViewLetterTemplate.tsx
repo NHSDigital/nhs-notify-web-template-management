@@ -1,0 +1,39 @@
+'use client';
+
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import {
+  LetterTemplate,
+  PageComponentProps,
+} from 'nhs-notify-web-template-management-utils';
+import { getBasePath } from '@utils/get-base-path';
+import { BackLink } from 'nhsuk-react-components';
+import content from '@content/content';
+import Link from 'next/link';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+
+export function ViewLetterTemplate({
+  initialState,
+}: Readonly<PageComponentProps<LetterTemplate>>) {
+  const { cannotEdit, createNewTemplate } =
+    content.components.viewSubmittedTemplate;
+
+  return (
+    <>
+      <BackLink href={`${getBasePath()}/manage-templates`}>
+        Back to all templates
+      </BackLink>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <PreviewTemplateDetails.Letter template={initialState} />
+            <p>{cannotEdit}</p>
+            <p>{createNewTemplate}</p>
+            <p>
+              <Link href='/manage-templates'>Back to all templates</Link>
+            </p>
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
+  );
+}

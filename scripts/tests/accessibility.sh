@@ -9,7 +9,7 @@ export INCLUDE_AUTH_PAGES=true
 
 npm run accessibility-test-setup -w tests/accessibility
 
-# npm run build
+npm run build
 
 npm run app:start --prefix frontend
 
