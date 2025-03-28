@@ -8,7 +8,7 @@ type Config = {
   templateOwner: string;
 };
 
-export class SimulatePassedVirusScan implements IUseCase<Template> {
+export class SimulatePassedValidation implements IUseCase<Template> {
   readonly #ddbDocClient: DynamoDBDocumentClient;
   readonly #config: Config;
 
@@ -26,9 +26,14 @@ export class SimulatePassedVirusScan implements IUseCase<Template> {
           owner: this.#config.templateOwner,
           id: this.#config.templateId,
         },
-        UpdateExpression: `SET files.pdfTemplate.virusScanStatus = :virusScanStatus, files.testDataCsv.virusScanStatus = :virusScanStatus`,
+        UpdateExpression: [
+          'SET files.pdfTemplate.virusScanStatus = :virusScanStatus',
+          'files.testDataCsv.virusScanStatus = :virusScanStatus',
+          'templateStatus = :readyForSubmissionStatus',
+        ].join(', '),
         ExpressionAttributeValues: {
           ':virusScanStatus': 'PASSED',
+          ':readyForSubmissionStatus': 'NOT_YET_SYBMITTED',
         },
         ReturnValues: 'ALL_NEW',
       })
