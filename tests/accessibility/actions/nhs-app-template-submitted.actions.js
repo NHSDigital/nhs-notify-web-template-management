@@ -8,7 +8,7 @@ const pageActions = [
   'wait for element #template-submitted to be visible',
 ];
 
-const NhsAppTemplateSubmittedPage = (url) => ({
+const nhsAppTemplateSubmittedPage = (url) => ({
   name: 'nhs-app-template-submitted',
   url,
   actions: pageActions,
@@ -16,5 +16,5 @@ const NhsAppTemplateSubmittedPage = (url) => ({
 
 module.exports = {
   pageActions,
-  NhsAppTemplateSubmittedPage,
+  nhsAppTemplateSubmittedPage,
 };
