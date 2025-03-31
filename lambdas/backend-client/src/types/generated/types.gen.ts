@@ -90,10 +90,6 @@ export type CreateTemplate = BaseTemplate &
 export type UpdateTemplate = BaseTemplate &
   (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
 
-export type UpdateStatus = {
-  templateStatus: TemplateStatus;
-};
-
 export type TemplateDto = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
