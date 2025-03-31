@@ -2,7 +2,7 @@ import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import {
   NHSAppTemplate,
-  CreateNHSAppTemplate,
+  CreateUpdateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
@@ -15,7 +15,7 @@ const saveTemplateMock = jest.mocked(saveTemplate);
 const createTemplateMock = jest.mocked(createTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: CreateNHSAppTemplate = {
+const initialState: CreateUpdateNHSAppTemplate = {
   templateType: 'NHS_APP',
   name: 'name',
   message: 'message',

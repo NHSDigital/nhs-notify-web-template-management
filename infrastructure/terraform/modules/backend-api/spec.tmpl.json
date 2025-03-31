@@ -637,7 +637,7 @@
           }
         }
       },
-      "CreateLetterProperties": {
+      "CreateUpdateLetterProperties": {
         "type": "object",
         "required": [
           "letterType",
@@ -649,13 +649,16 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
+          },
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
           }
         }
       },
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateLetterProperties"
+            "$ref": "#/components/schemas/CreateUpdateLetterProperties"
           },
           {
             "type": "object",
@@ -703,7 +706,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateLetterProperties"
+                "$ref": "#/components/schemas/CreateUpdateLetterProperties"
               }
             ]
           }
