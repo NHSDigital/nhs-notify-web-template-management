@@ -6,6 +6,7 @@ import { Template } from '../types';
 type Config = {
   templateId: string;
   templateOwner: string;
+  hasTestData: boolean;
 };
 
 export class SimulatePassedValidation implements IUseCase<Template> {
@@ -28,8 +29,10 @@ export class SimulatePassedValidation implements IUseCase<Template> {
         },
         UpdateExpression: [
           'SET files.pdfTemplate.virusScanStatus = :virusScanStatus',
-          'files.testDataCsv.virusScanStatus = :virusScanStatus',
           'templateStatus = :readyForSubmissionStatus',
+          ...(this.#config.hasTestData
+            ? ['files.testDataCsv.virusScanStatus = :virusScanStatus']
+            : []),
         ].join(', '),
         ExpressionAttributeValues: {
           ':virusScanStatus': 'PASSED',

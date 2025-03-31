@@ -211,6 +211,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
+          hasTestData: true,
         })
       );
 

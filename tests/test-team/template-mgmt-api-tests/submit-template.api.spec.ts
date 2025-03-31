@@ -149,6 +149,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
+          hasTestData: true,
         })
       );
 
@@ -244,6 +245,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.userId,
+          hasTestData: true,
         })
       );
 
