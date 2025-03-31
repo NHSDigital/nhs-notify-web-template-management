@@ -1,20 +1,27 @@
 /**
  * @jest-environment node
  */
-import PreviewEmailTemplatePage from '@app/preview-email-template/[templateId]/page';
-import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
-import {
-  EmailTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import PreviewEmailTemplatePage, {
+  generateMetadata,
+} from '@app/preview-email-template/[templateId]/page';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewEmailTemplate');
+jest.mock('@forms/PreviewEmailTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,22 +30,22 @@ describe('PreviewEmailTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       subject: 'template-subject-line',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     const emailTemplate: EmailTemplate = {
       ...templateDTO,
       subject: 'template-subject-line',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -49,7 +56,10 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(<ReviewEmailTemplate initialState={emailTemplate} />);
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
+    expect(page).toEqual(<PreviewEmailTemplate initialState={emailTemplate} />);
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
@@ -63,52 +73,29 @@ describe('PreviewEmailTemplatePage', () => {
   });
 
   test.each([
+    SMS_TEMPLATE,
+    NHS_APP_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      subject: 'template-subject-line',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.EMAIL,
+      ...EMAIL_TEMPLATE,
       name: undefined as unknown as string,
-      subject: 'template-subject-line',
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
+      ...EMAIL_TEMPLATE,
       subject: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      subject: 'template-subject-line',
+      ...EMAIL_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      subject: 'template-subject-line',
+      ...EMAIL_TEMPLATE,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $emailTemplateName and subjectLine is $$emailTemplateSubjectLine and message is $emailTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await PreviewEmailTemplatePage({
         params: Promise.resolve({

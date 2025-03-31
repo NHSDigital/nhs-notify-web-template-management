@@ -1,16 +1,18 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedSMSTemplatePage from '@app/view-submitted-text-message-template/[templateId]/page';
+import ViewSubmittedSMSTemplatePage, {
+  generateMetadata,
+} from '@app/view-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
-import {
-  SubmittedSMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -22,20 +24,20 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
-    const submittedSMSTemplate: SubmittedSMSTemplate = {
+    const submittedSMSTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -46,6 +48,9 @@ describe('ViewSubmittedSMSTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
       <ViewSMSTemplate initialState={submittedSMSTemplate} />
     );
@@ -63,50 +68,37 @@ describe('ViewSubmittedSMSTemplatePage', () => {
 
   test.each([
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      ...EMAIL_TEMPLATE,
+      templateStatus: 'SUBMITTED' as const,
     },
     {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      ...NHS_APP_TEMPLATE,
+      templateStatus: 'SUBMITTED' as const,
     },
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
+      ...SMS_TEMPLATE,
       message: undefined as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED' as const,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED' as const,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED' as const,
     },
     {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      ...SMS_TEMPLATE,
+      templateStatus: 'NOT_YET_SUBMITTED' as const,
     },
   ])(
     'should redirect to invalid-template when template is $templateType, name is $name, message is $message, and status is $templateStatus',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await ViewSubmittedSMSTemplatePage({
         params: Promise.resolve({

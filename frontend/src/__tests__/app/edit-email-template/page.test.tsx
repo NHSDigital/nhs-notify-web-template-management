@@ -1,16 +1,16 @@
 /**
  * @jest-environment node
  */
-import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
+import EditEmailTemplatePage, {
+  generateMetadata,
+} from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
-import {
-  EmailTemplate,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormEmail;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -19,10 +19,10 @@ jest.mock('@forms/EmailTemplateForm/EmailTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const templateDTO: TemplateDTO = {
+const template: EmailTemplate = {
   id: 'template-id',
-  templateType: TemplateType.EMAIL,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'EMAIL',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   subject: 'subject',
   message: 'message',
@@ -49,8 +49,8 @@ describe('EditEmailTemplatePage', () => {
 
   it('should redirect to invalid-template when template type is not EMAIL', async () => {
     getTemplateMock.mockResolvedValueOnce({
-      ...templateDTO,
-      templateType: TemplateType.NHS_APP,
+      ...template,
+      templateType: 'NHS_APP',
     });
 
     await EditEmailTemplatePage({
@@ -65,13 +65,13 @@ describe('EditEmailTemplatePage', () => {
   });
 
   it('should render CreateEmailTemplatePage component when template is found', async () => {
-    getTemplateMock.mockResolvedValueOnce(templateDTO);
+    getTemplateMock.mockResolvedValueOnce(template);
 
     const emailTemplate: EmailTemplate = {
-      ...templateDTO,
+      ...template,
       subject: 'subject',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL' as const,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     const page = await EditEmailTemplatePage({
@@ -80,6 +80,7 @@ describe('EditEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<EmailTemplateForm initialState={emailTemplate} />);

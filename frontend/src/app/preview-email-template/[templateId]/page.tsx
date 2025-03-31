@@ -1,10 +1,22 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import { Metadata } from 'next';
+import {
+  PageProps,
+  validateEmailTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ReviewEmailTemplate } from '@forms/ReviewEmailTemplate';
-import { validateEmailTemplate } from '@utils/validate-template';
+import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const PreviewEmailTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
@@ -17,7 +29,7 @@ const PreviewEmailTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewEmailTemplate initialState={validatedTemplate} />;
+  return <PreviewEmailTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewEmailTemplatePage;

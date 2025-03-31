@@ -66,3 +66,19 @@ variable "enable_backup" {
   description = "Enable Backups for the DynamoDB table?"
   default     = true
 }
+
+variable "enable_letters" {
+  type        = bool
+  description = "Enable letters feature flag"
+}
+
+variable "kms_key_arn" {
+  type        = string
+  description = "KMS Key ARN"
+}
+
+variable "dynamodb_kms_key_arn" {
+  type        = string
+  description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
+  default     = ""
+}

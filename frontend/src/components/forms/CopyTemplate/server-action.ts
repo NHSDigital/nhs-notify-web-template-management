@@ -1,23 +1,26 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import {
-  FormState,
-  Template,
-  TemplateType,
-} from 'nhs-notify-web-template-management-utils';
+import { FormState } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { createTemplate } from '@utils/form-actions';
 import { format } from 'date-fns/format';
+import {
+  TEMPLATE_TYPE_LIST,
+  TemplateType,
+  ValidatedTemplateDto,
+} from 'nhs-notify-backend-client';
 
 const $CopyTemplate = z.object({
-  templateType: z.nativeEnum(TemplateType, {
+  templateType: z.enum(TEMPLATE_TYPE_LIST, {
     message: 'Select a template type',
   }),
 });
 
 type CopyTemplateActionState = FormState & {
-  template: Template;
+  template: ValidatedTemplateDto & {
+    templateType: Exclude<TemplateType, 'LETTER'>;
+  };
 };
 type CopyTemplateAction = (
   formState: CopyTemplateActionState,
@@ -40,22 +43,37 @@ export const copyTemplateAction: CopyTemplateAction = async (
   }
 
   const newTemplateType = parsedForm.data.templateType;
-  const {
-    subject,
-    name,
-    id: _1,
-    createdAt: _2,
-    ...baseTemplateAttributes
-  } = formState.template;
+  const { name, message } = formState.template;
+  const subject =
+    formState.template.templateType === 'EMAIL'
+      ? formState.template.subject
+      : 'Enter a subject line';
 
-  await createTemplate({
-    ...baseTemplateAttributes,
-    name: `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`,
-    templateType: newTemplateType,
-    ...(newTemplateType === TemplateType.EMAIL && {
-      subject: subject ?? 'Enter a subject line',
-    }),
-  });
+  const copyName = `COPY (${format(new Date(), 'yyyy-MM-dd HH:mm:ss')}): ${name}`;
+
+  switch (newTemplateType) {
+    case 'NHS_APP':
+    case 'SMS': {
+      await createTemplate({
+        name: copyName,
+        message,
+        templateType: newTemplateType,
+      });
+
+      break;
+    }
+    case 'EMAIL': {
+      await createTemplate({
+        name: copyName,
+        message,
+        templateType: newTemplateType,
+        subject,
+      });
+
+      break;
+    }
+    // no default
+  }
 
   return redirect(`/manage-templates`, RedirectType.push);
 };

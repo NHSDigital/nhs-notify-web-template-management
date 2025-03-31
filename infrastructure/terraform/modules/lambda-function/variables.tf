@@ -46,3 +46,9 @@ variable "environment_variables" {
   description = "Lambda environment variables"
   default     = {}
 }
+
+variable "memory_size" {
+  type        = number
+  description = "Lambda memory size"
+  default     = 128
+}

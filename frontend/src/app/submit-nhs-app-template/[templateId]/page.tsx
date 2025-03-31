@@ -1,10 +1,22 @@
 'use server';
 
+import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateNHSAppTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
-import { validateNHSAppTemplate } from '@utils/validate-template';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle.NHS_APP,
+  };
+}
 
 const SubmitNhsAppTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

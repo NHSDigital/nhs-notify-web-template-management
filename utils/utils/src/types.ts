@@ -1,15 +1,12 @@
-import { z } from 'zod';
 import {
-  $Template,
-  $EmailTemplate,
-  $SMSTemplate,
-  $NHSAppTemplate,
-  $ChannelTemplate,
-  $SubmittedChannelTemplate,
-  $SubmittedEmailTemplate,
-  $SubmittedSMSTemplate,
-  $SubmittedNHSAppTemplate,
-} from './zod-validators';
+  CreateLetterProperties,
+  CreateTemplate,
+  EmailProperties,
+  LetterProperties,
+  NhsAppProperties,
+  SmsProperties,
+  TemplateDto,
+} from 'nhs-notify-backend-client';
 
 export type FormId =
   | 'choose-a-template-type'
@@ -26,33 +23,41 @@ export type FormErrorState = {
   fieldErrors: Record<string, string[]>;
 };
 
-export type Template = z.infer<typeof $Template>;
-
-export type EmailTemplate = z.infer<typeof $EmailTemplate>;
-
-export type SubmittedEmailTemplate = z.infer<typeof $SubmittedEmailTemplate>;
-
-export type SMSTemplate = z.infer<typeof $SMSTemplate>;
-
-export type SubmittedSMSTemplate = z.infer<typeof $SubmittedSMSTemplate>;
-
-export type NHSAppTemplate = z.infer<typeof $NHSAppTemplate>;
-
-export type SubmittedNHSAppTemplate = z.infer<typeof $SubmittedNHSAppTemplate>;
-
-export type ChannelTemplate = z.infer<typeof $ChannelTemplate>;
-
-export type SubmittedChannelTemplate = z.infer<
-  typeof $SubmittedChannelTemplate
->;
-
-export type Draft<T> = Omit<T, 'id'>;
-
 export type FormState = {
   validationError?: FormErrorState;
 };
 
-export type TemplateFormState<T = Template> = FormState & T;
+type NhsAppType = {
+  templateType: 'NHS_APP';
+};
+
+type EmailType = {
+  templateType: 'EMAIL';
+};
+
+type SmsType = {
+  templateType: 'SMS';
+};
+
+type LetterType = {
+  templateType: 'LETTER';
+};
+
+export type CreateNHSAppTemplate = CreateTemplate &
+  NhsAppProperties &
+  NhsAppType;
+export type CreateEmailTemplate = CreateTemplate & EmailProperties & EmailType;
+export type CreateSMSTemplate = CreateTemplate & SmsProperties & SmsType;
+export type CreateLetterTemplate = CreateTemplate &
+  CreateLetterProperties &
+  LetterType;
+
+export type NHSAppTemplate = TemplateDto & NhsAppProperties & NhsAppType;
+export type EmailTemplate = TemplateDto & EmailProperties & EmailType;
+export type SMSTemplate = TemplateDto & SmsProperties & SmsType;
+export type LetterTemplate = TemplateDto & LetterProperties & LetterType;
+
+export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
 
 export type PageProps = {
   params: Promise<{

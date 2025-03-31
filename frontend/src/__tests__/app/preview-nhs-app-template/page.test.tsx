@@ -1,20 +1,27 @@
 /**
  * @jest-environment node
  */
-import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
-import { ReviewNHSAppTemplate } from '@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate';
-import {
-  NHSAppTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import PreviewNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/preview-nhs-app-template/[templateId]/page';
+import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
+import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewNHSAppTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewNHSAppTemplate/ReviewNHSAppTemplate');
+jest.mock('@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,20 +30,20 @@ describe('PreviewNhsAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     const nhsAppTemplate: NHSAppTemplate = {
       ...templateDTO,
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
@@ -47,8 +54,11 @@ describe('PreviewNhsAppTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
-      <ReviewNHSAppTemplate initialState={nhsAppTemplate} />
+      <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );
   });
 
@@ -63,41 +73,26 @@ describe('PreviewNhsAppTemplatePage', () => {
   });
 
   test.each([
+    EMAIL_TEMPLATE,
+    SMS_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
+      ...NHS_APP_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $nhsAppTemplateName and message is $nhsAppTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: '2025-01-13T10:19:25.579Z',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await PreviewNhsAppTemplatePage({
         params: Promise.resolve({

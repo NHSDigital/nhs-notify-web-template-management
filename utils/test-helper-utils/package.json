@@ -1,0 +1,20 @@
+{
+  "name": "nhs-notify-web-template-management-test-helper-utils",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "form-data": "^4.0.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5"
+  }
+}

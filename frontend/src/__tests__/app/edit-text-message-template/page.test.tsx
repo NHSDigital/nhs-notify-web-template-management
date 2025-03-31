@@ -1,16 +1,17 @@
 /**
  * @jest-environment node
  */
-import EditSmsTemplatePage from '@app/edit-text-message-template/[templateId]/page';
+import EditSmsTemplatePage, {
+  generateMetadata,
+} from '@app/edit-text-message-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormSms;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -19,15 +20,15 @@ jest.mock('@forms/SmsTemplateForm/SmsTemplateForm');
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const templateDTO: TemplateDTO = {
+const templateDTO = {
   id: 'template-id',
-  templateType: TemplateType.SMS,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+  templateType: 'SMS',
+  templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
-};
+} satisfies TemplateDto;
 
 describe('EditSmsTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
@@ -49,7 +50,7 @@ describe('EditSmsTemplatePage', () => {
   it('should redirect to invalid-template when template type is not SMS', async () => {
     getTemplateMock.mockResolvedValueOnce({
       ...templateDTO,
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
     });
 
     await EditSmsTemplatePage({
@@ -68,8 +69,8 @@ describe('EditSmsTemplatePage', () => {
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     const page = await EditSmsTemplatePage({
@@ -78,6 +79,7 @@ describe('EditSmsTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<SmsTemplateForm initialState={smsTemplate} />);

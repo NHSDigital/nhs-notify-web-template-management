@@ -1,10 +1,22 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateSubmittedSMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
-import { validateSubmittedSMSTemplate } from '@utils/validate-template';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewSMSTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const ViewSubmittedSMSTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

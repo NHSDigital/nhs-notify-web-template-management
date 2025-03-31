@@ -1,17 +1,19 @@
-import { Template, TemplateStatus, TemplateType } from '../types';
+import { Template } from '../types';
+import { randomUUID } from 'node:crypto';
 
 export const TemplateFactory = {
   createEmailTemplate: (
     id: string,
     owner: string,
-    name: string = ''
+    name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
       id,
       owner,
       name,
-      templateType: TemplateType.EMAIL,
-      subject: '',
+      templateType: 'EMAIL',
+      message: 'test-message',
+      subject: 'test-subject',
     });
   },
 
@@ -19,8 +21,9 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
-      name: '',
-      templateType: TemplateType.SMS,
+      name: 'test',
+      templateType: 'SMS',
+      message: 'test-message',
     });
   },
 
@@ -28,8 +31,32 @@ export const TemplateFactory = {
     return TemplateFactory.create({
       id,
       owner,
-      name: '',
-      templateType: TemplateType.NHS_APP,
+      name: 'test-name',
+      templateType: 'NHS_APP',
+      message: 'test-message',
+    });
+  },
+
+  createLetterTemplate: (id: string, owner: string, name: string): Template => {
+    return TemplateFactory.create({
+      id,
+      owner,
+      name,
+      templateType: 'LETTER',
+      letterType: 'x0',
+      language: 'en',
+      files: {
+        pdfTemplate: {
+          fileName: 'file.pdf',
+          currentVersion: randomUUID(),
+          virusScanStatus: 'PENDING',
+        },
+        testDataCsv: {
+          fileName: 'test-data.csv',
+          currentVersion: randomUUID(),
+          virusScanStatus: 'PENDING',
+        },
+      },
     });
   },
 
@@ -42,11 +69,10 @@ export const TemplateFactory = {
     }
   ): Template => {
     return {
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      message: '',
       ...template,
     };
   },

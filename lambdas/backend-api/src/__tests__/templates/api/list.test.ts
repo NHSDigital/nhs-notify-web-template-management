@@ -1,21 +1,24 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
-} from 'nhs-notify-backend-client';
-import { handler } from '@backend-api/templates/api/list';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/list';
 
-jest.mock('@backend-api/templates/app/template-client');
+const setup = () => {
+  const templateClient = mock<ITemplateClient>();
 
-const listTemplatesMock = jest.spyOn(TemplateClient.prototype, 'listTemplates');
+  const handler = createHandler({ templateClient });
+
+  return { handler, mocks: { templateClient } };
+};
 
 describe('Template API - List', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
     });
@@ -30,11 +33,13 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(listTemplatesMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.listTemplates).not.toHaveBeenCalled();
   });
 
   test('should return error when listing templates fails', async () => {
-    listTemplatesMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -56,23 +61,24 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
-
-    expect(listTemplatesMock).toHaveBeenCalled();
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
   });
 
   test('should return template', async () => {
-    const template: TemplateDTO = {
+    const { handler, mocks } = setup();
+
+    const template: TemplateDto = {
       id: 'id',
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
       name: 'name',
       message: 'message',
+      subject: 'subject',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
-    listTemplatesMock.mockResolvedValueOnce({
+    mocks.templateClient.listTemplates.mockResolvedValueOnce({
       data: [template],
     });
 
@@ -87,8 +93,6 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, templates: [template] }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
-
-    expect(listTemplatesMock).toHaveBeenCalled();
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
   });
 });

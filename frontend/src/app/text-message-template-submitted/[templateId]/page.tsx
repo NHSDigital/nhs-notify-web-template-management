@@ -1,10 +1,22 @@
 'use server';
 
+import { Metadata } from 'next';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import { TemplateSubmittedPageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateSubmittedPageProps,
+  validateSubmittedSMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateSubmittedSMSTemplate } from '@utils/validate-template';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle.SMS,
+  };
+}
 
 const SmsTemplateSubmittedPage = async (props: TemplateSubmittedPageProps) => {
   const { templateId } = await props.params;

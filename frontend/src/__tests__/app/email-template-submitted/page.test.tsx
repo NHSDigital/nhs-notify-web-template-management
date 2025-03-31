@@ -1,14 +1,16 @@
 /**
  * @jest-environment node
  */
-import EmailTemplateSubmittedPage from '@app/email-template-submitted/[templateId]/page';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import EmailTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/email-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -23,14 +25,14 @@ describe('EmailTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
       subject: 'subject',
       createdAt: 'today',
       updatedAt: 'today',
-    };
+    } satisfies TemplateDto;
 
     getTemplateMock.mockResolvedValueOnce(template);
 
@@ -59,6 +61,7 @@ describe('EmailTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle.EMAIL });
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template');
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

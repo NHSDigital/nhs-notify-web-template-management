@@ -1,69 +1,39 @@
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import {
-  $CreateTemplateSchema,
-  $UpdateTemplateSchema,
-  $CreateEmailTemplateSchema,
-  $CreateSMSTemplateSchema,
-  $CreateNhsAppTemplateSchema,
-} from '../../schemas';
+  $CreateNonLetterSchema,
+  CreateTemplate,
+  isCreateTemplateValid,
+  isTemplateDtoValid,
+  isUpdateTemplateValid,
+  TemplateDto,
+  UpdateTemplate,
+} from 'nhs-notify-backend-client';
+import { $CreateTemplateSchema, $UpdateTemplateSchema } from '../../schemas';
 
 describe('Template schemas', () => {
   test.each([
     {
-      schema: $CreateEmailTemplateSchema,
-      data: {
-        name: 'Test Template',
-        message: 'This is a test template',
-        subject: 'Test Subject',
-        templateType: TemplateType.EMAIL,
-      },
-    },
-    {
-      schema: $CreateSMSTemplateSchema,
-      data: {
-        name: 'Test Template',
-        message: 'This is a test template',
-        templateType: TemplateType.SMS,
-      },
-    },
-    {
-      schema: $CreateNhsAppTemplateSchema,
-      data: {
-        name: 'Test Template',
-        message: 'This is a test template',
-        templateType: TemplateType.NHS_APP,
-      },
-    },
-  ])('%p.templateType - should pass validation', async ({ schema, data }) => {
-    const result = schema.safeParse(data);
-
-    expect(result.data).toEqual(data);
-  });
-
-  test.each([
-    {
-      schema: $CreateEmailTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(100_001),
         subject: 'Test Subject',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
-      schema: $CreateSMSTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(919),
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
-      schema: $CreateNhsAppTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(5001),
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -85,28 +55,28 @@ describe('Template schemas', () => {
 
   test.each([
     {
-      schema: $CreateEmailTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: ' ',
         message: ' ',
         subject: ' ',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
-      schema: $CreateSMSTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: ' ',
         message: ' ',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
-      schema: $CreateNhsAppTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: ' ',
         message: ' ',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -122,7 +92,7 @@ describe('Template schemas', () => {
         },
       };
 
-      if (data.templateType === TemplateType.EMAIL) {
+      if (data.templateType === 'EMAIL') {
         Object.assign(errors.fieldErrors, {
           subject: [errorMessage],
         });
@@ -134,28 +104,28 @@ describe('Template schemas', () => {
 
   test.each([
     {
-      schema: $CreateEmailTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: '',
         message: '',
         subject: '',
-        templateType: TemplateType.EMAIL,
+        templateType: 'EMAIL',
       },
     },
     {
-      schema: $CreateSMSTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: '',
         message: '',
-        templateType: TemplateType.SMS,
+        templateType: 'SMS',
       },
     },
     {
-      schema: $CreateNhsAppTemplateSchema,
+      schema: $CreateTemplateSchema,
       data: {
         name: '',
         message: '',
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       },
     },
   ])(
@@ -171,7 +141,7 @@ describe('Template schemas', () => {
         },
       };
 
-      if (data.templateType === TemplateType.EMAIL) {
+      if (data.templateType === 'EMAIL') {
         Object.assign(errors.fieldErrors, {
           subject: [errorMessage],
         });
@@ -181,11 +151,32 @@ describe('Template schemas', () => {
     }
   );
 
+  test('$CreateNonLetterSchema should fail when input is a letter', () => {
+    const letter: CreateTemplate = {
+      templateType: 'LETTER',
+      letterType: 'q1',
+      language: 'ar',
+      name: 'letter',
+    };
+
+    const result = $CreateNonLetterSchema.safeParse(letter);
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          templateType: [
+            "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+          ],
+        },
+      })
+    );
+  });
+
   test('$EmailTemplateFields - should fail validation, when no subject', async () => {
-    const result = $CreateEmailTemplateSchema.safeParse({
+    const result = $CreateTemplateSchema.safeParse({
       name: 'Test Template',
       message: 'a'.repeat(100_000),
-      templateType: TemplateType.EMAIL,
+      templateType: 'EMAIL',
     });
 
     expect(result.error?.flatten()).toEqual(
@@ -204,10 +195,10 @@ describe('Template schemas', () => {
   ])(
     '$NhsAppTemplateFields - should fail validation, when invalid characters are present %p',
     async (message) => {
-      const result = $CreateNhsAppTemplateSchema.safeParse({
+      const result = $CreateTemplateSchema.safeParse({
         name: 'Test Template',
         message,
-        templateType: TemplateType.NHS_APP,
+        templateType: 'NHS_APP',
       });
 
       expect(result.error?.flatten()).toEqual(
@@ -225,68 +216,73 @@ describe('Template schemas', () => {
   describe('$CreateTemplateSchema', () => {
     const commonFields = {
       name: 'Test Template',
-      message: 'This is a test template',
     };
 
     test.each([
       {
         ...commonFields,
         subject: 'Test Subject',
-        templateType: TemplateType.EMAIL,
+        message: 'This is a test template',
+        templateType: 'EMAIL',
       },
       {
         ...commonFields,
-        templateType: TemplateType.SMS,
+        message: 'This is a test template',
+        templateType: 'SMS',
       },
       {
         ...commonFields,
-        templateType: TemplateType.NHS_APP,
+        message: 'This is a test template',
+        templateType: 'NHS_APP',
+      },
+      {
+        ...commonFields,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
       },
     ])('should pass validation %p', async (template) => {
       const result = $CreateTemplateSchema.safeParse(template);
 
       expect(result.data).toEqual(template);
     });
-
-    test('Letter creation should fail', () => {
-      const result = $CreateTemplateSchema.safeParse({
-        name: 'Test Template',
-        message: 'mesage',
-        templateType: TemplateType.LETTER,
-      });
-
-      expect(result.error?.flatten()).toEqual(
-        expect.objectContaining({
-          fieldErrors: {
-            templateType: [
-              "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
-            ],
-          },
-        })
-      );
-    });
   });
 
   describe('$UpdateTemplateSchema', () => {
     const commonFields = {
       name: 'Test Template',
-      message: 'This is a test template',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     };
 
     test.each([
       {
         ...commonFields,
         subject: 'Test Subject',
-        templateType: TemplateType.EMAIL,
+        message: 'This is a test template',
+        templateType: 'EMAIL',
       },
       {
         ...commonFields,
-        templateType: TemplateType.SMS,
+        message: 'This is a test template',
+        templateType: 'SMS',
       },
       {
         ...commonFields,
-        templateType: TemplateType.NHS_APP,
+        message: 'This is a test template',
+        templateType: 'NHS_APP',
+      },
+      {
+        ...commonFields,
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: '57d8yds',
+            virusScanStatus: 'PASSED',
+          },
+        },
       },
     ])('should pass validation %p', async (template) => {
       const result = $UpdateTemplateSchema.safeParse(template);
@@ -295,21 +291,77 @@ describe('Template schemas', () => {
     });
   });
 
-  test('Letter update should fail', () => {
-    const result = $UpdateTemplateSchema.safeParse({
+  describe('isCreateTemplateValid', () => {
+    const template: CreateTemplate = {
       name: 'Test Template',
-      message: 'mesage',
-      templateType: TemplateType.LETTER,
+      message: 'This is a test template',
+      templateType: 'NHS_APP',
+    };
+
+    test('Should return template on pass', async () => {
+      const result = isCreateTemplateValid(template);
+
+      expect(result).toEqual(template);
     });
 
-    expect(result.error?.flatten()).toEqual(
-      expect.objectContaining({
-        fieldErrors: {
-          templateType: [
-            "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
-          ],
-        },
-      })
-    );
+    test('Should return undefined on fail', async () => {
+      const result = isCreateTemplateValid({
+        ...template,
+        name: undefined,
+      });
+
+      expect(result).toEqual(undefined);
+    });
+  });
+
+  describe('isUpdateTemplateValid', () => {
+    const template: UpdateTemplate = {
+      name: 'Test Template',
+      message: 'This is a test template',
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
+    };
+
+    test('Should return template on pass', async () => {
+      const result = isUpdateTemplateValid(template);
+
+      expect(result).toEqual(template);
+    });
+
+    test('Should return undefined on fail', async () => {
+      const result = isUpdateTemplateValid({
+        ...template,
+        name: undefined,
+      });
+
+      expect(result).toEqual(undefined);
+    });
+  });
+
+  describe('isTemplateDtoValid', () => {
+    const template: TemplateDto = {
+      name: 'Test Template',
+      message: 'This is a test template',
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      id: 'id',
+      createdAt: '2025-01-13T10:19:25.579Z',
+      updatedAt: '2025-01-13T10:19:25.579Z',
+    };
+
+    test('Should return template on pass', async () => {
+      const result = isTemplateDtoValid(template);
+
+      expect(result).toEqual(template);
+    });
+
+    test('Should return undefined on fail', async () => {
+      const result = isTemplateDtoValid({
+        ...template,
+        name: undefined,
+      });
+
+      expect(result).toEqual(undefined);
+    });
   });
 });

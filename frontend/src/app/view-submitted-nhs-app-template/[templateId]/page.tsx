@@ -1,10 +1,22 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateSubmittedNHSAppTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateSubmittedNHSAppTemplate } from '@utils/validate-template';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewNHSAppTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const ViewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

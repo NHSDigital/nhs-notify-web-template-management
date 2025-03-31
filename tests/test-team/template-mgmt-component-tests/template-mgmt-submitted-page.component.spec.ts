@@ -8,7 +8,7 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { TemplateType, TemplateStatus, Template } from '../helpers/types';
+import { Template } from '../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -21,8 +21,8 @@ function createTemplates(owner: string) {
   return {
     email: TemplateFactory.create({
       owner,
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'SUBMITTED',
       id: 'valid-email-template',
       name: 'test-template-email',
       subject: 'test-template-subject',
@@ -30,16 +30,16 @@ function createTemplates(owner: string) {
     }),
     'text-message': TemplateFactory.create({
       owner,
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
-      id: 'valid-sms-template',
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
+      id: 'valid-text-message-template',
       name: 'test-template-sms',
       message: 'test example content',
     }),
     'nhs-app': TemplateFactory.create({
       owner,
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
       id: 'valid-nhs-app-template',
       name: 'test-template-nhs-app',
       message: 'test example content',

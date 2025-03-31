@@ -2,17 +2,19 @@
 
 import React, { Suspense, useEffect } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { signOut } from 'aws-amplify/auth';
+import JsCookie from 'js-cookie';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { Redirect } from '../page.dev';
 
 export const SignOut = ({ children }: { children: React.ReactNode }) => {
-  const { signOut, authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
+  const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
-      signOut();
+      signOut({ global: true });
+      JsCookie.remove('csrf_token');
     }
-  }, [authStatus, signOut]);
+  }, [authStatus]);
 
   return (
     <NHSNotifyMain>
@@ -26,7 +28,7 @@ export const SignOut = ({ children }: { children: React.ReactNode }) => {
 export default function Page() {
   return (
     <SignOut>
-      <Redirect />
+      <p>Signed Out</p>
     </SignOut>
   );
 }

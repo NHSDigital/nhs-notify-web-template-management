@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import { catchAxiosError, createAxiosClient } from '../axios-client';
 
-const client = createAxiosClient('value');
+const client = createAxiosClient();
 const axiosMock = new MockAdapter(client);
 
 describe('axios-client', () => {

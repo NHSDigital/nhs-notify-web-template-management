@@ -1,10 +1,22 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateSubmittedEmailTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
-import { validateSubmittedEmailTemplate } from '@utils/validate-template';
+import { Metadata } from 'next';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewEmailTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const ViewSubmittedEmailTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
