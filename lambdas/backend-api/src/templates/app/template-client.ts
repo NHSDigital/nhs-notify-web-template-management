@@ -2,17 +2,15 @@ import { randomUUID } from 'node:crypto';
 import z from 'zod';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
-  CreateTemplate,
   ITemplateClient,
   Result,
   TemplateDto,
-  UpdateTemplate,
+  CreateUpdateTemplate,
   ErrorCase,
   isTemplateDtoValid,
   LetterFiles,
   TemplateStatus,
-  $CreateNonLetterSchema,
-  $UpdateNonLetter,
+  $CreateUpdateNonLetter,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -31,12 +29,12 @@ export class TemplateClient implements ITemplateClient {
   ) {}
 
   async createTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     owner: string
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ template });
 
-    const validationResult = await validate($CreateNonLetterSchema, template);
+    const validationResult = await validate($CreateUpdateNonLetter, template);
 
     if (validationResult.error) {
       log.error('Request failed validation', {
@@ -69,7 +67,7 @@ export class TemplateClient implements ITemplateClient {
   }
 
   async createLetterTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     owner: string,
     pdf: File,
     csv?: File
@@ -180,7 +178,7 @@ export class TemplateClient implements ITemplateClient {
 
   async updateTemplate(
     templateId: string,
-    template: UpdateTemplate,
+    template: CreateUpdateTemplate,
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
@@ -189,7 +187,7 @@ export class TemplateClient implements ITemplateClient {
       template,
     });
 
-    const validationResult = await validate($UpdateNonLetter, template);
+    const validationResult = await validate($CreateUpdateNonLetter, template);
 
     if (validationResult.error) {
       log.error('Invalid template', { validationResult });

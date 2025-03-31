@@ -2,10 +2,9 @@ import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
-  CreateTemplate,
   LetterFiles,
   TemplateDto,
-  UpdateTemplate,
+  CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import {
   DatabaseTemplate,
@@ -56,7 +55,7 @@ describe('templateClient', () => {
         name: 'name',
         message: undefined,
         subject: 'subject',
-      } as unknown as CreateTemplate;
+      } as unknown as CreateUpdateTemplate;
 
       const result = await templateClient.createTemplate(data, owner);
 
@@ -71,7 +70,7 @@ describe('templateClient', () => {
     test('should return a failure result when attempting to create a letter', async () => {
       const { templateClient } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         letterType: 'x0',
@@ -95,7 +94,7 @@ describe('templateClient', () => {
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -128,7 +127,7 @@ describe('templateClient', () => {
     test('should return a failure result, when created database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -172,7 +171,7 @@ describe('templateClient', () => {
     test('should return created template', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -218,7 +217,7 @@ describe('templateClient', () => {
       const pdfFilename = 'template.pdf';
       const csvFilename = 'test-data.csv';
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -244,7 +243,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -324,7 +323,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: undefined,
-      } as unknown as CreateTemplate;
+      } as unknown as CreateUpdateTemplate;
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
@@ -350,7 +349,7 @@ describe('templateClient', () => {
     test('should return a failure result, when attempting to create a non-letter', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'NHS_APP',
         name: 'name',
         message: 'app message',
@@ -399,7 +398,7 @@ describe('templateClient', () => {
       async ({ pdf }) => {
         const { templateClient, mocks } = setup();
 
-        const data: CreateTemplate = {
+        const data: CreateUpdateTemplate = {
           templateType: 'LETTER',
           name: 'name',
           language: 'en',
@@ -443,7 +442,7 @@ describe('templateClient', () => {
       async ({ csv }) => {
         const { templateClient, mocks } = setup();
 
-        const data: CreateTemplate = {
+        const data: CreateUpdateTemplate = {
           templateType: 'LETTER',
           name: 'name',
           language: 'en',
@@ -475,7 +474,7 @@ describe('templateClient', () => {
     test('should return a failure result when intial template creation fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -494,7 +493,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -535,7 +534,7 @@ describe('templateClient', () => {
     test('should return a failure result when initially created database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -570,7 +569,7 @@ describe('templateClient', () => {
     test('should return a failure result when failing to upload letter files', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -589,7 +588,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -661,7 +660,7 @@ describe('templateClient', () => {
     test('should return a failure result when final update fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -680,7 +679,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -754,7 +753,7 @@ describe('templateClient', () => {
       const pdfFilename = 'template.pdf';
       const csvFilename = 'test-data.csv';
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -780,7 +779,7 @@ describe('templateClient', () => {
         },
       };
 
-      const dataWithFiles: CreateTemplate & { files: LetterFiles } = {
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -849,7 +848,7 @@ describe('templateClient', () => {
         mocks.letterUploadRepository
       );
 
-      const data: CreateTemplate = {
+      const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
         language: 'en',
@@ -886,7 +885,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.updateTemplate(
         templateId,
-        data as unknown as UpdateTemplate,
+        data as unknown as CreateUpdateTemplate,
         owner
       );
 
@@ -901,7 +900,7 @@ describe('templateClient', () => {
     test('should return a failure result when attempting to update a letter', async () => {
       const { templateClient } = setup();
 
-      const data: UpdateTemplate = {
+      const data: CreateUpdateTemplate = {
         name: 'name',
         templateType: 'LETTER',
         language: 'it',
@@ -929,7 +928,7 @@ describe('templateClient', () => {
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: UpdateTemplate = {
+      const data: CreateUpdateTemplate = {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
@@ -966,7 +965,7 @@ describe('templateClient', () => {
     test('should return a failure result, when updated database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: UpdateTemplate = {
+      const data: CreateUpdateTemplate = {
         name: 'name',
         message: 'message',
         templateType: 'SMS',
@@ -1014,7 +1013,7 @@ describe('templateClient', () => {
     test('should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
-      const data: UpdateTemplate = {
+      const data: CreateUpdateTemplate = {
         name: 'name',
         message: 'message',
         templateType: 'SMS',

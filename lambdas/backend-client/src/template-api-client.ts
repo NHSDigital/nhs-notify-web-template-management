@@ -1,10 +1,9 @@
 import { ITemplateClient } from './types/template-client';
 import {
-  CreateTemplate,
+  CreateUpdateTemplate,
   Success,
   SuccessList,
   TemplateDto,
-  UpdateTemplate,
 } from './types/generated';
 import { Result } from './types/result';
 import {
@@ -22,7 +21,7 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
@@ -46,7 +45,7 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createLetterTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     token: string,
     pdf: File,
     csv?: File
@@ -78,7 +77,7 @@ export class TemplateApiClient implements ITemplateClient {
 
   async updateTemplate(
     templateId: string,
-    template: UpdateTemplate,
+    template: CreateUpdateTemplate,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(

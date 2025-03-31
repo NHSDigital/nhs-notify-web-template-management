@@ -7,9 +7,8 @@ import {
   NhsAppProperties,
   SmsProperties,
   TemplateStatus,
-  UpdateTemplate,
-  ValidatedCreateTemplate,
-  ValidatedUpdateTemplate,
+  CreateUpdateTemplate,
+  ValidatedCreateUpdateTemplate,
   VirusScanStatus,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -84,7 +83,7 @@ export class TemplateRepository {
   }
 
   async create(
-    template: WithAttachments<ValidatedCreateTemplate>,
+    template: WithAttachments<ValidatedCreateUpdateTemplate>,
     owner: string,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -112,7 +111,7 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: WithAttachments<ValidatedUpdateTemplate>,
+    template: WithAttachments<ValidatedCreateUpdateTemplate>,
     owner: string,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -426,7 +425,7 @@ export class TemplateRepository {
     );
   }
 
-  private getChannelAttributeExpressions(template: UpdateTemplate) {
+  private getChannelAttributeExpressions(template: CreateUpdateTemplate) {
     const expressions = [];
     if (template.templateType === 'NHS_APP') {
       expressions.push(
@@ -463,7 +462,7 @@ export class TemplateRepository {
     return attributeNames;
   }
 
-  private getChannelAttributeNames(template: UpdateTemplate) {
+  private getChannelAttributeNames(template: CreateUpdateTemplate) {
     let names = {};
 
     if (template.templateType === 'NHS_APP') {
@@ -495,7 +494,7 @@ export class TemplateRepository {
     return attributeValues;
   }
 
-  private getChannelAttributeValues(template: ValidatedUpdateTemplate) {
+  private getChannelAttributeValues(template: ValidatedCreateUpdateTemplate) {
     let values = {};
 
     if (template.templateType === 'NHS_APP') {

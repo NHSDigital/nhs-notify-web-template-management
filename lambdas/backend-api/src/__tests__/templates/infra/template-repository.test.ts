@@ -14,7 +14,7 @@ import {
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
-  ValidatedUpdateTemplate,
+  ValidatedCreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
@@ -412,7 +412,7 @@ describe('templateRepository', () => {
       async (channelProperties) => {
         const { templateRepository, mocks } = setup();
 
-        const updatedTemplate: ValidatedUpdateTemplate = {
+        const updatedTemplate: ValidatedCreateUpdateTemplate = {
           ...channelProperties,
           ...updateTemplateProperties,
           name: 'updated-name',
