@@ -468,10 +468,20 @@ describe('templateRepository', () => {
       },
       {
         testName:
-          'Fails when user tries to submit template when templateStatus is not NOT_YET_SUBMITTED',
+          'Fails when user tries to submit template when templateStatus is PENDING_UPLOAD',
         Item: marshall({
           templateType: 'LETTER',
           templateStatus: 'PENDING_UPLOAD',
+        }),
+        code: 400,
+        message: 'Template cannot be submitted',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is PENDING_VALIDATION',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'PENDING_VALIDATION',
         }),
         code: 400,
         message: 'Template cannot be submitted',
@@ -508,33 +518,30 @@ describe('templateRepository', () => {
         code: 400,
         message: 'Template cannot be submitted',
       },
-    ])(
-      'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
-      async ({ Item, code, message }) => {
-        const { templateRepository, mocks } = setup();
+    ])('submit: $testName', async ({ Item, code, message }) => {
+      const { templateRepository, mocks } = setup();
 
-        const error = new ConditionalCheckFailedException({
-          message: 'mocked',
-          $metadata: { httpStatusCode: 400 },
-          Item,
-        });
+      const error = new ConditionalCheckFailedException({
+        message: 'mocked',
+        $metadata: { httpStatusCode: 400 },
+        Item,
+      });
 
-        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
 
-        const response = await templateRepository.submit(
-          'abc-def-ghi-jkl-123',
-          'real-owner'
-        );
+      const response = await templateRepository.submit(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
 
-        expect(response).toEqual({
-          error: {
-            code,
-            message,
-            actualError: error,
-          },
-        });
-      }
-    );
+      expect(response).toEqual({
+        error: {
+          code,
+          message,
+          actualError: error,
+        },
+      });
+    });
 
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
