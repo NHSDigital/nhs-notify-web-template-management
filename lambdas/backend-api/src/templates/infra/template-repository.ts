@@ -210,7 +210,7 @@ export class TemplateRepository {
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '#templateStatus = :notYetSubmitted',
+      '#templateStatus = :expectedStatus',
     ];
 
     try {
