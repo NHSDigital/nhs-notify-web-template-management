@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-appsync": "^3.772.0",
-    "@aws-sdk/client-cognito-identity-provider": "^3.772.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.777.0",
     "@aws-sdk/client-dynamodb": "^3.772.0",
     "@aws-sdk/lib-dynamodb": "^3.772.0",
     "@faker-js/faker": "^9.6.0",
