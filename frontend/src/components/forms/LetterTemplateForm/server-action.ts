@@ -3,16 +3,16 @@
 import { createLetterTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  CreateLetterTemplate,
+  CreateUpdateLetterTemplate,
   LetterTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-import { $CreateLetterTemplateSchema } from './form-schema';
+import { $CreateUpdateLetterTemplate } from './form-schema';
 
 export async function processFormActions(
-  formState: TemplateFormState<CreateLetterTemplate | LetterTemplate>,
+  formState: TemplateFormState<CreateUpdateLetterTemplate | LetterTemplate>,
   formData: FormData
-): Promise<TemplateFormState<CreateLetterTemplate>> {
+): Promise<TemplateFormState<CreateUpdateLetterTemplate>> {
   const parsedForm = $CreateLetterTemplateSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
@@ -34,7 +34,7 @@ export async function processFormActions(
     letterTemplateCsv,
   } = parsedForm.data;
 
-  const updatedTemplate: CreateLetterTemplate = {
+  const updatedTemplate: CreateUpdateLetterTemplate = {
     ...formState,
     name: letterTemplateName,
     letterType: letterTemplateLetterType,

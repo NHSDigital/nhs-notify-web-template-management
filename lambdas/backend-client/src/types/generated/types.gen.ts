@@ -73,6 +73,7 @@ export type SmsProperties = {
 export type CreateUpdateLetterProperties = {
   letterType: LetterType;
   language: Language;
+  files?: LetterFiles;
 };
 
 export type LetterProperties = CreateUpdateLetterProperties & {

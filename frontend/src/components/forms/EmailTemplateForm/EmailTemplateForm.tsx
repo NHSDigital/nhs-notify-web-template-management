@@ -16,7 +16,7 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  CreateEmailTemplate,
+  CreateUpdateEmailTemplate,
   EmailTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -27,7 +27,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const EmailTemplateForm: FC<
-  PageComponentProps<CreateEmailTemplate | EmailTemplate>
+  PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,

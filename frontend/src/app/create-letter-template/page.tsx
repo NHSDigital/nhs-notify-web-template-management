@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
-import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { CreateUpdateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 
 const CreateLetterTemplatePage = async () => {
   if (process.env.NEXT_PUBLIC_ENABLE_LETTERS !== 'true') notFound();
 
-  const initialState: CreateLetterTemplate = {
+  const initialState: CreateUpdateLetterTemplate = {
     templateType: 'LETTER',
     name: '',
     letterType: 'x0',

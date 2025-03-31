@@ -2,8 +2,8 @@
  * @jest-environment node
  */
 import {
-  CreateLetterTemplate,
-  CreateNHSAppTemplate,
+  CreateUpdateLetterTemplate,
+  CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import {
@@ -46,7 +46,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -70,7 +70,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -90,7 +90,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -129,7 +129,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -182,7 +182,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -220,7 +220,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -250,7 +250,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',

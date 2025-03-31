@@ -126,24 +126,30 @@ describe('Template schemas', () => {
         templateType: 'NHS_APP',
       },
     },
+    {
+      schema: $CreateUpdateTemplate,
+      data: {
+        name: '',
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+      },
+    },
   ])(
     '%p - should fail validation, when name, message or subject is empty',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
       const errorMessage = 'String must contain at least 1 character(s)';
 
-      const errors = {
-        fieldErrors: {
-          message: [errorMessage],
-          name: [errorMessage],
-        },
-      };
+      const emptyFields = Object.entries(data).flatMap(([k, v]) =>
+        v === '' ? [k] : []
+      );
 
-      if (data.templateType === 'EMAIL') {
-        Object.assign(errors.fieldErrors, {
-          subject: [errorMessage],
-        });
-      }
+      const errors = {
+        fieldErrors: Object.fromEntries(
+          emptyFields.map((field) => [field, [errorMessage]])
+        ),
+      };
 
       expect(result.error?.flatten()).toEqual(expect.objectContaining(errors));
     }
@@ -211,7 +217,7 @@ describe('Template schemas', () => {
     }
   );
 
-  describe('$CreateTemplate', () => {
+  describe('$CreateUpdateTemplate', () => {
     const commonFields = {
       name: 'Test Template',
     };

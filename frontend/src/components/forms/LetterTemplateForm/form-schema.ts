@@ -1,7 +1,7 @@
 import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
 import { z } from 'zod';
 
-export const $CreateLetterTemplateSchema = z.object({
+export const $CreateUpdateLetterTemplateSchema = z.object({
   letterTemplateName: z
     .string({ message: 'Enter a template name' })
     .min(1, { message: 'Enter a template name' }),
