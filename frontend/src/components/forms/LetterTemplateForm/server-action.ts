@@ -7,13 +7,13 @@ import {
   LetterTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-import { $CreateUpdateLetterTemplate } from './form-schema';
+import { $CreateUpdateLetterTemplateForm } from './form-schema';
 
 export async function processFormActions(
   formState: TemplateFormState<CreateUpdateLetterTemplate | LetterTemplate>,
   formData: FormData
 ): Promise<TemplateFormState<CreateUpdateLetterTemplate>> {
-  const parsedForm = $CreateLetterTemplateSchema.safeParse(
+  const parsedForm = $CreateUpdateLetterTemplateForm.safeParse(
     Object.fromEntries(formData.entries())
   );
 
