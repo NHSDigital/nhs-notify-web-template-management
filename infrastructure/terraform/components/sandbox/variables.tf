@@ -56,3 +56,9 @@ variable "log_retention_in_days" {
   description = "The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite"
   default     = 0
 }
+
+variable "kms_deletion_window" {
+  type        = string
+  description = "When a kms key is deleted, how long should it wait in the pending deletion state?"
+  default     = "30"
+}

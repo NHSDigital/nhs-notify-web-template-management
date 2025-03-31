@@ -1,7 +1,11 @@
 import { Locator, type Page } from '@playwright/test';
 
-export class TemplateMgmtBasePage {
+export abstract class TemplateMgmtBasePage {
   readonly page: Page;
+
+  static readonly appUrlSegment = 'templates';
+
+  static readonly pageUrlSegment: string;
 
   readonly notifyBannerLink: Locator;
 
@@ -18,8 +22,6 @@ export class TemplateMgmtBasePage {
   readonly errorSummaryHeading: Locator;
 
   readonly errorSummaryList: Locator;
-
-  readonly submitButton: Locator;
 
   readonly skipLink: Locator;
 
@@ -53,12 +55,12 @@ export class TemplateMgmtBasePage {
 
     this.errorSummaryList = this.errorSummary.getByRole('listitem');
 
-    this.submitButton = page.locator('button.nhsuk-button[type="submit"]');
-
     this.skipLink = page
       .locator('[id="skip-link"]')
       .and(page.getByText('Skip to main content'));
   }
+
+  abstract loadPage(templateId?: string): Promise<void>;
 
   async navigateTo(url: string) {
     await this.page.goto(url);
@@ -70,14 +72,6 @@ export class TemplateMgmtBasePage {
 
   async clickSignInLink() {
     await this.signInLink.click();
-  }
-
-  async clickSubmitButton() {
-    await this.submitButton.click();
-  }
-
-  async loadPage(_?: string) {
-    throw new Error('Not implemented');
   }
 
   async clickBackLink() {

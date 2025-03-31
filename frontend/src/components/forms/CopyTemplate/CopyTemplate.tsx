@@ -1,28 +1,28 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
-import { copyTemplatePageContent } from '@content/content';
-import {
-  Template,
-  TemplateType,
-  templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { copyTemplateAction } from './server-action';
+import { TemplateType, ValidatedTemplateDto } from 'nhs-notify-backend-client';
+
+export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 
 type CopyTemplate = {
-  template: Template;
+  template: ValidatedTemplateDto & { templateType: ValidCopyType };
 };
 
 export const CopyTemplate = ({ template }: CopyTemplate) => {
-  const [state, action] = useFormState(copyTemplateAction, { template });
+  const copyTypes = ['NHS_APP', 'EMAIL', 'SMS'] as const;
 
-  const templateTypes = Object.values(TemplateType);
-  const options = templateTypes.map((templateType) => ({
+  const [state, action] = useActionState(copyTemplateAction, { template });
+
+  const options = copyTypes.map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),
   }));
@@ -34,7 +34,7 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
     pageHeading,
     radiosLabel,
     backLinkText,
-  } = copyTemplatePageContent;
+  } = content.components.copyTemplate;
 
   const fullPageHeading = `${pageHeading} '${template.name}'`;
 

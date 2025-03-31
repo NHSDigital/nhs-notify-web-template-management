@@ -8,7 +8,7 @@ exports[`ChannelGuidance component should correctly render the component for tem
     More about emails
   </h2>
   <ul
-    style="list-style-type: none; padding: 0px;"
+    class="channel-guidance__list"
   >
     <li
       class="nhsuk-u-margin-bottom-3"
@@ -47,6 +47,19 @@ exports[`ChannelGuidance component should correctly render the component for tem
 </DocumentFragment>
 `;
 
+exports[`ChannelGuidance component should correctly render the component for templateType LETTER 1`] = `
+<DocumentFragment>
+  <h2
+    class="nhsuk-heading-m"
+  >
+    More about letters
+  </h2>
+  <ul
+    class="channel-guidance__list"
+  />
+</DocumentFragment>
+`;
+
 exports[`ChannelGuidance component should correctly render the component for templateType NHS_APP 1`] = `
 <DocumentFragment>
   <h2
@@ -55,7 +68,7 @@ exports[`ChannelGuidance component should correctly render the component for tem
     More about NHS App messages
   </h2>
   <ul
-    style="list-style-type: none; padding: 0px;"
+    class="channel-guidance__list"
   >
     <li
       class="nhsuk-u-margin-bottom-3"
@@ -102,7 +115,7 @@ exports[`ChannelGuidance component should correctly render the component for tem
     More about text messages
   </h2>
   <ul
-    style="list-style-type: none; padding: 0px;"
+    class="channel-guidance__list"
   >
     <li
       class="nhsuk-u-margin-bottom-3"

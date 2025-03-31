@@ -4,8 +4,8 @@ const {
 
 const pageActions = [
   ...goToPreviewTextMessageTemplateActions,
-  'click element #reviewSMSTemplateAction-sms-submit',
-  'click element #review-sms-template-submit-button',
+  'click element #previewSMSTemplateAction-sms-submit',
+  'click element #preview-sms-template-submit-button',
   'wait for element #submit-template-button to be visible',
 ];
 

@@ -6,8 +6,7 @@ import {
   SpecificationVersion,
 } from '@pact-foundation/pact';
 
-import { TemplateClient } from 'nhs-notify-backend-client/src/template-api-client';
-import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
+import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 const { like } = MatchersV3;
 
@@ -50,8 +49,8 @@ describe('API Pact test', () => {
                 id: 'id',
                 name: 'name',
                 message: 'message',
-                templateStatus: TemplateStatus.SUBMITTED,
-                templateType: TemplateType.NHS_APP,
+                templateStatus: 'SUBMITTED',
+                templateType: 'NHS_APP',
               },
             ],
           }),
@@ -59,16 +58,14 @@ describe('API Pact test', () => {
       });
 
       await provider.executeTest(async (_) => {
-        const client = TemplateClient(testToken);
-
         // make request to Pact mock server
-        const templates = await client.listTemplates();
+        const templates = await templateClient.listTemplates(testToken);
         expect(templates.data?.[0]).toStrictEqual({
           id: 'id',
           name: 'name',
           message: 'message',
-          templateStatus: TemplateStatus.SUBMITTED,
-          templateType: TemplateType.NHS_APP,
+          templateStatus: 'SUBMITTED',
+          templateType: 'NHS_APP',
         });
       });
     });
@@ -97,25 +94,23 @@ describe('API Pact test', () => {
               id: 'id',
               name: 'name',
               message: 'message',
-              templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-              templateType: TemplateType.NHS_APP,
+              templateStatus: 'NOT_YET_SUBMITTED',
+              templateType: 'NHS_APP',
             },
           }),
         },
       });
 
       await provider.executeTest(async (_) => {
-        const client = TemplateClient(testToken);
-
         // make request to Pact mock server
-        const response = await client.getTemplate('10');
+        const response = await templateClient.getTemplate('10', testToken);
 
         expect(response.data).toStrictEqual({
           id: 'id',
           name: 'name',
           message: 'message',
-          templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-          templateType: TemplateType.NHS_APP,
+          templateStatus: 'NOT_YET_SUBMITTED',
+          templateType: 'NHS_APP',
         });
       });
     });

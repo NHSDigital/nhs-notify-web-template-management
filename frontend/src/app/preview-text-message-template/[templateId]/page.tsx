@@ -1,14 +1,16 @@
 'use server';
 
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateSMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
-import { validateSMSTemplate } from '@utils/validate-template';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 
-const PreviewSMSTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const PreviewSMSTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateSMSTemplate(template);
@@ -17,7 +19,7 @@ const PreviewSMSTemplatePage = async ({
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ReviewSMSTemplate initialState={validatedTemplate} />;
+  return <PreviewSMSTemplate initialState={validatedTemplate} />;
 };
 
 export default PreviewSMSTemplatePage;

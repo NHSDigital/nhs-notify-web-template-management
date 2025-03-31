@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {
@@ -105,7 +105,7 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.editRadioOption.click();
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-text-message-template/${templates.valid.id}`
@@ -122,7 +122,7 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.submitRadioOption.click();
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-text-message-template/${templates.valid.id}`
@@ -162,19 +162,19 @@ test.describe('Preview SMS message template Page', () => {
 
       await previewSmsTemplatePage.loadPage(templates.valid.id);
 
-      await previewSmsTemplatePage.clickSubmitButton();
+      await previewSmsTemplatePage.clickContinueButton();
 
       await expect(previewSmsTemplatePage.errorSummary).toBeVisible();
 
       const selectOptionErrorLink = previewSmsTemplatePage.errorSummary.locator(
-        '[href="#reviewSMSTemplateAction"]'
+        '[href="#previewSMSTemplateAction"]'
       );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#reviewSMSTemplateAction')).toBeInViewport();
+      await expect(page.locator('#previewSMSTemplateAction')).toBeInViewport();
     });
   });
 });

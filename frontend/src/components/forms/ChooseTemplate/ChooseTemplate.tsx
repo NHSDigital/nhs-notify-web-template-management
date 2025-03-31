@@ -1,22 +1,23 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { getBasePath } from '@utils/get-base-path';
-import { chooseTemplatePageContent } from '@content/content';
-import {
-  TemplateType,
-  templateTypeDisplayMappings,
-} from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { chooseTemplateAction } from './server-action';
+import { TemplateType } from 'nhs-notify-backend-client';
 
-export const ChooseTemplate = () => {
-  const [state, action] = useFormState(chooseTemplateAction, {});
+export const ChooseTemplate = ({
+  templateTypes,
+}: {
+  templateTypes: TemplateType[];
+}) => {
+  const [state, action] = useActionState(chooseTemplateAction, {});
 
-  const templateTypes = Object.values(TemplateType);
   const options = templateTypes.map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),
@@ -30,7 +31,7 @@ export const ChooseTemplate = () => {
     learnMoreLink,
     learnMoreText,
     backLinkText,
-  } = chooseTemplatePageContent;
+  } = content.components.chooseTemplate;
 
   return (
     <>

@@ -8,12 +8,12 @@ import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 
 jest.mock('@utils/amplify-utils');
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData
@@ -37,7 +37,7 @@ test('renders page with preloaded field values', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
-test('renders page without back link for initial state with id', () => {
+test('renders page without back link for initial state with id - edit mode', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({

@@ -1,37 +1,53 @@
-export enum TemplateType {
-  NHS_APP = 'NHS_APP',
-  SMS = 'SMS',
-  EMAIL = 'EMAIL',
-}
+export const templateTypeDisplayMappings: Record<string, string> = {
+  NHS_APP: 'NHS App message',
+  SMS: 'Text message (SMS)',
+  EMAIL: 'Email',
+  LETTER: 'Letter',
+};
 
-export const templateTypeDisplayMappings = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'NHS App message',
-    [TemplateType.SMS]: 'Text message (SMS)',
-    [TemplateType.EMAIL]: 'Email',
-  })[type];
+export const templateTypeToUrlTextMappings: Record<string, string> = {
+  NHS_APP: 'nhs-app',
+  SMS: 'text-message',
+  EMAIL: 'email',
+  LETTER: 'letter',
+};
 
-export const templateTypeToUrlTextMappings = (type: TemplateType) =>
-  ({
-    [TemplateType.NHS_APP]: 'nhs-app',
-    [TemplateType.SMS]: 'text-message',
-    [TemplateType.EMAIL]: 'email',
-  })[type];
+type File = {
+  fileName: string;
+  currentVersion?: string;
+  virusScanStatus: string;
+};
 
-export enum TemplateStatus {
-  NOT_YET_SUBMITTED = 'NOT_YET_SUBMITTED',
-  SUBMITTED = 'SUBMITTED',
-}
+type TypeSpecificProperties = {
+  message?: string;
+  subject?: string;
+  letterType?: string;
+  language?: string;
+  files?: {
+    pdfTemplate?: File;
+    testDataCsv: File;
+    proofs?: File[];
+  };
+};
 
-export type Template = {
+export type CreateTemplatePayload = TypeSpecificProperties & {
+  name: string;
+  templateType: string;
+};
+
+export type UpdateTemplatePayload = TypeSpecificProperties & {
+  name: string;
+  templateType: string;
+  templateStatus: string;
+};
+
+export type Template = TypeSpecificProperties & {
   createdAt: string;
   updatedAt: string;
   id: string;
   version: number;
   name: string;
-  message: string;
-  subject?: string;
-  templateType: TemplateType;
-  templateStatus: TemplateStatus;
+  templateType: string;
+  templateStatus: string;
   owner: string;
 };

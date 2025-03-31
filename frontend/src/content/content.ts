@@ -1,7 +1,6 @@
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateType } from 'nhs-notify-web-template-management-utils';
 
-const headerComponent = {
+const header = {
   serviceName: 'Notify',
   links: {
     signIn: {
@@ -17,22 +16,34 @@ const headerComponent = {
   },
 };
 
-const footerComponent = {
+const footer = {
   nhsEngland: 'NHS England',
   supportLinks: 'Support links',
   links: {
+    acceptableUsePolicy: {
+      text: 'Acceptable use policy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/acceptable-use-policy',
+    },
     accessibilityStatement: {
       text: 'Accessibility statement',
       url: '/accessibility',
     },
-    contactUs: 'Contact us',
-    cookies: 'Cookies',
-    privacyPolicy: 'Privacy policy',
-    termsAndCondition: 'Terms and conditions',
+    cookies: {
+      text: 'Cookies',
+      url: '/cookies',
+    },
+    privacy: {
+      text: 'Privacy',
+      url: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
+    },
+    termsAndConditions: {
+      text: 'Terms and conditions',
+      url: 'https://digital.nhs.uk/services/nhs-notify/terms-and-conditions',
+    },
   },
 };
 
-const personalisationComponent = {
+const personalisation = {
   header: 'Personalisation',
   details: {
     title: 'Personalisation fields',
@@ -60,7 +71,7 @@ const personalisationComponent = {
   },
 };
 
-const messageFormattingComponent = {
+const messageFormatting = {
   header: 'Message formatting',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
@@ -155,6 +166,8 @@ const mainLayout = {
   description: 'Template management',
 };
 
+const backToAllTemplates = 'Back to all templates';
+
 const homePage = {
   pageHeading: 'Create and submit a template to NHS Notify',
   text1:
@@ -201,7 +214,7 @@ const manageTemplates = {
   },
 };
 
-const reviewEmailTemplateContent = {
+const previewEmailTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -212,9 +225,24 @@ const reviewEmailTemplateContent = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
-const reviewNHSAppTemplateContent = {
+const previewLetterTemplate = {
+  sectionHeading: 'Template saved',
+  form: {
+    errorHeading: 'There is a problem',
+    pageHeading: 'What would you like to do next?',
+    options: [
+      { id: 'letter-edit', text: 'Edit template' },
+      { id: 'letter-submit', text: 'Submit template' },
+    ],
+    buttonText: 'Continue',
+  },
+  backLinkText: backToAllTemplates,
+};
+
+const previewNHSAppTemplate = {
   sectionHeading: 'Template saved',
   form: {
     errorHeading: 'There is a problem',
@@ -225,9 +253,10 @@ const reviewNHSAppTemplateContent = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
-const reviewSMSTemplateContent = {
+const previewSMSTemplate = {
   sectionHeading: 'Template saved',
   details: {
     heading: 'Who your text message will be sent from',
@@ -251,9 +280,10 @@ const reviewSMSTemplateContent = {
     ],
     buttonText: 'Continue',
   },
+  backLinkText: backToAllTemplates,
 };
 
-const error404PageContent = {
+const error404 = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
   backLink: {
@@ -268,7 +298,7 @@ const error404PageContent = {
   },
 };
 
-export const submitTemplateContent = {
+const submitTemplate = {
   pageHeading: 'Submit',
   warningCalloutLabel: 'Important',
   warningCalloutText:
@@ -288,26 +318,26 @@ export const submitTemplateContent = {
   buttonText: 'Submit template',
 };
 
-export const copyTemplatePageContent = {
+const copyTemplate = {
   pageHeading: 'Copy',
   radiosLabel: 'Choose a template type',
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
-export const chooseTemplatePageContent = {
+const chooseTemplate = {
   pageHeading: 'Choose a template type to create',
   errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
-  backLinkText: 'Back to all templates',
+  backLinkText: backToAllTemplates,
 };
 
-export const nameYourTemplateContent = {
+const nameYourTemplate = {
   templateNameDetailsSummary: 'Naming your templates',
   templateNameDetailsOpeningParagraph:
     'You should name your templates in a way that works best for your service or organisation.',
@@ -328,14 +358,15 @@ export const nameYourTemplateContent = {
     },
   ],
   templateNameDetailsExample: {
-    [TemplateType.NHS_APP]: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.EMAIL]: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
-    [TemplateType.SMS]: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    NHS_APP: `For example, 'NHS App - covid19 2023 - over 65s - version 3'`,
+    EMAIL: `For example, 'Email - covid19 2023 - over 65s - version 3'`,
+    SMS: `For example, 'SMS - covid19 2023 - over 65s - version 3'`,
+    LETTER: `For example, 'LETTER - covid19 2023 - over 65s - version 3'`,
   },
 };
 
-export const channelGuidanceContent = {
-  [TemplateType.NHS_APP]: {
+const channelGuidance = {
+  NHS_APP: {
     heading: 'More about NHS App messages',
     guidanceLinks: [
       {
@@ -352,7 +383,7 @@ export const channelGuidanceContent = {
       },
     ],
   },
-  [TemplateType.EMAIL]: {
+  EMAIL: {
     heading: 'More about emails',
     guidanceLinks: [
       {
@@ -369,7 +400,7 @@ export const channelGuidanceContent = {
       },
     ],
   },
-  [TemplateType.SMS]: {
+  SMS: {
     heading: 'More about text messages',
     guidanceLinks: [
       {
@@ -386,10 +417,14 @@ export const channelGuidanceContent = {
       },
     ],
   },
+  LETTER: {
+    heading: 'More about letters',
+    guidanceLinks: [],
+  },
 };
 
-export const createNhsAppTemplatePageContent = {
-  pageHeading: 'Create NHS App message template',
+const templateFormNhsApp = {
+  pageHeadingSuffix: 'NHS App message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -399,8 +434,8 @@ export const createNhsAppTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const createEmailTemplatePageContent = {
-  pageHeading: 'Create email template',
+const templateFormEmail = {
+  pageHeadingSuffix: 'email template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
@@ -410,22 +445,8 @@ export const createEmailTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const templateSubmittedPageContent = {
-  pageHeading: 'Template submitted',
-  templateNameHeading: 'Template name',
-  templateIdHeading: 'Template ID',
-  doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
-  backLinkText: 'Back to all templates',
-};
-
-export const createSmsTemplatePageContent = {
-  pageHeading: 'Create text message template',
+const templateFormSms = {
+  pageHeadingSuffix: 'text message template',
   errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
@@ -439,17 +460,37 @@ export const createSmsTemplatePageContent = {
   backLinkText: 'Back to choose a template type',
 };
 
-export const viewSubmittedTemplatePageContent = {
+const templateSubmitted = {
+  pageHeading: 'Template submitted',
+  templateNameHeading: 'Template name',
+  templateIdHeading: 'Template ID',
+  doNextHeading: 'What you need to do next',
+  notLiveHeading: "If you're currently onboarding",
+  notLiveText:
+    "Tell your onboarding manager once you've submitted all your templates.",
+  liveHeading: "If you've already onboarded",
+  liveText: "Once you've submitted all your templates",
+  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  backLinkText: backToAllTemplates,
+};
+
+const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
 };
 
-export const deleteTemplatePageContent = {
+const deleteTemplate = {
   pageHeading: 'Are you sure you want to delete the template',
   hintText: "The template will be removed and you won't be able to recover it.",
   noButtonText: 'No, go back',
   yesButtonText: 'Yes, delete template',
+};
+
+const logoutWarning = {
+  heading: "For security reasons, you'll be signed out in",
+  signIn: 'Stay signed in',
+  body: "If you're signed out, any unsaved changes will be lost.",
 };
 
 const content = {
@@ -457,17 +498,30 @@ const content = {
     mainLayout,
   },
   components: {
-    headerComponent,
-    footerComponent,
-    personalisationComponent,
-    reviewEmailTemplateContent,
-    reviewNHSAppTemplateContent,
-    reviewSMSTemplateContent,
-    messageFormattingComponent,
+    channelGuidance,
+    chooseTemplate,
+    copyTemplate,
+    deleteTemplate,
+    footer,
+    header,
+    logoutWarning,
+    messageFormatting,
+    nameYourTemplate,
+    personalisation,
+    previewEmailTemplate,
+    previewLetterTemplate,
+    previewNHSAppTemplate,
+    previewSMSTemplate,
+    submitTemplate,
+    templateFormEmail,
+    templateFormNhsApp,
+    templateFormSms,
+    templateSubmitted,
+    viewSubmittedTemplate,
   },
   pages: {
     homePage,
-    error404PageContent,
+    error404,
     manageTemplates,
   },
 };

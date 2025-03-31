@@ -46,7 +46,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"
@@ -136,6 +136,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               </span>
               <input
                 aria-describedby="smsTemplateName--error-message"
+                autocomplete="off"
                 class="nhsuk-input nhsuk-input--error"
                 id="smsTemplateName"
                 name="smsTemplateName"
@@ -155,6 +156,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               id="smsTemplateMessage"
               maxlength="918"
@@ -165,8 +167,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -198,7 +199,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -326,7 +327,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -362,13 +363,13 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
 `;
 
-exports[`CreateSmsTemplate component renders page with back link if initial state has no id 1`] = `
+exports[`CreateSmsTemplate component renders page with back link if initial state has no id - edit mode 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -482,6 +483,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 id="smsTemplateName"
                 name="smsTemplateName"
@@ -501,6 +503,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               id="smsTemplateMessage"
               maxlength="918"
@@ -511,8 +514,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -544,7 +546,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -672,7 +674,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -708,7 +710,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -762,7 +764,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"
@@ -852,6 +854,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               </span>
               <input
                 aria-describedby="smsTemplateName--error-message"
+                autocomplete="off"
                 class="nhsuk-input nhsuk-input--error"
                 id="smsTemplateName"
                 name="smsTemplateName"
@@ -883,6 +886,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </span>
             <textarea
               aria-describedby="smsTemplateMessage--error-message"
+              autocomplete="off"
               class="nhsuk-textarea nhsuk-textarea--error"
               id="smsTemplateMessage"
               maxlength="918"
@@ -893,8 +897,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -926,7 +929,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1054,7 +1057,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1090,7 +1093,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>
@@ -1112,7 +1115,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         <h1
           data-testid="page-heading"
         >
-          Create text message template
+          Edit text message template
         </h1>
         <form
           action="/action"
@@ -1188,6 +1191,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               class="nhsuk-form-group"
             >
               <input
+                autocomplete="off"
                 class="nhsuk-input"
                 id="smsTemplateName"
                 name="smsTemplateName"
@@ -1207,6 +1211,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               Message
             </label>
             <textarea
+              autocomplete="off"
               class="nhsuk-textarea"
               id="smsTemplateMessage"
               maxlength="918"
@@ -1217,8 +1222,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             </textarea>
           </div>
           <div
-            id="smsMessageCharacterCount"
-            style=""
+            class=""
           >
             <p
               class="nhsuk-u-margin-bottom-0"
@@ -1250,7 +1254,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
           </button>
         </form>
       </div>
-      <div
+      <aside
         class="nhsuk-grid-column-one-third"
       >
         <h2
@@ -1378,7 +1382,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
           More about text messages
         </h2>
         <ul
-          style="list-style-type: none; padding: 0px;"
+          class="channel-guidance__list"
         >
           <li
             class="nhsuk-u-margin-bottom-3"
@@ -1414,7 +1418,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             </a>
           </li>
         </ul>
-      </div>
+      </aside>
     </div>
   </main>
 </DocumentFragment>

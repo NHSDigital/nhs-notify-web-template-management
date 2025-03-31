@@ -36,7 +36,7 @@ test.describe('Create Email message template Page', () => {
 
     await expect(page).toHaveURL(`${baseURL}/templates/create-email-template`);
 
-    expect(await createEmailTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createEmailTemplatePage.pageHeader).toHaveText(
       'Create email template'
     );
   });
@@ -154,11 +154,12 @@ test.describe('Create Email message template Page', () => {
         'This is an email message'
       );
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const previewPageRegex =
         /\/templates\/preview-email-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
       const previewPageParts = page.url().match(previewPageRegex);
@@ -180,7 +181,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage();
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(createEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -222,7 +223,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailNameErrorLink = createEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -248,7 +249,7 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailSubjectLineErrorLink =
         createEmailTemplatePage.errorSummary.locator(
@@ -277,7 +278,7 @@ test.describe('Create Email message template Page', () => {
         'template-subject-line'
       );
 
-      await createEmailTemplatePage.clickSubmitButton();
+      await createEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailMessageErrorLink =
         createEmailTemplatePage.errorSummary.locator(

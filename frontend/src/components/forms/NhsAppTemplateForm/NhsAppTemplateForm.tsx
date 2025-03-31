@@ -1,13 +1,11 @@
 'use client';
 
-import { FC } from 'react';
-import { useFormState } from 'react-dom';
+import { FC, useActionState } from 'react';
 import {
   TextInput,
   HintText,
   Label,
   Textarea,
-  Button,
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
@@ -18,22 +16,22 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
-  Draft,
+  CreateNHSAppTemplate,
   NHSAppTemplate,
   PageComponentProps,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { createNhsAppTemplatePageContent } from '@content/content';
+import content from '@content/content';
 import { useTextInput } from '@hooks/use-text-input.hook';
-import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
+import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 export const NhsAppTemplateForm: FC<
-  PageComponentProps<NHSAppTemplate | Draft<NHSAppTemplate>>
+  PageComponentProps<NHSAppTemplate | CreateNHSAppTemplate>
 > = ({ initialState }) => {
   const {
-    pageHeading,
+    pageHeadingSuffix,
     errorHeading,
     buttonText,
     characterCountText,
@@ -41,8 +39,9 @@ export const NhsAppTemplateForm: FC<
     templateMessageLabelText,
     templateNameHintText,
     backLinkText,
-  } = createNhsAppTemplatePageContent;
-  const [state, action] = useFormState(processFormActions, initialState);
+  } = content.components.templateFormNhsApp;
+
+  const [state, action] = useActionState(processFormActions, initialState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
@@ -56,9 +55,11 @@ export const NhsAppTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
           {backLinkText}
         </BackLink>
@@ -72,20 +73,22 @@ export const NhsAppTemplateForm: FC<
               formId='create-nhs-app-template'
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {pageHeading}
+                {editMode ? 'Edit ' : 'Create '}
+                {pageHeadingSuffix}
               </h1>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='nhsAppTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
-                <TemplateNameGuidance template={TemplateType.NHS_APP} />
+                <TemplateNameGuidance template={'NHS_APP'} />
                 <TextInput
                   id='nhsAppTemplateName'
                   defaultValue={nhsAppTemplateName}
                   onChange={nhsAppTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'nhsAppTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
@@ -98,21 +101,24 @@ export const NhsAppTemplateForm: FC<
                 defaultValue={nhsAppTemplateMessage}
                 error={templateMessageError}
                 errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
+                autoComplete='off'
               />
-              <p style={useJsEnabledStyle()} id='character-count'>
-                {nhsAppTemplateMessage.length}
-                {characterCountText}
-              </p>
-              <Button type='submit' id='create-nhs-app-template-submit-button'>
+              <JsEnabled>
+                <p id='character-count'>
+                  {nhsAppTemplateMessage.length}
+                  {characterCountText}
+                </p>
+              </JsEnabled>
+              <NHSNotifyButton id='create-nhs-app-template-submit-button'>
                 {buttonText}
-              </Button>
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.NHS_APP} />
-            <ChannelGuidance template={TemplateType.NHS_APP} />
-          </div>
+            <MessageFormatting template='NHS_APP' />
+            <ChannelGuidance template='NHS_APP' />
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

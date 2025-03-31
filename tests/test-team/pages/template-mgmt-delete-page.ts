@@ -1,7 +1,9 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
 
-export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
+export class TemplateMgmtDeletePage extends TemplateMgmtBasePageDynamic {
+  static readonly pageUrlSegment = 'delete-template';
+
   readonly goBackButton: Locator;
 
   readonly confirmButton: Locator;
@@ -11,9 +13,5 @@ export class TemplateMgmtDeletePage extends TemplateMgmtBasePage {
 
     this.goBackButton = page.getByText('No, go back');
     this.confirmButton = page.getByText('Yes, delete template');
-  }
-
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/delete-template/${templateId}`);
   }
 }

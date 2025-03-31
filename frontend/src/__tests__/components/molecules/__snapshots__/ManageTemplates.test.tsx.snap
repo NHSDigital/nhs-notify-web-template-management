@@ -240,6 +240,79 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
               </p>
             </td>
           </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/view-submitted-letter-template/3"
+              >
+                Template 3
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--grey"
+              >
+                Submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -476,6 +549,79 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                   Copy
                 </a>
               </p>
+            </td>
+          </tr>
+          <tr
+            class="nhsuk-table__row"
+          >
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Name 
+              </span>
+              <a
+                href="/view-submitted-letter-template/3"
+              >
+                Template 3
+              </a>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Type 
+              </span>
+              Letter - French
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Status 
+              </span>
+              <strong
+                class="nhsuk-tag nhsuk-tag--grey"
+              >
+                Submitted
+              </strong>
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Date created 
+              </span>
+              1st Feb 2021
+              <br />
+              00:00
+            </td>
+            <td
+              class="nhsuk-table__cell"
+              role="cell"
+            >
+              <span
+                aria-hidden="true"
+                class="nhsuk-table-responsive__heading"
+              >
+                Action 
+              </span>
             </td>
           </tr>
         </tbody>

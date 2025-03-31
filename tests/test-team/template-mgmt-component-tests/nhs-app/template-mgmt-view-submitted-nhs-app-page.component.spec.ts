@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedNHSAppPage } from '../../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
+import { TemplateMgmtViewSubmittedNhsAppPage } from '../../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import { Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
@@ -27,7 +27,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-nhs-app',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createNhsAppTemplate(
@@ -36,7 +36,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-nhs-app',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }
@@ -61,7 +61,7 @@ test.describe('View submitted NHS App message template Page', () => {
     baseURL,
   }) => {
     const viewSubmittedNHSAppTemplatePage =
-      new TemplateMgmtViewSubmittedNHSAppPage(page);
+      new TemplateMgmtViewSubmittedNhsAppPage(page);
 
     await viewSubmittedNHSAppTemplatePage.loadPage(templates.valid.id);
 
@@ -81,7 +81,7 @@ test.describe('View submitted NHS App message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedNHSAppPage(page),
+        page: new TemplateMgmtViewSubmittedNhsAppPage(page),
         id: templates.valid.id,
         baseURL,
       };
@@ -101,7 +101,7 @@ test.describe('View submitted NHS App message template Page', () => {
       page,
     }) => {
       const viewSubmittedNHSAppTemplatePage =
-        new TemplateMgmtViewSubmittedNHSAppPage(page);
+        new TemplateMgmtViewSubmittedNhsAppPage(page);
 
       await viewSubmittedNHSAppTemplatePage.loadPage(templates.invalid.id);
 
@@ -113,7 +113,7 @@ test.describe('View submitted NHS App message template Page', () => {
       page,
     }) => {
       const viewSubmittedNHSAppTemplatePage =
-        new TemplateMgmtViewSubmittedNHSAppPage(page);
+        new TemplateMgmtViewSubmittedNhsAppPage(page);
 
       await viewSubmittedNHSAppTemplatePage.loadPage('/fake-template-id');
 

@@ -13,12 +13,12 @@ jest.mock('next/navigation', () => ({
   },
 }));
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData
@@ -29,6 +29,16 @@ jest.mock('react-dom', () => {
 });
 
 test('ChooseATemplateTypePage', async () => {
+  const page = await ChooseATemplateTypePage();
+
+  const container = render(page);
+
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('ChooseATemplateTypePage - LETTER option is hidden when feature flag is not enabled', async () => {
+  process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'false';
+
   const page = await ChooseATemplateTypePage();
 
   const container = render(page);

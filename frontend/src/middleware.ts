@@ -2,6 +2,42 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
 
+const protectedPaths = [
+  /^\/choose-a-template-type$/,
+  /^\/copy-template\/[^/]+$/,
+  /^\/create-email-template$/,
+  /^\/create-nhs-app-template$/,
+  /^\/create-text-message-template$/,
+  /^\/create-letter-template$/,
+  /^\/delete-template\/[^/]+$/,
+  /^\/edit-email-template\/[^/]+$/,
+  /^\/edit-nhs-app-template\/[^/]+$/,
+  /^\/edit-text-message-template\/[^/]+$/,
+  /^\/email-template-submitted\/[^/]+$/,
+  /^\/invalid-template$/,
+  /^\/manage-templates$/,
+  /^\/nhs-app-template-submitted\/[^/]+$/,
+  /^\/preview-email-template\/[^/]+$/,
+  /^\/preview-letter-template\/[^/]+$/,
+  /^\/preview-nhs-app-template\/[^/]+$/,
+  /^\/preview-text-message-template\/[^/]+$/,
+  /^\/submit-email-template\/[^/]+$/,
+  /^\/submit-nhs-app-template\/[^/]+$/,
+  /^\/submit-text-message-template\/[^/]+$/,
+  /^\/text-message-template-submitted\/[^/]+$/,
+  /^\/view-submitted-email-template\/[^/]+$/,
+  /^\/view-submitted-nhs-app-template\/[^/]+$/,
+  /^\/view-submitted-text-message-template\/[^/]+$/,
+];
+
+const publicPaths = [
+  /^\/create-and-submit-templates$/,
+  /^\/auth$/,
+  /^\/auth\/signin$/,
+  /^\/auth\/signout$/,
+  /^\/auth\/idle$/,
+];
+
 function getContentSecurityPolicy(nonce: string) {
   const contentSecurityPolicyDirective = {
     'base-uri': [`'self'`],
@@ -28,11 +64,9 @@ function getContentSecurityPolicy(nonce: string) {
     .join('; ');
 }
 
-function isPublicPath(path: string, publicPaths: string[]): boolean {
-  return publicPaths.some((publicPath) => path.startsWith(publicPath));
-}
-
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
   const csp = getContentSecurityPolicy(nonce);
@@ -40,9 +74,7 @@ export async function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('Content-Security-Policy', csp);
 
-  const publicPaths = ['/create-and-submit-templates', '/auth', '/lib'];
-
-  if (isPublicPath(request.nextUrl.pathname, publicPaths)) {
+  if (publicPaths.some((p) => p.test(pathname))) {
     const publicPathResponse = NextResponse.next({
       request: {
         headers: requestHeaders,
@@ -54,13 +86,17 @@ export async function middleware(request: NextRequest) {
     return publicPathResponse;
   }
 
+  if (!protectedPaths.some((p) => p.test(pathname))) {
+    return new NextResponse('Page not found', { status: 404 });
+  }
+
   const token = await getAccessTokenServer();
 
   if (!token) {
     const redirectResponse = NextResponse.redirect(
       new URL(
         `/auth?redirect=${encodeURIComponent(
-          `${getBasePath()}/${request.nextUrl.pathname}`
+          `${getBasePath()}${request.nextUrl.pathname}`
         )}`,
         request.url
       )

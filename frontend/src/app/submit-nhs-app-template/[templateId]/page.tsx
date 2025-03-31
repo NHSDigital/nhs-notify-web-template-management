@@ -2,13 +2,15 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
-import { PageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  PageProps,
+  validateNHSAppTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
-import { validateNHSAppTemplate } from '@utils/validate-template';
 
-const SubmitNhsAppTemplatePage = async ({
-  params: { templateId },
-}: PageProps) => {
+const SubmitNhsAppTemplatePage = async (props: PageProps) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateNHSAppTemplate(template);

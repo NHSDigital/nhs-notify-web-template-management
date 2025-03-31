@@ -2,7 +2,7 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
 
-const { numberedLists } = content.components.messageFormattingComponent;
+const { numberedLists } = content.components.messageFormatting;
 
 export const NumberedList = () => (
   <Details data-testid='numbered-list-details'>

@@ -18,9 +18,13 @@ const nextConfig = (phase) => {
       API_BASE_URL: amplifyConfig?.meta?.api_base_url,
     },
 
+    sassOptions: {
+      quietDeps: true,
+    },
+
     experimental: {
       serverActions: {
-        allowedOrigins: [domain, domain.replace('templates', 'web-gateway')],
+        allowedOrigins: ['**.nhsnotify.national.nhs.uk', 'notify.nhs.uk'],
       },
     },
 
@@ -32,12 +36,23 @@ const nextConfig = (phase) => {
           basePath: false,
           permanent: false,
         },
+        {
+          source: `${basePath}/auth/inactive`,
+          destination: '/auth/inactive',
+          permanent: false,
+          basePath: false,
+        },
       ];
     },
 
     async rewrites() {
       if (includeAuthPages) {
         return [
+          {
+            source: '/auth/inactive',
+            destination: `http://${domain}${basePath}/auth/idle`,
+            basePath: false,
+          },
           {
             source: '/auth/signout',
             destination: `http://${domain}${basePath}/auth/signout`,

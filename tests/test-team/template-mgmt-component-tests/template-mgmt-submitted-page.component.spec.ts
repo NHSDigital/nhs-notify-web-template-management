@@ -8,19 +8,21 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { TemplateMgmtTemplateSubmittedPage } from '../pages/template-mgmt-template-submitted-page';
-import { TemplateType, TemplateStatus, Template } from '../helpers/types';
+import { Template } from '../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
+import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
+import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
+import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 
 function createTemplates(owner: string) {
   return {
     email: TemplateFactory.create({
       owner,
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'SUBMITTED',
       id: 'valid-email-template',
       name: 'test-template-email',
       subject: 'test-template-subject',
@@ -28,16 +30,16 @@ function createTemplates(owner: string) {
     }),
     'text-message': TemplateFactory.create({
       owner,
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
       id: 'valid-sms-template',
       name: 'test-template-sms',
       message: 'test example content',
     }),
     'nhs-app': TemplateFactory.create({
       owner,
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
       id: 'valid-nhs-app-template',
       name: 'test-template-nhs-app',
       message: 'test example content',
@@ -60,20 +62,29 @@ test.describe('Template Submitted Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  for (const { channelName, channelIdentifier } of [
-    { channelName: 'email', channelIdentifier: 'email' },
-    { channelName: 'sms', channelIdentifier: 'text-message' },
-    { channelName: 'nhs-app', channelIdentifier: 'nhs-app' },
+  for (const { channelName, channelIdentifier, PageModel } of [
+    {
+      channelName: 'email',
+      channelIdentifier: 'email',
+      PageModel: TemplateMgmtTemplateSubmittedEmailPage,
+    },
+    {
+      channelName: 'sms',
+      channelIdentifier: 'text-message',
+      PageModel: TemplateMgmtTemplateSubmittedSmsPage,
+    },
+    {
+      channelName: 'nhs-app',
+      channelIdentifier: 'nhs-app',
+      PageModel: TemplateMgmtTemplateSubmittedNhsAppPage,
+    },
   ] as const) {
     // eslint-disable-next-line no-loop-func
     test(`when user visits ${channelName} page, then page is loaded`, async ({
       page,
       baseURL,
     }) => {
-      const templateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
-        page,
-        channelIdentifier
-      );
+      const templateSubmittedPage = new PageModel(page);
 
       await templateSubmittedPage.loadPage(templates[channelIdentifier].id);
 
@@ -103,7 +114,7 @@ test.describe('Template Submitted Page', () => {
     test.describe('Page functionality', () => {
       test(`common ${channelName} page tests`, async ({ page, baseURL }) => {
         const props = {
-          page: new TemplateMgmtTemplateSubmittedPage(page, channelIdentifier),
+          page: new PageModel(page),
           id: templates[channelIdentifier].id,
           baseURL,
         };
@@ -124,10 +135,7 @@ test.describe('Template Submitted Page', () => {
         baseURL,
         page,
       }) => {
-        const templateSubmittedPage = new TemplateMgmtTemplateSubmittedPage(
-          page,
-          channelIdentifier
-        );
+        const templateSubmittedPage = new PageModel(page);
 
         await templateSubmittedPage.loadPage('/fake-template-id');
 

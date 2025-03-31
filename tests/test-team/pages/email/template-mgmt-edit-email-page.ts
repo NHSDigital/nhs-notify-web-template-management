@@ -1,8 +1,10 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
+import { TemplateMgmtBasePageDynamic } from '../template-mgmt-base-page-dynamic';
 
-export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
+  static readonly pageUrlSegment = 'edit-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -16,6 +18,8 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
   public readonly namingYourTemplate: Locator;
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
+
+  public readonly saveAndPreviewButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -31,9 +35,13 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePage {
     );
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-email-template-submit-button"]'
+    );
   }
 
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/edit-email-template/${templateId}`);
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

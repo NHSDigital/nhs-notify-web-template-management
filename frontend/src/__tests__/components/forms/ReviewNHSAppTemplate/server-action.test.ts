@@ -1,25 +1,25 @@
 import { redirect } from 'next/navigation';
-import { reviewNhsAppTemplateAction } from '@forms/ReviewNHSAppTemplate';
+import { previewNhsAppTemplateAction } from '@forms/PreviewNHSAppTemplate';
 import { getMockFormData } from '@testhelpers';
 import {
   NHSAppTemplate,
   TemplateFormState,
-  TemplateType,
-  TemplateStatus,
 } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('next/navigation');
 
 const redirectMock = jest.mocked(redirect);
 
-describe('reviewNhsAppTemplateAction', () => {
+describe('previewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
-    templateType: TemplateType.NHS_APP,
-    templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+    templateType: 'NHS_APP',
+    templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Example name',
     message: 'Example message',
     validationError: undefined,
+    createdAt: '2025-01-13T10:19:25.579Z',
+    updatedAt: '2025-01-13T10:19:25.579Z',
   };
 
   beforeEach(() => jest.clearAllMocks());
@@ -27,17 +27,13 @@ describe('reviewNhsAppTemplateAction', () => {
   it('should return validation errors when no choice is selected', () => {
     const formData = getMockFormData({});
 
-    const newState = reviewNhsAppTemplateAction(currentState, formData);
+    const newState = previewNhsAppTemplateAction(currentState, formData);
 
     expect(newState).toEqual({
-      id: 'template-id',
-      templateType: 'NHS_APP',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      name: 'Example name',
-      message: 'Example message',
+      ...currentState,
       validationError: {
         fieldErrors: {
-          reviewNHSAppTemplateAction: ['Select an option'],
+          previewNHSAppTemplateAction: ['Select an option'],
         },
         formErrors: [],
       },
@@ -46,10 +42,10 @@ describe('reviewNhsAppTemplateAction', () => {
 
   it('should return submit page when submit action is chosen', () => {
     const formData = getMockFormData({
-      reviewNHSAppTemplateAction: 'nhsapp-submit',
+      previewNHSAppTemplateAction: 'nhsapp-submit',
     });
 
-    reviewNhsAppTemplateAction(currentState, formData);
+    previewNhsAppTemplateAction(currentState, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/submit-nhs-app-template/template-id',
@@ -59,10 +55,10 @@ describe('reviewNhsAppTemplateAction', () => {
 
   it('should return previous edit page when edit action is chosen', () => {
     const formData = getMockFormData({
-      reviewNHSAppTemplateAction: 'nhsapp-edit',
+      previewNHSAppTemplateAction: 'nhsapp-edit',
     });
 
-    reviewNhsAppTemplateAction(currentState, formData);
+    previewNhsAppTemplateAction(currentState, formData);
 
     expect(redirectMock).toHaveBeenCalledWith(
       '/edit-nhs-app-template/template-id',

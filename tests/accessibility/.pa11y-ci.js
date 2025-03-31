@@ -4,17 +4,20 @@ const {
   chooseATemplatePageError,
   createNHSAppTemplatePage,
   createNHSAppTemplateErrorPage,
-  reviewNHSAppTemplatePage,
-  reviewNHSAppTemplateErrorPage,
+  previewNHSAppTemplatePage,
+  previewNHSAppTemplateErrorPage,
   submitNHSAppTemplatePage,
   createEmailTemplatePage,
+  createLetterTemplatePage,
   createEmailTemplateErrorPage,
-  reviewEmailTemplatePage,
-  reviewEmailTemplateErrorPage,
+  previewEmailTemplatePage,
+  previewEmailTemplateErrorPage,
+  previewLetterTemplatePage,
+  previewLetterTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
-  reviewTextMessageTemplatePage,
-  reviewTextMessageTemplateErrorPage,
+  previewTextMessageTemplatePage,
+  previewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
   submitEmailTemplatePage,
@@ -52,8 +55,8 @@ module.exports = {
     // NHS App journey
     performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewNHSAppTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
+    performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
@@ -62,9 +65,11 @@ module.exports = {
     // Text message journey
     performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
+    performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
+    performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(
+      viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
+    ),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
@@ -72,14 +77,23 @@ module.exports = {
     // Email journey
     performCheck(createEmailTemplatePage(chooseTemplateUrl)),
     performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(reviewEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(reviewEmailTemplateErrorPage(chooseTemplateUrl)),
+    performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
+    performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
     performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
 
-    performCheck({ url: `${baseUrl}/invalid-template`, actions: [...signInPageActions, 'wait for h1 to be visible'], name: 'invalid-template'}),
+    // Letter Journey
+    performCheck(createLetterTemplatePage(chooseTemplateUrl)),
+    performCheck(previewLetterTemplatePage(baseUrl)),
+    performCheck(previewLetterTemplateErrorPage(baseUrl)),
+
+    performCheck({
+      url: `${baseUrl}/invalid-template`,
+      actions: [...signInPageActions, 'wait for h1 to be visible'],
+      name: 'invalid-template',
+    }),
   ],
   defaults: {
     reporters: [
@@ -88,18 +102,15 @@ module.exports = {
         'pa11y-ci-reporter-html',
         {
           destination: './.reports/accessibility',
-          includeZeroIssues: true
-        }
+          includeZeroIssues: true,
+        },
       ],
     ],
-    rules: [
-      'Principle1.Guideline1_3.1_3_1_AAA',
-    ],
+    rules: ['Principle1.Guideline1_3.1_3_1_AAA'],
     chromeLaunchConfig: {
-      args: ['--no-sandbox']
+      args: ['--no-sandbox'],
     },
     standard: 'WCAG2AA',
     agent: 'pa11y',
-  }
+  },
 };
-

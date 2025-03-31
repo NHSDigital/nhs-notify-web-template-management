@@ -1,14 +1,18 @@
 'use server';
 
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import { TemplateSubmittedPageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateSubmittedPageProps,
+  validateSubmittedEmailTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateSubmittedEmailTemplate } from '@utils/validate-template';
 
-const EmailTemplateSubmittedPage = async ({
-  params: { templateId },
-}: TemplateSubmittedPageProps) => {
+const EmailTemplateSubmittedPage = async (
+  props: TemplateSubmittedPageProps
+) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateSubmittedEmailTemplate(template);

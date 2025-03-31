@@ -9,7 +9,6 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -17,7 +16,7 @@ import {
 
 function createTemplates(owner: string) {
   return {
-    empty: TemplateFactory.createEmailTemplate('empty-email-template', owner),
+    valid: TemplateFactory.createEmailTemplate('valid-email-template', owner),
     submit: TemplateFactory.createEmailTemplate('submit-email-template', owner),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       'submit-and-return-create-email-template',
@@ -29,7 +28,8 @@ function createTemplates(owner: string) {
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
-      templateType: TemplateType.NHS_APP,
+      templateType: 'NHS_APP',
+      name: 'no-email-template-type-template',
       owner,
     }),
     previousData: {
@@ -64,14 +64,14 @@ test.describe('Edit Email message template Page', () => {
   }) => {
     const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-    await editEmailTemplatePage.loadPage(templates.empty.id);
+    await editEmailTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/edit-email-template/${templates.empty.id}`
+      `${baseURL}/templates/edit-email-template/${templates.valid.id}`
     );
 
-    expect(await editEmailTemplatePage.pageHeader.textContent()).toBe(
-      'Create email template'
+    await expect(editEmailTemplatePage.pageHeader).toHaveText(
+      'Edit email template'
     );
   });
 
@@ -79,7 +79,7 @@ test.describe('Edit Email message template Page', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
         page: new TemplateMgmtEditEmailPage(page),
-        id: templates.empty.id,
+        id: templates.valid.id,
         baseURL,
       };
 
@@ -127,7 +127,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
 
       await editEmailTemplatePage.messageFormatting.assertDetailsOpen([
         editEmailTemplatePage.messageFormatting.lineBreaksAndParagraphs,
@@ -157,7 +157,7 @@ test.describe('Edit Email message template Page', () => {
         baseURL,
       }) => {
         const editTemplatePage = new TemplateMgmtEditEmailPage(page);
-        await editTemplatePage.loadPage('empty-email-template');
+        await editTemplatePage.loadPage('valid-email-template');
         const newTabPromise = page.waitForEvent('popup');
         await page.getByRole('link', { name }).click();
         const newTab = await newTabPromise;
@@ -170,7 +170,7 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
 
       await editEmailTemplatePage.namingYourTemplate.click({
         position: { x: 0, y: 0 },
@@ -200,7 +200,7 @@ test.describe('Edit Email message template Page', () => {
         'This is an email message'
       );
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/preview-email-template/${templates.submit.id}?from=edit`
@@ -236,9 +236,15 @@ test.describe('Edit Email message template Page', () => {
     }) => {
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.nameInput.fill('');
+
+      await editEmailTemplatePage.subjectLineInput.fill('');
+
+      await editEmailTemplatePage.messageTextArea.fill('');
+
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       await expect(editEmailTemplatePage.errorSummary).toBeVisible();
 
@@ -272,7 +278,9 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
+
+      await editEmailTemplatePage.nameInput.fill('');
 
       await editEmailTemplatePage.subjectLineInput.fill(
         'template-subject-line'
@@ -280,7 +288,7 @@ test.describe('Edit Email message template Page', () => {
 
       await editEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailNameErrorLink = editEmailTemplatePage.errorSummary.locator(
         `[href="#emailTemplateName"]`
@@ -300,13 +308,15 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
 
       await editEmailTemplatePage.nameInput.fill('template-name');
 
+      await editEmailTemplatePage.subjectLineInput.fill('');
+
       await editEmailTemplatePage.messageTextArea.fill('template-message');
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailSubjectLineErrorLink =
         editEmailTemplatePage.errorSummary.locator(
@@ -327,7 +337,7 @@ test.describe('Edit Email message template Page', () => {
 
       const editEmailTemplatePage = new TemplateMgmtEditEmailPage(page);
 
-      await editEmailTemplatePage.loadPage(templates.empty.id);
+      await editEmailTemplatePage.loadPage(templates.valid.id);
 
       await editEmailTemplatePage.nameInput.fill('template-name');
 
@@ -335,7 +345,9 @@ test.describe('Edit Email message template Page', () => {
         'template-subject-line'
       );
 
-      await editEmailTemplatePage.clickSubmitButton();
+      await editEmailTemplatePage.messageTextArea.fill('');
+
+      await editEmailTemplatePage.clickSaveAndPreviewButton();
 
       const emailMessageErrorLink = editEmailTemplatePage.errorSummary.locator(
         '[href="#emailTemplateMessage"]'

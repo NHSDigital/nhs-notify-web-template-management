@@ -4,16 +4,16 @@ import { mockDeep } from 'jest-mock-extended';
 import {
   TemplateFormState,
   SMSTemplate,
-  Draft,
+  CreateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 
-jest.mock('react-dom', () => {
-  const originalModule = jest.requireActual('react-dom');
+jest.mock('react', () => {
+  const originalModule = jest.requireActual('react');
 
   return {
     ...originalModule,
-    useFormState: (
+    useActionState: (
       _: (
         formState: TemplateFormState,
         formData: FormData
@@ -26,10 +26,10 @@ jest.mock('react-dom', () => {
 jest.mock('@utils/amplify-utils');
 
 describe('CreateSmsTemplate component', () => {
-  test('renders page with back link if initial state has no id', async () => {
+  test('renders page with back link if initial state has no id - edit mode', async () => {
     const container = render(
       <SmsTemplateForm
-        initialState={mockDeep<Draft<TemplateFormState<SMSTemplate>>>({
+        initialState={mockDeep<TemplateFormState<CreateSMSTemplate>>({
           validationError: undefined,
           name: 'template-name',
           message: 'template-message',
@@ -116,7 +116,7 @@ describe('CreateSmsTemplate component', () => {
 
     await user.type(templateMessageBox, longMessage);
 
-    const characterCount = document.querySelector('#smsMessageCharacterCount');
+    const characterCount = document.querySelector('#character-count');
 
     if (!characterCount) {
       throw new Error('Template name box not found');

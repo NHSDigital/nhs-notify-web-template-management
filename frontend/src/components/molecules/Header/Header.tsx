@@ -21,12 +21,8 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
         <div className='nhsuk-header__logo'>
           <Link
             className='nhsuk-header__link nhsuk-header__link--service'
-            href={
-              process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true'
-                ? '/'
-                : '/create-and-submit-templates'
-            }
-            aria-label='NHS homepage'
+            href='/create-and-submit-templates'
+            aria-label='NHS Notify'
           >
             <svg
               className='nhsuk-logo'
@@ -48,14 +44,12 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
               />
             </svg>
             <span className='nhsuk-header__service-name'>
-              {content.components.headerComponent.serviceName}
+              {content.components.header.serviceName}
             </span>
           </Link>
         </div>
         <div className='nhsuk-header__content' id='content-header'>
-          {process.env.NEXT_PUBLIC_DISABLE_CONTENT === 'true' ? null : (
-            <AuthLink />
-          )}
+          <AuthLink />
         </div>
       </div>
     </header>

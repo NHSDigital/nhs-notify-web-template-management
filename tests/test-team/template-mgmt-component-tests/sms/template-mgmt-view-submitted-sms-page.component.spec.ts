@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedSMSPage } from '../../pages/sms/template-mgmt-view-submitted-sms-page';
+import { TemplateMgmtViewSubmittedSmsPage } from '../../pages/sms/template-mgmt-view-submitted-sms-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import { Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   assertFooterLinks,
   assertSignOutLink,
@@ -27,7 +27,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateStatus: 'SUBMITTED',
     },
     invalid: {
       ...TemplateFactory.createSmsTemplate(
@@ -36,7 +36,7 @@ function createTemplates(owner: string) {
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }
@@ -59,7 +59,7 @@ test.describe('View submitted sms message template Page', () => {
     page,
     baseURL,
   }) => {
-    const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSMSPage(
+    const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
       page
     );
 
@@ -81,7 +81,7 @@ test.describe('View submitted sms message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedSMSPage(page),
+        page: new TemplateMgmtViewSubmittedSmsPage(page),
         id: templates.valid.id,
         baseURL,
       };
@@ -100,7 +100,7 @@ test.describe('View submitted sms message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSMSPage(
+      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
         page
       );
 
@@ -113,7 +113,7 @@ test.describe('View submitted sms message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSMSPage(
+      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
         page
       );
 

@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { TemplateType, Template, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {
@@ -107,7 +107,7 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.editRadioOption.click();
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-email-template/${templates.valid.id}`
@@ -124,7 +124,7 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.submitRadioOption.click();
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-email-template/${templates.valid.id}`
@@ -164,20 +164,22 @@ test.describe('Preview Email message template Page', () => {
 
       await previewEmailTemplatePage.loadPage(templates.valid.id);
 
-      await previewEmailTemplatePage.clickSubmitButton();
+      await previewEmailTemplatePage.clickContinueButton();
 
       await expect(previewEmailTemplatePage.errorSummary).toBeVisible();
 
       const selectOptionErrorLink =
         previewEmailTemplatePage.errorSummary.locator(
-          '[href="#reviewEmailTemplateAction"]'
+          '[href="#previewEmailTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
 
       await selectOptionErrorLink.click();
 
-      await expect(page.locator('#reviewEmailTemplateAction')).toBeInViewport();
+      await expect(
+        page.locator('#previewEmailTemplateAction')
+      ).toBeInViewport();
     });
   });
 });

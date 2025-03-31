@@ -1,14 +1,18 @@
 'use server';
 
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
-import { TemplateSubmittedPageProps } from 'nhs-notify-web-template-management-utils';
+import {
+  TemplateSubmittedPageProps,
+  validateSubmittedNHSAppTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { validateSubmittedNHSAppTemplate } from '@utils/validate-template';
 
-const NhsAppTemplateSubmittedPage = async ({
-  params: { templateId },
-}: TemplateSubmittedPageProps) => {
+const NhsAppTemplateSubmittedPage = async (
+  props: TemplateSubmittedPageProps
+) => {
+  const { templateId } = await props.params;
+
   const template = await getTemplate(templateId);
 
   const validatedTemplate = validateSubmittedNHSAppTemplate(template);

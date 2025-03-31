@@ -1,28 +1,32 @@
 'use client';
 
-import { FC } from 'react';
-import { useFormState } from 'react-dom';
-import { ChannelTemplate } from 'nhs-notify-web-template-management-utils';
-import { deleteTemplatePageContent } from '@content/content';
-import { Button } from 'nhsuk-react-components';
+import { FC, useActionState } from 'react';
+import content from '@content/content';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import {
   deleteTemplateYesAction,
   deleteTemplateNoAction,
 } from './server-action';
+import concatClassNames from '@utils/concat-class-names';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 type DeleteTemplateProps = {
-  template: ChannelTemplate;
+  template: TemplateDto;
 };
 
 export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
   const { pageHeading, hintText, noButtonText, yesButtonText } =
-    deleteTemplatePageContent;
+    content.components.deleteTemplate;
 
-  const [state, action] = useFormState(deleteTemplateYesAction, template);
+  const [yesState, yesAction] = useActionState(
+    deleteTemplateYesAction,
+    template
+  );
+  const [_, noAction] = useActionState(deleteTemplateNoAction, null);
 
-  const fullPageHeading = `${pageHeading} '${state.name}'?`;
+  const fullPageHeading = `${pageHeading} '${yesState.name}'?`;
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
@@ -30,21 +34,25 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
           <h1 className='nhsuk-heading-l'>{fullPageHeading}</h1>
           <p>{hintText}</p>
           <NHSNotifyFormWrapper
-            action={deleteTemplateNoAction}
+            action={noAction}
             formId='delete-template-no'
             formAttributes={{
-              className: 'nhsuk-u-margin-right-3',
-              style: { display: 'inline' },
+              className: concatClassNames(
+                'nhsuk-u-margin-right-3',
+                'inline-form'
+              ),
             }}
           >
-            <Button secondary>{noButtonText}</Button>
+            <NHSNotifyButton secondary>{noButtonText}</NHSNotifyButton>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
-            action={action}
-            formAttributes={{ style: { display: 'inline' } }}
+            action={yesAction}
+            formAttributes={{ className: 'inline-form' }}
             formId='delete-template-yes'
           >
-            <Button className='nhsuk-button--warning'>{yesButtonText}</Button>
+            <NHSNotifyButton className='nhsuk-button--warning'>
+              {yesButtonText}
+            </NHSNotifyButton>
           </NHSNotifyFormWrapper>
         </div>
       </div>

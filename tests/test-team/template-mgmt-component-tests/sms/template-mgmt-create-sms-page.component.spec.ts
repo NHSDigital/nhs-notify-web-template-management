@@ -31,7 +31,7 @@ test.describe('Create SMS message template Page', () => {
 
     await createSmsTemplatePage.loadPage();
 
-    expect(await createSmsTemplatePage.pageHeader.textContent()).toBe(
+    await expect(createSmsTemplatePage.pageHeader).toHaveText(
       'Create text message template'
     );
 
@@ -169,11 +169,12 @@ test.describe('Create SMS message template Page', () => {
         'This is an SMS message'
       );
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const previewPageRegex =
         /\/templates\/preview-text-message-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/;
 
+      // eslint-disable-next-line security/detect-non-literal-regexp
       await expect(page).toHaveURL(new RegExp(previewPageRegex));
 
       const previewPageParts = page.url().match(previewPageRegex);
@@ -193,7 +194,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.loadPage();
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       await expect(createSmsTemplatePage.errorSummary).toBeVisible();
 
@@ -223,7 +224,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.messageTextArea.fill('template-message');
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsNameErrorLink = createSmsTemplatePage.errorSummary.locator(
         `[href="#smsTemplateName"]`
@@ -247,7 +248,7 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.nameInput.fill('template-name');
 
-      await createSmsTemplatePage.clickSubmitButton();
+      await createSmsTemplatePage.clickSaveAndPreviewButton();
 
       const smsMessageErrorLink = createSmsTemplatePage.errorSummary.locator(
         '[href="#smsTemplateMessage"]'

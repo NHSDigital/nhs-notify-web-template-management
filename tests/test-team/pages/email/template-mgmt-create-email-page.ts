@@ -1,8 +1,10 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
+import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
+export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic {
+  static readonly pageUrlSegment = 'create-email-template';
+
   public readonly nameInput: Locator;
 
   public readonly subjectLineInput: Locator;
@@ -18,6 +20,8 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
   public readonly goBackLink: Locator;
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
+
+  public readonly saveAndPreviewButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -36,9 +40,13 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePage {
       .and(page.getByText('Back to choose a template type'));
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-email-template-submit-button"]'
+    );
   }
 
-  async loadPage() {
-    await this.navigateTo('/templates/create-email-template');
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

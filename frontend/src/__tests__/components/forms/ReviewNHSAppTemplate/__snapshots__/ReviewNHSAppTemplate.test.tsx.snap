@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Review nhs app form renders matches error snapshot 1`] = `
+exports[`Preview nhs app form renders matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -59,7 +59,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
           >
             <li>
               <a
-                href="#reviewNHSAppTemplateAction"
+                href="#previewNHSAppTemplateAction"
               >
                 Select an option
               </a>
@@ -67,7 +67,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
           </ul>
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-nhs app
@@ -185,7 +185,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewNHSAppTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
@@ -194,7 +194,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
               >
                 <span
                   class="nhsuk-error-message"
-                  id="reviewNHSAppTemplateAction--error-message"
+                  id="previewNHSAppTemplateAction--error-message"
                 >
                   <span
                     class="nhsuk-u-visually-hidden"
@@ -204,9 +204,9 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
                   Select an option
                 </span>
                 <div
-                  aria-describedby="reviewNHSAppTemplateAction--error-message"
+                  aria-describedby="previewNHSAppTemplateAction--error-message"
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewNHSAppTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
@@ -214,15 +214,15 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-edit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-edit"
+                      id="previewNHSAppTemplateAction-nhsapp-edit--label"
                     >
                       Edit template
                     </label>
@@ -233,15 +233,15 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-submit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-submit"
+                      id="previewNHSAppTemplateAction-nhsapp-submit--label"
                     >
                       Submit template
                     </label>
@@ -273,7 +273,7 @@ exports[`Review nhs app form renders matches error snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Review nhs app form renders matches snapshot when navigating from edit screen 1`] = `
+exports[`Preview nhs app form renders matches snapshot when navigating from edit screen 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -315,7 +315,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
           Template saved
         </div>
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-nhs app
@@ -433,7 +433,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewNHSAppTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
@@ -442,7 +442,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
               >
                 <div
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewNHSAppTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
@@ -450,15 +450,15 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-edit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-edit"
+                      id="previewNHSAppTemplateAction-nhsapp-edit--label"
                     >
                       Edit template
                     </label>
@@ -469,15 +469,15 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-submit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-submit"
+                      id="previewNHSAppTemplateAction-nhsapp-submit--label"
                     >
                       Submit template
                     </label>
@@ -509,7 +509,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from edit 
 </DocumentFragment>
 `;
 
-exports[`Review nhs app form renders matches snapshot when navigating from manage templates screen 1`] = `
+exports[`Preview nhs app form renders matches snapshot when navigating from manage templates screen 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -546,7 +546,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
         class="nhsuk-grid-column-full"
       >
         <h1
-          class="review__heading"
+          class="preview__heading"
           data-testid="preview-message__heading"
         >
           test-template-nhs app
@@ -664,7 +664,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
             >
               <legend
                 class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m"
-                data-testid="reviewNHSAppTemplateAction-form__legend"
+                data-testid="previewNHSAppTemplateAction-form__legend"
               >
                 What would you like to do next?
               </legend>
@@ -673,7 +673,7 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
               >
                 <div
                   class="nhsuk-radios"
-                  id="reviewNHSAppTemplateAction"
+                  id="previewNHSAppTemplateAction"
                 >
                   <div
                     class="nhsuk-radios__item"
@@ -681,15 +681,15 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-edit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-edit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-edit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-edit"
-                      id="reviewNHSAppTemplateAction-nhsapp-edit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-edit"
+                      id="previewNHSAppTemplateAction-nhsapp-edit--label"
                     >
                       Edit template
                     </label>
@@ -700,15 +700,15 @@ exports[`Review nhs app form renders matches snapshot when navigating from manag
                     <input
                       class="nhsuk-radios__input"
                       data-testid="nhsapp-submit-radio"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit"
-                      name="reviewNHSAppTemplateAction"
+                      id="previewNHSAppTemplateAction-nhsapp-submit"
+                      name="previewNHSAppTemplateAction"
                       type="radio"
                       value="nhsapp-submit"
                     />
                     <label
                       class="nhsuk-label nhsuk-radios__label"
-                      for="reviewNHSAppTemplateAction-nhsapp-submit"
-                      id="reviewNHSAppTemplateAction-nhsapp-submit--label"
+                      for="previewNHSAppTemplateAction-nhsapp-submit"
+                      id="previewNHSAppTemplateAction-nhsapp-submit--label"
                     >
                       Submit template
                     </label>

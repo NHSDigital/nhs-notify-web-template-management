@@ -1,10 +1,14 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import { TemplateMgmtBasePageNonDynamic } from './template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
+export class TemplateMgmtChoosePage extends TemplateMgmtBasePageNonDynamic {
+  static readonly pageUrlSegment = 'choose-a-template-type';
+
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
+
+  readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -12,13 +16,16 @@ export class TemplateMgmtChoosePage extends TemplateMgmtBasePage {
     this.learnMoreLink = page.getByText(
       'Learn more about message channels (opens in a new tab)'
     );
-  }
-
-  async loadPage(_: string) {
-    await this.navigateTo('/templates/choose-a-template-type');
+    this.continueButton = page.locator('button.nhsuk-button[type="submit"]', {
+      hasText: 'Continue',
+    });
   }
 
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

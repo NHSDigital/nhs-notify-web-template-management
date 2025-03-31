@@ -1,4 +1,4 @@
-import { nameYourTemplateContent } from '@content/content';
+import content from '@content/content';
 import { Details } from 'nhsuk-react-components';
 import { TemplateNameGuidanceType } from './template-name-guidance.types';
 
@@ -9,7 +9,7 @@ export function TemplateNameGuidance({ template }: TemplateNameGuidanceType) {
     templateNameDetailsListHeader,
     templateNameDetailsList,
     templateNameDetailsExample,
-  } = nameYourTemplateContent;
+  } = content.components.nameYourTemplate;
 
   const templateNameDetailsExampleText = templateNameDetailsExample[template];
 

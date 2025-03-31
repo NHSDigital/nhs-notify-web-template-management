@@ -1,0 +1,40 @@
+/*
+* NHSUK Colours
+* https://service-manual.nhs.uk/design-system/styles/colour
+*/
+$white: #ffffff;
+$nhsuk-border-color: #d8dde0;
+$nhsuk-secondary-button-color: #4c6272;
+
+.preview {
+  background-color: $white;
+  border: 1px solid $nhsuk-border-color;
+
+  &__row {
+    margin: 0;
+    padding: 1rem;
+    border-bottom: 1px solid $nhsuk-border-color;
+  }
+
+  &__col {
+    padding: 0;
+    width: 20%;
+
+    @media screen and (max-width: 768px) {
+      width: auto;
+    }
+
+    &_heading {
+      color: $nhsuk-secondary-button-color;
+      font-weight: 600;
+    }
+
+    &_content {
+      word-wrap: anywhere;
+
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

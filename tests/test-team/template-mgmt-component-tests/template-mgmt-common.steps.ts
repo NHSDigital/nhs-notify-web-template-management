@@ -7,6 +7,34 @@ type CommonStepsProps = {
   baseURL?: string;
 };
 
+type FooterLinkSpec = {
+  text: string;
+  href: string;
+};
+
+const expectedFooterLinks: Record<string, FooterLinkSpec> = {
+  acceptableUsePolicy: {
+    text: 'Acceptable use policy',
+    href: 'https://digital.nhs.uk/services/nhs-notify/acceptable-use-policy',
+  },
+  accessibilityStatement: {
+    text: 'Accessibility statement',
+    href: '/accessibility',
+  },
+  cookiesStatement: {
+    text: 'Cookies',
+    href: '/cookies',
+  },
+  privacyStatement: {
+    text: 'Privacy',
+    href: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
+  },
+  termsAndConditions: {
+    text: 'Terms and conditions',
+    href: 'https://digital.nhs.uk/services/nhs-notify/terms-and-conditions',
+  },
+};
+
 export function assertSkipToMainContent({ page, id }: CommonStepsProps) {
   return test.step('when user clicks "skip to main content", then page heading is focused', async () => {
     await page.loadPage(id);
@@ -41,9 +69,10 @@ export function assertSignInLink({ page, id }: CommonStepsProps) {
   return test.step('when user clicks "Sign in", then user is redirected to "sign in page"', async () => {
     await page.loadPage(id);
 
-    const link = await page.signInLink.getAttribute('href');
+    const link = page.signInLink;
 
-    expect(link).toBe(
+    await expect(link).toHaveAttribute(
+      'href',
       '/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates'
     );
   });
@@ -53,9 +82,9 @@ export function assertSignOutLink({ page, id }: CommonStepsProps) {
   return test.step('"Sign out", should direct user to signout', async () => {
     await page.loadPage(id);
 
-    const link = await page.signOutLink.getAttribute('href');
+    const link = page.signOutLink;
 
-    expect(link).toBe('/auth/signout');
+    await expect(link).toHaveAttribute('href', '/auth/signout');
   });
 }
 
@@ -86,33 +115,11 @@ export function assertFooterLinks({ page, id }: CommonStepsProps) {
   return test.step('when page loads, then Page Footer should have the correct links', async () => {
     await page.loadPage(id);
 
-    const promises = [
-      // Accessibility link
+    const promises = Object.values(expectedFooterLinks).map((linkSpec) =>
       expect(
-        page.page.getByRole('link', { name: 'Accessibility statement' })
-      ).toHaveAttribute('href', '/accessibility'),
-
-      // Contact us link
-      expect(
-        page.page.getByRole('link', { name: 'Contact us' })
-      ).toHaveAttribute('href', '#'),
-
-      // Cookies link
-      expect(page.page.getByRole('link', { name: 'Cookies' })).toHaveAttribute(
-        'href',
-        '#'
-      ),
-
-      // Privacy policy link
-      expect(
-        page.page.getByRole('link', { name: 'Privacy policy' })
-      ).toHaveAttribute('href', '#'),
-
-      // Terms and conditions link
-      expect(
-        page.page.getByRole('link', { name: 'Terms and conditions' })
-      ).toHaveAttribute('href', '#'),
-    ];
+        page.page.getByRole('link', { name: linkSpec.text })
+      ).toHaveAttribute('href', linkSpec.href)
+    );
 
     await Promise.all(promises);
   });

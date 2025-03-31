@@ -7,8 +7,9 @@ import {
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
+import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 
-test.describe('POST /v1/template/:templateId', async () => {
+test.describe('POST /v1/template/:templateId', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -128,7 +129,7 @@ test.describe('POST /v1/template/:templateId', async () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });
@@ -171,7 +172,74 @@ test.describe('POST /v1/template/:templateId', async () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+      },
+    });
+  });
+
+  test('returns 400 when attempting to update a letter', async ({
+    request,
+  }) => {
+    const { multipart, contentType } =
+      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        {
+          templateType: 'LETTER',
+        },
+        [
+          {
+            _type: 'json',
+            partName: 'template',
+          },
+          {
+            _type: 'file',
+            partName: 'letterPdf',
+            fileName: 'template.pdf',
+            fileType: 'application/pdf',
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf,
+          },
+        ]
+      );
+
+    const createResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/letter-template`,
+      {
+        data: multipart,
+        headers: {
+          Authorization: await user1.getAccessToken(),
+          'Content-Type': contentType,
+        },
+      }
+    );
+
+    expect(createResponse.status()).toBe(201);
+    const created = await createResponse.json();
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created.template.id,
+      owner: user1.userId,
+    });
+
+    const updateResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getUpdateTemplatePayload({
+          templateType: 'LETTER',
+          language: 'en',
+          letterType: 'x0',
+          templateStatus: 'SUBMITTED',
+        }),
+      }
+    );
+
+    expect(updateResponse.status()).toBe(400);
+    expect(await updateResponse.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateType:
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });
@@ -215,7 +283,7 @@ test.describe('POST /v1/template/:templateId', async () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateStatus:
-          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED', received 'INVALID'",
+          "Invalid enum value. Expected 'NOT_YET_SUBMITTED' | 'SUBMITTED' | 'DELETED' | 'PENDING_UPLOAD' | 'PENDING_VALIDATION', received 'INVALID'",
       },
     });
   });

@@ -4,7 +4,9 @@ import {
   AdminSetUserPasswordCommand,
   CognitoIdentityProviderClient,
 } from '@aws-sdk/client-cognito-identity-provider';
+import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 export class TestUserClient {
   private readonly cognitoClient = new CognitoIdentityProviderClient({
@@ -13,9 +15,21 @@ export class TestUserClient {
 
   private readonly userPoolId: string;
 
-  constructor(amplifyOutputsPathPrefix = '../..') {
+  constructor(amplifyOutputsPathPrefix: string) {
+    const projectRoot = execSync('/usr/bin/git rev-parse --show-toplevel', {
+      encoding: 'utf8',
+    }).trim();
+
     const amplifyOutputs = JSON.parse(
-      readFileSync(`${amplifyOutputsPathPrefix}/amplify_outputs.json`, 'utf8')
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      readFileSync(
+        path.join(
+          projectRoot,
+          amplifyOutputsPathPrefix,
+          'amplify_outputs.json'
+        ),
+        'utf8'
+      )
     );
 
     this.userPoolId = amplifyOutputs.auth.user_pool_id;
@@ -51,11 +65,15 @@ export class TestUserClient {
 
     const username = res.User?.Username;
 
-    if (!username) {
+    const userId = res.User?.Attributes?.find(
+      (attr) => attr.Name === 'sub'
+    )?.Value;
+
+    if (!username || !userId) {
       throw new Error('Error during user creation');
     }
 
-    return username;
+    return { username, userId };
   }
 
   async deleteTestUser(email: string) {

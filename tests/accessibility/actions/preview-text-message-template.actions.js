@@ -7,21 +7,21 @@ const pageActions = [
   'set field #smsTemplateName to example-template-1',
   'set field #smsTemplateMessage to example template message',
   'click element #create-sms-template-submit-button',
-  'wait for #review-sms-template-submit-button to be visible',
+  'wait for #preview-sms-template-submit-button to be visible',
 ];
 
-const reviewTextMessageTemplatePage = (url) => ({
+const previewTextMessageTemplatePage = (url) => ({
   name: 'preview-text-message-template',
   url,
   actions: pageActions,
 });
 
-const reviewTextMessageTemplateErrorPage = (url) => ({
+const previewTextMessageTemplateErrorPage = (url) => ({
   name: 'preview-text-message-template-error',
   url,
   actions: [
     ...pageActions,
-    'click element #review-sms-template-submit-button',
+    'click element #preview-sms-template-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
   ignore: [
@@ -32,6 +32,6 @@ const reviewTextMessageTemplateErrorPage = (url) => ({
 
 module.exports = {
   pageActions,
-  reviewTextMessageTemplatePage,
-  reviewTextMessageTemplateErrorPage,
+  previewTextMessageTemplatePage,
+  previewTextMessageTemplateErrorPage,
 };

@@ -2,13 +2,10 @@
  * @jest-environment node
  */
 import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
-import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -23,11 +20,11 @@ describe('NhsAppTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
       name: 'template-name',
       message: 'example',
-    };
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValueOnce({
       ...template,
@@ -36,9 +33,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
     });
 
     const page = await NhsAppTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
@@ -55,9 +52,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
     getTemplateMock.mockResolvedValueOnce(undefined);
 
     await NhsAppTemplateSubmittedPage({
-      params: {
+      params: Promise.resolve({
         templateId: 'invalid-template',
-      },
+      }),
     });
 
     expect(getTemplateMock).toHaveBeenCalledWith('invalid-template');

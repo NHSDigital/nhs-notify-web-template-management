@@ -1,12 +1,11 @@
 'use client';
 
-import { useJsEnabledStyle } from '@hooks/use-js-enabled-style.hook';
+import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { useTextInput } from '@hooks/use-text-input.hook';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import {
-  Button,
   HintText,
   Label,
   Textarea,
@@ -14,27 +13,26 @@ import {
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
-import { useFormState } from 'react-dom';
 import {
-  Draft,
+  CreateSMSTemplate,
   PageComponentProps,
   SMSTemplate,
-  TemplateType,
 } from 'nhs-notify-web-template-management-utils';
-import { FC } from 'react';
+import { FC, useActionState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
-import { createSmsTemplatePageContent as content } from '@content/content';
+import content from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const SmsTemplateForm: FC<
-  PageComponentProps<SMSTemplate | Draft<SMSTemplate>>
+  PageComponentProps<SMSTemplate | CreateSMSTemplate>
 > = ({ initialState }) => {
-  const [state, action] = useFormState(processFormActions, initialState);
+  const [state, action] = useActionState(processFormActions, initialState);
 
   const [smsTemplateName, smsTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -48,27 +46,43 @@ export const SmsTemplateForm: FC<
   const templateMessageError =
     state.validationError?.fieldErrors.smsTemplateMessage?.join(', ');
 
+  const editMode = 'id' in initialState;
+
+  const {
+    backLinkText,
+    buttonText,
+    errorHeading,
+    pageHeadingSuffix,
+    smsCountText1,
+    smsCountText2,
+    smsPricingLink,
+    smsPricingText,
+    templateMessageLabelText,
+    templateNameHintText,
+    templateNameLabelText,
+  } = content.components.templateFormSms;
+
   return (
     <>
-      {'id' in initialState ? null : (
+      {editMode ? null : (
         <BackLink href={`${getBasePath()}/choose-a-template-type`}>
-          {content.backLinkText}
+          {backLinkText}
         </BackLink>
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={content.errorHeading}
-              state={state}
-            />
-            <h1 data-testid='page-heading'>{content.pageHeading}</h1>
+            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <h1 data-testid='page-heading'>
+              {editMode ? 'Edit ' : 'Create '}
+              {pageHeadingSuffix}
+            </h1>
             <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>
-                  {content.templateNameLabelText}
+                  {templateNameLabelText}
                 </Label>
-                <HintText>{content.templateNameHintText}</HintText>
+                <HintText>{templateNameHintText}</HintText>
                 <TemplateNameGuidance template='SMS' />
                 <TextInput
                   id='smsTemplateName'
@@ -76,11 +90,12 @@ export const SmsTemplateForm: FC<
                   onChange={smsTemplateNameHandler}
                   error={templateNameError}
                   errorProps={{ id: 'smsTemplateName--error-message' }}
+                  autoComplete='off'
                 />
               </div>
               <Textarea
                 id='smsTemplateMessage'
-                label={content.templateMessageLabelText}
+                label={templateMessageLabelText}
                 labelProps={{ size: 's' }}
                 defaultValue={smsTemplateMessage}
                 onChange={smsTemplateMessageHandler}
@@ -88,39 +103,40 @@ export const SmsTemplateForm: FC<
                 rows={10}
                 error={templateMessageError}
                 errorProps={{ id: 'smsTemplateMessage--error-message' }}
+                autoComplete='off'
               />
-              <div style={useJsEnabledStyle()} id='smsMessageCharacterCount'>
+              <JsEnabled>
                 <p className='nhsuk-u-margin-bottom-0' id='character-count'>
                   {smsTemplateMessage.length} characters
                 </p>
                 <p>
-                  {content.smsCountText1}
+                  {smsCountText1}
                   {calculateHowManySmsMessages(
                     Number(smsTemplateMessage.length)
                   )}
-                  {content.smsCountText2}
+                  {smsCountText2}
                 </p>
-              </div>
+              </JsEnabled>
               <p>
                 <a
-                  href={content.smsPricingLink}
+                  href={smsPricingLink}
                   data-testid='sms-pricing-link'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
-                  {content.smsPricingText}
+                  {smsPricingText}
                 </a>
               </p>
-              <Button id='create-sms-template-submit-button'>
-                {content.buttonText}
-              </Button>
+              <NHSNotifyButton id='create-sms-template-submit-button'>
+                {buttonText}
+              </NHSNotifyButton>
             </NHSNotifyFormWrapper>
           </div>
-          <div className='nhsuk-grid-column-one-third'>
+          <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template={TemplateType.SMS} />
-            <ChannelGuidance template={TemplateType.SMS} />
-          </div>
+            <MessageFormatting template='SMS' />
+            <ChannelGuidance template='SMS' />
+          </aside>
         </div>
       </NHSNotifyMain>
     </>

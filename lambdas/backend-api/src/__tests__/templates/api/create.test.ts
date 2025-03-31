@@ -1,22 +1,26 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import {
-  TemplateDTO,
-  TemplateStatus,
-  TemplateType,
+  TemplateDto,
   CreateTemplate,
+  ITemplateClient,
 } from 'nhs-notify-backend-client';
-import { handler } from '@backend-api/templates/api/create';
-import { TemplateClient } from '@backend-api/templates/app/template-client';
+import { createHandler } from '@backend-api/templates/api/create';
 
-jest.mock('@backend-api/templates/app/template-client');
+const setup = () => {
+  const templateClient = mock<ITemplateClient>();
 
-const createMock = jest.spyOn(TemplateClient.prototype, 'createTemplate');
+  const handler = createHandler({ templateClient });
+
+  return { handler, mocks: { templateClient } };
+};
 
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
+    const { handler, mocks } = setup();
+
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
       body: JSON.stringify({ id: 1 }),
@@ -32,11 +36,13 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(createMock).not.toHaveBeenCalled();
+    expect(mocks.templateClient.createTemplate).not.toHaveBeenCalled();
   });
 
   test('should return 400 - Invalid request when, no body', async () => {
-    createMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.createTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
         message: 'Validation failed',
@@ -65,13 +71,13 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
-
-    expect(createMock).toHaveBeenCalledWith({});
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith({}, 'sub');
   });
 
   test('should return error when creating template fails', async () => {
-    createMock.mockResolvedValueOnce({
+    const { handler, mocks } = setup();
+
+    mocks.templateClient.createTemplate.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -93,26 +99,29 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
-
-    expect(createMock).toHaveBeenCalledWith({ id: 1 });
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
+      { id: 1 },
+      'sub'
+    );
   });
 
   test('should return template', async () => {
+    const { handler, mocks } = setup();
+
     const create: CreateTemplate = {
       name: 'updated-name',
       message: 'message',
-      templateType: TemplateType.SMS,
+      templateType: 'SMS',
     };
-    const response: TemplateDTO = {
+    const response: TemplateDto = {
       ...create,
       id: 'id',
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    createMock.mockResolvedValueOnce({
+    mocks.templateClient.createTemplate.mockResolvedValueOnce({
       data: response,
     });
 
@@ -128,8 +137,9 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(TemplateClient).toHaveBeenCalledWith('sub');
-
-    expect(createMock).toHaveBeenCalledWith(create);
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
+      create,
+      'sub'
+    );
   });
 });

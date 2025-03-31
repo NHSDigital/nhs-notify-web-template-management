@@ -20,6 +20,14 @@ afterAll(() => {
 });
 
 describe('middleware function', () => {
+  it('If route is not registered in midleware, respond with 404', async () => {
+    const url = new URL('https://url.com/manage-templates/does-not-exist');
+    const request = new NextRequest(url);
+    const response = await middleware(request);
+
+    expect(response.status).toBe(404);
+  });
+
   it('if request path is protected, and no access token is obtained, redirect to auth page', async () => {
     const url = new URL('https://url.com/manage-templates');
     const request = new NextRequest(url);
@@ -27,7 +35,7 @@ describe('middleware function', () => {
 
     expect(response.status).toBe(307);
     expect(response.headers.get('location')).toBe(
-      'https://url.com/auth?redirect=%2Ftemplates%2F%2Fmanage-templates'
+      'https://url.com/auth?redirect=%2Ftemplates%2Fmanage-templates'
     );
     expect(response.headers.get('Content-Type')).toBe('text/html');
   });

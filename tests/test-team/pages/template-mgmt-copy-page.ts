@@ -1,12 +1,16 @@
 import { Locator, type Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from './template-mgmt-base-page';
+import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
 
-export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
+export class TemplateMgmtCopyPage extends TemplateMgmtBasePageDynamic {
+  static readonly pageUrlSegment = 'copy-template';
+
   readonly radioButtons: Locator;
 
   readonly learnMoreLink: Locator;
 
   readonly goBackLink: Locator;
+
+  readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -18,13 +22,17 @@ export class TemplateMgmtCopyPage extends TemplateMgmtBasePage {
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to all templates'));
-  }
 
-  async loadPage(templateId: string) {
-    await this.navigateTo(`/templates/copy-template/${templateId}`);
+    this.continueButton = page.locator(
+      '[id="choose-a-template-type-submit-button"]'
+    );
   }
 
   async checkRadioButton(radioButtonLabel: string) {
     await this.page.getByLabel(radioButtonLabel).check();
+  }
+
+  async clickContinueButton() {
+    await this.continueButton.click();
   }
 }

@@ -11,7 +11,6 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import {
   Template,
-  TemplateType,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
 } from '../helpers/types';
@@ -38,6 +37,13 @@ function createTemplates(owner: string) {
       ...TemplateFactory.createNhsAppTemplate('app-template-copy-page', owner),
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
+    },
+    letter: {
+      ...TemplateFactory.createLetterTemplate(
+        'letter-template-copy-page',
+        owner,
+        'letter-template-copy-page-name'
+      ),
     },
   };
 }
@@ -106,7 +112,7 @@ test.describe('Copy Template Page', () => {
     const copyTemplatePage = new TemplateMgmtCopyPage(page);
 
     await copyTemplatePage.loadPage(templates.email.id);
-    await copyTemplatePage.clickSubmitButton();
+    await copyTemplatePage.clickContinueButton();
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/copy-template/${templates.email.id}`
@@ -119,11 +125,7 @@ test.describe('Copy Template Page', () => {
   });
 
   for (const sourceTemplateType of ['nhsApp', 'email', 'sms']) {
-    for (const targetTemplateType of [
-      TemplateType.EMAIL,
-      TemplateType.NHS_APP,
-      TemplateType.SMS,
-    ]) {
+    for (const targetTemplateType of ['EMAIL', 'NHS_APP', 'SMS']) {
       // eslint-disable-next-line no-loop-func
       test(`should copy ${sourceTemplateType} to ${targetTemplateType} template`, async ({
         page,
@@ -134,9 +136,9 @@ test.describe('Copy Template Page', () => {
         const template = templates[sourceTemplateType];
         await copyTemplatePage.loadPage(template.id);
         await copyTemplatePage.checkRadioButton(
-          templateTypeDisplayMappings(targetTemplateType)
+          templateTypeDisplayMappings[targetTemplateType]
         );
-        await copyTemplatePage.clickSubmitButton();
+        await copyTemplatePage.clickContinueButton();
 
         await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
 
@@ -144,7 +146,7 @@ test.describe('Copy Template Page', () => {
           .getByRole('row')
           .filter({
             has: page.getByText(
-              `Type ${templateTypeDisplayMappings(targetTemplateType)}`,
+              `Type ${templateTypeDisplayMappings[targetTemplateType]}`,
               { exact: true }
             ),
           })
@@ -157,7 +159,7 @@ test.describe('Copy Template Page', () => {
           })
           .first();
 
-        expect(templateRow).toContainText('Not yet submitted');
+        await expect(templateRow).toContainText('Not yet submitted');
 
         const copyUrl = await templateRow
           .getByText('Copy', { exact: true })
@@ -165,26 +167,38 @@ test.describe('Copy Template Page', () => {
 
         const newTemplateId = copyUrl?.split('/').at(-1);
 
-        if (!newTemplateId) {
-          throw new Error('Could not determine ID of copied template');
-        }
+        expect(
+          newTemplateId,
+          'Could not determine ID of copied template'
+        ).toBeDefined();
 
         templateStorageHelper.addAdHocTemplateKey({
-          id: newTemplateId,
+          id: newTemplateId!,
           owner: user.userId,
         });
 
         await copyTemplatePage.navigateTo(
-          `/templates/preview-${templateTypeToUrlTextMappings(targetTemplateType)}-template/${newTemplateId}`
+          `/templates/preview-${templateTypeToUrlTextMappings[targetTemplateType]}-template/${newTemplateId}`
         );
 
-        expect(page.getByText(template.message)).toBeVisible();
+        await expect(page.getByText(template.message || '')).toBeVisible();
 
-        if (targetTemplateType === TemplateType.EMAIL) {
+        if (targetTemplateType === 'EMAIL') {
           const expectedSubject = template.subject ?? 'Enter a subject line';
-          expect(page.getByText(expectedSubject)).toBeVisible();
+          await expect(page.getByText(expectedSubject)).toBeVisible();
         }
       });
     }
   }
+
+  test(`when navigating to the copy page for a letter template, invalid template error is displayed`, async ({
+    baseURL,
+    page,
+  }) => {
+    const copyTemplatePage = new TemplateMgmtCopyPage(page);
+
+    await copyTemplatePage.loadPage(templates.letter.id);
+
+    await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+  });
 });

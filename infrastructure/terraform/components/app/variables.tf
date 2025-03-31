@@ -130,12 +130,6 @@ variable "commit_id" {
   default     = "HEAD"
 }
 
-variable "disable_content" {
-  type        = string
-  description = "Value for turning switching disable conten true/false"
-  default     = "false"
-}
-
 variable "destination_vault_arn" {
   type        = string
   description = "ARN of the backup vault in the destination account, if this environment should be backed up"
@@ -186,4 +180,15 @@ variable "data_plane_bus_arn" {
 variable "control_plane_bus_arn" {
   type        = string
   description = "Data plane event bus arn"
+}
+
+variable "enable_letters" {
+  type        = string
+  description = "Feature flag for letters"
+  default     = false
+}
+
+variable "observability_account_id" {
+  type        = string
+  description = "The Observability Account ID that needs access"
 }

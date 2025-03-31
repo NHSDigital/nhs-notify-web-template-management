@@ -8,7 +8,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 
-test.describe('POST /v1/template', async () => {
+test.describe('POST /v1/template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
@@ -48,7 +48,7 @@ test.describe('POST /v1/template', async () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });
@@ -75,7 +75,34 @@ test.describe('POST /v1/template', async () => {
       technicalMessage: 'Request failed validation',
       details: {
         templateType:
-          "Invalid discriminator value. Expected 'SMS' | 'NHS_APP' | 'EMAIL'",
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+      },
+    });
+  });
+
+  test('returns 400 if the template is a letter', async ({ request }) => {
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'en',
+        }),
+      }
+    );
+
+    expect(response.status()).toBe(400);
+
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Request failed validation',
+      details: {
+        templateType:
+          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
       },
     });
   });

@@ -2,19 +2,21 @@
  * @jest-environment node
  */
 import PreviewSMSTemplatePage from '@app/preview-text-message-template/[templateId]/page';
-import { ReviewSMSTemplate } from '@forms/ReviewSMSTemplate';
-import {
-  SMSTemplate,
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
+import { SMSTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
-import { TemplateDTO } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
+import {
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/ReviewSMSTemplate');
+jest.mock('@forms/PreviewSMSTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -23,84 +25,69 @@ describe('PreviewSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
-    const templateDTO: TemplateDTO = {
+    const templateDTO = {
       id: 'template-id',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
-    };
+    } satisfies TemplateDto;
 
     const smsTemplate: SMSTemplate = {
       ...templateDTO,
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
     };
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
     const page = await PreviewSMSTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
-    expect(page).toEqual(<ReviewSMSTemplate initialState={smsTemplate} />);
+    expect(page).toEqual(<PreviewSMSTemplate initialState={smsTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
     await PreviewSMSTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test.each([
+    EMAIL_TEMPLATE,
+    NHS_APP_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
+      ...SMS_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.SMS,
+      ...SMS_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
     },
   ])(
-    'should redirect to invalid-template when template is $templateType and name is $smsTemplateName and message is $smsTemplateMessage',
+    'should redirect to invalid-template when template is $templateType and name is $name and message is $message',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await PreviewSMSTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

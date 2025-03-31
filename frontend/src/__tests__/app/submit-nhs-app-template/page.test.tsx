@@ -5,10 +5,13 @@ import SubmitNhsAppTemplatePage from '@app/submit-nhs-app-template/[templateId]/
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import {
-  TemplateType,
-  TemplateStatus,
-} from 'nhs-notify-web-template-management-utils';
+  EMAIL_TEMPLATE,
+  LETTER_TEMPLATE,
+  NHS_APP_TEMPLATE,
+  SMS_TEMPLATE,
+} from '../../helpers';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -23,11 +26,11 @@ describe('SubmitNhsAppTemplatePage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       message: 'template-message',
-    };
+    } satisfies Partial<TemplateDto>;
 
     getTemplateMock.mockResolvedValue({
       ...state,
@@ -36,9 +39,9 @@ describe('SubmitNhsAppTemplatePage', () => {
     });
 
     const page = await SubmitNhsAppTemplatePage({
-      params: {
+      params: Promise.resolve({
         templateId: 'template-id',
-      },
+      }),
     });
     expect(page).toEqual(
       <SubmitTemplate
@@ -54,55 +57,40 @@ describe('SubmitNhsAppTemplatePage', () => {
     getTemplateMock.mockResolvedValue(undefined);
 
     await SubmitNhsAppTemplatePage({
-      params: {
-        templateId: 'invalid-template',
-      },
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
   test.each([
+    EMAIL_TEMPLATE,
+    SMS_TEMPLATE,
+    LETTER_TEMPLATE,
     {
-      templateType: TemplateType.EMAIL,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.SMS,
-      name: 'template-name',
-      message: 'template-message',
-    },
-    {
-      templateType: TemplateType.NHS_APP,
-      name: 'template-name',
+      ...NHS_APP_TEMPLATE,
       message: undefined as unknown as string,
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: undefined as unknown as string,
-      message: 'template-message',
     },
     {
-      templateType: TemplateType.NHS_APP,
+      ...NHS_APP_TEMPLATE,
       name: null as unknown as string,
       message: null as unknown as string,
     },
   ])(
     'should redirect to invalid-template when template is $templateType and name is $nhsAppTemplateName and message is $nhsAppTemplateMessage',
     async (value) => {
-      getTemplateMock.mockResolvedValueOnce({
-        id: 'template-id',
-        templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
-        ...value,
-        createdAt: 'today',
-        updatedAt: 'today',
-      });
+      getTemplateMock.mockResolvedValueOnce(value);
 
       await SubmitNhsAppTemplatePage({
-        params: {
+        params: Promise.resolve({
           templateId: 'template-id',
-        },
+        }),
       });
 
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

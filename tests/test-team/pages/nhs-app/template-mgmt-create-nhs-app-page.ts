@@ -1,8 +1,10 @@
 import { Locator, Page } from '@playwright/test';
-import { TemplateMgmtBasePage } from '../template-mgmt-base-page';
 import { TemplateMgmtMessageFormatting } from '../template-mgmt-message-formatting';
+import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
+export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic {
+  static readonly pageUrlSegment = 'create-nhs-app-template';
+
   public readonly nameInput: Locator;
 
   public readonly messageTextArea: Locator;
@@ -18,6 +20,8 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
   public readonly goBackLink: Locator;
 
   public readonly messageFormatting: TemplateMgmtMessageFormatting;
+
+  public readonly saveAndPreviewButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -35,9 +39,12 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePage {
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to choose a template type'));
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
+    this.saveAndPreviewButton = page.locator(
+      '[id="create-nhs-app-template-submit-button"]'
+    );
   }
 
-  async loadPage() {
-    await this.navigateTo('/templates/create-nhs-app-template');
+  async clickSaveAndPreviewButton() {
+    await this.saveAndPreviewButton.click();
   }
 }

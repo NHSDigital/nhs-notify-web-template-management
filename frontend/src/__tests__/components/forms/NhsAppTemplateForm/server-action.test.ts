@@ -2,8 +2,7 @@ import { getMockFormData } from '@testhelpers';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import {
   NHSAppTemplate,
-  TemplateType,
-  TemplateStatus,
+  CreateNHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
@@ -16,12 +15,16 @@ const saveTemplateMock = jest.mocked(saveTemplate);
 const createTemplateMock = jest.mocked(createTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: NHSAppTemplate = {
-  id: 'template-id',
-  templateType: TemplateType.NHS_APP,
-  templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+const initialState: CreateNHSAppTemplate = {
+  templateType: 'NHS_APP',
   name: 'name',
   message: 'message',
+};
+
+const savedState: NHSAppTemplate = {
+  ...initialState,
+  id: 'template-id',
+  templateStatus: 'NOT_YET_SUBMITTED',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
 };
@@ -70,15 +73,13 @@ describe('CreateNHSAppTemplate server actions', () => {
 
   test('should save the template and redirect', async () => {
     saveTemplateMock.mockResolvedValue({
-      ...initialState,
+      ...savedState,
       name: 'template-name',
       message: 'template-message',
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
     });
 
     await processFormActions(
-      initialState,
+      savedState,
       getMockFormData({
         nhsAppTemplateName: 'template-name',
         nhsAppTemplateMessage: 'template-message',
@@ -86,7 +87,7 @@ describe('CreateNHSAppTemplate server actions', () => {
     );
 
     expect(saveTemplateMock).toHaveBeenCalledWith({
-      ...initialState,
+      ...savedState,
       name: 'template-name',
       message: 'template-message',
     });
@@ -98,19 +99,10 @@ describe('CreateNHSAppTemplate server actions', () => {
   });
 
   test('should create the template and redirect', async () => {
-    const { id: _, ...initialDraftState } = initialState; // eslint-disable-line sonarjs/no-unused-vars
-
-    createTemplateMock.mockResolvedValue({
-      ...initialDraftState,
-      id: 'new-template-id',
-      name: 'template-name',
-      message: 'template-message',
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
-    });
+    createTemplateMock.mockResolvedValue(savedState);
 
     await processFormActions(
-      initialDraftState,
+      initialState,
       getMockFormData({
         nhsAppTemplateName: 'template-name',
         nhsAppTemplateMessage: 'template-message',
@@ -118,13 +110,13 @@ describe('CreateNHSAppTemplate server actions', () => {
     );
 
     expect(createTemplateMock).toHaveBeenCalledWith({
-      ...initialDraftState,
+      ...initialState,
       name: 'template-name',
       message: 'template-message',
     });
 
     expect(redirectMock).toHaveBeenCalledWith(
-      '/preview-nhs-app-template/new-template-id?from=edit',
+      '/preview-nhs-app-template/template-id?from=edit',
       'push'
     );
   });

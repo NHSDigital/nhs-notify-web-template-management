@@ -12,7 +12,7 @@ import {
   assertNotifyBannerLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
-import { Template, TemplateType, TemplateStatus } from '../../helpers/types';
+import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
   TestUserId,
@@ -26,8 +26,8 @@ async function createTemplates() {
       version: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
     valid: {
@@ -106,7 +106,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.editRadioOption.click();
 
-      await previewNhsAppTemplatePage.clickSubmitButton();
+      await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
@@ -123,7 +123,7 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.submitRadioOption.click();
 
-      await previewNhsAppTemplatePage.clickSubmitButton();
+      await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(
         `${baseURL}/templates/submit-nhs-app-template/${templates.valid.id}`
@@ -163,13 +163,13 @@ test.describe('Preview NHS App template Page', () => {
 
       await previewNhsAppTemplatePage.loadPage(templates.valid.id);
 
-      await previewNhsAppTemplatePage.clickSubmitButton();
+      await previewNhsAppTemplatePage.clickContinueButton();
 
       await expect(previewNhsAppTemplatePage.errorSummary).toBeVisible();
 
       const selectOptionErrorLink =
         previewNhsAppTemplatePage.errorSummary.locator(
-          '[href="#reviewNHSAppTemplateAction"]'
+          '[href="#previewNHSAppTemplateAction"]'
         );
 
       await expect(selectOptionErrorLink).toHaveText(errorMessage);
@@ -177,7 +177,7 @@ test.describe('Preview NHS App template Page', () => {
       await selectOptionErrorLink.click();
 
       await expect(
-        page.locator('#reviewNHSAppTemplateAction')
+        page.locator('#previewNHSAppTemplateAction')
       ).toBeInViewport();
     });
   });

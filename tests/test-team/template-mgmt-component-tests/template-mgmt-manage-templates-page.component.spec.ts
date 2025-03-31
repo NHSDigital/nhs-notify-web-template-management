@@ -9,7 +9,7 @@ import {
   assertSkipToMainContent,
 } from './template-mgmt-common.steps';
 import { TemplateFactory } from '../helpers/factories/template-factory';
-import { Template, TemplateStatus, TemplateType } from '../helpers/types';
+import { Template } from '../helpers/types';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
@@ -25,8 +25,8 @@ function createTemplates(owner: string) {
       name: 'email-submitted_manage-templates-page',
       message: 'test example message',
       subject: 'test example subject',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-11T11:11:11.111Z',
     }),
     emailNotYetSubmitted: TemplateFactory.create({
@@ -36,8 +36,8 @@ function createTemplates(owner: string) {
       name: 'email-not-yet-submitted_manage-templates-page',
       message: 'test example message',
       subject: 'test example subject',
-      templateType: TemplateType.EMAIL,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'EMAIL',
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-11T10:10:10.100Z',
     }),
     smsSubmitted: TemplateFactory.create({
@@ -45,8 +45,8 @@ function createTemplates(owner: string) {
       owner,
       name: 'sms-submitted_manage-templates-page',
       message: 'test example message',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-10T11:11:11.111Z',
     }),
     smsNotYetSubmitted: TemplateFactory.create({
@@ -54,8 +54,8 @@ function createTemplates(owner: string) {
       owner,
       name: 'sms-not-yet-submitted_manage-templates-page',
       message: 'test example message',
-      templateType: TemplateType.SMS,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'SMS',
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-10T10:10:10.100Z',
     }),
     nhsAppSubmitted: TemplateFactory.create({
@@ -63,8 +63,8 @@ function createTemplates(owner: string) {
       owner,
       name: 'nhs-app-submitted_manage-templates-page',
       message: 'test example message',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'SUBMITTED',
       createdAt: '2010-10-09T11:11:11.111Z',
     }),
     nhsAppNotYetSubmitted: TemplateFactory.create({
@@ -72,8 +72,8 @@ function createTemplates(owner: string) {
       owner,
       name: 'nhs-app-not-yet-submitted_manage-templates-page',
       message: 'test example message',
-      templateType: TemplateType.NHS_APP,
-      templateStatus: TemplateStatus.NOT_YET_SUBMITTED,
+      templateType: 'NHS_APP',
+      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: '2010-10-09T10:10:10.100Z',
     }),
   };
@@ -185,7 +185,7 @@ test.describe('Manage templates page', () => {
     await expect(manageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
     );
-    expect(manageTemplatesPage.createTemplateButton).toBeVisible();
+    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
     await manageTemplatesPage.clickCreateTemplateButton();
     await expect(page).toHaveURL('/templates/choose-a-template-type');
   });
@@ -203,7 +203,7 @@ test.describe('Manage templates page', () => {
       'email-not-yet-submitted_manage-templates-page'
     );
 
-    expect(templatePreviewLink).toHaveAttribute(
+    await expect(templatePreviewLink).toHaveAttribute(
       'href',
       `/templates/preview-email-template/${templates.emailNotYetSubmitted.id}`
     );
@@ -226,7 +226,7 @@ test.describe('Manage templates page', () => {
       'email-submitted_manage-templates-page'
     );
 
-    expect(templatePreviewLink).toHaveAttribute(
+    await expect(templatePreviewLink).toHaveAttribute(
       'href',
       `/templates/view-submitted-email-template/${templates.emailSubmitted.id}`
     );
@@ -250,7 +250,7 @@ test.describe('Manage templates page', () => {
     );
     const templateCopyLink = templateRow.getByText('Copy');
 
-    expect(templateCopyLink).toHaveAttribute(
+    await expect(templateCopyLink).toHaveAttribute(
       'href',
       `/templates/copy-template/${templates.emailSubmitted.id}`
     );
@@ -275,7 +275,7 @@ test.describe('Manage templates page', () => {
     const templateDeleteLink = templateRow.getByText('Delete', { exact: true });
 
     const deleteTemplateURL = `/templates/delete-template/${templates.emailNotYetSubmitted.id}`;
-    expect(templateDeleteLink).toHaveAttribute('href', deleteTemplateURL);
+    await expect(templateDeleteLink).toHaveAttribute('href', deleteTemplateURL);
     await templateDeleteLink.click();
     await expect(page).toHaveURL(new RegExp(deleteTemplateURL)); // eslint-disable-line security/detect-non-literal-regexp
   });
