@@ -111,7 +111,7 @@ export class TemplateRepository {
 
   async update(
     templateId: string,
-    template: WithAttachments<ValidatedCreateUpdateTemplate>,
+    template: ValidatedCreateUpdateTemplate,
     owner: string,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {
