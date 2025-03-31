@@ -95,7 +95,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTemplate"
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
               }
             }
           }
@@ -223,7 +223,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTemplate"
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
               }
             }
           }
@@ -292,7 +292,7 @@
                   "type": "object",
                   "properties": {
                     "template": {
-                      "$ref": "#/components/schemas/CreateTemplate"
+                      "$ref": "#/components/schemas/CreateUpdateTemplate"
                     },
                     "letterPdf": {
                       "type": "string",
@@ -685,31 +685,7 @@
           }
         }
       },
-      "CreateTemplate": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseTemplate"
-          },
-          {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              },
-              {
-                "$ref": "#/components/schemas/EmailProperties"
-              },
-              {
-                "$ref": "#/components/schemas/SmsProperties"
-              },
-              {
-                "$ref": "#/components/schemas/CreateLetterProperties"
-              }
-            ]
-          }
-        ]
-      },
-      "UpdateTemplate": {
+      "CreateUpdateTemplate": {
         "type": "object",
         "allOf": [
           {

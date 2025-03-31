@@ -70,12 +70,12 @@ export type SmsProperties = {
   message: string;
 };
 
-export type CreateLetterProperties = {
+export type CreateUpdateLetterProperties = {
   letterType: LetterType;
   language: Language;
 };
 
-export type LetterProperties = CreateLetterProperties & {
+export type LetterProperties = CreateUpdateLetterProperties & {
   files: LetterFiles;
 };
 
@@ -84,11 +84,13 @@ export type BaseTemplate = {
   name: string;
 };
 
-export type CreateTemplate = BaseTemplate &
-  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
-
-export type UpdateTemplate = BaseTemplate &
-  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
+export type CreateUpdateTemplate = BaseTemplate &
+  (
+    | NhsAppProperties
+    | EmailProperties
+    | SmsProperties
+    | CreateUpdateLetterProperties
+  );
 
 export type TemplateDto = BaseTemplate & {
   id: string;
@@ -181,7 +183,7 @@ export type PostV1TemplateByTemplateIdData = {
   /**
    * Template to update
    */
-  body: UpdateTemplate;
+  body: CreateUpdateTemplate;
   path: {
     /**
      * ID of template to update
@@ -216,7 +218,7 @@ export type PostV1TemplateData = {
   /**
    * Template to create
    */
-  body: CreateTemplate;
+  body: CreateUpdateTemplate;
   path?: never;
   query?: never;
   url: '/v1/template';

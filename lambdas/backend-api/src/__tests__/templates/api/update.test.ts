@@ -3,7 +3,7 @@ import { mock } from 'jest-mock-extended';
 import {
   ITemplateClient,
   TemplateDto,
-  UpdateTemplate,
+  CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/update';
 
@@ -138,7 +138,7 @@ describe('Template API - Update', () => {
   test('should return template', async () => {
     const { handler, mocks } = setup();
 
-    const update: UpdateTemplate = {
+    const update: CreateUpdateTemplate = {
       name: 'updated-name',
       message: 'message',
       templateType: 'SMS',

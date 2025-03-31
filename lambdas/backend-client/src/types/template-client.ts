@@ -1,14 +1,14 @@
-import { TemplateDto, CreateTemplate, UpdateTemplate } from './generated';
+import { TemplateDto, CreateUpdateTemplate } from './generated';
 import { Result } from './result';
 
 export interface ITemplateClient {
   createTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     owner: string
   ): Promise<Result<TemplateDto>>;
 
   createLetterTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     owner: string,
     pdf: File,
     csv?: File
@@ -16,7 +16,7 @@ export interface ITemplateClient {
 
   updateTemplate(
     templateId: string,
-    template: UpdateTemplate,
+    template: CreateUpdateTemplate,
     owner: string
   ): Promise<Result<TemplateDto>>;
 
