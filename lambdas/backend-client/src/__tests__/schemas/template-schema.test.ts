@@ -1,11 +1,11 @@
 import {
+  $CreateUpdateLetterPropertiesWithType,
   $CreateUpdateNonLetter,
-  CreateUpdateTemplate,
+  $CreateUpdateTemplate,
   isCreateUpdateTemplateValid,
   isTemplateDtoValid,
-  TemplateDto,
-} from 'nhs-notify-backend-client';
-import { $CreateUpdateTemplate } from '../../schemas';
+} from '../../schemas';
+import type { CreateUpdateTemplate, TemplateDto } from '../../types/generated';
 
 describe('Template schemas', () => {
   test.each([
@@ -77,24 +77,30 @@ describe('Template schemas', () => {
         templateType: 'NHS_APP',
       },
     },
+    {
+      schema: $CreateUpdateTemplate,
+      data: {
+        name: ' ',
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
+      },
+    },
   ])(
     '%p.templateType - should fail validation, when name, message or subject is whitespace',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
       const errorMessage = 'String must contain at least 1 character(s)';
 
-      const errors = {
-        fieldErrors: {
-          message: [errorMessage],
-          name: [errorMessage],
-        },
-      };
+      const emptyFields = Object.entries(data).flatMap(([k, v]) =>
+        v === ' ' ? [k] : []
+      );
 
-      if (data.templateType === 'EMAIL') {
-        Object.assign(errors.fieldErrors, {
-          subject: [errorMessage],
-        });
-      }
+      const errors = {
+        fieldErrors: Object.fromEntries(
+          emptyFields.map((field) => [field, [errorMessage]])
+        ),
+      };
 
       expect(result.error?.flatten()).toEqual(expect.objectContaining(errors));
     }
@@ -176,7 +182,7 @@ describe('Template schemas', () => {
     );
   });
 
-  test('$EmailTemplateFields - should fail validation, when no subject', async () => {
+  test('Email template fields - should fail validation, when no subject', async () => {
     const result = $CreateUpdateTemplate.safeParse({
       name: 'Test Template',
       message: 'a'.repeat(100_000),
@@ -192,12 +198,28 @@ describe('Template schemas', () => {
     );
   });
 
+  test('Letter template fields - should fail validation, when no letterType', async () => {
+    const result = $CreateUpdateLetterPropertiesWithType.safeParse({
+      name: 'Test Template',
+      templateType: 'LETTER',
+      language: 'en',
+    });
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          letterType: ['Required'],
+        },
+      })
+    );
+  });
+
   test.each([
     '<element>failed</element>',
     '<element><nested>nested</nested></element>',
     '<element attribute="failed">failed</element>',
   ])(
-    '$NhsAppTemplateFields - should fail validation, when invalid characters are present %p',
+    'App template fields - should fail validation, when invalid characters are present %p',
     async (message) => {
       const result = $CreateUpdateTemplate.safeParse({
         name: 'Test Template',
