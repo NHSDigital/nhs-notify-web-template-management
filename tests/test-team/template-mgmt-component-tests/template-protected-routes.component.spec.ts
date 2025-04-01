@@ -24,11 +24,11 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
 import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms-page';
 import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
-import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/temnplate-mgmt-template-submitted-letter-page';
+import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-view-submitted-email-page';
-import { TemplateMgmtViewSubmittedLetterPage } from '../pages/email/template-mgmt-view-submitted-letter-page';
+import { TemplateMgmtViewSubmittedLetterPage } from '../pages/letter/template-mgmt-view-submitted-letter-page';
 import { TemplateMgmtViewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
 import { TemplateMgmtViewSubmittedSmsPage } from '../pages/sms/template-mgmt-view-submitted-sms-page';
 

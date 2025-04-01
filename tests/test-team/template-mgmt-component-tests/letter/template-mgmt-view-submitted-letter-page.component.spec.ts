@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedLetterPage } from '../../pages/email/template-mgmt-view-submitted-letter-page';
+import { TemplateMgmtViewSubmittedLetterPage } from '../../pages/letter/template-mgmt-view-submitted-letter-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
