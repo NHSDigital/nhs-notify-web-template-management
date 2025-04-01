@@ -54,7 +54,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-sandbox-setup
           aws-region: ${{ env.AWS_REGION }}
       - name: "Get normalized branch name"
         id: normalize_branch_name
@@ -108,7 +108,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-accessibility-tests
           aws-region: eu-west-2
       - name: "Run accessibility test"
         run: make test-accessibility
@@ -143,7 +143,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-component-tests
           aws-region: eu-west-2
       - name: "Run ui component test"
         run: |
@@ -179,7 +179,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-api-tests
           aws-region: eu-west-2
       - name: "Run API test"
         run: |
@@ -216,7 +216,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-e2e-tests
           aws-region: eu-west-2
       - name: "Run E2E test"
         run:
@@ -246,7 +246,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
-          role-session-name: deployInfra
+          role-session-name: templates-ci-sandbox-teardown
           aws-region: eu-west-2
       - name: "Get normalized branch name"
         id: normalize_branch_name
