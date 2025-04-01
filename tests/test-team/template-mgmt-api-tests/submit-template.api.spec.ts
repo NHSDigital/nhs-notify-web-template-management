@@ -284,7 +284,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       });
     });
 
-    test('returns 400 - cannot submit a template when status is not NOT_YET_SUBMITTED', async ({
+    test('returns 400 - cannot submit a template when status is VIRUS_SCAN_FAILED', async ({
       request,
     }) => {
       const { multipart, contentType } =
