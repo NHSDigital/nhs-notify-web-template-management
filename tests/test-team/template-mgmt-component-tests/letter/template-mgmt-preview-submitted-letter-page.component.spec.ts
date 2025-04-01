@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtPreviewSubmittedLetterPage } from '../../pages/email/template-mgmt-preview-submitted-letter-page';
+import { TemplateMgmtPreviewSubmittedLetterPage } from '../../pages/letter/template-mgmt-preview-submitted-letter-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -60,7 +60,7 @@ test.describe('View submitted Letter message template Page', () => {
     baseURL,
   }) => {
     const previewSubmittedLetterTemplatePage =
-      new TemplateMgmtViewSubmittedLetterPage(page);
+      new TemplateMgmtPreviewSubmittedLetterPage(page);
 
     await previewSubmittedLetterTemplatePage.loadPage(templates.valid.id);
 
@@ -76,7 +76,7 @@ test.describe('View submitted Letter message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedLetterPage(page),
+        page: new TemplateMgmtPreviewSubmittedLetterPage(page),
         id: templates.valid.id,
         baseURL,
       };

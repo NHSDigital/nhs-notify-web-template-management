@@ -19,7 +19,7 @@ import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-pre
 import { TemplateMgmtPreviewNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-nhs-app-page';
 import { TemplateMgmtPreviewSmsPage } from '../pages/sms/template-mgmt-preview-sms-page';
 import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
-import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/email/template-mgmt-preview-submitted-letter-page';
+import { TemplateMgmtPreviewSubmittedLetterPage } from '../pages/letter/template-mgmt-preview-submitted-letter-page';
 import { TemplateMgmtPreviewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateMgmtPreviewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateMgmtStartPage } from '../pages/template-mgmt-start-page';
