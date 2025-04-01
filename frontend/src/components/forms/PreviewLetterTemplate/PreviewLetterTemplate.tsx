@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplate } from '@organisms/PreviewTemplate';
+import { PreviewTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   LetterTemplate,

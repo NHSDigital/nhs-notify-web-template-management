@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
-import { PreviewTemplate } from '@organisms/PreviewTemplate';
+import { PreviewTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   PageComponentProps,

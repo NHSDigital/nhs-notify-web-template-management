@@ -1,6 +1,6 @@
 import { mockDeep } from 'jest-mock-extended';
 import { render, screen } from '@testing-library/react';
-import { PreviewTemplate } from '@organisms/PreviewTemplate';
+import { PreviewTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
   EmailTemplate,
   FormState,
