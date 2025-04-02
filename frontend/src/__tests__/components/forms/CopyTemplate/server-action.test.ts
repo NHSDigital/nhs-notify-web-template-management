@@ -74,7 +74,7 @@ test('submit form - create email template from non-email template', async () => 
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/manage-templates',
+    '/message-templates',
     RedirectType.push
   );
 
@@ -113,7 +113,7 @@ test('submit form - create email template from email template', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/manage-templates',
+    '/message-templates',
     RedirectType.push
   );
 
@@ -151,7 +151,7 @@ test('submit form - create non-email template', async () => {
   );
 
   expect(mockRedirect).toHaveBeenCalledWith(
-    '/manage-templates',
+    '/message-templates',
     RedirectType.push
   );
 

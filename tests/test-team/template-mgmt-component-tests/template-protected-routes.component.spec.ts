@@ -2,16 +2,16 @@ import { test, expect } from '@playwright/test';
 import { glob } from 'glob';
 import { execSync } from 'node:child_process';
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
-import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
+import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
 import { TemplateMgmtPreviewNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-nhs-app-page';
-import { TemplateMgmtViewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
+import { TemplateMgmtViewSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms-page';
 import { TemplateMgmtPreviewSmsPage } from '../pages/sms/template-mgmt-preview-sms-page';
-import { TemplateMgmtViewSubmittedSmsPage } from '../pages/sms/template-mgmt-view-submitted-sms-page';
+import { TemplateMgmtViewSubmittedSmsPage } from '../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
-import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-view-submitted-email-page';
+import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
@@ -33,7 +33,7 @@ import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-pre
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const protectedPages = [
-  ManageTemplatesPage,
+  MessageTemplatesPage,
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,

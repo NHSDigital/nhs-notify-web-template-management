@@ -1,7 +1,7 @@
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
+import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
 import { getTemplates } from '@utils/form-actions';
 import { Metadata } from 'next';
 
@@ -12,15 +12,15 @@ import { Metadata } from 'next';
 // Which informs next it needs to be dynamically rendered
 export const dynamic = 'force-dynamic';
 
-const manageTemplatesContent = content.pages.manageTemplates;
+const messageTemplatesContent = content.pages.messageTemplates;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: manageTemplatesContent.pageTitle,
+    title: messageTemplatesContent.pageTitle,
   };
 }
 
-export default async function ManageTemplatesPage() {
+export default async function MessageTemplatesPage() {
   const availableTemplateList = await getTemplates();
 
   return (
@@ -28,21 +28,21 @@ export default async function ManageTemplatesPage() {
       <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
         <div className='nhsuk-grid-column-full'>
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-            {manageTemplatesContent.pageHeading}
+            {messageTemplatesContent.pageHeading}
           </h1>
 
           <NHSNotifyButton
             id='create-template-button'
-            href={manageTemplatesContent.createTemplateButton.url}
+            href={messageTemplatesContent.createTemplateButton.url}
           >
-            {manageTemplatesContent.createTemplateButton.text}
+            {messageTemplatesContent.createTemplateButton.text}
           </NHSNotifyButton>
 
           {availableTemplateList && availableTemplateList.length > 0 ? (
-            <ManageTemplates templateList={availableTemplateList} />
+            <MessageTemplates templateList={availableTemplateList} />
           ) : (
             <p id='no-templates-available' data-testid='no-templates-available'>
-              {manageTemplatesContent.emptyTemplates}
+              {messageTemplatesContent.emptyTemplates}
             </p>
           )}
         </div>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManageTemplates component matches snapshot with not submitted status 1`] = `
+exports[`MessageTemplates component matches snapshot with not submitted status 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -177,7 +177,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Name 
               </span>
               <a
-                href="/view-submitted-nhs-app-template/2"
+                href="/preview-submitted-nhs-app-template/2"
               >
                 Template 2
               </a>
@@ -265,7 +265,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
                 Name 
               </span>
               <a
-                href="/view-submitted-letter-template/3"
+                href="/preview-submitted-letter-template/3"
               >
                 Template 3
               </a>
@@ -334,7 +334,7 @@ exports[`ManageTemplates component matches snapshot with not submitted status 1`
 </DocumentFragment>
 `;
 
-exports[`ManageTemplates component matches snapshot with submitted status 1`] = `
+exports[`MessageTemplates component matches snapshot with submitted status 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
@@ -413,7 +413,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="/view-submitted-nhs-app-template/1"
+                href="/preview-submitted-nhs-app-template/1"
               >
                 Template 1
               </a>
@@ -501,7 +501,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="/view-submitted-nhs-app-template/2"
+                href="/preview-submitted-nhs-app-template/2"
               >
                 Template 2
               </a>
@@ -589,7 +589,7 @@ exports[`ManageTemplates component matches snapshot with submitted status 1`] = 
                 Name 
               </span>
               <a
-                href="/view-submitted-letter-template/3"
+                href="/preview-submitted-letter-template/3"
               >
                 Template 3
               </a>

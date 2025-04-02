@@ -7,7 +7,7 @@ exports[`ChooseATemplateTypePage - LETTER option is hidden when feature flag is 
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
     >
       <svg
         aria-hidden="true"
@@ -165,7 +165,7 @@ exports[`ChooseATemplateTypePage 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
     >
       <svg
         aria-hidden="true"
