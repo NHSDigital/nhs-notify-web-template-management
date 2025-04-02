@@ -1,5 +1,6 @@
 import 'aws-sdk-client-mock-jest';
 import { randomUUID } from 'node:crypto';
+import { mock } from 'jest-mock-extended';
 import {
   DynamoDBDocumentClient,
   GetCommand,
@@ -17,6 +18,7 @@ import {
   ValidatedUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import type { EventsClient } from '../../../templates/infra/events-client';
 import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
@@ -27,13 +29,15 @@ const templatesTableName = 'templates';
 
 const setup = () => {
   const ddbDocClient = mockClient(DynamoDBDocumentClient);
+  const eventsClient = mock<EventsClient>();
 
   const templateRepository = new TemplateRepository(
     ddbDocClient as unknown as DynamoDBDocumentClient,
-    templatesTableName
+    templatesTableName,
+    eventsClient
   );
 
-  return { templateRepository, mocks: { ddbDocClient } };
+  return { templateRepository, mocks: { ddbDocClient, eventsClient } };
 };
 
 const emailProperties: EmailProperties = {
@@ -481,12 +485,12 @@ describe('templateRepository', () => {
   });
 
   describe('setLetterFileVirusScanStatus', () => {
-    it('updates the virusScanStatus on the pdfTemplate field when the status is PASSED', async () => {
+    it('updates the virusScanStatus on the pdfTemplate field when the status is PASSED and emits an event', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
         { owner: 'template-owner', id: 'template-id' },
-        'pdfTemplate',
+        'pdf-template',
         'pdf-version-id',
         'PASSED'
       );
@@ -514,14 +518,24 @@ describe('templateRepository', () => {
           ':version': 'pdf-version-id',
         },
       });
+
+      expect(mocks.eventsClient.putEvent).toHaveBeenCalledWith({
+        'detail-type': 'template-file-scanned',
+        detail: {
+          fileType: 'pdf-template',
+          template: { id: 'template-id', owner: 'template-owner' },
+          versionId: 'pdf-version-id',
+          virusScanStatus: 'PASSED',
+        },
+      });
     });
 
-    it('updates the virusScanStatus on the testDataCsv field when the status is PASSED', async () => {
+    it('updates the virusScanStatus on the testDataCsv field when the status is PASSED and emits an event', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
         { owner: 'template-owner', id: 'template-id' },
-        'testDataCsv',
+        'test-data',
         'csv-version-id',
         'PASSED'
       );
@@ -549,14 +563,24 @@ describe('templateRepository', () => {
           ':version': 'csv-version-id',
         },
       });
+
+      expect(mocks.eventsClient.putEvent).toHaveBeenCalledWith({
+        'detail-type': 'template-file-scanned',
+        detail: {
+          fileType: 'test-data',
+          template: { id: 'template-id', owner: 'template-owner' },
+          versionId: 'csv-version-id',
+          virusScanStatus: 'PASSED',
+        },
+      });
     });
 
-    it('updates the virusScanStatus on the pdfTemplate field and the overall template status when the status is FAILED', async () => {
+    it('updates the virusScanStatus on the pdfTemplate field and the overall template status when the status is FAILED and emits an event', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
         { owner: 'template-owner', id: 'template-id' },
-        'pdfTemplate',
+        'pdf-template',
         'pdf-version-id',
         'FAILED'
       );
@@ -585,14 +609,24 @@ describe('templateRepository', () => {
           ':version': 'pdf-version-id',
         },
       });
+
+      expect(mocks.eventsClient.putEvent).toHaveBeenCalledWith({
+        'detail-type': 'template-file-scanned',
+        detail: {
+          fileType: 'pdf-template',
+          template: { id: 'template-id', owner: 'template-owner' },
+          versionId: 'pdf-version-id',
+          virusScanStatus: 'FAILED',
+        },
+      });
     });
 
-    it('updates the virusScanStatus on the testDataCsv field and the overall template status when the status is FAILED', async () => {
+    it('updates the virusScanStatus on the testDataCsv field and the overall template status when the status is FAILED and emits an event', async () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatus(
         { owner: 'template-owner', id: 'template-id' },
-        'testDataCsv',
+        'test-data',
         'csv-version-id',
         'FAILED'
       );
@@ -621,9 +655,19 @@ describe('templateRepository', () => {
           ':version': 'csv-version-id',
         },
       });
+
+      expect(mocks.eventsClient.putEvent).toHaveBeenCalledWith({
+        'detail-type': 'template-file-scanned',
+        detail: {
+          fileType: 'test-data',
+          template: { id: 'template-id', owner: 'template-owner' },
+          versionId: 'csv-version-id',
+          virusScanStatus: 'FAILED',
+        },
+      });
     });
 
-    it('swallows ConditionalCheckFailedExceptions', async () => {
+    it('swallows ConditionalCheckFailedExceptions and does not emit events', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.rejects(
@@ -636,14 +680,16 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterFileVirusScanStatus(
           { owner: 'template-owner', id: 'template-id' },
-          'testDataCsv',
+          'test-data',
           'csv-version-id',
           'FAILED'
         )
       ).resolves.not.toThrow();
+
+      expect(mocks.eventsClient.putEvent).not.toHaveBeenCalled();
     });
 
-    it('raises other exceptions', async () => {
+    it('raises other exceptions from the database', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.rejects(new Error('Something went wrong'));
@@ -651,11 +697,13 @@ describe('templateRepository', () => {
       await expect(
         templateRepository.setLetterFileVirusScanStatus(
           { owner: 'template-owner', id: 'template-id' },
-          'testDataCsv',
+          'test-data',
           'csv-version-id',
           'FAILED'
         )
       ).rejects.toThrow('Something went wrong');
+
+      expect(mocks.eventsClient.putEvent).not.toHaveBeenCalled();
     });
   });
 });

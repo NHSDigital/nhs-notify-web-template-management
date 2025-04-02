@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors if the event has no file-type 1`] = `
+"[
+  {
+    "expected": "'pdf-template' | 'test-data'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "fileType"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no template id 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "template",
+      "id"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no template owner 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "template",
+      "owner"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no version id 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "versionId"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has no virus scan status 1`] = `
+"[
+  {
+    "expected": "'PASSED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "virusScanStatus"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if the event has virus scan status FAILED 1`] = `
+"[
+  {
+    "received": "FAILED",
+    "code": "invalid_enum_value",
+    "options": [
+      "PASSED"
+    ],
+    "path": [
+      "detail",
+      "virusScanStatus"
+    ],
+    "message": "Invalid enum value. Expected 'PASSED', received 'FAILED'"
+  }
+]"
+`;

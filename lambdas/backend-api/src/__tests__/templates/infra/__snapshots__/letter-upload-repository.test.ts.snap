@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LetterUploadRepository getFileMetadata errors if file type is invalid in returned metadata 1`] = `
+"[
+  {
+    "received": "unknown",
+    "code": "invalid_enum_value",
+    "options": [
+      "pdf-template",
+      "test-data"
+    ],
+    "path": [
+      "file-type"
+    ],
+    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data', received 'unknown'"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if file type is missing in returned metadata 1`] = `
+"[
+  {
+    "expected": "'pdf-template' | 'test-data'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "file-type"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if owner is missing in returned metadata 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "owner"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if template-id is missing in returned metadata 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "template-id"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if test-data-provided value is invalid in returned metadata 1`] = `
+"[
+  {
+    "received": "unknown",
+    "code": "invalid_enum_value",
+    "options": [
+      "true",
+      "false"
+    ],
+    "path": [
+      "test-data-provided"
+    ],
+    "message": "Invalid enum value. Expected 'true' | 'false', received 'unknown'"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if user-filename is missing in returned metadata 1`] = `
+"[
+  {
+    "received": "unknown",
+    "code": "invalid_enum_value",
+    "options": [
+      "true",
+      "false"
+    ],
+    "path": [
+      "test-data-provided"
+    ],
+    "message": "Invalid enum value. Expected 'true' | 'false', received 'unknown'"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "user-filename"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository getFileMetadata errors if version-id is missing in returned metadata 1`] = `
+"[
+  {
+    "received": "unknown",
+    "code": "invalid_enum_value",
+    "options": [
+      "true",
+      "false"
+    ],
+    "path": [
+      "test-data-provided"
+    ],
+    "message": "Invalid enum value. Expected 'true' | 'false', received 'unknown'"
+  },
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "version-id"
+    ],
+    "message": "Required"
+  }
+]"
+`;

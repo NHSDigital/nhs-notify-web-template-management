@@ -9,6 +9,8 @@ module "build_template_lambda" {
     local.backend_lambda_entrypoints.update_template,
     local.backend_lambda_entrypoints.list_template,
     local.backend_lambda_entrypoints.set_file_virus_scan_status,
+    local.backend_lambda_entrypoints.copy_scanned_object_to_internal,
+    local.backend_lambda_entrypoints.delete_failed_scanned_object,
   ]
 }
 

@@ -1,18 +1,12 @@
 resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
   name        = "${local.csi}-virus-scan-passed"
-  description = "Forwards enriched events from quarantine bucket where GuardDuty virus scan has passed with no threats"
+  description = "Forwards 'template-file-scanned' domain events where virus scan has passed with no threats"
 
   event_pattern = jsonencode({
-    source      = ["templates.${var.environment}.${var.project}"]
-    detail-type = ["quarantine-scan-result-enriched"]
+    source      = [local.event_source]
+    detail-type = ["template-file-scanned"]
     detail = {
-      s3ObjectDetails = {
-        bucketName = [module.s3bucket_quarantine.id]
-        objectKey  = [{ prefix = "pdf-template/" }, { prefix = "test-data/" }]
-      }
-      scanResultDetails = {
-        scanResultStatus = ["NO_THREATS_FOUND"]
-      }
+      virusScanStatus = ["PASSED"]
     }
   })
 }
@@ -20,12 +14,6 @@ resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
 resource "aws_cloudwatch_event_target" "scan_passed_copy_object" {
   rule     = aws_cloudwatch_event_rule.virus_scan_passed.name
   arn      = module.lambda_copy_scanned_object_to_internal.function_arn
-  role_arn = aws_iam_role.handle_scan_passed.arn
-}
-
-resource "aws_cloudwatch_event_target" "scan_passed_set_file_status" {
-  rule     = aws_cloudwatch_event_rule.virus_scan_passed.name
-  arn      = module.lambda_set_file_virus_scan_status.function_arn
   role_arn = aws_iam_role.handle_scan_passed.arn
 }
 
@@ -49,7 +37,6 @@ data "aws_iam_policy_document" "handle_scan_passed" {
     actions = ["lambda:InvokeFunction"]
     resources = [
       module.lambda_copy_scanned_object_to_internal.function_arn,
-      module.lambda_set_file_virus_scan_status.function_arn,
     ]
   }
 }

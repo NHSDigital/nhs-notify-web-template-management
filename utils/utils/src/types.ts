@@ -1,4 +1,7 @@
-import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
+import type {
+  EventBridgeEvent,
+  GuardDutyScanResultNotificationEventDetail,
+} from 'aws-lambda';
 import {
   CreateLetterProperties,
   CreateTemplate,
@@ -7,6 +10,7 @@ import {
   NhsAppProperties,
   SmsProperties,
   TemplateDto,
+  VirusScanStatus,
 } from 'nhs-notify-backend-client';
 
 export type FormId =
@@ -96,4 +100,18 @@ export type GuardDutyMalwareScanStatusFailed = Exclude<
 export type GuardDutyMalwareScanStatusPassed = Extract<
   GuardDutyMalwareScanStatus,
   'NO_THREATS_FOUND'
+>;
+
+export type TemplateKey = { owner: string; id: string };
+export type FileType = 'pdf-template' | 'test-data';
+export type TemplateFileScannedEventDetailType = 'template-file-scanned';
+export type TemplateFileScannedEventDetail = {
+  template: TemplateKey;
+  fileType: FileType;
+  virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>;
+  versionId: string;
+};
+export type TemplateFileScannedEvent = EventBridgeEvent<
+  TemplateFileScannedEventDetailType,
+  TemplateFileScannedEventDetail
 >;

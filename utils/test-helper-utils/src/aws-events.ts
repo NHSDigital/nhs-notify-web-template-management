@@ -5,7 +5,13 @@ import type {
   GuardDutyScanResultNotificationEventDetail,
   SQSRecord,
 } from 'aws-lambda';
+import type {
+  TemplateFileScannedEvent,
+  TemplateFileScannedEventDetail,
+  TemplateFileScannedEventDetailType,
+} from 'nhs-notify-web-template-management-utils';
 
+// SQS Record
 type MakeSQSRecordParams = Partial<SQSRecord> & Pick<SQSRecord, 'body'>;
 
 export const makeSQSRecord = (record: MakeSQSRecordParams): SQSRecord => {
@@ -27,6 +33,7 @@ export const makeSQSRecord = (record: MakeSQSRecordParams): SQSRecord => {
   };
 };
 
+// EventBridge Event Base
 type MakeEventBridgeEventParams<
   TDetailType extends string,
   TDetail,
@@ -52,24 +59,7 @@ const makeEventBridgeEvent = <
   ...event,
 });
 
-type MakeGuardDutyMalwareScanResultNotificationEventParams = Omit<
-  MakeEventBridgeEventParams<
-    'GuardDuty Malware Protection Object Scan Result',
-    GuardDutyScanResultNotificationEventDetail,
-    'aws.guardduty'
-  >,
-  'detail-type' | 'source'
->;
-
-export const makeGuardDutyMalwareScanResultNotificationEvent = (
-  event: MakeGuardDutyMalwareScanResultNotificationEventParams
-): GuardDutyScanResultNotificationEvent =>
-  makeEventBridgeEvent({
-    ...event,
-    source: 'aws.guardduty',
-    'detail-type': 'GuardDuty Malware Protection Object Scan Result',
-  });
-
+// GuardDuty Malware Scan Result Event
 type MakeGuardDutyMalwareScanResultNotificationEventDetailParams = Partial<
   Omit<
     GuardDutyScanResultNotificationEventDetail,
@@ -109,66 +99,55 @@ export const makeGuardDutyMalwareScanResultNotificationEventDetail = (
   },
 });
 
-type QuarantineScanResultEnrichedEventDetail =
-  GuardDutyScanResultNotificationEventDetail & {
-    s3ObjectDetails: GuardDutyScanResultNotificationEventDetail['s3ObjectDetails'] & {
-      metadata: Record<string, string>;
-    };
-  };
-
-type MakeQuarantineScanResultEnrichedEventDetailInput = Partial<
-  Omit<
-    QuarantineScanResultEnrichedEventDetail,
-    's3ObjectDetails' | 'scanResultDetails'
-  >
-> & {
-  s3ObjectDetails: Partial<
-    QuarantineScanResultEnrichedEventDetail['s3ObjectDetails']
-  > &
-    Pick<
-      QuarantineScanResultEnrichedEventDetail['s3ObjectDetails'],
-      'objectKey' | 'bucketName'
-    >;
-} & Partial<{
-    scanResultDetails: Partial<
-      QuarantineScanResultEnrichedEventDetail['scanResultDetails']
-    >;
-  }>;
-
-type MakeQuarantineScanResultEnrichedEventParams = Omit<
+type MakeGuardDutyMalwareScanResultNotificationEventParams = Omit<
   MakeEventBridgeEventParams<
-    'quarantine-scan-result-enriched',
-    QuarantineScanResultEnrichedEventDetail
+    'GuardDuty Malware Protection Object Scan Result',
+    GuardDutyScanResultNotificationEventDetail,
+    'aws.guardduty'
   >,
   'detail-type' | 'source' | 'detail'
-> & { detail: MakeQuarantineScanResultEnrichedEventDetailInput };
+> & { detail: MakeGuardDutyMalwareScanResultNotificationEventDetailParams };
 
-export const makeQuarantineScanResultEnrichedEvent = (
-  event: MakeQuarantineScanResultEnrichedEventParams
-): EventBridgeEvent<
-  'quarantine-scan-result-enriched',
-  QuarantineScanResultEnrichedEventDetail
-> =>
+export const makeGuardDutyMalwareScanResultNotificationEvent = (
+  event: MakeGuardDutyMalwareScanResultNotificationEventParams
+): GuardDutyScanResultNotificationEvent =>
   makeEventBridgeEvent({
     ...event,
-    'detail-type': 'quarantine-scan-result-enriched',
+    source: 'aws.guardduty',
+    'detail-type': 'GuardDuty Malware Protection Object Scan Result',
+    detail: makeGuardDutyMalwareScanResultNotificationEventDetail(event.detail),
+  });
+
+// NHS Notify Template File Scanned Event
+type MakeTemplateFileScannedEventDetailParams = Partial<
+  Omit<TemplateFileScannedEventDetail, 'template'>
+> &
+  Pick<TemplateFileScannedEventDetail, 'template'>;
+
+const makeTemplateFileScannedEventDetail = (
+  detail: MakeTemplateFileScannedEventDetailParams
+): TemplateFileScannedEventDetail => ({
+  fileType: 'pdf-template',
+  virusScanStatus: 'PASSED',
+  versionId: randomUUID(),
+  ...detail,
+});
+
+type MakeTemplateFileScannedEventParams = Omit<
+  MakeEventBridgeEventParams<
+    TemplateFileScannedEventDetailType,
+    TemplateFileScannedEventDetail,
+    'templates.test.nhs-notify'
+  >,
+  'detail-type' | 'source' | 'detail'
+> & { detail: MakeTemplateFileScannedEventDetailParams };
+
+export const makeTemplateFileScannedEvent = (
+  event: MakeTemplateFileScannedEventParams
+): TemplateFileScannedEvent =>
+  makeEventBridgeEvent({
+    ...event,
     source: 'templates.test.nhs-notify',
-    detail: {
-      schemaVersion: '1.0',
-      scanStatus: 'COMPLETED',
-      resourceType: 'S3_OBJECT',
-      ...event.detail,
-      s3ObjectDetails: {
-        eTag: randomUUID(),
-        s3Throttled: false,
-        versionId: randomUUID(),
-        metadata: {},
-        ...event.detail.s3ObjectDetails,
-      },
-      scanResultDetails: {
-        scanResultStatus: 'NO_THREATS_FOUND',
-        threats: null,
-        ...event.detail.scanResultDetails,
-      },
-    },
+    'detail-type': 'template-file-scanned',
+    detail: makeTemplateFileScannedEventDetail(event.detail),
   });
