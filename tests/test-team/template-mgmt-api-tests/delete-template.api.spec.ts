@@ -109,14 +109,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
               partName: 'letterPdf',
               fileName: 'template.pdf',
               fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf,
+              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
             },
             {
               _type: 'file',
               partName: 'testCsv',
               fileName: 'test-data.csv',
               fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv,
+              file: pdfUploadFixtures.withPersonalisation.csv.open(),
             },
           ]
         );
@@ -173,14 +173,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
               partName: 'letterPdf',
               fileName: 'template.pdf',
               fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf,
+              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
             },
             {
               _type: 'file',
               partName: 'testCsv',
               fileName: 'test-data.csv',
               fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv,
+              file: pdfUploadFixtures.withPersonalisation.csv.open(),
             },
           ]
         );
@@ -268,14 +268,14 @@ test.describe('DELETE /v1/template/:templateId', () => {
               partName: 'letterPdf',
               fileName: 'template.pdf',
               fileType: 'application/pdf',
-              file: pdfUploadFixtures.withPersonalisation.pdf,
+              file: pdfUploadFixtures.withPersonalisation.pdf.open(),
             },
             {
               _type: 'file',
               partName: 'testCsv',
               fileName: 'test-data.csv',
               fileType: 'text/csv',
-              file: pdfUploadFixtures.withPersonalisation.csv,
+              file: pdfUploadFixtures.withPersonalisation.csv.open(),
             },
           ]
         );
