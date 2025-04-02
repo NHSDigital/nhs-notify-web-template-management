@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto';
-import z from 'zod';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
   ITemplateClient,
