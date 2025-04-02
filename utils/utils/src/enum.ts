@@ -3,7 +3,6 @@ import {
   TemplateStatus,
   LetterType,
   Language,
-  VIRUS_SCAN_STATUS_LIST,
 } from 'nhs-notify-backend-client';
 
 const languageMap: Record<Language, string> = {
