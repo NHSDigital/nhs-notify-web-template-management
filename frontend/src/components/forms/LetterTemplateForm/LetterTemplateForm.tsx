@@ -15,7 +15,7 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
-  CreateLetterTemplate,
+  CreateUpdateLetterTemplate,
   FormErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -25,10 +25,10 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
-import { $CreateLetterTemplateSchema } from './form-schema';
+import { $CreateUpdateLetterTemplateForm } from './form-schema';
 
 export const LetterTemplateForm: FC<
-  PageComponentProps<CreateLetterTemplate>
+  PageComponentProps<CreateUpdateLetterTemplate>
 > = ({ initialState }) => {
   const {
     backLinkText,
@@ -83,7 +83,7 @@ export const LetterTemplateForm: FC<
   const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    const validationResult = $CreateLetterTemplateSchema.safeParse(data);
+    const validationResult = $CreateUpdateLetterTemplateForm.safeParse(data);
     if (!validationResult.success) {
       event.preventDefault();
       setValidationError(validationResult.error.flatten());

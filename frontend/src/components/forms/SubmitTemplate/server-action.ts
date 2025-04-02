@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate, saveTemplate } from '@utils/form-actions';
+import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
 import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -26,10 +26,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   }
 
   try {
-    await saveTemplate({
-      ...validatedTemplate,
-      templateStatus: 'SUBMITTED',
-    });
+    await setTemplateToSubmitted(templateId);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,

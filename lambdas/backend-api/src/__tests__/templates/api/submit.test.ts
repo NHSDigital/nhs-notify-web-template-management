@@ -1,11 +1,7 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  TemplateDto,
-  CreateUpdateTemplate,
-  ITemplateClient,
-} from 'nhs-notify-backend-client';
-import { createHandler } from '@backend-api/templates/api/create';
+import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/submit';
 
 const setup = () => {
   const templateClient = mock<ITemplateClient>();
@@ -15,7 +11,7 @@ const setup = () => {
   return { handler, mocks: { templateClient } };
 };
 
-describe('Template API - Create', () => {
+describe('Template API - Submit', () => {
   beforeEach(jest.resetAllMocks);
 
   test('should return 400 - Invalid request when, no user in requestContext', async () => {
@@ -23,7 +19,7 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: undefined } },
-      body: JSON.stringify({ id: 1 }),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -36,26 +32,16 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).not.toHaveBeenCalled();
+    expect(mocks.templateClient.submitTemplate).not.toHaveBeenCalled();
   });
 
-  test('should return 400 - Invalid request when, no body', async () => {
+  test('should return 400 - Invalid request when, no templateId', async () => {
     const { handler, mocks } = setup();
-
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
-      error: {
-        code: 400,
-        message: 'Validation failed',
-        details: {
-          templateType: 'Required',
-        },
-      },
-      data: undefined,
-    });
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
-      body: undefined,
+      body: JSON.stringify({ name: 'test' }),
+      pathParameters: { templateId: undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -64,20 +50,17 @@ describe('Template API - Create', () => {
       statusCode: 400,
       body: JSON.stringify({
         statusCode: 400,
-        technicalMessage: 'Validation failed',
-        details: {
-          templateType: 'Required',
-        },
+        technicalMessage: 'Invalid request',
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith({}, 'sub');
+    expect(mocks.templateClient.submitTemplate).not.toHaveBeenCalled();
   });
 
-  test('should return error when creating template fails', async () => {
+  test('should return error when submitting template fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
+    mocks.templateClient.submitTemplate.mockResolvedValueOnce({
       error: {
         code: 500,
         message: 'Internal server error',
@@ -86,7 +69,7 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
-      body: JSON.stringify({ id: 1 }),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -99,8 +82,8 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      { id: 1 },
+    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
+      '1-2-3',
       'sub'
     );
   });
@@ -108,37 +91,34 @@ describe('Template API - Create', () => {
   test('should return template', async () => {
     const { handler, mocks } = setup();
 
-    const create: CreateUpdateTemplate = {
+    const response: TemplateDto = {
+      id: '1-2-3',
       name: 'updated-name',
       message: 'message',
+      templateStatus: 'SUBMITTED',
       templateType: 'SMS',
-    };
-    const response: TemplateDto = {
-      ...create,
-      id: 'id',
-      templateStatus: 'NOT_YET_SUBMITTED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
+    mocks.templateClient.submitTemplate.mockResolvedValueOnce({
       data: response,
     });
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
-      body: JSON.stringify(create),
+      pathParameters: { templateId: '1-2-3' },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
 
     expect(result).toEqual({
-      statusCode: 201,
-      body: JSON.stringify({ statusCode: 201, template: response }),
+      statusCode: 200,
+      body: JSON.stringify({ statusCode: 200, template: response }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      create,
+    expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
+      '1-2-3',
       'sub'
     );
   });
