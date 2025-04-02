@@ -24,6 +24,7 @@ locals {
     list_template              = "src/templates/list.ts"
     set_file_virus_scan_status = "src/templates/set-letter-file-virus-scan-status.ts"
     submit_template            = "src/templates/submit.ts"
+    template_client            = "src/index.ts"
     update_template            = "src/templates/update.ts"
   }
 
