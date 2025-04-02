@@ -26,6 +26,7 @@ export const baseJestConfig: Config = {
 
   transform: { '\\.ts$': '@swc/jest' },
   testPathIgnorePatterns: ['.build'],
+  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

@@ -13,3 +13,11 @@ output "cognito_user_pool_client_id" {
 output "templates_table_name" {
   value = module.backend_api.templates_table_name
 }
+
+output "internal_bucket_name" {
+  value = module.backend_api.internal_bucket_name
+}
+
+output "quarantine_bucket_name" {
+  value = module.backend_api.quarantine_bucket_name
+}
