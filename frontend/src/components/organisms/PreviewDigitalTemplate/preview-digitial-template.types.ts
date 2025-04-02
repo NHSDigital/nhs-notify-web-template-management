@@ -5,7 +5,7 @@ import { TemplateDto } from 'nhs-notify-backend-client';
 export type PreviewTemplateProps = {
   sectionHeading: string | undefined;
   template: TemplateDto;
-  
+
   form: {
     errorHeading: string;
   } & NHSNotifyRadioButtonFormProps;
