@@ -6,7 +6,13 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
-import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
+import content from '@content/content';
+import { getBasePath } from '@utils/get-base-path';
+import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
+import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import Link from 'next/link';
+import { BackLink } from 'nhsuk-react-components';
 
 const PreviewLetterTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
@@ -19,7 +25,33 @@ const PreviewLetterTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate initialState={validatedTemplate} />;
+  const { backLinkText, buttonText } = content.components.previewLetterTemplate;
+  const basePath = getBasePath();
+
+  return (
+    <>
+      <BackLink href={`${basePath}/manage-templates`} id='back-link'>
+        {backLinkText}
+      </BackLink>
+      <NHSNotifyMain>
+        <div className='nhsuk-grid-row'>
+          <div className='nhsuk-grid-column-full'>
+            <PreviewTemplateDetails.Letter template={validatedTemplate} />
+            <NHSNotifyButton
+              data-testid='submit-button'
+              id='preview-letter-template-submit-button'
+              href={`${basePath}/submit-letter-template/${validatedTemplate.id}`}
+            >
+              {buttonText}
+            </NHSNotifyButton>
+            <p>
+              <Link href='/manage-templates'>{backLinkText}</Link>
+            </p>
+          </div>
+        </div>
+      </NHSNotifyMain>
+    </>
+  );
 };
 
 export default PreviewLetterTemplatePage;

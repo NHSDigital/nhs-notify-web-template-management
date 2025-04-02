@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
-import { PreviewTemplate } from '@organisms/PreviewDigitalTemplate';
+import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   PageComponentProps,
@@ -40,7 +40,7 @@ export function PreviewSMSTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplate
+            <PreviewDigitalTemplate
               template={initialState}
               sectionHeading={isFromEditPage ? sectionHeading : undefined}
               form={{

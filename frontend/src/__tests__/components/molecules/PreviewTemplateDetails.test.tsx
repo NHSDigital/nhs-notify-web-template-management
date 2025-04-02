@@ -119,6 +119,37 @@ describe('PreviewTemplateDetails component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('renders letter template when testPersonalisationInputFile is set', () => {
+    const container = render(
+      <PreviewTemplateDetails.Letter
+        template={{
+          id: 'template-id',
+          name: 'Example template',
+          templateStatus: 'SUBMITTED',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'fr',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PENDING',
+            },
+            testDataCsv: {
+              fileName: 'file.csv',
+              currentVersion: '622AB7FA-29BA-418A-B1B6-1E63FB299269',
+              virusScanStatus: 'PENDING',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders component correctly', () => {
     render(
       <PreviewTemplateDetails
