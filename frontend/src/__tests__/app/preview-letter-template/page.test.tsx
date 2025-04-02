@@ -38,16 +38,16 @@ const templateDTO = {
   },
 } satisfies TemplateDto;
 
+const letterTemplate: LetterTemplate = {
+  ...templateDTO,
+  templateType: 'LETTER',
+  templateStatus: 'NOT_YET_SUBMITTED',
+};
+
 describe('PreviewLetterTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-
-  const letterTemplate: LetterTemplate = {
-    ...templateDTO,
-    templateType: 'LETTER',
-    templateStatus: 'NOT_YET_SUBMITTED',
-  };
 
   it('should load page', async () => {
     getTemplateMock.mockResolvedValueOnce(templateDTO);
