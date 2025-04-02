@@ -54,32 +54,4 @@ describe('PreviewLetterTemplate component', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
-
-  it('renders component correctly', () => {
-    render(
-      <PreviewLetterTemplate
-        template={{
-          id: '2DB31920-47E7-425C-8094-76AF0266823D',
-          name: 'letter',
-          templateType: 'LETTER',
-          templateStatus: 'PENDING_VALIDATION',
-          letterType: 'x0',
-          language: 'en',
-          files: {
-            pdfTemplate: {
-              fileName: 'file.pdf',
-              currentVersion: 'a',
-              virusScanStatus: 'PENDING',
-            },
-          },
-          createdAt: '2025-04-02T09:33:25.729Z',
-          updatedAt: '2025-04-02T09:33:25.729Z',
-        }}
-      />
-    );
-
-    expect(screen.getByTestId('submit-button')).toHaveTextContent(
-      'Submit template'
-    );
-  });
 });

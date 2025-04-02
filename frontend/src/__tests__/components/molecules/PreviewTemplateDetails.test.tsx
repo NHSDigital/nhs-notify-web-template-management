@@ -93,7 +93,7 @@ describe('PreviewTemplateDetails component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('renders letter template when testPersonalisationInputFile is not set', () => {
+  it('renders letter template when testDataCsv is not present', () => {
     const container = render(
       <PreviewTemplateDetails.Letter
         template={{
