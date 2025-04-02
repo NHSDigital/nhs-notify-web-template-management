@@ -17,21 +17,21 @@
   ],
   "types": "src/index.ts",
   "dependencies": {
-    "@hey-api/openapi-ts": "^0.64.10",
-    "axios": "^1.7.9",
+    "@hey-api/openapi-ts": "^0.64.13",
+    "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@swc/core": "^1.10.1",
+    "@swc/core": "^1.11.13",
     "@swc/jest": "^0.2.37",
-    "@tsconfig/node20": "^20.1.4",
+    "@tsconfig/node20": "^20.1.5",
     "@pact-foundation/pact": "13.1.4",
     "@pact-foundation/pact-cli": "16.0.1",
     "axios-mock-adapter": "^2.1.0",
     "esbuild": "^0.24.0",
-    "jest-mock-extended": "^4.0.0-beta1",
+    "jest-mock-extended": "^3.0.7",
     "nhs-notify-web-template-management-utils": "^0.0.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.8.2"
   }
 }
