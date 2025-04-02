@@ -19,7 +19,7 @@ const PreviewLetterTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate initialState={validatedTemplate} />;
+  return <PreviewLetterTemplate template={validatedTemplate} />;
 };
 
 export default PreviewLetterTemplatePage;

@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewLetterTemplate component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template ID
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                53525D03-1BC1-4563-ABF9-A74FF04142AF
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Type
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                Letter - Arabic
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Status
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <strong
+                  class="nhsuk-tag"
+                >
+                  Not yet submitted
+                </strong>
+              </div>
+            </div>
+            <div
+              class="nhsuk-grid-row preview__row"
+            >
+              <div
+                class="nhsuk-grid-column-one-third preview__col"
+              >
+                <div
+                  class="preview__col_heading"
+                >
+                  Template file
+                </div>
+              </div>
+              <div
+                class="nhsuk-grid-column-two-thirds col"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          draggable="false"
+          href="/templates/submit-letter-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
+          id="preview-letter-template-submit-button"
+          role="button"
+        >
+          Submit template
+        </a>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
