@@ -214,7 +214,7 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetails component renders letter template when testPersonalisationInputFile is not set 1`] = `
+exports[`PreviewTemplateDetails component renders letter template when testDataCsv is not present 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
