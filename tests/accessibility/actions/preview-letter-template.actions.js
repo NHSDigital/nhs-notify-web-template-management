@@ -18,5 +18,4 @@ const previewLetterTemplatePage = (baseUrl) => ({
 
 module.exports = {
   previewLetterTemplatePage,
-  previewLetterTemplateErrorPage,
 };
