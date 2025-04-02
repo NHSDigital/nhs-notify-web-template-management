@@ -47,6 +47,7 @@ No requirements.
 | <a name="module_sqs_virus_scan_failed_delete_object_dlq"></a> [sqs\_virus\_scan\_failed\_delete\_object\_dlq](#module\_sqs\_virus\_scan\_failed\_delete\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_sqs_virus_scan_passed_copy_object_dlq"></a> [sqs\_virus\_scan\_passed\_copy\_object\_dlq](#module\_sqs\_virus\_scan\_passed\_copy\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
 | <a name="module_sqs_virus_scan_set_file_status_dlq"></a> [sqs\_virus\_scan\_set\_file\_status\_dlq](#module\_sqs\_virus\_scan\_set\_file\_status\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v1.0.8 |
+| <a name="module_submit_template_lambda"></a> [submit\_template\_lambda](#module\_submit\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_update_template_lambda"></a> [update\_template\_lambda](#module\_update\_template\_lambda) | ../lambda-function | n/a |
 ## Outputs
 
