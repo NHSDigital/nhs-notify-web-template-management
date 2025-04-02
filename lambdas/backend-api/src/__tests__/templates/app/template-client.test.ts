@@ -809,8 +809,6 @@ describe('templateClient', () => {
 
       const { owner: _1, version: _2 } = finalTemplate;
 
-      mocks.generateVersionId.mockReturnValueOnce(versionId);
-
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
       });
