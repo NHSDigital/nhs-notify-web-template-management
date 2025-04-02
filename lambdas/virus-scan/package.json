@@ -19,13 +19,13 @@
     "esbuild": "^0.24.0",
     "jest": "^29.7.0",
     "nhs-notify-web-template-management-test-helper-utils": "*",
-    "ts-jest": "^29.2.5",
+    "ts-jest": "^29.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.8.2"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.775.0",
     "nhs-notify-web-template-management-utils": "*",
-    "zod": "^3.23.8"
+    "zod": "^3.24.2"
   }
 }
