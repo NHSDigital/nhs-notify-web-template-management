@@ -895,6 +895,34 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result when attempting to update a letter', async () => {
+      const { templateClient } = setup();
+
+      const data: CreateUpdateTemplate = {
+        name: 'name',
+        templateType: 'LETTER',
+        language: 'it',
+        letterType: 'q1',
+      };
+
+      const result = await templateClient.updateTemplate(
+        templateId,
+        data,
+        owner
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: {
+            templateType:
+              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+          },
+        }),
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
