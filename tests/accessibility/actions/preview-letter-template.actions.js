@@ -16,21 +16,6 @@ const previewLetterTemplatePage = (baseUrl) => ({
   actions: pageActions,
 });
 
-const previewLetterTemplateErrorPage = (baseUrl) => ({
-  name: 'preview-letter-template-error',
-  url: `${baseUrl}/preview-letter-template/${templateId}`,
-  actions: [
-    ...pageActions,
-    'click element #preview-letter-template-submit-button',
-    'wait for element .nhsuk-error-summary__title to be visible',
-  ],
-  ignore: [
-    // NHS error summary component has a H2 above the H1.
-    'WCAG2AA.Principle1.Guideline1_3.1_3_1_AAA.G141',
-  ],
-});
-
 module.exports = {
   previewLetterTemplatePage,
-  previewLetterTemplateErrorPage,
 };

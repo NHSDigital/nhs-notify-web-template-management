@@ -236,17 +236,8 @@ const previewEmailTemplate = {
 };
 
 const previewLetterTemplate = {
-  sectionHeading: 'Template saved',
-  form: {
-    errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next?',
-    options: [
-      { id: 'letter-edit', text: 'Edit template' },
-      { id: 'letter-submit', text: 'Submit template' },
-    ],
-    buttonText: 'Continue',
-  },
   backLinkText: backToAllTemplates,
+  buttonText: 'Submit template',
 };
 
 const previewNHSAppTemplate = {

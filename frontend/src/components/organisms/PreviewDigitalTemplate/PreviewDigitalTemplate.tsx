@@ -2,9 +2,9 @@
 
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { PreviewTemplateProps } from './preview-template.types';
+import { PreviewTemplateProps } from './preview-digitial-template.types';
 
-export function PreviewTemplate({
+export function PreviewDigitalTemplate({
   form,
   ...props
 }: Readonly<PreviewTemplateProps>) {

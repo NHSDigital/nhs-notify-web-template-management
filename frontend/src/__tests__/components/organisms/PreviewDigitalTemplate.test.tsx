@@ -1,18 +1,18 @@
 import { mockDeep } from 'jest-mock-extended';
 import { render, screen } from '@testing-library/react';
-import { PreviewTemplate } from '@organisms/PreviewTemplate';
+import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
   EmailTemplate,
   FormState,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 
-describe('PreviewTemplate component', () => {
+describe('PreviewDigitalTemplate component', () => {
   beforeEach(jest.resetAllMocks);
 
   it('matches snapshot', () => {
     const container = render(
-      <PreviewTemplate
+      <PreviewDigitalTemplate
         sectionHeading='NHS app message template'
         template={mockDeep<NHSAppTemplate>({
           id: 'template-id',
@@ -48,7 +48,7 @@ describe('PreviewTemplate component', () => {
       },
     };
     const container = render(
-      <PreviewTemplate
+      <PreviewDigitalTemplate
         sectionHeading='NHS app message template'
         template={mockDeep<NHSAppTemplate>({
           id: 'template-id',
@@ -76,7 +76,7 @@ describe('PreviewTemplate component', () => {
 
   it('renders component correctly', () => {
     render(
-      <PreviewTemplate
+      <PreviewDigitalTemplate
         sectionHeading='Email template'
         template={mockDeep<EmailTemplate>({
           id: 'template-id',
