@@ -47,7 +47,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
           Our service team will send you a proof of this letter template by email.
         </p>
         <p>
-          This email will also tell you what you need todo next.
+          This email will also tell you what you need to do next.
         </p>
         <div
           class="nhsuk-warning-callout"
