@@ -9,4 +9,6 @@ module "sftp_upload_queue" {
   name           = "sftp-upload"
 
   sqs_kms_key_arn = var.kms_key_arn
+
+  create_dlq = true
 }
