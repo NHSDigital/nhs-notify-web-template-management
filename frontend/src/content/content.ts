@@ -354,7 +354,7 @@ const submitLetterTemplate = {
   afterSubmissionHeading: 'After you submit this template',
   afterSubmissionText: [
     'Our service team will send you a proof of this letter template by email.',
-    'This email will also tell you what you need todo next.',
+    'This email will also tell you what you need to do next.',
   ],
   warningCalloutLabel: 'Important',
   warningCalloutText:

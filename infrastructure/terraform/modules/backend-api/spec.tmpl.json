@@ -649,9 +649,6 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
-          },
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
           }
         }
       },
