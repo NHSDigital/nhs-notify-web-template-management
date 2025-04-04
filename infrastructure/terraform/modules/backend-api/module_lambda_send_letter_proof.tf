@@ -10,6 +10,10 @@ module "lambda_send_letter_proof" {
   log_retention_in_days = var.log_retention_in_days
 
   execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
+
+  environment_variables = {
+    CSI = local.csi
+  }
 }
 
 data "aws_iam_policy_document" "send_letter_proof" {
@@ -36,6 +40,17 @@ data "aws_iam_policy_document" "send_letter_proof" {
     ]
 
     resources = ["${module.s3bucket_internal.arn}/*"]
+  }
+
+  statement {
+    sid    = "AllowSSMParameterRead"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+    ]
+    resources = [
+      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${local.csi}/*/sftp-config"
+    ]
   }
 
   statement {

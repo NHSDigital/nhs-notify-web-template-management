@@ -87,3 +87,11 @@ variable "dynamodb_kms_key_arn" {
   description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
   default     = ""
 }
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+  description = "Letter suppliers enabled in the environment"
+}

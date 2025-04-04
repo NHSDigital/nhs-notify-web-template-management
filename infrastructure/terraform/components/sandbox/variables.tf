@@ -62,3 +62,18 @@ variable "kms_deletion_window" {
   description = "When a kms key is deleted, how long should it wait in the pending deletion state?"
   default     = "30"
 }
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+  default = {
+    "WTMMOCK" = {
+      enable_polling   = true
+      default_supplier = true
+    }
+  }
+  description = "Letter suppliers enabled in the environment"
+}
+
