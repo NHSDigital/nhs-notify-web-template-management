@@ -10,7 +10,7 @@ import {
   CreateUpdateTemplate,
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
-  CreateUpdateLetterProperties,
+  CreateLetterProperties,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -518,11 +518,10 @@ export class TemplateRepository {
       );
     }
     if (template.templateType === 'LETTER') {
-      values =
-        this.attributeValuesFromMapAndTemplate<CreateUpdateLetterProperties>(
-          letterAttributes,
-          template
-        );
+      values = this.attributeValuesFromMapAndTemplate<CreateLetterProperties>(
+        letterAttributes,
+        template
+      );
     }
 
     return values;

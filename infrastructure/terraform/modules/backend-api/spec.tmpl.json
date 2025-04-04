@@ -637,7 +637,7 @@
           }
         }
       },
-      "CreateUpdateLetterProperties": {
+      "CreateLetterProperties": {
         "type": "object",
         "required": [
           "letterType",
@@ -655,7 +655,7 @@
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateUpdateLetterProperties"
+            "$ref": "#/components/schemas/CreateLetterProperties"
           },
           {
             "type": "object",
@@ -703,7 +703,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateUpdateLetterProperties"
+                "$ref": "#/components/schemas/CreateLetterProperties"
               }
             ]
           }

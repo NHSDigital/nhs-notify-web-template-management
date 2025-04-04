@@ -686,7 +686,7 @@ describe('templateRepository', () => {
         version: 1,
         name: 'updated-name',
         message: 'updated-message',
-        templateStatus: 'SUBMITTED',
+        templateStatus: 'DELETED',
         templateType: 'NHS_APP',
         updatedAt: 'now',
         createdAt: 'yesterday',
