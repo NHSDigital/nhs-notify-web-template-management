@@ -16,6 +16,7 @@ import {
 import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
+import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 
 function createTemplates(owner: string) {
   return {
@@ -44,6 +45,15 @@ function createTemplates(owner: string) {
       name: 'test-template-nhs-app',
       message: 'test example content',
     }),
+    letter: {
+      ...TemplateFactory.createLetterTemplate(
+        'valid-submitted-letter-template',
+        owner,
+        'test-template-letter',
+        'PASSED'
+      ),
+      templateStatus: 'SUBMITTED',
+    },
   };
 }
 
@@ -77,6 +87,11 @@ test.describe('Template Submitted Page', () => {
       channelName: 'nhs-app',
       channelIdentifier: 'nhs-app',
       PageModel: TemplateMgmtTemplateSubmittedNhsAppPage,
+    },
+    {
+      channelName: 'letter',
+      channelIdentifier: 'letter',
+      PageModel: TemplateMgmtTemplateSubmittedLetterPage,
     },
   ] as const) {
     // eslint-disable-next-line no-loop-func

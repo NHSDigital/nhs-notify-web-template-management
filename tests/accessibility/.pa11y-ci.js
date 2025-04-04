@@ -1,3 +1,4 @@
+const { readFileSync } = require('node:fs');
 const { performCheck } = require('./helpers');
 const {
   chooseATemplatePage,
@@ -16,20 +17,24 @@ const {
   previewLetterTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
+  letterTemplateSubmittedPage,
   previewTextMessageTemplatePage,
   previewTextMessageTemplateErrorPage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
   submitEmailTemplatePage,
+  submitLetterTemplatePage,
   emailTemplateSubmittedPage,
-  NhsAppTemplateSubmittedPage,
+  nhsAppTemplateSubmittedPage,
   manageTemplatesPage,
   viewNotYetSubmittedEmailTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
+  viewNotYetSubmittedLetterTemplatePage,
   viewSubmittedEmailTemplatePage,
   viewSubmittedNHSAppTemplatePage,
   viewSubmittedTextMessageTemplatePage,
+  viewSubmittedLetterTemplatePage,
   copyTemplatePage,
   signInPageActions,
 } = require('./actions');
@@ -38,6 +43,10 @@ const baseUrl = 'http://localhost:3000/templates';
 const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
 const manageTemplatesUrl = `${baseUrl}/manage-templates`;
+
+const { templateIds } = JSON.parse(
+  readFileSync('./pa11y-fixtures.json', 'utf8')
+);
 
 module.exports = {
   urls: [
@@ -59,7 +68,7 @@ module.exports = {
     performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
+    performCheck(nhsAppTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(viewSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
 
     // Text message journey
@@ -86,9 +95,30 @@ module.exports = {
 
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
-    performCheck(previewLetterTemplatePage(baseUrl)),
-    performCheck(previewLetterTemplateErrorPage(baseUrl)),
+    performCheck(
+      previewLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+      )
+    ),
+    performCheck(
+      previewLetterTemplateErrorPage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+      )
+    ),
+    performCheck(viewNotYetSubmittedLetterTemplatePage(manageTemplatesUrl)),
+    performCheck(
+      submitLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+      )
+    ),
+    performCheck(
+      letterTemplateSubmittedPage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+      )
+    ),
+    performCheck(viewSubmittedLetterTemplatePage(manageTemplatesUrl)),
 
+    // Non-existent template
     performCheck({
       url: `${baseUrl}/invalid-template`,
       actions: [...signInPageActions, 'wait for h1 to be visible'],
