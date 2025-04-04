@@ -14,8 +14,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 export function ViewLetterTemplate({
   initialState,
 }: Readonly<PageComponentProps<LetterTemplate>>) {
-  const { cannotEdit, createNewTemplate } =
-    content.components.viewSubmittedTemplate;
+  const { createNewTemplate } = content.components.viewSubmittedTemplate;
 
   return (
     <>
@@ -26,7 +25,6 @@ export function ViewLetterTemplate({
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplateDetails.Letter template={initialState} />
-            <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>
               <Link href='/manage-templates'>Back to all templates</Link>
