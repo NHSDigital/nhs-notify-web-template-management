@@ -147,9 +147,6 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
           </div>
         </div>
         <p>
-          This template cannot be edited because it has been submitted.
-        </p>
-        <p>
           If you want to change a submitted or live template, you must create a new template to replace it.
         </p>
         <p>
