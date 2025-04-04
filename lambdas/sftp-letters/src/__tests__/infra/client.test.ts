@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import { Readable } from 'node:stream';
 import Client, { FileInfo as SftpFileInfo } from 'ssh2-sftp-client';
-import { SftpClient, FileInfo } from '../../infra/client';
+import { SftpClient, FileInfo } from '../../infra/sftp-client';
 
 const HOST = 'sftp.example.com';
 const USERNAME = 'example-username';

@@ -12,8 +12,8 @@ resource "aws_ssm_parameter" "sftp_mock_config" {
     "host": string
     "username": string,
     "privateKey": string,
-    "baseUploadDir": "WTM_MOCK/Incoming,
-    "baseDownloadDir": "WTM_MOCK/Outgoing"
+    "baseUploadDir": "WTMMOCK/Incoming,
+    "baseDownloadDir": "WTMMOCK/Outgoing"
   }
   */
   value = "placeholder"
