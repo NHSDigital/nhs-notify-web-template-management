@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewTemplate component matches error snapshot 1`] = `
+exports[`PreviewDigitalTemplate component matches error snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
@@ -120,7 +120,7 @@ exports[`PreviewTemplate component matches error snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplate component matches snapshot 1`] = `
+exports[`PreviewDigitalTemplate component matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="notify-confirmation-panel nhsuk-heading-l"
