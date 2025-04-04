@@ -35,7 +35,7 @@ describe('LetterTemplateSubmittedPage', () => {
     });
 
     expect(await generateMetadata()).toEqual({
-      title: pageTitle.SMS,
+      title: pageTitle.LETTER,
     });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
