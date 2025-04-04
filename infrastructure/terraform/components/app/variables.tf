@@ -192,3 +192,12 @@ variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"
 }
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+  default = {}
+  description = "Letter suppliers enabled in the environment"
+}
