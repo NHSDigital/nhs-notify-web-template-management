@@ -1,5 +1,10 @@
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  GetObjectCommand,
+  GetObjectOutput,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import path from 'node:path';
+import { Readable } from 'node:stream';
 
 export class UserDataRepository {
   constructor(
@@ -33,9 +38,16 @@ export class UserDataRepository {
       commands.map((c) => this.s3Client.send(c))
     );
 
+    const pdfStream = this.getReadableBody(pdf.Body);
+    const csvStream = this.getReadableBody(testData.Body);
+
+    if (!pdfStream || (testDataVersion && !csvStream)) {
+      throw new Error('missing body');
+    }
+
     return {
-      pdf: pdf.Body,
-      ...(testDataVersion && { csv: testData.Body }),
+      pdf: pdfStream,
+      ...(testDataVersion && { csv: csvStream }),
     };
   }
 
@@ -45,5 +57,19 @@ export class UserDataRepository {
 
   private csvPath(owner: string, templateId: string, version: string): string {
     return path.join('test-data', owner, templateId, `${version}.csv`);
+  }
+
+  private getReadableBody(
+    body: GetObjectOutput['Body'] | undefined
+  ): Readable | undefined {
+    if (this.isReadableBody(body)) {
+      return body;
+    }
+  }
+
+  private isReadableBody(
+    body: GetObjectOutput['Body'] | undefined
+  ): body is Readable {
+    return body !== undefined && body && (body as Readable).read !== undefined;
   }
 }

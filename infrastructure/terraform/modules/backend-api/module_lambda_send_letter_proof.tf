@@ -12,8 +12,9 @@ module "lambda_send_letter_proof" {
   execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
 
   environment_variables = {
-    CSI                  = local.csi
-    INTERNAL_BUCKET_NAME = module.s3bucket_internal.id
+    CSI                     = local.csi
+    INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
+    DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier
   }
 }
 
