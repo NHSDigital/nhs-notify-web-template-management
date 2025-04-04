@@ -5,6 +5,7 @@
     "lambdas/backend-api",
     "lambdas/backend-client",
     "lambdas/virus-scan",
+    "lambdas/sftp-letters",
     "frontend",
     "tests/accessibility",
     "tests/test-team",

@@ -16,7 +16,8 @@ module "backend_api" {
     USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.sandbox.id
   }
 
-  enable_letters = true
+  enable_letters   = true
+  letter_suppliers = var.letter_suppliers
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
   dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
