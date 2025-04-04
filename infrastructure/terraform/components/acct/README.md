@@ -25,13 +25,16 @@
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_root_domain_name"></a> [root\_domain\_name](#input\_root\_domain\_name) | The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk | `string` | `"nonprod.nhsnotify.national.nhs.uk"` | no |
 | <a name="input_support_sandbox_environments"></a> [support\_sandbox\_environments](#input\_support\_sandbox\_environments) | Does this account support dev sandbox environments? | `bool` | `false` | no |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `string` | `"10.0.0.0/16"` | no |
+| <a name="input_vpc_subnet_cidr_bits"></a> [vpc\_subnet\_cidr\_bits](#input\_vpc\_subnet\_cidr\_bits) | Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed | <pre>object({<br/>    public  = number<br/>    private = number<br/>  })</pre> | <pre>{<br/>  "private": 3,<br/>  "public": 12<br/>}</pre> | no |
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_kms_sandbox"></a> [kms\_sandbox](#module\_kms\_sandbox) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms | v1.0.8 |
-| <a name="module_s3bucket_access_logs"></a> [s3bucket\_access\_logs](#module\_s3bucket\_access\_logs) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
+| <a name="module_s3bucket_access_logs"></a> [s3bucket\_access\_logs](#module\_s3bucket\_access\_logs) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.9 |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
 ## Outputs
 
 | Name | Description |
@@ -39,6 +42,8 @@
 | <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | n/a |
 | <a name="output_github_pat_ssm_param_name"></a> [github\_pat\_ssm\_param\_name](#output\_github\_pat\_ssm\_param\_name) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
+| <a name="output_vpc_nat_ips"></a> [vpc\_nat\_ips](#output\_vpc\_nat\_ips) | n/a |
+| <a name="output_vpc_public_subnets"></a> [vpc\_public\_subnets](#output\_vpc\_public\_subnets) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->

@@ -19,3 +19,14 @@ output "s3_buckets" {
     }
   }
 }
+
+output "vpc_public_subnets" {
+  value = {
+    public  = module.vpc.public_subnets
+    private = module.vpc.private_subnets
+  }
+}
+
+output "vpc_nat_ips" {
+  value = module.vpc.nat_public_ips
+}

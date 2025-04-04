@@ -87,3 +87,20 @@ variable "support_sandbox_environments" {
   description = "Does this account support dev sandbox environments?"
   default     = false
 }
+
+variable "vpc_cidr" {
+  type    = string
+  default = "10.0.0.0/16"
+}
+
+variable "vpc_subnet_cidr_bits" {
+  type = object({
+    public  = number
+    private = number
+  })
+  description = "Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed "
+  default = {
+    public  = 12 # Smaller subnets for public resources. 12 creates /28 subnets over 3x Az
+    private = 3  # Larger subnets for private resources, 3 creates /19 subnets over 3x Az
+  }
+}
