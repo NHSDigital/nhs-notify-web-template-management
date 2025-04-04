@@ -31,11 +31,11 @@ data "aws_iam_policy_document" "github_deploy" {
     resources = ["*"]
   }
 
-    statement {
+  statement {
     effect = "Allow"
 
     actions = [
-			"ec2:AllocateAddress",
+      "ec2:AllocateAddress",
       "ec2:Associate*",
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroup*",
