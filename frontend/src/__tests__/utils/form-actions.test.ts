@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import {
-  CreateUpdateLetterTemplate,
+  CreateLetterTemplate,
   CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -129,7 +129,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -182,7 +182,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -220,7 +220,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -250,7 +250,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -491,7 +491,7 @@ describe('form-actions', () => {
       const responseData = {
         id: 'id',
         templateType: 'NHS_APP',
-        templateStatus: 'NOT_YET_SUBMITTED',
+        templateStatus: 'SUBMITTED',
         name: 'name',
         message: 'message',
         createdAt: '2025-01-13T10:19:25.579Z',

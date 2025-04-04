@@ -1,11 +1,16 @@
 /**
  * @jest-environment node
  */
-import LetterTemplateSubmittedPage from '@app/letter-template-submitted/[templateId]/page';
+import LetterTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/letter-template-submitted/[templateId]/page';
+import content from '@content/content';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { LETTER_TEMPLATE } from '@testhelpers';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -29,6 +34,9 @@ describe('LetterTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.SMS,
+    });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(
