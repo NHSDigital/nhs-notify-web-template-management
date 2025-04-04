@@ -4,15 +4,16 @@ import { TemplateRepository } from './infra';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { S3Client } from '@aws-sdk/client-s3';
 import { LetterUploadRepository } from './infra/letter-upload-repository';
+import { defaultConfigReader } from 'nhs-notify-web-template-management-utils';
 
 export function createContainer() {
-  const enableLetters = process.env.ENABLE_LETTERS_BACKEND === 'true';
-  const quarantineBucket = process.env.QUARANTINE_BUCKET_NAME || 'unset';
-  const templatesTableName = process.env.TEMPLATES_TABLE_NAME;
-
-  if (!templatesTableName) {
-    throw new Error('process.env.QUARANTINE_BUCKET_NAME is undefined');
-  }
+  const enableLetters =
+    defaultConfigReader.tryGetBoolean('ENABLE_LETTERS_BACKEND') ?? false;
+  const quarantineBucket =
+    defaultConfigReader.tryGetValue('QUARANTINE_BUCKET_NAME') ?? 'unset';
+  const templatesTableName = defaultConfigReader.getValue(
+    'TEMPLATES_TABLE_NAME'
+  );
 
   const s3Client = new S3Client({ region: 'eu-west-2' });
 

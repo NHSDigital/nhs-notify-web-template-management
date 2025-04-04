@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SftpClient } from './client';
+import { SftpClient } from './sftp-client';
 import type { SftpSupplierConfig } from './types';
 import type { Logger } from 'nhs-notify-web-template-management-utils';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';

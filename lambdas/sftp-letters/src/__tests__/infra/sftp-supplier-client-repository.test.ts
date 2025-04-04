@@ -6,7 +6,7 @@ import {
   getConfigFromSsmString,
   SftpSupplierClientRepository,
 } from '../../infra/sftp-supplier-client-repository';
-import { SftpClient } from '../../infra/client';
+import { SftpClient } from '../../infra/sftp-client';
 import type { Logger } from 'nhs-notify-web-template-management-utils';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 
