@@ -11,6 +11,10 @@ module "s3bucket_quarantine" {
 
   kms_key_arn = var.kms_key_arn
 
+  notification_events = {
+    eventbridge = true
+  }
+
   lifecycle_rules = [
     {
       enabled = true

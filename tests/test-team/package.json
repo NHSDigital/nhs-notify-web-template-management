@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test:local-ui": "playwright test -c config/component/component.config.ts",
-    "test:local-ui-e2e": "playwright test --project e2e-local -c config/e2e/e2e.config.ts",
+    "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",
     "test:api": "playwright test --project api -c config/api/api.config.ts",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
@@ -12,10 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@aws-sdk/client-appsync": "^3.772.0",
-    "@aws-sdk/client-cognito-identity-provider": "^3.772.0",
-    "@aws-sdk/client-dynamodb": "^3.772.0",
-    "@aws-sdk/lib-dynamodb": "^3.772.0",
+    "@aws-sdk/client-appsync": "3.775.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.775.0",
+    "@aws-sdk/client-dynamodb": "3.775.0",
+    "@aws-sdk/client-s3": "3.775.0",
+    "@aws-sdk/lib-dynamodb": "3.775.0",
     "@faker-js/faker": "^9.6.0",
     "@playwright/test": "^1.51.1",
     "async-mutex": "^0.5.0",

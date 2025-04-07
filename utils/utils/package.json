@@ -18,6 +18,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.5"
+    "@tsconfig/node20": "^20.1.5",
+    "@types/aws-lambda": "^8.10.148"
   }
 }

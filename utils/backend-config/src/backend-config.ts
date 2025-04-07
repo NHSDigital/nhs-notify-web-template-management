@@ -5,6 +5,8 @@ import fs from 'node:fs';
 export type BackendConfig = {
   apiBaseUrl: string;
   templatesTableName: string;
+  templatesInternalBucketName: string;
+  templatesQuarantineBucketName: string;
   userPoolId: string;
   userPoolClientId: string;
 };
@@ -14,6 +16,10 @@ export const BackendConfigHelper = {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
       templatesTableName: process.env.TEMPLATES_TABLE_NAME ?? '',
+      templatesInternalBucketName:
+        process.env.TEMPLATES_INTERNAL_BUCKET_NAME ?? '',
+      templatesQuarantineBucketName:
+        process.env.TEMPLATES_QUARANTINE_BUCKET_NAME ?? '',
       userPoolId: process.env.USER_POOL_ID ?? '',
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
     };
@@ -21,9 +27,13 @@ export const BackendConfigHelper = {
 
   toEnv(config: BackendConfig): void {
     process.env.API_BASE_URL = config.apiBaseUrl;
-    process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
+    process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
+    process.env.TEMPLATES_INTERNAL_BUCKET_NAME =
+      config.templatesInternalBucketName;
+    process.env.TEMPLATES_QUARANTINE_BUCKET_NAME =
+      config.templatesQuarantineBucketName;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -32,6 +42,10 @@ export const BackendConfigHelper = {
     return {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
       templatesTableName: outputsFileContent.templates_table_name?.value ?? '',
+      templatesInternalBucketName:
+        outputsFileContent.internal_bucket_name?.value ?? '',
+      templatesQuarantineBucketName:
+        outputsFileContent.quarantine_bucket_name?.value ?? '',
       userPoolId: outputsFileContent.cognito_user_pool_id?.value ?? '',
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
