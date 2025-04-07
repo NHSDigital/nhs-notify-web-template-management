@@ -1,4 +1,6 @@
-import { failure, logger, success, validate } from '@backend-api/utils/index';
+import { randomUUID } from 'node:crypto';
+import z from 'zod';
+import { failure, success, validate } from '@backend-api/utils/index';
 import {
   CreateTemplate,
   ITemplateClient,
@@ -19,15 +21,14 @@ import {
 } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import { $CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
-import z from 'zod';
 
 export class TemplateClient implements ITemplateClient {
   constructor(
     private readonly enableLetters: boolean,
     private readonly templateRepository: TemplateRepository,
-    private readonly letterUploadRepository: LetterUploadRepository,
-    private readonly generateId: () => string
+    private readonly letterUploadRepository: LetterUploadRepository
   ) {}
 
   async createTemplate(
@@ -109,7 +110,7 @@ export class TemplateClient implements ITemplateClient {
       );
     }
 
-    const versionId = this.generateId();
+    const versionId = randomUUID();
 
     const files: LetterFiles = {
       pdfTemplate: {

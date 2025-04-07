@@ -13,7 +13,6 @@ const {
   previewEmailTemplatePage,
   previewEmailTemplateErrorPage,
   previewLetterTemplatePage,
-  previewLetterTemplateErrorPage,
   createTextMessageTemplatePage,
   createTextMessageTemplateErrorPage,
   previewTextMessageTemplatePage,
@@ -87,7 +86,6 @@ module.exports = {
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
     performCheck(previewLetterTemplatePage(baseUrl)),
-    performCheck(previewLetterTemplateErrorPage(baseUrl)),
 
     performCheck({
       url: `${baseUrl}/invalid-template`,

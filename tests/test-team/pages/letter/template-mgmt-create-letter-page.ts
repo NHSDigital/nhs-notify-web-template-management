@@ -16,6 +16,10 @@ export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic
 
   public readonly saveAndPreviewButton: Locator;
 
+  public readonly pdfSelector: Locator;
+
+  public readonly csvSelector: Locator;
+
   constructor(page: Page) {
     super(page);
     this.nameInput = page.locator('[id="letterTemplateName"]');
@@ -29,9 +33,25 @@ export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic
     this.saveAndPreviewButton = page.locator(
       '[id="create-letter-template-submit-button"]'
     );
+
+    this.pdfSelector = page.locator('input[name="letterTemplatePdf"]');
+    this.csvSelector = page.locator('input[name="letterTemplateCsv"]');
   }
 
   async clickSaveAndPreviewButton() {
     await this.saveAndPreviewButton.click();
+  }
+
+  async setPdfFile(path: string) {
+    await TemplateMgmtCreateLetterPage.setFileField(this.pdfSelector, path);
+  }
+
+  async setCsvFile(path: string) {
+    await TemplateMgmtCreateLetterPage.setFileField(this.csvSelector, path);
+  }
+
+  private static async setFileField(field: Locator, path: string) {
+    await field.click();
+    await field.setInputFiles(path);
   }
 }
