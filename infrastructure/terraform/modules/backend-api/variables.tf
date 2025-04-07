@@ -43,9 +43,10 @@ variable "module" {
   default     = "api"
 }
 
-##
-# Variables specific to this component
-##
+variable "base_component" {
+  type        = string
+  description = "The top level component containing this module"
+}
 
 variable "csi" {
   type        = string
