@@ -30,9 +30,13 @@ locals {
 
   dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
 
-  mock_letter_supplier_name     = "WTMMOCK"
+  mock_letter_supplier_name = "WTMMOCK"
+
   use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
+
   default_letter_supplier = [
     for k, v in var.letter_suppliers : merge(v, { name = k }) if v.default_supplier
   ][0]
+
+  sftp_environment = "${var.group}-${var.environment}-${var.base_component}"
 }

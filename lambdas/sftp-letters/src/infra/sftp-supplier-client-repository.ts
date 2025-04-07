@@ -36,7 +36,7 @@ export class SftpSupplierClientRepository {
     const sftpCredParameter = `/${this.csi}/sftp-config/${supplier}`;
 
     const ssmResult = await this.ssmClient.send(
-      new GetParameterCommand({ Name: sftpCredParameter })
+      new GetParameterCommand({ Name: sftpCredParameter, WithDecryption: true })
     );
 
     const sftpCredentials = ssmResult.Parameter?.Value;
