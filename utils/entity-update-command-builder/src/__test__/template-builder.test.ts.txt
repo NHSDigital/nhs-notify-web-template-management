@@ -1,0 +1,682 @@
+import type { PDSMetadata } from '@comms/utils';
+import { RequestItemPlanUpdateBuilder } from '../RequestItemPlanUpdateBuilder';
+
+const mockTableName = 'TABLE_NAME';
+const mockRequestItemId = 'Hello1';
+const mockRequestItemPlanId = 'Hello2';
+
+const mockDateTimeString = '2022-01-01T03:44:02.000Z';
+
+describe('RequestItemPlanUpdateBuilder', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date(mockDateTimeString));
+  });
+
+  describe('build', () => {
+    test('returns empty expression when built after initialisation', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {},
+        UpdateExpression: '',
+      });
+    });
+
+    test('provide ReturnValuesOnConditionCheckFailure optional arg will modify output', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId,
+        { ReturnValuesOnConditionCheckFailure: 'ALL_OLD' }
+      );
+
+      const res = builder.build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {},
+        UpdateExpression: '',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+      });
+    });
+  });
+
+  describe('setCompletedDate', () => {
+    test('sets completedDate field to current time', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.setCompletedDate().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':completedDate': mockDateTimeString,
+        },
+        ExpressionAttributeNames: {
+          '#completedDate': 'completedDate',
+        },
+        UpdateExpression: 'SET #completedDate = :completedDate',
+      });
+    });
+  });
+
+  describe('setStatus', () => {
+    test('sets status field to provided RequestItemPlanStatus', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const status = 'DELIVERED';
+
+      const res = builder.setStatus(status).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': status,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+
+    test('sets status field to provided RequestItemPlanStatus and creates ConditionExpression with expected value', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const expected = 'CREATED';
+
+      const res = builder.setStatus(value).expectedStatus(expected).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': expected,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression: '#status = :condition_1_status',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+  });
+
+  describe('setFailedReason', () => {
+    test('sets failedReason on request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const failedReason = 'Failed.';
+
+      const res = builder.setFailedReason(failedReason).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':failedReason': failedReason,
+        },
+        ExpressionAttributeNames: {
+          '#failedReason': 'failedReason',
+        },
+        UpdateExpression: 'SET #failedReason = :failedReason',
+      });
+    });
+  });
+
+  describe('setPdsMetadata', () => {
+    test('sets pdsMetadata on request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const pdsMetadata: PDSMetadata = {
+        queryTime: '2024-01-06T15:09:42.600Z',
+        version: 'versionIdentifier',
+      };
+
+      const res = builder.setPdsMetadata(pdsMetadata).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':pdsMetadata': pdsMetadata,
+        },
+        ExpressionAttributeNames: {
+          '#pdsMetadata': 'pdsMetadata',
+        },
+        UpdateExpression: 'SET #pdsMetadata = :pdsMetadata',
+      });
+    });
+  });
+
+  describe('setRouterGroup', () => {
+    test('sets routerGroup on request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.setRouterGroup('sms.fifo', 3, 'PENDING').build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':routerGroup': 'sms.fifo#3#PENDING',
+        },
+        ExpressionAttributeNames: {
+          '#routerGroup': 'routerGroup',
+        },
+        UpdateExpression: 'SET #routerGroup = :routerGroup',
+      });
+    });
+
+    describe('setBatchId', () => {
+      test('sets batchId on request item plan', () => {
+        const builder = new RequestItemPlanUpdateBuilder(
+          mockTableName,
+          mockRequestItemId,
+          mockRequestItemPlanId
+        );
+
+        const res = builder
+          .setBatchId('E6254AEF-7947-4931-93A2-21E04BCA4893')
+          .build();
+
+        expect(res).toEqual({
+          TableName: mockTableName,
+          Key: {
+            PK: `REQUEST_ITEM#${mockRequestItemId}`,
+            SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+          },
+          ExpressionAttributeValues: {
+            ':batchId': 'E6254AEF-7947-4931-93A2-21E04BCA4893',
+          },
+          ExpressionAttributeNames: {
+            '#batchId': 'batchId',
+          },
+          UpdateExpression: 'SET #batchId = :batchId',
+        });
+      });
+    });
+
+    test('additionally sets routerGroupOrder if provided', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const order = '2024-03-11T16:25:59.244Z';
+
+      const res = builder
+        .setRouterGroup('sms.fifo', 3, 'IN-FLIGHT', order)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':routerGroup': 'sms.fifo#3#IN-FLIGHT',
+          ':routerGroupOrder': order,
+        },
+        ExpressionAttributeNames: {
+          '#routerGroup': 'routerGroup',
+          '#routerGroupOrder': 'routerGroupOrder',
+        },
+        UpdateExpression:
+          'SET #routerGroup = :routerGroup, #routerGroupOrder = :routerGroupOrder',
+      });
+    });
+  });
+
+  describe('expectedStatus', () => {
+    test('single call to method creates ConditionExpression with equality (=) condition', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const expected = 'SENDING';
+
+      const res = builder.setStatus(value).expectedStatus(expected).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': expected,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression: '#status = :condition_1_status',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+
+    test('chained call to method creates ConditionExpression with expected value', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const expected = 'SENDING';
+      const expected2 = 'CREATED';
+
+      const res = builder
+        .setStatus(value)
+        .expectedStatus(expected)
+        .expectedStatus(expected2)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': expected,
+          ':condition_2_status': expected2,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression:
+          '#status = :condition_1_status AND #status = :condition_2_status',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+
+    test('providing array in single call to method creates ConditionExpression with IN condition', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const expected = 'SENDING';
+      const expected2 = 'CREATED';
+
+      const res = builder
+        .setStatus(value)
+        .expectedStatus([expected, expected2])
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': expected,
+          ':condition_2_status': expected2,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression:
+          '#status IN (:condition_1_status, :condition_2_status)',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+  });
+
+  describe('expectStatusIsNot', () => {
+    test('single call to method creates ConditionExpression with inequality (<>) condition', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const unexpected = 'SENDING';
+
+      const res = builder
+        .setStatus(value)
+        .expectStatusIsNot(unexpected)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': unexpected,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression: '#status <> :condition_1_status',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+
+    test('providing array in single call to method creates ConditionExpression with IN condition', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const value = 'DELIVERED';
+      const unexpected = 'SENDING';
+      const unexpected2 = 'CREATED';
+
+      const res = builder
+        .setStatus(value)
+        .expectStatusIsNot([unexpected, unexpected2])
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':status': value,
+          ':condition_1_status': unexpected,
+          ':condition_2_status': unexpected2,
+        },
+        ExpressionAttributeNames: {
+          '#status': 'status',
+        },
+        ConditionExpression:
+          'NOT #status IN (:condition_1_status, :condition_2_status)',
+        UpdateExpression: 'SET #status = :status',
+      });
+    });
+  });
+
+  describe('expectedRouterGroup', () => {
+    test('makes update conditional on a router group being present', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const expectedQueue = 'q';
+      const expectedShard = 0;
+      const expectedStatus = 'DLQ';
+
+      const res = builder
+        .setRouterGroup(expectedQueue, expectedShard, 'PENDING')
+        .expectedRouterGroup(expectedQueue, expectedShard, expectedStatus)
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_routerGroup': 'q#0#DLQ',
+          ':routerGroup': 'q#0#PENDING',
+        },
+        ExpressionAttributeNames: {
+          '#routerGroup': 'routerGroup',
+        },
+        ConditionExpression: '#routerGroup = :condition_1_routerGroup',
+        UpdateExpression: 'SET #routerGroup = :routerGroup',
+      });
+    });
+  });
+
+  describe('removeFailedReason', () => {
+    test('removes failedReason from request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.removeFailedReason().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {
+          '#failedReason': 'failedReason',
+        },
+        UpdateExpression: 'REMOVE #failedReason',
+      });
+    });
+  });
+
+  describe('removeRouterGroup', () => {
+    test('removes routerGroup from request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.removeRouterGroup().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {
+          '#routerGroup': 'routerGroup',
+        },
+        UpdateExpression: 'REMOVE #routerGroup',
+      });
+    });
+
+    test('if removeOrder option is true, also removes routerGroupOrder', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.removeRouterGroup({ removeOrder: true }).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {
+          '#routerGroup': 'routerGroup',
+          '#routerGroupOrder': 'routerGroupOrder',
+        },
+        UpdateExpression: 'REMOVE #routerGroup, #routerGroupOrder',
+      });
+    });
+  });
+
+  describe('setSupplierStatus', () => {
+    test('sets supplierStatus on request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.setSupplierStatus('delivered').build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':supplierStatus': 'delivered',
+        },
+        ExpressionAttributeNames: {
+          '#supplierStatus': 'supplierStatus',
+        },
+        UpdateExpression: 'SET #supplierStatus = :supplierStatus',
+      });
+    });
+  });
+
+  describe('setSupplier', () => {
+    test('sets supplier on request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.setSupplier('GOVUK_NOTIFY').build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':supplier': 'GOVUK_NOTIFY',
+        },
+        ExpressionAttributeNames: {
+          '#supplier': 'supplier',
+        },
+        UpdateExpression: 'SET #supplier = :supplier',
+      });
+    });
+  });
+
+  describe('removeSupplier', () => {
+    test('removes supplier from request item plan', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.removeSupplier().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeNames: {
+          '#supplier': 'supplier',
+        },
+        UpdateExpression: 'REMOVE #supplier',
+      });
+    });
+  });
+
+  describe('incrementAttemptNumber', () => {
+    test('increments the attempt number by 1', () => {
+      const builder = new RequestItemPlanUpdateBuilder(
+        mockTableName,
+        mockRequestItemId,
+        mockRequestItemPlanId
+      );
+
+      const res = builder.incrementAttemptNumber().build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          PK: `REQUEST_ITEM#${mockRequestItemId}`,
+          SK: `REQUEST_ITEM_PLAN#${mockRequestItemPlanId}`,
+        },
+        ExpressionAttributeValues: {
+          ':attemptNumber_value': 1,
+        },
+        ExpressionAttributeNames: {
+          '#attemptNumber': 'attemptNumber',
+        },
+        UpdateExpression: 'ADD #attemptNumber :attemptNumber_value',
+      });
+    });
+  });
+});

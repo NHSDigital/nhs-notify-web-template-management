@@ -14,7 +14,10 @@ module "lambda_send_letter_proof" {
   environment_variables = {
     CSI                     = local.csi
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
-    DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier
+    DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier.name
+    SFTP_ENVIRONMENT        = local.sftp_environment
+    REGION                  = var.region
+    "NODE_OPTIONS"          = "--enable-source-maps",
   }
 }
 
@@ -51,7 +54,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
       "ssm:GetParameter",
     ]
     resources = [
-      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${local.csi}/*/sftp-config"
+      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${local.csi}/sftp-config/*"
     ]
   }
 

@@ -1,51 +1,59 @@
-import { SQSRecord } from 'aws-lambda';
-import { UserDataRepository } from '../infra/user-data-repository';
+import { SQSBatchItemFailure, SQSHandler } from 'aws-lambda';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
-import { z } from 'zod';
-import { logger } from 'nhs-notify-web-template-management-utils';
-import path from 'node:path';
+import { Logger, logger } from 'nhs-notify-web-template-management-utils';
+import { App } from '../app/send';
 
-function parseProofingRequest(event: string) {
-  return z
-    .object({
-      owner: z.string(),
-      templateId: z.string(),
-      pdfVersion: z.string(),
-      testDataVersion: z.string().optional(),
-    })
-    .parse(JSON.parse(event));
-}
-
-export function createHandler({
-  userDataRepository,
-  sftpSupplierClientRepository,
-  defaultSupplier,
-}: {
-  userDataRepository: UserDataRepository;
+type Dependencies = {
+  app: App;
   sftpSupplierClientRepository: SftpSupplierClientRepository;
   defaultSupplier: string;
-}) {
-  return async function (records: SQSRecord[]) {
+  logger: Logger;
+};
+
+export function createHandler({
+  app,
+  sftpSupplierClientRepository,
+  defaultSupplier,
+  logger: _logger,
+}: Dependencies): SQSHandler {
+  return async function (event) {
     const { sftpClient, baseUploadDir } =
       await sftpSupplierClientRepository.getClient(defaultSupplier, logger);
 
+    const recordCount = event.Records.length;
+
+    const supplierLogger = logger.child({
+      supplier: defaultSupplier,
+      recordCount,
+    });
+
+    supplierLogger.info('Opening SFTP connection');
+
     await sftpClient.connect();
 
-    for (const record of records) {
-      const request = parseProofingRequest(record.body);
+    supplierLogger.info('Sending proof requests');
 
-      const streams = await userDataRepository.get(
-        request.owner,
-        request.templateId,
-        request.pdfVersion,
-        request.testDataVersion
-      );
+    const results = await Promise.allSettled(
+      event.Records.map((r) => app.send(r.body, sftpClient, baseUploadDir))
+    );
 
-      if (streams.csv) {
-        await sftpClient.put(streams.csv, path.join(baseUploadDir, 'batches'));
+    const batchItemFailures: SQSBatchItemFailure[] = [];
+
+    for (const [i, res] of results.entries()) {
+      if (res.status === 'rejected') {
+        batchItemFailures.push({ itemIdentifier: event.Records[i].messageId });
       }
-
-      await sftpClient.put(streams.pdf, path.join(baseUploadDir, ''));
     }
+
+    const failureCount = batchItemFailures.length;
+    const sentCount = recordCount - failureCount;
+
+    supplierLogger.info({ failureCount, sentCount });
+
+    await sftpClient.end().catch((error) => {
+      supplierLogger.error('Failed to close SFTP connection', error);
+    });
+
+    return { batchItemFailures };
   };
 }
