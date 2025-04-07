@@ -39,15 +39,15 @@ export class UserDataRepository {
     );
 
     const pdfStream = this.getReadableBody(pdf.Body);
-    const csvStream = this.getReadableBody(testData.Body);
+    const testDataString = await testData.Body?.transformToString();
 
-    if (!pdfStream || (testDataVersion && !csvStream)) {
+    if (!pdfStream || (testDataVersion && !testDataString)) {
       throw new Error('missing body');
     }
 
     return {
       pdf: pdfStream,
-      ...(testDataVersion && { csv: csvStream }),
+      ...(testDataVersion && { testData: testDataString }),
     };
   }
 

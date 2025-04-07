@@ -1,0 +1,14 @@
+{
+  "name": "nhs-notify-entity-update-command-builder",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.5"
+  }
+}
