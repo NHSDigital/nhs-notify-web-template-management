@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { SftpClient } from './sftp-client';
 import type { SftpSupplierConfig } from './types';
-import type { Logger } from 'nhs-notify-web-template-management-utils';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 
 export const getConfigFromSsmString = (ssmString: string): SftpSupplierConfig =>
