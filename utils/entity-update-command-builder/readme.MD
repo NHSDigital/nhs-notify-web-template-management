@@ -11,15 +11,14 @@ src/
 │   └── UpdateCommandBuilder.ts
 ├── domain/
 │   └── EntityUpdateBuilder.ts
-├── RequestItemPlanUpdateBuilder.ts
-└── RequestItemUpdateBuilder.ts
+└── TemplateUpdateBuilder.ts
 ```
 
 ## Base Classes
 
 - `ConditionBuilder<Entity>` - Class for building ConditionModel[] objects which are utilised by the `UpdateCommandBuilder<Entity>` for creating the UpdateCommand's ConditionExpression
-  - `or` - Appends a condition with an OR operator if no condition has been specified previously 
-  - `and` - Appends a condition with an AND operator if no condition has been specified previously 
+  - `or` - Appends a condition with an OR operator if no condition has been specified previously
+  - `and` - Appends a condition with an AND operator if no condition has been specified previously
   - `in` - Appends a condition with operator provided or AND if not.
   - `build` - Returns an object with type ConditionModel[] with conditions specified by previous calls to the available condition methods.
 
