@@ -1,7 +1,7 @@
-import { SQSBatchItemFailure, SQSHandler } from 'aws-lambda';
-import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
-import { Logger, logger } from 'nhs-notify-web-template-management-utils';
-import { App } from '../app/send';
+import type { SQSBatchItemFailure, SQSHandler } from 'aws-lambda';
+import type { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
+import { type Logger, logger } from 'nhs-notify-web-template-management-utils';
+import type { App } from '../app/send';
 
 type Dependencies = {
   app: App;

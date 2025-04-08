@@ -5,7 +5,6 @@ export const serialise = (
   header: string
 ): Promise<string> => {
   const stringifier = stringify(objects, {
-    // remove any newlines and trim
     cast: {
       string(value) {
         return value.replaceAll('\n', ' ').trim();
@@ -20,8 +19,8 @@ export const serialise = (
   return new Promise((resolve, reject) => {
     stringifier.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
     stringifier.on('error', (err) => reject(err));
-    // add header on end
     stringifier.on('end', () =>
+      // headers are not quoted
       resolve(`${header}\n${Buffer.concat(chunks).toString('utf8')}`)
     );
   });
