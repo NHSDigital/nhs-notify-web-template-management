@@ -1,5 +1,5 @@
 module "sftp_upload_queue" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v1.0.9"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v1.0.11"
 
   aws_account_id = var.aws_account_id
   component      = var.component
