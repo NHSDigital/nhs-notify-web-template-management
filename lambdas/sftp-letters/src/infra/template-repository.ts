@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
@@ -8,19 +7,31 @@ export class TemplateRepository {
     private readonly templatesTableName: string
   ) {}
 
-  async updateToSendingProof(owner: string, id: string) {
-    const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setStatus('SENDING_PROOF' as any)
-      .expectedStatus('PASSED_VALIDATION' as any)
+  async updateToSendingProofRequest(owner: string, id: string) {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      owner,
+      id,
+      { ReturnValuesOnConditionCheckFailure: 'ALL_OLD' }
+    )
+      .setStatus('SENDING_PROOF_REQUEST')
+      .expectedStatus('NOT_YET_SUBMITTED')
       .build();
 
-    return await this.client.send(new UpdateCommand(update));
+    try {
+      await this.client.send(new UpdateCommand(update));
+    } catch (error) {
+      if (1 == 1) {
+        console.log();
+      } else {
+        throw error;
+      }
+    }
   }
 
-  async updateToAwaitingProof(owner: string, id: string) {
+  async updateToNotYetSubmitted(owner: string, id: string) {
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setStatus('AWAITING_PROOF' as any)
-      .expectedStatus('SENDING_PROOF' as any)
+      .setStatus('NOT_YET_SUBMITTED')
       .build();
 
     return await this.client.send(new UpdateCommand(update));
