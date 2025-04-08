@@ -17,7 +17,8 @@ module "lambda_send_letter_proof" {
     DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier.name
     SFTP_ENVIRONMENT        = local.sftp_environment
     REGION                  = var.region
-    "NODE_OPTIONS"          = "--enable-source-maps",
+    TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
+    NODE_OPTIONS            = "--enable-source-maps",
   }
 }
 
@@ -105,7 +106,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
   }
 
   statement {
-    sid    = "AllowKMSAccessSQS"
+    sid    = "AllowKMSAccessGeneral"
     effect = "Allow"
 
     actions = [
@@ -123,12 +124,12 @@ resource "aws_lambda_event_source_mapping" "trigger_send_proof" {
   event_source_arn = module.sftp_upload_queue.sqs_queue_arn
   enabled          = true
   function_name    = "${local.csi}-send-letter-proof"
-  batch_size       = 1
+  batch_size       = 10
   function_response_types = [
     "ReportBatchItemFailures"
   ]
 
   scaling_config {
-    maximum_concurrency = 10
+    maximum_concurrency = 2
   }
 }

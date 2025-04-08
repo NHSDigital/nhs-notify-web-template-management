@@ -8,21 +8,39 @@ import { logger } from 'nhs-notify-web-template-management-utils';
 import { randomId } from './infra/ksuid-like-id';
 import { Batch } from './domain/batch';
 import { TemplateRepository } from './infra/template-repository';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 export function createContainer() {
-  const { csi, internalBucketName, defaultSupplier, sftpEnvironment, region } =
-    loadConfig();
+  const {
+    csi,
+    internalBucketName,
+    defaultSupplier,
+    sftpEnvironment,
+    region,
+    templatesTableName,
+  } = loadConfig();
 
   const s3Client = new S3Client({ region });
 
   const ssmClient = new SSMClient({ region });
+
+  const ddbDocClient = DynamoDBDocumentClient.from(
+    new DynamoDBClient({ region }),
+    {
+      marshallOptions: { removeUndefinedValues: true },
+    }
+  );
 
   const userDataRepository = new UserDataRepository(
     s3Client,
     internalBucketName
   );
 
-  const templateRepository = new TemplateRepository();
+  const templateRepository = new TemplateRepository(
+    ddbDocClient,
+    templatesTableName
+  );
 
   const sftpSupplierClientRepository = new SftpSupplierClientRepository(
     csi,
