@@ -4,7 +4,7 @@ import { SSMClient } from '@aws-sdk/client-ssm';
 import { SftpSupplierClientRepository } from './infra/sftp-supplier-client-repository';
 import { loadConfig } from './config/config';
 import { App } from './app/send';
-import { logger } from 'nhs-notify-web-template-management-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { randomId } from './infra/ksuid-like-id';
 import { Batch } from './domain/batch';
 import { TemplateRepository } from './infra/template-repository';

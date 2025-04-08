@@ -7,7 +7,7 @@ import {
 } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 jest.mock('../../infra/sftp-client');
 
