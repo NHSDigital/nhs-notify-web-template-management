@@ -1,19 +1,23 @@
-import { arrayOfAll } from 'nhs-notify-web-template-management-utils';
+const keys = [
+  'nhsNumber',
+  'firstName',
+  'lastName',
+  'fullName',
+  'middleNames',
+  'namePrefix',
+  'nameSuffix',
+  'address_line_1',
+  'address_line_2',
+  'address_line_3',
+  'address_line_4',
+  'address_line_5',
+  'address_line_6',
+  'address_line_7',
+] as const;
 
-type AddressLines = `address_line_${1 | 2 | 3 | 4 | 5 | 6 | 7}`;
+type PdsPersonalisationKeys = typeof keys;
 
-type NameParts =
-  | 'fullName'
-  | 'firstName'
-  | 'lastName'
-  | 'middleNames'
-  | 'namePrefix'
-  | 'nameSuffix'
-  | 'nhsNumber';
-
-type PdsPersonalisationKeys = AddressLines | NameParts | 'nhsNumber';
-
-type PdsPersonalisationExample = Record<PdsPersonalisationKeys, string>;
+type PdsPersonalisationExample = Record<PdsPersonalisationKeys[number], string>;
 
 export const staticPdsExampleData: [
   Record<string, string>,
@@ -75,20 +79,4 @@ export const staticPdsExampleData: [
   PdsPersonalisationExample,
 ];
 
-export const pdsPersonalisationKeys: string[] =
-  arrayOfAll<PdsPersonalisationKeys>()([
-    'nhsNumber',
-    'firstName',
-    'lastName',
-    'fullName',
-    'middleNames',
-    'namePrefix',
-    'nameSuffix',
-    'address_line_1',
-    'address_line_2',
-    'address_line_3',
-    'address_line_4',
-    'address_line_5',
-    'address_line_6',
-    'address_line_7',
-  ]);
+export const pdsPersonalisationKeys: string[] = [...keys];

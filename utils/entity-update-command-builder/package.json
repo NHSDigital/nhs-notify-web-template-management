@@ -5,13 +5,14 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test:unit": "jest",
+    "test:unit": "jest --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5"
   },
   "dependencies": {
-    "nhs-notify-backend-client": "0.0.1"
+    "nhs-notify-backend-client": "0.0.1",
+    "nhs-notify-web-template-management-utils": "0.0.1"
   }
 }
