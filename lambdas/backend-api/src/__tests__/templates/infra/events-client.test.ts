@@ -6,6 +6,8 @@ import {
 } from '@aws-sdk/client-eventbridge';
 import { EventsClient } from '@backend-api/templates/infra/events-client';
 
+jest.mock('nhs-notify-web-template-management-utils/logger');
+
 const setup = () => {
   const eventbridge = mockClient(EventBridgeClient);
 

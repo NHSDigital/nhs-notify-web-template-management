@@ -7,7 +7,9 @@ import type {
 import {
   CopyObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
   HeadObjectCommand,
+  NotFound,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -22,8 +24,10 @@ export type LetterUploadMetadata = {
   'version-id': string;
 };
 
+const $FileType: z.ZodType<FileType> = z.enum(['pdf-template', 'test-data']);
+
 const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
-  'file-type': z.enum(['pdf-template', 'test-data']),
+  'file-type': $FileType,
   owner: z.string(),
   'template-id': z.string(),
   'test-data-provided': z.enum(['true', 'false']).optional(),
@@ -97,6 +101,29 @@ export class LetterUploadRepository {
     }
   }
 
+  async download(
+    template: TemplateKey,
+    fileType: FileType,
+    versionId: string
+  ): Promise<Uint8Array | void> {
+    try {
+      const { Body } = await this.client.send(
+        new GetObjectCommand({
+          Bucket: this.internalBucketName,
+          Key: this.key(fileType, template.owner, template.id, versionId),
+        })
+      );
+
+      return Body?.transformToByteArray();
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return;
+      }
+
+      throw error;
+    }
+  }
+
   async getFileMetadata(
     bucket: string,
     key: string,
@@ -113,15 +140,10 @@ export class LetterUploadRepository {
     return $LetterUploadMetadata.parse(Metadata);
   }
 
-  async copyFromQuarantineToInternal(
-    template: TemplateKey,
-    fileType: FileType,
-    versionId: string
-  ) {
-    const key = this.key(fileType, template.owner, template.id, versionId);
+  async copyFromQuarantineToInternal(key: string, versionId: string) {
     await this.client.send(
       new CopyObjectCommand({
-        CopySource: `/${this.quarantineBucketName}/${key}`,
+        CopySource: `/${this.quarantineBucketName}/${key}?versionId=${versionId}`,
         Bucket: this.internalBucketName,
         Key: key,
         MetadataDirective: 'COPY',

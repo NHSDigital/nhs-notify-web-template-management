@@ -11,7 +11,10 @@ module "build_template_lambda" {
     local.backend_lambda_entrypoints.set_file_virus_scan_status,
     local.backend_lambda_entrypoints.copy_scanned_object_to_internal,
     local.backend_lambda_entrypoints.delete_failed_scanned_object,
+    local.backend_lambda_entrypoints.validate_letter_template_files,
   ]
+
+  externals = ["pdfjs-dist"]
 }
 
 module "build_template_client" {

@@ -1,7 +1,9 @@
 locals {
   csi = "${var.csi}-${var.component}"
 
-  lambdas_source_code_dir = abspath("${path.module}/../../../../lambdas")
+  monorepo_root               = abspath("${path.module}/../../../..")
+  lambdas_source_code_dir     = abspath("${local.monorepo_root}/lambdas")
+  pdfjs_layer_source_code_dir = abspath("${local.monorepo_root}/layers/pdfjs")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     AWS_REGION               = var.region
@@ -23,6 +25,7 @@ locals {
     set_file_virus_scan_status      = "src/templates/set-letter-file-virus-scan-status.ts"
     copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
     delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
+    validate_letter_template_files  = "src/templates/validate-letter-template-files.ts"
     template_client                 = "src/index.ts"
   }
 

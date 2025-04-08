@@ -706,4 +706,117 @@ describe('templateRepository', () => {
       expect(mocks.eventsClient.putEvent).not.toHaveBeenCalled();
     });
   });
+
+  describe('setLetterValidationResult', () => {
+    it('updates the templateStatus to NOT_YET_SUBMITTED, personalisationParameters and csvHeaders if valid', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterValidationResult(
+        { owner: 'template-owner', id: 'template-id' },
+        'file-version-id',
+        true,
+        ['personalisation', 'parameters'],
+        ['csv', 'headers']
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #csvHeaders = :csvHeaders',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#csvHeaders': 'csvHeaders',
+          '#file': 'pdfTemplate',
+          '#files': 'files',
+          '#personalisationParameters': 'personalisationParameters',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+        },
+        ExpressionAttributeValues: {
+          ':csvHeaders': ['csv', 'headers'],
+          ':personalisationParameters': ['personalisation', 'parameters'],
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'file-version-id',
+        },
+      });
+    });
+
+    it('updates the templateStatus to VALIDATION_FAILED if no valid', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterValidationResult(
+        { owner: 'template-owner', id: 'template-id' },
+        'file-version-id',
+        false,
+        [],
+        []
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt',
+        ConditionExpression:
+          '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#file': 'pdfTemplate',
+          '#files': 'files',
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#version': 'currentVersion',
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'VALIDATION_FAILED',
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+          ':version': 'file-version-id',
+        },
+      });
+    });
+
+    it('swallows ConditionalCheckFailedExceptions', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.rejects(
+        new ConditionalCheckFailedException({
+          $metadata: {},
+          message: 'Condition Check Failed',
+        })
+      );
+
+      await expect(
+        templateRepository.setLetterValidationResult(
+          { owner: 'template-owner', id: 'template-id' },
+          'file-version-id',
+          false,
+          [],
+          []
+        )
+      ).resolves.not.toThrow();
+    });
+
+    it('raises other exceptions from the database', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.rejects(new Error('Something went wrong'));
+
+      await expect(
+        templateRepository.setLetterValidationResult(
+          { owner: 'template-owner', id: 'template-id' },
+          'file-version-id',
+          false,
+          [],
+          []
+        )
+      ).rejects.toThrow('Something went wrong');
+    });
+  });
 });

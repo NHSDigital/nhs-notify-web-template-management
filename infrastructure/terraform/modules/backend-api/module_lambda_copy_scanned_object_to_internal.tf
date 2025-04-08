@@ -32,7 +32,9 @@ data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
 
     actions = [
       "s3:GetObject",
+      "s3:GetObjectVersion",
       "s3:GetObjectTagging",
+      "s3:GetObjectVersionTagging",
     ]
 
     resources = ["${module.s3bucket_quarantine.arn}/*"]
@@ -44,7 +46,9 @@ data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
 
     actions = [
       "s3:PutObject",
+      "s3:PutObjectVersion",
       "s3:PutObjectTagging",
+      "s3:PutObjectVersionTagging",
     ]
 
     resources = ["${module.s3bucket_internal.arn}/*"]

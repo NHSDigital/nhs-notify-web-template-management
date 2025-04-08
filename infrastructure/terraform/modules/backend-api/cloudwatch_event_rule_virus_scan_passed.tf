@@ -11,9 +11,9 @@ resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
   })
 }
 
-resource "aws_cloudwatch_event_target" "scan_passed_copy_object" {
+resource "aws_cloudwatch_event_target" "scan_passed_send_to_validation" {
   rule     = aws_cloudwatch_event_rule.virus_scan_passed.name
-  arn      = module.lambda_copy_scanned_object_to_internal.function_arn
+  arn      = module.lambda_validate_letter_template_files.function_arn
   role_arn = aws_iam_role.handle_scan_passed.arn
 }
 
@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "handle_scan_passed" {
     effect  = "Allow"
     actions = ["lambda:InvokeFunction"]
     resources = [
-      module.lambda_copy_scanned_object_to_internal.function_arn,
+      module.lambda_validate_letter_template_files.function_arn,
     ]
   }
 }
