@@ -1,13 +1,17 @@
 import {
   CopyObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
+  GetObjectCommandOutput,
   HeadObjectCommand,
+  NotFound,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { LetterUploadRepository } from '../../../templates/infra/letter-upload-repository';
+import { mock } from 'jest-mock-extended';
 
 const quarantineBucketName = 'quarantine-bucket';
 const internalBucketName = 'internal-bucket';
@@ -396,34 +400,15 @@ describe('LetterUploadRepository', () => {
       const { letterUploadRepository, mocks } = setup();
 
       await letterUploadRepository.copyFromQuarantineToInternal(
-        { owner: 'owner', id: 'template' },
-        'pdf-template',
-        'version'
+        's3/object/key',
+        's3-object-version'
       );
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(CopyObjectCommand, {
         Bucket: 'internal-bucket',
         CopySource:
-          '/quarantine-bucket/pdf-template/owner/template/version.pdf',
-        Key: 'pdf-template/owner/template/version.pdf',
-        MetadataDirective: 'COPY',
-        TaggingDirective: 'COPY',
-      });
-    });
-
-    it('copies test data files from quarantine to internal', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      await letterUploadRepository.copyFromQuarantineToInternal(
-        { owner: 'owner', id: 'template' },
-        'test-data',
-        'version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(CopyObjectCommand, {
-        Bucket: 'internal-bucket',
-        CopySource: '/quarantine-bucket/test-data/owner/template/version.csv',
-        Key: 'test-data/owner/template/version.csv',
+          '/quarantine-bucket/s3/object/key?versionId=s3-object-version',
+        Key: 's3/object/key',
         MetadataDirective: 'COPY',
         TaggingDirective: 'COPY',
       });
@@ -459,6 +444,68 @@ describe('LetterUploadRepository', () => {
         Bucket: 'quarantine-bucket',
         Key: 'test-data/owner/template/version.csv',
       });
+    });
+  });
+
+  describe('download', () => {
+    it('gets the object from s3 and returns the body as Uint8Array', async () => {
+      const { letterUploadRepository, mocks } = setup();
+
+      const expected = Uint8Array.from('hello');
+      mocks.s3Client.on(GetObjectCommand).resolves({
+        Body: mock<GetObjectCommandOutput['Body']>({
+          transformToByteArray: async () => expected,
+        }),
+      });
+
+      const res = await letterUploadRepository.download(
+        {
+          id: 'template-id',
+          owner: 'template-owner',
+        },
+        'pdf-template',
+        'file-version-id'
+      );
+
+      expect(mocks.s3Client).toHaveReceivedCommandWith(GetObjectCommand, {
+        Bucket: 'internal-bucket',
+        Key: 'pdf-template/template-owner/template-id/file-version-id.pdf',
+      });
+      expect(res).toBe(expected);
+    });
+
+    it('returns void if command throws NotFound', async () => {
+      const { letterUploadRepository, mocks } = setup();
+      mocks.s3Client
+        .on(GetObjectCommand)
+        .rejects(new NotFound({ $metadata: {}, message: 'NotFound' }));
+
+      const res = await letterUploadRepository.download(
+        {
+          id: 'template-id',
+          owner: 'template-owner',
+        },
+        'pdf-template',
+        'file-version-id'
+      );
+
+      expect(res).toBeUndefined();
+    });
+
+    it('raises other exceptions', async () => {
+      const { letterUploadRepository, mocks } = setup();
+      mocks.s3Client.on(GetObjectCommand).rejects(new Error('oh no'));
+
+      await expect(
+        letterUploadRepository.download(
+          {
+            id: 'template-id',
+            owner: 'template-owner',
+          },
+          'pdf-template',
+          'file-version-id'
+        )
+      ).rejects.toThrow('oh no');
     });
   });
 });

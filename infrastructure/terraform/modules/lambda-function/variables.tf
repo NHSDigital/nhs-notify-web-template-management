@@ -59,6 +59,12 @@ variable "memory_size" {
   default     = 128
 }
 
+variable "timeout" {
+  description = "The amount of time your Lambda Function has to run in seconds."
+  type        = number
+  default     = 3
+}
+
 variable "dead_letter_target_arn" {
   description = "The ARN of an SNS topic or SQS queue to notify when an async invocation fails."
   type        = string
@@ -87,4 +93,10 @@ variable "sqs_event_source_mapping" {
     }), null)
   })
   default = null
+}
+
+variable "layer_arns" {
+  description = "List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function."
+  type        = list(string)
+  default     = null
 }

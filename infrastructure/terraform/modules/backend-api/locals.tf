@@ -1,7 +1,9 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
-  lambdas_source_code_dir = abspath("${path.module}/../../../../lambdas")
+  monorepo_root               = abspath("${path.module}/../../../..")
+  lambdas_source_code_dir     = abspath("${local.monorepo_root}/lambdas")
+  pdfjs_layer_source_code_dir = abspath("${local.monorepo_root}/layers/pdfjs")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     AWS_REGION               = var.region
@@ -18,8 +20,10 @@ locals {
 
   backend_lambda_entrypoints = {
     copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
+    copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
     create_letter_template          = "src/templates/create-letter.ts"
     create_template                 = "src/templates/create.ts"
+    delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
     delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
     delete_template                 = "src/templates/delete.ts"
     get_template                    = "src/templates/get.ts"
@@ -28,6 +32,7 @@ locals {
     submit_template                 = "src/templates/submit.ts"
     template_client                 = "src/index.ts"
     update_template                 = "src/templates/update.ts"
+    validate_letter_template_files  = "src/templates/validate-letter-template-files.ts"
   }
 
   backend_lambda_environment_variables = {

@@ -1,21 +1,33 @@
 import { z } from 'zod';
-import type { TemplateFileScannedEventDetail } from 'nhs-notify-web-template-management-utils';
+import {
+  $GuardDutyMalwareScanStatusPassed,
+  type GuardDutyMalwareScanStatusPassed,
+} from 'nhs-notify-web-template-management-utils';
 import type { LetterUploadRepository } from '../infra/letter-upload-repository';
 
+// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
+// Just typing/validating the parts we use
 type CopyScannedObjectToInternalLambdaInput = {
-  detail: TemplateFileScannedEventDetail;
+  detail: {
+    s3ObjectDetails: {
+      objectKey: string;
+      versionId: string;
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatusPassed;
+    };
+  };
 };
-
 const $CopyScannedObjectToInternalLambdaInput: z.ZodType<CopyScannedObjectToInternalLambdaInput> =
   z.object({
     detail: z.object({
-      template: z.object({
-        id: z.string(),
-        owner: z.string(),
+      s3ObjectDetails: z.object({
+        objectKey: z.string(),
+        versionId: z.string(),
       }),
-      versionId: z.string(),
-      fileType: z.enum(['pdf-template', 'test-data']),
-      virusScanStatus: z.enum(['PASSED']),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatusPassed,
+      }),
     }),
   });
 
@@ -27,12 +39,13 @@ export const createHandler =
   }) =>
   async (event: unknown) => {
     const {
-      detail: { template, versionId, fileType },
+      detail: {
+        s3ObjectDetails: { objectKey, versionId },
+      },
     } = $CopyScannedObjectToInternalLambdaInput.parse(event);
 
     await letterUploadRepository.copyFromQuarantineToInternal(
-      template,
-      fileType,
+      objectKey,
       versionId
     );
   };

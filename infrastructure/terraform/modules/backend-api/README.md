@@ -34,7 +34,6 @@ No requirements.
 | <a name="module_build_sftp_letters_lambdas"></a> [build\_sftp\_letters\_lambdas](#module\_build\_sftp\_letters\_lambdas) | ../typescript-build-zip | n/a |
 | <a name="module_build_template_client"></a> [build\_template\_client](#module\_build\_template\_client) | ../typescript-build-zip | n/a |
 | <a name="module_build_template_lambda"></a> [build\_template\_lambda](#module\_build\_template\_lambda) | ../typescript-build-zip | n/a |
-| <a name="module_build_virus_scan_lambdas"></a> [build\_virus\_scan\_lambdas](#module\_build\_virus\_scan\_lambdas) | ../typescript-build-zip | n/a |
 | <a name="module_create_letter_template_lambda"></a> [create\_letter\_template\_lambda](#module\_create\_letter\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_delete_template_lambda"></a> [delete\_template\_lambda](#module\_delete\_template\_lambda) | ../lambda-function | n/a |
@@ -44,6 +43,7 @@ No requirements.
 | <a name="module_lambda_enrich_guardduty_scan_result"></a> [lambda\_enrich\_guardduty\_scan\_result](#module\_lambda\_enrich\_guardduty\_scan\_result) | ../lambda-function | n/a |
 | <a name="module_lambda_send_letter_proof"></a> [lambda\_send\_letter\_proof](#module\_lambda\_send\_letter\_proof) | ../lambda-function | n/a |
 | <a name="module_lambda_set_file_virus_scan_status"></a> [lambda\_set\_file\_virus\_scan\_status](#module\_lambda\_set\_file\_virus\_scan\_status) | ../lambda-function | n/a |
+| <a name="module_lambda_validate_letter_template_files"></a> [lambda\_validate\_letter\_template\_files](#module\_lambda\_validate\_letter\_template\_files) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |

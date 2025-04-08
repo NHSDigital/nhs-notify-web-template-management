@@ -303,6 +303,77 @@ export class TemplateRepository {
     }
   }
 
+  async setLetterValidationResult(
+    templateKey: TemplateKey,
+    versionId: string,
+    valid: boolean,
+    personalisationParameters: string[],
+    csvHeaders: string[]
+  ) {
+    const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
+      {
+        '#files': 'files',
+        '#file': 'pdfTemplate' satisfies keyof LetterFiles,
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
+
+    const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':templateStatus': (valid
+          ? 'NOT_YET_SUBMITTED'
+          : 'VALIDATION_FAILED') satisfies TemplateStatus,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':updatedAt': new Date().toISOString(),
+        ':version': versionId,
+      };
+
+    const updates = [
+      '#templateStatus = :templateStatus',
+      '#updatedAt = :updatedAt',
+    ];
+
+    if (valid) {
+      ExpressionAttributeNames['#personalisationParameters'] =
+        'personalisationParameters';
+      ExpressionAttributeNames['#csvHeaders'] = 'csvHeaders';
+
+      ExpressionAttributeValues[':personalisationParameters'] =
+        personalisationParameters;
+      ExpressionAttributeValues[':csvHeaders'] = csvHeaders;
+
+      updates.push(
+        '#personalisationParameters = :personalisationParameters',
+        '#csvHeaders = :csvHeaders'
+      );
+    }
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression: `SET ${updates.join(' , ')}`,
+          ExpressionAttributeNames,
+          ExpressionAttributeValues,
+          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(
+          'Conditional check failed when setting letter validation status:',
+          error,
+          { templateKey }
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
   async setLetterFileVirusScanStatus(
     templateKey: TemplateKey,
     fileType: FileType,
@@ -372,7 +443,11 @@ export class TemplateRepository {
       });
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error('Conditional Check Failed', { error });
+        logger.error(
+          'Conditional check failed when setting file virus scan status:',
+          error,
+          { templateKey }
+        );
       } else {
         throw error;
       }
