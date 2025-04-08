@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "form-data": "^4.0.2"
+    "form-data": "^4.0.2",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5"
