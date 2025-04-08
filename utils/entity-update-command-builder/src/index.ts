@@ -1,2 +1,1 @@
-export * from './RequestItemPlanUpdateBuilder';
-export * from './RequestItemUpdateBuilder';
+export * from './template-update-builder';

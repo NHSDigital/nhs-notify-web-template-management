@@ -30,15 +30,16 @@ export class Batch {
     fields: string[],
     userTestData?: TestCustomPersonalisation
   ): BatchDetails {
-    const date = new Date();
+    const date = this.getDate();
 
-    const id = `${templateId}-${this.getDate().getTime()}_${this.randomId()}`;
+    const id = `${templateId}-${date.getTime()}_${this.randomId()}`;
+    const ref = this.clientRef(date);
 
     const header = `clientRef,template,${fields.join(',')}`;
 
-    const rows = Array.from({ length: 3 }, (_, i) =>
-      Object.fromEntries([
-        ['clientRef', this.clientRef()],
+    const rows = Array.from({ length: 3 }, (_, i) => {
+      const fieldEntries = [
+        ['clientRef', ref],
         ['template', templateId],
         ...fields.map((field) => {
           const value = this.fieldValue(
@@ -49,8 +50,10 @@ export class Batch {
           );
           return [field, value];
         }),
-      ])
-    );
+      ];
+
+      return Object.fromEntries(fieldEntries);
+    });
 
     return { id, rows, header };
   }
@@ -70,12 +73,10 @@ export class Batch {
     return userData?.[field] ?? '';
   }
 
-  private clientRef() {
-    return [
-      this.randomId(),
-      this.randomId(),
-      this.getDate().toString().slice(10),
-    ].join('_');
+  private clientRef(date: Date) {
+    return [this.randomId(), this.randomId(), date.toString().slice(10)].join(
+      '_'
+    );
   }
 
   buildManifest(

@@ -1,13 +1,13 @@
+import type { SftpClient } from '../infra/sftp-client';
+import type { UserDataRepository } from '../infra/user-data-repository';
+import type { Logger } from 'nhs-notify-web-template-management-utils';
+import type { Batch } from '../domain/batch';
+import type { TemplateRepository } from '../infra/template-repository';
 import { parseTestPersonalisation } from '../domain/test-data';
 import { serialise } from '../infra/serialise-csv';
-import { SftpClient } from '../infra/sftp-client';
-import type { UserDataRepository } from '../infra/user-data-repository';
 import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
-import { Logger } from 'nhs-notify-web-template-management-utils';
-import { Batch } from '../domain/batch';
-import { TemplateRepository } from '../infra/template-repository';
 
 export function parseProofingRequest(event: string) {
   return z
@@ -66,43 +66,46 @@ export class App {
       'template,batch,records,md5'
     );
 
+    const sftpEnvDir = path.join(baseUploadDir, this.sftpEnvironment);
+
+    const templateDir = path.join(sftpEnvDir, 'templates', templateId);
+    const batchDir = path.join(sftpEnvDir, 'batches', templateId);
+
+    const pdfName = `${templateId}.pdf`;
+    const csvName = `${batch.id}.csv`;
+    const manifestName = `${batch.id}_MANIFEST.csv`;
+
+    const pdfDestination = path.join(templateDir, pdfName);
+    const batchDestination = path.join(batchDir, csvName);
+    const manifestDestination = path.join(batchDir, manifestName);
+
+    const batchStream = Readable.from(batchCsv);
+    const manifestStream = Readable.from(manifestCsv);
+
+    batchLogger.info('Updating template to SENDING_PROOF');
+
+    await this.templateRepository.updateToSendingProof(owner, templateId);
+
     batchLogger.info('Sending PDF');
 
-    await sftpClient.put(
-      userData.pdf,
-      path.join(
-        baseUploadDir,
-        this.sftpEnvironment,
-        'templates',
-        `${templateId}.pdf`
-      )
-    );
+    await Promise.all([
+      sftpClient.mkdir(templateDir, true),
+      sftpClient.mkdir(batchDir, true),
+    ]);
+
+    await sftpClient.put(userData.pdf, pdfDestination);
 
     batchLogger.info('Sending batch');
 
-    await sftpClient.put(
-      Readable.from(batchCsv),
-      path.join(
-        baseUploadDir,
-        this.sftpEnvironment,
-        'batches',
-        templateId,
-        `${batch.id}.csv`
-      )
-    );
+    await sftpClient.put(batchStream, batchDestination);
 
     batchLogger.info('Sending manifest');
 
-    await sftpClient.put(
-      Readable.from(manifestCsv),
-      path.join(
-        baseUploadDir,
-        this.sftpEnvironment,
-        'batches',
-        templateId,
-        `${batch.id}_MANIFEST.csv`
-      )
-    );
+    await sftpClient.put(manifestStream, manifestDestination);
+
+    batchLogger.info('Updating template to awaiting proof');
+
+    await this.templateRepository.updateToAwaitingProof(owner, templateId);
 
     batchLogger.info('Sent proofing request');
   }

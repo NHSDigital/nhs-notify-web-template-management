@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5"
+  },
+  "dependencies": {
+    "nhs-notify-backend-client": "0.0.1"
   }
 }
