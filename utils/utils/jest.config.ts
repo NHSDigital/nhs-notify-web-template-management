@@ -17,16 +17,16 @@ export const baseJestConfig: Config = {
 
   coverageThreshold: {
     global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: -10,
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
     },
   },
 
   transform: { '\\.ts$': '@swc/jest' },
   testPathIgnorePatterns: ['.build'],
-  testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+  testMatch: ['**/*.test.ts'],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

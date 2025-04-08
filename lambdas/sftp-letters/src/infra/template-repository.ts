@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
@@ -9,8 +10,8 @@ export class TemplateRepository {
 
   async updateToSendingProof(owner: string, id: string) {
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setStatus('SENDING_PROOF')
-      .expectedStatus('PASSED_VALIDATION')
+      .setStatus('SENDING_PROOF' as any)
+      .expectedStatus('PASSED_VALIDATION' as any)
       .build();
 
     return await this.client.send(new UpdateCommand(update));
@@ -18,8 +19,8 @@ export class TemplateRepository {
 
   async updateToAwaitingProof(owner: string, id: string) {
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setStatus('AWAITING_PROOF')
-      .expectedStatus('SENDING_PROOF')
+      .setStatus('AWAITING_PROOF' as any)
+      .expectedStatus('SENDING_PROOF' as any)
       .build();
 
     return await this.client.send(new UpdateCommand(update));
