@@ -1,6 +1,6 @@
 import type { SftpClient } from '../infra/sftp-client';
 import type { UserDataRepository } from '../infra/user-data-repository';
-import type { Logger } from 'nhs-notify-web-template-management-utils';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { Batch } from '../domain/batch';
 import type { TemplateRepository } from '../infra/template-repository';
 import { parseTestPersonalisation } from '../domain/test-data';
