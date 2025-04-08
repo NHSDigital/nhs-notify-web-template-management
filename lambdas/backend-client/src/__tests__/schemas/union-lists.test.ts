@@ -1,4 +1,4 @@
-import { arrayOfAll } from '../../src/type-util';
+import { arrayOfAll } from '../../schemas/union-lists';
 
 describe('arrayOfAll', () => {
   type Union = 'a' | 'b' | 'c';

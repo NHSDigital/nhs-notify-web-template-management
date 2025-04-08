@@ -1,23 +1,22 @@
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ZodError } from 'zod';
-import { mock } from 'jest-mock-extended';
 import {
   getConfigFromSsmString,
   SftpSupplierClientRepository,
 } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
-import type { Logger } from 'nhs-notify-web-template-management-utils';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils';
 
-jest.mock('../../infra/client');
+jest.mock('../../infra/sftp-client');
 
 function setup() {
   const environment = 'testenv';
 
   const ssmClient = mockClient(SSMClient);
 
-  const logger = mock<Logger>();
+  const { logger } = createMockLogger();
 
   const mocks = {
     logger,
