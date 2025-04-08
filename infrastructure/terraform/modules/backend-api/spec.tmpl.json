@@ -501,11 +501,13 @@
       "TemplateStatus": {
         "type": "string",
         "enum": [
-          "NOT_YET_SUBMITTED",
-          "SUBMITTED",
           "DELETED",
+          "NOT_YET_SUBMITTED",
+          "PENDING_PROOF_REQUEST",
           "PENDING_UPLOAD",
           "PENDING_VALIDATION",
+          "SENDING_PROOF_REQUEST",
+          "SUBMITTED",
           "VIRUS_SCAN_FAILED"
         ]
       },
