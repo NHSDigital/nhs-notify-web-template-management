@@ -4,6 +4,7 @@ module "backend_api" {
   source = "../../modules/backend-api"
 
   project               = var.project
+  component             = "${var.component}-api"
   environment           = var.environment
   aws_account_id        = var.aws_account_id
   region                = var.region

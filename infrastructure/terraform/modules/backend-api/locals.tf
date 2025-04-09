@@ -1,5 +1,5 @@
 locals {
-  csi = "${var.csi}-${var.component}"
+  csi = "${var.project}-${var.environment}-${var.component}"
 
   lambdas_source_code_dir = abspath("${path.module}/../../../../lambdas")
 
