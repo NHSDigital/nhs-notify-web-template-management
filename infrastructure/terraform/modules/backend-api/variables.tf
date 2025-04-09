@@ -40,6 +40,7 @@ variable "group" {
 variable "module" {
   type        = string
   description = "The variable encapsulating the name of this module"
+  default     = "api"
 }
 
 ##

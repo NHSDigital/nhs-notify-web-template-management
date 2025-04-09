@@ -6,8 +6,6 @@ module "sqs_virus_scan_passed_copy_object_dlq" {
   environment    = var.environment
   project        = var.project
   region         = var.region
-  module         = var.module
-
   name = "virus-scan-passed-copy-object-dlq"
 
   sqs_kms_key_arn = var.kms_key_arn

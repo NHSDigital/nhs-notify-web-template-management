@@ -1,7 +1,6 @@
 module "backend_api" {
   source = "../../modules/backend-api"
 
-  module                = "api"
   project               = var.project
   environment           = var.environment
   component             = var.component
