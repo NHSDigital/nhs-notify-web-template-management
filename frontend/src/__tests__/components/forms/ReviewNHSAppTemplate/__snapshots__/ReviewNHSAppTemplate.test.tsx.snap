@@ -75,92 +75,79 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <div
-            class="preview"
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template ID
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 template-id
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Type
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               />
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Status
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <strong
                   class="nhsuk-tag"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
-          <div
-            class="nhsuk-u-margin-top-4 preview"
+          </dl>
+          <dl
+            class="nhsuk-summary-list preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
                 <div
-                  class="preview__col_heading"
                   data-testid="preview__heading-0"
                   id="preview-heading-message"
                 >
                   Message
                 </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <div
-                  class="preview__col_content"
+                  class="preview__content"
                   data-testid="preview__content-0"
                   id="preview-content-message"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
         <form
           action="/action"
@@ -323,92 +310,79 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <div
-            class="preview"
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template ID
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 template-id
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Type
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               />
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Status
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <strong
                   class="nhsuk-tag"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
-          <div
-            class="nhsuk-u-margin-top-4 preview"
+          </dl>
+          <dl
+            class="nhsuk-summary-list preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
                 <div
-                  class="preview__col_heading"
                   data-testid="preview__heading-0"
                   id="preview-heading-message"
                 >
                   Message
                 </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <div
-                  class="preview__col_content"
+                  class="preview__content"
                   data-testid="preview__content-0"
                   id="preview-content-message"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
         <form
           action="/action"
@@ -554,92 +528,79 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <div
-            class="preview"
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template ID
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 template-id
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Type
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               />
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Status
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <strong
                   class="nhsuk-tag"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
-          <div
-            class="nhsuk-u-margin-top-4 preview"
+          </dl>
+          <dl
+            class="nhsuk-summary-list preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
                 <div
-                  class="preview__col_heading"
                   data-testid="preview__heading-0"
                   id="preview-heading-message"
                 >
                   Message
                 </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <div
-                  class="preview__col_content"
+                  class="preview__content"
                   data-testid="preview__content-0"
                   id="preview-content-message"
                 />
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
         <form
           action="/action"
