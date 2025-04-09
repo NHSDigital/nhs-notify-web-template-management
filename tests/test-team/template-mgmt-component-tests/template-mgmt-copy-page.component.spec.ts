@@ -85,7 +85,7 @@ test.describe('Copy Template Page', () => {
       page: new TemplateMgmtCopyPage(page),
       id: templates.email.id,
       baseURL,
-      expectedUrl: 'templates/manage-templates',
+      expectedUrl: 'templates/message-templates',
     };
 
     await assertSkipToMainContent(props);
@@ -140,7 +140,7 @@ test.describe('Copy Template Page', () => {
         );
         await copyTemplatePage.clickContinueButton();
 
-        await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
+        await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
 
         const templateRow = page
           .getByRole('row')

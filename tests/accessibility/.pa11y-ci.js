@@ -22,7 +22,7 @@ const {
   submitEmailTemplatePage,
   emailTemplateSubmittedPage,
   NhsAppTemplateSubmittedPage,
-  manageTemplatesPage,
+  messageTemplatesPage,
   viewNotYetSubmittedEmailTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
@@ -36,7 +36,7 @@ const {
 const baseUrl = 'http://localhost:3000/templates';
 const chooseTemplateUrl = `${baseUrl}/choose-a-template-type`;
 const startUrl = 'http://localhost:3000/templates/create-and-submit-templates';
-const manageTemplatesUrl = `${baseUrl}/manage-templates`;
+const messageTemplatesUrl = `${baseUrl}/message-templates`;
 
 module.exports = {
   urls: [
@@ -44,7 +44,7 @@ module.exports = {
     performCheck({ url: startUrl, name: 'landing-page' }),
 
     //My Messages Templates
-    performCheck(manageTemplatesPage(manageTemplatesUrl)),
+    performCheck(messageTemplatesPage(messageTemplatesUrl)),
     performCheck(copyTemplatePage(chooseTemplateUrl)),
 
     // Choose a template journey
@@ -56,10 +56,10 @@ module.exports = {
     performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
+    performCheck(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
     performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedNHSAppTemplatePage(manageTemplatesUrl)),
+    performCheck(viewSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
 
     // Text message journey
     performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
@@ -67,21 +67,21 @@ module.exports = {
     performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
     performCheck(
-      viewNotYetSubmittedTextMessageTemplatePage(manageTemplatesUrl)
+      viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl)
     ),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedTextMessageTemplatePage(manageTemplatesUrl)),
+    performCheck(viewSubmittedTextMessageTemplatePage(messageTemplatesUrl)),
 
     // Email journey
     performCheck(createEmailTemplatePage(chooseTemplateUrl)),
     performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
     performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
     performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedEmailTemplatePage(manageTemplatesUrl)),
+    performCheck(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl)),
     performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedEmailTemplatePage(manageTemplatesUrl)),
+    performCheck(viewSubmittedEmailTemplatePage(messageTemplatesUrl)),
 
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),

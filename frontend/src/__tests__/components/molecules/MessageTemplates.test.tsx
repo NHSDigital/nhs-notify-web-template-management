@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { ManageTemplates } from '@molecules/ManageTemplates/ManageTemplates';
+import { MessageTemplates } from '@molecules/MessageTemplates/MessageTemplates';
 import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
-const manageTemplatesContent = content.pages.manageTemplates;
+const messageTemplatesContent = content.pages.messageTemplates;
 
-const manageTemplatesProps: {
+const messageTemplatesProps: {
   templateList: TemplateDto[];
 } = {
   templateList: [
@@ -47,20 +47,20 @@ const manageTemplatesProps: {
   ],
 };
 
-describe('ManageTemplates component', () => {
+describe('MessageTemplates component', () => {
   it('matches snapshot with not submitted status', () => {
-    const container = render(<ManageTemplates {...manageTemplatesProps} />);
+    const container = render(<MessageTemplates {...messageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('matches snapshot with submitted status', () => {
-    manageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
-    const container = render(<ManageTemplates {...manageTemplatesProps} />);
+    messageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
+    const container = render(<MessageTemplates {...messageTemplatesProps} />);
 
     expect(container.asFragment()).toMatchSnapshot();
   });
   it('renders component correctly', () => {
-    render(<ManageTemplates {...manageTemplatesProps} />);
+    render(<MessageTemplates {...messageTemplatesProps} />);
 
     expect(screen.getByTestId('manage-template-table')).toBeInTheDocument();
     expect(
@@ -68,30 +68,30 @@ describe('ManageTemplates component', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-template-name')
-    ).toHaveTextContent(manageTemplatesContent.tableHeadings.name);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.name);
     expect(
       screen.getByTestId('manage-template-table-header-template-type')
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-template-type')
-    ).toHaveTextContent(manageTemplatesContent.tableHeadings.type);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.type);
     expect(
       screen.getByTestId('manage-template-table-header-template-status')
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-template-status')
-    ).toHaveTextContent(manageTemplatesContent.tableHeadings.status);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.status);
     expect(
       screen.getByTestId('manage-template-table-header-template-date-created')
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-template-date-created')
-    ).toHaveTextContent(manageTemplatesContent.tableHeadings.dateCreated);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.dateCreated);
     expect(
       screen.getByTestId('manage-template-table-header-action')
     ).toBeInTheDocument();
     expect(
       screen.getByTestId('manage-template-table-header-action')
-    ).toHaveTextContent(manageTemplatesContent.tableHeadings.action.text);
+    ).toHaveTextContent(messageTemplatesContent.tableHeadings.action.text);
   });
 });

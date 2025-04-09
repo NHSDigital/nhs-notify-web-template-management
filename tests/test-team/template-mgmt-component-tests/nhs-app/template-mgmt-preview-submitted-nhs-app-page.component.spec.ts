@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedNhsAppPage } from '../../pages/nhs-app/template-mgmt-view-submitted-nhs-app-page';
+import { TemplateMgmtViewSubmittedNhsAppPage } from '../../pages/nhs-app/template-mgmt-preview-submitted-nhs-app-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -66,7 +66,7 @@ test.describe('View submitted NHS App message template Page', () => {
     await viewSubmittedNHSAppTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/view-submitted-nhs-app-template/${templates.valid.id}`
+      `${baseURL}/templates/preview-submitted-nhs-app-template/${templates.valid.id}`
     );
 
     await expect(viewSubmittedNHSAppTemplatePage.pageHeader).toContainText(

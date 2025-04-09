@@ -125,7 +125,7 @@ test.describe('Template Submitted Page', () => {
         await assertSignOutLink(props);
         await assertGoBackLink({
           ...props,
-          expectedUrl: 'templates/manage-templates',
+          expectedUrl: 'templates/message-templates',
         });
       });
     });

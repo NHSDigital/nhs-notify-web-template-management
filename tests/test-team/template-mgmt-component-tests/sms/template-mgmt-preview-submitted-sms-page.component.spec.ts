@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedSmsPage } from '../../pages/sms/template-mgmt-view-submitted-sms-page';
+import { TemplateMgmtViewSubmittedSmsPage } from '../../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -66,7 +66,7 @@ test.describe('View submitted sms message template Page', () => {
     await viewSubmittedSMSTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/view-submitted-text-message-template/${templates.valid.id}`
+      `${baseURL}/templates/preview-submitted-text-message-template/${templates.valid.id}`
     );
 
     await expect(viewSubmittedSMSTemplatePage.pageHeader).toContainText(

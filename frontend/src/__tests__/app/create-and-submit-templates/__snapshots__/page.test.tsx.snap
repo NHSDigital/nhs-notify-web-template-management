@@ -64,7 +64,7 @@ exports[`matches the snapshot 1`] = `
           aria-disabled="false"
           class="nhsuk-button"
           draggable="false"
-          href="/templates/manage-templates"
+          href="/templates/message-templates"
           role="button"
         >
           Start now

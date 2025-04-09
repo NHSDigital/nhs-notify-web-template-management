@@ -75,5 +75,5 @@ export const copyTemplateAction: CopyTemplateAction = async (
     // no default
   }
 
-  return redirect(`/manage-templates`, RedirectType.push);
+  return redirect(`/message-templates`, RedirectType.push);
 };

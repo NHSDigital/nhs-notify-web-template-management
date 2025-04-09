@@ -7,7 +7,7 @@ exports[`Review sms form renders matches error snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -262,7 +262,7 @@ exports[`Review sms form renders matches error snapshot 1`] = `
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
@@ -280,7 +280,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -498,7 +498,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
@@ -516,7 +516,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -729,7 +729,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
         </form>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
