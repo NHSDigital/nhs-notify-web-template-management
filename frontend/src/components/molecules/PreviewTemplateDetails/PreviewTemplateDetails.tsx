@@ -1,4 +1,4 @@
-import { Container, Row, Col, Tag } from 'nhsuk-react-components';
+import { Container, Tag, SummaryList } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
   letterTypeDisplayMappings,
@@ -31,28 +31,24 @@ export function PreviewTemplateDetails({
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >
-        <div className={styles.preview}>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Template ID</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
-              {template.id}
-            </Col>
-          </Row>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Type</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
-              {templateTypeText}
-            </Col>
-          </Row>
-          <Row className={styles.preview__row}>
-            <Col width='one-third' className={styles.preview__col}>
-              <div className={styles.preview__col_heading}>Status</div>
-            </Col>
-            <Col width='two-thirds' className={styles.col}>
+        <SummaryList
+          noBorder={false}
+          className={concatClassNames(
+            'nhsuk-u-margin-bottom-4',
+            styles.preview
+          )}
+        >
+          <SummaryList.Row>
+            <SummaryList.Key>Template ID</SummaryList.Key>
+            <SummaryList.Value>{template.id}</SummaryList.Value>
+          </SummaryList.Row>
+          <SummaryList.Row>
+            <SummaryList.Key>Type</SummaryList.Key>
+            <SummaryList.Value>{templateTypeText}</SummaryList.Value>
+          </SummaryList.Row>
+          <SummaryList.Row>
+            <SummaryList.Key>Status</SummaryList.Key>
+            <SummaryList.Value>
               <Tag
                 color={
                   template.templateStatus === 'SUBMITTED' ? 'grey' : undefined
@@ -60,45 +56,39 @@ export function PreviewTemplateDetails({
               >
                 {templateStatusToDisplayMappings(template.templateStatus)}
               </Tag>
-            </Col>
-          </Row>
+            </SummaryList.Value>
+          </SummaryList.Row>
           {additionalMetaFields?.map((row) => (
-            <Row className={styles.preview__row} key={row.id}>
-              <Col width='one-third' className={styles.preview__col}>
-                <div className={styles.preview__col_heading}>{row.title}</div>
-              </Col>
-              <Col width='two-thirds' className={styles.col}>
-                {row.content}
-              </Col>
-            </Row>
+            <SummaryList.Row key={row.id}>
+              <SummaryList.Key>{row.title}</SummaryList.Key>
+              <SummaryList.Value>{row.content}</SummaryList.Value>
+            </SummaryList.Row>
           ))}
-        </div>
+        </SummaryList>
+
         {contentPreview ? (
-          <div
-            className={concatClassNames('nhsuk-u-margin-top-4', styles.preview)}
-          >
+          <SummaryList noBorder={false} className={styles.preview}>
             {contentPreview.map(({ heading, value, id }, idx) => (
-              <Row key={id} className={styles.preview__row}>
-                <Col width='one-third' className={styles.preview__col}>
+              <SummaryList.Row key={id}>
+                <SummaryList.Key>
                   <div
                     id={`preview-heading-${id}`}
                     data-testid={`preview__heading-${idx}`}
-                    className={styles.preview__col_heading}
                   >
                     {heading}
                   </div>
-                </Col>
-                <Col width='two-thirds' className={styles.col}>
+                </SummaryList.Key>
+                <SummaryList.Value>
                   <div
                     id={`preview-content-${id}`}
                     data-testid={`preview__content-${idx}`}
-                    className={styles.preview__col_content}
+                    className={styles.preview__content}
                     dangerouslySetInnerHTML={{ __html: value }}
                   />
-                </Col>
-              </Row>
+                </SummaryList.Value>
+              </SummaryList.Row>
             ))}
-          </div>
+          </SummaryList>
         ) : null}
       </Container>
     </>
