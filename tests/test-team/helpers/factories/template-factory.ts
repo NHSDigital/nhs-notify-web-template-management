@@ -37,7 +37,12 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (id: string, owner: string, name: string): Template => {
+  createLetterTemplate: (
+    id: string,
+    owner: string,
+    name: string,
+    status?: string
+  ): Template => {
     return TemplateFactory.create({
       id,
       owner,
@@ -57,6 +62,9 @@ export const TemplateFactory = {
           virusScanStatus: 'PENDING',
         },
       },
+      ...(status && {
+        templateStatus: status,
+      }),
     });
   },
 
