@@ -3,7 +3,6 @@ module "s3bucket_access_logs" {
 
   name = "access-logs"
 
-  module         = var.module
   aws_account_id = var.aws_account_id
   region         = var.region
   project        = var.project
