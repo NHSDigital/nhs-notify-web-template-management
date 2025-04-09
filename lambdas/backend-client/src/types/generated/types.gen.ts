@@ -8,7 +8,8 @@ export type TemplateStatus =
   | 'DELETED'
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
-  | 'VIRUS_SCAN_FAILED';
+  | 'VIRUS_SCAN_FAILED'
+  | 'VALIDATION_FAILED';
 
 export type Language =
   | 'ar'

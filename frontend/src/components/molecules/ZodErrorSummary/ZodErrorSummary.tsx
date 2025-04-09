@@ -1,4 +1,4 @@
-import { ErrorSummary } from 'nhsuk-react-components';
+import { ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 
 export type ZodErrorSummaryProps = {
@@ -35,9 +35,7 @@ export const ZodErrorSummary = ({
           </ErrorSummary.Item>
         ))}
         {formErrors.map(({ error, id }) => (
-          <ErrorSummary.Item key={`form-error-summary-${id}`}>
-            {error}
-          </ErrorSummary.Item>
+          <ErrorMessage key={`form-error-summary-${id}`}>{error}</ErrorMessage>
         ))}
       </ErrorSummary.List>
     </ErrorSummary>

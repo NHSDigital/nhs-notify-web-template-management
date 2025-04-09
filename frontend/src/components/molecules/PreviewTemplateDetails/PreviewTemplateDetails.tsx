@@ -8,6 +8,7 @@ import {
   NHSAppTemplate,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
+  templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplateDetails.module.scss';
 import { PreviewTemplateDetailsProps } from './preview-template-details.types';
@@ -54,9 +55,7 @@ export function PreviewTemplateDetails({
             </Col>
             <Col width='two-thirds' className={styles.col}>
               <Tag
-                color={
-                  template.templateStatus === 'SUBMITTED' ? 'grey' : undefined
-                }
+                color={templateStatusToColourMappings(template.templateStatus)}
               >
                 {templateStatusToDisplayMappings(template.templateStatus)}
               </Tag>

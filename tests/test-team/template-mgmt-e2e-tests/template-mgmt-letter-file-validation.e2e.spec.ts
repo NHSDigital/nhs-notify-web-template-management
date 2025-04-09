@@ -85,6 +85,11 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
     }).toPass({ timeout: 10_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
+    await expect(page.getByTestId('.submit-button')).toBeHidden();
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if scan fails, files are deleted from quarantine and not copied, file and template status updated in database', async ({
@@ -157,5 +162,10 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
     }).toPass({ timeout: 10_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('.submit-button')).toBeHidden();
   });
 });
