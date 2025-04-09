@@ -13,6 +13,7 @@ import styles from './PreviewTemplateDetails.module.scss';
 import { PreviewTemplateDetailsProps } from './preview-template-details.types';
 import { JSX } from 'react';
 import { Filename } from '@atoms/Filename/Filename';
+import content from '@content/content';
 
 export function PreviewTemplateDetails({
   template,
@@ -20,6 +21,8 @@ export function PreviewTemplateDetails({
   additionalMetaFields,
   contentPreview,
 }: Readonly<PreviewTemplateDetailsProps>): JSX.Element {
+  const { rowHeadings } = content.components.previewTemplateDetails;
+
   return (
     <>
       <h1
@@ -39,15 +42,15 @@ export function PreviewTemplateDetails({
           )}
         >
           <SummaryList.Row>
-            <SummaryList.Key>Template ID</SummaryList.Key>
+            <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
             <SummaryList.Value>{template.id}</SummaryList.Value>
           </SummaryList.Row>
           <SummaryList.Row>
-            <SummaryList.Key>Type</SummaryList.Key>
+            <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
             <SummaryList.Value>{templateTypeText}</SummaryList.Value>
           </SummaryList.Row>
           <SummaryList.Row>
-            <SummaryList.Key>Status</SummaryList.Key>
+            <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
             <SummaryList.Value>
               <Tag
                 color={
