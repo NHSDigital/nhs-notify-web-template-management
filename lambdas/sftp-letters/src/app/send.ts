@@ -9,7 +9,7 @@ import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 
-export function parseProofingRequest(event: string) {
+function parseProofingRequest(event: string) {
   return z
     .object({
       owner: z.string(),
@@ -66,7 +66,7 @@ export class App {
 
     const manifestCsv = await serialiseCsv(
       [manifest],
-      'template,batch,records,md5'
+      'template,batch,records,md5sum'
     );
 
     const sftpEnvDir = path.join(baseUploadDir, this.sftpEnvironment);

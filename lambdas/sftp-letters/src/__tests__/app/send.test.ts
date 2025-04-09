@@ -2,10 +2,10 @@ import { mock } from 'jest-mock-extended';
 import { TemplateRepository } from '../../infra/template-repository';
 import { UserDataRepository } from '../../infra/user-data-repository';
 import { App } from '../../app/send';
-import { Batch } from '../../domain/batch';
+import { Batch, Manifest } from '../../domain/batch';
 import { SftpClient } from '../../infra/sftp-client';
 import { Readable } from 'node:stream';
-import { mockTestDataCsv } from '../helpers';
+import { mockTestDataCsv, streamToString } from '../helpers';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
@@ -14,9 +14,6 @@ const owner = 'owner-id';
 const templateId = 'template-id';
 const pdfVersion = 'pdf-version-id';
 const testDataVersion = 'test-data-version-id';
-
-const generatedId = 'id';
-const date = new Date('2025-04-09T08:48:04.805Z');
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
@@ -65,7 +62,8 @@ describe('App', () => {
 
     const event = mockEvent(true, personalisationFields);
 
-    const pdf = Readable.from('data');
+    const pdfContent = 'mock PDF content';
+    const pdf = Readable.from(pdfContent);
 
     const batchId = 'template-id-0000000000000_pdfversionid';
 
@@ -99,7 +97,7 @@ describe('App', () => {
       },
     ];
 
-    const batchCsv = [
+    const batchCsv: string = [
       batchColumns.join(','),
       batchData
         .map((x) =>
@@ -112,6 +110,20 @@ describe('App', () => {
           ].join(',')
         )
         .join('\n'),
+    ].join('\n');
+
+    const batchHash = 'hash-of-batch-csv';
+
+    const manifestData: Manifest = {
+      template: templateId,
+      batch: `${batchId}.csv`,
+      records: '3',
+      md5sum: batchHash,
+    };
+
+    const manifestCsv = [
+      'template,batch,records,md5sum',
+      `"${templateId}","${batchId}.csv","3","${batchHash}"`,
     ].join('\n');
 
     const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
@@ -127,12 +139,7 @@ describe('App', () => {
 
     mocks.batch.getHeader.mockReturnValueOnce(batchColumns.join(','));
 
-    mocks.batch.buildManifest.mockReturnValueOnce({
-      template: templateId,
-      batch: `${batchId}.csv`,
-      records: '3',
-      md5sum: 'hash-of-batch-csv',
-    });
+    mocks.batch.buildManifest.mockReturnValueOnce(manifestData);
 
     // manifest doesn't already exist
     mocks.sftpClient.exists.mockResolvedValueOnce(false);
@@ -168,5 +175,66 @@ describe('App', () => {
     expect(mocks.sftpClient.exists).toHaveBeenCalledWith(
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
+
+    expect(mocks.sftpClient.mkdir).toHaveBeenCalledTimes(2);
+    expect(mocks.sftpClient.mkdir).toHaveBeenCalledWith(
+      `${baseUploadDir}/${sftpEnvironment}/templates/${templateId}`,
+      true
+    );
+    expect(mocks.sftpClient.mkdir).toHaveBeenCalledWith(
+      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}`,
+      true
+    );
+
+    expect(mocks.sftpClient.put).toHaveBeenCalledTimes(3);
+
+    const [pdfPutCall, batchPutCall, manifestPutCall] =
+      mocks.sftpClient.put.mock.calls;
+
+    const [pdfArg, pdfDestinationArg] = pdfPutCall;
+
+    expect(await streamToString(pdfArg)).toEqual(pdfContent);
+    expect(pdfDestinationArg).toBe(
+      `${baseUploadDir}/${sftpEnvironment}/templates/${templateId}/${templateId}.pdf`
+    );
+
+    const [batchArg, batchDestinationArg] = batchPutCall;
+
+    expect(await streamToString(batchArg)).toEqual(batchCsv);
+    expect(batchDestinationArg).toBe(
+      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}.csv`
+    );
+
+    const [manifestArg, manifestDestinationArg] = manifestPutCall;
+
+    expect(await streamToString(manifestArg)).toEqual(manifestCsv);
+    expect(manifestDestinationArg).toBe(
+      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
+    );
+
+    expect(
+      mocks.templateRepository.updateToNotYetSubmitted
+    ).toHaveBeenCalledTimes(1);
+    expect(
+      mocks.templateRepository.updateToNotYetSubmitted
+    ).toHaveBeenCalledWith(owner, templateId);
+  });
+
+  test('throws if proof request event is invalid JSON', async () => {
+    const { app, mocks } = setup();
+
+    await expect(
+      app.send('notjson', mocks.sftpClient, baseUploadDir)
+    ).rejects.toThrow(`Unexpected token 'o', "notjson" is not valid JSON`);
+  });
+
+  test('throws if proof request event is missing a property', async () => {
+    const { app, mocks } = setup();
+
+    const { fields: _, ...invalidEvent } = mockEvent(true, ['field']);
+
+    await expect(
+      app.send(JSON.stringify(invalidEvent), mocks.sftpClient, baseUploadDir)
+    ).rejects.toThrowErrorMatchingSnapshot();
   });
 });
