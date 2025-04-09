@@ -2,7 +2,7 @@ module "lambda_enrich_guardduty_scan_result" {
   source      = "../lambda-function"
   description = "Get S3 Object Metadata"
 
-  function_name    = "${local.csi}-enrich-guardduty-scan-result"
+  function_name    = "${var.csi}-enrich-guardduty-scan-result"
   filename         = module.build_virus_scan_lambdas.zips["src/enrich-guardduty-scan-result.ts"].path
   source_code_hash = module.build_virus_scan_lambdas.zips["src/enrich-guardduty-scan-result.ts"].base64sha256
   handler          = "enrich-guardduty-scan-result.handler"

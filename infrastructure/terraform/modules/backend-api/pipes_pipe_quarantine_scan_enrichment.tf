@@ -1,5 +1,5 @@
 resource "aws_pipes_pipe" "quarantine_scan_enrichment" {
-  name = "${local.csi}-quarantine-scan-enrichment"
+  name = "${var.csi}-quarantine-scan-enrichment"
 
   role_arn = aws_iam_role.quarantine_scan_enrichment_pipe.arn
 
@@ -25,7 +25,7 @@ resource "aws_pipes_pipe" "quarantine_scan_enrichment" {
 }
 
 resource "aws_iam_role" "quarantine_scan_enrichment_pipe" {
-  name               = "${local.csi}-quarantine-scan-enrich-pipe"
+  name               = "${var.csi}-quarantine-scan-enrich-pipe"
   description        = "Role used by Pipes enrich quarantine bucket scan complete events"
   assume_role_policy = data.aws_iam_policy_document.pipe_trust_policy.json
 }
@@ -92,6 +92,6 @@ data "aws_iam_policy_document" "quarantine_scan_enrichment_pipe" {
 }
 
 resource "aws_cloudwatch_log_group" "quarantine_scan_enrichment_pipe" {
-  name              = "/aws/vendedlogs/pipes/${local.csi}-quarantine-scan-enrichment"
+  name              = "/aws/vendedlogs/pipes/${var.csi}-quarantine-scan-enrichment"
   retention_in_days = var.log_retention_in_days
 }

@@ -4,7 +4,7 @@ module "create_template_lambda" {
   source      = "../lambda-function"
   description = "Create template API endpoint"
 
-  function_name    = "${local.csi}-create-template"
+  function_name    = "${var.csi}-create-template"
   filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_template].path
   source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_template].base64sha256
   runtime          = "nodejs20.x"

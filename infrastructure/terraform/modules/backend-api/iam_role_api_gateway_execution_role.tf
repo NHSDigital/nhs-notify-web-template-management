@@ -1,5 +1,5 @@
 resource "aws_iam_role" "api_gateway_execution_role" {
-  name               = "${local.csi}-apig"
+  name               = "${var.csi}-apig"
   description        = "Allows API Gateway service to invoke Lambda functions"
   assume_role_policy = data.aws_iam_policy_document.api_gateway_service_trust_policy.json
 }
@@ -10,7 +10,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_logs" {
 }
 
 resource "aws_iam_policy" "api_gateway_execution_policy" {
-  name   = "${local.csi}-apig-execution-policy"
+  name   = "${var.csi}-apig-execution-policy"
   policy = data.aws_iam_policy_document.api_gateway_execution_policy.json
 }
 

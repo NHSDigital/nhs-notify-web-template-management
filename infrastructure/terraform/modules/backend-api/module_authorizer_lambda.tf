@@ -6,7 +6,7 @@ module "authorizer_lambda" {
   source      = "../lambda-function"
   description = "templates api authorizer"
 
-  function_name    = "${local.csi}-authorizer"
+  function_name    = "${var.csi}-authorizer"
   filename         = module.authorizer_build.zips[local.authorizer_entrypoint].path
   source_code_hash = module.authorizer_build.zips[local.authorizer_entrypoint].base64sha256
   runtime          = "nodejs20.x"

@@ -5,7 +5,7 @@ module "lambda_set_file_virus_scan_status" {
   dead_letter_target_arn         = module.sqs_virus_scan_set_file_status_dlq.sqs_queue_arn
   execution_role_policy_document = data.aws_iam_policy_document.set_file_virus_scan_status.json
   filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status].path
-  function_name                  = "${local.csi}-set-file-virus-scan-status"
+  function_name                  = "${var.csi}-set-file-virus-scan-status"
   handler                        = "set-letter-file-virus-scan-status.handler"
   log_retention_in_days          = var.log_retention_in_days
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status].base64sha256

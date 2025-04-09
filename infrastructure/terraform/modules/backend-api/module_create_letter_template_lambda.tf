@@ -4,7 +4,7 @@ module "create_letter_template_lambda" {
   source      = "../lambda-function"
   description = "Create letter template API endpoint"
 
-  function_name    = "${local.csi}-create-letter"
+  function_name    = "${var.csi}-create-letter"
   filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_letter_template].path
   source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.create_letter_template].base64sha256
   runtime          = "nodejs20.x"

@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "virus_scan_passed" {
-  name        = "${local.csi}-virus-scan-passed"
+  name        = "${var.csi}-virus-scan-passed"
   description = "Forwards enriched events from quarantine bucket where GuardDuty virus scan has passed with no threats"
 
   event_pattern = jsonencode({
@@ -30,12 +30,12 @@ resource "aws_cloudwatch_event_target" "scan_passed_set_file_status" {
 }
 
 resource "aws_iam_role" "handle_scan_passed" {
-  name               = "${local.csi}-virus-scan-passed"
+  name               = "${var.csi}-virus-scan-passed"
   assume_role_policy = data.aws_iam_policy_document.events_assume_role.json
 }
 
 resource "aws_iam_role_policy" "handle_scan_passed" {
-  name   = "${local.csi}-virus-scan-passed"
+  name   = "${var.csi}-virus-scan-passed"
   role   = aws_iam_role.handle_scan_passed.id
   policy = data.aws_iam_policy_document.handle_scan_passed.json
 }

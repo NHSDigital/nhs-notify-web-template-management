@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "quarantine_scan_result" {
-  name        = "${local.csi}-quarantine-tags-added"
+  name        = "${var.csi}-quarantine-tags-added"
   description = "Forwards quarantine 'GuardDuty Malware Protection Object Scan Result' events for enrichment"
 
   event_pattern = jsonencode({
@@ -22,12 +22,12 @@ resource "aws_cloudwatch_event_target" "quarantine_scan_to_enrichment" {
 }
 
 resource "aws_iam_role" "quarantine_scan_to_enrichment" {
-  name               = "${local.csi}-quarantine-scan-to-enrichment"
+  name               = "${var.csi}-quarantine-scan-to-enrichment"
   assume_role_policy = data.aws_iam_policy_document.events_assume_role.json
 }
 
 resource "aws_iam_role_policy" "quarantine_scan_to_enrichment" {
-  name   = "${local.csi}-quarantine-scan-to-enrichment"
+  name   = "${var.csi}-quarantine-scan-to-enrichment"
   role   = aws_iam_role.quarantine_scan_to_enrichment.id
   policy = data.aws_iam_policy_document.quarantine_scan_to_enrichment.json
 }

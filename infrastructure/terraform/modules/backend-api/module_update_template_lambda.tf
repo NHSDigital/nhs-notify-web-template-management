@@ -4,7 +4,7 @@ module "update_template_lambda" {
   source      = "../lambda-function"
   description = "Update template API endpoint"
 
-  function_name    = "${local.csi}-update-template"
+  function_name    = "${var.csi}-update-template"
   filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.update_template].path
   source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.update_template].base64sha256
   runtime          = "nodejs20.x"

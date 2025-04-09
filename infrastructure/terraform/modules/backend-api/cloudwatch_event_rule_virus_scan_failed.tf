@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "virus_scan_failed" {
-  name        = "${local.csi}-virus-scan-failed"
+  name        = "${var.csi}-virus-scan-failed"
   description = "Forwards enriched events from quarantine bucket where GuardDuty virus scan has failed"
 
   event_pattern = jsonencode({
@@ -30,12 +30,12 @@ resource "aws_cloudwatch_event_target" "scan_failed_set_file_status" {
 }
 
 resource "aws_iam_role" "handle_scan_failed" {
-  name               = "${local.csi}-virus-scan-failed"
+  name               = "${var.csi}-virus-scan-failed"
   assume_role_policy = data.aws_iam_policy_document.events_assume_role.json
 }
 
 resource "aws_iam_role_policy" "handle_scan_failed" {
-  name   = "${local.csi}-virus-scan-failed"
+  name   = "${var.csi}-virus-scan-failed"
   role   = aws_iam_role.handle_scan_failed.id
   policy = data.aws_iam_policy_document.handle_scan_failed.json
 }
