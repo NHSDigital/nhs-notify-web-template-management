@@ -1,6 +1,6 @@
 import { stringify } from 'csv-stringify';
 
-export const serialise = (
+export const serialiseCsv = (
   objects: { [x: string]: string | undefined }[],
   header: string
 ): Promise<string> => {

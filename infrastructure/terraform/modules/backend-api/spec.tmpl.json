@@ -503,11 +503,10 @@
         "enum": [
           "DELETED",
           "NOT_YET_SUBMITTED",
-          "PENDING_PROOF_REQUEST",
           "PENDING_UPLOAD",
           "PENDING_VALIDATION",
-          "SENDING_PROOF_REQUEST",
           "SUBMITTED",
+          "VALIDATION_PASSED",
           "VIRUS_SCAN_FAILED"
         ]
       },

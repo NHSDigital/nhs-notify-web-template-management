@@ -1,16 +1,9 @@
 import { format } from 'date-fns';
-import type { TestCustomPersonalisation } from './test-data';
 import { createHash } from 'node:crypto';
 import {
   pdsPersonalisationKeys,
   staticPdsExampleData,
 } from './static-batch-data';
-
-export type BatchDetails = {
-  id: string;
-  rows: Record<string, string>[];
-  header: string;
-};
 
 export type Manifest = {
   template: string;
@@ -28,16 +21,12 @@ export class Batch {
   buildBatch(
     templateId: string,
     fields: string[],
-    userTestData?: TestCustomPersonalisation
-  ): BatchDetails {
+    userTestData?: Record<string, string>[]
+  ): Record<string, string>[] {
     const date = this.getDate();
-
-    const id = `${templateId}-${date.getTime()}_${this.randomId()}`;
     const ref = this.clientRef(date);
 
-    const header = `clientRef,template,${fields.join(',')}`;
-
-    const rows = Array.from({ length: 3 }, (_, i) => {
+    return Array.from({ length: 3 }, (_, i) => {
       const fieldEntries = [
         ['clientRef', ref],
         ['template', templateId],
@@ -54,8 +43,15 @@ export class Batch {
 
       return Object.fromEntries(fieldEntries);
     });
+  }
 
-    return { id, rows, header };
+  getId(templateId: string, pdfVersion: string) {
+    const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(27);
+    return `${templateId}-0000000000000_${pseudoRandomSegment}`;
+  }
+
+  getHeader(fields: string[]) {
+    return `clientRef,template,${fields.join(',')}`;
   }
 
   private fieldValue(

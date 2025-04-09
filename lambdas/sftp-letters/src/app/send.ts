@@ -4,7 +4,7 @@ import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { Batch } from '../domain/batch';
 import type { TemplateRepository } from '../infra/template-repository';
 import { parseTestPersonalisation } from '../domain/test-data';
-import { serialise } from '../infra/serialise-csv';
+import { serialiseCsv } from '../infra/serialise-csv';
 import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
@@ -33,11 +33,14 @@ export class App {
     const { owner, templateId, pdfVersion, testDataVersion, fields } =
       parseProofingRequest(eventBody);
 
+    const batchId = this.batch.getId(templateId, pdfVersion);
+
     const templateLogger = this.logger.child({
       owner,
       templateId,
       pdfVersion,
       testDataVersion,
+      batchId,
     });
 
     templateLogger.info('Fetching user Data');
@@ -53,15 +56,15 @@ export class App {
       ? parseTestPersonalisation(userData.testData)
       : undefined;
 
-    const batch = this.batch.buildBatch(templateId, fields, parsedTestData);
+    const batchRows = this.batch.buildBatch(templateId, fields, parsedTestData);
 
-    const batchLogger = templateLogger.child({ batchId: batch.id });
+    const batchHeader = this.batch.getHeader(fields);
 
-    const batchCsv = await serialise(batch.rows, batch.header);
+    const batchCsv = await serialiseCsv(batchRows, batchHeader);
 
-    const manifest = this.batch.buildManifest(templateId, batch.id, batchCsv);
+    const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
 
-    const manifestCsv = await serialise(
+    const manifestCsv = await serialiseCsv(
       [manifest],
       'template,batch,records,md5'
     );
@@ -72,8 +75,8 @@ export class App {
     const batchDir = path.join(sftpEnvDir, 'batches', templateId);
 
     const pdfName = `${templateId}.pdf`;
-    const csvName = `${batch.id}.csv`;
-    const manifestName = `${batch.id}_MANIFEST.csv`;
+    const csvName = `${batchId}.csv`;
+    const manifestName = `${batchId}_MANIFEST.csv`;
 
     const pdfDestination = path.join(templateDir, pdfName);
     const batchDestination = path.join(batchDir, csvName);
@@ -82,11 +85,14 @@ export class App {
     const batchStream = Readable.from(batchCsv);
     const manifestStream = Readable.from(manifestCsv);
 
-    batchLogger.info('Updating template to SENDING_PROOF');
+    templateLogger.info('Updating template to SENDING_PROOF_REQUEST');
 
-    await this.templateRepository.updateToSendingProof(owner, templateId);
+    if (await sftpClient.exists(manifestDestination)) {
+      templateLogger.warn('Manifest already exists, assuming duplicate event');
+      return;
+    }
 
-    batchLogger.info('Sending PDF');
+    templateLogger.info('Sending PDF');
 
     await Promise.all([
       sftpClient.mkdir(templateDir, true),
@@ -95,18 +101,18 @@ export class App {
 
     await sftpClient.put(userData.pdf, pdfDestination);
 
-    batchLogger.info('Sending batch');
+    templateLogger.info('Sending batch');
 
     await sftpClient.put(batchStream, batchDestination);
 
-    batchLogger.info('Sending manifest');
+    templateLogger.info('Sending manifest');
 
     await sftpClient.put(manifestStream, manifestDestination);
 
-    batchLogger.info('Updating template to awaiting proof');
+    templateLogger.info('Updating template to NOT_YET_SUBMITTED');
 
-    await this.templateRepository.updateToAwaitingProof(owner, templateId);
+    await this.templateRepository.updateToNotYetSubmitted(owner, templateId);
 
-    batchLogger.info('Sent proofing request');
+    templateLogger.info('Sent proofing request');
   }
 }

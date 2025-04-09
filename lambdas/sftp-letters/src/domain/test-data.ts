@@ -1,41 +1,17 @@
 import { z } from 'zod';
+import { parse } from 'csv-parse/sync';
 
-export type TestCustomPersonalisation = [
-  Record<string, string>,
-  Record<string, string>,
-  Record<string, string>,
-];
+export function parseTestPersonalisation(csv: string) {
+  const [, ...rows] = parse(csv);
 
-type Input = Array<{
-  parameter: string;
-  'short example': string;
-  'medium example': string;
-  'long example': string;
-}>;
-
-const $Cell = z.union([z.string(), z.number()]).transform(String);
-
-const pivotCol = (input: Input, col: keyof Input[number]) =>
-  Object.fromEntries(input.map((row) => [row.parameter, row[col]]));
-
-const pivot = (input: Input): TestCustomPersonalisation => [
-  pivotCol(input, 'short example'),
-  pivotCol(input, 'medium example'),
-  pivotCol(input, 'long example'),
-];
-
-export function parseTestPersonalisation(rawJson: unknown) {
   const input = z
-    .array(
-      z.object({
-        parameter: z.string(),
-        'short example': $Cell,
-        'medium example': $Cell,
-        'long example': $Cell,
-      })
-    )
+    .array(z.tuple([z.string(), z.string(), z.string(), z.string()]))
     .min(1)
-    .parse(rawJson);
+    .parse(rows);
 
-  return pivot(input);
+  return Array.from({ length: 3 }, (_, colIdx) =>
+    Object.fromEntries(
+      input.map(([field], rowIdx) => [field, input[rowIdx][colIdx + 1]])
+    )
+  );
 }
