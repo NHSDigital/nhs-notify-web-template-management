@@ -45,81 +45,65 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <div
-            class="preview"
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template ID
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 53525D03-1BC1-4563-ABF9-A74FF04142AF
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Type
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 Letter - Arabic
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Status
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <strong
                   class="nhsuk-tag"
                 >
                   Not yet submitted
                 </strong>
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template file
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <div
                   class="container"
@@ -143,9 +127,9 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
                     file.pdf
                   </p>
                 </div>
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
         <a
           aria-disabled="false"
@@ -216,81 +200,65 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
         <div
           class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
         >
-          <div
-            class="preview"
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template ID
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 template-id
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Type
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 Braille letter
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Status
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <strong
                   class="nhsuk-tag"
                 >
                   Virus Scan Failed
                 </strong>
-              </div>
+              </dd>
             </div>
             <div
-              class="nhsuk-grid-row preview__row"
+              class="nhsuk-summary-list__row"
             >
-              <div
-                class="nhsuk-grid-column-one-third preview__col"
+              <dt
+                class="nhsuk-summary-list__key"
               >
-                <div
-                  class="preview__col_heading"
-                >
-                  Template file
-                </div>
-              </div>
-              <div
-                class="nhsuk-grid-column-two-thirds col"
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
               >
                 <div
                   class="container"
@@ -314,9 +282,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                     file.pdf
                   </p>
                 </div>
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
         <a
           aria-disabled="false"
