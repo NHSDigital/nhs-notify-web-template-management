@@ -64,7 +64,7 @@
 - Unit test `npm run test:unit`
 - Accessibility test `npm run test:accessibility`
 
-You can find more commands in the `package.json` file
+You can find more commands in the `package.json` file.
 
 ### Running Team and IAM Web Auth projects locally
 

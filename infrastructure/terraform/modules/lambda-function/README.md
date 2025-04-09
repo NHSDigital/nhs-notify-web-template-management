@@ -28,6 +28,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_function_arn"></a> [function\_arn](#output\_function\_arn) | n/a |
+
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
