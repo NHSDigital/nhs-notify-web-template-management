@@ -41,6 +41,7 @@ export const TEMPLATE_STATUS_LIST = arrayOfAll<TemplateStatus>()([
   'DELETED',
   'PENDING_UPLOAD',
   'PENDING_VALIDATION',
+  'VALIDATION_PASSED',
   'VIRUS_SCAN_FAILED',
 ]);
 

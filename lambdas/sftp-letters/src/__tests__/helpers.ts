@@ -1,8 +1,8 @@
-export function mockTestData<const T extends string>(
-  parameters: T[],
-  parameterInput: [Record<T, string>, Record<T, string>, Record<T, string>]
+export function mockTestDataCsv(
+  parameters: string[],
+  parameterInput: Record<string, string>[]
 ) {
-  const headers = 'parameter,short example,medium example,long example';
+  const headers = `"Personalisation field","Short length data example","Medium length data example","Long length data example"`;
   const rows = parameters.map((p) =>
     [
       `"${p}"`,
@@ -11,5 +11,5 @@ export function mockTestData<const T extends string>(
       `"${parameterInput[2][p]}"`,
     ].join(',')
   );
-  return [headers, ...rows].join('\n');
+  return [headers, ...rows].join('\n').concat('\n');
 }

@@ -77,6 +77,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     DELETED: '', // will not be shown in the UI
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
+    VALIDATION_PASSED: 'Not yet submitted',
     VIRUS_SCAN_FAILED: 'Virus Scan Failed',
   })[status];
 
