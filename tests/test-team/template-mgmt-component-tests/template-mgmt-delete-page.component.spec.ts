@@ -100,7 +100,7 @@ test.describe('Delete Template Page', () => {
     await expect(page.getByText(templates.goBack.name)).toBeVisible();
   });
 
-  for (const templateKey of ['confirm-digitial', 'confirm-letter']) {
+  for (const templateKey of ['confirmDigitial', 'confirmLetter']) {
     test(`should go back to message-templates page with template "${templateKey}" no longer visible when "yes" button selected`, async ({
       page,
     }) => {
