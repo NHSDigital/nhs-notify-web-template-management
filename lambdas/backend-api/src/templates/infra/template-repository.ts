@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import {
   EmailProperties,
   ErrorCase,
@@ -9,6 +10,7 @@ import {
   UpdateTemplate,
   ValidatedCreateTemplate,
   ValidatedUpdateTemplate,
+  VirusScanStatus,
 } from 'nhs-notify-backend-client';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -22,6 +24,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -36,9 +39,7 @@ const emailAttributes: Record<keyof EmailProperties, null> = {
   subject: null,
 };
 
-const smsAttributes: Record<keyof SmsProperties, null> = {
-  message: null,
-};
+const smsAttributes: Record<keyof SmsProperties, null> = { message: null };
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
   letterType: null,
@@ -46,11 +47,12 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   files: null,
 };
 
+type TemplateKey = { owner: string; id: string };
+
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string,
-    private readonly generateId: () => string
+    private readonly templatesTableName: string
   ) {}
 
   async get(
@@ -61,10 +63,7 @@ export class TemplateRepository {
       const response = await this.client.send(
         new GetCommand({
           TableName: this.templatesTableName,
-          Key: {
-            id: templateId,
-            owner,
-          },
+          Key: { id: templateId, owner },
         })
       );
 
@@ -92,7 +91,7 @@ export class TemplateRepository {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {
       ...template,
-      id: this.generateId(),
+      id: randomUUID(),
       owner,
       version: 1,
       templateStatus: initialStatus,
@@ -102,10 +101,7 @@ export class TemplateRepository {
 
     try {
       await this.client.send(
-        new PutCommand({
-          TableName: this.templatesTableName,
-          Item: entity,
-        })
+        new PutCommand({ TableName: this.templatesTableName, Item: entity })
       );
 
       return success(entity);
@@ -146,10 +142,7 @@ export class TemplateRepository {
 
     if (template.templateStatus === 'DELETED') {
       updateExpression.push('#ttl = :ttl');
-      expressionAttributeNames = {
-        ...expressionAttributeNames,
-        '#ttl': 'ttl',
-      };
+      expressionAttributeNames = { ...expressionAttributeNames, '#ttl': 'ttl' };
       expressionAttributeValues = {
         ...expressionAttributeValues,
         ':ttl': calculateTTL(),
@@ -158,10 +151,7 @@ export class TemplateRepository {
 
     const input: UpdateCommandInput = {
       TableName: this.templatesTableName,
-      Key: {
-        id: templateId,
-        owner,
-      },
+      Key: { id: templateId, owner },
       UpdateExpression: `SET ${updateExpression.join(', ')}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
@@ -244,6 +234,62 @@ export class TemplateRepository {
     }
   }
 
+  async setLetterFileVirusScanStatus(
+    templateKey: TemplateKey,
+    fileType: Extract<keyof LetterFiles, 'pdfTemplate' | 'testDataCsv'>,
+    versionId: string,
+    status: VirusScanStatus
+  ) {
+    const updates = [
+      '#files.#file.#scanStatus = :scanStatus',
+      '#updatedAt = :updatedAt',
+    ];
+
+    const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
+      {
+        '#files': 'files',
+        '#file': fileType,
+        '#scanStatus': 'virusScanStatus',
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
+
+    const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':scanStatus': status,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':version': versionId,
+        ':updatedAt': new Date().toISOString(),
+      };
+
+    if (status === 'FAILED') {
+      ExpressionAttributeValues[':templateStatusFailed'] =
+        'VIRUS_SCAN_FAILED' satisfies TemplateStatus;
+      updates.push('#templateStatus = :templateStatusFailed');
+    }
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression: `SET ${updates.join(' , ')}`,
+          ExpressionAttributeNames,
+          ExpressionAttributeValues,
+          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(error);
+      } else {
+        throw error;
+      }
+    }
+  }
+
   private attributeExpressionsFromMap<T>(
     channelSpecificAttributes: Record<keyof T, null>
   ) {
@@ -283,10 +329,7 @@ export class TemplateRepository {
     let attributeNames = {};
 
     for (const att in channelSpecificAttributes) {
-      attributeNames = {
-        ...attributeNames,
-        [`#${att}`]: att,
-      };
+      attributeNames = { ...attributeNames, [`#${att}`]: att };
     }
 
     return attributeNames;
@@ -318,10 +361,7 @@ export class TemplateRepository {
     let attributeValues = {};
 
     for (const att in channelSpecificAttributes) {
-      attributeValues = {
-        ...attributeValues,
-        [`:${att}`]: template[att],
-      };
+      attributeValues = { ...attributeValues, [`:${att}`]: template[att] };
     }
 
     return attributeValues;

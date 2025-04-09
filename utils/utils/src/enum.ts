@@ -77,6 +77,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     DELETED: '', // will not be shown in the UI
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
+    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
@@ -90,4 +91,4 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const viewSubmittedTemplatePages = (type: TemplateType) =>
-  `view-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+  `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;

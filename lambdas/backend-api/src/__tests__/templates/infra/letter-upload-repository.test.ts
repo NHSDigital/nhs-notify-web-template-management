@@ -46,6 +46,7 @@ describe('LetterUploadRepository', () => {
       Body: new Uint8Array(await pdfBytes.arrayBuffer()),
       Metadata: {
         owner,
+        'file-type': 'pdf-template',
         'template-id': templateId,
         'user-filename': pdfFilename,
         'version-id': versionId,
@@ -59,6 +60,7 @@ describe('LetterUploadRepository', () => {
       Body: new Uint8Array(await csvBytes.arrayBuffer()),
       Metadata: {
         owner,
+        'file-type': 'test-data',
         'template-id': templateId,
         'user-filename': csvFilename,
         'version-id': versionId,
@@ -66,7 +68,7 @@ describe('LetterUploadRepository', () => {
     });
   });
 
-  test('uploads both PDF template when test data CSV is not present', async () => {
+  test('uploads only the PDF template when test data CSV is not present', async () => {
     const { letterUploadRepository, mocks } = setup();
     await letterUploadRepository.upload(templateId, owner, versionId, pdf);
 
@@ -78,9 +80,11 @@ describe('LetterUploadRepository', () => {
       Body: new Uint8Array(await pdfBytes.arrayBuffer()),
       Metadata: {
         owner,
+        'file-type': 'pdf-template',
         'template-id': templateId,
         'user-filename': pdfFilename,
         'version-id': versionId,
+        'test-data-provided': 'false',
       },
     });
   });

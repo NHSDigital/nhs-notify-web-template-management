@@ -52,3 +52,9 @@ variable "memory_size" {
   description = "Lambda memory size"
   default     = 128
 }
+
+variable "dead_letter_target_arn" {
+  description = "The ARN of an SNS topic or SQS queue to notify when an async invocation fails."
+  type        = string
+  default     = null
+}

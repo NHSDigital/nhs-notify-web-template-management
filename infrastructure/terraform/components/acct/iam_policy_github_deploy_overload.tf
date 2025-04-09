@@ -30,4 +30,25 @@ data "aws_iam_policy_document" "github_deploy" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ec2:AllocateAddress",
+      "ec2:Associate*",
+      "ec2:AttachInternetGateway",
+      "ec2:AuthorizeSecurityGroup*",
+      "ec2:Create*",
+      "ec2:Delete*",
+      "ec2:Describe*",
+      "ec2:DetachInternetGateway",
+      "ec2:Disassociate*",
+      "ec2:ModifySubnet*",
+      "ec2:ModifyVpc*",
+      "ec2:ReleaseAddress",
+      "ec2:Replace*",
+    ]
+    resources = ["*"]
+  }
 }
