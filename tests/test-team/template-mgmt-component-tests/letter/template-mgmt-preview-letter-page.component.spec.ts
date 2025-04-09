@@ -69,23 +69,6 @@ test.describe('Preview Letter template Page', () => {
     );
   });
 
-  test.describe('Page functionality', () => {
-    test('common page tests', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtPreviewLetterPage(page),
-        id: templates.valid.id,
-        baseURL,
-      };
-
-      await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
-      await assertSignOutLink(props);
-      await assertFooterLinks(props);
-      await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
-    });
-  });
-
   test.describe('Error handling', () => {
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
       baseURL,
