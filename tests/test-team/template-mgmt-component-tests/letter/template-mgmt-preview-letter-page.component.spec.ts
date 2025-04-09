@@ -1,16 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import {
-  assertBackToAllTemplatesBottomLink,
-  assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-preview-common.steps';
-import {
-  assertFooterLinks,
-  assertSignOutLink,
-  assertNotifyBannerLink,
-  assertSkipToMainContent,
-} from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
