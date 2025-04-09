@@ -9,7 +9,7 @@ exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`]
     Example template
   </h1>
   <div
-    class="nhsuk-width-container nhsuk-body-m"
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <dl
       class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
@@ -103,7 +103,7 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
     Example template
   </h1>
   <div
-    class="nhsuk-width-container nhsuk-body-m"
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <dl
       class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
@@ -197,7 +197,7 @@ exports[`PreviewTemplateDetails component renders letter template when testDataC
     Example template
   </h1>
   <div
-    class="nhsuk-width-container nhsuk-body-m"
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <dl
       class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
@@ -299,81 +299,65 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <div
-      class="preview"
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template ID
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           template-id
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Type
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           Letter - French
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Status
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
           >
             Submitted
           </strong>
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template file
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <div
             class="container"
@@ -397,22 +381,18 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
               file.pdf
             </p>
           </div>
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Test personalisation file
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Test personalisation file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <div
             class="container"
@@ -436,9 +416,9 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
               file.csv
             </p>
           </div>
-        </div>
+        </dd>
       </div>
-    </div>
+    </dl>
   </div>
 </DocumentFragment>
 `;
@@ -452,7 +432,7 @@ exports[`PreviewTemplateDetails component renders without content preview 1`] = 
     Example template
   </h1>
   <div
-    class="nhsuk-width-container nhsuk-body-m"
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
     <dl
       class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
