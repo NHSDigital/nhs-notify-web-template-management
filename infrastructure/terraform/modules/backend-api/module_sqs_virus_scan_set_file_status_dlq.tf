@@ -6,7 +6,9 @@ module "sqs_virus_scan_set_file_status_dlq" {
   environment    = var.environment
   project        = var.project
   region         = var.region
-  name           = "virus-scan-set-file-status-dlq"
+  module         = var.module
+
+  name = "virus-scan-set-file-status-dlq"
 
   sqs_kms_key_arn = var.kms_key_arn
 }

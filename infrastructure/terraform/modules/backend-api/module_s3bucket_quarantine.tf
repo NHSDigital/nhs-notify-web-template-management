@@ -8,6 +8,7 @@ module "s3bucket_quarantine" {
   project        = var.project
   environment    = var.environment
   component      = var.component
+  module         = var.module
 
   kms_key_arn = var.kms_key_arn
 

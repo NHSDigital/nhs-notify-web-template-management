@@ -6,6 +6,7 @@ module "sqs_quarantine_scan_enrichment" {
   environment    = var.environment
   project        = var.project
   region         = var.region
+  module         = var.module
   name           = "quarantine-scan-enrichment"
 
   sqs_kms_key_arn = var.kms_key_arn

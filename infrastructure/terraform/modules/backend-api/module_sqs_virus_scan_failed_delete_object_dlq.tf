@@ -6,7 +6,9 @@ module "sqs_virus_scan_failed_delete_object_dlq" {
   environment    = var.environment
   project        = var.project
   region         = var.region
-  name           = "virus-scan-failed-delete-object-dlq"
+  module         = var.module
+
+  name = "virus-scan-failed-delete-object-dlq"
 
   sqs_kms_key_arn = var.kms_key_arn
 }

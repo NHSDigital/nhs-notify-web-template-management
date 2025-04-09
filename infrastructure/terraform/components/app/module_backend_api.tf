@@ -3,8 +3,10 @@
 module "backend_api" {
   source = "../../modules/backend-api"
 
+  module                = "api"
   project               = var.project
   environment           = var.environment
+  component             = var.component
   aws_account_id        = var.aws_account_id
   region                = var.region
   group                 = var.group

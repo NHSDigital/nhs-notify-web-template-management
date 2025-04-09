@@ -6,6 +6,7 @@ module "s3bucket_internal" {
   aws_account_id = var.aws_account_id
   region         = var.region
   project        = var.project
+  module         = var.module
   environment    = var.environment
   component      = var.component
 
