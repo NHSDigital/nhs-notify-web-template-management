@@ -237,4 +237,110 @@ describe('App', () => {
       app.send(JSON.stringify(invalidEvent), mocks.sftpClient, baseUploadDir)
     ).rejects.toThrowErrorMatchingSnapshot();
   });
+
+  test('exist early and does not send if the manifest is already in the SFTP server', async () => {
+    const { app, mocks } = setup();
+
+    const personalisationFields = ['pdsField'];
+    const batchColumns = ['clientRef', 'template', ...personalisationFields];
+
+    const event = mockEvent(true, personalisationFields);
+
+    const pdfContent = 'mock PDF content';
+    const pdf = Readable.from(pdfContent);
+
+    const batchId = 'template-id-0000000000000_pdfversionid';
+
+    const batchData = [
+      {
+        clientRef: 'random1_random2_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal1',
+      },
+      {
+        clientRef: 'random3_random4_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal2',
+      },
+      {
+        clientRef: 'random5_random6_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal3',
+      },
+    ];
+
+    const batchCsv: string = [
+      batchColumns.join(','),
+      batchData
+        .map((x) =>
+          [`"${x.clientRef}"`, `"${x.template}"`, `"${x.pdsField}"`].join(',')
+        )
+        .join('\n'),
+    ].join('\n');
+
+    const batchHash = 'hash-of-batch-csv';
+
+    const manifestData: Manifest = {
+      template: templateId,
+      batch: `${batchId}.csv`,
+      records: '3',
+      md5sum: batchHash,
+    };
+
+    mocks.batch.getId.mockReturnValueOnce(batchId);
+
+    mocks.userDataRepository.get.mockResolvedValueOnce({
+      testData: undefined,
+      pdf,
+    });
+
+    mocks.batch.buildBatch.mockReturnValueOnce(batchData);
+
+    mocks.batch.getHeader.mockReturnValueOnce(batchColumns.join(','));
+
+    mocks.batch.buildManifest.mockReturnValueOnce(manifestData);
+
+    // manifest already exists
+    mocks.sftpClient.exists.mockResolvedValueOnce('-');
+
+    await app.send(JSON.stringify(event), mocks.sftpClient, baseUploadDir);
+
+    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
+    expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
+      owner,
+      templateId,
+      pdfVersion,
+      testDataVersion
+    );
+
+    expect(mocks.batch.buildBatch).toHaveBeenCalledTimes(1);
+    expect(mocks.batch.buildBatch).toHaveBeenCalledWith(
+      templateId,
+      personalisationFields,
+      undefined
+    );
+
+    expect(mocks.batch.getHeader).toHaveBeenCalledTimes(1);
+    expect(mocks.batch.getHeader).toHaveBeenCalledWith(personalisationFields);
+
+    expect(mocks.batch.buildManifest).toHaveBeenCalledTimes(1);
+    expect(mocks.batch.buildManifest).toHaveBeenCalledWith(
+      templateId,
+      batchId,
+      batchCsv
+    );
+
+    expect(mocks.sftpClient.exists).toHaveBeenCalledTimes(1);
+    expect(mocks.sftpClient.exists).toHaveBeenCalledWith(
+      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
+    );
+
+    expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
+
+    expect(mocks.sftpClient.put).not.toHaveBeenCalled();
+
+    expect(
+      mocks.templateRepository.updateToNotYetSubmitted
+    ).not.toHaveBeenCalled();
+  });
 });
