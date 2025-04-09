@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "templates" {
-  name         = "${local.csi}-templates"
+  name         = "${local.csi}-api-templates"
   billing_mode = "PAY_PER_REQUEST"
 
   hash_key  = "owner"
