@@ -26,7 +26,7 @@
 | <a name="input_root_domain_name"></a> [root\_domain\_name](#input\_root\_domain\_name) | The service's root DNS root nameespace, like nonprod.nhsnotify.national.nhs.uk | `string` | `"nonprod.nhsnotify.national.nhs.uk"` | no |
 | <a name="input_support_sandbox_environments"></a> [support\_sandbox\_environments](#input\_support\_sandbox\_environments) | Does this account support dev sandbox environments? | `bool` | `false` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | n/a | `string` | `"10.0.0.0/16"` | no |
-| <a name="input_vpc_subnet_cidr_bits"></a> [vpc\_subnet\_cidr\_bits](#input\_vpc\_subnet\_cidr\_bits) | Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed | <pre>object({<br/>    public  = number<br/>    private = number<br/>  })</pre> | <pre>{<br/>  "private": 3,<br/>  "public": 12<br/>}</pre> | no |
+| <a name="input_vpc_subnet_cidr_bits"></a> [vpc\_subnet\_cidr\_bits](#input\_vpc\_subnet\_cidr\_bits) | Number of additional bits to use for subnetting the VPC CIDR block. The bits are evently distributed | <pre>object({<br>    public  = number<br>    private = number<br>  })</pre> | <pre>{<br>  "private": 3,<br>  "public": 12<br>}</pre> | no |
 ## Modules
 
 | Name | Source | Version |
@@ -44,6 +44,7 @@
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
 | <a name="output_vpc_nat_ips"></a> [vpc\_nat\_ips](#output\_vpc\_nat\_ips) | n/a |
 | <a name="output_vpc_public_subnets"></a> [vpc\_public\_subnets](#output\_vpc\_public\_subnets) | n/a |
+
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
