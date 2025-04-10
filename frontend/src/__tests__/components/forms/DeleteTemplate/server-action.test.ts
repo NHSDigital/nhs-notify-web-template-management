@@ -4,7 +4,7 @@ import {
   deleteTemplateNoAction,
 } from '@forms/DeleteTemplate/server-action';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
-import { saveTemplate } from '@utils/form-actions';
+import { setTemplateToDeleted } from '@utils/form-actions';
 
 jest.mock('next/navigation');
 jest.mock('@utils/form-actions');
@@ -27,7 +27,7 @@ test('redirects', async () => {
 
 test('calls form action and redirects', async () => {
   const mockRedirect = jest.mocked(redirect);
-  const mockSaveTemplate = jest.mocked(saveTemplate);
+  const mockSetTemplateToDeleted = jest.mocked(setTemplateToDeleted);
 
   const mockTemplate: NHSAppTemplate = {
     id: 'template-id',
@@ -41,10 +41,7 @@ test('calls form action and redirects', async () => {
 
   await deleteTemplateYesAction(mockTemplate);
 
-  expect(mockSaveTemplate).toHaveBeenCalledWith({
-    ...mockTemplate,
-    templateStatus: 'DELETED',
-  });
+  expect(mockSetTemplateToDeleted).toHaveBeenCalledWith('template-id');
 
   expect(mockRedirect).toHaveBeenCalledWith(
     '/message-templates',

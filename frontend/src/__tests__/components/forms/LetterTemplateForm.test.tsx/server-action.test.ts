@@ -2,7 +2,7 @@ import { getMockFormData } from '@testhelpers';
 import { createLetterTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
-import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { CreateUpdateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
@@ -11,7 +11,7 @@ jest.mock('next/navigation');
 const createLetterTemplateMock = jest.mocked(createLetterTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: CreateLetterTemplate = {
+const initialState: CreateUpdateLetterTemplate = {
   templateType: 'LETTER',
   name: 'name',
   letterType: 'x0',
