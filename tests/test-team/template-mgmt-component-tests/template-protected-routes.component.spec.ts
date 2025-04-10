@@ -52,6 +52,10 @@ const protectedPages = [
   TemplateMgmtPreviewLetterPage,
   TemplateMgmtPreviewNhsAppPage,
   TemplateMgmtPreviewSmsPage,
+  TemplateMgmtPreviewSubmittedEmailPage,
+  TemplateMgmtPreviewSubmittedLetterPage,
+  TemplateMgmtPreviewSubmittedNhsAppPage,
+  TemplateMgmtPreviewSubmittedSmsPage,
   TemplateMgmtSubmitEmailPage,
   TemplateMgmtSubmitLetterPage,
   TemplateMgmtSubmitNhsAppPage,
@@ -60,10 +64,6 @@ const protectedPages = [
   TemplateMgmtTemplateSubmittedLetterPage,
   TemplateMgmtTemplateSubmittedNhsAppPage,
   TemplateMgmtTemplateSubmittedSmsPage,
-  TemplateMgmtPreviewSubmittedEmailPage,
-  TemplateMgmtPreviewSubmittedLetterPage,
-  TemplateMgmtPreviewSubmittedNhsAppPage,
-  TemplateMgmtPreviewSubmittedSmsPage,
 ];
 
 const publicPages = [TemplateMgmtStartPage];

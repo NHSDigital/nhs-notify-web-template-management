@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedEmailPage } from '../../pages/email/template-mgmt-preview-submitted-email-page';
+import { TemplateMgmtPreviewSubmittedEmailPage } from '../../pages/email/template-mgmt-preview-submitted-email-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -22,7 +22,7 @@ function createTemplates(owner: string) {
   return {
     valid: {
       ...TemplateFactory.createEmailTemplate(
-        'valid-email-template-view-submitted',
+        'valid-email-template-preview-submitted',
         owner
       ),
       name: 'test-template-email',
@@ -32,7 +32,7 @@ function createTemplates(owner: string) {
     },
     invalid: {
       ...TemplateFactory.createEmailTemplate(
-        'invalid-email-template-view-submitted',
+        'invalid-email-template-preview-submitted',
         owner
       ),
       name: 'test-template-email',
@@ -43,7 +43,7 @@ function createTemplates(owner: string) {
   };
 }
 
-test.describe('View submitted Email message template Page', () => {
+test.describe('Preview submitted Email message template Page', () => {
   let templates: Record<string, Template>;
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -61,24 +61,24 @@ test.describe('View submitted Email message template Page', () => {
     page,
     baseURL,
   }) => {
-    const viewSubmittedEmailTemplatePage =
-      new TemplateMgmtViewSubmittedEmailPage(page);
+    const previewSubmittedEmailTemplatePage =
+      new TemplateMgmtPreviewSubmittedEmailPage(page);
 
-    await viewSubmittedEmailTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedEmailTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-submitted-email-template/${templates.valid.id}`
     );
 
-    await expect(viewSubmittedEmailTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedEmailTemplatePage.pageHeader).toContainText(
       'test-template-email'
     );
 
-    await expect(viewSubmittedEmailTemplatePage.subjectLineText).toHaveText(
+    await expect(previewSubmittedEmailTemplatePage.subjectLineText).toHaveText(
       'test-template-subject-line'
     );
 
-    await expect(viewSubmittedEmailTemplatePage.messageText).toHaveText(
+    await expect(previewSubmittedEmailTemplatePage.messageText).toHaveText(
       'test-template-message'
     );
   });
@@ -86,7 +86,7 @@ test.describe('View submitted Email message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedEmailPage(page),
+        page: new TemplateMgmtPreviewSubmittedEmailPage(page),
         id: templates.valid.id,
         baseURL,
       };
@@ -105,10 +105,10 @@ test.describe('View submitted Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedEmailTemplatePage =
-        new TemplateMgmtViewSubmittedEmailPage(page);
+      const previewSubmittedEmailTemplatePage =
+        new TemplateMgmtPreviewSubmittedEmailPage(page);
 
-      await viewSubmittedEmailTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedEmailTemplatePage.loadPage(templates.invalid.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -117,10 +117,10 @@ test.describe('View submitted Email message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedEmailTemplatePage =
-        new TemplateMgmtViewSubmittedEmailPage(page);
+      const previewSubmittedEmailTemplatePage =
+        new TemplateMgmtPreviewSubmittedEmailPage(page);
 
-      await viewSubmittedEmailTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedEmailTemplatePage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

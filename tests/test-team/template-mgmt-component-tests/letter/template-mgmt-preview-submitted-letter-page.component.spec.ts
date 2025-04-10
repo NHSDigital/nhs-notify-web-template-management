@@ -22,9 +22,9 @@ function createTemplates(owner: string) {
   return {
     valid: {
       ...TemplateFactory.createLetterTemplate(
-        'valid-email-template-view-submitted',
+        'valid-email-template-preview-submitted',
         owner,
-        'valid-email-template-view-submitted'
+        'valid-email-template-preview-submitted'
       ),
       name: 'test-template-letter',
       templateStatus: 'SUBMITTED',
@@ -41,7 +41,7 @@ function createTemplates(owner: string) {
   };
 }
 
-test.describe('View submitted Letter message template Page', () => {
+test.describe('Preview submitted Letter message template Page', () => {
   let templates: Record<string, Template>;
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -65,7 +65,7 @@ test.describe('View submitted Letter message template Page', () => {
     await previewSubmittedLetterTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/view-submitted-letter-template/${templates.valid.id}`
+      `${baseURL}/templates/preview-submitted-letter-template/${templates.valid.id}`
     );
 
     await expect(previewSubmittedLetterTemplatePage.pageHeader).toContainText(
