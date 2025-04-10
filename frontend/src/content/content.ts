@@ -283,6 +283,14 @@ const previewSMSTemplate = {
   backLinkText: backToAllTemplates,
 };
 
+const previewTemplateDetails = {
+  rowHeadings: {
+    templateId: 'Template ID',
+    templateType: 'Type',
+    templateStatus: 'Status',
+  },
+};
+
 const error404 = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
@@ -557,6 +565,7 @@ const content = {
     previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
+    previewTemplateDetails,
     submitTemplate,
     templateFormEmail,
     templateFormLetter,
