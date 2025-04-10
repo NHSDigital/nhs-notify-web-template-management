@@ -2,7 +2,7 @@ import { mock } from 'jest-mock-extended';
 import { TemplateRepository } from '../../infra/template-repository';
 import { UserDataRepository } from '../../infra/user-data-repository';
 import { App } from '../../app/send';
-import { Batch, Manifest } from '../../domain/batch';
+import { SyntheticBatch, Manifest } from '../../domain/synthetic-batch';
 import { SftpClient } from '../../infra/sftp-client';
 import { Readable } from 'node:stream';
 import { mockTestDataCsv, streamToString } from '../helpers';
@@ -18,8 +18,8 @@ const testDataVersion = 'test-data-version-id';
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
   const templateRepository = mock<TemplateRepository>();
-  const batch = mock<Batch>();
-  const { logger } = createMockLogger();
+  const syntheticBatch = mock<SyntheticBatch>();
+  const { logger, logMessages } = createMockLogger();
 
   const sftpClient = mock<SftpClient>();
 
@@ -27,7 +27,7 @@ function setup() {
     userDataRepository,
     templateRepository,
     sftpEnvironment,
-    batch,
+    syntheticBatch,
     logger
   );
 
@@ -36,10 +36,11 @@ function setup() {
     mocks: {
       userDataRepository,
       templateRepository,
-      batch,
+      syntheticBatch,
       logger,
       sftpClient,
     },
+    logMessages,
   };
 }
 
@@ -128,18 +129,18 @@ describe('App', () => {
 
     const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
 
-    mocks.batch.getId.mockReturnValueOnce(batchId);
+    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
 
     mocks.userDataRepository.get.mockResolvedValueOnce({
       testData: testDataCsv,
       pdf,
     });
 
-    mocks.batch.buildBatch.mockReturnValueOnce(batchData);
+    mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
 
-    mocks.batch.getHeader.mockReturnValueOnce(batchColumns.join(','));
+    mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
 
-    mocks.batch.buildManifest.mockReturnValueOnce(manifestData);
+    mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
     // manifest doesn't already exist
     mocks.sftpClient.exists.mockResolvedValueOnce(false);
@@ -154,18 +155,20 @@ describe('App', () => {
       testDataVersion
     );
 
-    expect(mocks.batch.buildBatch).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.buildBatch).toHaveBeenCalledWith(
+    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
       templateId,
       personalisationFields,
       testData
     );
 
-    expect(mocks.batch.getHeader).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.getHeader).toHaveBeenCalledWith(personalisationFields);
+    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledWith(
+      personalisationFields
+    );
 
-    expect(mocks.batch.buildManifest).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.buildManifest).toHaveBeenCalledWith(
+    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
       templateId,
       batchId,
       batchCsv
@@ -239,7 +242,7 @@ describe('App', () => {
   });
 
   test('exist early and does not send if the manifest is already in the SFTP server', async () => {
-    const { app, mocks } = setup();
+    const { app, mocks, logMessages } = setup();
 
     const personalisationFields = ['pdsField'];
     const batchColumns = ['clientRef', 'template', ...personalisationFields];
@@ -287,44 +290,47 @@ describe('App', () => {
       md5sum: batchHash,
     };
 
-    mocks.batch.getId.mockReturnValueOnce(batchId);
+    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
 
     mocks.userDataRepository.get.mockResolvedValueOnce({
       testData: undefined,
       pdf,
     });
 
-    mocks.batch.buildBatch.mockReturnValueOnce(batchData);
+    mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
 
-    mocks.batch.getHeader.mockReturnValueOnce(batchColumns.join(','));
+    mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
 
-    mocks.batch.buildManifest.mockReturnValueOnce(manifestData);
+    mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
     // manifest already exists
     mocks.sftpClient.exists.mockResolvedValueOnce('-');
 
     await app.send(JSON.stringify(event), mocks.sftpClient, baseUploadDir);
 
-    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
-    expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      owner,
-      templateId,
-      pdfVersion,
-      testDataVersion
+    expect(logMessages).toContainEqual(
+      expect.objectContaining({
+        level: 'warn',
+        message: 'Manifest already exists, assuming duplicate event',
+      })
     );
 
-    expect(mocks.batch.buildBatch).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.buildBatch).toHaveBeenCalledWith(
+    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
+
+    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
       templateId,
       personalisationFields,
       undefined
     );
 
-    expect(mocks.batch.getHeader).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.getHeader).toHaveBeenCalledWith(personalisationFields);
+    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledWith(
+      personalisationFields
+    );
 
-    expect(mocks.batch.buildManifest).toHaveBeenCalledTimes(1);
-    expect(mocks.batch.buildManifest).toHaveBeenCalledWith(
+    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
       templateId,
       batchId,
       batchCsv

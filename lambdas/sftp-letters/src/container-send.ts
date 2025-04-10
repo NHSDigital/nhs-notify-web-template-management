@@ -6,7 +6,7 @@ import { loadConfig } from './config/config';
 import { App } from './app/send';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { randomId } from './infra/ksuid-like-id';
-import { Batch } from './domain/batch';
+import { SyntheticBatch } from './domain/synthetic-batch';
 import { TemplateRepository } from './infra/template-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -47,7 +47,7 @@ export function createContainer() {
     ssmClient
   );
 
-  const batch = new Batch(randomId, () => new Date());
+  const batch = new SyntheticBatch(randomId, () => new Date());
 
   const app = new App(
     userDataRepository,
