@@ -5,8 +5,6 @@ const $Env = z.object({
   ENVIRONMENT: z.string(),
   TEMPLATES_QUARANTINE_BUCKET_NAME: z.string(),
   TEMPLATES_INTERNAL_BUCKET_NAME: z.string(),
-  TEMPLATES_EVENT_BUS_NAME: z.string(),
-  TEMPLATES_EVENT_SOURCE: z.string(),
   TEMPLATES_TABLE_NAME: z.string(),
 });
 
@@ -16,8 +14,6 @@ export function loadConfig() {
   return {
     enableLetters: env.ENABLE_LETTERS_BACKEND === 'true',
     environment: env.ENVIRONMENT,
-    eventBusName: env.TEMPLATES_EVENT_BUS_NAME,
-    eventSource: env.TEMPLATES_EVENT_SOURCE,
     internalBucket: env.TEMPLATES_INTERNAL_BUCKET_NAME,
     quarantineBucket: env.TEMPLATES_QUARANTINE_BUCKET_NAME,
     templatesTableName: env.TEMPLATES_TABLE_NAME,

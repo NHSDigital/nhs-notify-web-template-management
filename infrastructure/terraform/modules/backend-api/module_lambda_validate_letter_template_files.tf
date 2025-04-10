@@ -2,17 +2,19 @@ module "lambda_validate_letter_template_files" {
   source      = "../lambda-function"
   description = "Validates content of letter template files"
 
-  dead_letter_target_arn         = module.sqs_validate_letter_template_files_dlq.sqs_queue_arn
+  environment_variables          = local.backend_lambda_environment_variables
   execution_role_policy_document = data.aws_iam_policy_document.validate_letter_template_files.json
   filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].path
   function_name                  = "${local.csi}-validate-letter-template-files"
   handler                        = "validate-letter-template-files.handler"
-  log_retention_in_days          = var.log_retention_in_days
-  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
-  timeout                        = 10
-  memory_size                    = 512
   layer_arns                     = [module.lambda_layer_pdfjs.layer_arn]
-  environment_variables          = local.backend_lambda_environment_variables
+  log_retention_in_days          = var.log_retention_in_days
+  memory_size                    = 1024
+  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
+  sqs_event_source_mapping = {
+    sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
+  }
+  timeout = 20
 }
 
 data "aws_iam_policy_document" "validate_letter_template_files" {
@@ -59,7 +61,22 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
   }
 
   statement {
-    sid    = "AllowKMSAccessSQSS3"
+    sid    = "AllowSQSEventSource"
+    effect = "Allow"
+
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+    ]
+
+    resources = [
+      module.sqs_validate_letter_template_files.sqs_queue_arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowKMSAccessS3SQS"
     effect = "Allow"
 
     actions = [
@@ -69,19 +86,6 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
 
     resources = [
       var.kms_key_arn
-    ]
-  }
-
-  statement {
-    sid    = "AllowSQSDLQ"
-    effect = "Allow"
-
-    actions = [
-      "sqs:SendMessage",
-    ]
-
-    resources = [
-      module.sqs_validate_letter_template_files_dlq.sqs_queue_arn,
     ]
   }
 }

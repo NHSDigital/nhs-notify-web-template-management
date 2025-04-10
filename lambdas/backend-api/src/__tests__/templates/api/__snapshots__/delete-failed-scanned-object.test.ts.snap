@@ -1,21 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errors if the event has no file-type 1`] = `
-"[
-  {
-    "expected": "'pdf-template' | 'test-data'",
-    "received": "undefined",
-    "code": "invalid_type",
-    "path": [
-      "detail",
-      "fileType"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has no template id 1`] = `
+exports[`errors if the event has no s3 object key 1`] = `
 "[
   {
     "code": "invalid_type",
@@ -23,15 +8,15 @@ exports[`errors if the event has no template id 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "template",
-      "id"
+      "s3ObjectDetails",
+      "objectKey"
     ],
     "message": "Required"
   }
 ]"
 `;
 
-exports[`errors if the event has no template owner 1`] = `
+exports[`errors if the event has no s3 version id 1`] = `
 "[
   {
     "code": "invalid_type",
@@ -39,22 +24,7 @@ exports[`errors if the event has no template owner 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "template",
-      "owner"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has no version id 1`] = `
-"[
-  {
-    "code": "invalid_type",
-    "expected": "string",
-    "received": "undefined",
-    "path": [
-      "detail",
+      "s3ObjectDetails",
       "versionId"
     ],
     "message": "Required"
@@ -65,31 +35,36 @@ exports[`errors if the event has no version id 1`] = `
 exports[`errors if the event has no virus scan status 1`] = `
 "[
   {
-    "expected": "'FAILED'",
+    "expected": "'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
     "received": "undefined",
     "code": "invalid_type",
     "path": [
       "detail",
-      "virusScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Required"
   }
 ]"
 `;
 
-exports[`errors if the event has virus scan status PASSED 1`] = `
+exports[`errors if the event has virus scan status NO_THREATS_FOUND 1`] = `
 "[
   {
-    "received": "PASSED",
+    "received": "NO_THREATS_FOUND",
     "code": "invalid_enum_value",
     "options": [
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
       "FAILED"
     ],
     "path": [
       "detail",
-      "virusScanStatus"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'FAILED', received 'PASSED'"
+    "message": "Invalid enum value. Expected 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'NO_THREATS_FOUND'"
   }
 ]"
 `;

@@ -35,12 +35,8 @@ locals {
     NODE_OPTIONS                     = "--enable-source-maps"
     TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
-    TEMPLATES_EVENT_BUS_NAME         = data.aws_cloudwatch_event_bus.default.name
-    TEMPLATES_EVENT_SOURCE           = local.event_source
     TEMPLATES_TABLE_NAME             = aws_dynamodb_table.templates.name
   }
 
   dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
-
-  event_source = "templates.${var.environment}.${var.project}"
 }

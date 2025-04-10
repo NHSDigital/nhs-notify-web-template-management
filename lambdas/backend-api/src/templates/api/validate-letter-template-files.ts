@@ -1,46 +1,91 @@
 import { z } from 'zod';
-import type { TemplateFileScannedEventDetail } from 'nhs-notify-web-template-management-utils';
-import type { LetterUploadRepository, TemplateRepository } from '../infra';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import {
+  type GuardDutyMalwareScanStatusPassed,
+  $GuardDutyMalwareScanStatusPassed,
+} from 'nhs-notify-web-template-management-utils';
+import { LetterUploadRepository, TemplateRepository } from '../infra';
 import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
 import { validateLetterTemplateFiles } from '../domain/validate-letter-template-files';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { SQSBatchItemFailure, SQSBatchResponse, SQSEvent } from 'aws-lambda';
 
+// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
+// Just typing/validating the parts we use
 type ValidateLetterTemplateFilesLambdaInput = {
-  detail: TemplateFileScannedEventDetail;
+  detail: {
+    s3ObjectDetails: {
+      objectKey: string;
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatusPassed;
+    };
+  };
 };
-
 const $ValidateLetterTemplateFilesLambdaInput: z.ZodType<ValidateLetterTemplateFilesLambdaInput> =
   z.object({
     detail: z.object({
-      template: z.object({
-        id: z.string(),
-        owner: z.string(),
+      s3ObjectDetails: z.object({
+        objectKey: z.string(),
       }),
-      fileType: z.enum(['pdf-template', 'test-data']),
-      versionId: z.string(),
-      virusScanStatus: z.enum(['PASSED']),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatusPassed,
+      }),
     }),
   });
 
-export const createHandler =
-  ({
+export class ValidateLetterTemplateFilesLambda {
+  private letterUploadRepository: LetterUploadRepository;
+
+  private templateRepository: TemplateRepository;
+
+  constructor({
     letterUploadRepository,
     templateRepository,
   }: {
     letterUploadRepository: LetterUploadRepository;
     templateRepository: TemplateRepository;
-  }) =>
-  async (event: unknown) => {
+  }) {
+    this.letterUploadRepository = letterUploadRepository;
+    this.templateRepository = templateRepository;
+  }
+
+  sqsHandler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
+    const batchItemFailures: SQSBatchItemFailure[] = [];
+
+    for (const record of event.Records) {
+      try {
+        await this.guardDutyHandler(JSON.parse(record.body));
+      } catch (error) {
+        logger.error('Failed processing record', error, {
+          messageId: record.messageId,
+        });
+
+        batchItemFailures.push({ itemIdentifier: record.messageId });
+      }
+    }
+
+    return { batchItemFailures };
+  };
+
+  guardDutyHandler = async (event: unknown) => {
     const { detail } = $ValidateLetterTemplateFilesLambdaInput.parse(event);
 
-    const log = logger.child({ detail });
+    const metadata = LetterUploadRepository.parseKey(
+      detail.s3ObjectDetails.objectKey
+    );
 
-    const { template: templateKey, versionId } = detail;
+    const log = logger.child({ detail, metadata });
 
-    const getTemplateResult = await templateRepository.get(
-      templateKey.id,
-      templateKey.owner
+    const {
+      'template-id': templateId,
+      owner,
+      'version-id': versionId,
+    } = metadata;
+
+    const getTemplateResult = await this.templateRepository.get(
+      templateId,
+      owner
     );
 
     if (getTemplateResult.error) {
@@ -49,30 +94,44 @@ export const createHandler =
       throw new Error('Unable to load template data');
     }
 
-    const pdfData = getTemplateResult.data.files?.pdfTemplate;
-    const csvData = getTemplateResult.data.files?.testDataCsv;
+    const template = getTemplateResult.data;
 
-    //  No-op if some of the files have failed virus scan, or if file version in event is non-current
+    if (!template.files) {
+      log.error("Can't process non-letter template");
+      return;
+    }
+
+    const pdfData = template.files.pdfTemplate;
+    const csvData = template.files.testDataCsv;
+
     if (
-      pdfData?.virusScanStatus === 'FAILED' ||
-      pdfData?.currentVersion !== versionId
+      pdfData.currentVersion !== versionId ||
+      (csvData && csvData.currentVersion !== versionId)
     ) {
-      log.info(
-        'PDF has failed virus scan or event is for non-current version',
-        { pdfData }
-      );
+      //  No-op if file version in event is non-current
+      log.info('Event is for non-current file version - skipping', {
+        pdfData,
+        csvData,
+      });
+      return;
+    }
+
+    if (template.templateStatus !== 'PENDING_VALIDATION') {
+      log.info('Template is not pending validation - skipping', {
+        templateStatus: template.templateStatus,
+      });
       return;
     }
 
     if (
-      csvData &&
-      (csvData.virusScanStatus === 'FAILED' ||
-        csvData.currentVersion !== versionId)
+      pdfData.virusScanStatus === 'FAILED' ||
+      (csvData && csvData.virusScanStatus === 'FAILED')
     ) {
-      log.info(
-        'CSV has failed virus scan or event is for non-current version',
-        { csvData }
-      );
+      //  No-op if some of the files have failed virus scan, or if file version in event is non-current
+      log.info('Template file has failed virus scan - skipping', {
+        pdfData,
+        csvData,
+      });
       return;
     }
 
@@ -86,12 +145,20 @@ export const createHandler =
     }
 
     const downloads = [
-      letterUploadRepository.download(templateKey, 'pdf-template', versionId),
+      this.letterUploadRepository.download(
+        { id: templateId, owner },
+        'pdf-template',
+        versionId
+      ),
     ];
 
     if (csvData) {
       downloads.push(
-        letterUploadRepository.download(templateKey, 'test-data', versionId)
+        this.letterUploadRepository.download(
+          { id: templateId, owner },
+          'test-data',
+          versionId
+        )
       );
     }
 
@@ -117,8 +184,8 @@ export const createHandler =
     } catch (error) {
       log.error('File parsing error:', error);
 
-      await templateRepository.setLetterValidationResult(
-        templateKey,
+      await this.templateRepository.setLetterValidationResult(
+        { id: templateId, owner },
         versionId,
         false,
         [],
@@ -130,11 +197,12 @@ export const createHandler =
 
     const valid = validateLetterTemplateFiles(pdf, csv);
 
-    await templateRepository.setLetterValidationResult(
-      templateKey,
+    await this.templateRepository.setLetterValidationResult(
+      { id: templateId, owner },
       versionId,
       valid,
       pdf.personalisationParameters,
       csv?.headers || []
     );
   };
+}

@@ -3,7 +3,6 @@ import {
   DeleteObjectCommand,
   GetObjectCommand,
   GetObjectCommandOutput,
-  HeadObjectCommand,
   NotFound,
   PutObjectCommand,
   S3Client,
@@ -66,9 +65,7 @@ describe('LetterUploadRepository', () => {
           owner,
           'file-type': 'pdf-template',
           'template-id': templateId,
-          'user-filename': pdfFilename,
           'version-id': versionId,
-          'test-data-provided': 'true',
         },
       });
 
@@ -80,7 +77,6 @@ describe('LetterUploadRepository', () => {
           owner,
           'file-type': 'test-data',
           'template-id': templateId,
-          'user-filename': csvFilename,
           'version-id': versionId,
         },
       });
@@ -100,9 +96,7 @@ describe('LetterUploadRepository', () => {
           owner,
           'file-type': 'pdf-template',
           'template-id': templateId,
-          'user-filename': pdfFilename,
           'version-id': versionId,
-          'test-data-provided': 'false',
         },
       });
     });
@@ -135,266 +129,6 @@ describe('LetterUploadRepository', () => {
     });
   });
 
-  describe('getFileMetadata', () => {
-    it('fetches pdf-template type file metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'pdf-template',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'test-data-provided': 'true',
-        'user-filename': 'template.pdf',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      const result = await letterUploadRepository.getFileMetadata(
-        'quarantine-bucket',
-        'test/object/key',
-        's3-object-version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(HeadObjectCommand, {
-        Bucket: 'quarantine-bucket',
-        Key: 'test/object/key',
-        VersionId: 's3-object-version',
-      });
-
-      expect(result).toEqual(metadata);
-    });
-
-    it('fetches pdf-template type file metadata with test-data-provided as false', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'pdf-template',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'test-data-provided': 'false',
-        'user-filename': 'template.pdf',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      const result = await letterUploadRepository.getFileMetadata(
-        'quarantine-bucket',
-        'test/object/key',
-        's3-object-version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(HeadObjectCommand, {
-        Bucket: 'quarantine-bucket',
-        Key: 'test/object/key',
-        VersionId: 's3-object-version',
-      });
-
-      expect(result).toEqual(metadata);
-    });
-
-    it('fetches test-data type file metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      const result = await letterUploadRepository.getFileMetadata(
-        'quarantine-bucket',
-        'test/object/key',
-        's3-object-version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(HeadObjectCommand, {
-        Bucket: 'quarantine-bucket',
-        Key: 'test/object/key',
-        VersionId: 's3-object-version',
-      });
-
-      expect(result).toEqual(metadata);
-    });
-
-    it('errors if file type is missing in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if file type is invalid in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'unknown',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if owner is missing in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        'template-id': 'template-id',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if template-id is missing in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        owner: 'template-owner',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if test-data-provided value is invalid in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'test-data-provided': 'unknown',
-        'user-filename': 'data.csv',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if user-filename is missing in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'test-data-provided': 'unknown',
-        'version-id': 'template-version',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-
-    it('errors if version-id is missing in returned metadata', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      const metadata = {
-        'file-type': 'test-data',
-        owner: 'template-owner',
-        'template-id': 'template-id',
-        'test-data-provided': 'unknown',
-        'user-filename': 'data.csv',
-      };
-
-      mocks.s3Client.on(HeadObjectCommand).resolves({
-        Metadata: metadata,
-      });
-
-      await expect(
-        letterUploadRepository.getFileMetadata(
-          'quarantine-bucket',
-          'test/object/key',
-          's3-object-version'
-        )
-      ).rejects.toThrowErrorMatchingSnapshot();
-    });
-  });
-
   describe('copyFromQuarantineToInternal', () => {
     it('copies pdf template files from quarantine to internal', async () => {
       const { letterUploadRepository, mocks } = setup();
@@ -416,33 +150,15 @@ describe('LetterUploadRepository', () => {
   });
 
   describe('deleteFromQuarantine', () => {
-    it('deletes pdf template files from quarantine', async () => {
+    it('deletes files from quarantine', async () => {
       const { letterUploadRepository, mocks } = setup();
 
-      await letterUploadRepository.deleteFromQuarantine(
-        { owner: 'owner', id: 'template' },
-        'pdf-template',
-        'version'
-      );
+      await letterUploadRepository.deleteFromQuarantine('key', 'version');
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(DeleteObjectCommand, {
         Bucket: 'quarantine-bucket',
-        Key: 'pdf-template/owner/template/version.pdf',
-      });
-    });
-
-    it('deletes test data files from quarantine', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      await letterUploadRepository.deleteFromQuarantine(
-        { owner: 'owner', id: 'template' },
-        'test-data',
-        'version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(DeleteObjectCommand, {
-        Bucket: 'quarantine-bucket',
-        Key: 'test-data/owner/template/version.csv',
+        Key: 'key',
+        VersionId: 'version',
       });
     });
   });
@@ -506,6 +222,88 @@ describe('LetterUploadRepository', () => {
           'file-version-id'
         )
       ).rejects.toThrow('oh no');
+    });
+  });
+
+  describe('static parseKey', () => {
+    it('returns metadata from valid pdf key', () => {
+      expect(
+        LetterUploadRepository.parseKey(
+          'pdf-template/owner-id/template-id/version-id.pdf'
+        )
+      ).toEqual({
+        'file-type': 'pdf-template',
+        owner: 'owner-id',
+        'template-id': 'template-id',
+        'version-id': 'version-id',
+      });
+    });
+
+    it('returns metadata from valid csv key', () => {
+      expect(
+        LetterUploadRepository.parseKey(
+          'test-data/owner-id/template-id/version-id.csv'
+        )
+      ).toEqual({
+        'file-type': 'test-data',
+        owner: 'owner-id',
+        'template-id': 'template-id',
+        'version-id': 'version-id',
+      });
+    });
+
+    it('errors if key if too long', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'test-data/owner-id/template-id/unexpected-path/version-id.csv'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if key if too short', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey('test-data/owner-id/version-id.csv')
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if invalid file type segment', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'unexpected/owner-id/template-id/version-id.csv'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if no file extension', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'test-data/owner-id/template-id/version-id'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if filename has too many parts', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'test-data/owner-id/template-id/version-id.unexpected.csv'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if file extension does not match csv file type', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'test-data/owner-id/template-id/version-id.pdf'
+        )
+      ).toThrowErrorMatchingSnapshot();
+    });
+
+    it('errors if file extension does not match pdf file type', () => {
+      expect(() =>
+        LetterUploadRepository.parseKey(
+          'pdf-template/owner-id/template-id/version-id.csv'
+        )
+      ).toThrowErrorMatchingSnapshot();
     });
   });
 });

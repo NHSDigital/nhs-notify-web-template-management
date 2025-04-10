@@ -15,8 +15,6 @@ import {
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import type {
   FileType,
-  TemplateFileScannedEventDetail,
-  TemplateFileScannedEventDetailType,
   TemplateKey,
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -31,7 +29,6 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from './template';
-import { EventsClient } from './events-client';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -57,8 +54,7 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string,
-    private eventsClient: EventsClient
+    private readonly templatesTableName: string
   ) {}
 
   async get(
@@ -363,21 +359,6 @@ export class TemplateRepository {
           ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
         })
       );
-
-      // Would be nice to publish the event off the back of the DynamoDB stream - doing two writes here now
-      // Or could we do something like events through logs, like we have with metrics?
-      await this.eventsClient.putEvent<
-        TemplateFileScannedEventDetailType,
-        TemplateFileScannedEventDetail
-      >({
-        'detail-type': 'template-file-scanned',
-        detail: {
-          template: templateKey,
-          fileType,
-          virusScanStatus: status,
-          versionId,
-        },
-      });
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         logger.error(

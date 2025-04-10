@@ -8,7 +8,6 @@ import {
   CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
-  HeadObjectCommand,
   NotFound,
   PutObjectCommand,
   S3Client,
@@ -19,8 +18,6 @@ export type LetterUploadMetadata = {
   'file-type': FileType;
   owner: string;
   'template-id': string;
-  'test-data-provided'?: 'true' | 'false';
-  'user-filename': string;
   'version-id': string;
 };
 
@@ -30,8 +27,6 @@ const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
   'file-type': $FileType,
   owner: z.string(),
   'template-id': z.string(),
-  'test-data-provided': z.enum(['true', 'false']).optional(),
-  'user-filename': z.string(),
   'version-id': z.string(),
 });
 
@@ -58,13 +53,11 @@ export class LetterUploadRepository {
         Key: pdfKey,
         Body: await pdf.bytes(),
         ChecksumAlgorithm: 'SHA256',
-        Metadata: this.metadata(
+        Metadata: LetterUploadRepository.metadata(
           owner,
-          pdf.name,
           templateId,
           versionId,
-          'pdf-template',
-          !!csv
+          'pdf-template'
         ),
       }),
     ];
@@ -78,9 +71,8 @@ export class LetterUploadRepository {
           Key: csvKey,
           Body: await csv.bytes(),
           ChecksumAlgorithm: 'SHA256',
-          Metadata: this.metadata(
+          Metadata: LetterUploadRepository.metadata(
             owner,
-            csv.name,
             templateId,
             versionId,
             'test-data'
@@ -124,22 +116,6 @@ export class LetterUploadRepository {
     }
   }
 
-  async getFileMetadata(
-    bucket: string,
-    key: string,
-    versionId: string
-  ): Promise<LetterUploadMetadata> {
-    const { Metadata } = await this.client.send(
-      new HeadObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        VersionId: versionId,
-      })
-    );
-
-    return $LetterUploadMetadata.parse(Metadata);
-  }
-
   async copyFromQuarantineToInternal(key: string, versionId: string) {
     await this.client.send(
       new CopyObjectCommand({
@@ -152,19 +128,41 @@ export class LetterUploadRepository {
     );
   }
 
-  async deleteFromQuarantine(
-    template: TemplateKey,
-    fileType: FileType,
-    versionId: string
-  ) {
-    const key = this.key(fileType, template.owner, template.id, versionId);
-
+  async deleteFromQuarantine(key: string, versionId: string) {
     await this.client.send(
       new DeleteObjectCommand({
         Bucket: this.quarantineBucketName,
         Key: key,
+        VersionId: versionId,
       })
     );
+  }
+
+  static parseKey(key: string): LetterUploadMetadata {
+    const keyParts = key.split('/');
+    const [type, owner, templateId, filename = ''] = keyParts;
+    const filenameParts = filename.split('.');
+    const [versionId, extension] = filenameParts;
+
+    if (keyParts.length !== 4 || filenameParts.length !== 2) {
+      throw new Error(`Unexpected object key "${key}"`);
+    }
+
+    const parsed = LetterUploadRepository.metadata(
+      owner,
+      templateId,
+      versionId,
+      type
+    );
+
+    const expectedExtension =
+      parsed['file-type'] === 'pdf-template' ? 'pdf' : 'csv';
+
+    if (extension !== expectedExtension) {
+      throw new Error(`Unexpected object key "${key}"`);
+    }
+
+    return parsed;
   }
 
   private key(
@@ -176,23 +174,17 @@ export class LetterUploadRepository {
     return `${type}/${owner}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
   }
 
-  private metadata(
+  private static metadata(
     owner: string,
-    userFilename: string,
     templateId: string,
     versionId: string,
-    type: FileType,
-    hasTestData?: boolean
+    type: string
   ): LetterUploadMetadata {
-    return {
+    return $LetterUploadMetadata.parse({
       owner,
       'file-type': type,
-      'user-filename': userFilename,
       'template-id': templateId,
       'version-id': versionId,
-      ...(hasTestData !== undefined && {
-        'test-data-provided': `${hasTestData}`,
-      }),
-    };
+    });
   }
 }

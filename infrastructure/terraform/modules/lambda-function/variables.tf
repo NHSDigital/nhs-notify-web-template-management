@@ -70,3 +70,16 @@ variable "layer_arns" {
   type        = list(string)
   default     = null
 }
+
+variable "sqs_event_source_mapping" {
+  description = "Configuration for SQS event source mapping"
+  type = object({
+    sqs_queue_arn                      = string
+    batch_size                         = optional(number, 10)
+    maximum_batching_window_in_seconds = optional(number, 0)
+    scaling_config = optional(object({
+      maximum_concurrency = number
+    }), null)
+  })
+  default = null
+}

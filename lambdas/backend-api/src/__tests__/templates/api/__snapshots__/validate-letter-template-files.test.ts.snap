@@ -1,63 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`errors if the event has FAILED scan status 1`] = `
-"[
-  {
-    "code": "invalid_type",
-    "expected": "string",
-    "received": "undefined",
-    "path": [
-      "detail",
-      "versionId"
-    ],
-    "message": "Required"
-  },
-  {
-    "received": "FAILED",
-    "code": "invalid_enum_value",
-    "options": [
-      "PASSED"
-    ],
-    "path": [
-      "detail",
-      "virusScanStatus"
-    ],
-    "message": "Invalid enum value. Expected 'PASSED', received 'FAILED'"
-  }
-]"
-`;
+exports[`guard duty handler errors if cannot parse version id in the event 1`] = `"Unexpected object key "pdf-template/template-owner/template-id/unexpected-file-name""`;
 
-exports[`errors if the event has no scan status 1`] = `
-"[
-  {
-    "expected": "'PASSED'",
-    "received": "undefined",
-    "code": "invalid_type",
-    "path": [
-      "detail",
-      "virusScanStatus"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has no version id 1`] = `
-"[
-  {
-    "code": "invalid_type",
-    "expected": "string",
-    "received": "undefined",
-    "path": [
-      "detail",
-      "versionId"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has unknown file-type 1`] = `
+exports[`guard duty handler errors if the event has unknown file-type 1`] = `
 "[
   {
     "received": "unknown",
@@ -67,30 +12,16 @@ exports[`errors if the event has unknown file-type 1`] = `
       "test-data"
     ],
     "path": [
-      "detail",
-      "fileType"
+      "file-type"
     ],
     "message": "Invalid enum value. Expected 'pdf-template' | 'test-data', received 'unknown'"
   }
 ]"
 `;
 
-exports[`errors if the event is missing file-type 1`] = `
-"[
-  {
-    "expected": "'pdf-template' | 'test-data'",
-    "received": "undefined",
-    "code": "invalid_type",
-    "path": [
-      "detail",
-      "fileType"
-    ],
-    "message": "Required"
-  }
-]"
-`;
+exports[`guard duty handler errors if the event is missing file-type 1`] = `"Unexpected object key "template-owner/template-id/template-version-id.pdf""`;
 
-exports[`errors if the event is missing template id 1`] = `
+exports[`guard duty handler errors if the event is missing object key 1`] = `
 "[
   {
     "code": "invalid_type",
@@ -98,26 +29,102 @@ exports[`errors if the event is missing template id 1`] = `
     "received": "undefined",
     "path": [
       "detail",
-      "template",
-      "id"
+      "s3ObjectDetails",
+      "objectKey"
     ],
     "message": "Required"
   }
 ]"
 `;
 
-exports[`errors if the event is missing template owner 1`] = `
+exports[`guard duty handler errors if the event is missing scan result 1`] = `
 "[
   {
-    "code": "invalid_type",
-    "expected": "string",
+    "expected": "'NO_THREATS_FOUND'",
     "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
-      "template",
-      "owner"
+      "scanResultDetails",
+      "scanResultStatus"
     ],
     "message": "Required"
+  }
+]"
+`;
+
+exports[`guard duty handler errors if the event is missing template id 1`] = `"Unexpected object key "pdf-template/template-owner/template-version-id.pdf""`;
+
+exports[`guard duty handler errors if the event is missing template owner 1`] = `"Unexpected object key "pdf-template/template-id/template-version-id.pdf""`;
+
+exports[`guard duty handler errors if the event scan result is ACCESS_DENIED 1`] = `
+"[
+  {
+    "received": "ACCESS_DENIED",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'ACCESS_DENIED'"
+  }
+]"
+`;
+
+exports[`guard duty handler errors if the event scan result is FAILED 1`] = `
+"[
+  {
+    "received": "FAILED",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'FAILED'"
+  }
+]"
+`;
+
+exports[`guard duty handler errors if the event scan result is THREATS_FOUND 1`] = `
+"[
+  {
+    "received": "THREATS_FOUND",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'THREATS_FOUND'"
+  }
+]"
+`;
+
+exports[`guard duty handler errors if the event scan result is UNSUPPORTED 1`] = `
+"[
+  {
+    "received": "UNSUPPORTED",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'UNSUPPORTED'"
   }
 ]"
 `;
