@@ -13,6 +13,7 @@ module "lambda_send_letter_proof" {
 
   environment_variables = {
     CSI                     = local.csi
+    ENVIRONMENT             = var.environment
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
     DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier.name
     SFTP_ENVIRONMENT        = local.sftp_environment
@@ -42,7 +43,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
 
     actions = [
       "s3:GetObject",
-      "s3:GetObjectVersion", // TODO: needed?
+      "s3:GetObjectVersion",
     ]
 
     resources = ["${module.s3bucket_internal.arn}/*"]
