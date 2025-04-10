@@ -14,12 +14,13 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 export function ViewLetterTemplate({
   initialState,
 }: Readonly<PageComponentProps<LetterTemplate>>) {
-  const { createNewTemplate } = content.components.viewSubmittedTemplate;
+  const { createNewTemplate, backLinkText } =
+    content.components.viewSubmittedTemplate;
 
   return (
     <>
       <BackLink href={`${getBasePath()}/manage-templates`}>
-        Back to all templates
+        {backLinkText}
       </BackLink>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
@@ -27,7 +28,7 @@ export function ViewLetterTemplate({
             <PreviewTemplateDetails.Letter template={initialState} />
             <p>{createNewTemplate}</p>
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/manage-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>

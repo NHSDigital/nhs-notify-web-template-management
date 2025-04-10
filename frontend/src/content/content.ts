@@ -560,6 +560,7 @@ const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
+  backLinkText: backToAllTemplates,
 };
 
 const deleteTemplate = {
