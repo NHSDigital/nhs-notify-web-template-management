@@ -3,39 +3,39 @@ const { performCheck } = require('./helpers');
 const {
   chooseATemplatePage,
   chooseATemplatePageError,
-  createNHSAppTemplatePage,
-  createNHSAppTemplateErrorPage,
-  previewNHSAppTemplatePage,
-  previewNHSAppTemplateErrorPage,
-  submitNHSAppTemplatePage,
+  copyTemplatePage,
+  createEmailTemplateErrorPage,
   createEmailTemplatePage,
   createLetterTemplatePage,
-  createEmailTemplateErrorPage,
-  previewEmailTemplatePage,
-  previewEmailTemplateErrorPage,
-  previewLetterTemplatePage,
-  createTextMessageTemplatePage,
+  createNHSAppTemplateErrorPage,
+  createNHSAppTemplatePage,
   createTextMessageTemplateErrorPage,
-  letterTemplateSubmittedPage,
-  previewTextMessageTemplatePage,
-  previewTextMessageTemplateErrorPage,
-  submitTextMessageTemplatePage,
-  textMessageTemplateSubmittedPage,
-  submitEmailTemplatePage,
-  submitLetterTemplatePage,
+  createTextMessageTemplatePage,
   emailTemplateSubmittedPage,
+  letterTemplateSubmittedPage,
   messageTemplatesPage,
   nhsAppTemplateSubmittedPage,
+  previewEmailTemplateErrorPage,
+  previewEmailTemplatePage,
+  previewLetterTemplatePage,
+  previewNHSAppTemplateErrorPage,
+  previewNHSAppTemplatePage,
+  previewSubmittedEmailTemplatePage,
+  previewSubmittedLetterTemplatePage,
+  previewSubmittedNHSAppTemplatePage,
+  previewSubmittedTextMessageTemplatePage,
+  previewTextMessageTemplateErrorPage,
+  previewTextMessageTemplatePage,
+  signInPageActions,
+  submitEmailTemplatePage,
+  submitLetterTemplatePage,
+  submitNHSAppTemplatePage,
+  submitTextMessageTemplatePage,
+  textMessageTemplateSubmittedPage,
   viewNotYetSubmittedEmailTemplatePage,
+  viewNotYetSubmittedLetterTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
-  viewNotYetSubmittedLetterTemplatePage,
-  viewSubmittedEmailTemplatePage,
-  viewSubmittedNHSAppTemplatePage,
-  viewSubmittedTextMessageTemplatePage,
-  viewSubmittedLetterTemplatePage,
-  copyTemplatePage,
-  signInPageActions,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -67,8 +67,8 @@ module.exports = {
     performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
     performCheck(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
     performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(NhsAppTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
+    performCheck(nhsAppTemplateSubmittedPage(chooseTemplateUrl)),
+    performCheck(previewSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
 
     // Text message journey
     performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
@@ -80,7 +80,7 @@ module.exports = {
     ),
     performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
     performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedTextMessageTemplatePage(messageTemplatesUrl)),
+    performCheck(previewSubmittedTextMessageTemplatePage(messageTemplatesUrl)),
 
     // Email journey
     performCheck(createEmailTemplatePage(chooseTemplateUrl)),
@@ -90,7 +90,7 @@ module.exports = {
     performCheck(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl)),
     performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(viewSubmittedEmailTemplatePage(messageTemplatesUrl)),
+    performCheck(previewSubmittedEmailTemplatePage(messageTemplatesUrl)),
 
     // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
@@ -115,7 +115,7 @@ module.exports = {
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
       )
     ),
-    performCheck(viewSubmittedLetterTemplatePage(messageTemplatesUrl)),
+    performCheck(previewSubmittedLetterTemplatePage(messageTemplatesUrl)),
 
     // Non-existent template
     performCheck({

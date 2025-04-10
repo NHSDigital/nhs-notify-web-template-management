@@ -7,12 +7,12 @@ const pageActions = [
   'wait for element [data-testid="preview-message__heading"] to be visible',
 ];
 
-const viewSubmittedLetterTemplatePage = (url) => ({
-  name: 'view-submitted-letter-template',
+const previewSubmittedLetterTemplatePage = (url) => ({
+  name: 'preview-submitted-letter-template',
   url,
   actions: pageActions,
 });
 
 module.exports = {
-  viewSubmittedLetterTemplatePage,
+  previewSubmittedLetterTemplatePage,
 };
