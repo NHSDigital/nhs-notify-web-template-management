@@ -38,5 +38,5 @@ locals {
     for k, v in var.letter_suppliers : merge(v, { name = k }) if v.default_supplier
   ][0]
 
-  sftp_environment = "${var.group}-${var.environment}-${var.base_component}"
+  sftp_environment = "${var.group}-${var.environment}-${var.component}"
 }
