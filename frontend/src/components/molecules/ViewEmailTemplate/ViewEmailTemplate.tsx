@@ -25,7 +25,7 @@ export function ViewEmailTemplate({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/manage-templates`}>
+      <BackLink href={`${getBasePath()}/message-templates`}>
         Back to all templates
       </BackLink>
       <NHSNotifyMain>
@@ -39,7 +39,7 @@ export function ViewEmailTemplate({
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>
-              <Link href='/manage-templates'>Back to all templates</Link>
+              <Link href='/message-templates'>Back to all templates</Link>
             </p>
           </div>
         </div>

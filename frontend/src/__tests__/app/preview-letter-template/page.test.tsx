@@ -2,16 +2,15 @@
  * @jest-environment node
  */
 import PreviewLetterTemplatePage from '@app/preview-letter-template/[templateId]/page';
-import { PreviewLetterTemplate } from '@forms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/PreviewLetterTemplate/PreviewLetterTemplate');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
@@ -59,9 +58,7 @@ describe('PreviewLetterTemplatePage', () => {
       }),
     });
 
-    expect(page).toEqual(
-      <PreviewLetterTemplate initialState={letterTemplate} />
-    );
+    expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);
   });
 
   it('should redirect to invalid-template when no template is found', async () => {

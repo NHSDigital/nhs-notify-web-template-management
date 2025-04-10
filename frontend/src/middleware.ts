@@ -16,7 +16,7 @@ const protectedPaths = [
   /^\/edit-text-message-template\/[^/]+$/,
   /^\/email-template-submitted\/[^/]+$/,
   /^\/invalid-template$/,
-  /^\/manage-templates$/,
+  /^\/message-templates$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,
   /^\/preview-email-template\/[^/]+$/,
   /^\/preview-letter-template\/[^/]+$/,
@@ -26,9 +26,9 @@ const protectedPaths = [
   /^\/submit-nhs-app-template\/[^/]+$/,
   /^\/submit-text-message-template\/[^/]+$/,
   /^\/text-message-template-submitted\/[^/]+$/,
-  /^\/view-submitted-email-template\/[^/]+$/,
-  /^\/view-submitted-nhs-app-template\/[^/]+$/,
-  /^\/view-submitted-text-message-template\/[^/]+$/,
+  /^\/preview-submitted-email-template\/[^/]+$/,
+  /^\/preview-submitted-nhs-app-template\/[^/]+$/,
+  /^\/preview-submitted-text-message-template\/[^/]+$/,
 ];
 
 const publicPaths = [

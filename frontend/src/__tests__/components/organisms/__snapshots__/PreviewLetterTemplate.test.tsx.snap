@@ -1,0 +1,311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreviewLetterTemplate component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                53525D03-1BC1-4563-ABF9-A74FF04142AF
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Letter - Arabic
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag"
+                >
+                  Not yet submitted
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          draggable="false"
+          href="/templates/submit-letter-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
+          id="preview-letter-template-submit-button"
+          role="button"
+        >
+          Submit template
+        </a>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot when template status is VIRUS_SCAN_FAILED 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/manage-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Braille letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag"
+                >
+                  Virus Scan Failed
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <a
+          aria-disabled="false"
+          class="nhsuk-button"
+          data-testid="submit-button"
+          draggable="false"
+          href="/templates/submit-letter-template/template-id"
+          id="preview-letter-template-submit-button"
+          role="button"
+        >
+          Submit template
+        </a>
+        <p>
+          <a
+            href="/manage-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

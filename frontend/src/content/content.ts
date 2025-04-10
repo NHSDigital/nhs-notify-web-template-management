@@ -194,11 +194,11 @@ const homePage = {
   text7: 'You can access this tool by signing in with your Care Identity.',
   linkButton: {
     text: 'Start now',
-    url: `${getBasePath()}/manage-templates`,
+    url: `${getBasePath()}/message-templates`,
   },
 };
 
-const manageTemplates = {
+const messageTemplates = {
   pageTitle: generatePageTitle('Message templates'),
   pageHeading: 'Message templates',
   emptyTemplates: 'You do not have any templates yet.',
@@ -236,17 +236,8 @@ const previewEmailTemplate = {
 };
 
 const previewLetterTemplate = {
-  sectionHeading: 'Template saved',
-  form: {
-    errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next?',
-    options: [
-      { id: 'letter-edit', text: 'Edit template' },
-      { id: 'letter-submit', text: 'Submit template' },
-    ],
-    buttonText: 'Continue',
-  },
   backLinkText: backToAllTemplates,
+  buttonText: 'Submit template',
 };
 
 const previewNHSAppTemplate = {
@@ -290,6 +281,14 @@ const previewSMSTemplate = {
     buttonText: 'Continue',
   },
   backLinkText: backToAllTemplates,
+};
+
+const previewTemplateDetails = {
+  rowHeadings: {
+    templateId: 'Template ID',
+    templateType: 'Type',
+    templateStatus: 'Status',
+  },
 };
 
 const error404 = {
@@ -566,6 +565,7 @@ const content = {
     previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
+    previewTemplateDetails,
     submitTemplate,
     templateFormEmail,
     templateFormLetter,
@@ -577,7 +577,7 @@ const content = {
   pages: {
     homePage,
     error404,
-    manageTemplates,
+    messageTemplates,
   },
 };
 
