@@ -5,11 +5,6 @@ import type {
   GuardDutyScanResultNotificationEventDetail,
   SQSRecord,
 } from 'aws-lambda';
-import type {
-  TemplateFileScannedEvent,
-  TemplateFileScannedEventDetail,
-  TemplateFileScannedEventDetailType,
-} from 'nhs-notify-web-template-management-utils';
 
 // SQS Record
 type MakeSQSRecordParams = Partial<SQSRecord> & Pick<SQSRecord, 'body'>;
@@ -116,38 +111,4 @@ export const makeGuardDutyMalwareScanResultNotificationEvent = (
     source: 'aws.guardduty',
     'detail-type': 'GuardDuty Malware Protection Object Scan Result',
     detail: makeGuardDutyMalwareScanResultNotificationEventDetail(event.detail),
-  });
-
-// NHS Notify Template File Scanned Event
-type MakeTemplateFileScannedEventDetailParams = Partial<
-  Omit<TemplateFileScannedEventDetail, 'template'>
-> &
-  Pick<TemplateFileScannedEventDetail, 'template'>;
-
-const makeTemplateFileScannedEventDetail = (
-  detail: MakeTemplateFileScannedEventDetailParams
-): TemplateFileScannedEventDetail => ({
-  fileType: 'pdf-template',
-  virusScanStatus: 'PASSED',
-  versionId: randomUUID(),
-  ...detail,
-});
-
-type MakeTemplateFileScannedEventParams = Omit<
-  MakeEventBridgeEventParams<
-    TemplateFileScannedEventDetailType,
-    TemplateFileScannedEventDetail,
-    'templates.test.nhs-notify'
-  >,
-  'detail-type' | 'source' | 'detail'
-> & { detail: MakeTemplateFileScannedEventDetailParams };
-
-export const makeTemplateFileScannedEvent = (
-  event: MakeTemplateFileScannedEventParams
-): TemplateFileScannedEvent =>
-  makeEventBridgeEvent({
-    ...event,
-    source: 'templates.test.nhs-notify',
-    'detail-type': 'template-file-scanned',
-    detail: makeTemplateFileScannedEventDetail(event.detail),
   });

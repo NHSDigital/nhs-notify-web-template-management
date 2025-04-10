@@ -15,18 +15,6 @@ module "lambda_set_file_virus_scan_status" {
 
 data "aws_iam_policy_document" "set_file_virus_scan_status" {
   statement {
-    sid    = "AllowS3Read"
-    effect = "Allow"
-
-    actions = [
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-    ]
-
-    resources = ["${module.s3bucket_quarantine.arn}/*"]
-  }
-
-  statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"
 
@@ -80,18 +68,6 @@ data "aws_iam_policy_document" "set_file_virus_scan_status" {
 
     resources = [
       var.kms_key_arn,
-    ]
-  }
-
-  statement {
-    sid    = "AllowEventBridge"
-    effect = "Allow"
-    actions = [
-      "events:PutEvents"
-    ]
-
-    resources = [
-      data.aws_cloudwatch_event_bus.default.arn
     ]
   }
 }

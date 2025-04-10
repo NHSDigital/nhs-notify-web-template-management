@@ -1,7 +1,8 @@
 import { mock } from 'jest-mock-extended';
-import { makeTemplateFileScannedEvent } from 'nhs-notify-web-template-management-test-helper-utils';
+import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-template-management-test-helper-utils';
 import { LetterUploadRepository } from '../../../templates/infra';
 import { createHandler } from '../../../templates/api/delete-failed-scanned-object';
+import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 
 function setup() {
   const mocks = { letterUploadRepository: mock<LetterUploadRepository>() };
@@ -9,38 +10,45 @@ function setup() {
   return { handler, mocks };
 }
 
-it('deletes the file with scan status FAILED', async () => {
-  const { handler, mocks } = setup();
+it.each($GuardDutyMalwareScanStatusFailed.options)(
+  'deletes the file with scan status %s',
+  async (status) => {
+    const { handler, mocks } = setup();
 
-  const event = makeTemplateFileScannedEvent({
-    detail: {
-      fileType: 'pdf-template',
-      template: { id: 'template-id', owner: 'template-owner' },
-      virusScanStatus: 'FAILED',
-      versionId: 'template-file-version',
-    },
-  });
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine',
+          objectKey: 'some/object/key',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: status,
+        },
+      },
+    });
 
-  await handler(event);
+    await handler(event);
 
-  expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
-  ).toHaveBeenCalledWith(
-    { owner: 'template-owner', id: 'template-id' },
-    'pdf-template',
-    'template-file-version'
-  );
-});
+    expect(
+      mocks.letterUploadRepository.deleteFromQuarantine
+    ).toHaveBeenCalledWith('some/object/key', 's3-version-id');
+  }
+);
 
-it('errors if the event has no file-type', async () => {
+it('errors if the event has no s3 object key', async () => {
   const { handler, mocks } = setup();
 
   await expect(
     handler({
       detail: {
-        template: { id: 'template-id', owner: 'template-owner' },
-        virusScanStatus: 'FAILED',
-        versionId: 'template-file-version',
+        s3ObjectDetails: {
+          bucketName: 'quarantine',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'THREATS_FOUND',
+        },
       },
     })
   ).rejects.toThrowErrorMatchingSnapshot();
@@ -50,35 +58,19 @@ it('errors if the event has no file-type', async () => {
   ).not.toHaveBeenCalled();
 });
 
-it('errors if the event has no template id', async () => {
+it('errors if the event has no s3 version id', async () => {
   const { handler, mocks } = setup();
 
   await expect(
     handler({
       detail: {
-        fileType: 'pdf-template',
-        template: { owner: 'template-owner' },
-        virusScanStatus: 'FAILED',
-        versionId: 'template-file-version',
-      },
-    })
-  ).rejects.toThrowErrorMatchingSnapshot();
-
-  expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
-  ).not.toHaveBeenCalled();
-});
-
-it('errors if the event has no template owner', async () => {
-  const { handler, mocks } = setup();
-
-  await expect(
-    handler({
-      detail: {
-        fileType: 'pdf-template',
-        template: { id: 'template-id' },
-        virusScanStatus: 'FAILED',
-        versionId: 'template-file-version',
+        s3ObjectDetails: {
+          bucketName: 'quarantine',
+          objectKey: 'some/object/key',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'THREATS_FOUND',
+        },
       },
     })
   ).rejects.toThrowErrorMatchingSnapshot();
@@ -94,9 +86,12 @@ it('errors if the event has no virus scan status', async () => {
   await expect(
     handler({
       detail: {
-        fileType: 'pdf-template',
-        template: { id: 'template-id', owner: 'template-owner' },
-        versionId: 'template-file-version',
+        s3ObjectDetails: {
+          bucketName: 'quarantine',
+          objectKey: 'some/object/key',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {},
       },
     })
   ).rejects.toThrowErrorMatchingSnapshot();
@@ -106,34 +101,20 @@ it('errors if the event has no virus scan status', async () => {
   ).not.toHaveBeenCalled();
 });
 
-it('errors if the event has virus scan status PASSED', async () => {
+it('errors if the event has virus scan status NO_THREATS_FOUND', async () => {
   const { handler, mocks } = setup();
 
   await expect(
     handler({
       detail: {
-        fileType: 'pdf-template',
-        template: { id: 'template-id', owner: 'template-owner' },
-        virusScanStatus: 'PASSED',
-        versionId: 'template-file-version',
-      },
-    })
-  ).rejects.toThrowErrorMatchingSnapshot();
-
-  expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
-  ).not.toHaveBeenCalled();
-});
-
-it('errors if the event has no version id', async () => {
-  const { handler, mocks } = setup();
-
-  await expect(
-    handler({
-      detail: {
-        fileType: 'pdf-template',
-        template: { id: 'template-id', owner: 'template-owner' },
-        virusScanStatus: 'FAILED',
+        s3ObjectDetails: {
+          bucketName: 'quarantine',
+          objectKey: 'some/object/key',
+          versionId: 's3-version-id',
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
       },
     })
   ).rejects.toThrowErrorMatchingSnapshot();

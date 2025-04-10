@@ -167,7 +167,7 @@ test.describe('letter file validation', () => {
       );
 
       expect(pdf?.ChecksumSHA256).toEqual(
-        pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+        pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
       );
     }).toPass({ timeout: 10_000 });
   });

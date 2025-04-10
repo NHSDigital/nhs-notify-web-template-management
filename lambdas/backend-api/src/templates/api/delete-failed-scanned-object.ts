@@ -1,21 +1,33 @@
 import { z } from 'zod';
-import type { TemplateFileScannedEventDetail } from 'nhs-notify-web-template-management-utils';
+import {
+  type GuardDutyMalwareScanStatusFailed,
+  $GuardDutyMalwareScanStatusFailed,
+} from 'nhs-notify-web-template-management-utils';
 import type { LetterUploadRepository } from '../infra';
 
+// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
+// Just typing/validating the parts we use
 type DeleteFailedScannedObjectLambdaInput = {
-  detail: TemplateFileScannedEventDetail;
+  detail: {
+    s3ObjectDetails: {
+      objectKey: string;
+      versionId: string;
+    };
+    scanResultDetails: {
+      scanResultStatus: GuardDutyMalwareScanStatusFailed;
+    };
+  };
 };
-
 const $DeleteFailedScannedObjectLambdaInput: z.ZodType<DeleteFailedScannedObjectLambdaInput> =
   z.object({
     detail: z.object({
-      template: z.object({
-        id: z.string(),
-        owner: z.string(),
+      s3ObjectDetails: z.object({
+        objectKey: z.string(),
+        versionId: z.string(),
       }),
-      versionId: z.string(),
-      fileType: z.enum(['pdf-template', 'test-data']),
-      virusScanStatus: z.enum(['FAILED']),
+      scanResultDetails: z.object({
+        scanResultStatus: $GuardDutyMalwareScanStatusFailed,
+      }),
     }),
   });
 
@@ -27,12 +39,10 @@ export const createHandler =
   }) =>
   async (event: unknown) => {
     const {
-      detail: { template, versionId, fileType },
+      detail: {
+        s3ObjectDetails: { objectKey, versionId },
+      },
     } = $DeleteFailedScannedObjectLambdaInput.parse(event);
 
-    await letterUploadRepository.deleteFromQuarantine(
-      template,
-      fileType,
-      versionId
-    );
+    await letterUploadRepository.deleteFromQuarantine(objectKey, versionId);
   };
