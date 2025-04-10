@@ -43,9 +43,14 @@ variable "module" {
   default     = "api"
 }
 
-variable "base_component" {
+##
+# tfscaffold variables specific to this component
+##
+
+variable "module" {
   type        = string
-  description = "The top level component containing this module"
+  description = "The variable encapsulating the name of this module"
+  default     = "api"
 }
 
 variable "csi" {
