@@ -288,7 +288,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -635,7 +635,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -1018,7 +1018,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -1343,7 +1343,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
