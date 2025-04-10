@@ -77,6 +77,7 @@ const personalisation = {
 
 const messageFormatting = {
   header: 'Message formatting',
+  hiddenCodeBlockDescription: 'Markdown example:',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
