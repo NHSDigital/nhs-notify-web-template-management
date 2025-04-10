@@ -1,13 +1,18 @@
 /**
  * @jest-environment node
  */
-import PreviewLetterTemplatePage from '@app/preview-letter-template/[templateId]/page';
+import PreviewLetterTemplatePage, {
+  generateMetadata,
+} from '@app/preview-letter-template/[templateId]/page';
+import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { type LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { Language, LetterType, TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
-import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewLetterTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -56,6 +61,10 @@ describe('PreviewLetterTemplatePage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+    });
+
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
     });
 
     expect(page).toEqual(<PreviewLetterTemplate template={letterTemplate} />);

@@ -7,7 +7,7 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -144,7 +144,7 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
         </a>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>
@@ -162,7 +162,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/manage-templates"
+      href="/templates/message-templates"
       id="back-link"
     >
       <svg
@@ -299,7 +299,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
         </a>
         <p>
           <a
-            href="/manage-templates"
+            href="/message-templates"
           >
             Back to all templates
           </a>

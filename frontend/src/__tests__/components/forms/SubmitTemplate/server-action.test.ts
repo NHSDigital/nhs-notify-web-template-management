@@ -26,7 +26,9 @@ const mockNhsAppTemplate = {
 } satisfies TemplateDto;
 
 describe('submitTemplate', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   it('should redirect when templateId from form is invalid', async () => {
     const formData = getMockFormData({});
