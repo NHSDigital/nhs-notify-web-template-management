@@ -11,7 +11,7 @@ import {
   previewTemplatePages,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
-  viewSubmittedTemplatePages,
+  previewSubmittedTemplatePages,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -20,7 +20,7 @@ const messageTemplatesContent = content.pages.messageTemplates;
 
 const generateViewTemplateLink = (template: TemplateDto): string => {
   if (template.templateStatus === 'SUBMITTED') {
-    return `/${viewSubmittedTemplatePages(template.templateType)}/${template.id}`;
+    return `/${previewSubmittedTemplatePages(template.templateType)}/${template.id}`;
   }
 
   return `/${previewTemplatePages(template.templateType)}/${template.id}`;

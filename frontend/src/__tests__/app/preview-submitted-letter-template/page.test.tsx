@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedLetterTemplatePage, {
+import PreviewSubmittedLetterTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-letter-template/[templateId]/page';
 import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
@@ -25,7 +25,7 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('ViewSubmittedLetterTemplatePage', () => {
+describe('PreviewSubmittedLetterTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
@@ -54,7 +54,7 @@ describe('ViewSubmittedLetterTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await ViewSubmittedLetterTemplatePage({
+    const page = await PreviewSubmittedLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -69,7 +69,7 @@ describe('ViewSubmittedLetterTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await ViewSubmittedLetterTemplatePage({
+    await PreviewSubmittedLetterTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -105,7 +105,7 @@ describe('ViewSubmittedLetterTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await ViewSubmittedLetterTemplatePage({
+      await PreviewSubmittedLetterTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),

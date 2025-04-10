@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedEmailTemplatePage, {
+import PreviewSubmittedEmailTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-email-template/[templateId]/page';
 import { ViewEmailTemplate } from '@molecules/ViewEmailTemplate/ViewEmailTemplate';
@@ -44,7 +44,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await ViewSubmittedEmailTemplatePage({
+    const page = await PreviewSubmittedEmailTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -59,7 +59,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no templateId is found', async () => {
-    await ViewSubmittedEmailTemplatePage({
+    await PreviewSubmittedEmailTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -106,7 +106,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await ViewSubmittedEmailTemplatePage({
+      await PreviewSubmittedEmailTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),
