@@ -1,5 +1,5 @@
 module "sqs_quarantine_scan_enrichment" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v1.0.11"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v1.0.8"
 
   aws_account_id = var.aws_account_id
   component      = var.component
