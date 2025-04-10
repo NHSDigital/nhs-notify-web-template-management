@@ -13,7 +13,7 @@ import {
   getTemplates,
   createLetterTemplate,
   setTemplateToDeleted,
-  setTemplateToSubmitted,
+  submitTemplate,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -486,7 +486,7 @@ describe('form-actions', () => {
     expect(actualOrder).toEqual(expectedOrder);
   });
 
-  describe('setTemplateToSubmitted', () => {
+  describe('submitTemplate', () => {
     test('submitTemplate successfully', async () => {
       const responseData = {
         id: 'id',
@@ -502,7 +502,7 @@ describe('form-actions', () => {
         data: responseData,
       });
 
-      const response = await setTemplateToSubmitted('id');
+      const response = await submitTemplate('id');
 
       expect(mockedTemplateClient.submitTemplate).toHaveBeenCalledWith(
         'id',
@@ -520,7 +520,7 @@ describe('form-actions', () => {
         },
       });
 
-      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+      await expect(submitTemplate('id')).rejects.toThrow(
         'Failed to save template data'
       );
 
@@ -534,7 +534,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+      await expect(submitTemplate('id')).rejects.toThrow(
         'Failed to get access token'
       );
     });

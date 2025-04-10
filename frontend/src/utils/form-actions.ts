@@ -78,9 +78,7 @@ export async function saveTemplate(
   return data;
 }
 
-export async function setTemplateToSubmitted(
-  templateId: string
-): Promise<TemplateDto> {
+export async function submitTemplate(templateId: string): Promise<TemplateDto> {
   const token = await getAccessTokenServer();
 
   if (!token) {
