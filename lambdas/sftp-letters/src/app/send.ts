@@ -1,7 +1,7 @@
 import type { SftpClient } from '../infra/sftp-client';
 import type { UserDataRepository } from '../infra/user-data-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { Batch } from '../domain/batch';
+import type { SyntheticBatch } from '../domain/synthetic-batch';
 import type { TemplateRepository } from '../infra/template-repository';
 import { parseTestPersonalisation } from '../domain/test-data';
 import { serialiseCsv } from '../infra/serialise-csv';
@@ -26,7 +26,7 @@ export class App {
     private readonly userDataRepository: UserDataRepository,
     private readonly templateRepository: TemplateRepository,
     private readonly sftpEnvironment: string,
-    private readonly batch: Batch,
+    private readonly batch: SyntheticBatch,
     private readonly logger: Logger
   ) {}
   async send(eventBody: string, sftpClient: SftpClient, baseUploadDir: string) {

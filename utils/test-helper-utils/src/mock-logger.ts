@@ -12,8 +12,9 @@ export function createMockLogger() {
     transports: [
       new winston.transports.Stream({
         stream: new Writable({
-          write: (msg) => {
+          write: (msg, _, cb) => {
             logMessages.push(JSON.parse(msg));
+            cb();
           },
         }),
       }),

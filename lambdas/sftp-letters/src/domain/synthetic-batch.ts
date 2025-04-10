@@ -12,7 +12,7 @@ export type Manifest = {
   md5sum: string;
 };
 
-export class Batch {
+export class SyntheticBatch {
   constructor(
     private readonly randomId: () => string,
     private readonly getDate: () => Date
@@ -45,15 +45,6 @@ export class Batch {
     });
   }
 
-  getId(templateId: string, pdfVersion: string) {
-    const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(27);
-    return `${templateId}-0000000000000_${pseudoRandomSegment}`;
-  }
-
-  getHeader(fields: string[]) {
-    return `clientRef,template,${fields.join(',')}`;
-  }
-
   private fieldValue(
     field: string,
     date: Date,
@@ -70,9 +61,22 @@ export class Batch {
   }
 
   private clientRef(date: Date) {
-    return [this.randomId(), this.randomId(), date.toString().slice(10)].join(
-      '_'
-    );
+    console.log('D', date.getTime());
+
+    return [
+      this.randomId(),
+      this.randomId(),
+      date.getTime().toString().slice(10),
+    ].join('_');
+  }
+
+  getId(templateId: string, pdfVersion: string) {
+    const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(27);
+    return `${templateId}-0000000000000_${pseudoRandomSegment}`;
+  }
+
+  getHeader(fields: string[]) {
+    return `clientRef,template,${fields.join(',')}`;
   }
 
   buildManifest(
