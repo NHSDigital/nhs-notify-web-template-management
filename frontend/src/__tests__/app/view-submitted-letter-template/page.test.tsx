@@ -3,7 +3,7 @@
  */
 import ViewSubmittedLetterTemplatePage, {
   generateMetadata,
-} from '@app/view-submitted-letter-template/[templateId]/page';
+} from '@app/preview-submitted-letter-template/[templateId]/page';
 import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';

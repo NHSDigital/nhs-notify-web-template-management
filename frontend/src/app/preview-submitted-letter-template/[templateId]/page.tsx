@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const ViewSubmittedLetterTemplatePage = async (props: PageProps) => {
+const PreviewSubmittedLetterTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
@@ -32,4 +32,4 @@ const ViewSubmittedLetterTemplatePage = async (props: PageProps) => {
   return <ViewLetterTemplate initialState={validatedTemplate} />;
 };
 
-export default ViewSubmittedLetterTemplatePage;
+export default PreviewSubmittedLetterTemplatePage;
