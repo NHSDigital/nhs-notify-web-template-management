@@ -2,7 +2,8 @@ import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import { JSX } from 'react';
 
-const { linksAndUrls } = content.components.messageFormatting;
+const { linksAndUrls, hiddenCodeBlockDescription } =
+  content.components.messageFormatting;
 
 const LinksAndUrls = ({ children }: { children?: JSX.Element }) => (
   <Details data-testid='link-and-url-details'>
@@ -12,7 +13,12 @@ const LinksAndUrls = ({ children }: { children?: JSX.Element }) => (
     <Details.Text data-testid='link-and-url-text'>
       <p>{linksAndUrls.text1}</p>
       <p>{linksAndUrls.text2}</p>
-      <code>{linksAndUrls.codeBlockText.text1}</code>
+      <span className='nhsuk-u-visually-hidden' id='link-url-description'>
+        {hiddenCodeBlockDescription}
+      </span>
+      <code aria-describedby='link-url-description'>
+        {linksAndUrls.codeBlockText.text1}
+      </code>
       {children}
     </Details.Text>
   </Details>
@@ -25,7 +31,15 @@ export const LinksAndUrlsMarkdown = () => (
     <>
       <p className='nhsuk-u-margin-top-4'>{linksAndUrls.text3}</p>
       <p>{linksAndUrls.text4}</p>
-      <code>{linksAndUrls.codeBlockText.text2}</code>
+      <span
+        className='nhsuk-u-visually-hidden'
+        id='link-url-markdown-description'
+      >
+        {hiddenCodeBlockDescription}
+      </span>
+      <code aria-describedby='link-url-markdown-description'>
+        {linksAndUrls.codeBlockText.text2}
+      </code>
     </>
   </LinksAndUrls>
 );

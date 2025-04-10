@@ -316,7 +316,15 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              Markdown example:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -663,7 +671,15 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              Markdown example:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -1046,7 +1062,15 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              Markdown example:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -1371,7 +1395,15 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              Markdown example:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
