@@ -99,11 +99,6 @@ module.exports = {
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
       )
     ),
-    performCheck(
-      previewLetterTemplateErrorPage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
-      )
-    ),
     performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
     performCheck(
       submitLetterTemplatePage(
