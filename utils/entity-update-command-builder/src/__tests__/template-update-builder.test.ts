@@ -1,3 +1,4 @@
+import { TemplateStatus } from 'nhs-notify-backend-client';
 import { TemplateUpdateBuilder } from '../template-update-builder';
 
 const mockTableName = 'TABLE_NAME';
@@ -70,12 +71,12 @@ describe('TemplateBuilder', () => {
           id: mockId,
         },
         ExpressionAttributeValues: {
-          ':status': status,
+          ':templateStatus': status,
         },
         ExpressionAttributeNames: {
-          '#status': 'status',
+          '#templateStatus': 'templateStatus',
         },
-        UpdateExpression: 'SET #status = :status',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
 
@@ -98,14 +99,49 @@ describe('TemplateBuilder', () => {
           id: mockId,
         },
         ExpressionAttributeValues: {
-          ':status': value,
-          ':condition_1_status': expected,
+          ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
+          ':templateStatus': value,
         },
         ExpressionAttributeNames: {
-          '#status': 'status',
+          '#templateStatus': 'templateStatus',
         },
-        ConditionExpression: '#status = :condition_1_status',
-        UpdateExpression: 'SET #status = :status',
+        ConditionExpression: '#templateStatus = :condition_1_templateStatus',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
+      });
+    });
+
+    test('allows array of expected statuses to be used', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const value = 'DELETED';
+      const expected: TemplateStatus[] = [
+        'NOT_YET_SUBMITTED',
+        'PENDING_VALIDATION',
+      ];
+
+      const res = builder.setStatus(value).expectedStatus(expected).build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwner,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_templateStatus': 'NOT_YET_SUBMITTED',
+          ':condition_2_templateStatus': 'PENDING_VALIDATION',
+          ':templateStatus': value,
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+        },
+        ConditionExpression:
+          '#templateStatus IN (:condition_1_templateStatus, :condition_2_templateStatus)',
+        UpdateExpression: 'SET #templateStatus = :templateStatus',
       });
     });
   });
