@@ -229,7 +229,15 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -288,7 +296,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -316,7 +324,15 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -576,7 +592,15 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -635,7 +659,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -663,7 +687,15 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -959,7 +991,15 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -1018,7 +1058,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -1046,7 +1086,15 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>
@@ -1284,7 +1332,15 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -1343,7 +1399,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -1371,7 +1427,15 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
           </div>

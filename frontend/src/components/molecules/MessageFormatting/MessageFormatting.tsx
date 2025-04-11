@@ -38,7 +38,7 @@ export function MessageFormatting({ template }: { template: TemplateType }) {
     <>
       <h2
         className='nhsuk-heading-m nhsuk-u-margin-top-4'
-        data-testid='personalisation-header'
+        data-testid='message-formatting-header'
       >
         {messageFormattingContent.header}
       </h2>

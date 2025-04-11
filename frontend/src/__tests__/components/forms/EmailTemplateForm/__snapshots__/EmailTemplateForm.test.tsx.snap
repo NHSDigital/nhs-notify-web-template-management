@@ -254,7 +254,15 @@ exports[`renders page one error 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -313,7 +321,7 @@ exports[`renders page one error 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -338,7 +346,15 @@ exports[`renders page one error 1`] = `
             <p>
               To add a line break, use 2 spaces at the end of your text, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="linebreak-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="linebreak-description"
+            >
               <span
                 class="inlineText"
               >
@@ -360,7 +376,14 @@ exports[`renders page one error 1`] = `
             >
               To add a paragraph, use a blank line between each paragraph, for example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="paragraph-break-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="paragraph-break-description"
               class="codeLine"
             >
               <p>
@@ -396,13 +419,31 @@ exports[`renders page one error 1`] = `
             <p>
               Use one hash symbol followed by a space for a heading, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="heading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="heading-description"
+            >
               # This is a heading
             </code>
-            <p>
+            <p
+              class="nhsuk-u-margin-top-4"
+            >
               To add a subheading, use 2 hash symbols:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="subheading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="subheading-description"
+            >
               ## This is a subheading
             </code>
           </div>
@@ -428,7 +469,15 @@ exports[`renders page one error 1`] = `
             <p>
               Put each item on a separate line with an asterisk and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -468,7 +517,15 @@ exports[`renders page one error 1`] = `
             <p>
               Put each item on a separate line with the number, full stop and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -508,7 +565,14 @@ exports[`renders page one error 1`] = `
             <p>
               To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="horizontal-rule-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="horizontal-rule-description"
               class="horizontalLine"
             >
               <p>
@@ -547,7 +611,15 @@ exports[`renders page one error 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
             <p
@@ -558,7 +630,15 @@ exports[`renders page one error 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-markdown-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-markdown-description"
+            >
               [Read more](https://www.nhs.uk/)
             </code>
           </div>
@@ -895,7 +975,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -954,7 +1042,7 @@ exports[`renders page with multiple errors 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -979,7 +1067,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               To add a line break, use 2 spaces at the end of your text, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="linebreak-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="linebreak-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1001,7 +1097,14 @@ exports[`renders page with multiple errors 1`] = `
             >
               To add a paragraph, use a blank line between each paragraph, for example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="paragraph-break-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="paragraph-break-description"
               class="codeLine"
             >
               <p>
@@ -1037,13 +1140,31 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Use one hash symbol followed by a space for a heading, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="heading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="heading-description"
+            >
               # This is a heading
             </code>
-            <p>
+            <p
+              class="nhsuk-u-margin-top-4"
+            >
               To add a subheading, use 2 hash symbols:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="subheading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="subheading-description"
+            >
               ## This is a subheading
             </code>
           </div>
@@ -1069,7 +1190,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Put each item on a separate line with an asterisk and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1109,7 +1238,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Put each item on a separate line with the number, full stop and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1149,7 +1286,14 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="horizontal-rule-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="horizontal-rule-description"
               class="horizontalLine"
             >
               <p>
@@ -1188,7 +1332,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
             <p
@@ -1199,7 +1351,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-markdown-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-markdown-description"
+            >
               [Read more](https://www.nhs.uk/)
             </code>
           </div>
@@ -1459,7 +1619,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -1518,7 +1686,7 @@ exports[`renders page with preloaded field values 1`] = `
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -1543,7 +1711,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               To add a line break, use 2 spaces at the end of your text, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="linebreak-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="linebreak-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1565,7 +1741,14 @@ exports[`renders page with preloaded field values 1`] = `
             >
               To add a paragraph, use a blank line between each paragraph, for example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="paragraph-break-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="paragraph-break-description"
               class="codeLine"
             >
               <p>
@@ -1601,13 +1784,31 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Use one hash symbol followed by a space for a heading, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="heading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="heading-description"
+            >
               # This is a heading
             </code>
-            <p>
+            <p
+              class="nhsuk-u-margin-top-4"
+            >
               To add a subheading, use 2 hash symbols:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="subheading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="subheading-description"
+            >
               ## This is a subheading
             </code>
           </div>
@@ -1633,7 +1834,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Put each item on a separate line with an asterisk and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1673,7 +1882,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Put each item on a separate line with the number, full stop and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -1713,7 +1930,14 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="horizontal-rule-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="horizontal-rule-description"
               class="horizontalLine"
             >
               <p>
@@ -1752,7 +1976,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
             <p
@@ -1763,7 +1995,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-markdown-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-markdown-description"
+            >
               [Read more](https://www.nhs.uk/)
             </code>
           </div>
@@ -2001,7 +2241,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -2060,7 +2308,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
         </details>
         <h2
           class="nhsuk-heading-m nhsuk-u-margin-top-4"
-          data-testid="personalisation-header"
+          data-testid="message-formatting-header"
         >
           Message formatting
         </h2>
@@ -2085,7 +2333,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               To add a line break, use 2 spaces at the end of your text, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="linebreak-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="linebreak-description"
+            >
               <span
                 class="inlineText"
               >
@@ -2107,7 +2363,14 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             >
               To add a paragraph, use a blank line between each paragraph, for example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="paragraph-break-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="paragraph-break-description"
               class="codeLine"
             >
               <p>
@@ -2143,13 +2406,31 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Use one hash symbol followed by a space for a heading, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="heading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="heading-description"
+            >
               # This is a heading
             </code>
-            <p>
+            <p
+              class="nhsuk-u-margin-top-4"
+            >
               To add a subheading, use 2 hash symbols:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="subheading-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="subheading-description"
+            >
               ## This is a subheading
             </code>
           </div>
@@ -2175,7 +2456,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Put each item on a separate line with an asterisk and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -2215,7 +2504,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Put each item on a separate line with the number, full stop and a space in front of each one, for example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
               <span
                 class="inlineText"
               >
@@ -2255,7 +2552,14 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:
             </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="horizontal-rule-description"
+            >
+              An example of markdown:
+            </span>
             <code
+              aria-describedby="horizontal-rule-description"
               class="horizontalLine"
             >
               <p>
@@ -2294,7 +2598,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-description"
+            >
               https://www.nhs.uk/example
             </code>
             <p
@@ -2305,7 +2617,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="link-url-markdown-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="link-url-markdown-description"
+            >
               [Read more](https://www.nhs.uk/)
             </code>
           </div>

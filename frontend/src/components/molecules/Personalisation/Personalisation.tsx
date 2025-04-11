@@ -15,7 +15,15 @@ export function Personalisation() {
         </Details.Summary>
         <Details.Text data-testid='personalisation-text'>
           <p>{personalisationContent.details.text1}</p>
-          <code>{personalisationContent.details.codeBlockText}</code>
+          <span
+            id='personalisation-description'
+            className='nhsuk-u-visually-hidden'
+          >
+            {personalisationContent.hiddenCodeBlockDescription}
+          </span>
+          <code aria-describedby='personalisation-description'>
+            {personalisationContent.details.codeBlockText}
+          </code>
           <p className='nhsuk-u-margin-top-4'>
             {personalisationContent.details.text2}
           </p>
