@@ -14,6 +14,7 @@ const owner = 'owner-id';
 const templateId = 'template-id';
 const pdfVersion = 'pdf-version-id';
 const testDataVersion = 'test-data-version-id';
+const messageId = 'message-id';
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
@@ -145,7 +146,12 @@ describe('App', () => {
     // manifest doesn't already exist
     mocks.sftpClient.exists.mockResolvedValueOnce(false);
 
-    await app.send(JSON.stringify(event), mocks.sftpClient, baseUploadDir);
+    await app.send(
+      JSON.stringify(event),
+      messageId,
+      mocks.sftpClient,
+      baseUploadDir
+    );
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
@@ -227,7 +233,7 @@ describe('App', () => {
     const { app, mocks } = setup();
 
     await expect(
-      app.send('notjson', mocks.sftpClient, baseUploadDir)
+      app.send('notjson', messageId, mocks.sftpClient, baseUploadDir)
     ).rejects.toThrow(`Unexpected token 'o', "notjson" is not valid JSON`);
   });
 
@@ -237,7 +243,12 @@ describe('App', () => {
     const { fields: _, ...invalidEvent } = mockEvent(true, ['field']);
 
     await expect(
-      app.send(JSON.stringify(invalidEvent), mocks.sftpClient, baseUploadDir)
+      app.send(
+        JSON.stringify(invalidEvent),
+        messageId,
+        mocks.sftpClient,
+        baseUploadDir
+      )
     ).rejects.toThrowErrorMatchingSnapshot();
   });
 
@@ -306,7 +317,12 @@ describe('App', () => {
     // manifest already exists
     mocks.sftpClient.exists.mockResolvedValueOnce('-');
 
-    await app.send(JSON.stringify(event), mocks.sftpClient, baseUploadDir);
+    await app.send(
+      JSON.stringify(event),
+      messageId,
+      mocks.sftpClient,
+      baseUploadDir
+    );
 
     expect(logMessages).toContainEqual(
       expect.objectContaining({
@@ -348,5 +364,48 @@ describe('App', () => {
     expect(
       mocks.templateRepository.updateToNotYetSubmitted
     ).not.toHaveBeenCalled();
+  });
+
+  test('logs thrown errors', async () => {
+    const { app, mocks, logMessages } = setup();
+
+    const personalisationFields = ['pdsField', 'custom1', 'custom2'];
+
+    const event = mockEvent(true, personalisationFields);
+
+    const batchId = 'template-id-0000000000000_pdfversionid';
+
+    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
+
+    const error = new Error('no PDF');
+
+    mocks.userDataRepository.get.mockRejectedValueOnce(error);
+
+    await app.send(
+      JSON.stringify(event),
+      messageId,
+      mocks.sftpClient,
+      baseUploadDir
+    );
+
+    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
+    expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
+      owner,
+      templateId,
+      pdfVersion,
+      testDataVersion
+    );
+
+    expect(logMessages).toContainEqual(
+      expect.objectContaining({
+        description: 'Failed to handle proofing request',
+        level: 'error',
+        batchId,
+        message: error.message,
+        messageId,
+        owner,
+        pdfVersion,
+      })
+    );
   });
 });

@@ -29,7 +29,12 @@ export class App {
     private readonly batch: SyntheticBatch,
     private readonly logger: Logger
   ) {}
-  async send(eventBody: string, sftpClient: SftpClient, baseUploadDir: string) {
+  async send(
+    eventBody: string,
+    messageId: string,
+    sftpClient: SftpClient,
+    baseUploadDir: string
+  ) {
     const { owner, templateId, pdfVersion, testDataVersion, fields } =
       parseProofingRequest(eventBody);
 
@@ -41,78 +46,90 @@ export class App {
       pdfVersion,
       testDataVersion,
       batchId,
+      messageId,
     });
 
-    templateLogger.info('Fetching user Data');
+    try {
+      templateLogger.info('Fetching user Data');
 
-    const userData = await this.userDataRepository.get(
-      owner,
-      templateId,
-      pdfVersion,
-      testDataVersion
-    );
+      const userData = await this.userDataRepository.get(
+        owner,
+        templateId,
+        pdfVersion,
+        testDataVersion
+      );
 
-    const parsedTestData = userData.testData
-      ? parseTestPersonalisation(userData.testData)
-      : undefined;
+      const parsedTestData = userData.testData
+        ? parseTestPersonalisation(userData.testData)
+        : undefined;
 
-    const batchRows = this.batch.buildBatch(templateId, fields, parsedTestData);
+      const batchRows = this.batch.buildBatch(
+        templateId,
+        fields,
+        parsedTestData
+      );
 
-    const batchHeader = this.batch.getHeader(fields);
+      const batchHeader = this.batch.getHeader(fields);
 
-    const batchCsv = await serialiseCsv(batchRows, batchHeader);
+      const batchCsv = await serialiseCsv(batchRows, batchHeader);
 
-    const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
+      const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
 
-    const manifestCsv = await serialiseCsv(
-      [manifest],
-      'template,batch,records,md5sum'
-    );
+      const manifestCsv = await serialiseCsv(
+        [manifest],
+        'template,batch,records,md5sum'
+      );
 
-    const sftpEnvDir = path.join(baseUploadDir, this.sftpEnvironment);
+      const sftpEnvDir = path.join(baseUploadDir, this.sftpEnvironment);
 
-    const templateDir = path.join(sftpEnvDir, 'templates', templateId);
-    const batchDir = path.join(sftpEnvDir, 'batches', templateId);
+      const templateDir = path.join(sftpEnvDir, 'templates', templateId);
+      const batchDir = path.join(sftpEnvDir, 'batches', templateId);
 
-    const pdfName = `${templateId}.pdf`;
-    const csvName = `${batchId}.csv`;
-    const manifestName = `${batchId}_MANIFEST.csv`;
+      const pdfName = `${templateId}.pdf`;
+      const csvName = `${batchId}.csv`;
+      const manifestName = `${batchId}_MANIFEST.csv`;
 
-    const pdfDestination = path.join(templateDir, pdfName);
-    const batchDestination = path.join(batchDir, csvName);
-    const manifestDestination = path.join(batchDir, manifestName);
+      const pdfDestination = path.join(templateDir, pdfName);
+      const batchDestination = path.join(batchDir, csvName);
+      const manifestDestination = path.join(batchDir, manifestName);
 
-    const batchStream = Readable.from(batchCsv);
-    const manifestStream = Readable.from(manifestCsv);
+      const batchStream = Readable.from(batchCsv);
+      const manifestStream = Readable.from(manifestCsv);
 
-    templateLogger.info('Updating template to SENDING_PROOF_REQUEST');
+      templateLogger.info('Updating template to SENDING_PROOF_REQUEST');
 
-    if (await sftpClient.exists(manifestDestination)) {
-      templateLogger.warn('Manifest already exists, assuming duplicate event');
-      return;
+      if (await sftpClient.exists(manifestDestination)) {
+        templateLogger.warn(
+          'Manifest already exists, assuming duplicate event'
+        );
+        return;
+      }
+
+      templateLogger.info('Sending PDF');
+
+      await Promise.all([
+        sftpClient.mkdir(templateDir, true),
+        sftpClient.mkdir(batchDir, true),
+      ]);
+
+      await sftpClient.put(userData.pdf, pdfDestination);
+
+      templateLogger.info('Sending batch');
+
+      await sftpClient.put(batchStream, batchDestination);
+
+      templateLogger.info('Sending manifest');
+
+      await sftpClient.put(manifestStream, manifestDestination);
+
+      templateLogger.info('Updating template to NOT_YET_SUBMITTED');
+
+      await this.templateRepository.updateToNotYetSubmitted(owner, templateId);
+    } catch (error) {
+      templateLogger
+        .child({ description: 'Failed to handle proofing request' })
+        .error(error);
     }
-
-    templateLogger.info('Sending PDF');
-
-    await Promise.all([
-      sftpClient.mkdir(templateDir, true),
-      sftpClient.mkdir(batchDir, true),
-    ]);
-
-    await sftpClient.put(userData.pdf, pdfDestination);
-
-    templateLogger.info('Sending batch');
-
-    await sftpClient.put(batchStream, batchDestination);
-
-    templateLogger.info('Sending manifest');
-
-    await sftpClient.put(manifestStream, manifestDestination);
-
-    templateLogger.info('Updating template to NOT_YET_SUBMITTED');
-
-    await this.templateRepository.updateToNotYetSubmitted(owner, templateId);
-
     templateLogger.info('Sent proofing request');
   }
 }

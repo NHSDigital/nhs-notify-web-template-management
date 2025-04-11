@@ -1,4 +1,4 @@
-const keys = [
+export const keys = [
   'nhsNumber',
   'firstName',
   'lastName',

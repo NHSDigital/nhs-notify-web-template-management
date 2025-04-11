@@ -47,11 +47,12 @@ describe('getClient', () => {
 
     const sftpClientRepository = new SftpSupplierClientRepository(
       environment,
-      ssmClient as unknown as SSMClient
+      ssmClient as unknown as SSMClient,
+      logger
     );
 
     const supplier: string = 'SYNERTEC';
-    const client = await sftpClientRepository.getClient(supplier, logger);
+    const client = await sftpClientRepository.getClient(supplier);
     const mockSftpClient = (SftpClient as jest.Mock).mock.instances[0];
 
     expect(client).toEqual({
@@ -83,12 +84,13 @@ describe('getClient', () => {
 
     const sftpClientRepository = new SftpSupplierClientRepository(
       environment,
-      ssmClient as unknown as SSMClient
+      ssmClient as unknown as SSMClient,
+      logger
     );
 
-    await expect(
-      sftpClientRepository.getClient('SYNERTEC', logger)
-    ).rejects.toThrow('SFTP credentials are undefined');
+    await expect(sftpClientRepository.getClient('SYNERTEC')).rejects.toThrow(
+      'SFTP credentials are undefined'
+    );
   });
 });
 

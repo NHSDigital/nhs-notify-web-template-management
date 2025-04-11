@@ -24,11 +24,10 @@ export class SyntheticBatch {
     userTestData?: Record<string, string>[]
   ): Record<string, string>[] {
     const date = this.getDate();
-    const ref = this.clientRef(date);
 
     return Array.from({ length: 3 }, (_, i) => {
       const fieldEntries = [
-        ['clientRef', ref],
+        ['clientRef', this.clientRef(date)],
         ['template', templateId],
         ...fields.map((field) => {
           const value = this.fieldValue(
@@ -55,23 +54,21 @@ export class SyntheticBatch {
       return format(date, 'd LLLL yyyy');
     }
     if (pdsPersonalisationKeys.includes(field)) {
-      return pdsData[field] ?? '';
+      return pdsData[field];
     }
-    return userData?.[field] ?? '';
+    return userData?.[field];
   }
 
   private clientRef(date: Date) {
-    console.log('D', date.getTime());
-
     return [
       this.randomId(),
       this.randomId(),
-      date.getTime().toString().slice(10),
+      date.getTime().toString().slice(0, 10),
     ].join('_');
   }
 
   getId(templateId: string, pdfVersion: string) {
-    const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(27);
+    const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(0, 27);
     return `${templateId}-0000000000000_${pseudoRandomSegment}`;
   }
 

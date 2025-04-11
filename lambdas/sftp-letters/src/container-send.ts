@@ -5,11 +5,11 @@ import { SftpSupplierClientRepository } from './infra/sftp-supplier-client-repos
 import { loadConfig } from './config/config';
 import { App } from './app/send';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { randomId } from './infra/ksuid-like-id';
 import { SyntheticBatch } from './domain/synthetic-batch';
 import { TemplateRepository } from './infra/template-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import ksuid from 'ksuid';
 
 export function createContainer() {
   const {
@@ -44,10 +44,14 @@ export function createContainer() {
 
   const sftpSupplierClientRepository = new SftpSupplierClientRepository(
     csi,
-    ssmClient
+    ssmClient,
+    logger
   );
 
-  const batch = new SyntheticBatch(randomId, () => new Date());
+  const batch = new SyntheticBatch(
+    () => ksuid.randomSync(new Date()).string,
+    () => new Date()
+  );
 
   const app = new App(
     userDataRepository,

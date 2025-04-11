@@ -24,13 +24,15 @@ export type SupplierSftpClient = {
 
 export class SftpSupplierClientRepository {
   constructor(
-    private csi: string,
-    private ssmClient: SSMClient
+    private readonly csi: string,
+    private readonly ssmClient: SSMClient,
+    private readonly logger: Logger
   ) {}
 
-  async getClient(supplier: string, logger: Logger) {
-    logger.info({
+  async getClient(supplier: string) {
+    this.logger.info({
       description: 'Retrieving SFTP details for supplier from SSM',
+      supplier,
     });
 
     const sftpCredParameter = `/${this.csi}/sftp-config/${supplier}`;

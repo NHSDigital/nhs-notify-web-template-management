@@ -1,9 +1,6 @@
 import type { SQSBatchItemFailure, SQSHandler } from 'aws-lambda';
 import type { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
-import {
-  type Logger,
-  logger,
-} from 'nhs-notify-web-template-management-utils/logger';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { App } from '../app/send';
 
 type Dependencies = {
@@ -17,11 +14,11 @@ export function createHandler({
   app,
   sftpSupplierClientRepository,
   defaultSupplier,
-  logger: _logger,
+  logger,
 }: Dependencies): SQSHandler {
   return async function (event) {
     const { sftpClient, baseUploadDir } =
-      await sftpSupplierClientRepository.getClient(defaultSupplier, logger);
+      await sftpSupplierClientRepository.getClient(defaultSupplier);
 
     const recordCount = event.Records.length;
 
@@ -37,14 +34,17 @@ export function createHandler({
     supplierLogger.info('Sending proof requests');
 
     const results = await Promise.allSettled(
-      event.Records.map((r) => app.send(r.body, sftpClient, baseUploadDir))
+      event.Records.map((r) =>
+        app.send(r.body, r.messageId, sftpClient, baseUploadDir)
+      )
     );
 
     const batchItemFailures: SQSBatchItemFailure[] = [];
 
     for (const [i, res] of results.entries()) {
       if (res.status === 'rejected') {
-        batchItemFailures.push({ itemIdentifier: event.Records[i].messageId });
+        const messageId = event.Records[i].messageId;
+        batchItemFailures.push({ itemIdentifier: messageId });
       }
     }
 
@@ -54,7 +54,11 @@ export function createHandler({
     supplierLogger.info({ failureCount, sentCount });
 
     await sftpClient.end().catch((error) => {
-      supplierLogger.error('Failed to close SFTP connection', error);
+      supplierLogger
+        .child({
+          description: 'Failed to close SFTP connection',
+        })
+        .error(error);
     });
 
     return { batchItemFailures };
