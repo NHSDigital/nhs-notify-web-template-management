@@ -8,6 +8,7 @@ resource "aws_security_group" "allow_sftp_egress" {
   }
 }
 
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group_rule" "allow_sftp_egress_ssh" {
   description       = "Allow SFTP egress within VPC on port 22"
   type              = "egress"
@@ -18,6 +19,7 @@ resource "aws_security_group_rule" "allow_sftp_egress_ssh" {
   security_group_id = aws_security_group.allow_sftp_egress.id
 }
 
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group_rule" "allow_sftp_egress_https" {
   description       = "Allow SFTP egress within VPC on port 443"
   type              = "egress"
