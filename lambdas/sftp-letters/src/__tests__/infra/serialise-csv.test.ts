@@ -1,6 +1,6 @@
-import { serialise } from '../../infra/serialise-csv';
+import { serialiseCsv } from '../../infra/serialise-csv';
 
-describe('serialise', () => {
+describe('serialiseCsv', () => {
   test('Produces csv string with fields in quotes', async () => {
     const headers = 'a,b';
     const records = [
@@ -8,7 +8,7 @@ describe('serialise', () => {
       { a: 'a value 2', b: 'b value 2' },
     ];
 
-    expect(await serialise(records, headers)).toEqual(
+    expect(await serialiseCsv(records, headers)).toEqual(
       'a,b\n"a value 1","b value 1"\n"a value 2","b value 2"'
     );
   });
@@ -20,7 +20,7 @@ describe('serialise', () => {
       { a: 'a value 2', b: 'b value 2', d: 'd value', e: 'e value' },
     ];
 
-    expect(await serialise(records, headers)).toEqual(
+    expect(await serialiseCsv(records, headers)).toEqual(
       'a,b\n"a value 1","b value 1"\n"a value 2","b value 2"'
     );
   });
@@ -32,7 +32,7 @@ describe('serialise', () => {
       { a: 'a value 2', b: 'b value 2' },
     ];
 
-    expect(await serialise(records, headers)).toEqual(
+    expect(await serialiseCsv(records, headers)).toEqual(
       'a,b\n"a value 1","b value 1"\n"a value 2","b value 2"'
     );
   });
@@ -44,7 +44,7 @@ describe('serialise', () => {
       { a: 'a value 2', b: 'b value 2' },
     ];
 
-    expect(await serialise(records, headers)).toEqual(
+    expect(await serialiseCsv(records, headers)).toEqual(
       'a,b\n"a value 1","b value 1"\n"a value 2","b value 2"'
     );
   });
