@@ -7,6 +7,8 @@ resource "aws_lambda_function" "main" {
   handler          = var.handler
   runtime          = var.runtime
   memory_size      = var.memory_size
+  layers           = var.layer_arns
+  timeout          = var.timeout
 
   environment {
     variables = var.environment_variables

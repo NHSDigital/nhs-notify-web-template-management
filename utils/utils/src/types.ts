@@ -102,3 +102,6 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   GuardDutyMalwareScanStatus,
   'NO_THREATS_FOUND'
 >;
+
+export type TemplateKey = { owner: string; id: string };
+export type FileType = 'pdf-template' | 'test-data';

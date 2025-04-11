@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "form-data": "^4.0.2"
+    "form-data": "^4.0.2",
+    "nhs-notify-web-template-management-utils": "*"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5"

@@ -18,3 +18,9 @@ variable "output_dir" {
   description = "Name of the build output directory (relative to source_code_dir)"
   default     = "dist"
 }
+
+variable "externals" {
+  type        = list(string)
+  description = "node modules to mark as external that will be excluded from the build"
+  default     = []
+}
