@@ -43,9 +43,10 @@ const getFile = (directory: string, filename: string) => {
 
 export const pdfUploadFixtures = {
   withPersonalisation: {
-    pdf: getFile('with-personalisation', 'template.pdf'),
     csv: getFile('with-personalisation', 'test-data.csv'),
+    csvWrongParams: getFile('with-personalisation', 'wrong-params.csv'),
     passwordPdf: getFile('with-personalisation', 'password.pdf'),
+    pdf: getFile('with-personalisation', 'template.pdf'),
   },
   noCustomPersonalisation: {
     pdf: getFile('no-custom-personalisation', 'template.pdf'),

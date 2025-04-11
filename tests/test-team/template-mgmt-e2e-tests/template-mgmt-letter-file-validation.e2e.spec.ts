@@ -246,4 +246,147 @@ test.describe('letter file validation', () => {
       );
     }).toPass({ timeout: 10_000 });
   });
+
+  test('validation fails if pdf parameters and test data parameters do not match', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+
+    await createTemplatePage.loadPage();
+
+    await createTemplatePage.nameInput.fill('Wrong test data params');
+
+    await createTemplatePage.setPdfFile(
+      pdfUploadFixtures.withPersonalisation.pdf.filepath
+    );
+
+    await createTemplatePage.setCsvFile(
+      pdfUploadFixtures.withPersonalisation.csvWrongParams.filepath
+    );
+
+    await createTemplatePage.clickSaveAndPreviewButton();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+    const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+      page.url()
+    );
+
+    expect(maybeTemplateId).not.toBeUndefined();
+
+    const templateId = maybeTemplateId as string;
+
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        id: templateId,
+        owner: user.userId,
+      });
+
+      expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
+      expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
+      expect(template.templateStatus).toBe('VALIDATION_FAILED');
+      expect(template.personalisationParameters).toBeUndefined();
+      expect(template.csvHeaders).toBeUndefined();
+    }).toPass({ timeout: 10_000 });
+  });
+
+  test('validation fails if unexpected csv is uploaded', async ({ page }) => {
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+
+    await createTemplatePage.loadPage();
+
+    await createTemplatePage.nameInput.fill('With unexpected CSV');
+
+    await createTemplatePage.setPdfFile(
+      pdfUploadFixtures.noCustomPersonalisation.pdf.filepath
+    );
+
+    await createTemplatePage.setCsvFile(
+      pdfUploadFixtures.withPersonalisation.csv.filepath
+    );
+
+    await createTemplatePage.clickSaveAndPreviewButton();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+    const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+      page.url()
+    );
+
+    expect(maybeTemplateId).not.toBeUndefined();
+
+    const templateId = maybeTemplateId as string;
+
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        id: templateId,
+        owner: user.userId,
+      });
+
+      expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
+      expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
+      expect(template.templateStatus).toBe('VALIDATION_FAILED');
+      expect(template.personalisationParameters).toBeUndefined();
+      expect(template.csvHeaders).toBeUndefined();
+    }).toPass({ timeout: 10_000 });
+  });
+
+  test('validation fails if expected csv is not uploaded', async ({ page }) => {
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+
+    await createTemplatePage.loadPage();
+
+    await createTemplatePage.nameInput.fill('Missing CSV');
+
+    await createTemplatePage.setPdfFile(
+      pdfUploadFixtures.withPersonalisation.pdf.filepath
+    );
+
+    await createTemplatePage.clickSaveAndPreviewButton();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+    const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+      page.url()
+    );
+
+    expect(maybeTemplateId).not.toBeUndefined();
+
+    const templateId = maybeTemplateId as string;
+
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        id: templateId,
+        owner: user.userId,
+      });
+
+      expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
+      expect(template.templateStatus).toBe('VALIDATION_FAILED');
+      expect(template.personalisationParameters).toBeUndefined();
+      expect(template.csvHeaders).toBeUndefined();
+    }).toPass({ timeout: 10_000 });
+  });
 });
+
+// TODO: Add test for parameter formatting in pdf
