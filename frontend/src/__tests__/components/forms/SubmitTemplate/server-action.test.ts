@@ -4,7 +4,7 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getTemplate, saveTemplate } from '@utils/form-actions';
+import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
@@ -13,7 +13,7 @@ jest.mock('@utils/amplify-utils');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
-const saveTemplateMock = jest.mocked(saveTemplate);
+const setTemplateToSubmittedMock = jest.mocked(setTemplateToSubmitted);
 
 const mockNhsAppTemplate = {
   templateType: 'NHS_APP',
@@ -63,7 +63,7 @@ describe('submitTemplate', () => {
   it('should handle error when failing to save template', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
 
-    saveTemplateMock.mockImplementationOnce(() => {
+    setTemplateToSubmittedMock.mockImplementationOnce(() => {
       throw new Error('failed to save template');
     });
 
@@ -85,17 +85,8 @@ describe('submitTemplate', () => {
 
     await submitTemplate('submit-route', formData);
 
-    expect(saveTemplateMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        createdAt: '2025-01-13T10:19:25.579Z',
-        id: '1',
-        message: 'body',
-        name: 'name',
-        templateStatus: 'SUBMITTED',
-        templateType: 'NHS_APP',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      })
-    );
+    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith('1');
+
     expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
   });
 });
