@@ -39,10 +39,10 @@ export class UserDataRepository {
     );
 
     const pdfStream = this.getReadableBody(pdf.Body);
-    const testDataString = await testData.Body?.transformToString();
+    const testDataString = await testData?.Body?.transformToString();
 
     if (!pdfStream || (testDataVersion && !testDataString)) {
-      throw new Error('missing body');
+      throw new Error('Missing body on S3 response');
     }
 
     return {
