@@ -1,14 +1,14 @@
 import winston from 'winston';
 import { Writable } from 'node:stream';
 
-const { combine, timestamp, json } = winston.format;
+const { combine, timestamp, json, errors } = winston.format;
 
 export function createMockLogger() {
   const logMessages: { msg?: string } & Record<string, unknown>[] = [];
 
   const logger = winston.createLogger({
     level: 'info',
-    format: combine(timestamp(), json()),
+    format: combine(timestamp(), json(), errors({ stack: true, cause: true })),
     transports: [
       new winston.transports.Stream({
         stream: new Writable({
