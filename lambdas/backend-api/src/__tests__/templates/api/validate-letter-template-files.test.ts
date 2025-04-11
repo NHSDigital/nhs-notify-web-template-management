@@ -90,7 +90,7 @@ describe('guard duty handler', () => {
     });
     mocks.TemplatePdf.mockImplementation(() => pdf);
 
-    const csv = mock<TestDataCsv>({ headers: ['parameter_1'] });
+    const csv = mock<TestDataCsv>({ parameters: ['parameter_1'] });
     mocks.TestDataCsv.mockImplementation(() => csv);
 
     mocks.validateLetterTemplateFiles.mockReturnValueOnce(true);
@@ -129,7 +129,7 @@ describe('guard duty handler', () => {
       versionId,
       true,
       pdf.personalisationParameters,
-      csv.headers
+      csv.parameters
     );
   });
 
@@ -958,7 +958,7 @@ describe('guard duty handler', () => {
     });
     mocks.TemplatePdf.mockImplementation(() => pdf);
 
-    const csv = mock<TestDataCsv>({ headers: ['parameter_1'] });
+    const csv = mock<TestDataCsv>({ parameters: ['parameter_1'] });
     mocks.TestDataCsv.mockImplementation(() => csv);
 
     mocks.validateLetterTemplateFiles.mockReturnValue(false);
@@ -972,7 +972,7 @@ describe('guard duty handler', () => {
       versionId,
       false,
       pdf.personalisationParameters,
-      csv.headers
+      csv.parameters
     );
   });
 });
