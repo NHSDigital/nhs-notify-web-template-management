@@ -194,7 +194,15 @@ exports[`renders page 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -282,7 +290,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="linebreak-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="linebreak-description"
@@ -312,7 +320,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="paragraph-break-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="paragraph-break-description"
@@ -355,7 +363,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="heading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="heading-description"
@@ -371,7 +379,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="subheading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="subheading-description"
@@ -405,7 +413,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="bold-text-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="bold-text-description"
@@ -442,7 +450,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-description"
@@ -461,7 +469,7 @@ exports[`renders page 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-markdown-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-markdown-description"
@@ -754,7 +762,15 @@ exports[`renders page one error 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -842,7 +858,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="linebreak-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="linebreak-description"
@@ -872,7 +888,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="paragraph-break-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="paragraph-break-description"
@@ -915,7 +931,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="heading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="heading-description"
@@ -931,7 +947,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="subheading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="subheading-description"
@@ -965,7 +981,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="bold-text-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="bold-text-description"
@@ -1002,7 +1018,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-description"
@@ -1021,7 +1037,7 @@ exports[`renders page one error 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-markdown-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-markdown-description"
@@ -1328,7 +1344,15 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -1416,7 +1440,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="linebreak-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="linebreak-description"
@@ -1446,7 +1470,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="paragraph-break-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="paragraph-break-description"
@@ -1489,7 +1513,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="heading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="heading-description"
@@ -1505,7 +1529,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="subheading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="subheading-description"
@@ -1539,7 +1563,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="bold-text-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="bold-text-description"
@@ -1576,7 +1600,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-description"
@@ -1595,7 +1619,7 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-markdown-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-markdown-description"
@@ -1846,7 +1870,15 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -1934,7 +1966,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="linebreak-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="linebreak-description"
@@ -1964,7 +1996,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="paragraph-break-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="paragraph-break-description"
@@ -2007,7 +2039,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="heading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="heading-description"
@@ -2023,7 +2055,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="subheading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="subheading-description"
@@ -2057,7 +2089,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="bold-text-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="bold-text-description"
@@ -2094,7 +2126,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-description"
@@ -2113,7 +2145,7 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-u-visually-hidden"
               id="link-url-markdown-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-markdown-description"
@@ -2342,7 +2374,15 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Use double brackets to add a personalisation field to your content. For example:
             </p>
-            <code>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="personalisation-description"
+            >
+              An example of personalised message content:
+            </span>
+            <code
+              aria-describedby="personalisation-description"
+            >
               Hello ((firstName)), your NHS number is ((nhsNumber))
             </code>
             <p
@@ -2430,7 +2470,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="linebreak-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="linebreak-description"
@@ -2460,7 +2500,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="paragraph-break-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="paragraph-break-description"
@@ -2503,7 +2543,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="heading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="heading-description"
@@ -2519,7 +2559,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="subheading-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="subheading-description"
@@ -2553,7 +2593,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="bold-text-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="bold-text-description"
@@ -2590,7 +2630,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="link-url-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-description"
@@ -2609,7 +2649,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class="nhsuk-u-visually-hidden"
               id="link-url-markdown-description"
             >
-              Markdown example:
+              An example of markdown:
             </span>
             <code
               aria-describedby="link-url-markdown-description"
