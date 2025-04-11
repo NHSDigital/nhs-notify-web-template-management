@@ -71,12 +71,13 @@ export type SmsProperties = {
   message: string;
 };
 
-export type CreateLetterProperties = {
+export type CreateUpdateLetterProperties = {
   letterType: LetterType;
   language: Language;
+  files?: LetterFiles;
 };
 
-export type LetterProperties = CreateLetterProperties & {
+export type LetterProperties = CreateUpdateLetterProperties & {
   files: LetterFiles;
 };
 
@@ -85,16 +86,12 @@ export type BaseTemplate = {
   name: string;
 };
 
-export type CreateTemplate = BaseTemplate &
-  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
-
-export type UpdateTemplate = BaseTemplate & {
-  templateStatus: TemplateStatus;
-} & (
+export type CreateUpdateTemplate = BaseTemplate &
+  (
     | NhsAppProperties
     | EmailProperties
     | SmsProperties
-    | CreateLetterProperties
+    | CreateUpdateLetterProperties
   );
 
 export type TemplateDto = BaseTemplate & {
@@ -119,6 +116,38 @@ export type Failure = {
   statusCode: number;
   details?: unknown;
 };
+
+export type DeleteV1TemplateByTemplateIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}';
+};
+
+export type DeleteV1TemplateByTemplateIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type DeleteV1TemplateByTemplateIdError =
+  DeleteV1TemplateByTemplateIdErrors[keyof DeleteV1TemplateByTemplateIdErrors];
+
+export type DeleteV1TemplateByTemplateIdResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type DeleteV1TemplateByTemplateIdResponse =
+  DeleteV1TemplateByTemplateIdResponses[keyof DeleteV1TemplateByTemplateIdResponses];
 
 export type GetV1TemplateByTemplateIdData = {
   body?: never;
@@ -156,7 +185,7 @@ export type PostV1TemplateByTemplateIdData = {
   /**
    * Template to update
    */
-  body: UpdateTemplate;
+  body: CreateUpdateTemplate;
   path: {
     /**
      * ID of template to update
@@ -191,7 +220,7 @@ export type PostV1TemplateData = {
   /**
    * Template to create
    */
-  body: CreateTemplate;
+  body: CreateUpdateTemplate;
   path?: never;
   query?: never;
   url: '/v1/template';
@@ -273,6 +302,38 @@ export type GetV1TemplatesResponses = {
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
+
+export type PatchV1TemplateByTemplateIdSubmitData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/submit';
+};
+
+export type PatchV1TemplateByTemplateIdSubmitErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitError =
+  PatchV1TemplateByTemplateIdSubmitErrors[keyof PatchV1TemplateByTemplateIdSubmitErrors];
+
+export type PatchV1TemplateByTemplateIdSubmitResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitResponse =
+  PatchV1TemplateByTemplateIdSubmitResponses[keyof PatchV1TemplateByTemplateIdSubmitResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});

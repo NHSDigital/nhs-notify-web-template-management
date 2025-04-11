@@ -92,4 +92,4 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const viewSubmittedTemplatePages = (type: TemplateType) =>
-  `view-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+  `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;

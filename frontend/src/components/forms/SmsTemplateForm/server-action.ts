@@ -1,7 +1,7 @@
 import {
   TemplateFormState,
   SMSTemplate,
-  CreateSMSTemplate,
+  CreateUpdateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
@@ -19,9 +19,9 @@ const $CreateSmsTemplateSchema = z.object({
 });
 
 export async function processFormActions(
-  formState: TemplateFormState<SMSTemplate | CreateSMSTemplate>,
+  formState: TemplateFormState<SMSTemplate | CreateUpdateSMSTemplate>,
   formData: FormData
-): Promise<TemplateFormState<SMSTemplate | CreateSMSTemplate>> {
+): Promise<TemplateFormState<SMSTemplate | CreateUpdateSMSTemplate>> {
   const parsedForm = $CreateSmsTemplateSchema.safeParse(
     Object.fromEntries(formData.entries())
   );

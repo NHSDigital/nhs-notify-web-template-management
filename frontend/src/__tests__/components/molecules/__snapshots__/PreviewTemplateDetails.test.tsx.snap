@@ -11,98 +11,85 @@ exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`]
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <div
-      class="preview"
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template ID
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           template-id
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Type
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           Channel template
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Status
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <strong
             class="nhsuk-tag"
           >
             Not yet submitted
           </strong>
-        </div>
+        </dd>
       </div>
-    </div>
-    <div
-      class="nhsuk-u-margin-top-4 preview"
+    </dl>
+    <dl
+      class="nhsuk-summary-list preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
           <div
-            class="preview__col_heading"
             data-testid="preview__heading-0"
             id="preview-heading-heading"
           >
             Heading
           </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <div
-            class="preview__col_content"
+            class="preview__content"
             data-testid="preview__content-0"
             id="preview-content-heading"
           >
             Test value-1
           </div>
-        </div>
+        </dd>
       </div>
-    </div>
+    </dl>
   </div>
 </DocumentFragment>
 `;
@@ -118,103 +105,90 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <div
-      class="preview"
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template ID
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           template-id
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Type
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           Channel template
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Status
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
           >
             Submitted
           </strong>
-        </div>
+        </dd>
       </div>
-    </div>
-    <div
-      class="nhsuk-u-margin-top-4 preview"
+    </dl>
+    <dl
+      class="nhsuk-summary-list preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
           <div
-            class="preview__col_heading"
             data-testid="preview__heading-0"
             id="preview-heading-heading"
           >
             Heading
           </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <div
-            class="preview__col_content"
+            class="preview__content"
             data-testid="preview__content-0"
             id="preview-content-heading"
           >
             Test value-1
           </div>
-        </div>
+        </dd>
       </div>
-    </div>
+    </dl>
   </div>
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetails component renders letter template when testPersonalisationInputFile is not set 1`] = `
+exports[`PreviewTemplateDetails component renders letter template when testDataCsv is not present 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
@@ -225,81 +199,65 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <div
-      class="preview"
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template ID
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           template-id
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Type
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           Letter - French
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Status
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
           >
             Submitted
           </strong>
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template file
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <div
             class="container"
@@ -323,9 +281,144 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
               file.pdf
             </p>
           </div>
-        </div>
+        </dd>
       </div>
-    </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetails component renders letter template when testPersonalisationInputFile is set 1`] = `
+<DocumentFragment>
+  <h1
+    class="preview__heading"
+    data-testid="preview-message__heading"
+  >
+    Example template
+  </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Letter - French
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--grey"
+          >
+            Submitted
+          </strong>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="container"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              height="26"
+              viewBox="0 0 20 26"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                fill="#4C6272"
+              />
+            </svg>
+            <p
+              class="text"
+            >
+              file.pdf
+            </p>
+          </div>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Test personalisation file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="container"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              height="26"
+              viewBox="0 0 20 26"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                fill="#4C6272"
+              />
+            </svg>
+            <p
+              class="text"
+            >
+              file.csv
+            </p>
+          </div>
+        </dd>
+      </div>
+    </dl>
   </div>
 </DocumentFragment>
 `;
@@ -341,88 +434,72 @@ exports[`PreviewTemplateDetails component renders without content preview 1`] = 
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
   >
-    <div
-      class="preview"
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Template ID
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           template-id
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Type
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           Channel template
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Status
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
           >
             Submitted
           </strong>
-        </div>
+        </dd>
       </div>
       <div
-        class="nhsuk-grid-row preview__row"
+        class="nhsuk-summary-list__row"
       >
-        <div
-          class="nhsuk-grid-column-one-third preview__col"
+        <dt
+          class="nhsuk-summary-list__key"
         >
-          <div
-            class="preview__col_heading"
-          >
-            Meta
-          </div>
-        </div>
-        <div
-          class="nhsuk-grid-column-two-thirds col"
+          Meta
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
         >
           <p>
             metadata
           </p>
-        </div>
+        </dd>
       </div>
-    </div>
+    </dl>
   </div>
 </DocumentFragment>
 `;

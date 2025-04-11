@@ -95,7 +95,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateTemplate"
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
               }
             }
           }
@@ -143,6 +143,69 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY"
         }
+      },
+      "delete": {
+        "summary": "Delete a template",
+        "description": "Delete a template by Id",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID of template to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
       }
     },
     "/v1/template": {
@@ -160,7 +223,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTemplate"
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
               }
             }
           }
@@ -229,7 +292,7 @@
                   "type": "object",
                   "properties": {
                     "template": {
-                      "$ref": "#/components/schemas/CreateTemplate"
+                      "$ref": "#/components/schemas/CreateUpdateTemplate"
                     },
                     "letterPdf": {
                       "type": "string",
@@ -333,6 +396,71 @@
           "httpMethod": "POST",
           "passthroughBehavior": "WHEN_NO_TEMPLATES",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
+    },
+    "/v1/template/{templateId}/submit": {
+      "patch": {
+        "summary": "Update a template's status to SUBMITTED",
+        "description": "Update a template status by Id",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID of template to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_LAMBDA_ARN}/invocations",
           "responses": {
             ".*": {
               "statusCode": "200"
@@ -510,7 +638,7 @@
           }
         }
       },
-      "CreateLetterProperties": {
+      "CreateUpdateLetterProperties": {
         "type": "object",
         "required": [
           "letterType",
@@ -522,13 +650,16 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
+          },
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
           }
         }
       },
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateLetterProperties"
+            "$ref": "#/components/schemas/CreateUpdateLetterProperties"
           },
           {
             "type": "object",
@@ -558,7 +689,7 @@
           }
         }
       },
-      "CreateTemplate": {
+      "CreateUpdateTemplate": {
         "type": "object",
         "allOf": [
           {
@@ -576,42 +707,7 @@
                 "$ref": "#/components/schemas/SmsProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateLetterProperties"
-              }
-            ]
-          }
-        ]
-      },
-      "UpdateTemplate": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseTemplate"
-          },
-          {
-            "type": "object",
-            "required": [
-              "templateStatus"
-            ],
-            "properties": {
-              "templateStatus": {
-                "$ref": "#/components/schemas/TemplateStatus"
-              }
-            }
-          },
-          {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              },
-              {
-                "$ref": "#/components/schemas/EmailProperties"
-              },
-              {
-                "$ref": "#/components/schemas/SmsProperties"
-              },
-              {
-                "$ref": "#/components/schemas/CreateLetterProperties"
+                "$ref": "#/components/schemas/CreateUpdateLetterProperties"
               }
             ]
           }

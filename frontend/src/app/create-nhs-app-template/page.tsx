@@ -1,6 +1,6 @@
 import { NhsAppTemplateForm } from '@forms/NhsAppTemplateForm/NhsAppTemplateForm';
 import { Metadata } from 'next';
-import { CreateNHSAppTemplate } from 'nhs-notify-web-template-management-utils';
+import { CreateUpdateNHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
 const { pageTitle } = content.components.templateFormNhsApp;
@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const CreateNHSAppTemplatePage = async () => {
-  const initialState: CreateNHSAppTemplate = {
+  const initialState: CreateUpdateNHSAppTemplate = {
     templateType: 'NHS_APP',
     name: '',
     message: '',

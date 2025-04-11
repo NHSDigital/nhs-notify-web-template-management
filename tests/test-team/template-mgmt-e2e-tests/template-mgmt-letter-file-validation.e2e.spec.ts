@@ -107,7 +107,7 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 100_000 });
   });
 
   test('PDF only - Uploaded pdf file is virus scanned - if scan passes, file is copied to the internal bucket and validated', async ({

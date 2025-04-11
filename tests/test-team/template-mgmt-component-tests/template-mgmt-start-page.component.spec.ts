@@ -91,6 +91,6 @@ test.describe('Start Page', () => {
     await startPage.loadPage();
     await startPage.clickStartButton();
 
-    expect(page.url()).toContain(`${baseURL}/templates/manage-templates`);
+    expect(page.url()).toContain(`${baseURL}/templates/message-templates`);
   });
 });

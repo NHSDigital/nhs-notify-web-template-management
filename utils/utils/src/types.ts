@@ -1,7 +1,7 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
-  CreateLetterProperties,
-  CreateTemplate,
+  CreateUpdateLetterProperties,
+  CreateUpdateTemplate,
   EmailProperties,
   LetterProperties,
   NhsAppProperties,
@@ -44,13 +44,17 @@ type LetterType = {
   templateType: 'LETTER';
 };
 
-export type CreateNHSAppTemplate = CreateTemplate &
+export type CreateUpdateNHSAppTemplate = CreateUpdateTemplate &
   NhsAppProperties &
   NhsAppType;
-export type CreateEmailTemplate = CreateTemplate & EmailProperties & EmailType;
-export type CreateSMSTemplate = CreateTemplate & SmsProperties & SmsType;
-export type CreateLetterTemplate = CreateTemplate &
-  CreateLetterProperties &
+export type CreateUpdateEmailTemplate = CreateUpdateTemplate &
+  EmailProperties &
+  EmailType;
+export type CreateUpdateSMSTemplate = CreateUpdateTemplate &
+  SmsProperties &
+  SmsType;
+export type CreateUpdateLetterTemplate = CreateUpdateTemplate &
+  CreateUpdateLetterProperties &
   LetterType;
 
 export type NHSAppTemplate = TemplateDto & NhsAppProperties & NhsAppType;
@@ -58,7 +62,8 @@ export type EmailTemplate = TemplateDto & EmailProperties & EmailType;
 export type SMSTemplate = TemplateDto & SmsProperties & SmsType;
 export type LetterTemplate = TemplateDto & LetterProperties & LetterType;
 
-export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
+export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
+  FormState & T;
 
 export type PageProps = {
   params: Promise<{

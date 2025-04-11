@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
-import { CreateEmailTemplate } from 'nhs-notify-web-template-management-utils';
+import { CreateUpdateEmailTemplate } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 
 const { pageTitle } = content.components.templateFormEmail;
@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const CreateEmailTemplatePage = async () => {
-  const initialState: CreateEmailTemplate = {
+  const initialState: CreateUpdateEmailTemplate = {
     templateType: 'EMAIL',
     name: '',
     subject: '',
