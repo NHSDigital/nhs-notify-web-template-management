@@ -13,8 +13,9 @@ module "lambda_validate_letter_template_files" {
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
   sqs_event_source_mapping = {
     sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
+    batch_size    = 1
   }
-  timeout = 20
+  timeout = 10
 }
 
 data "aws_iam_policy_document" "validate_letter_template_files" {
