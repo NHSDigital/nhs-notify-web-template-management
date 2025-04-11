@@ -3,11 +3,11 @@
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
 export type TemplateStatus =
-  | 'NOT_YET_SUBMITTED'
-  | 'SUBMITTED'
   | 'DELETED'
+  | 'NOT_YET_SUBMITTED'
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
+  | 'SUBMITTED'
   | 'VIRUS_SCAN_FAILED';
 
 export type Language =

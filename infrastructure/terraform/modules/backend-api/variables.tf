@@ -32,7 +32,6 @@ variable "group" {
   description = "The group variables are being inherited from (often synonmous with account short-name)"
 }
 
-
 ##
 # tfscaffold variables specific to this component
 ##
@@ -42,10 +41,6 @@ variable "module" {
   description = "The variable encapsulating the name of this module"
   default     = "api"
 }
-
-##
-# Variables specific to this component
-##
 
 variable "csi" {
   type        = string
@@ -86,4 +81,12 @@ variable "dynamodb_kms_key_arn" {
   type        = string
   description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
   default     = ""
+}
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+  description = "Letter suppliers enabled in the environment"
 }

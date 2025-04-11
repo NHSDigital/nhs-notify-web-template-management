@@ -58,3 +58,18 @@ variable "dead_letter_target_arn" {
   type        = string
   default     = null
 }
+
+variable "vpc" {
+  description = "VPC details"
+  type = object({
+    id         = string
+    cidr_block = string
+    subnet_ids = set(string)
+  })
+  default = null
+}
+
+variable "security_group_ids" {
+  type    = list(string)
+  default = []
+}

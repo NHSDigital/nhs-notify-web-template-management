@@ -1,0 +1,22 @@
+{
+  "name": "nhs-notify-entity-update-command-builder",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.11.3",
+    "@swc/jest": "^0.2.37",
+    "@tsconfig/node20": "^20.1.5",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "nhs-notify-backend-client": "0.0.1",
+    "nhs-notify-web-template-management-utils": "0.0.1"
+  }
+}

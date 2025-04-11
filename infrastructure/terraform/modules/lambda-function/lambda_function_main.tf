@@ -18,4 +18,13 @@ resource "aws_lambda_function" "main" {
       target_arn = var.dead_letter_target_arn
     }
   }
+
+  dynamic "vpc_config" {
+    for_each = var.vpc != null ? [1] : []
+
+    content {
+      subnet_ids         = var.vpc.subnet_ids
+      security_group_ids = var.security_group_ids
+    }
+  }
 }
