@@ -1,5 +1,5 @@
 locals {
-  csi = "${var.csi}-${var.component}"
+  csi = "${var.csi}-${var.module}"
 
   monorepo_root           = abspath("${path.module}/../../../..")
   lambdas_source_code_dir = abspath("${local.monorepo_root}/lambdas")
