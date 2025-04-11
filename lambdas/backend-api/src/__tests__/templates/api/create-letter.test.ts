@@ -1,7 +1,7 @@
 import { createHandler } from '@backend-api/templates/api/create-letter';
 import { mock } from 'jest-mock-extended';
 import {
-  CreateTemplate,
+  CreateUpdateTemplate,
   ITemplateClient,
   TemplateDto,
 } from 'nhs-notify-backend-client';
@@ -29,7 +29,7 @@ const now = '2025-03-05T17:42:47.978Z';
 describe('create-letter', () => {
   beforeEach(jest.resetAllMocks);
 
-  const initialTemplate: CreateTemplate = {
+  const initialTemplate: CreateUpdateTemplate = {
     templateType: 'LETTER',
     name: 'template-name',
     letterType: 'x0',

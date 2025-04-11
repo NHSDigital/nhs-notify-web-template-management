@@ -14,10 +14,11 @@ import {
   LetterProperties,
   NhsAppProperties,
   SmsProperties,
-  ValidatedUpdateTemplate,
+  ValidatedCreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
+import { marshall } from '@aws-sdk/util-dynamodb';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 jest.mock('node:crypto');
@@ -361,7 +362,6 @@ describe('templateRepository', () => {
             name: 'name',
             message: 'message',
             subject: 'subject',
-            templateStatus: 'SUBMITTED',
             templateType: 'EMAIL',
           },
           'real-owner',
@@ -387,7 +387,6 @@ describe('templateRepository', () => {
           name: 'name',
           message: 'message',
           subject: 'subject',
-          templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'EMAIL',
         },
         'real-owner',
@@ -413,11 +412,10 @@ describe('templateRepository', () => {
       async (channelProperties) => {
         const { templateRepository, mocks } = setup();
 
-        const updatedTemplate: ValidatedUpdateTemplate = {
+        const updatedTemplate: ValidatedCreateUpdateTemplate = {
           ...channelProperties,
           ...updateTemplateProperties,
           name: 'updated-name',
-          templateStatus: 'SUBMITTED',
         };
 
         mocks.ddbDocClient
@@ -449,15 +447,138 @@ describe('templateRepository', () => {
         });
       }
     );
+  });
 
-    test('should update template to deleted state', async () => {
+  describe('submit', () => {
+    test.each([
+      {
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is SUBMITTED',
+        Item: marshall({
+          templateType: 'EMAIL',
+          templateStatus: 'SUBMITTED',
+        }),
+        code: 400,
+        message: 'Template with status SUBMITTED cannot be updated',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is PENDING_UPLOAD',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'PENDING_UPLOAD',
+        }),
+        code: 400,
+        message: 'Template cannot be submitted',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is PENDING_VALIDATION',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'PENDING_VALIDATION',
+        }),
+        code: 400,
+        message: 'Template cannot be submitted',
+      },
+      {
+        testName:
+          'Fails when user tries to submit template when templateStatus is DELETED',
+        Item: marshall({
+          templateType: 'EMAIL',
+          templateStatus: 'DELETED',
+        }),
+        code: 404,
+        message: 'Template not found',
+      },
+      {
+        testName:
+          'Fails when user tries to submit a letter template when any virusScanStatus is not PASSED',
+        Item: marshall({
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          files: {
+            pdfTemplate: {
+              virusScanStatus: 'PASSED',
+              currentVersion: 'a',
+              fileName: 'pdf.pdf',
+            },
+            testDataCsv: {
+              virusScanStatus: 'FAILED',
+              currentVersion: 'a',
+              fileName: 'csv.csv',
+            },
+          },
+        }),
+        code: 400,
+        message: 'Template cannot be submitted',
+      },
+    ])('submit: $testName', async ({ Item, code, message }) => {
       const { templateRepository, mocks } = setup();
 
-      const updatedTemplate: ValidatedUpdateTemplate = {
+      const error = new ConditionalCheckFailedException({
+        message: 'mocked',
+        $metadata: { httpStatusCode: 400 },
+        Item,
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.submit(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        error: {
+          code,
+          message,
+          actualError: error,
+        },
+      });
+    });
+
+    test('should return error when, an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.submit(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to update template',
+          actualError: error,
+        },
+      });
+    });
+
+    test('should update templateStatus to SUBMITTED', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+      const owner = 'real-owner';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner,
+        version: 1,
         name: 'updated-name',
         message: 'updated-message',
-        templateStatus: 'DELETED',
+        templateStatus: 'SUBMITTED',
         templateType: 'NHS_APP',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
       };
 
       mocks.ddbDocClient
@@ -465,17 +586,248 @@ describe('templateRepository', () => {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
-        .resolves({ Attributes: { ...emailTemplate, ...updatedTemplate } });
+        .resolves({ Attributes: databaseTemplate });
 
-      const response = await templateRepository.update(
+      const response = await templateRepository.submit(
         'abc-def-ghi-jkl-123',
-        updatedTemplate,
-        'real-owner',
-        'NOT_YET_SUBMITTED'
+        'real-owner'
       );
 
       expect(response).toEqual({
-        data: { ...emailTemplate, ...updatedTemplate },
+        data: databaseTemplate,
+      });
+    });
+  });
+
+  describe('delete', () => {
+    test.each([
+      {
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+      },
+      {
+        testName:
+          'Fails when user tries to update template when templateStatus is SUBMITTED',
+        Item: {
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'SUBMITTED' },
+        },
+        code: 400,
+        message: 'Template with status SUBMITTED cannot be updated',
+      },
+      {
+        testName:
+          'Fails when user tries to update template when templateStatus is DELETED',
+        Item: {
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'DELETED' },
+        },
+        code: 404,
+        message: 'Template not found',
+      },
+    ])(
+      'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
+      async ({ Item, code, message }) => {
+        const { templateRepository, mocks } = setup();
+
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
+
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+        const response = await templateRepository.delete(
+          'abc-def-ghi-jkl-123',
+          'real-owner'
+        );
+
+        expect(response).toEqual({
+          error: {
+            code,
+            message,
+            actualError: error,
+          },
+        });
+      }
+    );
+
+    test('should return error when, an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.delete(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to update template',
+          actualError: error,
+        },
+      });
+    });
+
+    test('should update templateStatus to DELETED', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+      const owner = 'real-owner';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner,
+        version: 1,
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: 'DELETED',
+        templateType: 'NHS_APP',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+        })
+        .resolves({
+          Attributes: {
+            ...databaseTemplate,
+          },
+        });
+
+      const response = await templateRepository.delete(
+        'abc-def-ghi-jkl-123',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        data: databaseTemplate,
+      });
+    });
+  });
+
+  describe('updateStatus', () => {
+    test.each([
+      {
+        Item: undefined,
+        code: 404,
+        message: 'Template not found',
+      },
+      {
+        testName:
+          'Fails when user tries to update template when templateStatus is SUBMITTED',
+        Item: {
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'SUBMITTED' },
+        },
+        code: 400,
+        message: 'Template with status SUBMITTED cannot be updated',
+      },
+      {
+        testName:
+          'Fails when user tries to update template when templateStatus is DELETED',
+        Item: {
+          templateType: { S: 'EMAIL' },
+          templateStatus: { S: 'DELETED' },
+        },
+        code: 404,
+        message: 'Template not found',
+      },
+    ])(
+      'should return error when, ConditionalCheckFailedException occurs and no Item is returned %p',
+      async ({ Item, code, message }) => {
+        const { templateRepository, mocks } = setup();
+
+        const error = new ConditionalCheckFailedException({
+          message: 'mocked',
+          $metadata: { httpStatusCode: 400 },
+          Item,
+        });
+
+        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+        const response = await templateRepository.updateStatus(
+          'abc-def-ghi-jkl-123',
+          'PENDING_VALIDATION',
+          'real-owner'
+        );
+
+        expect(response).toEqual({
+          error: {
+            code,
+            message,
+            actualError: error,
+          },
+        });
+      }
+    );
+
+    test('should return error when, an unexpected error occurs', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const error = new Error('mocked');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+
+      const response = await templateRepository.updateStatus(
+        'abc-def-ghi-jkl-123',
+        'PENDING_VALIDATION',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to update template',
+          actualError: error,
+        },
+      });
+    });
+
+    test('should update templateStatus to new status', async () => {
+      const { templateRepository, mocks } = setup();
+      const id = 'abc-def-ghi-jkl-123';
+      const owner = 'real-owner';
+
+      const databaseTemplate: DatabaseTemplate = {
+        id,
+        owner,
+        version: 1,
+        name: 'updated-name',
+        message: 'updated-message',
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: 'NHS_APP',
+        updatedAt: 'now',
+        createdAt: 'yesterday',
+      };
+
+      mocks.ddbDocClient
+        .on(UpdateCommand, {
+          TableName: templatesTableName,
+          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
+        })
+        .resolves({
+          Attributes: {
+            ...databaseTemplate,
+          },
+        });
+
+      const response = await templateRepository.updateStatus(
+        'abc-def-ghi-jkl-123',
+        'PENDING_VALIDATION',
+        'real-owner'
+      );
+
+      expect(response).toEqual({
+        data: databaseTemplate,
       });
     });
   });

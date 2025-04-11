@@ -4,7 +4,7 @@ import { mockDeep } from 'jest-mock-extended';
 import {
   TemplateFormState,
   SMSTemplate,
-  CreateSMSTemplate,
+  CreateUpdateSMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { SmsTemplateForm } from '@forms/SmsTemplateForm/SmsTemplateForm';
 
@@ -29,7 +29,7 @@ describe('CreateSmsTemplate component', () => {
   test('renders page with back link if initial state has no id - edit mode', async () => {
     const container = render(
       <SmsTemplateForm
-        initialState={mockDeep<TemplateFormState<CreateSMSTemplate>>({
+        initialState={mockDeep<TemplateFormState<CreateUpdateSMSTemplate>>({
           validationError: undefined,
           name: 'template-name',
           message: 'template-message',
