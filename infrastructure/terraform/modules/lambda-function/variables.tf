@@ -61,11 +61,12 @@ variable "dead_letter_target_arn" {
 
 variable "vpc" {
   description = "VPC details"
-  type = optional(object({
+  type = object({
     id         = string
     cidr_block = string
     subnet_ids = set(string)
-  }))
+  })
+  default = null
 }
 
 variable "security_group_ids" {
