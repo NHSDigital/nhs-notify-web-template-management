@@ -21,30 +21,24 @@ export function validateLetterTemplateFiles(
   const requiredTestFileExists =
     pdf.customPersonalisationParameters.length === 0 || Boolean(csv);
 
-  let testFileHasCorrectNumberOfColumns = requiredTestFileExists;
+  let testFileHasExpectedNumberOfParameters = requiredTestFileExists;
   let allCustomPersonalisationIsInTestFile = requiredTestFileExists;
-  let allTestFileRowsContainCorrectNumberOfColumns = requiredTestFileExists;
 
   if (csv) {
-    testFileHasCorrectNumberOfColumns =
-      pdf.customPersonalisationParameters.length === csv.headers.length;
+    testFileHasExpectedNumberOfParameters =
+      pdf.customPersonalisationParameters.length === csv.parameters.length;
 
     allCustomPersonalisationIsInTestFile =
       pdf.customPersonalisationParameters.every((parameter) =>
-        csv.headers.includes(parameter)
+        csv.parameters.includes(parameter)
       );
-
-    allTestFileRowsContainCorrectNumberOfColumns = csv.rows.every(
-      (row) => row.length === csv.headers.length
-    );
   }
 
   return (
     correctAddressLength &&
     correctAddressLines &&
     customParametersSensiblyFormatted &&
-    allCustomPersonalisationIsInTestFile &&
-    testFileHasCorrectNumberOfColumns &&
-    allTestFileRowsContainCorrectNumberOfColumns
+    testFileHasExpectedNumberOfParameters &&
+    allCustomPersonalisationIsInTestFile
   );
 }

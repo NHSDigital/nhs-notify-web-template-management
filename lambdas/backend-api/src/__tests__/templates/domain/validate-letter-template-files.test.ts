@@ -68,7 +68,7 @@ describe('pdf has no custom personalisation', () => {
       ],
     });
 
-    const csv = mock<TestDataCsv>({ headers: [], rows: [] });
+    const csv = mock<TestDataCsv>({ parameters: [] });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(true);
   });
@@ -88,8 +88,7 @@ describe('pdf has no custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['parameter_1'],
-      rows: [['value_1']],
+      parameters: ['parameter_1'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -135,8 +134,7 @@ describe('pdf with custom personalisation', () => {
       });
 
       const csv = mock<TestDataCsv>({
-        headers: [value],
-        rows: [['value_1']],
+        parameters: [value],
       });
 
       expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -158,8 +156,7 @@ describe('pdf with custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['parameter_2'],
-      rows: [['value_2']],
+      parameters: ['parameter_2'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -180,8 +177,7 @@ describe('pdf with custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['parameter_1', 'parameter_2'],
-      rows: [['value_1', 'value_2']],
+      parameters: ['parameter_1', 'parameter_2'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -202,8 +198,7 @@ describe('pdf with custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['parameter_2'],
-      rows: [['value_2']],
+      parameters: ['parameter_2'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -224,52 +219,7 @@ describe('pdf with custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['fullName'],
-      rows: [['example name']],
-    });
-
-    expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
-  });
-
-  test('returns false if csv row contains too few values', () => {
-    const pdf = mock<TemplatePdf>({
-      customPersonalisationParameters: ['parameter_1'],
-      addressLinePersonalisationParameters: [
-        'address_line_1',
-        'address_line_2',
-        'address_line_3',
-        'address_line_4',
-        'address_line_5',
-        'address_line_6',
-        'address_line_7',
-      ],
-    });
-
-    const csv = mock<TestDataCsv>({
-      headers: ['parameter_1'],
-      rows: [['value_1'], []],
-    });
-
-    expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
-  });
-
-  test('returns false if csv row contains too many values', () => {
-    const pdf = mock<TemplatePdf>({
-      customPersonalisationParameters: ['parameter_1'],
-      addressLinePersonalisationParameters: [
-        'address_line_1',
-        'address_line_2',
-        'address_line_3',
-        'address_line_4',
-        'address_line_5',
-        'address_line_6',
-        'address_line_7',
-      ],
-    });
-
-    const csv = mock<TestDataCsv>({
-      headers: ['parameter_1'],
-      rows: [['value_1'], ['value_2', 'value_3']],
+      parameters: ['fullName'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(false);
@@ -290,11 +240,7 @@ describe('pdf with custom personalisation', () => {
     });
 
     const csv = mock<TestDataCsv>({
-      headers: ['parameter_1', 'parameter_2'],
-      rows: [
-        ['value_1', 'value_2'],
-        ['value_3', 'value_4'],
-      ],
+      parameters: ['parameter_1', 'parameter_2'],
     });
 
     expect(validateLetterTemplateFiles(pdf, csv)).toBe(true);

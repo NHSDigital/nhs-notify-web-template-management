@@ -202,7 +202,7 @@ export class ValidateLetterTemplateFilesLambda {
       versionId,
       valid,
       pdf.personalisationParameters,
-      csv?.headers || []
+      csv?.parameters || []
     );
   };
 }
