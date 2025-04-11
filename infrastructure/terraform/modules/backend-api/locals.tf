@@ -1,9 +1,9 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
-  monorepo_root               = abspath("${path.module}/../../../..")
-  lambdas_source_code_dir     = abspath("${local.monorepo_root}/lambdas")
-  pdfjs_layer_source_code_dir = abspath("${local.monorepo_root}/layers/pdfjs")
+  monorepo_root           = abspath("${path.module}/../../../..")
+  lambdas_source_code_dir = abspath("${local.monorepo_root}/lambdas")
+  pdfjs_layer_filepath    = abspath("${local.monorepo_root}/layers/pdfjs/dist/layer.zip")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     AWS_REGION               = var.region
