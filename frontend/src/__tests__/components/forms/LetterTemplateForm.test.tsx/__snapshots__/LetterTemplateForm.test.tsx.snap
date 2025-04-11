@@ -411,7 +411,7 @@ exports[`Client-side validation triggers 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -456,7 +456,7 @@ exports[`Client-side validation triggers 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload"
+              class="nhsuk-form-group"
             >
               <input
                 accept="text/csv"
@@ -909,7 +909,7 @@ exports[`renders page one error 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload"
+              class="nhsuk-form-group"
             >
               <input
                 accept="application/pdf"
@@ -944,7 +944,7 @@ exports[`renders page one error 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload"
+              class="nhsuk-form-group"
             >
               <input
                 accept="text/csv"
@@ -1415,7 +1415,7 @@ exports[`renders page with multiple errors 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -1462,7 +1462,7 @@ exports[`renders page with multiple errors 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -1866,7 +1866,7 @@ exports[`renders page with preloaded field values 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload"
+              class="nhsuk-form-group"
             >
               <input
                 accept="application/pdf"
@@ -1901,7 +1901,7 @@ exports[`renders page with preloaded field values 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nicki-file-upload"
+              class="nhsuk-form-group"
             >
               <input
                 accept="text/csv"
