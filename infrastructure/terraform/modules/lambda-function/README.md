@@ -19,7 +19,9 @@ No requirements.
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | Specifies the number of days you want to retain log events in the log group for this Lambda | `number` | `0` | no |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Lambda memory size | `number` | `128` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Identifier of the function's runtime | `string` | `"nodejs20.x"` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | n/a | `list(string)` | `[]` | no |
 | <a name="input_source_code_hash"></a> [source\_code\_hash](#input\_source\_code\_hash) | Base64-encoded SHA256 hash of the package file specified by `filename` | `string` | n/a | yes |
+| <a name="input_vpc"></a> [vpc](#input\_vpc) | VPC details | <pre>optional(object({<br/>    id         = string<br/>    cidr_block = string<br/>    subnet_ids = set(string)<br/>  }))</pre> | n/a | yes |
 ## Modules
 
 No modules.
