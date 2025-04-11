@@ -3,7 +3,6 @@
 module "backend_api" {
   source = "../../modules/backend-api"
 
-  component             = var.component
   project               = var.project
   environment           = var.environment
   component             = var.component
