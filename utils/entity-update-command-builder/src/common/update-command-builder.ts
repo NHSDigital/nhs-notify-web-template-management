@@ -166,10 +166,7 @@ export class UpdateCommandBuilder<Entity> {
     condition: SpecialCondition,
     conditionIndex: number
   ) {
-    if (condition.specialOperator === 'IN') {
-      return this.buildInCondition(condition, conditionIndex);
-    }
-    throw new Error('Unsupported operator');
+    return this.buildInCondition(condition, conditionIndex);
   }
 
   private buildFnCondition(condition: FnCondition, conditionIndex: number) {
@@ -229,6 +226,8 @@ export class UpdateCommandBuilder<Entity> {
         if ('operator' in condition) {
           return this.buildCondition(condition, conditionIndex);
         }
+        // unreachable
+        /* istanbul ignore next */
         throw new Error('Unsupported condition provided');
       })
       .join(' ');
