@@ -32,17 +32,6 @@ variable "group" {
   description = "The group variables are being inherited from (often synonmous with account short-name)"
 }
 
-
-##
-# tfscaffold variables specific to this component
-##
-
-variable "module" {
-  type        = string
-  description = "The variable encapsulating the name of this module"
-  default     = "api"
-}
-
 ##
 # tfscaffold variables specific to this component
 ##
