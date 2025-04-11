@@ -8,7 +8,7 @@ module "sqs_validate_letter_template_files" {
   region                     = var.region
   name                       = "validate-letter-template-files"
   create_dlq                 = true
-  visibility_timeout_seconds = 5
+  visibility_timeout_seconds = 10
 
   sqs_kms_key_arn = var.kms_key_arn
 }
