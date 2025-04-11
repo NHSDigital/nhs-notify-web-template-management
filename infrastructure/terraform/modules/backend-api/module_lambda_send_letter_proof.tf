@@ -21,6 +21,16 @@ module "lambda_send_letter_proof" {
     TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
     NODE_OPTIONS            = "--enable-source-maps",
   }
+
+  vpc = {
+    id         = data.aws_vpc.account_vpc.id
+    cidr_block = data.aws_vpc.account_vpc.cidr_block
+    subnet_ids = data.aws_subnets.account_vpc_private_subnets.ids
+  }
+
+  security_group_ids = [
+    data.aws_security_group.account_vpc_sg_allow_sftp_egress.id
+  ]
 }
 
 data "aws_iam_policy_document" "send_letter_proof" {
