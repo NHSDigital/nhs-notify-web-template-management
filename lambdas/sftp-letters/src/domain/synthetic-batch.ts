@@ -25,7 +25,7 @@ export class SyntheticBatch {
   ): Record<string, string>[] {
     const date = this.getDate();
 
-    return Array.from({ length: 3 }, (_, i) => {
+    return Array.from({ length: staticPdsExampleData.length }, (_, i) => {
       const fieldEntries = [
         ['clientRef', this.clientRef(date)],
         ['template', templateId],
@@ -86,7 +86,7 @@ export class SyntheticBatch {
     return {
       template: templateId,
       batch: `${batchId}.csv`,
-      records: '3',
+      records: staticPdsExampleData.length.toString(),
       // eslint-disable-next-line sonarjs/hashing
       md5sum: createHash('md5').update(batchCsv).digest('hex'),
     };
