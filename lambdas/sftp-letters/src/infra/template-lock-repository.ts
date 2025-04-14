@@ -2,7 +2,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-export class TemplateRepository {
+export class TemplateLockRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
     private readonly templatesTableName: string,
