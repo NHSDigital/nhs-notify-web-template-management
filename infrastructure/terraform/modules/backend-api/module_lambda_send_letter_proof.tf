@@ -7,8 +7,8 @@ module "lambda_send_letter_proof" {
   source_code_hash = module.build_sftp_letters_lambdas.zips["src/send-proof.ts"].base64sha256
   handler          = "send-proof.handler"
 
-  memory_size    = 512
-  timout_seconds = 20
+  memory_size = 512
+  timeout     = 20
 
   log_retention_in_days = var.log_retention_in_days
 
@@ -25,6 +25,14 @@ module "lambda_send_letter_proof" {
     SEND_LOCK_TTL_MS        = 50 * 1000 // visibility timeout 60s
     SFTP_ENVIRONMENT        = local.sftp_environment
     TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
+  }
+
+  sqs_event_source_mapping = {
+    sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
+    batch_size    = 5
+    scaling_config = {
+      maximum_concurrency = 5
+    }
   }
 
   vpc = {
@@ -144,19 +152,5 @@ data "aws_iam_policy_document" "send_letter_proof" {
     resources = [
       var.kms_key_arn,
     ]
-  }
-}
-
-resource "aws_lambda_event_source_mapping" "trigger_send_proof" {
-  event_source_arn = module.sftp_upload_queue.sqs_queue_arn
-  enabled          = true
-  function_name    = "${local.csi}-send-letter-proof"
-  batch_size       = 10
-  function_response_types = [
-    "ReportBatchItemFailures"
-  ]
-
-  scaling_config {
-    maximum_concurrency = 5
   }
 }

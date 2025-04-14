@@ -35,7 +35,7 @@ variable "runtime" {
   default     = "nodejs20.x"
 }
 
-variable "timout_seconds" {
+variable "timeout" {
   type        = number
   description = "Maximum running time before timeout"
   default     = 3
@@ -78,4 +78,17 @@ variable "vpc" {
 variable "security_group_ids" {
   type    = list(string)
   default = []
+}
+
+variable "sqs_event_source_mapping" {
+  description = "Configuration for SQS event source mapping"
+  type = object({
+    sqs_queue_arn                      = string
+    batch_size                         = optional(number, 10)
+    maximum_batching_window_in_seconds = optional(number, 0)
+    scaling_config = optional(object({
+      maximum_concurrency = number
+    }), null)
+  })
+  default = null
 }
