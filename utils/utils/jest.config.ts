@@ -24,6 +24,8 @@ export const baseJestConfig: Config = {
     },
   },
 
+  coveragePathIgnorePatterns: ['/__tests__/'],
+
   transform: { '\\.ts$': '@swc/jest' },
   testPathIgnorePatterns: ['.build'],
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
@@ -48,7 +50,10 @@ export const baseJestConfig: Config = {
 const utilsJestConfig = {
   ...baseJestConfig,
 
-  coveragePathIgnorePatterns: ['zod-validators.ts'],
+  coveragePathIgnorePatterns: [
+    ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
+    'zod-validators.ts',
+  ],
 };
 
 export default utilsJestConfig;

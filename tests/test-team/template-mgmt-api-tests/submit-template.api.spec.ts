@@ -5,7 +5,10 @@ import {
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { isoDateRegExp, uuidRegExp } from '../helpers/regexp';
+import {
+  isoDateRegExp,
+  uuidRegExp,
+} from 'nhs-notify-web-template-management-test-helper-utils';
 import { TemplateAPIPayloadFactory } from '../helpers/factories/template-api-payload-factory';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import {

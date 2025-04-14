@@ -13,12 +13,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "async-mutex": "^0.5.0",
     "nhs-notify-backend-client": "^0.0.1",
     "winston": "^3.17.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
-    "@types/aws-lambda": "^8.10.148"
+    "@types/aws-lambda": "^8.10.148",
+    "jest-mock-extended": "^3.0.7",
+    "nhs-notify-web-template-management-test-helper-utils": "^0.0.1"
   }
 }

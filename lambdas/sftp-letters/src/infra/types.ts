@@ -6,3 +6,11 @@ export type SftpSupplierConfig = {
   baseUploadDir: string;
   baseDownloadDir: string;
 };
+
+export type ProofingRequest = {
+  owner: string;
+  templateId: string;
+  pdfVersion: string;
+  testDataVersion?: string;
+  personalisationFields: string[];
+};

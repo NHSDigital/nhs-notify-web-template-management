@@ -10,14 +10,17 @@ import { TemplateRepository } from './infra/template-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import ksuid from 'ksuid';
+import { InMemoryCache } from 'nhs-notify-web-template-management-utils';
 
 export function createContainer() {
   const {
+    credentialsTtlMs,
     csi,
-    internalBucketName,
     defaultSupplier,
-    sftpEnvironment,
+    internalBucketName,
     region,
+    sendLockTtlMs,
+    sftpEnvironment,
     templatesTableName,
   } = loadConfig();
 
@@ -37,20 +40,28 @@ export function createContainer() {
     internalBucketName
   );
 
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  const getDate = () => new Date();
+
   const templateRepository = new TemplateRepository(
     ddbDocClient,
-    templatesTableName
+    templatesTableName,
+    getDate,
+    sendLockTtlMs
   );
+
+  const cache = new InMemoryCache({ ttl: credentialsTtlMs });
 
   const sftpSupplierClientRepository = new SftpSupplierClientRepository(
     csi,
     ssmClient,
+    cache,
     logger
   );
 
   const batch = new SyntheticBatch(
     () => ksuid.randomSync(new Date()).string,
-    () => new Date()
+    getDate
   );
 
   const app = new App(

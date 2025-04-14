@@ -8,18 +8,7 @@ import { serialiseCsv } from '../infra/serialise-csv';
 import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
-
-function parseProofingRequest(event: string) {
-  return z
-    .object({
-      owner: z.string(),
-      templateId: z.string(),
-      pdfVersion: z.string(),
-      testDataVersion: z.string().optional(),
-      fields: z.array(z.string()),
-    })
-    .parse(JSON.parse(event));
-}
+import type { ProofingRequest } from '../infra/types';
 
 export class App {
   constructor(
@@ -32,11 +21,16 @@ export class App {
   async send(
     eventBody: string,
     messageId: string,
-    sftpClient: SftpClient,
+    sftp: SftpClient,
     baseUploadDir: string
-  ) {
-    const { owner, templateId, pdfVersion, testDataVersion, fields } =
-      parseProofingRequest(eventBody);
+  ): Promise<'sent' | 'already-sent' | 'failed'> {
+    const {
+      owner,
+      templateId,
+      pdfVersion,
+      testDataVersion,
+      personalisationFields,
+    } = this.parseProofingRequest(eventBody);
 
     const batchId = this.batch.getId(templateId, pdfVersion);
 
@@ -49,87 +43,154 @@ export class App {
       messageId,
     });
 
-    try {
-      templateLogger.info('Fetching user Data');
+    const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
 
-      const userData = await this.userDataRepository.get(
+    templateLogger.info('Fetching user Data');
+
+    try {
+      const files = await this.getFileData(
         owner,
         templateId,
         pdfVersion,
-        testDataVersion
+        testDataVersion,
+        personalisationFields,
+        batchId
       );
 
-      const parsedTestData = userData.testData
-        ? parseTestPersonalisation(userData.testData)
-        : undefined;
+      templateLogger.info('Acquiring sender lock');
 
-      const batchRows = this.batch.buildBatch(
-        templateId,
-        fields,
-        parsedTestData
+      const locked = await this.templateRepository.acquireLock(
+        owner,
+        templateId
       );
 
-      const batchHeader = this.batch.getHeader(fields);
+      if (!locked) {
+        templateLogger.warn(
+          'Template is already locked, assuming duplicate event'
+        );
+        return 'already-sent';
+      }
 
-      const batchCsv = await serialiseCsv(batchRows, batchHeader);
-
-      const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
-
-      const manifestCsv = await serialiseCsv(
-        [manifest],
-        'template,batch,records,md5sum'
-      );
-
-      const sftpEnvDir = path.join(baseUploadDir, this.sftpEnvironment);
-
-      const templateDir = path.join(sftpEnvDir, 'templates', templateId);
-      const batchDir = path.join(sftpEnvDir, 'batches', templateId);
-
-      const pdfName = `${templateId}.pdf`;
-      const csvName = `${batchId}.csv`;
-      const manifestName = `${batchId}_MANIFEST.csv`;
-
-      const pdfDestination = path.join(templateDir, pdfName);
-      const batchDestination = path.join(batchDir, csvName);
-      const manifestDestination = path.join(batchDir, manifestName);
-
-      const batchStream = Readable.from(batchCsv);
-      const manifestStream = Readable.from(manifestCsv);
-
-      templateLogger.info('Updating template to SENDING_PROOF_REQUEST');
-
-      if (await sftpClient.exists(manifestDestination)) {
+      if (await sftp.exists(dest.manifest)) {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        return;
+        await this.templateRepository.cancelLock(owner, templateId);
+        return 'already-sent';
       }
 
       templateLogger.info('Sending PDF');
 
-      await Promise.all([
-        sftpClient.mkdir(templateDir, true),
-        sftpClient.mkdir(batchDir, true),
-      ]);
+      // create directories in sequence to reduce likelihood of simultaneous creation
+      await sftp.mkdir(dest.dir.pdf, true);
+      await sftp.mkdir(dest.dir.batch, true);
 
-      await sftpClient.put(userData.pdf, pdfDestination);
+      await sftp.put(files.pdf, dest.pdf);
 
       templateLogger.info('Sending batch');
 
-      await sftpClient.put(batchStream, batchDestination);
+      await sftp.put(files.batch, dest.batch);
 
       templateLogger.info('Sending manifest');
 
-      await sftpClient.put(manifestStream, manifestDestination);
+      await sftp.put(files.manifest, dest.manifest);
 
-      templateLogger.info('Updating template to NOT_YET_SUBMITTED');
+      templateLogger.info('Updating template');
 
       await this.templateRepository.updateToNotYetSubmitted(owner, templateId);
+
+      templateLogger.info('Sent proofing request');
+
+      return 'sent';
     } catch (error) {
       templateLogger
         .child({ description: 'Failed to handle proofing request' })
         .error(error);
+
+      return 'failed';
     }
-    templateLogger.info('Sent proofing request');
+  }
+
+  private parseProofingRequest(event: string): ProofingRequest {
+    return z
+      .object({
+        owner: z.string(),
+        templateId: z.string(),
+        pdfVersion: z.string(),
+        testDataVersion: z.string().optional(),
+        personalisationFields: z.array(z.string()),
+      })
+      .parse(JSON.parse(event));
+  }
+
+  private async getFileData(
+    owner: string,
+    templateId: string,
+    pdfVersion: string,
+    testDataVersion: string | undefined,
+    fields: string[],
+    batchId: string
+  ) {
+    const userData = await this.userDataRepository.get(
+      owner,
+      templateId,
+      pdfVersion,
+      testDataVersion
+    );
+
+    const parsedTestData = userData.testData
+      ? parseTestPersonalisation(userData.testData)
+      : undefined;
+
+    const batchRows = this.batch.buildBatch(templateId, fields, parsedTestData);
+
+    const batchHeader = this.batch.getHeader(fields);
+
+    const batchCsv = await serialiseCsv(batchRows, batchHeader);
+
+    const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
+
+    const manifestCsv = await serialiseCsv(
+      [manifest],
+      'template,batch,records,md5sum'
+    );
+
+    const batchStream = Readable.from(batchCsv);
+    const manifestStream = Readable.from(manifestCsv);
+
+    return {
+      batch: batchStream,
+      manifest: manifestStream,
+      pdf: userData.pdf,
+    };
+  }
+
+  private getFileDestinations(
+    sftpBasePath: string,
+    templateId: string,
+    batchId: string
+  ) {
+    const sftpEnvDir = path.join(sftpBasePath, this.sftpEnvironment);
+
+    const templateDir = path.join(sftpEnvDir, 'templates', templateId);
+    const batchDir = path.join(sftpEnvDir, 'batches', templateId);
+
+    const pdfName = `${templateId}.pdf`;
+    const csvName = `${batchId}.csv`;
+    const manifestName = `${batchId}_MANIFEST.csv`;
+
+    const pdfDestination = path.join(templateDir, pdfName);
+    const batchDestination = path.join(batchDir, csvName);
+    const manifestDestination = path.join(batchDir, manifestName);
+
+    return {
+      pdf: pdfDestination,
+      batch: batchDestination,
+      manifest: manifestDestination,
+      dir: {
+        pdf: templateDir,
+        batch: batchDir,
+      },
+    };
   }
 }

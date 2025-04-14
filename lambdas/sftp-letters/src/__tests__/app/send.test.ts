@@ -7,6 +7,7 @@ import { SftpClient } from '../../infra/sftp-client';
 import { Readable } from 'node:stream';
 import { mockTestDataCsv, streamToString } from '../helpers';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { ProofingRequest } from '../../infra/types';
 
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
 const baseUploadDir = 'Incoming';
@@ -45,13 +46,16 @@ function setup() {
   };
 }
 
-function mockEvent(hasTestData: boolean, fields: string[]) {
+function mockEvent(
+  hasTestData: boolean,
+  personalisationFields: string[]
+): ProofingRequest {
   return {
     owner,
     templateId,
     pdfVersion,
     ...(hasTestData && { testDataVersion }),
-    fields,
+    personalisationFields,
   };
 }
 
@@ -143,15 +147,19 @@ describe('App', () => {
 
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
+    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+
     // manifest doesn't already exist
     mocks.sftpClient.exists.mockResolvedValueOnce(false);
 
-    await app.send(
+    const res = await app.send(
       JSON.stringify(event),
       messageId,
       mocks.sftpClient,
       baseUploadDir
     );
+
+    expect(res).toBe('sent');
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
@@ -178,6 +186,12 @@ describe('App', () => {
       templateId,
       batchId,
       batchCsv
+    );
+
+    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
+      owner,
+      templateId
     );
 
     expect(mocks.sftpClient.exists).toHaveBeenCalledTimes(1);
@@ -240,7 +254,9 @@ describe('App', () => {
   test('throws if proof request event is missing a property', async () => {
     const { app, mocks } = setup();
 
-    const { fields: _, ...invalidEvent } = mockEvent(true, ['field']);
+    const { personalisationFields: _, ...invalidEvent } = mockEvent(true, [
+      'field',
+    ]);
 
     await expect(
       app.send(
@@ -252,7 +268,7 @@ describe('App', () => {
     ).rejects.toThrowErrorMatchingSnapshot();
   });
 
-  test('exist early and does not send if the manifest is already in the SFTP server', async () => {
+  test('exits early and does not send if a lock is already in effect', async () => {
     const { app, mocks, logMessages } = setup();
 
     const personalisationFields = ['pdsField'];
@@ -283,46 +299,121 @@ describe('App', () => {
       },
     ];
 
-    const batchCsv: string = [
-      batchColumns.join(','),
-      batchData
-        .map((x) =>
-          [`"${x.clientRef}"`, `"${x.template}"`, `"${x.pdsField}"`].join(',')
-        )
-        .join('\n'),
-    ].join('\n');
-
-    const batchHash = 'hash-of-batch-csv';
-
     const manifestData: Manifest = {
       template: templateId,
       batch: `${batchId}.csv`,
       records: '3',
-      md5sum: batchHash,
+      md5sum: 'hash-of-batch-csv',
     };
 
     mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
-
     mocks.userDataRepository.get.mockResolvedValueOnce({
       testData: undefined,
       pdf,
     });
-
     mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
-
     mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
-
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
-    // manifest already exists
-    mocks.sftpClient.exists.mockResolvedValueOnce('-');
+    // already locked
+    mocks.templateRepository.acquireLock.mockResolvedValueOnce(false);
 
-    await app.send(
+    const res = await app.send(
       JSON.stringify(event),
       messageId,
       mocks.sftpClient,
       baseUploadDir
     );
+
+    expect(res).toBe('already-sent');
+
+    expect(logMessages).toContainEqual(
+      expect.objectContaining({
+        level: 'warn',
+        message: 'Template is already locked, assuming duplicate event',
+      })
+    );
+
+    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
+    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
+
+    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
+      owner,
+      templateId
+    );
+
+    expect(mocks.sftpClient.exists).not.toHaveBeenCalled();
+    expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
+    expect(mocks.sftpClient.put).not.toHaveBeenCalled();
+    expect(
+      mocks.templateRepository.updateToNotYetSubmitted
+    ).not.toHaveBeenCalled();
+  });
+
+  test('exits early and does not send if the manifest is already in the SFTP server', async () => {
+    const { app, mocks, logMessages } = setup();
+
+    const personalisationFields = ['pdsField'];
+    const batchColumns = ['clientRef', 'template', ...personalisationFields];
+
+    const event = mockEvent(true, personalisationFields);
+
+    const pdfContent = 'mock PDF content';
+    const pdf = Readable.from(pdfContent);
+
+    const batchId = 'template-id-0000000000000_pdfversionid';
+
+    const batchData = [
+      {
+        clientRef: 'random1_random2_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal1',
+      },
+      {
+        clientRef: 'random3_random4_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal2',
+      },
+      {
+        clientRef: 'random5_random6_1744184100',
+        template: templateId,
+        pdsField: 'pdsVal3',
+      },
+    ];
+
+    const manifestData: Manifest = {
+      template: templateId,
+      batch: `${batchId}.csv`,
+      records: '3',
+      md5sum: 'hash-of-batch-csv',
+    };
+
+    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
+    mocks.userDataRepository.get.mockResolvedValueOnce({
+      testData: undefined,
+      pdf,
+    });
+    mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
+    mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
+    mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
+
+    // not already locked
+    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+
+    // but manifest already exists
+    mocks.sftpClient.exists.mockResolvedValueOnce('-');
+
+    const res = await app.send(
+      JSON.stringify(event),
+      messageId,
+      mocks.sftpClient,
+      baseUploadDir
+    );
+
+    expect(res).toBe('already-sent');
 
     expect(logMessages).toContainEqual(
       expect.objectContaining({
@@ -332,25 +423,10 @@ describe('App', () => {
     );
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
-
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
-      templateId,
-      personalisationFields,
-      undefined
-    );
-
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledWith(
-      personalisationFields
-    );
-
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
-      templateId,
-      batchId,
-      batchCsv
-    );
+    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
 
     expect(mocks.sftpClient.exists).toHaveBeenCalledTimes(1);
     expect(mocks.sftpClient.exists).toHaveBeenCalledWith(
@@ -358,15 +434,13 @@ describe('App', () => {
     );
 
     expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
-
     expect(mocks.sftpClient.put).not.toHaveBeenCalled();
-
     expect(
       mocks.templateRepository.updateToNotYetSubmitted
     ).not.toHaveBeenCalled();
   });
 
-  test('logs thrown errors', async () => {
+  test('logs handled errors', async () => {
     const { app, mocks, logMessages } = setup();
 
     const personalisationFields = ['pdsField', 'custom1', 'custom2'];
@@ -381,12 +455,14 @@ describe('App', () => {
 
     mocks.userDataRepository.get.mockRejectedValueOnce(error);
 
-    await app.send(
+    const res = await app.send(
       JSON.stringify(event),
       messageId,
       mocks.sftpClient,
       baseUploadDir
     );
+
+    expect(res).toBe('failed');
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(

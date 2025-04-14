@@ -41,17 +41,36 @@ export function createHandler({
 
     const batchItemFailures: SQSBatchItemFailure[] = [];
 
+    const outcomes = {
+      failed: 0,
+      sent: 0,
+      'already-sent': 0,
+    };
+
     for (const [i, res] of results.entries()) {
+      const messageId = event.Records[i].messageId;
+
       if (res.status === 'rejected') {
-        const messageId = event.Records[i].messageId;
+        logger
+          .child({
+            description: 'Could not process proofing request',
+            messageId,
+          })
+          .error(res.reason);
+
         batchItemFailures.push({ itemIdentifier: messageId });
+        outcomes.failed += 1;
+      } else if (res.value === 'failed') {
+        batchItemFailures.push({ itemIdentifier: messageId });
+        outcomes.failed += 1;
+      } else if (res.value === 'already-sent') {
+        outcomes['already-sent'] += 1;
+      } else {
+        outcomes.sent += 1;
       }
     }
 
-    const failureCount = batchItemFailures.length;
-    const sentCount = recordCount - failureCount;
-
-    supplierLogger.info({ failureCount, sentCount });
+    supplierLogger.info(outcomes);
 
     await sftpClient.end().catch((error) => {
       supplierLogger

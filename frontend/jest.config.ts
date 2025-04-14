@@ -22,6 +22,7 @@ const config: Config = {
   ...baseJestConfig,
 
   coveragePathIgnorePatterns: [
+    ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
     '.types.ts',
     'layout.tsx',
     'container.tsx',
