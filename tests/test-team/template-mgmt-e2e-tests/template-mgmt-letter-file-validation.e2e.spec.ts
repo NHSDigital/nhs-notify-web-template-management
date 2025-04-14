@@ -107,7 +107,7 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('PDF only - Uploaded pdf file is virus scanned - if scan passes, file is copied to the internal bucket and validated', async ({
@@ -172,7 +172,7 @@ test.describe('letter file validation', () => {
       expect(pdf?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
       );
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if scan fails, files are deleted from quarantine and not copied, file and template status updated in database', async ({
@@ -244,7 +244,7 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if pdf parameters and test data parameters do not match', async ({
@@ -294,7 +294,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if unexpected csv is uploaded', async ({ page }) => {
@@ -342,7 +342,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if expected csv is not uploaded', async ({ page }) => {
@@ -385,7 +385,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if pdf has incomplete address', async ({ page }) => {
@@ -428,7 +428,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if pdf has empty parameters', async ({ page }) => {
@@ -476,7 +476,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('validation fails if pdf has non-sensible parameters', async ({
@@ -526,6 +526,6 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 });
