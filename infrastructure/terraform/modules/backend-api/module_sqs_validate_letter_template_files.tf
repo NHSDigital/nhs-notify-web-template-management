@@ -9,7 +9,7 @@ module "sqs_validate_letter_template_files" {
   name                       = "validate-letter-template-files"
   create_dlq                 = true
   visibility_timeout_seconds = 10
-  delay_seconds              = 1
+  delay_seconds              = 2
 
   sqs_kms_key_arn = var.kms_key_arn
 }
