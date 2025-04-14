@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@aws-amplify/backend": "^1.2.0",
+    "@aws-sdk/client-ses": "^3.637.0",
+    "aws-cdk-lib": "^2.154.1",
+    "jest-mock-extended": "^3.0.7",
+    "mimetext": "^3.0.24"
+  }
+}
