@@ -7,7 +7,8 @@ module "lambda_send_letter_proof" {
   source_code_hash = module.build_sftp_letters_lambdas.zips["src/send-proof.ts"].base64sha256
   handler          = "send-proof.handler"
 
-  memory_size = 512
+  memory_size    = 512
+  timout_seconds = 20
 
   log_retention_in_days = var.log_retention_in_days
 

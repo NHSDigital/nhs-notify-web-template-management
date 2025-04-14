@@ -35,6 +35,12 @@ variable "runtime" {
   default     = "nodejs20.x"
 }
 
+variable "timout_seconds" {
+  type        = number
+  description = "Maximum running time before timeout"
+  default     = 3
+}
+
 variable "log_retention_in_days" {
   type        = number
   description = "Specifies the number of days you want to retain log events in the log group for this Lambda"
