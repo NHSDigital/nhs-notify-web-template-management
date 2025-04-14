@@ -47,7 +47,7 @@ test.describe('SFTP proof send', () => {
     await sftpHelper.end();
   });
 
-  test('Sends PDF and test batch to SFTP, updates template @debug', async () => {
+  test('Sends PDF and test batch to SFTP, updates template', async () => {
     const templateId = randomUUID();
 
     const personalisationParameters = [
