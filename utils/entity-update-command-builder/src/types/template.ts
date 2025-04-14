@@ -18,7 +18,7 @@ export type MergedTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
-  lockTime?: number;
+  sftpSendLockTime?: number;
   message?: string;
   name: string;
   subject?: string;
