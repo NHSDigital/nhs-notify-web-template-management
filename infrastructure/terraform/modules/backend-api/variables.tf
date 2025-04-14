@@ -42,6 +42,10 @@ variable "module" {
   default     = "api"
 }
 
+##
+# Variables specific to this component
+##
+
 variable "csi" {
   type        = string
   description = "CSI from the parent component"

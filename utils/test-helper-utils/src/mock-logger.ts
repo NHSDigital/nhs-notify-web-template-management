@@ -4,7 +4,7 @@ import { Writable } from 'node:stream';
 const { combine, timestamp, json, errors } = winston.format;
 
 export function createMockLogger() {
-  const logMessages: { msg?: string } & Record<string, unknown>[] = [];
+  const logMessages: Record<string, unknown>[] = [];
 
   const logger = winston.createLogger({
     level: 'info',
