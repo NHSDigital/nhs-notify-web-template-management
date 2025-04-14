@@ -1,5 +1,5 @@
 module "sftp_upload_queue" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v1.0.14"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v2.0.1"
 
   aws_account_id = var.aws_account_id
   component      = var.component
@@ -10,7 +10,7 @@ module "sftp_upload_queue" {
 
   sqs_kms_key_arn = var.kms_key_arn
 
-  visibility_timeout = 60
+  visibility_timeout_seconds = 60
 
   create_dlq = true
 }

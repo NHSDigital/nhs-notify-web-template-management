@@ -175,16 +175,16 @@ describe('TemplateBuilder', () => {
         mockId
       );
 
-      const res = builder.setLockTime(500).build();
+      const res = builder.setLockTime('sftpSendLockTime', 500).build();
 
       expect(res).toEqual({
-        ConditionExpression: 'attribute_not_exists (#lockTime)',
+        ConditionExpression: 'attribute_not_exists (#sftpSendLockTime)',
         ExpressionAttributeNames: {
-          '#lockTime': 'lockTime',
+          '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
-          ':lockTime': 500,
+          ':sftpSendLockTime': 500,
           ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
@@ -192,7 +192,8 @@ describe('TemplateBuilder', () => {
           owner: 'Hello1',
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression: 'SET #lockTime = :lockTime, #updatedAt = :updatedAt',
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
       });
     });
 
@@ -203,18 +204,18 @@ describe('TemplateBuilder', () => {
         mockId
       );
 
-      const res = builder.setLockTime(1000, 1500).build();
+      const res = builder.setLockTime('sftpSendLockTime', 1000, 1500).build();
 
       expect(res).toEqual({
         ConditionExpression:
-          'attribute_not_exists (#lockTime) OR #lockTime > :condition_2_lockTime',
+          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
         ExpressionAttributeNames: {
-          '#lockTime': 'lockTime',
+          '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
-          ':condition_2_lockTime': 1500,
-          ':lockTime': 1000,
+          ':condition_2_sftpSendLockTime': 1500,
+          ':sftpSendLockTime': 1000,
           ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
@@ -222,7 +223,8 @@ describe('TemplateBuilder', () => {
           owner: 'Hello1',
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression: 'SET #lockTime = :lockTime, #updatedAt = :updatedAt',
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
       });
     });
   });
@@ -235,11 +237,11 @@ describe('TemplateBuilder', () => {
         mockId
       );
 
-      const res = builder.removeLockTime().build();
+      const res = builder.removeLockTime('sftpSendLockTime').build();
 
       expect(res).toEqual({
         ExpressionAttributeNames: {
-          '#lockTime': 'lockTime',
+          '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
@@ -250,7 +252,8 @@ describe('TemplateBuilder', () => {
           owner: 'Hello1',
         },
         TableName: 'TABLE_NAME',
-        UpdateExpression: 'SET #updatedAt = :updatedAt REMOVE #lockTime',
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt REMOVE #sftpSendLockTime',
       });
     });
   });

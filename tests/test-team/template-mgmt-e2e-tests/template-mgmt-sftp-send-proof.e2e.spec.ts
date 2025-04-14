@@ -77,7 +77,7 @@ test.describe('SFTP proof send', () => {
       // The status PENDING_PROOF_REQUEST doesn't exist yet
       // the template's 'personalisationFields' has no effect on the test
       // the sender lambda does not read the template
-      templateStatus: 'PENDING_PROOF_REQUEST',
+      templateStatus: 'PENDING_PROOF',
       personalisationFields,
     };
 
@@ -117,8 +117,8 @@ test.describe('SFTP proof send', () => {
       const updatedTemplate = await templateStorageHelper.getTemplate(key);
       const debugUpdated = JSON.stringify(updatedTemplate);
 
-      expect(updatedTemplate.templateStatus, debugUpdated).toBe(
-        'NOT_YET_SUBMITTED'
+      expect(updatedTemplate.updatedAt, debugUpdated).not.toBe(
+        template.updatedAt
       );
     }).toPass({ timeout: 5000 });
 
