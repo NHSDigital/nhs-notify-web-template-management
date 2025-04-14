@@ -4,10 +4,15 @@ import type {
   LetterType,
   TemplateStatus,
   TemplateType,
-  ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
+import {
+  EmailTemplate,
+  LetterTemplate,
+  NHSAppTemplate,
+  SMSTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
-export type MergedTemplateDto = {
+export type MergedTemplate = {
   createdAt: string;
   files?: LetterFiles;
   id: string;
@@ -21,5 +26,9 @@ export type MergedTemplateDto = {
   lockTime?: number;
 };
 
-type AssertExtendsMerged<T extends MergedTemplateDto> = T;
-type _Asserted = AssertExtendsMerged<ValidatedTemplateDto>;
+type AssertExtendsMerged<T extends MergedTemplate> = T;
+
+type _Asserted = AssertExtendsMerged<LetterTemplate> &
+  AssertExtendsMerged<NHSAppTemplate> &
+  AssertExtendsMerged<EmailTemplate> &
+  AssertExtendsMerged<SMSTemplate>;
