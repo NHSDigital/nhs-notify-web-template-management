@@ -1,9 +1,9 @@
 import type { TemplateStatus } from 'nhs-notify-backend-client';
 import { EntityUpdateBuilder } from './domain/entity-update-builder';
 import { BuilderOptionalArgs } from './types/builders';
-import { MergedTemplateDto } from './types/template';
+import { MergedTemplate } from './types/template';
 
-export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplateDto> {
+export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
   constructor(
     tableName: string,
     owner: string,
