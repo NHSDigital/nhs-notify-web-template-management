@@ -459,7 +459,7 @@ const templateFormLetter = {
   templateNameHintText: 'This will not be visible to recipients.',
   templateTypeLabelText: 'Letter type',
   templateTypeHintText: 'Choose the type of letter template you are uploading',
-  templateLanguageLabelText: 'Additional language',
+  templateLanguageLabelText: 'Letter language',
   templateLanguageHintText: 'Choose the language of this letter template',
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:

@@ -225,7 +225,7 @@ exports[`Client-side validation triggers 1`] = `
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -724,7 +724,7 @@ exports[`renders page one error 1`] = `
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -1229,7 +1229,7 @@ exports[`renders page with multiple errors 1`] = `
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -1681,7 +1681,7 @@ exports[`renders page with preloaded field values 1`] = `
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
