@@ -1,5 +1,6 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
+import CodeExample from '@atoms/CodeExample/CodeExample';
 
 const { headings, hiddenCodeBlockDescription } =
   content.components.messageFormatting;
@@ -11,19 +12,19 @@ export const Headings = () => (
     </Details.Summary>
     <Details.Text data-testid='headings-text'>
       <p>{headings.text1}</p>
-      <span className='nhsuk-u-visually-hidden' id='heading-description'>
-        {hiddenCodeBlockDescription}
-      </span>
-      <code aria-describedby='heading-description'>
+      <CodeExample
+        ariaText={hiddenCodeBlockDescription}
+        ariaId='heading-description'
+      >
         {headings.codeBlock.text1}
-      </code>
+      </CodeExample>
       <p className='nhsuk-u-margin-top-4'>{headings.text2}</p>
-      <span className='nhsuk-u-visually-hidden' id='subheading-description'>
-        {hiddenCodeBlockDescription}
-      </span>
-      <code aria-describedby='subheading-description'>
+      <CodeExample
+        ariaText={hiddenCodeBlockDescription}
+        ariaId='subheading-description'
+      >
         {headings.codeBlock.text2}
-      </code>
+      </CodeExample>
     </Details.Text>
   </Details>
 );

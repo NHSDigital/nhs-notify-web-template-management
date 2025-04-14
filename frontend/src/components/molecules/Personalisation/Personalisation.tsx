@@ -1,3 +1,4 @@
+import CodeExample from '@atoms/CodeExample/CodeExample';
 import content from '@content/content';
 import { Details } from 'nhsuk-react-components';
 
@@ -15,15 +16,12 @@ export function Personalisation() {
         </Details.Summary>
         <Details.Text data-testid='personalisation-text'>
           <p>{personalisationContent.details.text1}</p>
-          <span
-            id='personalisation-description'
-            className='nhsuk-u-visually-hidden'
+          <CodeExample
+            ariaText={personalisationContent.hiddenCodeBlockDescription}
+            ariaId='personalisation-description'
           >
-            {personalisationContent.hiddenCodeBlockDescription}
-          </span>
-          <code aria-describedby='personalisation-description'>
             {personalisationContent.details.codeBlockText}
-          </code>
+          </CodeExample>
           <p className='nhsuk-u-margin-top-4'>
             {personalisationContent.details.text2}
           </p>
