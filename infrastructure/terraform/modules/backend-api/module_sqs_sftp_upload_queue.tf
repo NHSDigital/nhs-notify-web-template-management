@@ -1,4 +1,4 @@
-module "sftp_upload_queue" {
+module "sqs_sftp_upload" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v2.0.1"
 
   aws_account_id = var.aws_account_id
