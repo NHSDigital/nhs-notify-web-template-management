@@ -50,7 +50,7 @@ test.describe('SFTP proof send', () => {
   test('Sends PDF and test batch to SFTP, updates template @debug', async () => {
     const templateId = randomUUID();
 
-    const personalisationFields = [
+    const personalisationParameters = [
       'date',
       'nhsNumber',
       'fullName',
@@ -74,11 +74,11 @@ test.describe('SFTP proof send', () => {
         'send-proof-letter',
         'PASSED'
       ),
-      // The status PENDING_PROOF_REQUEST doesn't exist yet
-      // the template's 'personalisationFields' has no effect on the test
+      // The status PENDING_PROOF doesn't exist yet
+      // the template's 'personalisationParameters' has no effect on the test
       // the sender lambda does not read the template
       templateStatus: 'PENDING_PROOF',
-      personalisationFields,
+      personalisationParameters,
     };
 
     const key = {
@@ -108,7 +108,7 @@ test.describe('SFTP proof send', () => {
       owner: key.owner,
       pdfVersion,
       testDataVersion: csvVersion,
-      personalisationFields,
+      personalisationParameters,
     };
 
     await sqsHelper.sendMessage(process.env.SEND_PROOF_QUEUE_URL, proofRequest);
