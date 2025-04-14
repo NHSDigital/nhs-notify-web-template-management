@@ -29,7 +29,7 @@ export class App {
       templateId,
       pdfVersion,
       testDataVersion,
-      personalisationFields,
+      personalisationParameters,
     } = this.parseProofingRequest(eventBody);
 
     const batchId = this.batch.getId(templateId, pdfVersion);
@@ -53,7 +53,7 @@ export class App {
         templateId,
         pdfVersion,
         testDataVersion,
-        personalisationFields,
+        personalisationParameters,
         batchId
       );
 
@@ -118,7 +118,7 @@ export class App {
         templateId: z.string(),
         pdfVersion: z.string(),
         testDataVersion: z.string().optional(),
-        personalisationFields: z.array(z.string()),
+        personalisationParameters: z.array(z.string()),
       })
       .parse(JSON.parse(event));
   }

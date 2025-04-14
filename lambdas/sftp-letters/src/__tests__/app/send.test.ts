@@ -48,14 +48,14 @@ function setup() {
 
 function mockEvent(
   hasTestData: boolean,
-  personalisationFields: string[]
+  personalisationParameters: string[]
 ): ProofingRequest {
   return {
     owner,
     templateId,
     pdfVersion,
     ...(hasTestData && { testDataVersion }),
-    personalisationFields,
+    personalisationParameters,
   };
 }
 
@@ -63,10 +63,14 @@ describe('App', () => {
   test('calls dependencies to send a proofing request', async () => {
     const { app, mocks } = setup();
 
-    const personalisationFields = ['pdsField', 'custom1', 'custom2'];
-    const batchColumns = ['clientRef', 'template', ...personalisationFields];
+    const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
+    const batchColumns = [
+      'clientRef',
+      'template',
+      ...personalisationParameters,
+    ];
 
-    const event = mockEvent(true, personalisationFields);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -172,13 +176,13 @@ describe('App', () => {
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
       templateId,
-      personalisationFields,
+      personalisationParameters,
       testData
     );
 
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledWith(
-      personalisationFields
+      personalisationParameters
     );
 
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
@@ -253,7 +257,7 @@ describe('App', () => {
   test('throws if proof request event is missing a property', async () => {
     const { app, mocks } = setup();
 
-    const { personalisationFields: _, ...invalidEvent } = mockEvent(true, [
+    const { personalisationParameters: _, ...invalidEvent } = mockEvent(true, [
       'field',
     ]);
 
@@ -270,10 +274,14 @@ describe('App', () => {
   test('exits early and does not send if a lock is already in effect', async () => {
     const { app, mocks, logMessages } = setup();
 
-    const personalisationFields = ['pdsField'];
-    const batchColumns = ['clientRef', 'template', ...personalisationFields];
+    const personalisationParameters = ['pdsField'];
+    const batchColumns = [
+      'clientRef',
+      'template',
+      ...personalisationParameters,
+    ];
 
-    const event = mockEvent(true, personalisationFields);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -353,10 +361,14 @@ describe('App', () => {
   test('exits early and does not send if the manifest is already in the SFTP server, clears existing lock', async () => {
     const { app, mocks, logMessages } = setup();
 
-    const personalisationFields = ['pdsField'];
-    const batchColumns = ['clientRef', 'template', ...personalisationFields];
+    const personalisationParameters = ['pdsField'];
+    const batchColumns = [
+      'clientRef',
+      'template',
+      ...personalisationParameters,
+    ];
 
-    const event = mockEvent(true, personalisationFields);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -443,9 +455,9 @@ describe('App', () => {
   test('logs handled errors', async () => {
     const { app, mocks, logMessages } = setup();
 
-    const personalisationFields = ['pdsField', 'custom1', 'custom2'];
+    const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
 
-    const event = mockEvent(true, personalisationFields);
+    const event = mockEvent(true, personalisationParameters);
 
     const batchId = 'template-id-0000000000000_pdfversionid';
 

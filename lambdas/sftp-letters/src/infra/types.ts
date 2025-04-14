@@ -12,5 +12,5 @@ export type ProofingRequest = {
   templateId: string;
   pdfVersion: string;
   testDataVersion?: string;
-  personalisationFields: string[];
+  personalisationParameters: string[];
 };
