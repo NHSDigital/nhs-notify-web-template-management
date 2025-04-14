@@ -25,35 +25,6 @@ function setup() {
 }
 
 describe('TemplateRepository', () => {
-  describe('updateToNotYetSubmitted', () => {
-    test('send command to update to NOT_YET_SUBMITTED, removes lock', async () => {
-      const { mocks, templateRepository } = setup();
-
-      mocks.client.on(UpdateCommand).resolvesOnce({});
-
-      await templateRepository.updateToNotYetSubmitted(owner, templateId);
-
-      expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
-        ExpressionAttributeNames: {
-          '#templateStatus': 'templateStatus',
-          '#updatedAt': 'updatedAt',
-          '#lockTime': 'lockTime',
-        },
-        ExpressionAttributeValues: {
-          ':templateStatus': 'NOT_YET_SUBMITTED',
-          ':updatedAt': expect.stringMatching(isoDateRegExp),
-        },
-        Key: {
-          id: templateId,
-          owner,
-        },
-        TableName: templatesTableName,
-        UpdateExpression:
-          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt REMOVE #lockTime',
-      });
-    });
-  });
-
   describe('acquireLock', () => {
     test('returns true when database update succeeds', async () => {
       const { mocks, templateRepository } = setup();
@@ -111,13 +82,13 @@ describe('TemplateRepository', () => {
     });
   });
 
-  describe('cancelLock', () => {
+  describe('clearLock', () => {
     test('removes lock attribute', async () => {
       const { mocks, templateRepository } = setup();
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
 
-      await templateRepository.cancelLock(owner, templateId);
+      await templateRepository.clearLock(owner, templateId);
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
           '#lockTime': 'lockTime',
