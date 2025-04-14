@@ -7,8 +7,20 @@ import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { FetchAuthSessionOptions, JWT } from 'aws-amplify/auth';
 import { jwtDecode } from 'jwt-decode';
+import { Schema } from '../../../amplify/data/resource';
+import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
 
 const config = require('@/amplify_outputs.json');
+
+export const getAmplifyBackendClient = () =>
+  generateServerClientUsingCookies<Schema>({
+    config,
+    cookies,
+    authMode: 'iam',
+  });
+
+export const getSessionClient = () =>
+  getAmplifyBackendClient().models.SessionStorage;
 
 export const { runWithAmplifyServerContext } = createServerRunner({
   config,
