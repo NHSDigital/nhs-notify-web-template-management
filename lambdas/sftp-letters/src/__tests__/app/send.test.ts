@@ -235,12 +235,11 @@ describe('App', () => {
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
-    expect(
-      mocks.templateRepository.updateToNotYetSubmitted
-    ).toHaveBeenCalledTimes(1);
-    expect(
-      mocks.templateRepository.updateToNotYetSubmitted
-    ).toHaveBeenCalledWith(owner, templateId);
+    expect(mocks.templateRepository.clearLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.clearLock).toHaveBeenCalledWith(
+      owner,
+      templateId
+    );
   });
 
   test('throws if proof request event is invalid JSON', async () => {
@@ -348,12 +347,10 @@ describe('App', () => {
     expect(mocks.sftpClient.exists).not.toHaveBeenCalled();
     expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
     expect(mocks.sftpClient.put).not.toHaveBeenCalled();
-    expect(
-      mocks.templateRepository.updateToNotYetSubmitted
-    ).not.toHaveBeenCalled();
+    expect(mocks.templateRepository.clearLock).not.toHaveBeenCalled();
   });
 
-  test('exits early and does not send if the manifest is already in the SFTP server', async () => {
+  test('exits early and does not send if the manifest is already in the SFTP server, clears existing lock', async () => {
     const { app, mocks, logMessages } = setup();
 
     const personalisationFields = ['pdsField'];
@@ -433,11 +430,14 @@ describe('App', () => {
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
+    expect(mocks.templateRepository.clearLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.clearLock).toHaveBeenCalledWith(
+      owner,
+      templateId
+    );
+
     expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
     expect(mocks.sftpClient.put).not.toHaveBeenCalled();
-    expect(
-      mocks.templateRepository.updateToNotYetSubmitted
-    ).not.toHaveBeenCalled();
   });
 
   test('logs handled errors', async () => {
