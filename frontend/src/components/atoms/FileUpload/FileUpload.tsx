@@ -17,7 +17,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 }) => {
   return (
     <div
-      className={classNames('nhsuk-form-group', {
+      className={classNames('nhsuk-form-group', 'nhsuk-u-margin-bottom-0', {
         'nhsuk-form-group--error': error,
       })}
       {...rest}
