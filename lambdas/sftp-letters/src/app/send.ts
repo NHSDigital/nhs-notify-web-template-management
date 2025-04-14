@@ -2,7 +2,7 @@ import type { SftpClient } from '../infra/sftp-client';
 import type { UserDataRepository } from '../infra/user-data-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { SyntheticBatch } from '../domain/synthetic-batch';
-import type { TemplateRepository } from '../infra/template-repository';
+import type { TemplateLockRepository } from '../infra/template-lock-repository';
 import { parseTestPersonalisation } from '../domain/test-data';
 import { serialiseCsv } from '../infra/serialise-csv';
 import { z } from 'zod';
@@ -13,7 +13,7 @@ import type { ProofingRequest } from '../infra/types';
 export class App {
   constructor(
     private readonly userDataRepository: UserDataRepository,
-    private readonly templateRepository: TemplateRepository,
+    private readonly templateRepository: TemplateLockRepository,
     private readonly sftpEnvironment: string,
     private readonly batch: SyntheticBatch,
     private readonly logger: Logger

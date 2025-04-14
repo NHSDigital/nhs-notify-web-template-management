@@ -1,5 +1,5 @@
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { TemplateRepository } from '../../infra/template-repository';
+import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
@@ -14,7 +14,7 @@ const sendLockTtlMs = 50_000;
 function setup() {
   const client = mockClient(DynamoDBDocumentClient);
 
-  const templateRepository = new TemplateRepository(
+  const templateRepository = new TemplateLockRepository(
     client as unknown as DynamoDBDocumentClient,
     templatesTableName,
     () => mockDate,
@@ -24,7 +24,7 @@ function setup() {
   return { templateRepository, mocks: { client } };
 }
 
-describe('TemplateRepository', () => {
+describe('TemplateLockRepository', () => {
   describe('acquireLock', () => {
     test('returns true when database update succeeds', async () => {
       const { mocks, templateRepository } = setup();
