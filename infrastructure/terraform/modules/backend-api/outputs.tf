@@ -3,7 +3,7 @@ output "api_base_url" {
 }
 
 output "send_proof_queue_url" {
-  value = module.sftp_upload_queue.sqs_queue_url
+  value = module.sqs_sftp_upload.sqs_queue_url
 }
 
 output "sftp_mock_credential_path" {

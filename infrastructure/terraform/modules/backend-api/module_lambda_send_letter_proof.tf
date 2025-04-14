@@ -28,7 +28,7 @@ module "lambda_send_letter_proof" {
   }
 
   sqs_event_source_mapping = {
-    sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
+    sqs_queue_arn = module.sqs_sftp_upload.sqs_queue_arn
     batch_size    = 5
     scaling_config = {
       maximum_concurrency = 5
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
     ]
 
     resources = [
-      module.sftp_upload_queue.sqs_dlq_arn,
+      module.sqs_sftp_upload.sqs_dlq_arn,
     ]
   }
 
@@ -126,7 +126,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
     ]
 
     resources = [
-      module.sftp_upload_queue.sqs_queue_arn,
+      module.sqs_sftp_upload.sqs_queue_arn,
     ]
   }
 
