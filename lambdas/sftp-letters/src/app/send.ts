@@ -75,7 +75,7 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.cancelLock(owner, templateId);
+        await this.templateRepository.clearLock(owner, templateId);
         return 'already-sent';
       }
 
@@ -95,9 +95,9 @@ export class App {
 
       await sftp.put(files.manifest, dest.manifest);
 
-      templateLogger.info('Updating template');
+      templateLogger.info('Removing lock');
 
-      await this.templateRepository.updateToNotYetSubmitted(owner, templateId);
+      await this.templateRepository.clearLock(owner, templateId);
 
       templateLogger.info('Sent proofing request');
 

@@ -74,7 +74,7 @@ test.describe('SFTP proof send', () => {
         'send-proof-letter',
         'PASSED'
       ),
-      // fields TBD
+      // The status PENDING_PROOF_REQUEST doesn't exist yet
       // the template's 'personalisationFields' has no effect on the test
       // the sender lambda does not read the template
       templateStatus: 'PENDING_PROOF_REQUEST',

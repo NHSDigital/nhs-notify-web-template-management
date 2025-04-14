@@ -29,17 +29,8 @@ export class TemplateRepository {
     return true;
   }
 
-  async cancelLock(owner: string, id: string) {
+  async clearLock(owner: string, id: string) {
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .removeLockTime()
-      .build();
-
-    return await this.client.send(new UpdateCommand(update));
-  }
-
-  async updateToNotYetSubmitted(owner: string, id: string) {
-    const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setStatus('NOT_YET_SUBMITTED')
       .removeLockTime()
       .build();
 
