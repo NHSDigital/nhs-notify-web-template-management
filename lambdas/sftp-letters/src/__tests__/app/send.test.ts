@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended';
-import { TemplateRepository } from '../../infra/template-repository';
+import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import { UserDataRepository } from '../../infra/user-data-repository';
 import { App } from '../../app/send';
 import { SyntheticBatch, Manifest } from '../../domain/synthetic-batch';
@@ -19,7 +19,7 @@ const messageId = 'message-id';
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
-  const templateRepository = mock<TemplateRepository>();
+  const templateRepository = mock<TemplateLockRepository>();
   const syntheticBatch = mock<SyntheticBatch>();
   const { logger, logMessages } = createMockLogger();
 

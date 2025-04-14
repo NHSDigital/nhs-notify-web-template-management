@@ -6,7 +6,7 @@ import { loadConfig } from './config/config';
 import { App } from './app/send';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { SyntheticBatch } from './domain/synthetic-batch';
-import { TemplateRepository } from './infra/template-repository';
+import { TemplateLockRepository } from './infra/template-lock-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import ksuid from 'ksuid';
@@ -43,7 +43,7 @@ export function createContainer() {
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const getDate = () => new Date();
 
-  const templateRepository = new TemplateRepository(
+  const templateRepository = new TemplateLockRepository(
     ddbDocClient,
     templatesTableName,
     getDate,
