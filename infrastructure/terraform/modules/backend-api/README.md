@@ -60,6 +60,9 @@ No requirements.
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
+| <a name="output_send_proof_queue_url"></a> [send\_proof\_queue\_url](#output\_send\_proof\_queue\_url) | n/a |
+| <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |
+| <a name="output_sftp_mock_credential_path"></a> [sftp\_mock\_credential\_path](#output\_sftp\_mock\_credential\_path) | n/a |
 | <a name="output_templates_table_name"></a> [templates\_table\_name](#output\_templates\_table\_name) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
