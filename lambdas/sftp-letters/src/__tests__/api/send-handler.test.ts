@@ -47,16 +47,18 @@ describe('handler', () => {
     });
 
     mocks.app.send
-      .mockResolvedValueOnce()
+      .mockResolvedValueOnce('sent')
       .mockRejectedValueOnce(new Error('!'))
-      .mockResolvedValueOnce();
+      .mockResolvedValueOnce('failed')
+      .mockResolvedValueOnce('already-sent');
 
     client.end.mockResolvedValueOnce();
 
     const record1 = makeSQSRecord({ body: JSON.stringify({}), messageId: 'a' });
     const record2 = makeSQSRecord({ body: JSON.stringify({}), messageId: 'b' });
     const record3 = makeSQSRecord({ body: JSON.stringify({}), messageId: 'c' });
-    const records = [record1, record2, record3];
+    const record4 = makeSQSRecord({ body: JSON.stringify({}), messageId: 'd' });
+    const records = [record1, record2, record3, record4];
 
     const response = await handler(
       {
@@ -75,7 +77,7 @@ describe('handler', () => {
 
     expect(client.connect).toHaveBeenCalledTimes(1);
 
-    expect(mocks.app.send).toHaveBeenCalledTimes(3);
+    expect(mocks.app.send).toHaveBeenCalledTimes(4);
     for (const record of records) {
       expect(mocks.app.send).toHaveBeenCalledWith(
         record.body,
@@ -87,12 +89,23 @@ describe('handler', () => {
 
     expect(client.end).toHaveBeenCalledTimes(1);
 
-    expect(response).toEqual({ batchItemFailures: [{ itemIdentifier: 'b' }] });
+    expect(response).toEqual({
+      batchItemFailures: [{ itemIdentifier: 'b' }, { itemIdentifier: 'c' }],
+    });
+
+    // logs rejections
+    expect(logMessages).toContainEqual(
+      expect.objectContaining({
+        description: 'Could not process proofing request',
+        level: 'error',
+        message: '!',
+      })
+    );
 
     expect(logMessages).toContainEqual(
       expect.objectContaining({
-        message: { failureCount: 1, sentCount: 2 },
-        recordCount: 3,
+        message: { 'already-sent': 1, failed: 2, sent: 1 },
+        recordCount: 4,
         supplier: defaultSupplier,
       })
     );
@@ -111,7 +124,7 @@ describe('handler', () => {
       baseUploadDir,
     });
 
-    mocks.app.send.mockResolvedValue();
+    mocks.app.send.mockResolvedValue('sent');
 
     const error = new Error('close error');
 

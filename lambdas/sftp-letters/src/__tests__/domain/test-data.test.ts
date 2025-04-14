@@ -16,10 +16,10 @@ describe('parseTestPersonalisation', () => {
   test('parses valid test data', () => {
     expect(parseTestPersonalisation(testDataCsv)).toEqual([
       {
-        appointment_date: 'Wednesday 10 September 2025',
+        appointment_date: 'Monday 1 May 2025',
         appointment_location:
-          'City, Sandwell & Walsall BSS, The Rosewood Centre, Sandwell & West Birmingham Hospitals NHS Trust, The Birmingham Treatment Centre, City Hospital, Dudley Road, Birmingham, B18 7QH',
-        appointment_time: '12:56pm',
+          "The Epping Breast Screening Unit, St Margaret's Hospital, The Plain, Epping, Essex, CM16 6TN",
+        appointment_time: '1:56pm',
         contact_telephone_number: '020 3299 9010',
       },
       {
@@ -30,10 +30,10 @@ describe('parseTestPersonalisation', () => {
         contact_telephone_number: '020 3299 9010',
       },
       {
-        appointment_date: 'Monday 1 May 2025',
+        appointment_date: 'Wednesday 10 September 2025',
         appointment_location:
-          "The Epping Breast Screening Unit, St Margaret's Hospital, The Plain, Epping, Essex, CM16 6TN",
-        appointment_time: '1:56pm',
+          'City, Sandwell & Walsall BSS, The Rosewood Centre, Sandwell & West Birmingham Hospitals NHS Trust, The Birmingham Treatment Centre, City Hospital, Dudley Road, Birmingham, B18 7QH',
+        appointment_time: '12:56pm',
         contact_telephone_number: '020 3299 9010',
       },
     ]);
