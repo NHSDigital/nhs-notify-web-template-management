@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import {
   pdsPersonalisationKeys,
   staticPdsExampleData,
-} from './static-batch-data';
+} from './synthetic-batch-data';
 
 export type Manifest = {
   template: string;
@@ -69,6 +69,8 @@ export class SyntheticBatch {
 
   getId(templateId: string, pdfVersion: string) {
     const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(0, 27);
+
+    // 0000000000000 stands in for a timestamp in a real batch ID
     return `${templateId}-0000000000000_${pseudoRandomSegment}`;
   }
 
