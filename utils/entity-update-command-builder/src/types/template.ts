@@ -18,12 +18,13 @@ export type MergedTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
+  lockTime?: number;
   message?: string;
+  name: string;
   subject?: string;
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
-  lockTime?: number;
 };
 
 type AssertExtendsMerged<T extends MergedTemplate> = T;
