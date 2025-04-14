@@ -24,6 +24,8 @@ export const staticPdsExampleData: [
   Record<string, string>,
   Record<string, string>,
 ] = [
+  // corresponds to 'Short length data example' in custom personalisation spreadsheet.
+  // can be used to send a real letter to the NHS office
   {
     nhsNumber: '9728543751',
     firstName: 'Louie',
@@ -40,6 +42,7 @@ export const staticPdsExampleData: [
     address_line_6: 'West Yorkshire',
     address_line_7: 'LS1 4AP',
   },
+  // corresponds to 'Medium length data example' in custom personalisation spreadsheet.
   {
     nhsNumber: '9728543417',
     firstName: 'John',
@@ -56,6 +59,8 @@ export const staticPdsExampleData: [
     address_line_6: 'DN15 0AR',
     address_line_7: '',
   },
+  // corresponds to 'Long length data example' in custom personalisation spreadsheet.
+  // contains special characters in the address.
   {
     nhsNumber: '9464416181',
     firstName: 'AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
