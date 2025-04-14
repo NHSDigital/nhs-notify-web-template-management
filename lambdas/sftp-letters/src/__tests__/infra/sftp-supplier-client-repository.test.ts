@@ -8,6 +8,8 @@ import {
 import { SftpClient } from '../../infra/sftp-client';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { ICache } from 'nhs-notify-web-template-management-utils';
+import { mock } from 'jest-mock-extended';
 
 jest.mock('../../infra/sftp-client');
 
@@ -18,19 +20,26 @@ function setup() {
 
   const { logger } = createMockLogger();
 
+  const cacheRelease = jest.fn();
+  const cache = mock<ICache>({ acquireLock: async () => cacheRelease });
+
   const mocks = {
     logger,
     environment,
     ssmClient,
+    cache,
   };
-  return { mocks };
+  return { mocks, cacheRelease };
 }
 
 describe('getClient', () => {
-  test('Returns client', async () => {
+  test('Returns client when credentials are not cached', async () => {
     const {
-      mocks: { logger, environment, ssmClient },
+      mocks: { logger, environment, ssmClient, cache },
+      cacheRelease,
     } = setup();
+
+    cache.get.mockResolvedValueOnce(null);
 
     ssmClient.on(GetParameterCommand).resolvesOnce({
       Parameter: {
@@ -48,12 +57,14 @@ describe('getClient', () => {
     const sftpClientRepository = new SftpSupplierClientRepository(
       environment,
       ssmClient as unknown as SSMClient,
+      cache,
       logger
     );
 
     const supplier: string = 'SYNERTEC';
     const client = await sftpClientRepository.getClient(supplier);
     const mockSftpClient = (SftpClient as jest.Mock).mock.instances[0];
+    const credKey = '/testenv/sftp-config/SYNERTEC';
 
     expect(client).toEqual({
       sftpClient: mockSftpClient,
@@ -61,8 +72,10 @@ describe('getClient', () => {
       baseDownloadDir: 'download/dir',
     });
 
+    expect(cache.get).toHaveBeenCalledWith(credKey);
+
     expect(ssmClient).toHaveReceivedCommandWith(GetParameterCommand, {
-      Name: '/testenv/sftp-config/SYNERTEC',
+      Name: credKey,
     });
 
     expect(SftpClient).toHaveBeenCalledWith(
@@ -71,11 +84,62 @@ describe('getClient', () => {
       'testKey',
       'hostKey'
     );
+
+    expect(cacheRelease).toHaveBeenCalled();
+  });
+
+  test('Returns client when credentials are cached', async () => {
+    const {
+      mocks: { logger, environment, ssmClient, cache },
+      cacheRelease,
+    } = setup();
+
+    cache.get.mockResolvedValueOnce(
+      JSON.stringify({
+        host: 'testHost',
+        username: 'testUser',
+        privateKey: 'testKey',
+        hostKey: 'hostKey',
+        baseUploadDir: 'upload/dir',
+        baseDownloadDir: 'download/dir',
+      })
+    );
+
+    const sftpClientRepository = new SftpSupplierClientRepository(
+      environment,
+      ssmClient as unknown as SSMClient,
+      cache,
+      logger
+    );
+
+    const supplier: string = 'SYNERTEC';
+    const client = await sftpClientRepository.getClient(supplier);
+    const mockSftpClient = (SftpClient as jest.Mock).mock.instances[0];
+    const credKey = '/testenv/sftp-config/SYNERTEC';
+
+    expect(client).toEqual({
+      sftpClient: mockSftpClient,
+      baseUploadDir: 'upload/dir',
+      baseDownloadDir: 'download/dir',
+    });
+
+    expect(cache.get).toHaveBeenCalledWith(credKey);
+
+    expect(ssmClient).not.toHaveReceivedAnyCommand();
+
+    expect(SftpClient).toHaveBeenCalledWith(
+      'testHost',
+      'testUser',
+      'testKey',
+      'hostKey'
+    );
+
+    expect(cacheRelease).toHaveBeenCalled();
   });
 
   test('throws if parameter response is empty', async () => {
     const {
-      mocks: { logger, environment, ssmClient },
+      mocks: { logger, environment, ssmClient, cache },
     } = setup();
 
     ssmClient.on(GetParameterCommand).resolvesOnce({
@@ -85,6 +149,7 @@ describe('getClient', () => {
     const sftpClientRepository = new SftpSupplierClientRepository(
       environment,
       ssmClient as unknown as SSMClient,
+      cache,
       logger
     );
 

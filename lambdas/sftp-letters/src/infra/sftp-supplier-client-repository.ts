@@ -3,6 +3,7 @@ import { SftpClient } from './sftp-client';
 import type { SftpSupplierConfig } from './types';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import { ICache } from 'nhs-notify-web-template-management-utils';
 
 export const getConfigFromSsmString = (ssmString: string): SftpSupplierConfig =>
   z
@@ -26,6 +27,7 @@ export class SftpSupplierClientRepository {
   constructor(
     private readonly csi: string,
     private readonly ssmClient: SSMClient,
+    private readonly cache: ICache,
     private readonly logger: Logger
   ) {}
 
@@ -35,15 +37,30 @@ export class SftpSupplierClientRepository {
       supplier,
     });
 
-    const sftpCredParameter = `/${this.csi}/sftp-config/${supplier}`;
+    const sftpCredKey = `/${this.csi}/sftp-config/${supplier}`;
 
-    const ssmResult = await this.ssmClient.send(
-      new GetParameterCommand({ Name: sftpCredParameter, WithDecryption: true })
-    );
+    const release = await this.cache.acquireLock();
 
-    const sftpCredentials = ssmResult.Parameter?.Value;
+    let credentialStr: string | null = null;
 
-    if (!sftpCredentials) {
+    try {
+      credentialStr = await this.cache.get<string>(sftpCredKey);
+
+      if (!credentialStr) {
+        const ssmResult = await this.ssmClient.send(
+          new GetParameterCommand({ Name: sftpCredKey, WithDecryption: true })
+        );
+        credentialStr = ssmResult.Parameter?.Value ?? null;
+
+        if (credentialStr) {
+          await this.cache.set(sftpCredKey, credentialStr);
+        }
+      }
+    } finally {
+      release();
+    }
+
+    if (!credentialStr) {
       throw new Error('SFTP credentials are undefined');
     }
 
@@ -54,7 +71,7 @@ export class SftpSupplierClientRepository {
       hostKey,
       baseUploadDir,
       baseDownloadDir,
-    } = getConfigFromSsmString(sftpCredentials);
+    } = getConfigFromSsmString(credentialStr);
 
     return {
       sftpClient: new SftpClient(host, username, privateKey, hostKey),

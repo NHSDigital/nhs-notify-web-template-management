@@ -10,5 +10,7 @@ module "sftp_upload_queue" {
 
   sqs_kms_key_arn = var.kms_key_arn
 
+  visibility_timeout_seconds = 60
+
   create_dlq = true
 }

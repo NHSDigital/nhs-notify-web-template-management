@@ -4,6 +4,9 @@ import fs from 'node:fs';
 
 export type BackendConfig = {
   apiBaseUrl: string;
+  sendProofQueueUrl: string;
+  sftpEnvironment: string;
+  sftpMockCredentialPath: string;
   templatesTableName: string;
   templatesInternalBucketName: string;
   templatesQuarantineBucketName: string;
@@ -15,6 +18,9 @@ export const BackendConfigHelper = {
   fromEnv(): BackendConfig {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
+      sendProofQueueUrl: process.env.SEND_PROOF_QUEUE_URL ?? '',
+      sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
+      sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
       templatesTableName: process.env.TEMPLATES_TABLE_NAME ?? '',
       templatesInternalBucketName:
         process.env.TEMPLATES_INTERNAL_BUCKET_NAME ?? '',
@@ -30,6 +36,9 @@ export const BackendConfigHelper = {
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
+    process.env.SEND_PROOF_QUEUE_URL = config.sendProofQueueUrl;
+    process.env.SFTP_ENVIRONMENT = config.sftpEnvironment;
+    process.env.SFTP_MOCK_CREDENTIAL_PATH = config.sftpMockCredentialPath;
     process.env.TEMPLATES_INTERNAL_BUCKET_NAME =
       config.templatesInternalBucketName;
     process.env.TEMPLATES_QUARANTINE_BUCKET_NAME =
@@ -41,6 +50,10 @@ export const BackendConfigHelper = {
 
     return {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
+      sendProofQueueUrl: outputsFileContent.send_proof_queue_url?.value ?? '',
+      sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',
+      sftpMockCredentialPath:
+        outputsFileContent.sftp_mock_credential_path?.value ?? '',
       templatesTableName: outputsFileContent.templates_table_name?.value ?? '',
       templatesInternalBucketName:
         outputsFileContent.internal_bucket_name?.value ?? '',

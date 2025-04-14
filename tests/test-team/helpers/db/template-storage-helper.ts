@@ -4,6 +4,7 @@ import {
   HeadObjectCommand,
   ListObjectsV2Command,
   NotFound,
+  PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
 import {
@@ -184,6 +185,42 @@ export class TemplateStorageHelper {
   }
 
   /**
+   * Creates a letter template pdf file in the internal bucket
+   */
+  async putScannedPdfTemplateFile(
+    key: TemplateKey,
+    version: string,
+    data: Buffer
+  ) {
+    return await this.putLetterTemplateFile(
+      process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
+      'pdf-template',
+      key,
+      version,
+      'pdf',
+      data
+    );
+  }
+
+  /**
+   * Creates a letter template test data csv file in the internal bucket
+   */
+  async putScannedCsvTestDataFile(
+    key: TemplateKey,
+    version: string,
+    data: Buffer
+  ) {
+    return await this.putLetterTemplateFile(
+      process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
+      'test-data',
+      key,
+      version,
+      'csv',
+      data
+    );
+  }
+
+  /**
    * Retrieves a letter template pdf file from the quarantine bucket
    */
   async getQuarantinePdfTemplateFile(key: TemplateKey, version: string) {
@@ -210,6 +247,28 @@ export class TemplateStorageHelper {
   }
 
   /**
+   * Adds a letter template file to s3
+   */
+  private async putLetterTemplateFile(
+    bucket: string,
+    prefix: string,
+    key: TemplateKey,
+    version: string,
+    ext: string,
+    data: Buffer,
+    metadata?: Record<string, string>
+  ) {
+    return this.s3.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: this.letterFileKey(prefix, key, version, ext),
+        Body: data,
+        Metadata: metadata,
+      })
+    );
+  }
+
+  /**
    * Retrieves a letter template file from s3
    */
   private async getLetterTemplateFile(
@@ -223,7 +282,7 @@ export class TemplateStorageHelper {
       return await this.s3.send(
         new HeadObjectCommand({
           Bucket: bucket,
-          Key: `${prefix}/${key.owner}/${key.id}/${version}.${ext}`,
+          Key: this.letterFileKey(prefix, key, version, ext),
           ChecksumMode: 'ENABLED',
         })
       );
@@ -234,5 +293,14 @@ export class TemplateStorageHelper {
 
       throw error;
     }
+  }
+
+  private letterFileKey(
+    prefix: string,
+    key: TemplateKey,
+    version: string,
+    ext: string
+  ) {
+    return `${prefix}/${key.owner}/${key.id}/${version}.${ext}`;
   }
 }

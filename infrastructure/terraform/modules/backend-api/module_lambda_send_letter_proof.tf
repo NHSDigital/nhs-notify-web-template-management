@@ -7,19 +7,23 @@ module "lambda_send_letter_proof" {
   source_code_hash = module.build_sftp_letters_lambdas.zips["src/send-proof.ts"].base64sha256
   handler          = "send-proof.handler"
 
+  memory_size = 512
+
   log_retention_in_days = var.log_retention_in_days
 
   execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
 
   environment_variables = {
+    CREDENTIALS_TTL_MS      = 900 * 1000
     CSI                     = local.csi
+    DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier.name
     ENVIRONMENT             = var.environment
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
-    DEFAULT_LETTER_SUPPLIER = local.default_letter_supplier.name
-    SFTP_ENVIRONMENT        = local.sftp_environment
-    REGION                  = var.region
-    TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
     NODE_OPTIONS            = "--enable-source-maps",
+    REGION                  = var.region
+    SEND_LOCK_TTL_MS        = 50 * 1000 // visibility timeout 60s
+    SFTP_ENVIRONMENT        = local.sftp_environment
+    TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
   }
 
   vpc = {
@@ -29,7 +33,7 @@ module "lambda_send_letter_proof" {
   }
 
   security_group_ids = [
-    data.aws_security_group.account_vpc_sg_allow_sftp_egress.id
+    # data.aws_security_group.account_vpc_sg_allow_sftp_egress.id
   ]
 }
 
@@ -57,6 +61,17 @@ data "aws_iam_policy_document" "send_letter_proof" {
     ]
 
     resources = ["${module.s3bucket_internal.arn}/*"]
+  }
+
+  statement {
+    sid    = "AllowS3InternalList"
+    effect = "Allow"
+
+    actions = [
+      "s3:ListBucket",
+    ]
+
+    resources = [module.s3bucket_internal.arn]
   }
 
   statement {
@@ -141,6 +156,6 @@ resource "aws_lambda_event_source_mapping" "trigger_send_proof" {
   ]
 
   scaling_config {
-    maximum_concurrency = 2
+    maximum_concurrency = 5
   }
 }

@@ -49,17 +49,16 @@ describe('SyntheticBatch', () => {
           clientRef: '1_2_1744270721',
           template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
           date: '10 April 2025',
-          nhsNumber: '9464416181',
-          fullName:
-            'Ms AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
-          firstName: 'AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
-          address_line_1: 'Ms A A AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
-          address_line_2: '14 Dean Garden Rise',
-          address_line_3: '?!""#$%&\'()*+,-./0123456789',
-          address_line_4: 'HIGH WYCOMBE:;<=',
-          address_line_5: 'HP11 1RE',
-          address_line_6: '',
-          address_line_7: '',
+          nhsNumber: '9728543751',
+          fullName: 'MR Louie NAPIER',
+          firstName: 'Louie',
+          address_line_1: 'MR Louie NAPIER',
+          address_line_2: 'c/o Wayne Shirt (CM Test)',
+          address_line_3: '6th Floor',
+          address_line_4: '7&8 Wellington Place',
+          address_line_5: 'Leeds',
+          address_line_6: 'West Yorkshire',
+          address_line_7: 'LS1 4AP',
           userData1: 'a',
           userData2: 'b',
         },
@@ -84,16 +83,17 @@ describe('SyntheticBatch', () => {
           clientRef: '5_6_1744270721',
           template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
           date: '10 April 2025',
-          nhsNumber: '9728543751',
-          fullName: 'MR Louie NAPIER',
-          firstName: 'Louie',
-          address_line_1: 'MR Louie NAPIER',
-          address_line_2: 'c/o Wayne Shirt (CM Test)',
-          address_line_3: '6th Floor',
-          address_line_4: '7&8 Wellington Place',
-          address_line_5: 'Leeds',
-          address_line_6: 'West Yorkshire',
-          address_line_7: 'LS1 4AP',
+          nhsNumber: '9464416181',
+          fullName:
+            'Ms AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
+          firstName: 'AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
+          address_line_1: 'Ms A A AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
+          address_line_2: '14 Dean Garden Rise',
+          address_line_3: '?!""#$%&\'()*+,-./0123456789',
+          address_line_4: 'HIGH WYCOMBE:;<=',
+          address_line_5: 'HP11 1RE',
+          address_line_6: '',
+          address_line_7: '',
           userData1: 'ghi',
           userData2: '',
         },
@@ -127,14 +127,14 @@ describe('SyntheticBatch', () => {
         {
           clientRef: 'id_id_1741592400',
           template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
-          firstName: 'AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
-          address_line_1: 'Ms A A AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
-          address_line_2: '14 Dean Garden Rise',
-          address_line_3: '?!""#$%&\'()*+,-./0123456789',
-          address_line_4: 'HIGH WYCOMBE:;<=',
-          address_line_5: 'HP11 1RE',
-          address_line_6: '',
-          address_line_7: '',
+          address_line_1: 'MR Louie NAPIER',
+          address_line_2: 'c/o Wayne Shirt (CM Test)',
+          address_line_3: '6th Floor',
+          address_line_4: '7&8 Wellington Place',
+          address_line_5: 'Leeds',
+          address_line_6: 'West Yorkshire',
+          address_line_7: 'LS1 4AP',
+          firstName: 'Louie',
         },
         {
           clientRef: 'id_id_1741592400',
@@ -151,66 +151,6 @@ describe('SyntheticBatch', () => {
         {
           clientRef: 'id_id_1741592400',
           template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
-          address_line_1: 'MR Louie NAPIER',
-          address_line_2: 'c/o Wayne Shirt (CM Test)',
-          address_line_3: '6th Floor',
-          address_line_4: '7&8 Wellington Place',
-          address_line_5: 'Leeds',
-          address_line_6: 'West Yorkshire',
-          address_line_7: 'LS1 4AP',
-          firstName: 'Louie',
-        },
-      ]);
-    });
-
-    test('if PDS or user data is unexpectedly undefined, undefined', () => {
-      let mockIdIdx = 0;
-      const mockGenerateId = () => {
-        mockIdIdx += 1;
-        return mockIdIdx.toString();
-      };
-
-      const syntheticBatch = new SyntheticBatch(
-        mockGenerateId,
-        () => new Date('2025-04-10T07:38:41.502Z')
-      );
-
-      const userData = [
-        { userData1: 'a', userData2: 'b' },
-        { userData1: 'c d', userData2: 'e f' },
-        { userData1: 'ghi', userData2: '' },
-      ];
-
-      const fieldsInTemplate = [
-        'date',
-        'nhsNumber',
-        'fullName',
-        'firstName',
-        'address_line_1',
-        'address_line_2',
-        'address_line_3',
-        'address_line_4',
-        'address_line_5',
-        'address_line_6',
-        'address_line_7',
-        'userData1',
-        'userData2',
-      ];
-
-      const batch = syntheticBatch.buildBatch(
-        templateId,
-        fieldsInTemplate,
-        userData
-      );
-
-      expect(batch).toEqual([
-        {
-          clientRef: '1_2_1744270721',
-          template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
-          date: '10 April 2025',
-          nhsNumber: '9464416181',
-          fullName:
-            'Ms AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
           firstName: 'AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
           address_line_1: 'Ms A A AAAAAAAAAABBBBBBBBBBDDDDDDDDDDEEEEE',
           address_line_2: '14 Dean Garden Rise',
@@ -219,42 +159,6 @@ describe('SyntheticBatch', () => {
           address_line_5: 'HP11 1RE',
           address_line_6: '',
           address_line_7: '',
-          userData1: 'a',
-          userData2: 'b',
-        },
-        {
-          clientRef: '3_4_1744270721',
-          template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
-          date: '10 April 2025',
-          nhsNumber: '9728543417',
-          fullName: 'MR John Barry LESTER',
-          firstName: 'John',
-          address_line_1: 'MR John Barry LESTER',
-          address_line_2: '1 PAUL LANE',
-          address_line_3: 'APPLEBY',
-          address_line_4: 'SCUNTHORPE',
-          address_line_5: 'S HUMBERSIDE',
-          address_line_6: 'DN15 0AR',
-          address_line_7: '',
-          userData1: 'c d',
-          userData2: 'e f',
-        },
-        {
-          clientRef: '5_6_1744270721',
-          template: '84755bd6-3cc1-4759-98b9-d1dbd8b3eff8',
-          date: '10 April 2025',
-          nhsNumber: '9728543751',
-          fullName: 'MR Louie NAPIER',
-          firstName: 'Louie',
-          address_line_1: 'MR Louie NAPIER',
-          address_line_2: 'c/o Wayne Shirt (CM Test)',
-          address_line_3: '6th Floor',
-          address_line_4: '7&8 Wellington Place',
-          address_line_5: 'Leeds',
-          address_line_6: 'West Yorkshire',
-          address_line_7: 'LS1 4AP',
-          userData1: 'ghi',
-          userData2: '',
         },
       ]);
     });

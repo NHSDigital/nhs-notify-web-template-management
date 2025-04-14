@@ -7,7 +7,7 @@ exports[`App throws if proof request event is missing a property 1`] = `
     "expected": "array",
     "received": "undefined",
     "path": [
-      "fields"
+      "personalisationFields"
     ],
     "message": "Required"
   }

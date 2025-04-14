@@ -1,11 +1,9 @@
-import type {
-  TemplateStatus,
-  ValidatedTemplateDto,
-} from 'nhs-notify-backend-client';
+import type { TemplateStatus } from 'nhs-notify-backend-client';
 import { EntityUpdateBuilder } from './domain/entity-update-builder';
 import { BuilderOptionalArgs } from './types/builders';
+import { MergedTemplateDto } from './types/template';
 
-export class TemplateUpdateBuilder extends EntityUpdateBuilder<ValidatedTemplateDto> {
+export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplateDto> {
   constructor(
     tableName: string,
     owner: string,
@@ -34,5 +32,29 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<ValidatedTemplate
     }
     this.updateBuilder.andCondition('templateStatus', expectedStatus, '=');
     return this;
+  }
+
+  setLockTime(timeMs: number, lockExpiryTimeMs?: number) {
+    this.updateBuilder
+      .setValue('lockTime', timeMs)
+      .fnCondition('lockTime', null, 'attribute_not_exists');
+
+    if (lockExpiryTimeMs) {
+      this.updateBuilder.orCondition('lockTime', lockExpiryTimeMs, '>');
+    }
+
+    return this;
+  }
+
+  removeLockTime() {
+    this.updateBuilder.removeAttribute('lockTime');
+
+    return this;
+  }
+
+  build() {
+    return this.updateBuilder
+      .setValue('updatedAt', new Date().toISOString())
+      .build();
   }
 }
