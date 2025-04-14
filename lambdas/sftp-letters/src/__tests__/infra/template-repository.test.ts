@@ -38,21 +38,22 @@ describe('TemplateRepository', () => {
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
           '#updatedAt': 'updatedAt',
-          '#lockTime': 'lockTime',
+          '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
           ':updatedAt': expect.stringMatching(isoDateRegExp),
-          ':condition_2_lockTime': mockDate.getTime() + sendLockTtlMs,
-          ':lockTime': mockDate.getTime(),
+          ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
+          ':sftpSendLockTime': mockDate.getTime(),
         },
         ConditionExpression:
-          'attribute_not_exists (#lockTime) OR #lockTime > :condition_2_lockTime',
+          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
         Key: {
           id: templateId,
           owner,
         },
         TableName: templatesTableName,
-        UpdateExpression: 'SET #lockTime = :lockTime, #updatedAt = :updatedAt',
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
       });
     });
 
@@ -91,7 +92,7 @@ describe('TemplateRepository', () => {
       await templateRepository.clearLock(owner, templateId);
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
-          '#lockTime': 'lockTime',
+          '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
@@ -102,7 +103,8 @@ describe('TemplateRepository', () => {
           owner,
         },
         TableName: templatesTableName,
-        UpdateExpression: 'SET #updatedAt = :updatedAt REMOVE #lockTime',
+        UpdateExpression:
+          'SET #updatedAt = :updatedAt REMOVE #sftpSendLockTime',
       });
     });
   });
