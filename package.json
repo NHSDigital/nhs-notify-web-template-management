@@ -13,7 +13,7 @@
     "utils/test-helper-utils"
   ],
   "scripts": {
-    "build": "npm run create-env-file && npm run build --workspace frontend",
+    "build": "npm run build --workspace frontend",
     "create-amplify-outputs": "tsx ./scripts/create-amplify-outputs.ts",
     "create-env-file": "tsx ./scripts/create-env-file.ts",
     "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
