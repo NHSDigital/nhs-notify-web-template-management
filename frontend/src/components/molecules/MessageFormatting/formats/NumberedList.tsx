@@ -1,8 +1,10 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
+import CodeExample from '@atoms/CodeExample/CodeExample';
 
-const { numberedLists } = content.components.messageFormatting;
+const { numberedLists, hiddenCodeBlockDescription } =
+  content.components.messageFormatting;
 
 export const NumberedList = () => (
   <Details data-testid='numbered-list-details'>
@@ -11,13 +13,16 @@ export const NumberedList = () => (
     </Details.Summary>
     <Details.Text data-testid='numbered-list-text'>
       <p>{numberedLists.text}</p>
-      <code>
+      <CodeExample
+        ariaText={hiddenCodeBlockDescription}
+        ariaId='numbered-list-description'
+      >
         {numberedLists.codeBlockText.map(({ id, item }) => (
           <span className={styles.inlineText} key={id}>
             {item}
           </span>
         ))}
-      </code>
+      </CodeExample>
     </Details.Text>
   </Details>
 );
