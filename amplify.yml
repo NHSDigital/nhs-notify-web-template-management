@@ -22,5 +22,3 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
-
-npx ampx generate outputs --branch main --app-id $AWS_APP_ID
