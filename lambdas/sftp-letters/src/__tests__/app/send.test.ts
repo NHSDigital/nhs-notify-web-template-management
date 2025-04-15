@@ -239,8 +239,8 @@ describe('App', () => {
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
-    expect(mocks.templateRepository.clearLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.clearLock).toHaveBeenCalledWith(
+    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
       owner,
       templateId
     );
@@ -355,10 +355,10 @@ describe('App', () => {
     expect(mocks.sftpClient.exists).not.toHaveBeenCalled();
     expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
     expect(mocks.sftpClient.put).not.toHaveBeenCalled();
-    expect(mocks.templateRepository.clearLock).not.toHaveBeenCalled();
+    expect(mocks.templateRepository.finaliseLock).not.toHaveBeenCalled();
   });
 
-  test('exits early and does not send if the manifest is already in the SFTP server, clears existing lock', async () => {
+  test('exits early and does not send if the manifest is already in the SFTP server, finalises existing lock', async () => {
     const { app, mocks, logMessages } = setup();
 
     const personalisationParameters = ['pdsField'];
@@ -442,8 +442,8 @@ describe('App', () => {
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
-    expect(mocks.templateRepository.clearLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.clearLock).toHaveBeenCalledWith(
+    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
+    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
       owner,
       templateId
     );

@@ -34,24 +34,32 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
     return this;
   }
 
-  setLockTime(
+  setLockTimeConditionally(
     lockField: 'sftpSendLockTime',
     timeMs: number,
     lockExpiryTimeMs?: number
   ) {
     this.updateBuilder
       .setValue(lockField, timeMs)
-      .fnCondition(lockField, null, 'attribute_not_exists');
+      .andCondition(lockField, 0, '<>');
 
     if (lockExpiryTimeMs) {
-      this.updateBuilder.orCondition(lockField, lockExpiryTimeMs, '>');
+      this.updateBuilder.andCondition(lockField, lockExpiryTimeMs, '>');
     }
+
+    this.updateBuilder.fnCondition(
+      lockField,
+      null,
+      'attribute_not_exists',
+      false,
+      'OR'
+    );
 
     return this;
   }
 
-  removeLockTime(lockField: 'sftpSendLockTime') {
-    this.updateBuilder.removeAttribute(lockField);
+  setLockTimeUnconditionally(lockField: 'sftpSendLockTime', timeMs: number) {
+    this.updateBuilder.setValue(lockField, timeMs);
 
     return this;
   }

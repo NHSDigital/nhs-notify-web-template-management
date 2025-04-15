@@ -167,18 +167,21 @@ describe('TemplateBuilder', () => {
     });
   });
 
-  describe('setLockTime', () => {
-    test('sets lock time if no lock exists', () => {
+  describe('setLockTimeConditionally', () => {
+    test('sets lock time if no lock exists, or lock is not finalised (set to zero)', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
         mockOwner,
         mockId
       );
 
-      const res = builder.setLockTime('sftpSendLockTime', 500).build();
+      const res = builder
+        .setLockTimeConditionally('sftpSendLockTime', 500)
+        .build();
 
       expect(res).toEqual({
-        ConditionExpression: 'attribute_not_exists (#sftpSendLockTime)',
+        ConditionExpression:
+          '#sftpSendLockTime <> :condition_1_sftpSendLockTime OR attribute_not_exists (#sftpSendLockTime)',
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
@@ -186,6 +189,7 @@ describe('TemplateBuilder', () => {
         ExpressionAttributeValues: {
           ':sftpSendLockTime': 500,
           ':updatedAt': '2025-01-01T09:00:00.000Z',
+          ':condition_1_sftpSendLockTime': 0,
         },
         Key: {
           id: 'Hello2',
@@ -204,16 +208,19 @@ describe('TemplateBuilder', () => {
         mockId
       );
 
-      const res = builder.setLockTime('sftpSendLockTime', 1000, 1500).build();
+      const res = builder
+        .setLockTimeConditionally('sftpSendLockTime', 1000, 1500)
+        .build();
 
       expect(res).toEqual({
         ConditionExpression:
-          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
+          '#sftpSendLockTime <> :condition_1_sftpSendLockTime AND #sftpSendLockTime > :condition_2_sftpSendLockTime OR attribute_not_exists (#sftpSendLockTime)',
         ExpressionAttributeNames: {
           '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
+          ':condition_1_sftpSendLockTime': 0,
           ':condition_2_sftpSendLockTime': 1500,
           ':sftpSendLockTime': 1000,
           ':updatedAt': '2025-01-01T09:00:00.000Z',
@@ -229,15 +236,17 @@ describe('TemplateBuilder', () => {
     });
   });
 
-  describe('removeLockTime', () => {
-    test('clears lockTime attribute', () => {
+  describe('setLockTimeUnconditionally', () => {
+    test('sets lock time without conditions', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
         mockOwner,
         mockId
       );
 
-      const res = builder.removeLockTime('sftpSendLockTime').build();
+      const res = builder
+        .setLockTimeUnconditionally('sftpSendLockTime', 500)
+        .build();
 
       expect(res).toEqual({
         ExpressionAttributeNames: {
@@ -245,6 +254,7 @@ describe('TemplateBuilder', () => {
           '#updatedAt': 'updatedAt',
         },
         ExpressionAttributeValues: {
+          ':sftpSendLockTime': 500,
           ':updatedAt': '2025-01-01T09:00:00.000Z',
         },
         Key: {
@@ -253,7 +263,7 @@ describe('TemplateBuilder', () => {
         },
         TableName: 'TABLE_NAME',
         UpdateExpression:
-          'SET #updatedAt = :updatedAt REMOVE #sftpSendLockTime',
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
       });
     });
   });
