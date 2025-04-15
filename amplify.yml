@@ -20,5 +20,3 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
-
-npx ampx generate outputs --branch main --app-id d1cnvxdzxtz999
