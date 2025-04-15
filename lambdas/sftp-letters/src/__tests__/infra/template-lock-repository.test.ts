@@ -41,12 +41,13 @@ describe('TemplateLockRepository', () => {
           '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
-          ':updatedAt': expect.stringMatching(isoDateRegExp),
+          ':condition_1_sftpSendLockTime': 0,
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
+          ':updatedAt': expect.stringMatching(isoDateRegExp),
           ':sftpSendLockTime': mockDate.getTime(),
         },
         ConditionExpression:
-          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
+          '#sftpSendLockTime <> :condition_1_sftpSendLockTime AND #sftpSendLockTime > :condition_2_sftpSendLockTime OR attribute_not_exists (#sftpSendLockTime)',
         Key: {
           id: templateId,
           owner,
@@ -83,20 +84,22 @@ describe('TemplateLockRepository', () => {
     });
   });
 
-  describe('clearLock', () => {
-    test('removes lock attribute', async () => {
+  describe('finaliseLock', () => {
+    test('unconditionally sets lockTime to zero', async () => {
       const { mocks, templateRepository } = setup();
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
 
-      await templateRepository.clearLock(owner, templateId);
+      await templateRepository.finaliseLock(owner, templateId);
+
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
-          '#sftpSendLockTime': 'sftpSendLockTime',
           '#updatedAt': 'updatedAt',
+          '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
           ':updatedAt': expect.stringMatching(isoDateRegExp),
+          ':sftpSendLockTime': 0,
         },
         Key: {
           id: templateId,
@@ -104,7 +107,7 @@ describe('TemplateLockRepository', () => {
         },
         TableName: templatesTableName,
         UpdateExpression:
-          'SET #updatedAt = :updatedAt REMOVE #sftpSendLockTime',
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
       });
     });
   });

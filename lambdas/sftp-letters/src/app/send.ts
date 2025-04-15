@@ -75,7 +75,7 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.clearLock(owner, templateId);
+        await this.templateRepository.finaliseLock(owner, templateId);
         return 'already-sent';
       }
 
@@ -97,7 +97,7 @@ export class App {
 
       templateLogger.info('Removing lock');
 
-      await this.templateRepository.clearLock(owner, templateId);
+      await this.templateRepository.finaliseLock(owner, templateId);
 
       templateLogger.info('Sent proofing request');
 
