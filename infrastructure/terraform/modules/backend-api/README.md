@@ -37,7 +37,7 @@ No requirements.
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | ../lambda-function | n/a |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | ../lambda-function | n/a |
-| <a name="module_lambda_layer_pdfjs"></a> [lambda\_layer\_pdfjs](#module\_lambda\_layer\_pdfjs) | ../lambda_layer | n/a |
+| <a name="module_lambda_layer_pdfjs"></a> [lambda\_layer\_pdfjs](#module\_lambda\_layer\_pdfjs) | ../lambda-layer | n/a |
 | <a name="module_lambda_set_file_virus_scan_status"></a> [lambda\_set\_file\_virus\_scan\_status](#module\_lambda\_set\_file\_virus\_scan\_status) | ../lambda-function | n/a |
 | <a name="module_lambda_validate_letter_template_files"></a> [lambda\_validate\_letter\_template\_files](#module\_lambda\_validate\_letter\_template\_files) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
