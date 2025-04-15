@@ -14,7 +14,7 @@ exports[`Header component should render correctly 1`] = `
         class="nhsuk-header__logo"
       >
         <a
-          aria-label="Link to NHS Notify templates"
+          aria-label="NHS Notify templates"
           class="nhsuk-header__link nhsuk-header__link--service"
           href="/create-and-submit-templates"
         >
