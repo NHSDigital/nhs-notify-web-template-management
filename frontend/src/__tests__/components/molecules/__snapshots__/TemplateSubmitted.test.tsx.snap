@@ -43,30 +43,13 @@ exports[`TemplateSubmitted component should render 1`] = `
         >
           template-id
         </p>
-        <h2
+        <h3
           class="nhsuk-u-margin-top-5"
         >
           What you need to do next
-        </h2>
-        <h3>
-          If you're currently onboarding
         </h3>
         <p>
-          Tell your onboarding manager once you've submitted all your templates.
-        </p>
-        <h3>
-          If you've already onboarded
-        </h3>
-        <p>
-          Once you've submitted all your templates 
-          <a
-            href="https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5"
-            id="servicenow-link"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            raise a request with the service desk (opens in a new tab).
-          </a>
+          Tell an onboarding manager once you've submitted all your templates.
         </p>
         <hr
           class="nhsuk-section-break--visible"
