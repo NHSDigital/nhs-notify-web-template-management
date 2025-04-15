@@ -14,7 +14,7 @@ export class TemplateLockRepository {
     const time = this.getDate().getTime();
 
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
+      .setLockTimeConditionally('sftpSendLockTime', time, time + this.lockTtl)
       .build();
 
     try {
@@ -29,9 +29,9 @@ export class TemplateLockRepository {
     return true;
   }
 
-  async clearLock(owner: string, id: string) {
+  async finaliseLock(owner: string, id: string) {
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .removeLockTime('sftpSendLockTime')
+      .setLockTimeUnconditionally('sftpSendLockTime', 0)
       .build();
 
     return await this.client.send(new UpdateCommand(update));
