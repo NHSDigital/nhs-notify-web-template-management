@@ -518,12 +518,8 @@ const templateSubmitted = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  doNextText:
+    "Tell an onboarding manager once you've submitted all your templates.",
   backLinkText: backToAllTemplates,
 };
 
