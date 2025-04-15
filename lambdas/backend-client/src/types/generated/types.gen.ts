@@ -71,13 +71,13 @@ export type SmsProperties = {
   message: string;
 };
 
-export type CreateUpdateLetterProperties = {
+export type CreateLetterProperties = {
   letterType: LetterType;
   language: Language;
   files?: LetterFiles;
 };
 
-export type LetterProperties = CreateUpdateLetterProperties & {
+export type LetterProperties = CreateLetterProperties & {
   files: LetterFiles;
 };
 
@@ -87,12 +87,7 @@ export type BaseTemplate = {
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
-  (
-    | NhsAppProperties
-    | EmailProperties
-    | SmsProperties
-    | CreateUpdateLetterProperties
-  );
+  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
 
 export type TemplateDto = BaseTemplate & {
   id: string;

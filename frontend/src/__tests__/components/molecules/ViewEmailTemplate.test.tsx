@@ -9,11 +9,14 @@ describe('ViewEmailTemplate component', () => {
         initialState={
           {
             id: 'template-id',
+            templateType: 'EMAIL',
             name: 'Example template',
             templateStatus: 'SUBMITTED',
             subject: 'Example subject',
             message: 'Example message',
-          } as EmailTemplate
+            createdAt: '2025-03-28T12:30:54.684Z',
+            updatedAt: '2025-03-28T12:31:54.684Z',
+          } satisfies EmailTemplate
         }
       />
     );

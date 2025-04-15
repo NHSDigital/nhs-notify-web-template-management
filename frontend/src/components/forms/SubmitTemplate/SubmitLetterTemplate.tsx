@@ -10,12 +10,12 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
-export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
+export const SubmitLetterTemplate: FC<SubmitTemplatePageComponentProps> = ({
   templateName,
   templateId,
   goBackPath,
   submitPath,
-}: SubmitTemplatePageComponentProps) => {
+}) => {
   const {
     pageHeading,
     warningCalloutLabel,
@@ -26,7 +26,9 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
     submitChecklistParagraphs,
     goBackButtonText,
     buttonText,
-  } = content.components.submitTemplate;
+    afterSubmissionHeading,
+    afterSubmissionText,
+  } = content.components.submitLetterTemplate;
 
   const [_, action] = useActionState(submitTemplate, submitPath);
 
@@ -37,13 +39,7 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           <h1>
             {pageHeading} {`'${templateName}'`}
           </h1>
-          <WarningCallout>
-            <WarningCallout.Label headingLevel='h2'>
-              {warningCalloutLabel}
-            </WarningCallout.Label>
-            <p>{warningCalloutText}</p>
-          </WarningCallout>
-          <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
+          <h2 className='nhsuk-heading-s'>{submitChecklistHeading}</h2>
           <p>{submitChecklistIntroduction}</p>
           <ul>
             {submitChecklistItems.map((item) => (
@@ -53,6 +49,16 @@ export const SubmitTemplate: FC<SubmitTemplatePageComponentProps> = ({
           {submitChecklistParagraphs.map((item) => (
             <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
           ))}
+          <h2 className='nhsuk-heading-s'>{afterSubmissionHeading}</h2>
+          {afterSubmissionText.map((item) => (
+            <p key={`after-submission-paragraph-${item.slice(0, 5)}`}>{item}</p>
+          ))}
+          <WarningCallout>
+            <WarningCallout.Label headingLevel='h2'>
+              {warningCalloutLabel}
+            </WarningCallout.Label>
+            <p>{warningCalloutText}</p>
+          </WarningCallout>
           <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input
               type='hidden'

@@ -7,12 +7,12 @@ const pageActions = [
   'wait for element #preview-heading-message to be visible',
 ];
 
-const viewSubmittedTextMessageTemplatePage = (url) => ({
+const previewSubmittedTextMessageTemplatePage = (url) => ({
   name: 'preview-submitted-text-message-template',
   url,
   actions: pageActions,
 });
 
 module.exports = {
-  viewSubmittedTextMessageTemplatePage,
+  previewSubmittedTextMessageTemplatePage,
 };
