@@ -7,7 +7,7 @@ import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
 import { FetchAuthSessionOptions, JWT } from 'aws-amplify/auth';
 import { jwtDecode } from 'jwt-decode';
-import { Schema } from '../../../amplify/data/resource';
+import { Schema } from '../../amplify/data/resource';
 import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
 
 const config = require('@/amplify_outputs.json');
