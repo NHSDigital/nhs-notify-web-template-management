@@ -9,7 +9,7 @@ describe('MessageFormatting component', () => {
   it('renders component correctly with SMS related formatting', () => {
     render(<MessageFormatting {...componentProps} />);
 
-    expect(screen.getByTestId('personalisation-header')).toHaveTextContent(
+    expect(screen.getByTestId('message-formatting-header')).toHaveTextContent(
       'Message formatting'
     );
     expect(screen.getByTestId('link-and-url-details')).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('MessageFormatting component', () => {
     };
     render(<MessageFormatting {...appFormattingProps} />);
 
-    expect(screen.getByTestId('personalisation-header')).toHaveTextContent(
+    expect(screen.getByTestId('message-formatting-header')).toHaveTextContent(
       'Message formatting'
     );
     expect(
@@ -40,7 +40,7 @@ describe('MessageFormatting component', () => {
     };
     render(<MessageFormatting {...emailFormattingProps} />);
 
-    expect(screen.getByTestId('personalisation-header')).toHaveTextContent(
+    expect(screen.getByTestId('message-formatting-header')).toHaveTextContent(
       'Message formatting'
     );
     expect(

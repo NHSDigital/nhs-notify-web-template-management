@@ -49,6 +49,7 @@ const footer = {
 
 const personalisation = {
   header: 'Personalisation',
+  hiddenCodeBlockDescription: 'An example of personalised message content:',
   details: {
     title: 'Personalisation fields',
     text1:
@@ -77,6 +78,7 @@ const personalisation = {
 
 const messageFormatting = {
   header: 'Message formatting',
+  hiddenCodeBlockDescription: 'An example of markdown:',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
