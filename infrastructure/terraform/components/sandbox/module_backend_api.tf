@@ -1,14 +1,15 @@
 module "backend_api" {
   source = "../../modules/backend-api"
 
-  project               = var.project
-  environment           = var.environment
-  component             = var.component
-  aws_account_id        = var.aws_account_id
-  region                = var.region
-  group                 = var.group
-  csi                   = local.csi
-  log_retention_in_days = var.log_retention_in_days
+  project                 = var.project
+  environment             = var.environment
+  component               = var.component
+  aws_account_id          = var.aws_account_id
+  region                  = var.region
+  group                   = var.group
+  csi                     = local.csi
+  log_retention_in_days   = var.log_retention_in_days
+  parent_acct_environment = "main"
 
 
   cognito_config = {

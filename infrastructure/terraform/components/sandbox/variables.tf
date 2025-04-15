@@ -47,6 +47,12 @@ variable "default_tags" {
   default     = {}
 }
 
+variable "parent_acct_environment" {
+  type        = string
+  description = "Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments"
+  default     = "main"
+}
+
 ##
 # Variables specific to the "sandbox"component
 ##
