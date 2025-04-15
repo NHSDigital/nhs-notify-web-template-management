@@ -4,4 +4,4 @@ if [ -z "$SKIP_SANDBOX_INSTALL" ]; then npm ci; fi
 
 npm run generate-dependencies --workspaces --if-present
 
-$root_dir/lambdas/layers/pdfjs/package.sh
+$root_dir/lambdas/layers/pdfjs/build.sh

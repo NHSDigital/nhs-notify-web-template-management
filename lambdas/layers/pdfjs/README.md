@@ -6,11 +6,11 @@ Packaged version is locked at `5.1.91`.
 
 To use with a Lambda make sure you exclude `pdfjs-dist` from the bundled code.
 
+Currently gets deployed via Terraform - [module_lambda_layer_pdfjs.tf](../../../infrastructure/terraform/modules/backend-api/module_lambda_layer_pdfjs.tf)
+
 ## Build
 
-Gets packaged using `package.sh` which is invoked in the Terraform `pre.sh` script.
-
-This creates a zip archive at `dist/layer.zip` which is deployed via Terraform - [lambda_layer_version_pdfjs.tf](../../../infrastructure/terraform/modules/backend-api/lambda_layer_version_pdfjs.tf)
+The `build.sh` installs the dependencies and outputs the layer source code in `dist/layer`. This source code then gets zipped up by Terraform on apply.
 
 ## Caveats
 
