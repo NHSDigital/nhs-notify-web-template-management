@@ -10,7 +10,7 @@ To use with a Lambda make sure you exclude `pdfjs-dist` from the bundled code.
 
 Gets packaged using `package.sh` which is invoked in the Terraform `pre.sh` script.
 
-This creates a zip archive at `dist/layer.zip` which is deployed via Terraform - [lambda_layer_version_pdfjs.tf](../../infrastructure/terraform/modules/backend-api/lambda_layer_version_pdfjs.tf)
+This creates a zip archive at `dist/layer.zip` which is deployed via Terraform - [lambda_layer_version_pdfjs.tf](../../../infrastructure/terraform/modules/backend-api/lambda_layer_version_pdfjs.tf)
 
 ## Caveats
 

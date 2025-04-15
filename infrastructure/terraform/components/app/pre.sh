@@ -4,4 +4,4 @@ npm ci
 
 npm run generate-dependencies --workspaces --if-present
 
-$root_dir/layers/pdfjs/package.sh
+$root_dir/lambdas/layers/pdfjs/package.sh
