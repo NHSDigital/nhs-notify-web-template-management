@@ -12,12 +12,12 @@ module "lambda_sftp_poll" {
   execution_role_policy_document = data.aws_iam_policy_document.sftp_poll.json
 
   environment_variables = {
-    CREDENTIALS_TTL_MS     = 900 * 1000
-    CSI                    = local.csi
-    QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
-    NODE_OPTIONS           = "--enable-source-maps",
-    REGION                 = var.region
-    SFTP_ENVIRONMENT       = local.sftp_environment
+    CREDENTIALS_TTL_SECONDS = 900
+    CSI                     = local.csi
+    QUARANTINE_BUCKET_NAME  = module.s3bucket_quarantine.id
+    NODE_OPTIONS            = "--enable-source-maps",
+    REGION                  = var.region
+    SFTP_ENVIRONMENT        = local.sftp_environment
   }
 
   timeout = 20

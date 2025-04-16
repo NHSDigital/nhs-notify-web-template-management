@@ -18,6 +18,11 @@ export class App {
     copyPath: string,
     pastePath: string
   ) {
+    this.logger.info({
+      description: 'Copying folder',
+      copyPath,
+      pastePath,
+    });
     const isDir = (await sftpClient.exists(copyPath)) === 'd';
 
     if (!isDir) {
@@ -29,11 +34,6 @@ export class App {
 
     for (const sftpFile of sftpFiles) {
       if (sftpFile.type === 'd') {
-        this.logger.info({
-          description: 'Copying folder',
-          copyPath,
-          pastePath,
-        });
         await this.copyFolder(
           sftpClient,
           `${copyPath}/${sftpFile.name}`,
@@ -42,7 +42,6 @@ export class App {
       }
 
       if (sftpFile.type === '-') {
-        this.logger.info({ description: 'Copying file', copyPath, pastePath });
         await this.copyFile(
           sftpClient,
           `${copyPath}/${sftpFile.name}`,
@@ -70,6 +69,7 @@ export class App {
     copyPath: string,
     pastePath: string
   ) {
+    this.logger.info({ description: 'Copying file', copyPath, pastePath });
     try {
       const data = (await sftpClient.get(copyPath)) as Buffer;
 
