@@ -3,7 +3,6 @@ import {
   PutObjectCommandInput,
   PutObjectCommandOutput,
   S3Client,
-  _Object,
 } from '@aws-sdk/client-s3';
 
 export class S3Repository {
@@ -11,10 +10,6 @@ export class S3Repository {
     private readonly bucket: string,
     private readonly client: S3Client
   ) {}
-
-  s3Path(key: string) {
-    return `s3://${this.bucket}/${key}`;
-  }
 
   async putRawData(
     fileData: PutObjectCommandInput['Body'],

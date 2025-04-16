@@ -4,16 +4,14 @@ import { SftpSupplierClientRepository } from './infra/sftp-supplier-client-repos
 import { loadConfig } from './config/config-poll';
 import { App } from './app/poll';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import {
-  InMemoryCache,
-  S3Repository,
-} from 'nhs-notify-web-template-management-utils';
+import { S3Repository } from 'nhs-notify-web-template-management-utils';
+import NodeCache from 'node-cache';
 
 export function createContainer() {
   const {
     csi,
     quarantineBucketName,
-    credentialsTtlMs,
+    credentialsTtlSeconds,
     region,
     sftpEnvironment,
   } = loadConfig();
@@ -22,7 +20,7 @@ export function createContainer() {
 
   const s3Client = new S3Client({ region });
 
-  const cache = new InMemoryCache({ ttl: credentialsTtlMs });
+  const cache = new NodeCache({ stdTTL: credentialsTtlSeconds });
 
   const sftpSupplierClientRepository = new SftpSupplierClientRepository(
     csi,

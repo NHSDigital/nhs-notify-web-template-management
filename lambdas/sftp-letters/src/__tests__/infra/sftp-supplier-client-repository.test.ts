@@ -1,6 +1,5 @@
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { ICache } from 'nhs-notify-web-template-management-utils';
 import { mock } from 'jest-mock-extended';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
@@ -10,13 +9,6 @@ import {
   SftpSupplierClientRepository,
 } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
-import {
-  GetParameterCommand,
-  GetParametersByPathCommand,
-  SSMClient,
-} from '@aws-sdk/client-ssm';
-import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
 
 jest.mock('../../infra/sftp-client');
@@ -77,7 +69,6 @@ describe('getClient', () => {
       sftpClient: mockSftpClient,
       baseUploadDir: 'upload/dir',
       baseDownloadDir: 'download/dir',
-      name: 'SYNERTEC',
     });
 
     expect(cache.get).toHaveBeenCalledWith(credKey);
@@ -126,7 +117,6 @@ describe('getClient', () => {
       sftpClient: mockSftpClient,
       baseUploadDir: 'upload/dir',
       baseDownloadDir: 'download/dir',
-      name: 'SYNERTEC',
     });
 
     expect(cache.get).toHaveBeenCalledWith(credKey);

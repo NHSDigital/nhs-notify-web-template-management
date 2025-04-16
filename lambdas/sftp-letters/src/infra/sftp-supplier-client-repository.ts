@@ -69,7 +69,6 @@ export class SftpSupplierClientRepository {
       sftpClient: new SftpClient(host, username, privateKey, hostKey),
       baseUploadDir,
       baseDownloadDir,
-      name: supplier,
     };
   }
 }
