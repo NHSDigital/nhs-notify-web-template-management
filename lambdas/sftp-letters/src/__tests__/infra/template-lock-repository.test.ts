@@ -84,7 +84,7 @@ describe('TemplateLockRepository', () => {
   });
 
   describe('finaliseLock', () => {
-    test('unconditionally sets lockTime to zero', async () => {
+    test('unconditionally sets lockTime to one month in the future', async () => {
       const { mocks, templateRepository } = setup();
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
