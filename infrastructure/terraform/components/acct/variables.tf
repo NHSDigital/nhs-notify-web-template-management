@@ -110,6 +110,6 @@ variable "letter_suppliers" {
     enable_polling   = bool
     default_supplier = optional(bool)
   }))
-  description = "Letter suppliers enabled in the environment"
+  description = "Letter suppliers enabled in the account (across all environments)"
   default     = {}
 }

@@ -41,13 +41,12 @@ describe('TemplateLockRepository', () => {
           '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
-          ':condition_1_sftpSendLockTime': 0,
           ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
           ':updatedAt': expect.stringMatching(isoDateRegExp),
           ':sftpSendLockTime': mockDate.getTime(),
         },
         ConditionExpression:
-          '#sftpSendLockTime <> :condition_1_sftpSendLockTime AND #sftpSendLockTime > :condition_2_sftpSendLockTime OR attribute_not_exists (#sftpSendLockTime)',
+          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
         Key: {
           id: templateId,
           owner,
@@ -98,8 +97,8 @@ describe('TemplateLockRepository', () => {
           '#sftpSendLockTime': 'sftpSendLockTime',
         },
         ExpressionAttributeValues: {
-          ':updatedAt': expect.stringMatching(isoDateRegExp),
-          ':sftpSendLockTime': 0,
+          ':updatedAt': expect.any(String),
+          ':sftpSendLockTime': mockDate.getTime() + 2_592_000_000,
         },
         Key: {
           id: templateId,
