@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeExample component renders component correctly 1`] = `
+<DocumentFragment>
+  <span
+    class="nhsuk-u-visually-hidden"
+    id="test-id"
+  >
+    This is an example of markdown:
+  </span>
+  <code
+    aria-describedby="test-id"
+  >
+    # A test example
+  </code>
+</DocumentFragment>
+`;
+
+exports[`CodeExample component renders component correctly when optional class is provided 1`] = `
+<DocumentFragment>
+  <span
+    class="nhsuk-u-visually-hidden"
+    id="test-id"
+  >
+    This is an example of markdown:
+  </span>
+  <code
+    aria-describedby="test-id"
+    class="test-class"
+  >
+    # A test example
+  </code>
+</DocumentFragment>
+`;
