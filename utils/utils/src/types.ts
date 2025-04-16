@@ -125,11 +125,16 @@ export type MergedTemplate = {
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
-  // owner: string;
-  // version: number;
+} & DbOnlyTemplateProperties;
+
+type DbOnlyTemplateProperties = {
+  owner: string;
+  version: number;
 };
 
-type AssertExtendsMerged<T extends MergedTemplate> = T;
+type AssertExtendsMerged<
+  T extends Omit<MergedTemplate, keyof DbOnlyTemplateProperties>,
+> = T;
 
 // assigned only for the purpose of the assertion
 type _Asserted = AssertExtendsMerged<LetterTemplate> &

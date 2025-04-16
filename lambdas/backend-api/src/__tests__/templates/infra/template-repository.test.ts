@@ -17,8 +17,9 @@ import {
   ValidatedCreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
+import { TemplateRepository } from '../../../templates/infra';
 import { marshall } from '@aws-sdk/util-dynamodb';
+import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 jest.mock('node:crypto');
@@ -79,25 +80,25 @@ const databaseTemplateProperties = {
   updatedAt: '2024-12-27T00:00:00.000Z',
 };
 
-const emailTemplate: DatabaseTemplate = {
+const emailTemplate: MergedTemplate = {
   templateType: 'EMAIL',
   ...emailProperties,
   ...databaseTemplateProperties,
 };
 
-const smsTemplate: DatabaseTemplate = {
+const smsTemplate: MergedTemplate = {
   templateType: 'SMS',
   ...smsProperties,
   ...databaseTemplateProperties,
 };
 
-const nhsAppTemplate: DatabaseTemplate = {
+const nhsAppTemplate: MergedTemplate = {
   templateType: 'NHS_APP',
   ...nhsAppProperties,
   ...databaseTemplateProperties,
 };
 
-const letterTemplate: DatabaseTemplate = {
+const letterTemplate: MergedTemplate = {
   templateType: 'LETTER',
   ...letterProperties,
   ...databaseTemplateProperties,
@@ -569,7 +570,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: DatabaseTemplate = {
+      const databaseTemplate: MergedTemplate = {
         id,
         owner,
         version: 1,
@@ -680,7 +681,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: DatabaseTemplate = {
+      const databaseTemplate: MergedTemplate = {
         id,
         owner,
         version: 1,
@@ -797,7 +798,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: DatabaseTemplate = {
+      const databaseTemplate: MergedTemplate = {
         id,
         owner,
         version: 1,
