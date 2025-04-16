@@ -99,15 +99,32 @@ module.exports = {
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
       )
     ),
+    // TODO header nesting error, see CCM-9749
+    // performCheck(
+    //   previewLetterTemplatePage(
+    //     `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-virus-check']}`
+    //   )
+    // ),
+    performCheck(
+      previewLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-validation']}`
+      )
+    ),
+    // TODO header nesting error, see CCM-9749
+    // performCheck(
+    //   previewLetterTemplatePage(
+    //     `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-validation']}`
+    //   )
+    // ),
     performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
     performCheck(
       submitLetterTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-validation']}`
       )
     ),
     performCheck(
       letterTemplateSubmittedPage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-validation']}`
       )
     ),
     performCheck(previewSubmittedLetterTemplatePage(messageTemplatesUrl)),
