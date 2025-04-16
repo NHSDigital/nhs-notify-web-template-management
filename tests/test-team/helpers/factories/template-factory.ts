@@ -37,7 +37,12 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (id: string, owner: string, name: string): Template => {
+  createLetterTemplate: (
+    id: string,
+    owner: string,
+    name: string,
+    virusScanStatus = 'PENDING'
+  ): Template => {
     return TemplateFactory.create({
       id,
       owner,
@@ -49,12 +54,12 @@ export const TemplateFactory = {
         pdfTemplate: {
           fileName: 'file.pdf',
           currentVersion: randomUUID(),
-          virusScanStatus: 'PENDING',
+          virusScanStatus,
         },
         testDataCsv: {
           fileName: 'test-data.csv',
           currentVersion: randomUUID(),
-          virusScanStatus: 'PENDING',
+          virusScanStatus,
         },
       },
     });

@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import {
-  CreateUpdateLetterTemplate,
+  CreateLetterTemplate,
   CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -62,7 +62,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('createTemplate - should thrown error when saving unexpectedly fails', async () => {
+  test('createTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -86,7 +86,7 @@ describe('form-actions', () => {
     );
   });
 
-  test('createTemplate - should thrown error when no token', async () => {
+  test('createTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -129,7 +129,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -182,7 +182,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -220,7 +220,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -250,7 +250,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createLetterTemplateInput: CreateUpdateLetterTemplate = {
+    const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -305,7 +305,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('saveTemplate - should thrown error when saving unexpectedly fails', async () => {
+  test('saveTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -334,7 +334,7 @@ describe('form-actions', () => {
     );
   });
 
-  test('saveTemplate - should thrown error when no token', async () => {
+  test('saveTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -397,7 +397,7 @@ describe('form-actions', () => {
     expect(response).toEqual(undefined);
   });
 
-  test('getTemplate - should thrown error when no token', async () => {
+  test('getTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -442,7 +442,7 @@ describe('form-actions', () => {
     expect(response).toEqual([]);
   });
 
-  test('getTemplates - should thrown error when no token', async () => {
+  test('getTemplates - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -512,7 +512,7 @@ describe('form-actions', () => {
       expect(response).toEqual(responseData);
     });
 
-    test('submitTemplate - should thrown error when saving unexpectedly fails', async () => {
+    test('submitTemplate - should throw error when saving unexpectedly fails', async () => {
       mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
         error: {
           code: 400,
@@ -530,7 +530,7 @@ describe('form-actions', () => {
       );
     });
 
-    test('submitTemplate - should thrown error when no token', async () => {
+    test('submitTemplate - should throw error when no token', async () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -556,7 +556,7 @@ describe('form-actions', () => {
       expect(response).toEqual(undefined);
     });
 
-    test('deleteTemplate - should thrown error when saving unexpectedly fails', async () => {
+    test('deleteTemplate - should throw error when saving unexpectedly fails', async () => {
       mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
         error: {
           code: 400,
@@ -574,7 +574,7 @@ describe('form-actions', () => {
       );
     });
 
-    test('deleteTemplate - should thrown error when no token', async () => {
+    test('deleteTemplate - should throw error when no token', async () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce(undefined);
 

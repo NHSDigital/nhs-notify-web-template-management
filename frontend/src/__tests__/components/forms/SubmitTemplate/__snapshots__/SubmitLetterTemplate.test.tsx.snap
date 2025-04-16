@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubmitTemplate component should render 1`] = `
+exports[`SubmitLetterTemplate component should render 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -16,6 +16,39 @@ exports[`SubmitTemplate component should render 1`] = `
         <h1>
           Submit 'template-name'
         </h1>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          Before you submit this template
+        </h2>
+        <p>
+          Check that the template you uploaded:
+        </p>
+        <ul>
+          <li>
+            is signed off by the relevant stakeholders in your team
+          </li>
+          <li>
+            does not have any spelling errors
+          </li>
+          <li>
+            is formatted correctly
+          </li>
+        </ul>
+        <p>
+          If you need to make further changes to this template, go back and upload an updated or different letter
+        </p>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          After you submit this template
+        </h2>
+        <p>
+          Our service team will send you a proof of this letter template by email.
+        </p>
+        <p>
+          This email will also tell you what you need to do next.
+        </p>
         <div
           class="nhsuk-warning-callout"
         >
@@ -34,34 +67,9 @@ exports[`SubmitTemplate component should render 1`] = `
             </span>
           </h2>
           <p>
-            When you submit this template it cannot be changed. It can only be replaced by a new template.
+            When you submit this template you will not be able to make further changes. If you still need to change this template after it's submitted, replace it with a new template.
           </p>
         </div>
-        <h2
-          class="nhsuk-heading-m"
-        >
-          Before you submit
-        </h2>
-        <p>
-          You should check that your template:
-        </p>
-        <ul>
-          <li>
-            is signed off by the relevant stakeholders in your team
-          </li>
-          <li>
-            does not have any spelling errors
-          </li>
-          <li>
-            is formatted correctly
-          </li>
-        </ul>
-        <p>
-          When you submit a template, it will be used by NHS Notify to set up the messages you want to send.
-        </p>
-        <p>
-          If you want to change a submitted template, you must create and submit a new template to replace it.
-        </p>
         <form
           action="/action"
         >

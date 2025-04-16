@@ -7,7 +7,7 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
-import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
+import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
 
 function createTemplates(owner: string) {
   return {
@@ -92,7 +92,7 @@ test.describe('Unauthorised data access Tests', () => {
     page,
     baseURL,
   }) => {
-    const previewEmailTemplatePage = new TemplateMgmtViewSubmittedEmailPage(
+    const previewEmailTemplatePage = new TemplateMgmtPreviewSubmittedEmailPage(
       page
     );
 

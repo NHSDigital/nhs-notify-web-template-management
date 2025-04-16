@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedSMSTemplatePage, {
+import PreviewSubmittedSMSTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-text-message-template/[templateId]/page';
 import { ViewSMSTemplate } from '@molecules/ViewSMSTemplate/ViewSMSTemplate';
@@ -20,7 +20,7 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('ViewSubmittedSMSTemplatePage', () => {
+describe('PreviewSubmittedSMSTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
@@ -42,7 +42,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await ViewSubmittedSMSTemplatePage({
+    const page = await PreviewSubmittedSMSTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -57,7 +57,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await ViewSubmittedSMSTemplatePage({
+    await PreviewSubmittedSMSTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -100,7 +100,7 @@ describe('ViewSubmittedSMSTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await ViewSubmittedSMSTemplatePage({
+      await PreviewSubmittedSMSTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),

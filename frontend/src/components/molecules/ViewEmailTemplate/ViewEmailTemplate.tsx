@@ -20,13 +20,13 @@ export function ViewEmailTemplate({
 
   const html = renderEmailMarkdown(templateMessage);
 
-  const { cannotEdit, createNewTemplate } =
+  const { cannotEdit, createNewTemplate, backLinkText } =
     content.components.viewSubmittedTemplate;
 
   return (
     <>
       <BackLink href={`${getBasePath()}/message-templates`}>
-        Back to all templates
+        {backLinkText}
       </BackLink>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
@@ -39,7 +39,7 @@ export function ViewEmailTemplate({
             <p>{cannotEdit}</p>
             <p>{createNewTemplate}</p>
             <p>
-              <Link href='/message-templates'>Back to all templates</Link>
+              <Link href='/message-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>
