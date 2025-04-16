@@ -6,12 +6,10 @@ import {
   TemplateDto,
   CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
-import {
-  DatabaseTemplate,
-  TemplateRepository,
-} from '@backend-api/templates/infra';
+import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
+import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/logger');
@@ -142,7 +140,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: DatabaseTemplate = {
+      const template: MergedTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -186,7 +184,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: DatabaseTemplate = {
+      const template: MergedTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -253,7 +251,7 @@ describe('templateClient', () => {
 
       const creationTime = '2025-03-12T08:41:08.805Z';
 
-      const initialCreatedTemplate: DatabaseTemplate = {
+      const initialCreatedTemplate: MergedTemplate = {
         ...dataWithFiles,
         id: templateId,
         createdAt: creationTime,
@@ -265,7 +263,7 @@ describe('templateClient', () => {
 
       const updateTime = '2025-03-12T08:41:33.666Z';
 
-      const finalTemplate: DatabaseTemplate = {
+      const finalTemplate: MergedTemplate = {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
@@ -546,7 +544,7 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
-        data: {} as unknown as DatabaseTemplate,
+        data: {} as unknown as MergedTemplate,
       });
 
       const result = await templateClient.createLetterTemplate(
@@ -604,7 +602,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_VALIDATION',
       };
 
-      const initialCreatedTemplate: DatabaseTemplate = {
+      const initialCreatedTemplate: MergedTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
         owner,
@@ -695,7 +693,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_VALIDATION',
       };
 
-      const initialCreatedTemplate: DatabaseTemplate = {
+      const initialCreatedTemplate: MergedTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
         owner,
@@ -789,7 +787,7 @@ describe('templateClient', () => {
 
       const creationTime = '2025-03-12T08:41:08.805Z';
 
-      const initialCreatedTemplate: DatabaseTemplate = {
+      const initialCreatedTemplate: MergedTemplate = {
         ...dataWithFiles,
         id: templateId,
         createdAt: creationTime,
@@ -801,7 +799,7 @@ describe('templateClient', () => {
 
       const updateTime = '2025-03-12T08:41:33.666Z';
 
-      const finalTemplate: DatabaseTemplate = {
+      const finalTemplate: MergedTemplate = {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
@@ -977,7 +975,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: DatabaseTemplate = {
+      const template: MergedTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -1089,7 +1087,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: DatabaseTemplate = {
+      const template: MergedTemplate = {
         ...templateDTO,
         owner,
         version: 1,
@@ -1359,7 +1357,7 @@ describe('templateClient', () => {
         templateType: 'SMS',
       };
 
-      const template: DatabaseTemplate = {
+      const template: MergedTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,

@@ -23,8 +23,8 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
-import { DatabaseTemplate } from './template';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -58,7 +58,7 @@ export class TemplateRepository {
   async get(
     templateId: string,
     owner: string
-  ): Promise<ApplicationResult<DatabaseTemplate>> {
+  ): Promise<ApplicationResult<MergedTemplate>> {
     try {
       const response = await this.client.send(
         new GetCommand({
@@ -71,7 +71,7 @@ export class TemplateRepository {
         return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
       }
 
-      const item = response.Item as DatabaseTemplate;
+      const item = response.Item as MergedTemplate;
 
       if (item.templateStatus === 'DELETED') {
         return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
@@ -87,9 +87,9 @@ export class TemplateRepository {
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     owner: string,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
-  ): Promise<ApplicationResult<DatabaseTemplate>> {
+  ): Promise<ApplicationResult<MergedTemplate>> {
     const date = new Date().toISOString();
-    const entity: DatabaseTemplate = {
+    const entity: MergedTemplate = {
       ...template,
       id: randomUUID(),
       owner,
@@ -115,7 +115,7 @@ export class TemplateRepository {
     template: ValidatedCreateUpdateTemplate,
     owner: string,
     expectedStatus: TemplateStatus
-  ): Promise<ApplicationResult<DatabaseTemplate>> {
+  ): Promise<ApplicationResult<MergedTemplate>> {
     const updateExpression = [
       '#name = :name',
       ...this.getChannelAttributeExpressions(template),
@@ -241,7 +241,7 @@ export class TemplateRepository {
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
     owner: string
-  ): Promise<ApplicationResult<DatabaseTemplate>> {
+  ): Promise<ApplicationResult<MergedTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string | number> = {
@@ -262,7 +262,7 @@ export class TemplateRepository {
     }
   }
 
-  async list(owner: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  async list(owner: string): Promise<ApplicationResult<MergedTemplate[]>> {
     try {
       const input: QueryCommandInput = {
         TableName: this.templatesTableName,
@@ -278,7 +278,7 @@ export class TemplateRepository {
         FilterExpression: '#status <> :deletedStatus',
       };
 
-      const items: DatabaseTemplate[] = [];
+      const items: MergedTemplate[] = [];
 
       do {
         // eslint-disable-next-line no-await-in-loop
@@ -288,7 +288,7 @@ export class TemplateRepository {
 
         input.ExclusiveStartKey = LastEvaluatedKey;
 
-        items.push(...(Items as DatabaseTemplate[]));
+        items.push(...(Items as MergedTemplate[]));
       } while (input.ExclusiveStartKey);
 
       return success(items);
@@ -395,7 +395,7 @@ export class TemplateRepository {
     try {
       const response = await this.client.send(new UpdateCommand(input));
 
-      return success(response.Attributes as DatabaseTemplate);
+      return success(response.Attributes as MergedTemplate);
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
