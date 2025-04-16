@@ -2,6 +2,8 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
+const THIRTY_DAYS_MS = 2_592_000_000;
+
 export class TemplateLockRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
@@ -14,7 +16,7 @@ export class TemplateLockRepository {
     const time = this.getDate().getTime();
 
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setLockTimeConditionally('sftpSendLockTime', time, time + this.lockTtl)
+      .setLockTime('sftpSendLockTime', time, time + this.lockTtl)
       .build();
 
     try {
@@ -30,8 +32,10 @@ export class TemplateLockRepository {
   }
 
   async finaliseLock(owner: string, id: string) {
+    const time = this.getDate().getTime();
+
     const update = new TemplateUpdateBuilder(this.templatesTableName, owner, id)
-      .setLockTimeUnconditionally('sftpSendLockTime', 0)
+      .setLockTimeUnconditional('sftpSendLockTime', time + THIRTY_DAYS_MS)
       .build();
 
     return await this.client.send(new UpdateCommand(update));
