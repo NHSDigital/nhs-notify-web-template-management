@@ -8,10 +8,11 @@ import {
 import { SftpClient } from '../../infra/sftp-client';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { ICache } from 'nhs-notify-web-template-management-utils';
 import { mock } from 'jest-mock-extended';
+import NodeCache from 'node-cache';
 
 jest.mock('../../infra/sftp-client');
+jest.mock('node-cache');
 
 function setup() {
   const environment = 'testenv';
@@ -20,8 +21,7 @@ function setup() {
 
   const { logger } = createMockLogger();
 
-  const cacheRelease = jest.fn();
-  const cache = mock<ICache>({ acquireLock: async () => cacheRelease });
+  const cache = mock<NodeCache>();
 
   const mocks = {
     logger,
@@ -29,17 +29,16 @@ function setup() {
     ssmClient,
     cache,
   };
-  return { mocks, cacheRelease };
+  return { mocks };
 }
 
 describe('getClient', () => {
   test('Returns client when credentials are not cached', async () => {
     const {
       mocks: { logger, environment, ssmClient, cache },
-      cacheRelease,
     } = setup();
 
-    cache.get.mockResolvedValueOnce(null);
+    cache.get.mockReturnValueOnce(undefined);
 
     ssmClient.on(GetParameterCommand).resolvesOnce({
       Parameter: {
@@ -84,17 +83,14 @@ describe('getClient', () => {
       'testKey',
       'hostKey'
     );
-
-    expect(cacheRelease).toHaveBeenCalled();
   });
 
   test('Returns client when credentials are cached', async () => {
     const {
       mocks: { logger, environment, ssmClient, cache },
-      cacheRelease,
     } = setup();
 
-    cache.get.mockResolvedValueOnce(
+    cache.get.mockReturnValueOnce(
       JSON.stringify({
         host: 'testHost',
         username: 'testUser',
@@ -133,8 +129,6 @@ describe('getClient', () => {
       'testKey',
       'hostKey'
     );
-
-    expect(cacheRelease).toHaveBeenCalled();
   });
 
   test('throws if parameter response is empty', async () => {

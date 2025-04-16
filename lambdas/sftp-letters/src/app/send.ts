@@ -1,4 +1,3 @@
-import type { SftpClient } from '../infra/sftp-client';
 import type { UserDataRepository } from '../infra/user-data-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { SyntheticBatch } from '../domain/synthetic-batch';
@@ -9,6 +8,7 @@ import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import type { ProofingRequest } from '../infra/types';
+import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
 
 export class App {
   constructor(
@@ -16,31 +16,35 @@ export class App {
     private readonly templateRepository: TemplateLockRepository,
     private readonly sftpEnvironment: string,
     private readonly batch: SyntheticBatch,
+    private readonly sftpSupplierClientRepository: SftpSupplierClientRepository,
     private readonly logger: Logger
   ) {}
   async send(
     eventBody: string,
-    messageId: string,
-    sftp: SftpClient,
-    baseUploadDir: string
+    messageId: string
   ): Promise<'sent' | 'already-sent' | 'failed'> {
     const {
       owner,
-      templateId,
       pdfVersion,
-      testDataVersion,
       personalisationParameters,
+      supplier,
+      templateId,
+      testDataVersion,
     } = this.parseProofingRequest(eventBody);
+
+    const { sftpClient: sftp, baseUploadDir } =
+      await this.sftpSupplierClientRepository.getClient(supplier);
 
     const batchId = this.batch.getId(templateId, pdfVersion);
 
     const templateLogger = this.logger.child({
-      owner,
-      templateId,
-      pdfVersion,
-      testDataVersion,
       batchId,
       messageId,
+      owner,
+      pdfVersion,
+      supplier,
+      templateId,
+      testDataVersion,
     });
 
     const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
@@ -48,6 +52,9 @@ export class App {
     templateLogger.info('Fetching user Data');
 
     try {
+      templateLogger.info('Opening SFTP connection');
+      await sftp.connect();
+
       const files = await this.getFileData(
         owner,
         templateId,
@@ -108,6 +115,14 @@ export class App {
         .error(error);
 
       return 'failed';
+    } finally {
+      await sftp.end().catch((error) => {
+        templateLogger
+          .child({
+            description: 'Failed to close SFTP connection',
+          })
+          .error(error);
+      });
     }
   }
 
@@ -115,10 +130,11 @@ export class App {
     return z
       .object({
         owner: z.string(),
-        templateId: z.string(),
         pdfVersion: z.string(),
-        testDataVersion: z.string().optional(),
         personalisationParameters: z.array(z.string()),
+        supplier: z.string(),
+        templateId: z.string(),
+        testDataVersion: z.string().optional(),
       })
       .parse(JSON.parse(event));
   }

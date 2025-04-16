@@ -10,13 +10,12 @@ import { TemplateLockRepository } from './infra/template-lock-repository';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import ksuid from 'ksuid';
-import { InMemoryCache } from 'nhs-notify-web-template-management-utils';
+import NodeCache from 'node-cache';
 
 export function createContainer() {
   const {
-    credentialsTtlMs,
+    credentialsTtlSeconds,
     csi,
-    defaultSupplier,
     internalBucketName,
     region,
     sendLockTtlMs,
@@ -50,7 +49,7 @@ export function createContainer() {
     sendLockTtlMs
   );
 
-  const cache = new InMemoryCache({ ttl: credentialsTtlMs });
+  const cache = new NodeCache({ stdTTL: credentialsTtlSeconds });
 
   const sftpSupplierClientRepository = new SftpSupplierClientRepository(
     csi,
@@ -69,13 +68,12 @@ export function createContainer() {
     templateRepository,
     sftpEnvironment,
     batch,
+    sftpSupplierClientRepository,
     logger
   );
 
   return {
     app,
-    sftpSupplierClientRepository,
-    defaultSupplier,
     logger,
   };
 }
