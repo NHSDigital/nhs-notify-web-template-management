@@ -70,6 +70,19 @@ export const templateTypeDisplayMappings = (type: TemplateType) =>
     LETTER: 'Letter',
   })[type];
 
+export const templateStatusToColourMappings = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: undefined,
+      SUBMITTED: 'grey',
+      DELETED: undefined,
+      PENDING_UPLOAD: undefined,
+      PENDING_VALIDATION: undefined,
+      VIRUS_SCAN_FAILED: 'red',
+      VALIDATION_FAILED: 'red',
+    }) as const
+  )[status];
+
 export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
   ({
     NOT_YET_SUBMITTED: 'Not yet submitted',
@@ -77,8 +90,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     DELETED: '', // will not be shown in the UI
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
-    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
-    VALIDATION_FAILED: 'Validation Failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    VALIDATION_FAILED: 'Checks failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>

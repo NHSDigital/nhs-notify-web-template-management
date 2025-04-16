@@ -108,6 +108,11 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
+    await expect(page.getByTestId('submit-button')).toBeVisible();
   });
 
   test('PDF only - Uploaded pdf file is virus scanned - if scan passes, file is copied to the internal bucket and validated', async ({
@@ -173,16 +178,98 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
       );
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
+    await expect(page.getByTestId('submit-button')).toBeVisible();
   });
 
-  test('Uploaded pdf template files and test data csv files are virus scanned - if scan fails, files are deleted from quarantine and not copied, file and template status updated in database', async ({
+  test('Uploaded pdf template files and test data csv files are virus scanned - if threat detected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
     page,
   }) => {
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
 
     await createTemplatePage.loadPage();
 
-    await createTemplatePage.nameInput.fill('Valid Letter Template');
+    await createTemplatePage.nameInput.fill('Antivirus test file');
+
+    await createTemplatePage.setPdfFile(
+      pdfUploadFixtures.withPersonalisation.pdf.filepath
+    );
+
+    await createTemplatePage.setCsvFile(
+      pdfUploadFixtures.withPersonalisation.csvFakeVirus.filepath
+    );
+
+    await createTemplatePage.clickSaveAndPreviewButton();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+    const maybeTemplateId = TemplateMgmtPreviewLetterPage.getTemplateId(
+      page.url()
+    );
+
+    expect(maybeTemplateId).not.toBeUndefined();
+
+    const templateId = maybeTemplateId as string;
+
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        id: templateId,
+        owner: user.userId,
+      });
+
+      expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
+      expect(template.files?.testDataCsv?.virusScanStatus).toBe('FAILED');
+      expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
+
+      const csvInternal = await templateStorageHelper.getScannedCsvTestDataFile(
+        key,
+        template.files?.testDataCsv?.currentVersion as string
+      );
+
+      expect(csvInternal).toBe(null);
+
+      const csvQuarantine =
+        await templateStorageHelper.getQuarantineCsvTestDataFile(
+          key,
+          template.files?.testDataCsv?.currentVersion as string
+        );
+
+      expect(csvQuarantine).toBe(null);
+
+      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+        key,
+        template.files?.pdfTemplate?.currentVersion as string
+      );
+
+      expect(pdf?.ChecksumSHA256).toEqual(
+        pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+      );
+    }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
+  });
+
+  test('Uploaded pdf template files and test data csv files are virus scanned - if password protected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
+    page,
+  }) => {
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+
+    await createTemplatePage.loadPage();
+
+    await createTemplatePage.nameInput.fill('Password protected file');
 
     await createTemplatePage.setPdfFile(
       pdfUploadFixtures.withPersonalisation.passwordPdf.filepath
@@ -245,6 +332,11 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if pdf parameters and test data parameters do not match', async ({
@@ -295,6 +387,11 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if unexpected csv is uploaded', async ({ page }) => {
@@ -343,6 +440,11 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if expected csv is not uploaded', async ({ page }) => {
@@ -386,6 +488,11 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if pdf has incomplete address', async ({ page }) => {
@@ -429,6 +536,11 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if pdf has empty parameters', async ({ page }) => {
@@ -477,6 +589,11 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 
   test('validation fails if pdf has non-sensible parameters', async ({
@@ -527,5 +644,10 @@ test.describe('letter file validation', () => {
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.csvHeaders).toBeUndefined();
     }).toPass({ timeout: 20_000 });
+
+    page.reload();
+
+    await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
+    await expect(page.getByTestId('submit-button')).toBeHidden();
   });
 });
