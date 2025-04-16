@@ -21,7 +21,6 @@ export type SupplierSftpClient = {
   sftpClient: SftpClient;
   baseUploadDir: string;
   baseDownloadDir: string;
-  name: string;
 };
 
 export class SftpSupplierClientRepository {
@@ -72,46 +71,5 @@ export class SftpSupplierClientRepository {
       baseDownloadDir,
       name: supplier,
     };
-  }
-
-  async listClients(): Promise<SupplierSftpClient[]> {
-    this.logger.info({
-      description: 'Retrieving SFTP details for suppliers from SSM',
-    });
-
-    const sftpCredParameterPath = `/${this.csi}/sftp-config`;
-
-    const ssmResult = await this.ssmClient.send(
-      new GetParametersByPathCommand({
-        Path: sftpCredParameterPath,
-        WithDecryption: true,
-      })
-    );
-
-    const sftpClientParameters = ssmResult.Parameters ?? [];
-
-    return sftpClientParameters.map(
-      ({ Name: name, Value: sftpCredentials }) => {
-        if (!name || !sftpCredentials) {
-          throw new Error(`SFTP credentials for ${name} are undefined`);
-        }
-
-        const {
-          host,
-          username,
-          privateKey,
-          hostKey,
-          baseUploadDir,
-          baseDownloadDir,
-        } = getConfigFromSsmString(sftpCredentials);
-
-        return {
-          sftpClient: new SftpClient(host, username, privateKey, hostKey),
-          baseUploadDir,
-          baseDownloadDir,
-          name,
-        };
-      }
-    );
   }
 }

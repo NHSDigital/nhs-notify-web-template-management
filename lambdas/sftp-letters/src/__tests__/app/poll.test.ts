@@ -92,14 +92,12 @@ test('polls SFTP clients', async () => {
   });
 
   const sftpSupplierClientRepository = mockDeep<SftpSupplierClientRepository>({
-    listClients: async () => [
-      {
-        sftpClient,
-        baseUploadDir: 'upload-dir',
-        baseDownloadDir: 'download-dir',
-        name: 'supplier',
-      },
-    ],
+    getClient: async () => ({
+      sftpClient,
+      baseUploadDir: 'upload-dir',
+      baseDownloadDir: 'download-dir',
+      name: 'supplier',
+    }),
   });
 
   const mockLogger = mockDeep<Logger>();
@@ -112,7 +110,7 @@ test('polls SFTP clients', async () => {
     'sftp-environment'
   );
 
-  await app.poll();
+  await app.poll('supplier');
 
   expect(s3Repository.putRawData).toHaveBeenCalledTimes(3);
   expect(s3Repository.putRawData).toHaveBeenCalledWith(

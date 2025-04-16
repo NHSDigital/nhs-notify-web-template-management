@@ -1,3 +1,7 @@
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { ICache } from 'nhs-notify-web-template-management-utils';
+import { mock } from 'jest-mock-extended';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ZodError } from 'zod';
@@ -35,113 +39,6 @@ function setup() {
   };
   return { mocks };
 }
-
-describe('listClients', () => {
-  test('returns client list', async () => {
-    const {
-      mocks: { logger, environment, ssmClient, cache },
-    } = setup();
-
-    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
-      Parameters: [
-        {
-          Name: 'supplier-1',
-          Value: JSON.stringify({
-            host: 'testHost',
-            username: 'testUser',
-            privateKey: 'testKey',
-            hostKey: 'hostKey',
-            baseUploadDir: 'upload/dir',
-            baseDownloadDir: 'download/dir',
-          }),
-        },
-        {
-          Name: 'supplier-2',
-          Value: JSON.stringify({
-            host: 'testHost',
-            username: 'testUser',
-            privateKey: 'testKey',
-            hostKey: 'hostKey',
-            baseUploadDir: 'upload/dir',
-            baseDownloadDir: 'download/dir',
-          }),
-        },
-      ],
-    });
-
-    const sftpClientRepository = new SftpSupplierClientRepository(
-      environment,
-      ssmClient as unknown as SSMClient,
-      cache,
-      logger
-    );
-
-    const clients = await sftpClientRepository.listClients();
-
-    const mockSftpClients = jest.mocked(SftpClient).mock.instances;
-
-    expect(clients).toEqual([
-      {
-        sftpClient: mockSftpClients[0],
-        baseUploadDir: 'upload/dir',
-        baseDownloadDir: 'download/dir',
-        name: 'supplier-1',
-      },
-      {
-        sftpClient: mockSftpClients[1],
-        baseUploadDir: 'upload/dir',
-        baseDownloadDir: 'download/dir',
-        name: 'supplier-2',
-      },
-    ]);
-  });
-
-  test('returns empty array if no parameters are found', async () => {
-    const {
-      mocks: { logger, environment, ssmClient, cache },
-    } = setup();
-
-    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
-      Parameters: undefined,
-    });
-
-    const sftpClientRepository = new SftpSupplierClientRepository(
-      environment,
-      ssmClient as unknown as SSMClient,
-      cache,
-      logger
-    );
-
-    const clients = await sftpClientRepository.listClients();
-
-    expect(clients).toEqual([]);
-  });
-
-  test('throws error if malformed SSM response is found', async () => {
-    const {
-      mocks: { logger, environment, ssmClient, cache },
-    } = setup();
-
-    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
-      Parameters: [
-        {
-          Name: 'name',
-        },
-      ],
-    });
-
-    const sftpClientRepository = new SftpSupplierClientRepository(
-      environment,
-      ssmClient as unknown as SSMClient,
-      cache,
-      logger
-    );
-
-    await expect(() => sftpClientRepository.listClients()).rejects.toThrow(
-      'SFTP credentials for name are undefined'
-    );
-  });
-});
 
 describe('getClient', () => {
   test('Returns client when credentials are not cached', async () => {

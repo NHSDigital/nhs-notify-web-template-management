@@ -2,7 +2,7 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { UserDataRepository } from './infra/user-data-repository';
 import { SSMClient } from '@aws-sdk/client-ssm';
 import { SftpSupplierClientRepository } from './infra/sftp-supplier-client-repository';
-import { loadConfig } from './config/config';
+import { loadConfig } from './config/config-send';
 import { App } from './app/send';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { SyntheticBatch } from './domain/synthetic-batch';
