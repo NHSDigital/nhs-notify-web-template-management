@@ -49,6 +49,7 @@ const footer = {
 
 const personalisation = {
   header: 'Personalisation',
+  hiddenCodeBlockDescription: 'An example of personalised message content:',
   details: {
     title: 'Personalisation fields',
     text1:
@@ -77,6 +78,7 @@ const personalisation = {
 
 const messageFormatting = {
   header: 'Message formatting',
+  hiddenCodeBlockDescription: 'An example of markdown:',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
@@ -459,7 +461,7 @@ const templateFormLetter = {
   templateNameHintText: 'This will not be visible to recipients.',
   templateTypeLabelText: 'Letter type',
   templateTypeHintText: 'Choose the type of letter template you are uploading',
-  templateLanguageLabelText: 'Additional language',
+  templateLanguageLabelText: 'Letter language',
   templateLanguageHintText: 'Choose the language of this letter template',
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:

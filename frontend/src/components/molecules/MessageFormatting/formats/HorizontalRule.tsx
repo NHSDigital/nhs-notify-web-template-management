@@ -1,8 +1,10 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
 import styles from '../MessageFormatting.module.scss';
+import CodeExample from '@atoms/CodeExample/CodeExample';
 
-const { horizontalLine } = content.components.messageFormatting;
+const { horizontalLine, hiddenCodeBlockDescription } =
+  content.components.messageFormatting;
 
 export const HorizontalRule = () => (
   <Details data-testid='horizontal-lines-details'>
@@ -11,11 +13,15 @@ export const HorizontalRule = () => (
     </Details.Summary>
     <Details.Text data-testid='horizontal-lines-text'>
       <p>{horizontalLine.text}</p>
-      <code className={styles.horizontalLine}>
+      <CodeExample
+        ariaText={hiddenCodeBlockDescription}
+        ariaId='horizontal-rule-description'
+        codeClassName={styles.horizontalLine}
+      >
         {horizontalLine.codeBlockText.map(({ id, item }) => (
           <p key={id}>{item}</p>
         ))}
-      </code>
+      </CodeExample>
     </Details.Text>
   </Details>
 );
