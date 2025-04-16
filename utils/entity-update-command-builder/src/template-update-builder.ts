@@ -1,7 +1,7 @@
 import type { TemplateStatus } from 'nhs-notify-backend-client';
 import { EntityUpdateBuilder } from './domain/entity-update-builder';
 import { BuilderOptionalArgs } from './types/builders';
-import { MergedTemplate } from './types/template';
+import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
 
 export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
   constructor(
