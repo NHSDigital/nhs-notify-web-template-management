@@ -91,26 +91,25 @@ export class App {
     }
   }
 
-  async poll() {
-    const sftpConfigs = await this.sftpSupplierClientRepository.listClients();
+  async poll(supplier: string) {
+    const { sftpClient, baseDownloadDir } =
+      await this.sftpSupplierClientRepository.getClient(supplier);
 
-    for (const { sftpClient, baseDownloadDir, name } of sftpConfigs) {
-      this.logger.info('Polling SFTP');
-      await sftpClient.connect();
+    this.logger.info('Polling SFTP');
+    await sftpClient.connect();
 
-      this.logger.info(
-        `Copying files from folder ${baseDownloadDir} to proofs/${name}`
-      );
+    this.logger.info(
+      `Copying files from folder ${baseDownloadDir}/${this.sftpEnvironment}/proofs to proofs`
+    );
 
-      await this.copyFolder(
-        sftpClient,
-        `${baseDownloadDir}/${this.sftpEnvironment}/proofs`,
-        'proofs'
-      );
+    await this.copyFolder(
+      sftpClient,
+      `${baseDownloadDir}/${this.sftpEnvironment}/proofs`,
+      'proofs'
+    );
 
-      await sftpClient.end();
+    await sftpClient.end();
 
-      this.logger.info('Finished polling SFTP');
-    }
+    this.logger.info('Finished polling SFTP');
   }
 }
