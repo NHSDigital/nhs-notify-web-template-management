@@ -13,4 +13,5 @@ export type ProofingRequest = {
   pdfVersion: string;
   testDataVersion?: string;
   personalisationParameters: string[];
+  supplier: string;
 };

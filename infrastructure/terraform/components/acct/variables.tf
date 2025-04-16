@@ -111,5 +111,6 @@ variable "letter_suppliers" {
     default_supplier = optional(bool)
   }))
   description = "Letter suppliers enabled in the account (across all environments)"
-  default     = {}
+
+  default = {}
 }

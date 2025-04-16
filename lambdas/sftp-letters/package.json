@@ -36,6 +36,7 @@
     "nhs-notify-entity-update-command-builder": "*",
     "nhs-notify-web-template-management-test-helper-utils": "*",
     "nhs-notify-web-template-management-utils": "*",
+    "node-cache": "^5.1.2",
     "ssh2-sftp-client": "^9.1.0",
     "zod": "^3.24.2"
   }

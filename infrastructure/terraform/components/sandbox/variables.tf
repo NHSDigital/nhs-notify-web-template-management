@@ -68,12 +68,22 @@ variable "letter_suppliers" {
     enable_polling   = bool
     default_supplier = optional(bool)
   }))
+
   default = {
     "WTMMOCK" = {
       enable_polling   = true
       default_supplier = true
     }
   }
+
+  validation {
+    condition = (
+      length(var.letter_suppliers) == 0 ||
+      length([for s in values(var.suppliers) : s if s.default_supplier]) == 1
+    )
+    error_message = "If letter suppliers are configured, exactly one must be default_supplier"
+  }
+
   description = "Letter suppliers enabled in the environment"
 }
 

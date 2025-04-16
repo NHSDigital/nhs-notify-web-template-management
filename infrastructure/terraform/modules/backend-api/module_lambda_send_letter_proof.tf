@@ -15,9 +15,8 @@ module "lambda_send_letter_proof" {
   execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
 
   environment_variables = {
-    CREDENTIALS_TTL_MS      = 900 * 1000
+    CREDENTIALS_TTL_SECONDS = 900
     CSI                     = local.csi
-    DEFAULT_LETTER_SUPPLIER = try(local.default_letter_supplier.name, "unset")
     ENVIRONMENT             = var.environment
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
     NODE_OPTIONS            = "--enable-source-maps",
