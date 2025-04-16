@@ -13,6 +13,8 @@ import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { SqsHelper } from '../helpers/sqs/sqs-helper';
 import { parse } from 'csv-parse/sync';
 
+const MOCK_LETTER_SUPPLIER = 'WTMMOCK';
+
 const sqsHelper = new SqsHelper();
 const sftpHelper = new SftpHelper();
 
@@ -104,11 +106,12 @@ test.describe('SFTP proof send', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     const proofRequest = {
-      templateId: templateId,
       owner: key.owner,
       pdfVersion,
-      testDataVersion: csvVersion,
       personalisationParameters,
+      supplier: MOCK_LETTER_SUPPLIER,
+      templateId: templateId,
+      testDataVersion: csvVersion,
     };
 
     await sqsHelper.sendMessage(process.env.SEND_PROOF_QUEUE_URL, proofRequest);

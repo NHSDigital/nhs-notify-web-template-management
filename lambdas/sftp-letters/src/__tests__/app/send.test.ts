@@ -3,19 +3,22 @@ import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import { UserDataRepository } from '../../infra/user-data-repository';
 import { App } from '../../app/send';
 import { SyntheticBatch, Manifest } from '../../domain/synthetic-batch';
-import { SftpClient } from '../../infra/sftp-client';
 import { Readable } from 'node:stream';
 import { mockTestDataCsv, streamToString } from '../helpers';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { ProofingRequest } from '../../infra/types';
+import { SftpSupplierClientRepository } from '../../infra/sftp-supplier-client-repository';
+import { SftpClient } from '../../infra/sftp-client';
 
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
 const baseUploadDir = 'Incoming';
+const baseDownloadDir = 'Outgoing';
 const owner = 'owner-id';
 const templateId = 'template-id';
 const pdfVersion = 'pdf-version-id';
 const testDataVersion = 'test-data-version-id';
 const messageId = 'message-id';
+const supplier = 'LETTER_SUPPLIER';
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
@@ -23,13 +26,14 @@ function setup() {
   const syntheticBatch = mock<SyntheticBatch>();
   const { logger, logMessages } = createMockLogger();
 
-  const sftpClient = mock<SftpClient>();
+  const sftpSupplierClientRepository = mock<SftpSupplierClientRepository>();
 
   const app = new App(
     userDataRepository,
     templateRepository,
     sftpEnvironment,
     syntheticBatch,
+    sftpSupplierClientRepository,
     logger
   );
 
@@ -40,7 +44,7 @@ function setup() {
       templateRepository,
       syntheticBatch,
       logger,
-      sftpClient,
+      sftpSupplierClientRepository,
     },
     logMessages,
   };
@@ -54,6 +58,7 @@ function mockEvent(
     owner,
     templateId,
     pdfVersion,
+    supplier,
     ...(hasTestData && { testDataVersion }),
     personalisationParameters,
   };
@@ -138,6 +143,14 @@ describe('App', () => {
 
     const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
 
+    const sftpClient = mock<SftpClient>();
+
+    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
+      baseDownloadDir,
+      baseUploadDir,
+      sftpClient,
+    });
+
     mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
 
     mocks.userDataRepository.get.mockResolvedValueOnce({
@@ -153,17 +166,23 @@ describe('App', () => {
 
     mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
 
-    // manifest doesn't already exist
-    mocks.sftpClient.exists.mockResolvedValueOnce(false);
+    sftpClient.connect.mockResolvedValueOnce();
 
-    const res = await app.send(
-      JSON.stringify(event),
-      messageId,
-      mocks.sftpClient,
-      baseUploadDir
-    );
+    // manifest doesn't already exist
+    sftpClient.exists.mockResolvedValueOnce(false);
+
+    sftpClient.end.mockResolvedValueOnce();
+
+    const res = await app.send(JSON.stringify(event), messageId);
 
     expect(res).toBe('sent');
+
+    expect(mocks.sftpSupplierClientRepository.getClient).toHaveBeenCalledTimes(
+      1
+    );
+    expect(mocks.sftpSupplierClientRepository.getClient).toHaveBeenCalledWith(
+      supplier
+    );
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
@@ -192,31 +211,33 @@ describe('App', () => {
       batchCsv
     );
 
+    expect(sftpClient.connect).toHaveBeenCalledTimes(1);
+
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
       owner,
       templateId
     );
 
-    expect(mocks.sftpClient.exists).toHaveBeenCalledTimes(1);
-    expect(mocks.sftpClient.exists).toHaveBeenCalledWith(
+    expect(sftpClient.exists).toHaveBeenCalledTimes(1);
+    expect(sftpClient.exists).toHaveBeenCalledWith(
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
-    expect(mocks.sftpClient.mkdir).toHaveBeenCalledTimes(2);
-    expect(mocks.sftpClient.mkdir).toHaveBeenCalledWith(
+    expect(sftpClient.mkdir).toHaveBeenCalledTimes(2);
+    expect(sftpClient.mkdir).toHaveBeenCalledWith(
       `${baseUploadDir}/${sftpEnvironment}/templates/${templateId}`,
       true
     );
-    expect(mocks.sftpClient.mkdir).toHaveBeenCalledWith(
+    expect(sftpClient.mkdir).toHaveBeenCalledWith(
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}`,
       true
     );
 
-    expect(mocks.sftpClient.put).toHaveBeenCalledTimes(3);
+    expect(sftpClient.put).toHaveBeenCalledTimes(3);
 
     const [pdfPutCall, batchPutCall, manifestPutCall] =
-      mocks.sftpClient.put.mock.calls;
+      sftpClient.put.mock.calls;
 
     const [pdfArg, pdfDestinationArg] = pdfPutCall;
 
@@ -244,30 +265,27 @@ describe('App', () => {
       owner,
       templateId
     );
+
+    expect(sftpClient.end).toHaveBeenCalledTimes(1);
   });
 
-  test('throws if proof request event is invalid JSON', async () => {
-    const { app, mocks } = setup();
+  test('throws if proof request event not valid JSON', async () => {
+    const { app } = setup();
 
-    await expect(
-      app.send('notjson', messageId, mocks.sftpClient, baseUploadDir)
-    ).rejects.toThrow(`Unexpected token 'o', "notjson" is not valid JSON`);
+    await expect(app.send('notjson', messageId)).rejects.toThrow(
+      `Unexpected token 'o', "notjson" is not valid JSON`
+    );
   });
 
   test('throws if proof request event is missing a property', async () => {
-    const { app, mocks } = setup();
+    const { app } = setup();
 
     const { personalisationParameters: _, ...invalidEvent } = mockEvent(true, [
       'field',
     ]);
 
     await expect(
-      app.send(
-        JSON.stringify(invalidEvent),
-        messageId,
-        mocks.sftpClient,
-        baseUploadDir
-      )
+      app.send(JSON.stringify(invalidEvent), messageId)
     ).rejects.toThrowErrorMatchingSnapshot();
   });
 
@@ -313,6 +331,14 @@ describe('App', () => {
       md5sum: 'hash-of-batch-csv',
     };
 
+    const sftpClient = mock<SftpClient>();
+
+    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
+      sftpClient,
+      baseDownloadDir,
+      baseUploadDir,
+    });
+
     mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
     mocks.userDataRepository.get.mockResolvedValueOnce({
       testData: undefined,
@@ -321,16 +347,13 @@ describe('App', () => {
     mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
     mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
+    sftpClient.connect.mockResolvedValueOnce();
 
     // already locked
     mocks.templateRepository.acquireLock.mockResolvedValueOnce(false);
+    sftpClient.end.mockResolvedValueOnce();
 
-    const res = await app.send(
-      JSON.stringify(event),
-      messageId,
-      mocks.sftpClient,
-      baseUploadDir
-    );
+    const res = await app.send(JSON.stringify(event), messageId);
 
     expect(res).toBe('already-sent');
 
@@ -352,10 +375,12 @@ describe('App', () => {
       templateId
     );
 
-    expect(mocks.sftpClient.exists).not.toHaveBeenCalled();
-    expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
-    expect(mocks.sftpClient.put).not.toHaveBeenCalled();
+    expect(sftpClient.connect).toHaveBeenCalled();
+    expect(sftpClient.exists).not.toHaveBeenCalled();
+    expect(sftpClient.mkdir).not.toHaveBeenCalled();
+    expect(sftpClient.put).not.toHaveBeenCalled();
     expect(mocks.templateRepository.finaliseLock).not.toHaveBeenCalled();
+    expect(sftpClient.end).toHaveBeenCalledTimes(1);
   });
 
   test('exits early and does not send if the manifest is already in the SFTP server, finalises existing lock', async () => {
@@ -409,18 +434,24 @@ describe('App', () => {
     mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
 
+    const sftpClient = mock<SftpClient>();
+
+    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
+      sftpClient,
+      baseDownloadDir,
+      baseUploadDir,
+    });
+
     // not already locked
     mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
 
-    // but manifest already exists
-    mocks.sftpClient.exists.mockResolvedValueOnce('-');
+    sftpClient.connect.mockResolvedValueOnce();
 
-    const res = await app.send(
-      JSON.stringify(event),
-      messageId,
-      mocks.sftpClient,
-      baseUploadDir
-    );
+    // but manifest already exists
+    sftpClient.exists.mockResolvedValueOnce('-');
+    sftpClient.end.mockResolvedValueOnce();
+
+    const res = await app.send(JSON.stringify(event), messageId);
 
     expect(res).toBe('already-sent');
 
@@ -435,10 +466,11 @@ describe('App', () => {
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
+    expect(sftpClient.connect).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
 
-    expect(mocks.sftpClient.exists).toHaveBeenCalledTimes(1);
-    expect(mocks.sftpClient.exists).toHaveBeenCalledWith(
+    expect(sftpClient.exists).toHaveBeenCalledTimes(1);
+    expect(sftpClient.exists).toHaveBeenCalledWith(
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
 
@@ -448,8 +480,9 @@ describe('App', () => {
       templateId
     );
 
-    expect(mocks.sftpClient.mkdir).not.toHaveBeenCalled();
-    expect(mocks.sftpClient.put).not.toHaveBeenCalled();
+    expect(sftpClient.mkdir).not.toHaveBeenCalled();
+    expect(sftpClient.put).not.toHaveBeenCalled();
+    expect(sftpClient.end).toHaveBeenCalledTimes(1);
   });
 
   test('logs handled errors', async () => {
@@ -461,18 +494,23 @@ describe('App', () => {
 
     const batchId = 'template-id-0000000000000_pdfversionid';
 
+    const sftpClient = mock<SftpClient>();
+
+    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
+      sftpClient,
+      baseDownloadDir,
+      baseUploadDir,
+    });
+
     mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
+    sftpClient.connect.mockResolvedValueOnce();
 
     const error = new Error('no PDF');
 
     mocks.userDataRepository.get.mockRejectedValueOnce(error);
+    sftpClient.end.mockResolvedValueOnce();
 
-    const res = await app.send(
-      JSON.stringify(event),
-      messageId,
-      mocks.sftpClient,
-      baseUploadDir
-    );
+    const res = await app.send(JSON.stringify(event), messageId);
 
     expect(res).toBe('failed');
 
@@ -490,6 +528,61 @@ describe('App', () => {
         level: 'error',
         batchId,
         message: error.message,
+        messageId,
+        owner,
+        pdfVersion,
+      })
+    );
+  });
+
+  test('logs errors if sftp connection cannot be closed', async () => {
+    const { app, mocks, logMessages } = setup();
+
+    const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
+
+    const event = mockEvent(true, personalisationParameters);
+
+    const batchId = 'template-id-0000000000000_pdfversionid';
+
+    const sftpClient = mock<SftpClient>();
+
+    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
+      sftpClient,
+      baseDownloadDir,
+      baseUploadDir,
+    });
+
+    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
+    sftpClient.connect.mockResolvedValueOnce();
+    mocks.userDataRepository.get.mockResolvedValueOnce({
+      testData: undefined,
+      pdf: Readable.from('content'),
+    });
+    mocks.syntheticBatch.buildBatch.mockReturnValueOnce([]);
+    mocks.syntheticBatch.getHeader.mockReturnValueOnce('header');
+    mocks.syntheticBatch.buildManifest.mockReturnValueOnce({
+      template: templateId,
+      batch: `${batchId}.csv`,
+      records: '3',
+      md5sum: 'hash-of-batch-csv',
+    });
+    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
+    sftpClient.exists.mockResolvedValueOnce(false);
+
+    const err = new Error('sftp close err');
+
+    sftpClient.end.mockRejectedValueOnce(err);
+
+    const res = await app.send(JSON.stringify(event), messageId);
+
+    expect(res).toBe('sent');
+
+    expect(logMessages).toContainEqual(
+      expect.objectContaining({
+        description: 'Failed to close SFTP connection',
+        level: 'error',
+        batchId,
+        message: err.message,
         messageId,
         owner,
         pdfVersion,

@@ -3,7 +3,7 @@ import { SftpClient } from './sftp-client';
 import type { SftpSupplierConfig } from './types';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { ICache } from 'nhs-notify-web-template-management-utils';
+import NodeCache from 'node-cache';
 
 export const getConfigFromSsmString = (ssmString: string): SftpSupplierConfig =>
   z
@@ -27,7 +27,7 @@ export class SftpSupplierClientRepository {
   constructor(
     private readonly csi: string,
     private readonly ssmClient: SSMClient,
-    private readonly cache: ICache,
+    private readonly cache: NodeCache,
     private readonly logger: Logger
   ) {}
 
@@ -39,25 +39,17 @@ export class SftpSupplierClientRepository {
 
     const sftpCredKey = `/${this.csi}/sftp-config/${supplier}`;
 
-    const release = await this.cache.acquireLock();
+    let credentialStr = this.cache.get<string>(sftpCredKey);
 
-    let credentialStr: string | null = null;
+    if (!credentialStr) {
+      const ssmResult = await this.ssmClient.send(
+        new GetParameterCommand({ Name: sftpCredKey, WithDecryption: true })
+      );
+      credentialStr = ssmResult.Parameter?.Value;
 
-    try {
-      credentialStr = await this.cache.get<string>(sftpCredKey);
-
-      if (!credentialStr) {
-        const ssmResult = await this.ssmClient.send(
-          new GetParameterCommand({ Name: sftpCredKey, WithDecryption: true })
-        );
-        credentialStr = ssmResult.Parameter?.Value ?? null;
-
-        if (credentialStr) {
-          await this.cache.set(sftpCredKey, credentialStr);
-        }
+      if (credentialStr) {
+        this.cache.set(sftpCredKey, credentialStr);
       }
-    } finally {
-      release();
     }
 
     if (!credentialStr) {
