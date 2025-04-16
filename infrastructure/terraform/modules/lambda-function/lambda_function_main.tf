@@ -25,7 +25,7 @@ resource "aws_lambda_function" "main" {
 
     content {
       subnet_ids         = var.vpc.subnet_ids
-      security_group_ids = var.security_group_ids
+      security_group_ids = var.vpc.security_group_ids
     }
   }
 }
