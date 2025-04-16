@@ -1,7 +1,7 @@
 import type { Container } from '../container-poll';
 
 type EventBridgeEvent = {
-    supplier: string;
+  supplier: string;
 };
 
 export const createHandler =
