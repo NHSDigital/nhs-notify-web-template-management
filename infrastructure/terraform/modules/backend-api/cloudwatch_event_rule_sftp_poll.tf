@@ -4,7 +4,7 @@ resource "aws_cloudwatch_event_rule" "sftp_poll" {
   name                = "${local.csi}-sftp-poll-${lower(each.key)}"
   schedule_expression = "rate(1 hour)" # Runs at the top of every hour
 
-  state = each.value.polling_enabled ? "ENABLED" : "DISABLED"
+  state = each.value.enable_polling ? "ENABLED" : "DISABLED"
 }
 
 resource "aws_cloudwatch_event_target" "sftp_poll" {
