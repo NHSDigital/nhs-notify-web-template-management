@@ -68,16 +68,12 @@ variable "dead_letter_target_arn" {
 variable "vpc" {
   description = "VPC details"
   type = object({
-    id         = string
-    cidr_block = string
-    subnet_ids = set(string)
+    id                 = string
+    cidr_block         = string
+    subnet_ids         = set(string)
+    security_group_ids = list(string)
   })
   default = null
-}
-
-variable "security_group_ids" {
-  type    = list(string)
-  default = []
 }
 
 variable "sqs_event_source_mapping" {
