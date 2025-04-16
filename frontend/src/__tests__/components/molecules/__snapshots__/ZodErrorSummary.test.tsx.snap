@@ -25,11 +25,16 @@ exports[`Renders ZodErrorSummary correctly with errors 1`] = `
           Field error
         </a>
       </li>
-      <li>
-        <a>
-          Form error
-        </a>
-      </li>
+      <span
+        class="nhsuk-error-message"
+      >
+        <span
+          class="nhsuk-u-visually-hidden"
+        >
+          Error: 
+        </span>
+        Form error
+      </span>
     </ul>
   </div>
 </DocumentFragment>

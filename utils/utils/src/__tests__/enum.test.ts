@@ -4,6 +4,7 @@ import {
   alphabeticalLetterTypeList,
   letterTypeDisplayMappings,
   previewTemplatePages,
+  templateStatusToColourMappings,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
@@ -92,6 +93,22 @@ describe('alphabeticalLanguageList', () => {
       ['tr', 'Turkish'],
       ['ur', 'Urdu'],
     ]);
+  });
+});
+
+describe('templateStatusToColourMappings', () => {
+  test('NOT_YET_SUBMITTED', () => {
+    expect(templateStatusToColourMappings('NOT_YET_SUBMITTED')).toEqual(
+      undefined
+    );
+  });
+
+  test('SUBMITTED', () => {
+    expect(templateStatusToColourMappings('SUBMITTED')).toEqual('grey');
+  });
+
+  test('VIRUS_SCAN_FAILED', () => {
+    expect(templateStatusToColourMappings('VIRUS_SCAN_FAILED')).toEqual('red');
   });
 });
 
