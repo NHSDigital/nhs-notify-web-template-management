@@ -17,7 +17,6 @@ module "lambda_send_letter_proof" {
   environment_variables = {
     CREDENTIALS_TTL_SECONDS = 900
     CSI                     = local.csi
-    ENVIRONMENT             = var.environment
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
     NODE_OPTIONS            = "--enable-source-maps",
     REGION                  = var.region

@@ -44,6 +44,7 @@ No requirements.
 | <a name="module_lambda_enrich_guardduty_scan_result"></a> [lambda\_enrich\_guardduty\_scan\_result](#module\_lambda\_enrich\_guardduty\_scan\_result) | ../lambda-function | n/a |
 | <a name="module_lambda_send_letter_proof"></a> [lambda\_send\_letter\_proof](#module\_lambda\_send\_letter\_proof) | ../lambda-function | n/a |
 | <a name="module_lambda_set_file_virus_scan_status"></a> [lambda\_set\_file\_virus\_scan\_status](#module\_lambda\_set\_file\_virus\_scan\_status) | ../lambda-function | n/a |
+| <a name="module_lambda_sftp_poll"></a> [lambda\_sftp\_poll](#module\_lambda\_sftp\_poll) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |

@@ -50,6 +50,8 @@ export const baseJestConfig: Config = {
 const utilsJestConfig = {
   ...baseJestConfig,
 
+  testEnvironment: 'node',
+
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),
     'zod-validators.ts',
