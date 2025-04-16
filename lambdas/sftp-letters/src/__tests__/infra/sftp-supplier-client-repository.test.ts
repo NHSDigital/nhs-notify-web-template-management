@@ -6,7 +6,11 @@ import {
   SftpSupplierClientRepository,
 } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
-import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import {
+  GetParameterCommand,
+  GetParametersByPathCommand,
+  SSMClient,
+} from '@aws-sdk/client-ssm';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
@@ -31,6 +35,113 @@ function setup() {
   };
   return { mocks };
 }
+
+describe('listClients', () => {
+  test('returns client list', async () => {
+    const {
+      mocks: { logger, environment, ssmClient, cache },
+    } = setup();
+
+    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
+      Parameters: [
+        {
+          Name: 'supplier-1',
+          Value: JSON.stringify({
+            host: 'testHost',
+            username: 'testUser',
+            privateKey: 'testKey',
+            hostKey: 'hostKey',
+            baseUploadDir: 'upload/dir',
+            baseDownloadDir: 'download/dir',
+          }),
+        },
+        {
+          Name: 'supplier-2',
+          Value: JSON.stringify({
+            host: 'testHost',
+            username: 'testUser',
+            privateKey: 'testKey',
+            hostKey: 'hostKey',
+            baseUploadDir: 'upload/dir',
+            baseDownloadDir: 'download/dir',
+          }),
+        },
+      ],
+    });
+
+    const sftpClientRepository = new SftpSupplierClientRepository(
+      environment,
+      ssmClient as unknown as SSMClient,
+      cache,
+      logger
+    );
+
+    const clients = await sftpClientRepository.listClients();
+
+    const mockSftpClients = jest.mocked(SftpClient).mock.instances;
+
+    expect(clients).toEqual([
+      {
+        sftpClient: mockSftpClients[0],
+        baseUploadDir: 'upload/dir',
+        baseDownloadDir: 'download/dir',
+        name: 'supplier-1',
+      },
+      {
+        sftpClient: mockSftpClients[1],
+        baseUploadDir: 'upload/dir',
+        baseDownloadDir: 'download/dir',
+        name: 'supplier-2',
+      },
+    ]);
+  });
+
+  test('returns empty array if no parameters are found', async () => {
+    const {
+      mocks: { logger, environment, ssmClient, cache },
+    } = setup();
+
+    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
+      Parameters: undefined,
+    });
+
+    const sftpClientRepository = new SftpSupplierClientRepository(
+      environment,
+      ssmClient as unknown as SSMClient,
+      cache,
+      logger
+    );
+
+    const clients = await sftpClientRepository.listClients();
+
+    expect(clients).toEqual([]);
+  });
+
+  test('throws error if malformed SSM response is found', async () => {
+    const {
+      mocks: { logger, environment, ssmClient, cache },
+    } = setup();
+
+    ssmClient.on(GetParametersByPathCommand).resolvesOnce({
+      Parameters: [
+        {
+          Name: 'name',
+        },
+      ],
+    });
+
+    const sftpClientRepository = new SftpSupplierClientRepository(
+      environment,
+      ssmClient as unknown as SSMClient,
+      cache,
+      logger
+    );
+
+    await expect(() => sftpClientRepository.listClients()).rejects.toThrow(
+      'SFTP credentials for name are undefined'
+    );
+  });
+});
 
 describe('getClient', () => {
   test('Returns client when credentials are not cached', async () => {
@@ -62,13 +173,14 @@ describe('getClient', () => {
 
     const supplier: string = 'SYNERTEC';
     const client = await sftpClientRepository.getClient(supplier);
-    const mockSftpClient = (SftpClient as jest.Mock).mock.instances[0];
+    const mockSftpClient = jest.mocked(SftpClient).mock.instances[0];
     const credKey = '/testenv/sftp-config/SYNERTEC';
 
     expect(client).toEqual({
       sftpClient: mockSftpClient,
       baseUploadDir: 'upload/dir',
       baseDownloadDir: 'download/dir',
+      name: 'SYNERTEC',
     });
 
     expect(cache.get).toHaveBeenCalledWith(credKey);
@@ -117,6 +229,7 @@ describe('getClient', () => {
       sftpClient: mockSftpClient,
       baseUploadDir: 'upload/dir',
       baseDownloadDir: 'download/dir',
+      name: 'SYNERTEC',
     });
 
     expect(cache.get).toHaveBeenCalledWith(credKey);
