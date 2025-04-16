@@ -47,7 +47,7 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
         </p>
         <ul>
           <li>
-            is signed off by the relevant stakeholders in your team
+            is approved by the relevant stakeholders in your team
           </li>
           <li>
             does not have any spelling errors
