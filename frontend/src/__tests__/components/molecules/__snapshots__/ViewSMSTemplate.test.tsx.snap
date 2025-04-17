@@ -71,7 +71,9 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
-              />
+              >
+                Text message (SMS)
+              </dd>
             </div>
             <div
               class="nhsuk-summary-list__row"
