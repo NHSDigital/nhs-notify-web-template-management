@@ -18,6 +18,7 @@ module "backend_api" {
   }
 
   enable_letters   = true
+  enable_proofing = true
   letter_suppliers = var.letter_suppliers
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
