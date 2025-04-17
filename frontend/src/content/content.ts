@@ -4,6 +4,8 @@ const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
 };
 
+const goBackButtonText = 'Go back';
+
 const header = {
   serviceName: 'Notify',
   links: {
@@ -334,7 +336,7 @@ const submitTemplate = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
-  goBackButtonText: 'Go back',
+  goBackButtonText,
   buttonText: 'Submit template',
 };
 
@@ -548,6 +550,24 @@ const logoutWarning = {
   body: "If you're signed out, any unsaved changes will be lost.",
 };
 
+const requestProof = {
+  subHeading: 'Before you request a proof of this template',
+  requirementsIntro:
+    'You should only request a proof of the final version of a template you’ve created. This means that your template:',
+  requirementsList: [
+    'is approved by the relevant stakeholders in your team',
+    'does not have any spelling errors',
+    'is formatted correctly',
+  ],
+  checkTestData:
+    'If your template uses personalisation, check that you’ve uploaded your example personalisation data.',
+  waitTime: 'It can take 5 to 10 working days to get a proof of your template.',
+  buttons: {
+    confirm: 'Request a proof',
+    back: goBackButtonText,
+  },
+};
+
 const content = {
   global: {
     mainLayout,
@@ -568,6 +588,7 @@ const content = {
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
+    requestProof,
     submitTemplate,
     templateFormEmail,
     templateFormLetter,
