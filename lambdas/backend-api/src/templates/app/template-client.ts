@@ -15,7 +15,7 @@ import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
   $CreateUpdateLetterTemplate,
-  MergedTemplate,
+  DatabaseTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
@@ -344,7 +344,7 @@ export class TemplateClient implements ITemplateClient {
   }
 
   private mapDatabaseObjectToDTO(
-    databaseTemplate: MergedTemplate
+    databaseTemplate: DatabaseTemplate
   ): TemplateDto | undefined {
     const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
 

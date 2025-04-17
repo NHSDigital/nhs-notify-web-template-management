@@ -1,9 +1,9 @@
 import type { TemplateStatus } from 'nhs-notify-backend-client';
 import { BuilderOptionalArgs } from './types/builders';
-import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { UpdateCommandBuilder } from './common/update-command-builder';
 
-export class TemplateUpdateBuilder extends UpdateCommandBuilder<MergedTemplate> {
+export class TemplateUpdateBuilder extends UpdateCommandBuilder<DatabaseTemplate> {
   constructor(
     tableName: string,
     owner: string,

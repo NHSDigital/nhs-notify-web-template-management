@@ -21,7 +21,7 @@ module "lambda_send_letter_proof" {
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
     NODE_OPTIONS            = "--enable-source-maps",
     REGION                  = var.region
-    SEND_LOCK_TTL_MS        = 50 * 1000
+    SEND_LOCK_TTL_MS        = 50 * 1000 # this must be less than the visibility timeout
     SFTP_ENVIRONMENT        = local.sftp_environment
     TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
   }
