@@ -239,7 +239,8 @@ const previewEmailTemplate = {
 
 const previewLetterTemplate = {
   backLinkText: backToAllTemplates,
-  buttonText: 'Submit template',
+  submitText: 'Submit template',
+  requestProofText: 'Request a proof',
 };
 
 const previewNHSAppTemplate = {
