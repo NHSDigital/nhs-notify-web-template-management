@@ -6,6 +6,7 @@ export type TemplateStatus =
   | 'DELETED'
   | 'NOT_YET_SUBMITTED'
   | 'PENDING_UPLOAD'
+  | 'PENDING_PROOF_REQUEST'
   | 'PENDING_VALIDATION'
   | 'SUBMITTED'
   | 'VALIDATION_FAILED'
