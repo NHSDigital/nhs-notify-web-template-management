@@ -7,6 +7,7 @@ export type TemplateStatus =
   | 'SUBMITTED'
   | 'DELETED'
   | 'PENDING_UPLOAD'
+  | 'PENDING_PROOF_REQUEST'
   | 'PENDING_VALIDATION'
   | 'VIRUS_SCAN_FAILED'
   | 'VALIDATION_FAILED';
