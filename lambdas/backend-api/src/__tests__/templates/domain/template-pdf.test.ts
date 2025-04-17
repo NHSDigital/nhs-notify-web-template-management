@@ -4,11 +4,24 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 
+test('has the given key attributes', () => {
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    Buffer.from('')
+  );
+
+  expect(pdf.templateId).toBe('template-id');
+  expect(pdf.owner).toBe('template-owner');
+});
+
 test('parse with no custom personalisation', async () => {
   const file = fs.readFileSync(
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
-  const pdf = new TemplatePdf(file);
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    file
+  );
   await pdf.parse();
 
   expect(pdf.personalisationParameters).toEqual([
@@ -52,7 +65,10 @@ test('parse with custom personalisation', async () => {
   const file = fs.readFileSync(
     path.resolve(__dirname, '../fixtures/custom-personalisation.pdf')
   );
-  const pdf = new TemplatePdf(file);
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    file
+  );
   await pdf.parse();
 
   expect(pdf.personalisationParameters).toEqual([
@@ -107,7 +123,10 @@ test('errors if parse is not called before reading personalisation', () => {
   const file = fs.readFileSync(
     path.resolve(__dirname, '../fixtures/no-custom-personalisation.pdf')
   );
-  const pdf = new TemplatePdf(file);
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    file
+  );
 
   expect(() => pdf.personalisationParameters).toThrow(
     'PDF has not been parsed'
@@ -128,7 +147,10 @@ test('errors if file cannot be parsed', async () => {
     path.resolve(__dirname, '../fixtures/test-data.csv')
   );
 
-  const pdf = new TemplatePdf(file);
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    file
+  );
 
   await expect(pdf.parse()).rejects.toThrow();
 });
@@ -138,7 +160,10 @@ test('errors if file cannot be opened', async () => {
     path.resolve(__dirname, '../fixtures/password.pdf')
   );
 
-  const pdf = new TemplatePdf(file);
+  const pdf = new TemplatePdf(
+    { id: 'template-id', owner: 'template-owner' },
+    file
+  );
 
   await expect(pdf.parse()).rejects.toThrow();
 });

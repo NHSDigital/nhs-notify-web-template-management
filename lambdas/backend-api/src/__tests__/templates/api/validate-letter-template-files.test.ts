@@ -114,7 +114,10 @@ describe('guard duty handler', () => {
       versionId
     );
 
-    expect(mocks.TemplatePdf).toHaveBeenCalledWith(pdfData);
+    expect(mocks.TemplatePdf).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      pdfData
+    );
     expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
 
     expect(pdf.parse).toHaveBeenCalled();
@@ -187,7 +190,10 @@ describe('guard duty handler', () => {
       versionId
     );
 
-    expect(mocks.TemplatePdf).toHaveBeenCalledWith(pdfData);
+    expect(mocks.TemplatePdf).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      pdfData
+    );
     expect(mocks.TestDataCsv).not.toHaveBeenCalled();
 
     expect(pdf.parse).toHaveBeenCalled();
