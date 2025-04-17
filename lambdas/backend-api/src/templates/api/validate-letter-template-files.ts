@@ -170,7 +170,7 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files are available to download');
     }
 
-    const pdf = new TemplatePdf(pdfBuff);
+    const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
     let csv;
 
     try {
