@@ -26,10 +26,11 @@ export class UpdateCommandBuilder<Entity> {
 
   private _conditions: ConditionModel[] = [];
 
+  private _conditionBuilder = new ConditionBuilder<Entity>();
+
   constructor(
     private readonly _tableName: string,
     private readonly _keys: Record<string, string>,
-    private readonly _conditionBuilder: ConditionBuilder<Entity>,
     private readonly _optionalArgs: BuilderOptionalArgs = {}
   ) {}
 
@@ -86,8 +87,8 @@ export class UpdateCommandBuilder<Entity> {
 
   orCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attribute: T,
-    value: K,
     operand: ConditionOperator,
+    value: K,
     negate?: boolean
   ) {
     this._conditionBuilder.or(attribute, value, operand, negate);
@@ -96,8 +97,8 @@ export class UpdateCommandBuilder<Entity> {
 
   andCondition<T extends Prop<Entity>, K extends PropType<Entity, T>>(
     attribute: T,
-    value: K,
     operand: ConditionOperator,
+    value: K,
     negate?: boolean
   ) {
     this._conditionBuilder.and(attribute, value, operand, negate);
@@ -105,16 +106,16 @@ export class UpdateCommandBuilder<Entity> {
   }
 
   fnCondition<T extends Prop<Entity>>(
-    attribute: T,
-    secondArgument: string | null,
     operand: ConditionFnOperator,
+    attribute: T,
+    secondArgument?: string,
     negate?: boolean,
     conditionJoiner?: ConditionJoiner
   ) {
     this._conditionBuilder.fn(
       attribute,
-      secondArgument,
       operand,
+      secondArgument,
       negate,
       conditionJoiner
     );
@@ -243,7 +244,7 @@ export class UpdateCommandBuilder<Entity> {
       .join(' ');
   }
 
-  build() {
+  finalise() {
     const conditionExpression = this.buildConditionExpression();
     const updateExpression = this.buildUpdateExpression();
 

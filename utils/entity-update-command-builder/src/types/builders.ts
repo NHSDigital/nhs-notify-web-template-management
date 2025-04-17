@@ -33,7 +33,7 @@ export type RegularCondition = BaseConditionAttributes & {
 
 export type FnCondition = BaseConditionAttributes & {
   fnOperator: ConditionFnOperator;
-  secondArgument: string | null;
+  secondArgument: string | undefined;
 };
 
 export type SpecialCondition = BaseConditionAttributes & {

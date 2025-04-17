@@ -154,7 +154,7 @@ describe('ConditionBuilder', () => {
       const func = 'begins_with';
 
       const condition = new ConditionBuilder<Record<string, string>>()
-        .fn(attribute, secondArgument, func)
+        .fn(attribute, func, secondArgument)
         .build();
 
       expect(condition).toEqual([
@@ -173,7 +173,7 @@ describe('ConditionBuilder', () => {
       'adds correct joiner when chained with %s method',
       (joiner) => {
         const attribute1 = 'ATTRIBUTE1';
-        const secondArg1 = null;
+        const secondArg1 = undefined;
         const operator1 = 'attribute_exists';
 
         const attribute2 = 'ATTRIBUTE2';
@@ -182,7 +182,7 @@ describe('ConditionBuilder', () => {
 
         const conditionBuilder = new ConditionBuilder<
           Record<string, string>
-        >().fn(attribute1, secondArg1, operator1, true);
+        >().fn(attribute1, operator1, secondArg1, true);
 
         switch (joiner) {
           case 'AND': {
