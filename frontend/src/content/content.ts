@@ -244,7 +244,8 @@ const previewEmailTemplate = {
 const previewLetterTemplate = {
   pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
-  buttonText: 'Submit template',
+  submitText: 'Submit template',
+  requestProofText: 'Request a proof',
 };
 
 const previewNHSAppTemplate = {
