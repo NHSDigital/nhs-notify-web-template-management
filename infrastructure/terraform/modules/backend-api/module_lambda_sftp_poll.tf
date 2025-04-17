@@ -1,6 +1,6 @@
 module "lambda_sftp_poll" {
   source      = "../lambda-function"
-  description = "Lambda to poll the SFTP suppliers and "
+  description = "Lambda to poll the SFTP suppliers and copy proofs to the quarantine bucket"
 
   function_name    = "${local.csi}-sftp-poll"
   filename         = module.build_sftp_letters_lambdas.zips["src/sftp-poll.ts"].path
@@ -20,7 +20,8 @@ module "lambda_sftp_poll" {
     SFTP_ENVIRONMENT        = local.sftp_environment
   }
 
-  timeout = 20
+  timeout     = 60 * 10
+  memory_size = 2048
 }
 
 data "aws_iam_policy_document" "sftp_poll" {
