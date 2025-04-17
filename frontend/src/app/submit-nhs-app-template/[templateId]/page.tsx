@@ -34,7 +34,7 @@ const SubmitNhsAppTemplatePage = async (props: PageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-nhs-app-template'
-      submitPath='nhs-app-template-submitted'
+      confirmPath='nhs-app-template-submitted'
     />
   );
 };

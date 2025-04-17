@@ -2,7 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { RequestProof } from '@molecules/RequestProof/RequestProof';
+import { RequestProof } from '@forms/RequestProof/RequestProof';
 import {
   PageProps,
   validateLetterTemplate,
@@ -34,7 +34,7 @@ const RequestProofPage = async (props: PageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-email-template'
-      submitPath='email-template-submitted'
+      confirmPath='email-template-submitted'
     />
   );
 };

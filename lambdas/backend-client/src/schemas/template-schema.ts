@@ -108,7 +108,10 @@ const $CreateUpdateLetterProperties = schemaFor<CreateUpdateLetterProperties>()(
 );
 
 const $LetterProperties = schemaFor<LetterProperties>()(
-  $CreateUpdateLetterProperties.extend({ files: $LetterFiles })
+  $CreateUpdateLetterProperties.extend({
+    files: $LetterFiles,
+    personalisationParameters: z.array(z.string()).optional(),
+  })
 );
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(

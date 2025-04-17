@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 
 import { ConfirmCancelProps } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -8,6 +8,7 @@ import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyF
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { getBasePath } from '@utils/get-base-path';
 import { useActionState } from 'react';
+import { requestProof } from './server-action';
 
 export function RequestProof({
   templateName,
@@ -26,7 +27,7 @@ export function RequestProof({
 
   const goBackHref = `${getBasePath()}/${goBackPath}/${templateId}`;
 
-  const [_, action] = useActionState(submitTemplate, confirmPath);
+  const [_, action] = useActionState(requestProof, confirmPath);
 
   return (
     <NHSNotifyMain>

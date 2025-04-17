@@ -115,6 +115,34 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
   }
 }
 
+export async function requestTemplateProof(
+  templateId: string,
+  personalisationParameters: string[],
+  pdfVersionId: string,
+  testDataVersionId: string | undefined
+): Promise<void> {
+  const token = await getAccessTokenServer();
+
+  if (!token) {
+    throw new Error('Failed to get access token');
+  }
+
+  const { data, error } = await templateClient.requestProof(
+    templateId,
+    token,
+    personalisationParameters,
+    pdfVersionId,
+    testDataVersionId
+  );
+
+  if (error) {
+    logger.error('Failed to request proof', { error });
+    throw new Error('Failed to request proof');
+  }
+
+  return data;
+}
+
 export async function getTemplate(
   templateId: string
 ): Promise<TemplateDto | undefined> {

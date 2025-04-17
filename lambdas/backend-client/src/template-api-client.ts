@@ -187,6 +187,37 @@ export class TemplateApiClient implements ITemplateClient {
       data: undefined,
     };
   }
+
+  async requestProof(
+    templateId: string,
+    owner: string,
+    personalisationParameters: string[],
+    pdfVersionId: string,
+    testDataVersionId: string | undefined
+  ): Promise<Result<void>> {
+    const response = await catchAxiosError(
+      this._client.patch<Success>(
+        `/v1/template/${templateId}/proof`,
+        { personalisationParameters, pdfVersionId, testDataVersionId },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: undefined,
+    };
+  }
 }
 
 export const templateClient = new TemplateApiClient();
