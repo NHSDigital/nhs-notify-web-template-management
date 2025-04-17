@@ -9,7 +9,7 @@ import {
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
-import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/logger');
@@ -140,7 +140,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: MergedTemplate = {
+      const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -184,7 +184,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: MergedTemplate = {
+      const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -251,7 +251,7 @@ describe('templateClient', () => {
 
       const creationTime = '2025-03-12T08:41:08.805Z';
 
-      const initialCreatedTemplate: MergedTemplate = {
+      const initialCreatedTemplate: DatabaseTemplate = {
         ...dataWithFiles,
         id: templateId,
         createdAt: creationTime,
@@ -263,7 +263,7 @@ describe('templateClient', () => {
 
       const updateTime = '2025-03-12T08:41:33.666Z';
 
-      const finalTemplate: MergedTemplate = {
+      const finalTemplate: DatabaseTemplate = {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
@@ -544,7 +544,7 @@ describe('templateClient', () => {
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
-        data: {} as unknown as MergedTemplate,
+        data: {} as unknown as DatabaseTemplate,
       });
 
       const result = await templateClient.createLetterTemplate(
@@ -602,7 +602,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_VALIDATION',
       };
 
-      const initialCreatedTemplate: MergedTemplate = {
+      const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
         owner,
@@ -693,7 +693,7 @@ describe('templateClient', () => {
         templateStatus: 'PENDING_VALIDATION',
       };
 
-      const initialCreatedTemplate: MergedTemplate = {
+      const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
         owner,
@@ -787,7 +787,7 @@ describe('templateClient', () => {
 
       const creationTime = '2025-03-12T08:41:08.805Z';
 
-      const initialCreatedTemplate: MergedTemplate = {
+      const initialCreatedTemplate: DatabaseTemplate = {
         ...dataWithFiles,
         id: templateId,
         createdAt: creationTime,
@@ -799,7 +799,7 @@ describe('templateClient', () => {
 
       const updateTime = '2025-03-12T08:41:33.666Z';
 
-      const finalTemplate: MergedTemplate = {
+      const finalTemplate: DatabaseTemplate = {
         ...initialCreatedTemplate,
         templateStatus: 'PENDING_VALIDATION',
         updatedAt: updateTime,
@@ -975,7 +975,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: MergedTemplate = {
+      const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,
@@ -1087,7 +1087,7 @@ describe('templateClient', () => {
         templateStatus: 'NOT_YET_SUBMITTED',
       };
 
-      const template: MergedTemplate = {
+      const template: DatabaseTemplate = {
         ...templateDTO,
         owner,
         version: 1,
@@ -1357,7 +1357,7 @@ describe('templateClient', () => {
         templateType: 'SMS',
       };
 
-      const template: MergedTemplate = {
+      const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner,
         version: 1,

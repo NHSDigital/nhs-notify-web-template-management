@@ -112,7 +112,7 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   'NO_THREATS_FOUND'
 >;
 
-export type MergedTemplate = {
+export type DatabaseTemplate = {
   createdAt: string;
   files?: LetterFiles;
   id: string;
@@ -133,7 +133,7 @@ type DbOnlyTemplateProperties = {
 };
 
 type AssertExtendsMerged<
-  T extends Omit<MergedTemplate, keyof DbOnlyTemplateProperties>,
+  T extends Omit<DatabaseTemplate, keyof DbOnlyTemplateProperties>,
 > = T;
 
 // assigned only for the purpose of the assertion

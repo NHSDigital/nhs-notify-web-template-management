@@ -19,7 +19,7 @@ import {
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { TemplateRepository } from '../../../templates/infra';
 import { marshall } from '@aws-sdk/util-dynamodb';
-import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 jest.mock('node:crypto');
@@ -80,25 +80,25 @@ const databaseTemplateProperties = {
   updatedAt: '2024-12-27T00:00:00.000Z',
 };
 
-const emailTemplate: MergedTemplate = {
+const emailTemplate: DatabaseTemplate = {
   templateType: 'EMAIL',
   ...emailProperties,
   ...databaseTemplateProperties,
 };
 
-const smsTemplate: MergedTemplate = {
+const smsTemplate: DatabaseTemplate = {
   templateType: 'SMS',
   ...smsProperties,
   ...databaseTemplateProperties,
 };
 
-const nhsAppTemplate: MergedTemplate = {
+const nhsAppTemplate: DatabaseTemplate = {
   templateType: 'NHS_APP',
   ...nhsAppProperties,
   ...databaseTemplateProperties,
 };
 
-const letterTemplate: MergedTemplate = {
+const letterTemplate: DatabaseTemplate = {
   templateType: 'LETTER',
   ...letterProperties,
   ...databaseTemplateProperties,
@@ -570,7 +570,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: MergedTemplate = {
+      const databaseTemplate: DatabaseTemplate = {
         id,
         owner,
         version: 1,
@@ -681,7 +681,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: MergedTemplate = {
+      const databaseTemplate: DatabaseTemplate = {
         id,
         owner,
         version: 1,
@@ -798,7 +798,7 @@ describe('templateRepository', () => {
       const id = 'abc-def-ghi-jkl-123';
       const owner = 'real-owner';
 
-      const databaseTemplate: MergedTemplate = {
+      const databaseTemplate: DatabaseTemplate = {
         id,
         owner,
         version: 1,
