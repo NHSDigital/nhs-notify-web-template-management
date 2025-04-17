@@ -1,10 +1,10 @@
 import type { Container } from '../container-poll';
 
-type EventBridgeEvent = {
+type PollEvent = {
   supplier: string;
 };
 
 export const createHandler =
   ({ app }: Container) =>
-  ({ supplier }: EventBridgeEvent) =>
+  ({ supplier }: PollEvent) =>
     app.poll(supplier);
