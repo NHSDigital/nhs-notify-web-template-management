@@ -17,6 +17,10 @@ const jestConfig: Config = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   prettierPath: null,
   coveragePathIgnorePatterns: ['/test-utils/'],
+  transformIgnorePatterns: ['node_modules/(?!pdfjs-dist)'],
+  transform: {
+    '^.+\\.(mjs)$': 'babel-jest',
+  },
 };
 
 export default jestConfig;

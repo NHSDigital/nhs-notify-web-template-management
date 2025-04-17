@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LetterUploadRepository static parseKey errors if file extension does not match csv file type 1`] = `"Unexpected object key "test-data/owner-id/template-id/version-id.pdf""`;
+
+exports[`LetterUploadRepository static parseKey errors if file extension does not match pdf file type 1`] = `"Unexpected object key "pdf-template/owner-id/template-id/version-id.csv""`;
+
+exports[`LetterUploadRepository static parseKey errors if filename has too many parts 1`] = `"Unexpected object key "test-data/owner-id/template-id/version-id.unexpected.csv""`;
+
+exports[`LetterUploadRepository static parseKey errors if invalid file type segment 1`] = `
+"[
+  {
+    "received": "unexpected",
+    "code": "invalid_enum_value",
+    "options": [
+      "pdf-template",
+      "test-data"
+    ],
+    "path": [
+      "file-type"
+    ],
+    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data', received 'unexpected'"
+  }
+]"
+`;
+
+exports[`LetterUploadRepository static parseKey errors if key if too long 1`] = `"Unexpected object key "test-data/owner-id/template-id/unexpected-path/version-id.csv""`;
+
+exports[`LetterUploadRepository static parseKey errors if key if too short 1`] = `"Unexpected object key "test-data/owner-id/version-id.csv""`;
+
+exports[`LetterUploadRepository static parseKey errors if no file extension 1`] = `"Unexpected object key "test-data/owner-id/template-id/version-id""`;

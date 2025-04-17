@@ -4,15 +4,13 @@ module "lambda_copy_scanned_object_to_internal" {
 
   dead_letter_target_arn         = module.sqs_virus_scan_passed_copy_object_dlq.sqs_queue_arn
   execution_role_policy_document = data.aws_iam_policy_document.copy_scanned_object_to_internal.json
-  filename                       = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].path
+  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.copy_scanned_object_to_internal].path
   function_name                  = "${local.csi}-copy-scanned-file"
   handler                        = "copy-scanned-object-to-internal.handler"
   log_retention_in_days          = var.log_retention_in_days
-  source_code_hash               = module.build_virus_scan_lambdas.zips["src/copy-scanned-object-to-internal.ts"].base64sha256
+  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.copy_scanned_object_to_internal].base64sha256
 
-  environment_variables = {
-    TEMPLATES_INTERNAL_S3_BUCKET_NAME = module.s3bucket_internal.id
-  }
+  environment_variables = local.backend_lambda_environment_variables
 }
 
 data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
