@@ -6,12 +6,10 @@ import {
   TemplateDto,
   CreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
-import {
-  DatabaseTemplate,
-  TemplateRepository,
-} from '@backend-api/templates/infra';
+import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/logger');

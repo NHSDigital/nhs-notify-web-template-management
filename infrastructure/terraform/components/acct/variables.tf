@@ -104,3 +104,13 @@ variable "vpc_subnet_cidr_bits" {
     private = 3  # Larger subnets for private resources, 3 creates /19 subnets over 3x Az
   }
 }
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+  description = "Letter suppliers enabled in the account (across all environments)"
+
+  default = {}
+}

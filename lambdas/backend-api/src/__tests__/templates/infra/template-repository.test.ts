@@ -17,8 +17,9 @@ import {
   ValidatedCreateUpdateTemplate,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { DatabaseTemplate, TemplateRepository } from '../../../templates/infra';
+import { TemplateRepository } from '../../../templates/infra';
 import { marshall } from '@aws-sdk/util-dynamodb';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('nhs-notify-web-template-management-utils/logger');
 jest.mock('node:crypto');

@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
-    "@types/aws-lambda": "^8.10.148"
+    "@types/aws-lambda": "^8.10.148",
+    "jest-mock-extended": "^3.0.7",
+    "nhs-notify-web-template-management-test-helper-utils": "^0.0.1"
   }
 }

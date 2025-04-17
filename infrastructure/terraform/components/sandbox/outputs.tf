@@ -10,6 +10,18 @@ output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.sandbox.id
 }
 
+output "send_proof_queue_url" {
+  value = module.backend_api.send_proof_queue_url
+}
+
+output "sftp_mock_credential_path" {
+  value = module.backend_api.sftp_mock_credential_path
+}
+
+output "sftp_environment" {
+  value = module.backend_api.sftp_environment
+}
+
 output "templates_table_name" {
   value = module.backend_api.templates_table_name
 }
