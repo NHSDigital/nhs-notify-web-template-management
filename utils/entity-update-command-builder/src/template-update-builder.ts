@@ -1,9 +1,9 @@
 import type { TemplateStatus } from 'nhs-notify-backend-client';
-import { EntityUpdateBuilder } from './domain/entity-update-builder';
 import { BuilderOptionalArgs } from './types/builders';
 import { MergedTemplate } from 'nhs-notify-web-template-management-utils';
+import { UpdateCommandBuilder } from './common/update-command-builder';
 
-export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
+export class TemplateUpdateBuilder extends UpdateCommandBuilder<MergedTemplate> {
   constructor(
     tableName: string,
     owner: string,
@@ -21,16 +21,16 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
   }
 
   setStatus(status: TemplateStatus) {
-    this.updateBuilder.setValue('templateStatus', status);
+    this.setValue('templateStatus', status);
     return this;
   }
 
   expectedStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
     if (Array.isArray(expectedStatus)) {
-      this.updateBuilder.inCondition('templateStatus', expectedStatus);
+      this.inCondition('templateStatus', expectedStatus);
       return this;
     }
-    this.updateBuilder.andCondition('templateStatus', expectedStatus, '=');
+    this.andCondition('templateStatus', '=', expectedStatus);
     return this;
   }
 
@@ -39,26 +39,23 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<MergedTemplate> {
     timeMs: number,
     lockExpiryTimeMs?: number
   ) {
-    this.updateBuilder
-      .setValue(lockField, timeMs)
-      .fnCondition(lockField, null, 'attribute_not_exists');
+    this.setValue(lockField, timeMs).fnCondition(
+      'attribute_not_exists',
+      lockField
+    );
 
     if (lockExpiryTimeMs) {
-      this.updateBuilder.orCondition(lockField, lockExpiryTimeMs, '>');
+      this.orCondition(lockField, '>', lockExpiryTimeMs);
     }
-
     return this;
   }
 
   setLockTimeUnconditional(lockField: 'sftpSendLockTime', timeMs: number) {
-    this.updateBuilder.setValue(lockField, timeMs);
-
+    this.setValue(lockField, timeMs);
     return this;
   }
 
   build() {
-    return this.updateBuilder
-      .setValue('updatedAt', new Date().toISOString())
-      .build();
+    return this.setValue('updatedAt', new Date().toISOString()).finalise();
   }
 }

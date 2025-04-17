@@ -118,9 +118,9 @@ export type MergedTemplate = {
   id: string;
   language?: Language;
   letterType?: LetterType;
-  sftpSendLockTime?: number;
   message?: string;
   name: string;
+  sftpSendLockTime?: number;
   subject?: string;
   templateStatus: TemplateStatus;
   templateType: TemplateType;

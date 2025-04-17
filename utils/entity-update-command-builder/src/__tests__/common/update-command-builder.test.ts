@@ -1,4 +1,3 @@
-import { ConditionBuilder } from '../../common/condition-builder';
 import { UpdateCommandBuilder } from '../../common/update-command-builder';
 import {
   ConditionFnOperator,
@@ -18,14 +17,13 @@ describe('UpdateExpressionBuilder', () => {
     test('fields are correctly populated when performing single set', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
       const attributeValue = 'VALUE';
 
-      const res = builder.setValue(attributeName, attributeValue).build();
+      const res = builder.setValue(attributeName, attributeValue).finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -43,8 +41,7 @@ describe('UpdateExpressionBuilder', () => {
     test('can set multiple attributes', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -56,7 +53,7 @@ describe('UpdateExpressionBuilder', () => {
       const res = builder
         .setValue(attribute1Name, attribute1Value)
         .setValue(attribute2Name, attribute2Value)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -76,8 +73,7 @@ describe('UpdateExpressionBuilder', () => {
     test('chaining setValue with same attribute but different value overwrites previous update', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -91,7 +87,7 @@ describe('UpdateExpressionBuilder', () => {
         .setValue(attribute1Name, attribute1Value)
         .setValue(attribute2Name, attribute2Value)
         .setValue(attribute1Name, attribute1Value2)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -124,8 +120,7 @@ describe('UpdateExpressionBuilder', () => {
       (operand, negated) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE';
@@ -134,8 +129,8 @@ describe('UpdateExpressionBuilder', () => {
 
         const res = builder
           .setValue(attributeName, attributeValue)
-          .andCondition(attributeName, attributeExpectedValue, operand, negated)
-          .build();
+          .andCondition(attributeName, operand, attributeExpectedValue, negated)
+          .finalise();
 
         const expectedCondition = negated
           ? `NOT #${attributeName} ${operand} :condition_1_${attributeName}`
@@ -172,18 +167,17 @@ describe('UpdateExpressionBuilder', () => {
       (fn, negated) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE';
         const attributeValue = 'VALUE';
-        const secondArg = null;
+        const secondArg = undefined;
 
         const res = builder
           .setValue(attributeName, attributeValue)
-          .fnCondition(attributeName, secondArg, fn, negated)
-          .build();
+          .fnCondition(fn, attributeName, secondArg, negated)
+          .finalise();
 
         const expectedCondition = negated
           ? `NOT ${fn} (#${attributeName})`
@@ -218,8 +212,7 @@ describe('UpdateExpressionBuilder', () => {
       (fn, negated) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE';
@@ -228,8 +221,8 @@ describe('UpdateExpressionBuilder', () => {
 
         const res = builder
           .setValue(attributeName, attributeValue)
-          .fnCondition(attributeName, secondArg, fn, negated)
-          .build();
+          .fnCondition(fn, attributeName, secondArg, negated)
+          .finalise();
 
         const expectedCondition = negated
           ? `NOT ${fn} (#${attributeName}, :condition_1_${attributeName})`
@@ -267,8 +260,7 @@ describe('UpdateExpressionBuilder', () => {
       (conditionJoiner1, conditionJoiner2, joiner) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE1';
@@ -281,11 +273,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (conditionJoiner1) {
           case 'AND': {
-            builder.andCondition(attributeName, attributeExpectedValue1, '=');
+            builder.andCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, attributeExpectedValue1, '=');
+            builder.orCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           default: {
@@ -295,11 +287,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (conditionJoiner2) {
           case 'AND': {
-            builder.andCondition(attributeName, attributeExpectedValue2, '>');
+            builder.andCondition(attributeName, '>', attributeExpectedValue2);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, attributeExpectedValue2, '>');
+            builder.orCondition(attributeName, '>', attributeExpectedValue2);
             break;
           }
           default: {
@@ -307,7 +299,7 @@ describe('UpdateExpressionBuilder', () => {
           }
         }
 
-        const res = builder.build();
+        const res = builder.finalise();
 
         expect(res).toEqual({
           ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 ${joiner} #ATTRIBUTE1 > :condition_2_ATTRIBUTE1`,
@@ -388,8 +380,7 @@ describe('UpdateExpressionBuilder', () => {
       }) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE1';
@@ -402,11 +393,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (firstCall) {
           case 'AND': {
-            builder.andCondition(attributeName, attributeExpectedValue1, '=');
+            builder.andCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, attributeExpectedValue1, '=');
+            builder.orCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'IN': {
@@ -422,8 +413,8 @@ describe('UpdateExpressionBuilder', () => {
           case 'AND': {
             builder.andCondition(
               attributeName,
-              attributeExpectedValue2,
               '>',
+              attributeExpectedValue2,
               secondCallNegated
             );
             break;
@@ -431,8 +422,8 @@ describe('UpdateExpressionBuilder', () => {
           case 'OR': {
             builder.orCondition(
               attributeName,
-              attributeExpectedValue2,
               '>',
+              attributeExpectedValue2,
               secondCallNegated
             );
             break;
@@ -450,7 +441,7 @@ describe('UpdateExpressionBuilder', () => {
           }
         }
 
-        const res = builder.build();
+        const res = builder.finalise();
 
         expect(res).toEqual({
           ConditionExpression: `${expectedFirstCondition} ${expectedJoiner} ${expectedSecondCondition}`,
@@ -478,14 +469,13 @@ describe('UpdateExpressionBuilder', () => {
 
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       )
         .setValue(attributeName, attributeValue)
-        .fnCondition(attributeName, expectContained, 'contains', true)
-        .andCondition(attributeName, attributeExpectedValue, '=');
+        .fnCondition('contains', attributeName, expectContained, true)
+        .andCondition(attributeName, '=', attributeExpectedValue);
 
-      const res = builder.build();
+      const res = builder.finalise();
 
       expect(res).toEqual({
         ConditionExpression:
@@ -512,14 +502,13 @@ describe('UpdateExpressionBuilder', () => {
 
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       )
         .setValue(attributeName, attributeValue)
-        .andCondition(attributeName, attributeExpectedValue, '=')
-        .fnCondition(attributeName2, null, 'attribute_exists', true);
+        .andCondition(attributeName, '=', attributeExpectedValue)
+        .fnCondition('attribute_exists', attributeName2, undefined, true);
 
-      const res = builder.build();
+      const res = builder.finalise();
 
       expect(res).toEqual({
         ConditionExpression:
@@ -550,8 +539,7 @@ describe('UpdateExpressionBuilder', () => {
       (firstCall, optionalArg, joiner) => {
         const builder = new UpdateCommandBuilder<Record<string, string>>(
           mockTableName,
-          mockEntityKeys,
-          new ConditionBuilder()
+          mockEntityKeys
         );
 
         const attributeName = 'ATTRIBUTE1';
@@ -564,11 +552,11 @@ describe('UpdateExpressionBuilder', () => {
 
         switch (firstCall) {
           case 'AND': {
-            builder.andCondition(attributeName, attributeExpectedValue1, '=');
+            builder.andCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           case 'OR': {
-            builder.orCondition(attributeName, attributeExpectedValue1, '=');
+            builder.orCondition(attributeName, '=', attributeExpectedValue1);
             break;
           }
           default: {
@@ -583,7 +571,7 @@ describe('UpdateExpressionBuilder', () => {
           optionalArg
         );
 
-        const res = builder.build();
+        const res = builder.finalise();
 
         expect(res).toEqual({
           ConditionExpression: `#ATTRIBUTE1 = :condition_1_ATTRIBUTE1 ${joiner} #ATTRIBUTE1 IN (:condition_2_ATTRIBUTE1)`,
@@ -610,20 +598,19 @@ describe('UpdateExpressionBuilder', () => {
 
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       )
         .setValue(attributeName, attributeValue)
         .inCondition(attributeName, attributeExpectedArray, true)
         .fnCondition(
+          'attribute_type',
           attributeName,
           attributeExpectedType,
-          'attribute_type',
           false,
           'OR'
         );
 
-      const res = builder.build();
+      const res = builder.finalise();
 
       expect(res).toEqual({
         ConditionExpression:
@@ -647,14 +634,13 @@ describe('UpdateExpressionBuilder', () => {
     test('fields are correctly populated when performing single set with value', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
       const value = ['VALUE'];
 
-      const res = builder.setValueInList(attributeName, value).build();
+      const res = builder.setValueInList(attributeName, value).finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -672,14 +658,13 @@ describe('UpdateExpressionBuilder', () => {
     test('fields are correctly populated when performing single set with array of values', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
       const values = ['VALUE1', 'VALUE2'];
 
-      const res = builder.setValueInList(attributeName, values).build();
+      const res = builder.setValueInList(attributeName, values).finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -697,8 +682,7 @@ describe('UpdateExpressionBuilder', () => {
     test('can set multiple attributes', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -710,7 +694,7 @@ describe('UpdateExpressionBuilder', () => {
       const res = builder
         .setValueInList(attribute1Name, attribute1Value)
         .setValueInList(attribute2Name, attribute2Value)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -730,8 +714,7 @@ describe('UpdateExpressionBuilder', () => {
     test('chaining setValueInList with same attribute but different value overwrites previous update', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -745,7 +728,7 @@ describe('UpdateExpressionBuilder', () => {
         .setValueInList(attribute1Name, attribute1Value)
         .setValueInList(attribute2Name, attribute2Value)
         .setValueInList(attribute1Name, attribute1Value2)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -767,14 +750,15 @@ describe('UpdateExpressionBuilder', () => {
     test('Appends to a list if it exists, otherwise creates the list', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
       const value = ['VALUE'];
 
-      const res = builder.setValueInOrCreateList(attributeName, value).build();
+      const res = builder
+        .setValueInOrCreateList(attributeName, value)
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -795,13 +779,12 @@ describe('UpdateExpressionBuilder', () => {
     test('fields are correctly populated when performing single remove', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
 
-      const res = builder.removeAttribute(attributeName).build();
+      const res = builder.removeAttribute(attributeName).finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -812,11 +795,11 @@ describe('UpdateExpressionBuilder', () => {
         UpdateExpression: `REMOVE #${attributeName}`,
       });
     });
+
     test('can remove multiple attributes', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -825,7 +808,7 @@ describe('UpdateExpressionBuilder', () => {
       const res = builder
         .removeAttribute(attribute1Name)
         .removeAttribute(attribute2Name)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -837,11 +820,11 @@ describe('UpdateExpressionBuilder', () => {
         UpdateExpression: `REMOVE #${attribute1Name}, #${attribute2Name}`,
       });
     });
+
     test('chaining removeAttribute with same attribute is idempotent', () => {
       const builder = new UpdateCommandBuilder<Record<string, string[]>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attribute1Name = 'ATTRIBUTE1';
@@ -851,7 +834,7 @@ describe('UpdateExpressionBuilder', () => {
         .removeAttribute(attribute1Name)
         .removeAttribute(attribute2Name)
         .removeAttribute(attribute1Name)
-        .build();
+        .finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -869,13 +852,12 @@ describe('UpdateExpressionBuilder', () => {
     test('fields are correctly to indicate an attibute is being incremented by value', () => {
       const builder = new UpdateCommandBuilder<Record<string, number>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
 
       const attributeName = 'ATTRIBUTE';
 
-      const res = builder.addToValue(attributeName, 1).build();
+      const res = builder.addToValue(attributeName, 1).finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -891,14 +873,13 @@ describe('UpdateExpressionBuilder', () => {
     });
   });
 
-  describe('build', () => {
+  describe('finalise', () => {
     test('returns empty expression when built after initialisation', () => {
       const builder = new UpdateCommandBuilder<Record<string, string>>(
         mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder()
+        mockEntityKeys
       );
-      const res = builder.build();
+      const res = builder.finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,
@@ -909,16 +890,11 @@ describe('UpdateExpressionBuilder', () => {
     });
 
     test('provide ReturnValuesOnConditionCheckFailure optional arg will modify output', () => {
-      const builder = new UpdateCommandBuilder(
-        mockTableName,
-        mockEntityKeys,
-        new ConditionBuilder(),
-        {
-          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
-        }
-      );
+      const builder = new UpdateCommandBuilder(mockTableName, mockEntityKeys, {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+      });
 
-      const res = builder.build();
+      const res = builder.finalise();
 
       expect(res).toEqual({
         TableName: mockTableName,

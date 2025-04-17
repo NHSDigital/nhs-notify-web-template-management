@@ -40,19 +40,19 @@ export class ConditionBuilder<Entity> {
 
   fn<T extends Prop<Entity>>(
     attribute: T,
-    secondArgument: string | null,
     operator: ConditionFnOperator,
+    secondArgument?: string,
     negate?: boolean,
     conditionJoiner?: ConditionJoiner
   ) {
     if (this.isEmpty()) {
-      this.addFnCondition(attribute, secondArgument, operator, negate);
+      this.addFnCondition(attribute, operator, secondArgument, negate);
       return this;
     }
     this.addFnCondition(
       attribute,
-      secondArgument,
       operator,
+      secondArgument,
       negate,
       conditionJoiner ?? 'AND'
     );
@@ -104,8 +104,8 @@ export class ConditionBuilder<Entity> {
 
   private addFnCondition<T extends Prop<Entity>>(
     attribute: T,
-    secondArgument: string | null,
     fnOperator: ConditionFnOperator,
+    secondArgument?: string,
     negate?: boolean,
     conditionJoiner?: ConditionJoiner
   ) {
