@@ -40,6 +40,7 @@ locals {
     TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
     TEMPLATES_TABLE_NAME             = aws_dynamodb_table.templates.name
+    ENABLE_PROOFING                  = var.enable_proofing
   }
 
   dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn

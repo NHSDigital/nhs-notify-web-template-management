@@ -54,7 +54,8 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string
+    private readonly templatesTableName: string,
+    private readonly enableProofing: boolean
   ) {}
 
   async get(
@@ -315,10 +316,14 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
+    const resolvedPostValidationSuccessStatus = this.enableProofing
+      ? 'PENDING_PROOF_REQUEST'
+      : 'NOT_YET_SUBMITTED';
+
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
       {
         ':templateStatus': (valid
-          ? 'NOT_YET_SUBMITTED'
+          ? resolvedPostValidationSuccessStatus
           : 'VALIDATION_FAILED') satisfies TemplateStatus,
         ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
         ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
