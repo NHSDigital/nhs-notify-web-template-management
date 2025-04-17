@@ -1,3 +1,4 @@
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { type TemplatePdf, ADDRESS_PERSONALISATIONS } from './template-pdf';
 import type { TestDataCsv } from './test-data-csv';
 
@@ -33,6 +34,17 @@ export function validateLetterTemplateFiles(
         csv.parameters.includes(parameter)
       );
   }
+
+  logger.info('Template file validation complete', {
+    templateId: pdf.templateId,
+    owner: pdf.owner,
+    correctAddressLength,
+    correctAddressLines,
+    customParametersSensiblyFormatted,
+    requiredTestFileExists,
+    testFileHasExpectedNumberOfParameters,
+    allCustomPersonalisationIsInTestFile,
+  });
 
   return (
     correctAddressLength &&
