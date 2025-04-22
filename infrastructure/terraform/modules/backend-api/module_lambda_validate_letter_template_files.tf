@@ -62,6 +62,18 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
   }
 
   statement {
+    sid    = "AllowS3InternalList"
+    effect = "Allow"
+
+    actions = [
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+    ]
+
+    resources = [module.s3bucket_internal.arn]
+  }
+
+  statement {
     sid    = "AllowSQSEventSource"
     effect = "Allow"
 
