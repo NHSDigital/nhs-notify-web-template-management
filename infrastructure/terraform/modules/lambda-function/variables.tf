@@ -59,12 +59,6 @@ variable "memory_size" {
   default     = 128
 }
 
-variable "timeout" {
-  description = "The amount of time your Lambda Function has to run in seconds."
-  type        = number
-  default     = 3
-}
-
 variable "dead_letter_target_arn" {
   description = "The ARN of an SNS topic or SQS queue to notify when an async invocation fails."
   type        = string
@@ -78,19 +72,6 @@ variable "vpc" {
     cidr_block         = string
     subnet_ids         = set(string)
     security_group_ids = list(string)
-  })
-  default = null
-}
-
-variable "sqs_event_source_mapping" {
-  description = "Configuration for SQS event source mapping"
-  type = object({
-    sqs_queue_arn                      = string
-    batch_size                         = optional(number, 10)
-    maximum_batching_window_in_seconds = optional(number, 0)
-    scaling_config = optional(object({
-      maximum_concurrency = number
-    }), null)
   })
   default = null
 }
