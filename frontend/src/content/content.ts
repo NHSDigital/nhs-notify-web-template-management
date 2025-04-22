@@ -17,6 +17,10 @@ const header = {
       text: 'Sign out',
       href: '/auth/signout',
     },
+    logoLink: {
+      ariaLabel: 'NHS Notify templates',
+      logoTitle: 'NHS logo',
+    },
   },
 };
 
