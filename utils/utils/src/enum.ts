@@ -45,14 +45,12 @@ const letterTypeMap: Record<LetterType, string> = {
   x3: 'Audio CD',
   q1: 'Braille',
   q4: 'British Sign Language',
-  x0: 'Letter',
+  x0: 'Standard',
   x1: 'Large print',
 };
 
 export const letterTypeMapping = (letterType: LetterType) =>
-  letterType === 'x0'
-    ? letterTypeMap[letterType]
-    : `${letterTypeMap[letterType]} letter`;
+  `${letterTypeMap[letterType]} letter`;
 
 export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
   ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
