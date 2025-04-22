@@ -134,10 +134,10 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
         <a
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          data-testid="preview-letter-template-cta"
           draggable="false"
           href="/templates/submit-letter-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
-          id="preview-letter-template-submit-button"
+          id="preview-letter-template-cta"
           role="button"
         >
           Submit template
@@ -289,10 +289,10 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
         <a
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          data-testid="preview-letter-template-cta"
           draggable="false"
           href="/templates/submit-letter-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
-          id="preview-letter-template-submit-button"
+          id="preview-letter-template-cta"
           role="button"
         >
           Request a proof
@@ -444,10 +444,10 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
         <a
           aria-disabled="false"
           class="nhsuk-button"
-          data-testid="submit-button"
+          data-testid="preview-letter-template-cta"
           draggable="false"
           href="/templates/submit-letter-template/template-id"
-          id="preview-letter-template-submit-button"
+          id="preview-letter-template-cta"
           role="button"
         >
           Submit template

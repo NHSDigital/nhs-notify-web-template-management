@@ -31,8 +31,8 @@ export function PreviewLetterTemplate({
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplateDetails.Letter template={template} />
             <NHSNotifyButton
-              data-testid='submit-button'
-              id='preview-letter-template-submit-button'
+              data-testid='preview-letter-template-cta'
+              id='preview-letter-template-cta'
               href={`${basePath}/submit-letter-template/${template.id}`}
             >
               {buttonText}
