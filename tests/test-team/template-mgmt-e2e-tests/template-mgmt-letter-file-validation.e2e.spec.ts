@@ -58,10 +58,7 @@ test.describe('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -84,7 +81,7 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 100_000 });
+    }).toPass({ timeout: 20_000 });
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if scan fails, files are deleted from quarantine and not copied, file and template status updated in database', async ({
@@ -124,10 +121,7 @@ test.describe('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('FAILED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -156,6 +150,6 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 20_000 });
   });
 });

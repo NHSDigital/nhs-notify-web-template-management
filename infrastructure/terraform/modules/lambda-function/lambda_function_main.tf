@@ -7,6 +7,7 @@ resource "aws_lambda_function" "main" {
   handler          = var.handler
   runtime          = var.runtime
   memory_size      = var.memory_size
+  timeout          = var.timeout
 
   environment {
     variables = var.environment_variables
@@ -16,6 +17,15 @@ resource "aws_lambda_function" "main" {
     for_each = var.dead_letter_target_arn == null ? [] : [true]
     content {
       target_arn = var.dead_letter_target_arn
+    }
+  }
+
+  dynamic "vpc_config" {
+    for_each = var.vpc != null ? [1] : []
+
+    content {
+      subnet_ids         = var.vpc.subnet_ids
+      security_group_ids = var.vpc.security_group_ids
     }
   }
 }

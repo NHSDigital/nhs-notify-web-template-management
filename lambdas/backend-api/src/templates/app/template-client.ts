@@ -11,12 +11,12 @@ import {
   TemplateStatus,
   $CreateUpdateNonLetter,
 } from 'nhs-notify-backend-client';
-import {
-  DatabaseTemplate,
-  TemplateRepository,
-} from '@backend-api/templates/infra';
+import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
-import { $CreateUpdateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  $CreateUpdateLetterTemplate,
+  DatabaseTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 

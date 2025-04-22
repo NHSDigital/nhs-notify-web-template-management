@@ -23,8 +23,8 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
-import { DatabaseTemplate } from './template';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }

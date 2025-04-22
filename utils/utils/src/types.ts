@@ -3,10 +3,15 @@ import {
   CreateUpdateLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
+  Language,
+  LetterFiles,
   LetterProperties,
+  LetterType,
   NhsAppProperties,
   SmsProperties,
   TemplateDto,
+  TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-backend-client';
 
 export type FormId =
@@ -28,39 +33,43 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-type NhsAppType = {
+type NhsAppTemplateType = {
   templateType: 'NHS_APP';
 };
 
-type EmailType = {
+type EmailTemplateType = {
   templateType: 'EMAIL';
 };
 
-type SmsType = {
+type SmsTemplateType = {
   templateType: 'SMS';
 };
 
-type LetterType = {
+type LetterTemplateType = {
   templateType: 'LETTER';
 };
 
 export type CreateUpdateNHSAppTemplate = CreateUpdateTemplate &
   NhsAppProperties &
-  NhsAppType;
+  NhsAppTemplateType;
 export type CreateUpdateEmailTemplate = CreateUpdateTemplate &
   EmailProperties &
-  EmailType;
+  EmailTemplateType;
 export type CreateUpdateSMSTemplate = CreateUpdateTemplate &
   SmsProperties &
-  SmsType;
+  SmsTemplateType;
 export type CreateUpdateLetterTemplate = CreateUpdateTemplate &
   CreateUpdateLetterProperties &
-  LetterType;
+  LetterTemplateType;
 
-export type NHSAppTemplate = TemplateDto & NhsAppProperties & NhsAppType;
-export type EmailTemplate = TemplateDto & EmailProperties & EmailType;
-export type SMSTemplate = TemplateDto & SmsProperties & SmsType;
-export type LetterTemplate = TemplateDto & LetterProperties & LetterType;
+export type NHSAppTemplate = TemplateDto &
+  NhsAppProperties &
+  NhsAppTemplateType;
+export type EmailTemplate = TemplateDto & EmailProperties & EmailTemplateType;
+export type SMSTemplate = TemplateDto & SmsProperties & SmsTemplateType;
+export type LetterTemplate = TemplateDto &
+  LetterProperties &
+  LetterTemplateType;
 
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
@@ -102,3 +111,33 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   GuardDutyMalwareScanStatus,
   'NO_THREATS_FOUND'
 >;
+
+export type DatabaseTemplate = {
+  createdAt: string;
+  files?: LetterFiles;
+  id: string;
+  language?: Language;
+  letterType?: LetterType;
+  message?: string;
+  name: string;
+  sftpSendLockTime?: number;
+  subject?: string;
+  templateStatus: TemplateStatus;
+  templateType: TemplateType;
+  updatedAt: string;
+} & DbOnlyTemplateProperties;
+
+type DbOnlyTemplateProperties = {
+  owner: string;
+  version: number;
+};
+
+type AssertExtendsMerged<
+  T extends Omit<DatabaseTemplate, keyof DbOnlyTemplateProperties>,
+> = T;
+
+// assigned only for the purpose of the assertion
+type _Asserted = AssertExtendsMerged<LetterTemplate> &
+  AssertExtendsMerged<NHSAppTemplate> &
+  AssertExtendsMerged<EmailTemplate> &
+  AssertExtendsMerged<SMSTemplate>;
