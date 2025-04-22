@@ -29,10 +29,12 @@ export function createHandler({ app, logger }: Dependencies): SQSHandler {
       const messageId = event.Records[i].messageId;
 
       if (res.status === 'rejected') {
-        logger.error(res.reason, {
-          description: 'Could not process proofing request',
-          messageId,
-        });
+        logger
+          .child({
+            description: 'Could not process proofing request',
+            messageId,
+          })
+          .error(res.reason);
 
         batchItemFailures.push({ itemIdentifier: messageId });
         outcomes.failed += 1;
