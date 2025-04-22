@@ -8,13 +8,15 @@ import {
 import type {
   TemplateRepository,
   LetterUploadRepository,
-  DatabaseTemplate,
 } from '@backend-api/templates/infra';
 import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 import { TestDataCsv } from '@backend-api/templates/domain/test-data-csv';
 import { validateLetterTemplateFiles } from '@backend-api/templates/domain/validate-letter-template-files';
 import { ValidateLetterTemplateFilesLambda } from '@backend-api/templates/api/validate-letter-template-files';
-import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
+import {
+  $GuardDutyMalwareScanStatusFailed,
+  DatabaseTemplate,
+} from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@backend-api/templates/domain/template-pdf');
 jest.mock('@backend-api/templates/domain/test-data-csv');
