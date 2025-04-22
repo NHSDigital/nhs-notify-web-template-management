@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { parse } from 'csv-parse/sync';
+import { staticPdsExampleData } from './synthetic-batch-data';
 
 export function parseTestPersonalisation(csv: string) {
   const [, ...rows] = parse(csv);
@@ -9,7 +10,7 @@ export function parseTestPersonalisation(csv: string) {
     .min(1)
     .parse(rows);
 
-  return Array.from({ length: 3 }, (_, colIdx) =>
+  return Array.from({ length: staticPdsExampleData.length }, (_, colIdx) =>
     Object.fromEntries(
       input.map(([field], rowIdx) => [field, input[rowIdx][colIdx + 1]])
     )
