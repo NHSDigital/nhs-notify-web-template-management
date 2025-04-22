@@ -2,6 +2,7 @@ import z from 'zod';
 
 const $Env = z.object({
   ENABLE_LETTERS_BACKEND: z.enum(['true', 'false']).default('false'),
+  ENABLE_PROOFING: z.enum(['true', 'false']).default('false'),
   ENVIRONMENT: z.string(),
   TEMPLATES_QUARANTINE_BUCKET_NAME: z.string(),
   TEMPLATES_INTERNAL_BUCKET_NAME: z.string(),
@@ -13,6 +14,7 @@ export function loadConfig() {
 
   return {
     enableLetters: env.ENABLE_LETTERS_BACKEND === 'true',
+    enableProofing: env.ENABLE_PROOFING === 'true',
     environment: env.ENVIRONMENT,
     internalBucket: env.TEMPLATES_INTERNAL_BUCKET_NAME,
     quarantineBucket: env.TEMPLATES_QUARANTINE_BUCKET_NAME,

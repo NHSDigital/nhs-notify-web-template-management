@@ -17,6 +17,10 @@ const header = {
       text: 'Sign out',
       href: '/auth/signout',
     },
+    logoLink: {
+      ariaLabel: 'NHS Notify templates',
+      logoTitle: 'NHS logo',
+    },
   },
 };
 
@@ -239,7 +243,8 @@ const previewEmailTemplate = {
 
 const previewLetterTemplate = {
   backLinkText: backToAllTemplates,
-  buttonText: 'Submit template',
+  submitText: 'Submit template',
+  requestProofText: 'Request a proof',
 };
 
 const previewNHSAppTemplate = {

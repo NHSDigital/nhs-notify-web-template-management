@@ -5,8 +5,6 @@
 /.github/                   @NHSDigital/nhs-notify-web-template-management-admins
 *.code-workspace            @NHSDigital/nhs-notify-web-template-management-admins
 /docs/                      @NHSDigital/nhs-notify-web-template-management
-/docs/testing/              @NHSDigital/nhs-notify-web-template-management-testers
-/tests/test-team/           @NHSDigital/nhs-notify-web-template-management-testers
 /infrastructure/terraform/  @NHSDigital/nhs-notify-platform
 
 # Codeowners must be final check

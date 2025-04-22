@@ -16,6 +16,7 @@ No requirements.
 | <a name="input_dynamodb_kms_key_arn"></a> [dynamodb\_kms\_key\_arn](#input\_dynamodb\_kms\_key\_arn) | KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created. | `string` | `""` | no |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
 | <a name="input_enable_letters"></a> [enable\_letters](#input\_enable\_letters) | Enable letters feature flag | `bool` | n/a | yes |
+| <a name="input_enable_proofing"></a> [enable\_proofing](#input\_enable\_proofing) | Enable proofing feature flag | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN | `string` | n/a | yes |

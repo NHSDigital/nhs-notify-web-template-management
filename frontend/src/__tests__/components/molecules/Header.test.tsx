@@ -12,11 +12,21 @@ jest.mocked(useAuthenticator).mockReturnValue(
 );
 
 describe('Header component', () => {
-  it('renders component correctly', () => {
+  it('should contain the logo', () => {
     render(<NHSNotifyHeader />);
 
-    expect(screen.getByTestId('page-header')).toBeInTheDocument();
     expect(screen.getByTestId('page-header-logo')).toBeInTheDocument();
+  });
+
+  it('should contain an authentication link', () => {
+    render(<NHSNotifyHeader />);
+
     expect(screen.getByTestId('auth-link')).toBeInTheDocument();
+  });
+
+  it('should render correctly', () => {
+    const container = render(<NHSNotifyHeader />);
+
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

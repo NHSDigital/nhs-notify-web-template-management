@@ -12,7 +12,13 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 export function PreviewLetterTemplate({
   template,
 }: Readonly<{ template: LetterTemplate }>) {
-  const { backLinkText, buttonText } = content.components.previewLetterTemplate;
+  const { backLinkText, submitText, requestProofText } =
+    content.components.previewLetterTemplate;
+  const buttonText =
+    template.templateStatus === 'PENDING_PROOF_REQUEST'
+      ? requestProofText
+      : submitText;
+
   const basePath = getBasePath();
 
   return (
@@ -25,8 +31,8 @@ export function PreviewLetterTemplate({
           <div className='nhsuk-grid-column-full'>
             <PreviewTemplateDetails.Letter template={template} />
             <NHSNotifyButton
-              data-testid='submit-button'
-              id='preview-letter-template-submit-button'
+              data-testid='preview-letter-template-cta'
+              id='preview-letter-template-cta'
               href={`${basePath}/submit-letter-template/${template.id}`}
             >
               {buttonText}
