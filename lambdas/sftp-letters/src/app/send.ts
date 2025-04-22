@@ -49,12 +49,11 @@ export class App {
 
     const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
 
-    templateLogger.info('Fetching user Data');
-
     try {
       templateLogger.info('Opening SFTP connection');
       await sftp.connect();
 
+      templateLogger.info('Fetching user Data');
       const files = await this.getFileData(
         owner,
         templateId,
@@ -65,7 +64,6 @@ export class App {
       );
 
       templateLogger.info('Acquiring sender lock');
-
       const locked = await this.templateRepository.acquireLock(
         owner,
         templateId
@@ -87,22 +85,18 @@ export class App {
       }
 
       templateLogger.info('Sending PDF');
-
       // create directories in sequence to reduce likelihood of simultaneous creation
       await sftp.mkdir(dest.dir.pdf, true);
       await sftp.mkdir(dest.dir.batch, true);
-
       await sftp.put(files.pdf, dest.pdf);
 
       templateLogger.info('Sending batch');
-
       await sftp.put(files.batch, dest.batch);
 
       templateLogger.info('Sending manifest');
-
       await sftp.put(files.manifest, dest.manifest);
 
-      templateLogger.info('Removing lock');
+      templateLogger.info('Finalising lock');
 
       await this.templateRepository.finaliseLock(owner, templateId);
 
