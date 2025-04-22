@@ -7,7 +7,7 @@ module "lambda_validate_letter_template_files" {
   filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].path
   function_name                  = "${local.csi}-validate-letter-template-files"
   handler                        = "validate-letter-template-files.handler"
-  layer_arns                     = [module.lambda_layer_pdfjs.layer_arn]
+  layer_arns                     = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
   log_retention_in_days          = var.log_retention_in_days
   memory_size                    = 1024
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
