@@ -1,8 +1,8 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
-  monorepo_root           = abspath("${path.module}/../../../..")
-  lambdas_source_code_dir = abspath("${local.monorepo_root}/lambdas")
+  repo_root           = abspath("${path.module}/../../../..")
+  lambdas_source_code_dir = abspath("${local.repo_root}/lambdas")
   pdfjs_layer_dir         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {

@@ -304,7 +304,7 @@ export class TemplateRepository {
     versionId: string,
     valid: boolean,
     personalisationParameters: string[],
-    csvHeaders: string[]
+    testDataCsvHeaders: string[]
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
@@ -334,15 +334,15 @@ export class TemplateRepository {
     if (valid) {
       ExpressionAttributeNames['#personalisationParameters'] =
         'personalisationParameters';
-      ExpressionAttributeNames['#csvHeaders'] = 'csvHeaders';
+      ExpressionAttributeNames['#testDataCsvHeaders'] = 'testDataCsvHeaders';
 
       ExpressionAttributeValues[':personalisationParameters'] =
         personalisationParameters;
-      ExpressionAttributeValues[':csvHeaders'] = csvHeaders;
+      ExpressionAttributeValues[':testDataCsvHeaders'] = testDataCsvHeaders;
 
       updates.push(
         '#personalisationParameters = :personalisationParameters',
-        '#csvHeaders = :csvHeaders'
+        '#testDataCsvHeaders = :testDataCsvHeaders'
       );
     }
 

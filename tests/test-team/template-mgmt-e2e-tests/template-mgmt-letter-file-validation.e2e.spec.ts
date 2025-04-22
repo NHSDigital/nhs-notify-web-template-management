@@ -80,7 +80,7 @@ test.describe('letter file validation', () => {
         'contact_telephone_number',
       ]);
 
-      expect(template.csvHeaders).toEqual([
+      expect(template.testDataCsvHeaders).toEqual([
         'appointment_date',
         'appointment_time',
         'appointment_location',
@@ -159,7 +159,7 @@ test.describe('letter file validation', () => {
         'date',
       ]);
 
-      expect(template.csvHeaders).toEqual([]);
+      expect(template.testDataCsvHeaders).toEqual([]);
 
       const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
         key,
@@ -287,7 +287,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 
@@ -335,7 +335,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 
@@ -378,7 +378,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 
@@ -421,7 +421,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 
@@ -469,7 +469,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 
@@ -519,7 +519,7 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
-      expect(template.csvHeaders).toBeUndefined();
+      expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
   });
 });
