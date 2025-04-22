@@ -40,15 +40,15 @@ No requirements.
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | ../lambda-function | n/a |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | ../lambda-function | n/a |
-| <a name="module_lambda_enrich_guardduty_scan_result"></a> [lambda\_enrich\_guardduty\_scan\_result](#module\_lambda\_enrich\_guardduty\_scan\_result) | ../lambda-function | n/a |
+| <a name="module_lambda_layer_pdfjs"></a> [lambda\_layer\_pdfjs](#module\_lambda\_layer\_pdfjs) | ../lambda-layer | n/a |
 | <a name="module_lambda_send_letter_proof"></a> [lambda\_send\_letter\_proof](#module\_lambda\_send\_letter\_proof) | ../lambda-function | n/a |
 | <a name="module_lambda_set_file_virus_scan_status"></a> [lambda\_set\_file\_virus\_scan\_status](#module\_lambda\_set\_file\_virus\_scan\_status) | ../lambda-function | n/a |
 | <a name="module_lambda_validate_letter_template_files"></a> [lambda\_validate\_letter\_template\_files](#module\_lambda\_validate\_letter\_template\_files) | ../lambda-function | n/a |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | ../lambda-function | n/a |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
-| <a name="module_sqs_quarantine_scan_enrichment"></a> [sqs\_quarantine\_scan\_enrichment](#module\_sqs\_quarantine\_scan\_enrichment) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
 | <a name="module_sqs_sftp_upload"></a> [sqs\_sftp\_upload](#module\_sqs\_sftp\_upload) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
+| <a name="module_sqs_validate_letter_template_files"></a> [sqs\_validate\_letter\_template\_files](#module\_sqs\_validate\_letter\_template\_files) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
 | <a name="module_sqs_virus_scan_failed_delete_object_dlq"></a> [sqs\_virus\_scan\_failed\_delete\_object\_dlq](#module\_sqs\_virus\_scan\_failed\_delete\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
 | <a name="module_sqs_virus_scan_passed_copy_object_dlq"></a> [sqs\_virus\_scan\_passed\_copy\_object\_dlq](#module\_sqs\_virus\_scan\_passed\_copy\_object\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
 | <a name="module_sqs_virus_scan_set_file_status_dlq"></a> [sqs\_virus\_scan\_set\_file\_status\_dlq](#module\_sqs\_virus\_scan\_set\_file\_status\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
