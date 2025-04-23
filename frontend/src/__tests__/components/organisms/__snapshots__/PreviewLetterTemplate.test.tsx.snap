@@ -73,7 +73,7 @@ exports[`PreviewLetterTemplate component matches snapshot 1`] = `
               <dd
                 class="nhsuk-summary-list__value"
               >
-                Letter - Arabic
+                British Sign Language letter - Arabic
               </dd>
             </div>
             <div

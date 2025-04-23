@@ -227,7 +227,7 @@ exports[`PreviewTemplateDetails component renders letter template when testDataC
         <dd
           class="nhsuk-summary-list__value"
         >
-          Letter - French
+          Standard letter - French
         </dd>
       </div>
       <div
@@ -327,7 +327,7 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
         <dd
           class="nhsuk-summary-list__value"
         >
-          Letter - French
+          Standard letter - French
         </dd>
       </div>
       <div
