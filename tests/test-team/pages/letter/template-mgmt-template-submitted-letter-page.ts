@@ -2,4 +2,8 @@ import { TemplateMgmtTemplateSubmittedBasePage } from '../template-mgmt-template
 
 export class TemplateMgmtTemplateSubmittedLetterPage extends TemplateMgmtTemplateSubmittedBasePage {
   static readonly pageUrlSegment = 'letter-template-submitted';
+
+  public static readonly urlRegexp = new RegExp(
+    /\/templates\/letter-template-submitted\/([\dA-Fa-f-]+)$/
+  );
 }
