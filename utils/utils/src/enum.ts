@@ -48,8 +48,10 @@ const letterTypeMap: Record<LetterType, string> = {
   x0: 'Standard',
   x1: 'Large print',
 };
+
 export const letterTypeMapping = (letterType: LetterType) =>
-  letterTypeMap[letterType];
+  `${letterTypeMap[letterType]} letter`;
+
 export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
   ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
 );
@@ -59,8 +61,8 @@ export const letterTypeDisplayMappings = (
   language: Language
 ) =>
   language === 'en'
-    ? `${letterTypeMapping(letterType)} letter`
-    : `Letter - ${languageMapping(language)}`;
+    ? letterTypeMapping(letterType)
+    : `${letterTypeMapping(letterType)} - ${languageMapping(language)}`;
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
@@ -78,6 +80,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
     VIRUS_SCAN_FAILED: 'Virus Scan Failed',
+    VALIDATION_FAILED: 'Validation Failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>

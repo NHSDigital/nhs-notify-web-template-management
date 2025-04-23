@@ -22,16 +22,20 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
           <Link
             className='nhsuk-header__link nhsuk-header__link--service'
             href='/create-and-submit-templates'
-            aria-label='NHS Notify'
+            aria-label={content.components.header.links.logoLink.ariaLabel}
           >
             <svg
               className='nhsuk-logo'
+              role='img'
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 40 16'
               height='40'
               width='100'
               data-testid='page-header-logo'
             >
+              <title>
+                {content.components.header.links.logoLink.logoTitle}
+              </title>
               <path
                 className='nhsuk-logo__background'
                 fill='#005eb8'

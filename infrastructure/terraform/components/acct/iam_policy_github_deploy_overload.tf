@@ -48,6 +48,7 @@ data "aws_iam_policy_document" "github_deploy" {
       "ec2:ModifyVpc*",
       "ec2:ReleaseAddress",
       "ec2:Replace*",
+      "ec2:Revoke*",
     ]
     resources = ["*"]
   }

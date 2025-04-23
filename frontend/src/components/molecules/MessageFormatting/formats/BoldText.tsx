@@ -1,7 +1,9 @@
 import { Details } from 'nhsuk-react-components';
 import content from '@content/content';
+import CodeExample from '@atoms/CodeExample/CodeExample';
 
-const { boldText } = content.components.messageFormatting;
+const { boldText, hiddenCodeBlockDescription } =
+  content.components.messageFormatting;
 
 export const BoldText = () => (
   <Details data-testid='bold-text-details'>
@@ -10,7 +12,12 @@ export const BoldText = () => (
     </Details.Summary>
     <Details.Text data-testid='bold-text-text'>
       <p>{boldText.text}</p>
-      <code>{boldText.codeBlockText}</code>
+      <CodeExample
+        ariaText={hiddenCodeBlockDescription}
+        ariaId='bold-text-description'
+      >
+        {boldText.codeBlockText}
+      </CodeExample>
     </Details.Text>
   </Details>
 );

@@ -17,6 +17,10 @@ const header = {
       text: 'Sign out',
       href: '/auth/signout',
     },
+    logoLink: {
+      ariaLabel: 'NHS Notify templates',
+      logoTitle: 'NHS logo',
+    },
   },
 };
 
@@ -49,6 +53,7 @@ const footer = {
 
 const personalisation = {
   header: 'Personalisation',
+  hiddenCodeBlockDescription: 'An example of personalised message content:',
   details: {
     title: 'Personalisation fields',
     text1:
@@ -77,6 +82,7 @@ const personalisation = {
 
 const messageFormatting = {
   header: 'Message formatting',
+  hiddenCodeBlockDescription: 'An example of markdown:',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
@@ -459,7 +465,7 @@ const templateFormLetter = {
   templateNameHintText: 'This will not be visible to recipients.',
   templateTypeLabelText: 'Letter type',
   templateTypeHintText: 'Choose the type of letter template you are uploading',
-  templateLanguageLabelText: 'Additional language',
+  templateLanguageLabelText: 'Letter language',
   templateLanguageHintText: 'Choose the language of this letter template',
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:
@@ -518,12 +524,8 @@ const templateSubmitted = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  doNextText:
+    "Tell an onboarding manager once you've submitted all your templates.",
   backLinkText: backToAllTemplates,
 };
 

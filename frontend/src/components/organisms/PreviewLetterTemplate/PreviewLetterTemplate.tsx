@@ -17,7 +17,7 @@ export function PreviewLetterTemplate({
 
   return (
     <>
-      <BackLink href={`${basePath}/manage-templates`} id='back-link'>
+      <BackLink href={`${basePath}/message-templates`} id='back-link'>
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
@@ -32,7 +32,7 @@ export function PreviewLetterTemplate({
               {buttonText}
             </NHSNotifyButton>
             <p>
-              <Link href='/manage-templates'>{backLinkText}</Link>
+              <Link href='/message-templates'>{backLinkText}</Link>
             </p>
           </div>
         </div>
