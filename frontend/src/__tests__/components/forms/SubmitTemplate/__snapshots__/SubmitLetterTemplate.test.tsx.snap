@@ -26,7 +26,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
         </p>
         <ul>
           <li>
-            is signed off by the relevant stakeholders in your team
+            is approved by the relevant stakeholders in your team
           </li>
           <li>
             does not have any spelling errors
@@ -35,9 +35,6 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             is formatted correctly
           </li>
         </ul>
-        <p>
-          If you need to make further changes to this template, go back and upload an updated or different letter
-        </p>
         <h2
           class="nhsuk-heading-s"
         >
@@ -67,8 +64,16 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             </span>
           </h2>
           <p>
-            When you submit this template you will not be able to make further changes. If you still need to change this template after it's submitted, replace it with a new template.
+            If you need to change this template after you've submitted it:
           </p>
+          <ul>
+            <li>
+              go back and upload a new letter template
+            </li>
+            <li>
+              tell your onboarding manager which template you want to use
+            </li>
+          </ul>
         </div>
         <form
           action="/action"

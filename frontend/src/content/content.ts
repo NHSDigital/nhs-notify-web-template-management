@@ -193,7 +193,7 @@ const homePage = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
   text4:
-    'Only use this tool if your message content has been signed off by the relevant stakeholders in your team.',
+    'Only use this tool if your message content has been approved by the relevant stakeholders in your team.',
   text5: 'You can save a template as a draft and edit it later.',
   text6:
     'If you want to change a submitted template, you must create a new template to replace it.',
@@ -327,7 +327,7 @@ const submitTemplate = {
   submitChecklistHeading: 'Before you submit',
   submitChecklistIntroduction: 'You should check that your template:',
   submitChecklistItems: [
-    'is signed off by the relevant stakeholders in your team',
+    'is approved by the relevant stakeholders in your team',
     'does not have any spelling errors',
     'is formatted correctly',
   ],
