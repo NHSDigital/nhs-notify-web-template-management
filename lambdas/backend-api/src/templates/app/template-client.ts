@@ -329,7 +329,7 @@ export class TemplateClient implements ITemplateClient {
     );
 
     if (statusUpdateResult.error) {
-      log.error('Failed to save template to the database', {
+      log.error('Failed to save template update to the database', {
         statusUpdateResult,
       });
 
@@ -353,7 +353,7 @@ export class TemplateClient implements ITemplateClient {
     const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
     const personalisationParameters = templateDTO.personalisationParameters;
 
-    await this.proofingQueue.send(
+    const sendQueueResult = await this.proofingQueue.send(
       templateId,
       owner,
       personalisationParameters!,
@@ -361,6 +361,10 @@ export class TemplateClient implements ITemplateClient {
       testDataVersionId,
       this.defaultLetterSupplier
     );
+
+    if (sendQueueResult.error) {
+      return sendQueueResult;
+    }
 
     return success(templateDTO);
   }

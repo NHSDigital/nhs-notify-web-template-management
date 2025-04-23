@@ -1529,6 +1529,72 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when failing to send to SQS', async () => {
+      const { templateClient, mocks } = setup();
+
+      const pdfVersionId = 'a';
+      const personalisationParameters = ['myParam'];
+
+      const template: TemplateDto = {
+        name: 'name',
+        templateStatus: 'SUBMITTED',
+        templateType: 'LETTER',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        personalisationParameters,
+        letterType: 'q1',
+        language: 'en',
+        files: {
+          pdfTemplate: {
+            virusScanStatus: 'PASSED',
+            currentVersion: pdfVersionId,
+            fileName: 'template.pdf',
+          },
+        },
+      };
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
+      });
+
+      const clientErr = new Error('sqs err');
+
+      mocks.queueMock.send.mockResolvedValueOnce({
+        error: {
+          message: 'Failed to send to proofing queue',
+          code: 500,
+          actualError: clientErr,
+        },
+      });
+
+      const result = await templateClient.requestProof(templateId, owner);
+
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        personalisationParameters,
+        pdfVersionId,
+        undefined,
+        defaultLetterSupplier
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          actualError: clientErr,
+          message: 'Failed to send to proofing queue',
+        },
+      });
+    });
+
     test('should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1557,6 +1623,8 @@ describe('templateClient', () => {
       mocks.templateRepository.updateStatus.mockResolvedValueOnce({
         data: { ...template, owner, version: 1 },
       });
+
+      mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
 
       const result = await templateClient.requestProof(templateId, owner);
 
