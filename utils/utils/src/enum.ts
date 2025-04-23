@@ -80,6 +80,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
     VIRUS_SCAN_FAILED: 'Virus Scan Failed',
+    VALIDATION_FAILED: 'Validation Failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>

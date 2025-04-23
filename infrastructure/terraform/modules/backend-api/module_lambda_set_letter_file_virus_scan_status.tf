@@ -10,9 +10,7 @@ module "lambda_set_file_virus_scan_status" {
   log_retention_in_days          = var.log_retention_in_days
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status].base64sha256
 
-  environment_variables = {
-    TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
-  }
+  environment_variables = local.backend_lambda_environment_variables
 }
 
 data "aws_iam_policy_document" "set_file_virus_scan_status" {

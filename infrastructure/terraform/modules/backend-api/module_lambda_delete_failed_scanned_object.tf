@@ -4,11 +4,12 @@ module "lambda_delete_failed_scanned_object" {
 
   dead_letter_target_arn         = module.sqs_virus_scan_failed_delete_object_dlq.sqs_queue_arn
   execution_role_policy_document = data.aws_iam_policy_document.delete_failed_scanned_object.json
-  filename                       = module.build_virus_scan_lambdas.zips["src/delete-failed-scanned-object.ts"].path
+  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.delete_failed_scanned_object].path
   function_name                  = "${local.csi}-delete-failed-scanned-object"
   handler                        = "delete-failed-scanned-object.handler"
   log_retention_in_days          = var.log_retention_in_days
-  source_code_hash               = module.build_virus_scan_lambdas.zips["src/delete-failed-scanned-object.ts"].base64sha256
+  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.delete_failed_scanned_object].base64sha256
+  environment_variables          = local.backend_lambda_environment_variables
 }
 
 data "aws_iam_policy_document" "delete_failed_scanned_object" {
@@ -18,7 +19,7 @@ data "aws_iam_policy_document" "delete_failed_scanned_object" {
 
     actions = [
       "s3:DeleteObject",
-      "s3:DeleteObjectVersion"
+      "s3:DeleteObjectVersion",
     ]
 
     resources = ["${module.s3bucket_quarantine.arn}/*"]

@@ -141,3 +141,6 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
   AssertExtendsMerged<NHSAppTemplate> &
   AssertExtendsMerged<EmailTemplate> &
   AssertExtendsMerged<SMSTemplate>;
+
+export type TemplateKey = { owner: string; id: string };
+export type FileType = 'pdf-template' | 'test-data';
