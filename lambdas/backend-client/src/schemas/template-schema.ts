@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import {
   BaseTemplate,
-  CreateUpdateLetterProperties,
+  CreateLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
   FileDetails,
@@ -36,17 +36,16 @@ export type SmsPropertiesWithType = SmsProperties & { templateType: 'SMS' };
 export type LetterPropertiesWithType = LetterProperties & {
   templateType: 'LETTER';
 };
-export type CreateUpdateLetterPropertiesWithType =
-  CreateUpdateLetterProperties & {
-    templateType: 'LETTER';
-  };
+export type CreateLetterPropertiesWithType = CreateLetterProperties & {
+  templateType: 'LETTER';
+};
 
 export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
   (
     | EmailPropertiesWithType
     | NhsAppPropertiesWithType
     | SmsPropertiesWithType
-    | CreateUpdateLetterPropertiesWithType
+    | CreateLetterPropertiesWithType
   );
 
 export type ValidatedTemplateDto = TemplateDto &
@@ -100,7 +99,7 @@ const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-const $CreateUpdateLetterProperties = schemaFor<CreateUpdateLetterProperties>()(
+const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
   z.object({
     letterType: z.enum(LETTER_TYPE_LIST),
     language: z.enum(LANGUAGE_LIST),
@@ -108,7 +107,7 @@ const $CreateUpdateLetterProperties = schemaFor<CreateUpdateLetterProperties>()(
 );
 
 const $LetterProperties = schemaFor<LetterProperties>()(
-  $CreateUpdateLetterProperties.extend({ files: $LetterFiles })
+  $CreateLetterProperties.extend({ files: $LetterFiles })
 );
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
@@ -127,10 +126,9 @@ export const $NhsAppPropertiesWithType = $NhsAppProperties.merge(
 export const $EmailPropertiesWithType = $EmailProperties.merge(
   z.object({ templateType: z.literal('EMAIL') })
 );
-export const $CreateUpdateLetterPropertiesWithType =
-  $CreateUpdateLetterProperties.merge(
-    z.object({ templateType: z.literal('LETTER') })
-  );
+export const $CreateLetterPropertiesWithType = $CreateLetterProperties.merge(
+  z.object({ templateType: z.literal('LETTER') })
+);
 export const $LetterPropertiesWithType = $LetterProperties.merge(
   z.object({ templateType: z.literal('LETTER') })
 );
@@ -154,7 +152,7 @@ export const $CreateUpdateTemplate = schemaFor<
     $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
     $BaseTemplateSchema.merge($EmailPropertiesWithType),
     $BaseTemplateSchema.merge($SmsPropertiesWithType),
-    $BaseTemplateSchema.merge($CreateUpdateLetterPropertiesWithType),
+    $BaseTemplateSchema.merge($CreateLetterPropertiesWithType),
   ])
 );
 

@@ -7,6 +7,16 @@ import {
 import { getTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
+import content from '@content/content';
+import type { Metadata } from 'next';
+
+const { pageTitle } = content.components.previewLetterTemplate;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const PreviewLetterTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;

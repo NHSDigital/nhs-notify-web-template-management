@@ -1,6 +1,6 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
-  CreateUpdateLetterProperties,
+  CreateLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
   Language,
@@ -58,8 +58,8 @@ export type CreateUpdateEmailTemplate = CreateUpdateTemplate &
 export type CreateUpdateSMSTemplate = CreateUpdateTemplate &
   SmsProperties &
   SmsTemplateType;
-export type CreateUpdateLetterTemplate = CreateUpdateTemplate &
-  CreateUpdateLetterProperties &
+export type CreateLetterTemplate = CreateUpdateTemplate &
+  CreateLetterProperties &
   LetterTemplateType;
 
 export type NHSAppTemplate = TemplateDto &
