@@ -1030,11 +1030,11 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: 'template-owner' },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #csvHeaders = :csvHeaders',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
-            '#csvHeaders': 'csvHeaders',
+            '#testDataCsvHeaders': 'testDataCsvHeaders',
             '#file': 'pdfTemplate',
             '#files': 'files',
             '#personalisationParameters': 'personalisationParameters',
@@ -1043,7 +1043,7 @@ describe('templateRepository', () => {
             '#version': 'currentVersion',
           },
           ExpressionAttributeValues: {
-            ':csvHeaders': ['csv', 'headers'],
+            ':testDataCsvHeaders': ['csv', 'headers'],
             ':personalisationParameters': ['personalisation', 'parameters'],
             ':templateStatus': 'PENDING_PROOF_REQUEST',
             ':templateStatusDeleted': 'DELETED',
@@ -1104,11 +1104,11 @@ describe('templateRepository', () => {
           TableName: 'templates',
           Key: { id: 'template-id', owner: 'template-owner' },
           UpdateExpression:
-            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #csvHeaders = :csvHeaders',
+            'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
           ConditionExpression:
             '#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
           ExpressionAttributeNames: {
-            '#csvHeaders': 'csvHeaders',
+            '#testDataCsvHeaders': 'testDataCsvHeaders',
             '#file': 'pdfTemplate',
             '#files': 'files',
             '#personalisationParameters': 'personalisationParameters',
@@ -1117,7 +1117,7 @@ describe('templateRepository', () => {
             '#version': 'currentVersion',
           },
           ExpressionAttributeValues: {
-            ':csvHeaders': ['csv', 'headers'],
+            ':testDataCsvHeaders': ['csv', 'headers'],
             ':personalisationParameters': ['personalisation', 'parameters'],
             ':templateStatus': 'NOT_YET_SUBMITTED',
             ':templateStatusDeleted': 'DELETED',
