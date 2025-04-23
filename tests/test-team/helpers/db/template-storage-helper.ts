@@ -2,7 +2,6 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DeleteObjectsCommand,
   HeadObjectCommand,
-  ListObjectsV2Command,
   NotFound,
   PutObjectCommand,
   S3Client,
@@ -105,31 +104,12 @@ export class TemplateStorageHelper {
       )
     );
 
-    const owners = keys
-      .map((key) => key.owner)
-      .filter((owner, i, list) => list.indexOf(owner) === i);
+    const files = keys.flatMap((key) => [
+      `pdf-template/${key.owner}/${key.id}.pdf`,
+      `test-data/${key.owner}/${key.id}.csv`,
+    ]);
 
-    const files = await Promise.all(
-      owners.map(async (owner) => {
-        const pdfs = await this.s3.send(
-          new ListObjectsV2Command({
-            Bucket: process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
-            Prefix: `pdf-template/${owner}`,
-          })
-        );
-
-        const csvs = await this.s3.send(
-          new ListObjectsV2Command({
-            Bucket: process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
-            Prefix: `test-data/${owner}`,
-          })
-        );
-
-        return [...(pdfs.Contents || []), ...(csvs.Contents || [])];
-      })
-    );
-
-    const s3Chunks = TemplateStorageHelper.chunk(files.flat(), 1000);
+    const s3Chunks = TemplateStorageHelper.chunk(files, 1000);
 
     await Promise.all(
       s3Chunks.map((chunk) =>
@@ -137,7 +117,7 @@ export class TemplateStorageHelper {
           new DeleteObjectsCommand({
             Bucket: process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
             Delete: {
-              Objects: chunk.map(({ Key }) => ({ Key })),
+              Objects: chunk.map((key) => ({ Key: key })),
             },
           })
         )
