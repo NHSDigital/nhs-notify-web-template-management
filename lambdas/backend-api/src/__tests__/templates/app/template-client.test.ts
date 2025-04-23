@@ -10,6 +10,7 @@ import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 
 jest.mock('node:crypto');
 jest.mock('nhs-notify-web-template-management-utils/logger');
@@ -17,6 +18,7 @@ jest.mock('nhs-notify-web-template-management-utils/logger');
 const owner = '58890285E473';
 const templateId = 'E1F5088E5B77';
 const versionId = '28F-D4-72-A93-A6';
+const defaultLetterSupplier = 'SUPPLIER';
 
 const setup = () => {
   const enableLetters = true;
@@ -25,15 +27,19 @@ const setup = () => {
 
   const letterUploadRepository = mock<LetterUploadRepository>();
 
+  const queueMock = mock<ProofingQueue>();
+
   const templateClient = new TemplateClient(
     enableLetters,
     templateRepository,
-    letterUploadRepository
+    letterUploadRepository,
+    queueMock,
+    defaultLetterSupplier
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository },
+    mocks: { templateRepository, letterUploadRepository, queueMock },
   };
 };
 
@@ -308,8 +314,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        'PENDING_VALIDATION',
-        owner
+        owner,
+        'PENDING_VALIDATION'
       );
     });
 
@@ -740,8 +746,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        'PENDING_VALIDATION',
-        owner
+        owner,
+        'PENDING_VALIDATION'
       );
     });
 
@@ -841,7 +847,9 @@ describe('templateClient', () => {
       const client = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository
+        mocks.letterUploadRepository,
+        mocks.queueMock,
+        defaultLetterSupplier
       );
 
       const data: CreateUpdateTemplate = {
@@ -1118,7 +1126,9 @@ describe('templateClient', () => {
       const noLettersClient = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository
+        mocks.letterUploadRepository,
+        mocks.queueMock,
+        defaultLetterSupplier
       );
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1211,7 +1221,9 @@ describe('templateClient', () => {
       const noLettersClient = new TemplateClient(
         false,
         mocks.templateRepository,
-        mocks.letterUploadRepository
+        mocks.letterUploadRepository,
+        mocks.queueMock,
+        defaultLetterSupplier
       );
 
       const template: TemplateDto = {
@@ -1404,6 +1416,164 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
         owner
+      );
+
+      expect(result).toEqual({
+        data: template,
+      });
+    });
+  });
+
+  describe('requestProof', () => {
+    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+
+      const result = await templateClient.requestProof(templateId, owner);
+
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Internal server error',
+        },
+      });
+    });
+
+    test('should return a failure result, when updated database template is invalid', async () => {
+      const { templateClient, mocks } = setup();
+
+      const expectedTemplateDto: TemplateDto = {
+        id: templateId,
+        createdAt: undefined as unknown as string,
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'SUBMITTED',
+        name: 'name',
+        message: 'message',
+        templateType: 'SMS',
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner,
+        version: 1,
+      };
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.requestProof(templateId, owner);
+
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'Error retrieving template',
+        },
+      });
+    });
+
+    test('should return a failure result, when updated database template not a letter', async () => {
+      const { templateClient, mocks } = setup();
+
+      const expectedTemplateDto: TemplateDto = {
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'SUBMITTED',
+        name: 'name',
+        message: 'message',
+        templateType: 'SMS',
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner,
+        version: 1,
+      };
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.requestProof(templateId, owner);
+
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(result).toEqual({
+        error: {
+          code: 400,
+          message: 'Only letter proofing is curently supported',
+        },
+      });
+    });
+
+    test('should return updated template', async () => {
+      const { templateClient, mocks } = setup();
+
+      const pdfVersionId = 'a';
+      const personalisationParameters = ['myParam'];
+
+      const template: TemplateDto = {
+        name: 'name',
+        templateStatus: 'SUBMITTED',
+        templateType: 'LETTER',
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        personalisationParameters,
+        letterType: 'q1',
+        language: 'en',
+        files: {
+          pdfTemplate: {
+            virusScanStatus: 'PASSED',
+            currentVersion: pdfVersionId,
+            fileName: 'template.pdf',
+          },
+        },
+      };
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: { ...template, owner, version: 1 },
+      });
+
+      const result = await templateClient.requestProof(templateId, owner);
+
+      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
+      expect(mocks.queueMock.send).toHaveBeenCalledWith(
+        templateId,
+        owner,
+        personalisationParameters,
+        pdfVersionId,
+        undefined,
+        defaultLetterSupplier
       );
 
       expect(result).toEqual({

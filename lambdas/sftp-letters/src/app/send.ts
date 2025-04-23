@@ -7,8 +7,8 @@ import { serialiseCsv } from '../infra/serialise-csv';
 import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
-import type { ProofingRequest } from '../infra/types';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
+import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 
 export class App {
   constructor(
@@ -25,26 +25,26 @@ export class App {
   ): Promise<'sent' | 'already-sent' | 'failed'> {
     const {
       owner,
-      pdfVersion,
+      pdfVersionId,
       personalisationParameters,
       supplier,
       templateId,
-      testDataVersion,
+      testDataVersionId,
     } = this.parseProofingRequest(eventBody);
 
     const { sftpClient: sftp, baseUploadDir } =
       await this.sftpSupplierClientRepository.getClient(supplier);
 
-    const batchId = this.batch.getId(templateId, pdfVersion);
+    const batchId = this.batch.getId(templateId, pdfVersionId);
 
     const templateLogger = this.logger.child({
       batchId,
       messageId,
       owner,
-      pdfVersion,
+      pdfVersionId,
       supplier,
       templateId,
-      testDataVersion,
+      testDataVersionId,
     });
 
     const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
@@ -57,8 +57,8 @@ export class App {
       const files = await this.getFileData(
         owner,
         templateId,
-        pdfVersion,
-        testDataVersion,
+        pdfVersionId,
+        testDataVersionId,
         personalisationParameters,
         batchId
       );
@@ -85,6 +85,7 @@ export class App {
       }
 
       templateLogger.info('Sending PDF');
+
       // create directories in sequence to reduce likelihood of simultaneous creation
       await sftp.mkdir(dest.dir.pdf, true);
       await sftp.mkdir(dest.dir.batch, true);
@@ -97,7 +98,6 @@ export class App {
       await sftp.put(files.manifest, dest.manifest);
 
       templateLogger.info('Finalising lock');
-
       await this.templateRepository.finaliseLock(owner, templateId);
 
       templateLogger.info('Sent proofing request');
@@ -124,11 +124,11 @@ export class App {
     return z
       .object({
         owner: z.string(),
-        pdfVersion: z.string(),
+        pdfVersionId: z.string(),
         personalisationParameters: z.array(z.string()),
         supplier: z.string(),
         templateId: z.string(),
-        testDataVersion: z.string().optional(),
+        testDataVersionId: z.string().optional(),
       })
       .parse(JSON.parse(event));
   }

@@ -19,12 +19,15 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
+import { ProofingQueue } from '../infra/proofing-queue';
 
 export class TemplateClient implements ITemplateClient {
   constructor(
     private readonly enableLetters: boolean,
     private readonly templateRepository: TemplateRepository,
-    private readonly letterUploadRepository: LetterUploadRepository
+    private readonly letterUploadRepository: LetterUploadRepository,
+    private readonly proofingQueue: ProofingQueue,
+    private readonly defaultLetterSupplier: string
   ) {}
 
   async createTemplate(
@@ -229,7 +232,7 @@ export class TemplateClient implements ITemplateClient {
 
     if (submitResult.error) {
       log.error('Failed to save template to the database', {
-        createResult: submitResult,
+        submitResult,
       });
 
       return submitResult;
@@ -313,6 +316,55 @@ export class TemplateClient implements ITemplateClient {
     return success(templateDTOs);
   }
 
+  async requestProof(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const log = logger.child({ templateId });
+
+    const statusUpdateResult = await this.templateRepository.updateStatus(
+      templateId,
+      owner,
+      'NOT_YET_SUBMITTED'
+    );
+
+    if (statusUpdateResult.error) {
+      log.error('Failed to save template to the database', {
+        statusUpdateResult,
+      });
+
+      return statusUpdateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(statusUpdateResult.data);
+
+    if (!templateDTO) {
+      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+    }
+
+    if (templateDTO.templateType !== 'LETTER') {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Only letter proofing is curently supported'
+      );
+    }
+
+    const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
+    const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
+    const personalisationParameters = templateDTO.personalisationParameters;
+
+    await this.proofingQueue.send(
+      templateId,
+      owner,
+      personalisationParameters!,
+      pdfVersionId,
+      testDataVersionId,
+      this.defaultLetterSupplier
+    );
+
+    return success(templateDTO);
+  }
+
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
@@ -322,8 +374,8 @@ export class TemplateClient implements ITemplateClient {
 
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      status,
-      owner
+      owner,
+      status
     );
 
     if (updateStatusResult.error) {

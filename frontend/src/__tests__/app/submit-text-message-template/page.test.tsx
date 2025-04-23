@@ -57,7 +57,7 @@ describe('SubmitSmsTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         goBackPath='preview-text-message-template'
-        submitPath='text-message-template-submitted'
+        confirmPath='text-message-template-submitted'
       />
     );
   });

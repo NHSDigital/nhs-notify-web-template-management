@@ -35,20 +35,27 @@ type WithAttachments<T> = T extends { templateType: 'LETTER' }
   : T;
 
 const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
+  templateType: null,
   message: null,
 };
 
 const emailAttributes: Record<keyof EmailProperties, null> = {
+  templateType: null,
   message: null,
   subject: null,
 };
 
-const smsAttributes: Record<keyof SmsProperties, null> = { message: null };
+const smsAttributes: Record<keyof SmsProperties, null> = {
+  templateType: null,
+  message: null,
+};
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
+  templateType: null,
   letterType: null,
   language: null,
   files: null,
+  personalisationParameters: null,
 };
 
 export class TemplateRepository {
@@ -242,14 +249,15 @@ export class TemplateRepository {
 
   async updateStatus(
     templateId: string,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    owner: string
+    owner: string,
+    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string | number> = {
       ':newStatus': status,
     };
+
     try {
       const result = await this._update(
         templateId,

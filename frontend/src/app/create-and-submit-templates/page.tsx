@@ -10,6 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const channelList =
+    process.env.NEXT_PUBLIC_ENABLE_LETTERS === 'true'
+      ? [...homePageContent.list, { key: 'template-4', item: 'letters' }]
+      : homePageContent.list;
+
   return (
     <NHSNotifyMain>
       <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
@@ -22,7 +27,7 @@ export default function HomePage() {
           <p>{homePageContent.text2}</p>
 
           <ul className='nhsuk-list nhsuk-list--bullet'>
-            {homePageContent.list.map(({ key, item }) => (
+            {channelList.map(({ key, item }) => (
               <li key={key}>{item}</li>
             ))}
           </ul>

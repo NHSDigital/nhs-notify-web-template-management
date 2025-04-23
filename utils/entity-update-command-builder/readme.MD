@@ -54,11 +54,11 @@ If their current functionality was to be extended or a new entity UpdateCommand 
 In order to begin writing a condition, use either an .andCondition or .orCondition on an instance of an EntityUpdateBuilder derived class. The 2 below examples produce the same output as follows:
 
 ```javascript
-this.updateBuilder.andCondition('status', 'CREATED', '=');
-    .orCondition('status', 'SENDING', '=');
+this.updateBuilder.andCondition('status', '=', 'CREATED');
+    .orCondition('status', '=', 'SENDING');
 
-this.updateBuilder.orCondition('status', 'CREATED', '=');
-    .orCondition('status', 'SENDING', '=');
+this.updateBuilder.orCondition('status', '=', 'CREATED');
+    .orCondition('status', '=', 'SENDING');
 ```
 
 ```javascript

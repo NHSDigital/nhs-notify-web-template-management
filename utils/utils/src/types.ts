@@ -90,11 +90,11 @@ export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
 };
 
-export type SubmitTemplatePageComponentProps = {
+export type ConfirmCancelProps = {
   templateName: string;
   templateId: string;
   goBackPath: string;
-  submitPath: string;
+  confirmPath: string;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
@@ -144,3 +144,12 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
 
 export type TemplateKey = { owner: string; id: string };
 export type FileType = 'pdf-template' | 'test-data';
+
+export type ProofingRequest = {
+  owner: string;
+  pdfVersionId: string;
+  personalisationParameters: string[];
+  supplier: string;
+  templateId: string;
+  testDataVersionId?: string;
+};

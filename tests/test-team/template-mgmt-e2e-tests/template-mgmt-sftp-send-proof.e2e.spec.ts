@@ -76,10 +76,9 @@ test.describe('SFTP proof send', () => {
         'send-proof-letter',
         'PASSED'
       ),
-      // The status PENDING_PROOF doesn't exist yet
+      templateStatus: 'NOT_YET_SUBMITTED',
       // the template's 'personalisationParameters' has no effect on the test
       // the sender lambda does not read the template
-      templateStatus: 'PENDING_PROOF',
       personalisationParameters,
     };
 
@@ -88,30 +87,30 @@ test.describe('SFTP proof send', () => {
       owner: user.userId,
     };
 
-    const pdfVersion = template.files?.pdfTemplate?.currentVersion;
-    const csvVersion = template.files?.testDataCsv?.currentVersion;
+    const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
+    const csvVersionId = template.files?.testDataCsv?.currentVersion;
 
-    expect(pdfVersion).toBeDefined();
-    expect(csvVersion).toBeDefined();
+    expect(pdfVersionId).toBeDefined();
+    expect(csvVersionId).toBeDefined();
 
     const pdf = pdfUploadFixtures.withPersonalisation.pdf.open();
     const csv = pdfUploadFixtures.withPersonalisation.csv.open();
 
     await Promise.all([
       templateStorageHelper.seedTemplateData([template]),
-      templateStorageHelper.putScannedPdfTemplateFile(key, pdfVersion!, pdf),
-      templateStorageHelper.putScannedCsvTestDataFile(key, csvVersion!, csv),
+      templateStorageHelper.putScannedPdfTemplateFile(key, pdfVersionId!, pdf),
+      templateStorageHelper.putScannedCsvTestDataFile(key, csvVersionId!, csv),
     ]);
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
     const proofRequest = {
       owner: key.owner,
-      pdfVersion,
+      pdfVersionId,
       personalisationParameters,
       supplier: MOCK_LETTER_SUPPLIER,
       templateId: templateId,
-      testDataVersion: csvVersion,
+      testDataVersionId: csvVersionId,
     };
 
     await sqsHelper.sendMessage(process.env.SEND_PROOF_QUEUE_URL, proofRequest);
@@ -139,7 +138,7 @@ test.describe('SFTP proof send', () => {
       `${templateId}.pdf`
     );
 
-    const batchId = `${templateId}-0000000000000_${pdfVersion!.replaceAll('-', '').slice(0, 27)}`;
+    const batchId = `${templateId}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
 
     const batchLocation = path.join(
       sftpBase,

@@ -53,7 +53,7 @@ describe('SubmitEmailTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         goBackPath='preview-email-template'
-        submitPath='email-template-submitted'
+        confirmPath='email-template-submitted'
       />
     );
   });

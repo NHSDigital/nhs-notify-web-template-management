@@ -14,7 +14,6 @@ const jestConfig: Config = {
   ...baseJestConfig,
   moduleNameMapper: moduleNameMapperDefaults,
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   prettierPath: null,
   coveragePathIgnorePatterns: [
     ...(baseJestConfig.coveragePathIgnorePatterns ?? []),

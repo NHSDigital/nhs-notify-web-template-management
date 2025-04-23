@@ -6,28 +6,28 @@ locals {
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
-    AWS_REGION               = var.region
     APIG_EXECUTION_ROLE_ARN  = aws_iam_role.api_gateway_execution_role.arn
     AUTHORIZER_LAMBDA_ARN    = module.authorizer_lambda.function_arn
+    AWS_REGION               = var.region
     CREATE_LAMBDA_ARN        = module.create_template_lambda.function_arn
     CREATE_LETTER_LAMBDA_ARN = module.create_letter_template_lambda.function_arn
-    UPDATE_LAMBDA_ARN        = module.update_template_lambda.function_arn
-    SUBMIT_LAMBDA_ARN        = module.submit_template_lambda.function_arn
     DELETE_LAMBDA_ARN        = module.delete_template_lambda.function_arn
     GET_LAMBDA_ARN           = module.get_template_lambda.function_arn
     LIST_LAMBDA_ARN          = module.list_template_lambda.function_arn
+    REQUEST_PROOF_LAMBDA_ARN = module.request_proof_lambda.function_arn
+    SUBMIT_LAMBDA_ARN        = module.submit_template_lambda.function_arn
+    UPDATE_LAMBDA_ARN        = module.update_template_lambda.function_arn
   })
 
   backend_lambda_entrypoints = {
     copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
-    copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
     create_letter_template          = "src/templates/create-letter.ts"
     create_template                 = "src/templates/create.ts"
-    delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
     delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
     delete_template                 = "src/templates/delete.ts"
     get_template                    = "src/templates/get.ts"
     list_template                   = "src/templates/list.ts"
+    request_proof                   = "src/templates/proof.ts"
     set_file_virus_scan_status      = "src/templates/set-letter-file-virus-scan-status.ts"
     submit_template                 = "src/templates/submit.ts"
     template_client                 = "src/index.ts"
@@ -36,9 +36,11 @@ locals {
   }
 
   backend_lambda_environment_variables = {
+    DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier.name
     ENABLE_LETTERS_BACKEND           = var.enable_letters
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"
+    REQUEST_PROOF_QUEUE_URL          = module.sqs_sftp_upload.sqs_queue_url
     TEMPLATES_EVENT_BUS_NAME         = data.aws_cloudwatch_event_bus.default.name
     TEMPLATES_EVENT_SOURCE           = local.event_source
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id

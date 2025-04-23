@@ -57,7 +57,7 @@ describe('SubmitNhsAppTemplatePage', () => {
         templateName={state.name}
         templateId={state.id}
         goBackPath='preview-nhs-app-template'
-        submitPath='nhs-app-template-submitted'
+        confirmPath='nhs-app-template-submitted'
       />
     );
   });

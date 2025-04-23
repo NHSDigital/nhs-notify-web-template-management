@@ -2,7 +2,7 @@
 
 import { FC, useActionState } from 'react';
 import { WarningCallout } from 'nhsuk-react-components';
-import { SubmitTemplatePageComponentProps } from 'nhs-notify-web-template-management-utils';
+import { ConfirmCancelProps } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { getBasePath } from '@utils/get-base-path';
@@ -10,12 +10,12 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
-export const SubmitDigitalTemplate: FC<SubmitTemplatePageComponentProps> = ({
+export const SubmitDigitalTemplate: FC<ConfirmCancelProps> = ({
   templateName,
   templateId,
   goBackPath,
-  submitPath,
-}: SubmitTemplatePageComponentProps) => {
+  confirmPath,
+}: ConfirmCancelProps) => {
   const {
     pageHeading,
     warningCalloutLabel,
@@ -28,7 +28,7 @@ export const SubmitDigitalTemplate: FC<SubmitTemplatePageComponentProps> = ({
     buttonText,
   } = content.components.submitTemplate;
 
-  const [_, action] = useActionState(submitTemplate, submitPath);
+  const [_, action] = useActionState(submitTemplate, confirmPath);
 
   return (
     <NHSNotifyMain>
