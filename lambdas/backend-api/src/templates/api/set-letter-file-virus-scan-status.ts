@@ -1,18 +1,17 @@
 import { z } from 'zod';
 import {
-  $GuardDutyMalwareScanStatus,
   type GuardDutyMalwareScanStatus,
+  $GuardDutyMalwareScanStatus,
 } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRepository } from '../infra';
-import type { LetterUploadMetadata } from '../infra/letter-upload-repository';
+import { LetterUploadRepository } from '../infra/letter-upload-repository';
 
+// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
+// Just typing/validating the parts we use
 type SetLetterFileVirusScanStatusLambdaInput = {
   detail: {
     s3ObjectDetails: {
-      metadata: Omit<
-        LetterUploadMetadata,
-        'user-filename' | 'test-data-provided'
-      >;
+      objectKey: string;
     };
     scanResultDetails: {
       scanResultStatus: GuardDutyMalwareScanStatus;
@@ -24,12 +23,7 @@ const $SetLetterFileVirusScanStatusLambdaInput: z.ZodType<SetLetterFileVirusScan
   z.object({
     detail: z.object({
       s3ObjectDetails: z.object({
-        metadata: z.object({
-          owner: z.string(),
-          'template-id': z.string(),
-          'version-id': z.string(),
-          'file-type': z.enum(['pdf-template', 'test-data']),
-        }),
+        objectKey: z.string(),
       }),
       scanResultDetails: z.object({
         scanResultStatus: $GuardDutyMalwareScanStatus,
@@ -42,15 +36,21 @@ export const createHandler =
   async (event: unknown) => {
     const {
       detail: {
-        s3ObjectDetails: { metadata },
+        s3ObjectDetails: { objectKey },
         scanResultDetails: { scanResultStatus },
       },
     } = $SetLetterFileVirusScanStatusLambdaInput.parse(event);
 
+    const metadata = LetterUploadRepository.parseKey(objectKey);
+
+    const templateKey = { owner: metadata.owner, id: metadata['template-id'] };
+    const virusScanResult =
+      scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
+
     await templateRepository.setLetterFileVirusScanStatus(
-      { owner: metadata.owner, id: metadata['template-id'] },
-      metadata['file-type'] === 'pdf-template' ? 'pdfTemplate' : 'testDataCsv',
+      templateKey,
+      metadata['file-type'],
       metadata['version-id'],
-      scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED'
+      virusScanResult
     );
   };

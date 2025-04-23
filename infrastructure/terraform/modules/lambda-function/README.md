@@ -16,6 +16,7 @@ No requirements.
 | <a name="input_filename"></a> [filename](#input\_filename) | Path to the function's deployment package within the local filesystem | `string` | n/a | yes |
 | <a name="input_function_name"></a> [function\_name](#input\_function\_name) | Unique name of the Lambda function | `string` | n/a | yes |
 | <a name="input_handler"></a> [handler](#input\_handler) | Function entrypoint in your code | `string` | n/a | yes |
+| <a name="input_layer_arns"></a> [layer\_arns](#input\_layer\_arns) | List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function. | `list(string)` | `null` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | Specifies the number of days you want to retain log events in the log group for this Lambda | `number` | `0` | no |
 | <a name="input_memory_size"></a> [memory\_size](#input\_memory\_size) | Lambda memory size | `number` | `128` | no |
 | <a name="input_runtime"></a> [runtime](#input\_runtime) | Identifier of the function's runtime | `string` | `"nodejs20.x"` | no |

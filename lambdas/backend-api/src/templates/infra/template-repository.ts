@@ -12,6 +12,11 @@ import {
   VirusScanStatus,
   CreateUpdateLetterProperties,
 } from 'nhs-notify-backend-client';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import type {
+  FileType,
+  TemplateKey,
+} from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
@@ -23,7 +28,6 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
@@ -46,8 +50,6 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   language: null,
   files: null,
 };
-
-type TemplateKey = { owner: string; id: string };
 
 export class TemplateRepository {
   constructor(
@@ -297,11 +299,82 @@ export class TemplateRepository {
     }
   }
 
+  async setLetterValidationResult(
+    templateKey: TemplateKey,
+    versionId: string,
+    valid: boolean,
+    personalisationParameters: string[],
+    testDataCsvHeaders: string[]
+  ) {
+    const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
+      {
+        '#files': 'files',
+        '#file': 'pdfTemplate' satisfies keyof LetterFiles,
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
+
+    const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':templateStatus': (valid
+          ? 'NOT_YET_SUBMITTED'
+          : 'VALIDATION_FAILED') satisfies TemplateStatus,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':updatedAt': new Date().toISOString(),
+        ':version': versionId,
+      };
+
+    const updates = [
+      '#templateStatus = :templateStatus',
+      '#updatedAt = :updatedAt',
+    ];
+
+    if (valid) {
+      ExpressionAttributeNames['#personalisationParameters'] =
+        'personalisationParameters';
+      ExpressionAttributeNames['#testDataCsvHeaders'] = 'testDataCsvHeaders';
+
+      ExpressionAttributeValues[':personalisationParameters'] =
+        personalisationParameters;
+      ExpressionAttributeValues[':testDataCsvHeaders'] = testDataCsvHeaders;
+
+      updates.push(
+        '#personalisationParameters = :personalisationParameters',
+        '#testDataCsvHeaders = :testDataCsvHeaders'
+      );
+    }
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression: `SET ${updates.join(' , ')}`,
+          ExpressionAttributeNames,
+          ExpressionAttributeValues,
+          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(
+          'Conditional check failed when setting letter validation status:',
+          error,
+          { templateKey }
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
+
   async setLetterFileVirusScanStatus(
     templateKey: TemplateKey,
-    fileType: Extract<keyof LetterFiles, 'pdfTemplate' | 'testDataCsv'>,
+    fileType: FileType,
     versionId: string,
-    status: VirusScanStatus
+    status: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
     const updates = [
       '#files.#file.#scanStatus = :scanStatus',
@@ -311,7 +384,12 @@ export class TemplateRepository {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
-        '#file': fileType,
+        '#file': (fileType === 'pdf-template'
+          ? 'pdfTemplate'
+          : 'testDataCsv') satisfies Extract<
+          keyof LetterFiles,
+          'pdfTemplate' | 'testDataCsv'
+        >,
         '#scanStatus': 'virusScanStatus',
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
@@ -346,7 +424,11 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(error);
+        logger.error(
+          'Conditional check failed when setting file virus scan status:',
+          error,
+          { templateKey }
+        );
       } else {
         throw error;
       }

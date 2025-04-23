@@ -12,9 +12,7 @@ module "create_template_lambda" {
 
   log_retention_in_days = var.log_retention_in_days
 
-  environment_variables = {
-    TEMPLATES_TABLE_NAME = aws_dynamodb_table.templates.name
-  }
+  environment_variables = local.backend_lambda_environment_variables
 
   execution_role_policy_document = data.aws_iam_policy_document.create_template_lambda_policy.json
 }
