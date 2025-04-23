@@ -28,6 +28,8 @@ type TypeSpecificProperties = {
     testDataCsv?: File;
     proofs?: File[];
   };
+  personalisationParameters?: string[];
+  testDataCsvHeaders?: string[];
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

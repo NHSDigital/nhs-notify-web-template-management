@@ -76,6 +76,12 @@ variable "vpc" {
   default = null
 }
 
+variable "layer_arns" {
+  description = "List of Lambda Layer Version ARNs (maximum of 5) to attach to your Lambda Function."
+  type        = list(string)
+  default     = null
+}
+
 variable "sqs_event_source_mapping" {
   description = "Configuration for SQS event source mapping"
   type = object({

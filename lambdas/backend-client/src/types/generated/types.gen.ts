@@ -8,6 +8,7 @@ export type TemplateStatus =
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
   | 'SUBMITTED'
+  | 'VALIDATION_FAILED'
   | 'VIRUS_SCAN_FAILED';
 
 export type Language =
