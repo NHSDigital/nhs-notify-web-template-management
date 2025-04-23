@@ -20,7 +20,7 @@ output "s3_buckets" {
   }
 }
 
-output "vpc_public_subnets" {
+output "vpc_subnets" {
   value = {
     public  = module.vpc.public_subnets
     private = module.vpc.private_subnets
