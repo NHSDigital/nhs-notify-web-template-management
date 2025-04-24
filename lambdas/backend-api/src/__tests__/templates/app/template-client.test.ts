@@ -852,7 +852,8 @@ describe('templateClient', () => {
         mocks.templateRepository,
         mocks.letterUploadRepository,
         mocks.queueMock,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        mocks.logger
       );
 
       const data: CreateUpdateTemplate = {
