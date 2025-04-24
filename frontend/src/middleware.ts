@@ -11,11 +11,12 @@ const protectedPaths = [
   /^\/create-letter-template$/,
   /^\/delete-template\/[^/]+$/,
   /^\/edit-email-template\/[^/]+$/,
+  /^\/edit-letter-template\/[^/]+$/,
   /^\/edit-nhs-app-template\/[^/]+$/,
   /^\/edit-text-message-template\/[^/]+$/,
   /^\/email-template-submitted\/[^/]+$/,
   /^\/invalid-template$/,
-  /^\/manage-templates$/,
+  /^\/message-templates$/,
   /^\/nhs-app-template-submitted\/[^/]+$/,
   /^\/preview-email-template\/[^/]+$/,
   /^\/preview-letter-template\/[^/]+$/,
@@ -25,9 +26,9 @@ const protectedPaths = [
   /^\/submit-nhs-app-template\/[^/]+$/,
   /^\/submit-text-message-template\/[^/]+$/,
   /^\/text-message-template-submitted\/[^/]+$/,
-  /^\/view-submitted-email-template\/[^/]+$/,
-  /^\/view-submitted-nhs-app-template\/[^/]+$/,
-  /^\/view-submitted-text-message-template\/[^/]+$/,
+  /^\/preview-submitted-email-template\/[^/]+$/,
+  /^\/preview-submitted-nhs-app-template\/[^/]+$/,
+  /^\/preview-submitted-text-message-template\/[^/]+$/,
 ];
 
 const publicPaths = [
@@ -90,7 +91,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const token = await getAccessTokenServer();
+  const token = await getAccessTokenServer({ forceRefresh: true });
 
   if (!token) {
     const redirectResponse = NextResponse.redirect(
@@ -103,6 +104,8 @@ export async function middleware(request: NextRequest) {
     );
 
     redirectResponse.headers.set('Content-Type', 'text/html');
+
+    redirectResponse.cookies.delete('csrf_token');
 
     return redirectResponse;
   }

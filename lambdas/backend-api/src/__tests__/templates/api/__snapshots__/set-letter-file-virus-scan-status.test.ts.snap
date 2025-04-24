@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors if event has invalid scan result status 1`] = `
+"[
+  {
+    "received": "UNKNOWN_STATUS",
+    "code": "invalid_enum_value",
+    "options": [
+      "NO_THREATS_FOUND",
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
+      "FAILED"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'UNKNOWN_STATUS'"
+  }
+]"
+`;
+
+exports[`errors if event has no object key name 1`] = `
+"[
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "undefined",
+    "path": [
+      "detail",
+      "s3ObjectDetails",
+      "objectKey"
+    ],
+    "message": "Required"
+  }
+]"
+`;
+
+exports[`errors if event has no scan result status 1`] = `
+"[
+  {
+    "expected": "'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
+    "received": "undefined",
+    "code": "invalid_type",
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Required"
+  }
+]"
+`;

@@ -13,11 +13,7 @@ module "create_letter_template_lambda" {
 
   log_retention_in_days = var.log_retention_in_days
 
-  environment_variables = {
-    TEMPLATES_TABLE_NAME   = aws_dynamodb_table.templates.name
-    QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.bucket
-    ENABLE_LETTERS_BACKEND = var.enable_letters
-  }
+  environment_variables = local.backend_lambda_environment_variables
 
   execution_role_policy_document = data.aws_iam_policy_document.create_letter_template_lambda_policy.json
 }
@@ -50,6 +46,7 @@ data "aws_iam_policy_document" "create_letter_template_lambda_policy" {
     ]
 
     resources = [
+      local.dynamodb_kms_key_arn,
       var.kms_key_arn
     ]
   }

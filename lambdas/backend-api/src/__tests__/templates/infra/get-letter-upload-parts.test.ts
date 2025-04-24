@@ -1,9 +1,9 @@
 import { getLetterUploadParts } from '@backend-api/templates/app/get-letter-upload-parts';
-import { CreateTemplate } from 'nhs-notify-backend-client';
+import { CreateUpdateTemplate } from 'nhs-notify-backend-client';
 import { pdfLetterMultipart } from 'nhs-notify-web-template-management-test-helper-utils';
 
 describe('getLetterUploadParts', () => {
-  const initialTemplate: CreateTemplate = {
+  const initialTemplate: CreateUpdateTemplate = {
     templateType: 'LETTER',
     name: 'template-name',
     letterType: 'x0',

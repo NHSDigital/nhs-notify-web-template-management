@@ -21,6 +21,8 @@ component_dir=$terraform_dir/components/$COMPONENT
 
 echo "Creating backend sandbox \"$ENVIRONMENT\""
 
+./lambdas/layers/pdfjs/build.sh
+
 cd $terraform_dir
 
 ./bin/terraform.sh \

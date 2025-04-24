@@ -35,6 +35,7 @@ node_modules
 
 # production
 /build
+dist
 
 # misc
 .DS_Store
@@ -63,6 +64,7 @@ reports
 tests/screenshots/*
 plugin-cache/
 
+# terraform
 *.terraform*
 terraform.tfstate
 terraform.tfstate.backup
@@ -86,3 +88,6 @@ tests/test-team/playwright-report/
 tests/test-team/blob-report/
 tests/test-team/playwright/.cache/
 lambdas/backend-api/src/email/email-template.json
+
+# vscode
+.vscode/settings.local.json

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import {
-  $CreateLetterPropertiesWithType,
-  $CreateTemplateSchema,
+  $CreateUpdateLetterPropertiesWithType,
+  $CreateUpdateTemplate,
   $EmailPropertiesWithType,
   $LetterFiles,
   $LetterPropertiesWithType,
@@ -10,6 +10,7 @@ import {
   $TemplateDtoSchema,
   TemplateDto,
 } from 'nhs-notify-backend-client';
+import { GuardDutyMalwareScanStatus } from './types';
 
 export const zodValidate = <T extends z.Schema>(
   schema: T,
@@ -37,7 +38,7 @@ export const $NonSubmittedTemplate = z.intersection(
 );
 
 export const $CreateNHSAppTemplate = z.intersection(
-  $CreateTemplateSchema,
+  $CreateUpdateTemplate,
   $NhsAppPropertiesWithType
 );
 export const $NHSAppTemplate = z.intersection(
@@ -50,7 +51,7 @@ export const $SubmittedNHSAppTemplate = z.intersection(
 );
 
 export const $CreateEmailTemplate = z.intersection(
-  $CreateTemplateSchema,
+  $CreateUpdateTemplate,
   $EmailPropertiesWithType
 );
 export const $EmailTemplate = z.intersection(
@@ -63,7 +64,7 @@ export const $SubmittedEmailTemplate = z.intersection(
 );
 
 export const $CreateSMSTemplate = z.intersection(
-  $CreateTemplateSchema,
+  $CreateUpdateTemplate,
   $SmsPropertiesWithType
 );
 export const $SMSTemplate = z.intersection(
@@ -75,9 +76,9 @@ export const $SubmittedSMSTemplate = z.intersection(
   $SMSTemplate
 );
 
-export const $CreateLetterTemplate = z.intersection(
-  $CreateTemplateSchema,
-  $CreateLetterPropertiesWithType
+export const $CreateUpdateLetterTemplate = z.intersection(
+  $CreateUpdateTemplate,
+  $CreateUpdateLetterPropertiesWithType
 );
 export const $LetterTemplate = z.intersection(
   $TemplateDtoSchema,
@@ -114,3 +115,26 @@ export const validateTemplate = (template?: TemplateDto) =>
 
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);
+
+export const $GuardDutyMalwareScanStatus = z.enum<
+  GuardDutyMalwareScanStatus,
+  [
+    'NO_THREATS_FOUND',
+    'THREATS_FOUND',
+    'UNSUPPORTED',
+    'ACCESS_DENIED',
+    'FAILED',
+  ]
+>([
+  'NO_THREATS_FOUND',
+  'THREATS_FOUND',
+  'UNSUPPORTED',
+  'ACCESS_DENIED',
+  'FAILED',
+]);
+
+export const $GuardDutyMalwareScanStatusFailed =
+  $GuardDutyMalwareScanStatus.exclude(['NO_THREATS_FOUND']);
+
+export const $GuardDutyMalwareScanStatusPassed =
+  $GuardDutyMalwareScanStatus.extract(['NO_THREATS_FOUND']);

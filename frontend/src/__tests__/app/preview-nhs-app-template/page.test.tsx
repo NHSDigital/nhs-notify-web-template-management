@@ -1,7 +1,9 @@
 /**
  * @jest-environment node
  */
-import PreviewNhsAppTemplatePage from '@app/preview-nhs-app-template/[templateId]/page';
+import PreviewNhsAppTemplatePage, {
+  generateMetadata,
+} from '@app/preview-nhs-app-template/[templateId]/page';
 import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate/PreviewNHSAppTemplate';
 import { NHSAppTemplate } from 'nhs-notify-web-template-management-utils';
 import { redirect } from 'next/navigation';
@@ -13,6 +15,9 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.previewNHSAppTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -49,6 +54,9 @@ describe('PreviewNhsAppTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
+    });
     expect(page).toEqual(
       <PreviewNHSAppTemplate initialState={nhsAppTemplate} />
     );

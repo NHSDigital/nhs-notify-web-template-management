@@ -1,11 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 
-type TemplateSubmittedProps = {
-  templateId: string;
-  templateName: string;
-};
+type TemplateSubmittedProps = { templateId: string; templateName: string };
 
 export const TemplateSubmitted = ({
   templateId,
@@ -17,11 +16,7 @@ export const TemplateSubmitted = ({
     templateNameHeading,
     templateIdHeading,
     doNextHeading,
-    notLiveHeading,
-    notLiveText,
-    liveHeading,
-    liveLinkText,
-    liveText,
+    doNextText,
   } = content.components.templateSubmitted;
 
   return (
@@ -44,24 +39,11 @@ export const TemplateSubmitted = ({
             {templateIdHeading}
           </h2>
           <p id='template-id'>{templateId}</p>
-          <h2 className='nhsuk-u-margin-top-5'>{doNextHeading}</h2>
-          <h3>{notLiveHeading}</h3>
-          <p>{notLiveText}</p>
-          <h3>{liveHeading}</h3>
-          <p>
-            {liveText}{' '}
-            <Link
-              id='servicenow-link'
-              href='https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {liveLinkText}
-            </Link>
-          </p>
+          <h3 className='nhsuk-u-margin-top-5'>{doNextHeading}</h3>
+          <p>{doNextText}</p>
           <hr className='nhsuk-section-break--visible' />
           <p>
-            <Link id='go-back-link' href='/manage-templates'>
+            <Link id='go-back-link' href='/message-templates'>
               {backLinkText}
             </Link>
           </p>

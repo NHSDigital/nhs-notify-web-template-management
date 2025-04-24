@@ -1,12 +1,17 @@
 /**
  * @jest-environment node
  */
-import SubmitEmailTemplatePage from '@app/submit-email-template/[templateId]/page';
+import SubmitEmailTemplatePage, {
+  generateMetadata,
+} from '@app/submit-email-template/[templateId]/page';
 import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { EMAIL_TEMPLATE, NHS_APP_TEMPLATE, SMS_TEMPLATE } from '../../helpers';
+import content from '@content/content';
+
+const { pageTitle } = content.components.submitTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -40,6 +45,9 @@ describe('SubmitEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.EMAIL,
+    });
     expect(page).toEqual(
       <SubmitTemplate
         templateName={state.name}

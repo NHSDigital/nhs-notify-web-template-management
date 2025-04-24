@@ -5,54 +5,64 @@ import {
   Language,
 } from 'nhs-notify-backend-client';
 
-export const languageMapping = (language: Language) =>
-  ({
-    ar: 'Arabic',
-    bg: 'Bulgarian',
-    bn: 'Bengali',
-    de: 'German',
-    el: 'Greek',
-    en: 'English',
-    es: 'Spanish',
-    fa: 'Persian',
-    fr: 'French',
-    gu: 'Gujurati',
-    hi: 'Hindi',
-    hu: 'Hungarian',
-    it: 'Italian',
-    ku: 'Kurdish',
-    lt: 'Lithuanian',
-    lv: 'Latvian',
-    ne: 'Nepali',
-    pa: 'Punjabi',
-    pl: 'Polish',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    ru: 'Russian',
-    sk: 'Slovak',
-    so: 'Somali',
-    sq: 'Albanian',
-    ta: 'Tamil',
-    tr: 'Turkish',
-    ur: 'Urdu',
-    zh: 'Chinese',
-  })[language];
-const letterTypeMapping = (letterType: LetterType) =>
-  ({
-    x3: 'Audio CD',
-    q1: 'Braille',
-    q4: 'British Sign Language',
-    x0: 'Standard',
-    x1: 'Large print',
-  })[letterType];
+const languageMap: Record<Language, string> = {
+  ar: 'Arabic',
+  bg: 'Bulgarian',
+  bn: 'Bengali',
+  de: 'German',
+  el: 'Greek',
+  en: 'English',
+  es: 'Spanish',
+  fa: 'Persian',
+  fr: 'French',
+  gu: 'Gujurati',
+  hi: 'Hindi',
+  hu: 'Hungarian',
+  it: 'Italian',
+  ku: 'Kurdish',
+  lt: 'Lithuanian',
+  lv: 'Latvian',
+  ne: 'Nepali',
+  pa: 'Punjabi',
+  pl: 'Polish',
+  pt: 'Portuguese',
+  ro: 'Romanian',
+  ru: 'Russian',
+  sk: 'Slovak',
+  so: 'Somali',
+  sq: 'Albanian',
+  ta: 'Tamil',
+  tr: 'Turkish',
+  ur: 'Urdu',
+  zh: 'Chinese',
+};
+export const languageMapping = (language: Language) => languageMap[language];
+export const alphabeticalLanguageList = Object.entries(languageMap).sort(
+  ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
+);
+
+const letterTypeMap: Record<LetterType, string> = {
+  x3: 'Audio CD',
+  q1: 'Braille',
+  q4: 'British Sign Language',
+  x0: 'Standard',
+  x1: 'Large print',
+};
+
+export const letterTypeMapping = (letterType: LetterType) =>
+  `${letterTypeMap[letterType]} letter`;
+
+export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
+  ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
+);
 
 export const letterTypeDisplayMappings = (
   letterType: LetterType,
   language: Language
 ) =>
   language === 'en'
-    ? `${letterTypeMapping(letterType)} letter`
-    : `Letter - ${languageMapping(language)}`;
+    ? letterTypeMapping(letterType)
+    : `${letterTypeMapping(letterType)} - ${languageMapping(language)}`;
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
@@ -69,6 +79,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     DELETED: '', // will not be shown in the UI
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
+    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
+    VALIDATION_FAILED: 'Validation Failed',
   })[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
@@ -82,4 +94,4 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const viewSubmittedTemplatePages = (type: TemplateType) =>
-  `view-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+  `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;

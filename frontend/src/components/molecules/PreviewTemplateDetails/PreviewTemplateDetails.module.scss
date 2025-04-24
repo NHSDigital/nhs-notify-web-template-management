@@ -3,38 +3,33 @@
 * https://service-manual.nhs.uk/design-system/styles/colour
 */
 $white: #ffffff;
-$nhsuk-border-color: #d8dde0;
-$nhsuk-secondary-button-color: #4c6272;
 
 .preview {
   background-color: $white;
-  border: 1px solid $nhsuk-border-color;
 
-  &__row {
-    margin: 0;
-    padding: 1rem;
-    border-bottom: 1px solid $nhsuk-border-color;
-  }
-
-  &__col {
-    padding: 0;
+  & :global(.nhsuk-summary-list__key) {
     width: 20%;
+    padding: 1rem;
 
     @media screen and (max-width: 768px) {
       width: auto;
     }
+  }
 
-    &_heading {
-      color: $nhsuk-secondary-button-color;
-      font-weight: 600;
+  & :global(.nhsuk-summary-list__value) {
+    width: 80%;
+    padding: 1rem;
+
+    @media screen and (max-width: 768px) {
+      width: auto;
     }
+  }
 
-    &_content {
-      word-wrap: anywhere;
+  &__content {
+    word-wrap: anywhere;
 
-      > :last-child {
-        margin-bottom: 0;
-      }
+    > :last-child {
+      margin-bottom: 0;
     }
   }
 }

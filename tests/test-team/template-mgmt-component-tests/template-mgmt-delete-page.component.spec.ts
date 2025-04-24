@@ -76,7 +76,7 @@ test.describe('Delete Template Page', () => {
     await assertGoBackLinkNotPresent(props);
   });
 
-  test('should go back to manage-templates page with template still visible when "no" button selected', async ({
+  test('should go back to message-templates page with template still visible when "no" button selected', async ({
     page,
   }) => {
     const deleteTemplatePage = new TemplateMgmtDeletePage(page);
@@ -85,12 +85,12 @@ test.describe('Delete Template Page', () => {
 
     await deleteTemplatePage.goBackButton.click();
 
-    await expect(page).toHaveURL('/templates/manage-templates');
+    await expect(page).toHaveURL('/templates/message-templates');
 
     await expect(page.getByText(templates.goBack.name)).toBeVisible();
   });
 
-  test('should go back to manage-templates page with template no longer visible when "yes" button selected', async ({
+  test('should go back to message-templates page with template no longer visible when "yes" button selected', async ({
     page,
   }) => {
     const deleteTemplatePage = new TemplateMgmtDeletePage(page);
@@ -99,7 +99,7 @@ test.describe('Delete Template Page', () => {
 
     await deleteTemplatePage.confirmButton.click();
 
-    await expect(page).toHaveURL('/templates/manage-templates');
+    await expect(page).toHaveURL('/templates/message-templates');
 
     await expect(page.getByText(templates.confirm.name)).toBeHidden();
   });

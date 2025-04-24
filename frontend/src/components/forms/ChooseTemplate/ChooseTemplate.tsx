@@ -35,7 +35,7 @@ export const ChooseTemplate = ({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/manage-templates`}>
+      <BackLink href={`${getBasePath()}/message-templates`}>
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>

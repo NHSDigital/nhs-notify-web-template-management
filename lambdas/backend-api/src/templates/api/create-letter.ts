@@ -1,7 +1,7 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
 import {
-  type CreateTemplate,
+  type CreateUpdateTemplate,
   type ITemplateClient,
 } from 'nhs-notify-backend-client';
 import { getLetterUploadParts } from '../app/get-letter-upload-parts';
@@ -34,7 +34,7 @@ export function createHandler({
 
     const { data: created, error: createTemplateError } =
       await templateClient.createLetterTemplate(
-        template as CreateTemplate,
+        template as CreateUpdateTemplate,
         user,
         pdf,
         csv

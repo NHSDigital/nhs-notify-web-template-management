@@ -1,16 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
-import {
-  assertBackToAllTemplatesBottomLink,
-  assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-preview-common.steps';
-import {
-  assertFooterLinks,
-  assertSignOutLink,
-  assertNotifyBannerLink,
-  assertSkipToMainContent,
-} from '../template-mgmt-common.steps';
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
@@ -30,13 +20,11 @@ async function createTemplates() {
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
-    valid: {
-      ...TemplateFactory.createLetterTemplate(
-        'valid-letter-preview-template',
-        user.userId,
-        'test-template-letter'
-      ),
-    },
+    valid: TemplateFactory.createLetterTemplate(
+      'valid-letter-preview-template',
+      user.userId,
+      'test-template-letter'
+    ),
   };
 }
 
@@ -66,30 +54,9 @@ test.describe('Preview Letter template Page', () => {
       `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
     );
 
-    await expect(previewLetterTemplatePage.editRadioOption).not.toBeChecked();
-
-    await expect(previewLetterTemplatePage.submitRadioOption).not.toBeChecked();
-
     await expect(previewLetterTemplatePage.pageHeader).toContainText(
       'test-template-letter'
     );
-  });
-
-  test.describe('Page functionality', () => {
-    test('common page tests', async ({ page, baseURL }) => {
-      const props = {
-        page: new TemplateMgmtPreviewLetterPage(page),
-        id: templates.valid.id,
-        baseURL,
-      };
-
-      await assertSkipToMainContent(props);
-      await assertNotifyBannerLink(props);
-      await assertSignOutLink(props);
-      await assertFooterLinks(props);
-      await assertBackToAllTemplatesTopLink(props);
-      await assertBackToAllTemplatesBottomLink(props);
-    });
   });
 
   test.describe('Error handling', () => {
@@ -113,33 +80,6 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
-    });
-
-    test('when user submits page with no data, then an error is displayed', async ({
-      page,
-    }) => {
-      const errorMessage = 'Select an option';
-
-      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
-
-      await previewLetterTemplatePage.loadPage(templates.valid.id);
-
-      await previewLetterTemplatePage.clickContinueButton();
-
-      await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
-
-      const selectOptionErrorLink =
-        previewLetterTemplatePage.errorSummary.locator(
-          '[href="#previewLetterTemplateAction"]'
-        );
-
-      await expect(selectOptionErrorLink).toHaveText(errorMessage);
-
-      await selectOptionErrorLink.click();
-
-      await expect(
-        page.locator('#previewLetterTemplateAction')
-      ).toBeInViewport();
     });
   });
 });

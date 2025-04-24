@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "main": "src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./mock-logger": "./src/mock-logger.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -12,9 +13,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "form-data": "^4.0.2"
+    "form-data": "^4.0.2",
+    "winston": "^3.17.0",
+    "nhs-notify-web-template-management-utils": "*"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.4"
+    "@tsconfig/node20": "^20.1.5"
   }
 }

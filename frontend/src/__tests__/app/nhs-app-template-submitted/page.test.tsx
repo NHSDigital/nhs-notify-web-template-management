@@ -1,11 +1,16 @@
 /**
  * @jest-environment node
  */
-import NhsAppTemplateSubmittedPage from '@app/nhs-app-template-submitted/[templateId]/page';
+import NhsAppTemplateSubmittedPage, {
+  generateMetadata,
+} from '@app/nhs-app-template-submitted/[templateId]/page';
 import { TemplateSubmitted } from '@molecules/TemplateSubmitted/TemplateSubmitted';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateSubmitted;
 
 jest.mock('@molecules/TemplateSubmitted/TemplateSubmitted');
 jest.mock('@utils/form-actions');
@@ -38,6 +43,9 @@ describe('NhsAppTemplateSubmittedPage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle.NHS_APP,
+    });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(

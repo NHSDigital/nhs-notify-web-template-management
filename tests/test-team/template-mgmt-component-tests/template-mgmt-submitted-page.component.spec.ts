@@ -32,7 +32,7 @@ function createTemplates(owner: string) {
       owner,
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
-      id: 'valid-sms-template',
+      id: 'valid-text-message-template',
       name: 'test-template-sms',
       message: 'test example content',
     }),
@@ -103,11 +103,6 @@ test.describe('Template Submitted Page', () => {
       await expect(templateSubmittedPage.templateIdText).toHaveText(
         templates[channelIdentifier].id
       );
-
-      await expect(templateSubmittedPage.serviceNowLink).toHaveAttribute(
-        'href',
-        'https://nhsdigitallive.service-now.com/nhs_digital?id=sc_cat_item&sys_id=6208dbce1be759102eee65b9bd4bcbf5'
-      );
     });
 
     // eslint-disable-next-line no-loop-func
@@ -125,7 +120,7 @@ test.describe('Template Submitted Page', () => {
         await assertSignOutLink(props);
         await assertGoBackLink({
           ...props,
-          expectedUrl: 'templates/manage-templates',
+          expectedUrl: 'templates/message-templates',
         });
       });
     });

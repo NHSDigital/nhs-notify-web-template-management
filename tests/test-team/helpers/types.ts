@@ -14,7 +14,7 @@ export const templateTypeToUrlTextMappings: Record<string, string> = {
 
 type File = {
   fileName: string;
-  currentVersion?: string;
+  currentVersion: string;
   virusScanStatus: string;
 };
 
@@ -25,9 +25,11 @@ type TypeSpecificProperties = {
   language?: string;
   files?: {
     pdfTemplate?: File;
-    testDataCsv: File;
+    testDataCsv?: File;
     proofs?: File[];
   };
+  personalisationParameters?: string[];
+  testDataCsvHeaders?: string[];
 };
 
 export type CreateTemplatePayload = TypeSpecificProperties & {

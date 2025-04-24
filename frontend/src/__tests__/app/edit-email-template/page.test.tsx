@@ -1,11 +1,16 @@
 /**
  * @jest-environment node
  */
-import EditEmailTemplatePage from '@app/edit-email-template/[templateId]/page';
+import EditEmailTemplatePage, {
+  generateMetadata,
+} from '@app/edit-email-template/[templateId]/page';
 import { getTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { EmailTemplateForm } from '@forms/EmailTemplateForm/EmailTemplateForm';
 import { EmailTemplate } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const { editPageTitle } = content.components.templateFormEmail;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
@@ -75,6 +80,7 @@ describe('EditEmailTemplatePage', () => {
       }),
     });
 
+    expect(await generateMetadata()).toEqual({ title: editPageTitle });
     expect(getTemplateMock).toHaveBeenCalledWith('template-id');
 
     expect(page).toEqual(<EmailTemplateForm initialState={emailTemplate} />);

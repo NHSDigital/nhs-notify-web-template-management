@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type InputValue = HTMLTextAreaElement | HTMLInputElement;
+type InputValue = HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement;
 
 export const useTextInput = <T extends InputValue>(
   initialState: string

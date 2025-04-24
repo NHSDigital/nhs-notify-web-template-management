@@ -77,7 +77,7 @@ describe('PreviewEmailTemplatePage', () => {
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
 
-  test('should redirect to manage-templates when template is already deleted', async () => {
+  test('should redirect to message-templates when template is already deleted', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
       templateStatus: 'DELETED',
@@ -94,6 +94,6 @@ describe('PreviewEmailTemplatePage', () => {
       }),
     });
 
-    expect(redirectMock).toHaveBeenCalledWith('/manage-templates', 'push');
+    expect(redirectMock).toHaveBeenCalledWith('/message-templates', 'push');
   });
 });

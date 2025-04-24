@@ -1,15 +1,14 @@
 act 0.2.64
 gitleaks 8.24.0
+jq 1.6
+nodejs 20.18.2
+make 4.4
 pre-commit 3.6.0
 terraform 1.9.2
 terraform-docs 0.19.0
+trivy 0.61.0
 vale 3.6.0
-tfsec 1.28.10
-nodejs 20.18.2
-jq 1.6
-python 3.9.18
-direnv 2.32.1
-make 4.4
+python 3.12.2
 
 # ==============================================================================
 # The section below is reserved for Docker image versions.

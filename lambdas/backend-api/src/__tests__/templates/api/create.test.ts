@@ -2,7 +2,7 @@ import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import {
   TemplateDto,
-  CreateTemplate,
+  CreateUpdateTemplate,
   ITemplateClient,
 } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/create';
@@ -108,7 +108,7 @@ describe('Template API - Create', () => {
   test('should return template', async () => {
     const { handler, mocks } = setup();
 
-    const create: CreateTemplate = {
+    const create: CreateUpdateTemplate = {
       name: 'updated-name',
       message: 'message',
       templateType: 'SMS',
