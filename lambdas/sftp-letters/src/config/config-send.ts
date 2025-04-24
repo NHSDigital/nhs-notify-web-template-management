@@ -22,3 +22,5 @@ export function loadConfig() {
     }))
     .parse(process.env);
 }
+
+export type Config = ReturnType<typeof loadConfig>;

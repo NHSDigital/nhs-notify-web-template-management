@@ -5,5 +5,6 @@ module "build_sftp_letters_lambdas" {
 
   entrypoints = [
     "src/send-proof.ts",
+    "src/sftp-poll.ts",
   ]
 }
