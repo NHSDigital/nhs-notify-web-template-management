@@ -89,7 +89,6 @@ export type LetterProperties = CreateLetterProperties & {
 };
 
 export type BaseTemplate = {
-  templateType: TemplateType;
   name: string;
 };
 

@@ -796,13 +796,9 @@
       "BaseTemplate": {
         "type": "object",
         "required": [
-          "templateType",
           "name"
         ],
         "properties": {
-          "templateType": {
-            "$ref": "#/components/schemas/TemplateType"
-          },
           "name": {
             "type": "string"
           }
