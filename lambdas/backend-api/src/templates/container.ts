@@ -10,10 +10,6 @@ import { loadConfig } from './infra/config';
 export function createContainer() {
   const config = loadConfig();
 
-  if (!config.templatesTableName) {
-    throw new Error('process.env.QUARANTINE_BUCKET_NAME is undefined');
-  }
-
   const ddbDocClient = DynamoDBDocumentClient.from(
     new DynamoDBClient({ region: 'eu-west-2' }),
     {

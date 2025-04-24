@@ -29,6 +29,7 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -89,7 +90,7 @@ export class TemplateRepository {
 
       return success(item);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to get template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to get template', error);
     }
   }
 
@@ -116,7 +117,7 @@ export class TemplateRepository {
 
       return success(entity);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to create template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to create template', error);
     }
   }
 
@@ -176,7 +177,7 @@ export class TemplateRepository {
         );
       }
 
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -204,7 +205,7 @@ export class TemplateRepository {
 
       return result;
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -243,7 +244,7 @@ export class TemplateRepository {
         );
       }
 
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -269,7 +270,7 @@ export class TemplateRepository {
       );
       return result;
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -304,7 +305,7 @@ export class TemplateRepository {
 
       return success(items);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to list templates', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
     }
   }
 
@@ -445,6 +446,36 @@ export class TemplateRepository {
       } else {
         throw error;
       }
+    }
+  }
+
+  async proofRequestUpdate(templateId: string, owner: string) {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      owner,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    )
+      .setStatus('PENDING_PROOF')
+      .expectedStatus('PENDING_PROOF_REQUEST')
+      .expectedTemplateType('LETTER')
+      .expectTemplateExists()
+      .build();
+
+    try {
+      const response = await this.client.send(new UpdateCommand(update));
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      return error instanceof ConditionalCheckFailedException
+        ? failure(
+            ErrorCase.VALIDATION_FAILED,
+            'Template cannot be proofed',
+            error
+          )
+        : failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 

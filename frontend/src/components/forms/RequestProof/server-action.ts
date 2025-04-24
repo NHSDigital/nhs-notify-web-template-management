@@ -6,12 +6,10 @@ import { z } from 'zod';
 import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
-const $TemplateIdSchema = z.string();
-
 export async function requestProof(route: string, formData: FormData) {
-  const { success, data: templateId } = $TemplateIdSchema.safeParse(
-    formData.get('templateId')
-  );
+  const { success, data: templateId } = z
+    .string()
+    .safeParse(formData.get('templateId'));
 
   if (!success) {
     return redirect('/invalid-template', RedirectType.replace);

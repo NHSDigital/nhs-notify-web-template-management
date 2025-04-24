@@ -39,7 +39,7 @@ describe('requestProof', () => {
   it('should redirect when templateId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await requestProof('submit-route', formData);
+    await requestProof('preview-letter-template', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -51,7 +51,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await requestProof('submit-route', formData);
+    await requestProof('preview-letter-template', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });

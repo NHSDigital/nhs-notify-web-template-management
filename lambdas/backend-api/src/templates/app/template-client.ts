@@ -62,7 +62,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -148,7 +148,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     const uploadResult = await this.letterUploadRepository.upload(
@@ -213,7 +213,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -241,7 +241,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(submitResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -293,7 +293,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTO = this.mapDatabaseObjectToDTO(getResult.data);
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -322,31 +322,27 @@ export class TemplateClient implements ITemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = logger.child({ templateId });
 
-    const statusUpdateResult = await this.templateRepository.updateStatus(
-      templateId,
-      owner,
-      'NOT_YET_SUBMITTED'
-    );
+    const proofRequestUpdateResult =
+      await this.templateRepository.proofRequestUpdate(templateId, owner);
 
-    if (statusUpdateResult.error) {
+    if (proofRequestUpdateResult.error) {
       log.error('Failed to save template update to the database', {
-        statusUpdateResult,
+        proofRequestUpdateResult,
       });
 
-      return statusUpdateResult;
+      return proofRequestUpdateResult;
     }
 
-    const templateDTO = this.mapDatabaseObjectToDTO(statusUpdateResult.data);
+    const templateDTO = this.mapDatabaseObjectToDTO(
+      proofRequestUpdateResult.data
+    );
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     if (templateDTO.templateType !== 'LETTER') {
-      return failure(
-        ErrorCase.VALIDATION_FAILED,
-        'Only letter proofing is curently supported'
-      );
+      return failure(ErrorCase.INTERNAL, 'Unexpected template type');
     }
 
     const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
@@ -393,7 +389,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(updateStatusResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);

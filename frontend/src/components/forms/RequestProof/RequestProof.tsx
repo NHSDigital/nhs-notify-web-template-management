@@ -18,6 +18,7 @@ export function RequestProof({
   const {
     buttons,
     checkTestData,
+    heading,
     requirementsIntro,
     requirementsList,
     subHeading,
@@ -32,9 +33,7 @@ export function RequestProof({
     <NHSNotifyMain>
       <div className='nhsuk-grid-row'>
         <div className='nhsuk-grid-column-two-thirds'>
-          <h1 id='request-proof'>
-            Request a proof of &apos;{templateName}&apos;
-          </h1>
+          <h1 id='request-proof'>{heading(templateName)}</h1>
           <h2 className='nhsuk-heading-m'>{subHeading}</h2>
           <p>{requirementsIntro}</p>
           <ul>

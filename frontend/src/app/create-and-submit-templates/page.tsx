@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const channelList =
     process.env.NEXT_PUBLIC_ENABLE_LETTERS === 'true'
-      ? [...homePageContent.list, { key: 'template-4', item: 'letters' }]
+      ? [...homePageContent.list, 'letters']
       : homePageContent.list;
 
   return (
@@ -27,8 +27,8 @@ export default function HomePage() {
           <p>{homePageContent.text2}</p>
 
           <ul className='nhsuk-list nhsuk-list--bullet'>
-            {channelList.map(({ key, item }) => (
-              <li key={key}>{item}</li>
+            {channelList.map((channel, i) => (
+              <li key={`template${i + 1}`}>{channel}</li>
             ))}
           </ul>
 

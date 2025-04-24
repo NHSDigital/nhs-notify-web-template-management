@@ -33,7 +33,7 @@ export class ProofingQueue {
       return success(response);
     } catch (error) {
       return failure(
-        ErrorCase.IO_FAILURE,
+        ErrorCase.INTERNAL,
         'Failed to send to proofing queue',
         error
       );

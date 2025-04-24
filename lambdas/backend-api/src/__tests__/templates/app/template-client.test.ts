@@ -1428,7 +1428,7 @@ describe('templateClient', () => {
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
@@ -1437,10 +1437,9 @@ describe('templateClient', () => {
 
       const result = await templateClient.requestProof(templateId, owner);
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner,
-        'NOT_YET_SUBMITTED'
+        owner
       );
 
       expect(result).toEqual({
@@ -1470,16 +1469,15 @@ describe('templateClient', () => {
         version: 1,
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: template,
       });
 
       const result = await templateClient.requestProof(templateId, owner);
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner,
-        'NOT_YET_SUBMITTED'
+        owner
       );
 
       expect(result).toEqual({
@@ -1509,22 +1507,23 @@ describe('templateClient', () => {
         version: 1,
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      // This is not actually possible, because the update is conditional on
+      // templateTypebeing LETTER
+      mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: template,
       });
 
       const result = await templateClient.requestProof(templateId, owner);
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner,
-        'NOT_YET_SUBMITTED'
+        owner
       );
 
       expect(result).toEqual({
         error: {
-          code: 400,
-          message: 'Only letter proofing is curently supported',
+          code: 500,
+          message: 'Unexpected template type',
         },
       });
     });
@@ -1554,7 +1553,7 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: { ...template, owner, version: 1 },
       });
 
@@ -1570,10 +1569,9 @@ describe('templateClient', () => {
 
       const result = await templateClient.requestProof(templateId, owner);
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner,
-        'NOT_YET_SUBMITTED'
+        owner
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
@@ -1620,7 +1618,7 @@ describe('templateClient', () => {
         },
       };
 
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+      mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: { ...template, owner, version: 1 },
       });
 
@@ -1628,10 +1626,9 @@ describe('templateClient', () => {
 
       const result = await templateClient.requestProof(templateId, owner);
 
-      expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
+      expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner,
-        'NOT_YET_SUBMITTED'
+        owner
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);

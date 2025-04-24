@@ -1203,4 +1203,92 @@ describe('templateRepository', () => {
       ).rejects.toThrow('Something went wrong');
     });
   });
+
+  describe('proofRequestUpdate', () => {
+    it('updates status to PENDING_PROOF', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
+        Attributes: {
+          // complete template
+          id: 'template-id',
+        },
+      });
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({ data: { id: 'template-id' } });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression:
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND attribute_exists (#id)',
+        ExpressionAttributeNames: {
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#templateType': 'templateType',
+          '#updatedAt': 'updatedAt',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
+          ':condition_2_templateType': 'LETTER',
+          ':templateStatus': 'PENDING_PROOF',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+        },
+        Key: { id: 'template-owner', owner: 'template-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        TableName: 'templates',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+
+    it('returns 400 error response when conditional check fails', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 400,
+          message: 'Template cannot be proofed',
+        },
+      });
+    });
+
+    it('returns 500 error response when update fails for reason other than conditional check', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new Error('!');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 500,
+          message: 'Failed to update template',
+        },
+      });
+    });
+  });
 });

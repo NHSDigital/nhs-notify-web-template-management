@@ -186,11 +186,7 @@ const homePage = {
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
   text2: 'You can create templates for:',
-  list: [
-    { key: 'template-1', item: 'NHS App messages' },
-    { key: 'template-2', item: 'emails' },
-    { key: 'template-3', item: 'text messages (SMS)' },
-  ],
+  list: ['NHS App messages', 'emails', 'text messages (SMS)'],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
@@ -575,6 +571,7 @@ const logoutWarning = {
 
 const requestProof = {
   pageTitle: generatePageTitle('Request a proof of your template'),
+  heading: (templateName: string) => `Request a proof of '${templateName}'`,
   subHeading: 'Before you request a proof of this template',
   requirementsIntro:
     'You should only request a proof of the final version of a template you’ve created. This means that your template:',
