@@ -1205,7 +1205,7 @@ describe('templateRepository', () => {
   });
 
   describe('proofRequestUpdate', () => {
-    it('updates status to PENDING_PROOF', async () => {
+    it('updates status to NOT_YET_SUBMITTED', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
@@ -1234,7 +1234,7 @@ describe('templateRepository', () => {
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
           ':condition_2_templateType': 'LETTER',
-          ':templateStatus': 'PENDING_PROOF',
+          ':templateStatus': 'NOT_YET_SUBMITTED',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
         },
         Key: { id: 'template-owner', owner: 'template-id' },

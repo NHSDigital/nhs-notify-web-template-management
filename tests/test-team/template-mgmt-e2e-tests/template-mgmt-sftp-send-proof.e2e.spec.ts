@@ -76,10 +76,9 @@ test.describe('SFTP proof send', () => {
         'send-proof-letter',
         'PASSED'
       ),
-      // The status PENDING_PROOF doesn't exist yet
       // the template's 'personalisationParameters' has no effect on the test
       // the sender lambda does not read the template
-      templateStatus: 'PENDING_PROOF',
+      templateStatus: 'NOT_YET_SUBMITTED',
       personalisationParameters,
     };
 

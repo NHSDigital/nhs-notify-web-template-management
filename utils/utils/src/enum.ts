@@ -77,7 +77,6 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     NOT_YET_SUBMITTED: 'Not yet submitted',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
-    PENDING_PROOF: 'Waiting for proof',
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Processing',
     PENDING_PROOF_REQUEST: 'Files uploaded',

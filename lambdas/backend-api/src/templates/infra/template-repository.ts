@@ -459,7 +459,7 @@ export class TemplateRepository {
         ReturnValues: 'ALL_NEW',
       }
     )
-      .setStatus('PENDING_PROOF')
+      .setStatus('NOT_YET_SUBMITTED')
       .expectedStatus('PENDING_PROOF_REQUEST')
       .expectedTemplateType('LETTER')
       .expectTemplateExists()
