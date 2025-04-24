@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
   LetterFiles,
   TemplateDto,
@@ -11,9 +10,10 @@ import { TemplateClient } from '@backend-api/templates/app/template-client';
 import { LetterUploadRepository } from '@backend-api/templates/infra/letter-upload-repository';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 
 jest.mock('node:crypto');
-jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const owner = '58890285E473';
 const templateId = 'E1F5088E5B77';
@@ -29,17 +29,21 @@ const setup = () => {
 
   const queueMock = mock<ProofingQueue>();
 
+  const { logger, logMessages } = createMockLogger();
+
   const templateClient = new TemplateClient(
     enableLetters,
     templateRepository,
     letterUploadRepository,
     queueMock,
-    defaultLetterSupplier
+    defaultLetterSupplier,
+    logger
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository, queueMock },
+    mocks: { templateRepository, letterUploadRepository, queueMock, logger },
+    logMessages,
   };
 };
 
@@ -47,7 +51,6 @@ describe('templateClient', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     jest.mocked(randomUUID).mockReturnValue(versionId);
-    jest.mocked(logger).child.mockReturnThis();
   });
 
   describe('createTemplate', () => {
@@ -1426,12 +1429,15 @@ describe('templateClient', () => {
 
   describe('requestProof', () => {
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
-      const { templateClient, mocks } = setup();
+      const { templateClient, mocks, logMessages } = setup();
+
+      const actualError = new Error('from db');
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         error: {
           code: 500,
           message: 'Internal server error',
+          actualError,
         },
       });
 
@@ -1446,7 +1452,19 @@ describe('templateClient', () => {
         error: {
           code: 500,
           message: 'Internal server error',
+          actualError,
         },
+      });
+
+      expect(logMessages).toContainEqual({
+        code: 500,
+        description: 'Internal server error',
+        level: 'error',
+        message: 'from db',
+        owner,
+        stack: expect.any(String),
+        templateId,
+        timestamp: expect.stringMatching(isoDateRegExp),
       });
     });
 
@@ -1483,7 +1501,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 500,
-          message: 'Error retrieving template',
+          message: 'Malformed template',
         },
       });
     });
@@ -1508,7 +1526,7 @@ describe('templateClient', () => {
       };
 
       // This is not actually possible, because the update is conditional on
-      // templateTypebeing LETTER
+      // templateType being LETTER
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: template,
       });
@@ -1523,7 +1541,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 500,
-          message: 'Unexpected template type',
+          message: 'Malformed template',
         },
       });
     });

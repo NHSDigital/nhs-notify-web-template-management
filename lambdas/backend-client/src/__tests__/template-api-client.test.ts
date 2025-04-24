@@ -426,7 +426,7 @@ describe('TemplateAPIClient', () => {
         statusCode: 400,
         technicalMessage: 'Bad request',
         details: {
-          message: 'Cannot delete a submitted template',
+          message: 'Template cannot be proofed',
         },
       });
 
@@ -438,7 +438,7 @@ describe('TemplateAPIClient', () => {
         code: 400,
         message: 'Bad request',
         details: {
-          message: 'Cannot delete a submitted template',
+          message: 'Template cannot be proofed',
         },
       });
 
@@ -452,7 +452,7 @@ describe('TemplateAPIClient', () => {
         id: 'id',
         name: 'name',
         message: 'message',
-        templateStatus: 'SUBMITTED',
+        templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'LETTER',
       };
 

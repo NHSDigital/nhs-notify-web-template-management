@@ -17,7 +17,7 @@ import {
   $CreateLetterTemplate,
   DatabaseTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 
@@ -27,14 +27,15 @@ export class TemplateClient implements ITemplateClient {
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
-    private readonly defaultLetterSupplier: string
+    private readonly defaultLetterSupplier: string,
+    private readonly logger: Logger
   ) {}
 
   async createTemplate(
     template: CreateUpdateTemplate,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ template });
+    const log = this.logger.child({ template, owner });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
@@ -74,8 +75,9 @@ export class TemplateClient implements ITemplateClient {
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       template,
+      owner,
     });
 
     if (!this.enableLetters) {
@@ -184,7 +186,7 @@ export class TemplateClient implements ITemplateClient {
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       templateId,
       template,
     });
@@ -223,7 +225,7 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId });
 
     const submitResult = await this.templateRepository.submit(
       templateId,
@@ -251,7 +253,7 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<void>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId, owner });
 
     const deleteResult = await this.templateRepository.delete(
       templateId,
@@ -275,8 +277,9 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       templateId,
+      owner,
     });
 
     const getResult = await this.templateRepository.get(templateId, owner);
@@ -303,7 +306,7 @@ export class TemplateClient implements ITemplateClient {
     const listResult = await this.templateRepository.list(owner);
 
     if (listResult.error) {
-      logger.error('Failed to list templates', { listResult });
+      this.logger.error('Failed to list templates', { listResult, owner });
 
       return listResult;
     }
@@ -320,15 +323,19 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId, owner });
 
     const proofRequestUpdateResult =
       await this.templateRepository.proofRequestUpdate(templateId, owner);
 
     if (proofRequestUpdateResult.error) {
-      log.error('Failed to save template update to the database', {
-        proofRequestUpdateResult,
-      });
+      log
+        .child({
+          code: proofRequestUpdateResult.error.code,
+          description: proofRequestUpdateResult.error.message,
+          details: proofRequestUpdateResult.error.details,
+        })
+        .error(proofRequestUpdateResult.error.actualError);
 
       return proofRequestUpdateResult;
     }
@@ -337,12 +344,13 @@ export class TemplateClient implements ITemplateClient {
       proofRequestUpdateResult.data
     );
 
-    if (!templateDTO) {
-      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
-    }
+    if (!templateDTO || templateDTO.templateType !== 'LETTER') {
+      log.error({
+        code: ErrorCase.INTERNAL,
+        description: 'Malformed template',
+      });
 
-    if (templateDTO.templateType !== 'LETTER') {
-      return failure(ErrorCase.INTERNAL, 'Unexpected template type');
+      return failure(ErrorCase.INTERNAL, 'Malformed template');
     }
 
     const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
@@ -359,6 +367,14 @@ export class TemplateClient implements ITemplateClient {
     );
 
     if (sendQueueResult.error) {
+      log
+        .child({
+          code: sendQueueResult.error.code,
+          description: sendQueueResult.error.message,
+          details: sendQueueResult.error.details,
+        })
+        .error(sendQueueResult.error.actualError);
+
       return sendQueueResult;
     }
 
@@ -370,7 +386,7 @@ export class TemplateClient implements ITemplateClient {
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId });
 
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,

@@ -6,6 +6,7 @@ import { LetterUploadRepository } from './infra/letter-upload-repository';
 import { ProofingQueue } from './infra/proofing-queue';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { loadConfig } from './infra/config';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export function createContainer() {
   const config = loadConfig();
@@ -40,7 +41,8 @@ export function createContainer() {
     templateRepository,
     letterUploadRepository,
     proofingQueue,
-    config.defaultLetterSupplier
+    config.defaultLetterSupplier,
+    logger
   );
 
   return {
