@@ -4,7 +4,7 @@
 import SubmitSmsTemplatePage, {
   generateMetadata,
 } from '@app/submit-text-message-template/[templateId]/page';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
+import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import { redirect } from 'next/navigation';
 import { getTemplate } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -20,7 +20,7 @@ const { pageTitle } = content.components.submitTemplate;
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
-jest.mock('@forms/SubmitTemplate/SubmitTemplate');
+jest.mock('@forms/SubmitTemplate/SubmitDigitalTemplate');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
@@ -53,7 +53,7 @@ describe('SubmitSmsTemplatePage', () => {
       title: pageTitle.SMS,
     });
     expect(page).toEqual(
-      <SubmitTemplate
+      <SubmitDigitalTemplate
         templateName={state.name}
         templateId={state.id}
         goBackPath='preview-text-message-template'

@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import ViewSubmittedNHSAppTemplatePage, {
+import PreviewSubmittedNHSAppTemplatePage, {
   generateMetadata,
 } from '@app/preview-submitted-nhs-app-template/[templateId]/page';
 import { ViewNHSAppTemplate } from '@molecules/ViewNHSAppTemplate/ViewNHSAppTemplate';
@@ -20,7 +20,7 @@ jest.mock('next/navigation');
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
-describe('ViewSubmittedNHSAppTemplatePage', () => {
+describe('PreviewSubmittedNHSAppTemplatePage', () => {
   beforeEach(jest.resetAllMocks);
 
   it('should load page', async () => {
@@ -42,7 +42,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
 
     getTemplateMock.mockResolvedValueOnce(templateDTO);
 
-    const page = await ViewSubmittedNHSAppTemplatePage({
+    const page = await PreviewSubmittedNHSAppTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -57,7 +57,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
   });
 
   it('should redirect to invalid-template when no template is found', async () => {
-    await ViewSubmittedNHSAppTemplatePage({
+    await PreviewSubmittedNHSAppTemplatePage({
       params: Promise.resolve({
         templateId: 'template-id',
       }),
@@ -108,7 +108,7 @@ describe('ViewSubmittedNHSAppTemplatePage', () => {
     async (value) => {
       getTemplateMock.mockResolvedValueOnce(value);
 
-      await ViewSubmittedNHSAppTemplatePage({
+      await PreviewSubmittedNHSAppTemplatePage({
         params: Promise.resolve({
           templateId: 'template-id',
         }),

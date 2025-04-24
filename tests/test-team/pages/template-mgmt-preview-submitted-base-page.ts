@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePageDynamic } from './template-mgmt-base-page-dynamic';
 
-export abstract class TemplateMgmtViewSubmitedBasePage extends TemplateMgmtBasePageDynamic {
+export abstract class TemplateMgmtPreviewSubmitedBasePage extends TemplateMgmtBasePageDynamic {
   readonly backToAllTemplatesLinks: Locator;
 
   constructor(page: Page) {
