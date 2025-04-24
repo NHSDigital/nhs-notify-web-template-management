@@ -44,7 +44,7 @@
 | <a name="output_github_pat_ssm_param_name"></a> [github\_pat\_ssm\_param\_name](#output\_github\_pat\_ssm\_param\_name) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
 | <a name="output_vpc_nat_ips"></a> [vpc\_nat\_ips](#output\_vpc\_nat\_ips) | n/a |
-| <a name="output_vpc_public_subnets"></a> [vpc\_public\_subnets](#output\_vpc\_public\_subnets) | n/a |
+| <a name="output_vpc_subnets"></a> [vpc\_subnets](#output\_vpc\_subnets) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->

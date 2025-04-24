@@ -1,3 +1,6 @@
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { mock } from 'jest-mock-extended';
 import 'aws-sdk-client-mock-jest';
 import { mockClient } from 'aws-sdk-client-mock';
 import { ZodError } from 'zod';
@@ -6,9 +9,6 @@ import {
   SftpSupplierClientRepository,
 } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
-import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
 
 jest.mock('../../infra/sftp-client');
@@ -62,7 +62,7 @@ describe('getClient', () => {
 
     const supplier: string = 'SYNERTEC';
     const client = await sftpClientRepository.getClient(supplier);
-    const mockSftpClient = (SftpClient as jest.Mock).mock.instances[0];
+    const mockSftpClient = jest.mocked(SftpClient).mock.instances[0];
     const credKey = '/testenv/sftp-config/SYNERTEC';
 
     expect(client).toEqual({
