@@ -1131,7 +1131,8 @@ describe('templateClient', () => {
         mocks.templateRepository,
         mocks.letterUploadRepository,
         mocks.queueMock,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        mocks.logger
       );
 
       mocks.templateRepository.get.mockResolvedValueOnce({
@@ -1226,7 +1227,8 @@ describe('templateClient', () => {
         mocks.templateRepository,
         mocks.letterUploadRepository,
         mocks.queueMock,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        mocks.logger
       );
 
       const template: TemplateDto = {
