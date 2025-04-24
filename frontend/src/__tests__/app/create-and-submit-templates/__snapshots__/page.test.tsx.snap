@@ -52,7 +52,7 @@ exports[`matches the snapshot 1`] = `
           Before you start
         </h2>
         <p>
-          Only use this tool if your message content has been signed off by the relevant stakeholders in your team.
+          Only use this tool if your message content has been approved by the relevant stakeholders in your team.
         </p>
         <p>
           You can save a template as a draft and edit it later.

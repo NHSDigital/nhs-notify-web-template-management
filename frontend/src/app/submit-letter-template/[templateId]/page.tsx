@@ -31,7 +31,7 @@ const SubmitLetterTemplatePage = async (props: PageProps) => {
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
       goBackPath='preview-letter-template'
-      submitPath='letter-template-submitted'
+      confirmPath='letter-template-submitted'
     />
   );
 };

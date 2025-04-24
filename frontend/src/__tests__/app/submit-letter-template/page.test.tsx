@@ -44,7 +44,7 @@ describe('SubmitLetterTemplatePage', () => {
         templateName={LETTER_TEMPLATE.name}
         templateId={LETTER_TEMPLATE.id}
         goBackPath='preview-letter-template'
-        submitPath='letter-template-submitted'
+        confirmPath='letter-template-submitted'
       />
     );
   });
