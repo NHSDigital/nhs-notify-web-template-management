@@ -469,13 +469,23 @@ export class TemplateRepository {
       const response = await this.client.send(new UpdateCommand(update));
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
-      return error instanceof ConditionalCheckFailedException
-        ? failure(
-            ErrorCase.VALIDATION_FAILED,
-            'Template cannot be proofed',
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(
+            ErrorCase.TEMPLATE_NOT_FOUND,
+            `Template not found`,
             error
-          )
-        : failure(ErrorCase.INTERNAL, 'Failed to update template', error);
+          );
+        }
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Template cannot be proofed',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 

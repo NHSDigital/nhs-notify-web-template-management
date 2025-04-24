@@ -1246,12 +1246,39 @@ describe('templateRepository', () => {
       });
     });
 
-    it('returns 400 error response when conditional check fails', async () => {
+    it('returns 404 error response when conditional check fails due to template not existing', async () => {
       const { templateRepository, mocks } = setup();
 
       const err = new ConditionalCheckFailedException({
         message: 'condition check failed',
         $metadata: {},
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 404,
+          message: 'Template not found',
+        },
+      });
+    });
+
+    it('returns 400 error response when conditional check fails, but item exists, with a status other than DELETED or PENDING_PROOF_REQUEST', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'PENDING_UPLOAD' },
+        },
       });
 
       mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
