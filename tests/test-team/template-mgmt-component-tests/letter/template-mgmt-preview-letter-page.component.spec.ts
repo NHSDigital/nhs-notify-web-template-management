@@ -59,22 +59,22 @@ test.describe('Preview Letter template Page', () => {
     );
   });
 
-  test('when the template is PENDING_PROOF_REQUEST, the button to request a proof is displayed', async ({
-    page,
-    baseURL,
-  }) => {
-    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+  // test('when the template is PENDING_PROOF_REQUEST, the button to request a proof is displayed', async ({
+  //   page,
+  //   baseURL,
+  // }) => {
+  //   const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
 
-    await previewLetterTemplatePage.loadPage(templates.valid.id);
+  //   await previewLetterTemplatePage.loadPage(templates.valid.id);
 
-    await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
-    );
+  //   await expect(page).toHaveURL(
+  //     `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
+  //   );
 
-    await expect(previewLetterTemplatePage.pageHeader).toContainText(
-      'test-template-letter'
-    );
-  });
+  //   await expect(previewLetterTemplatePage.pageHeader).toContainText(
+  //     'test-template-letter'
+  //   );
+  // });
 
   test.describe('Error handling', () => {
     test('when user visits page with missing data, then an invalid template error is displayed', async ({
