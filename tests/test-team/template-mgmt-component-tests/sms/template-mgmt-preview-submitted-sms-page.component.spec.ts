@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper';
-import { TemplateMgmtViewSubmittedSmsPage } from '../../pages/sms/template-mgmt-preview-submitted-sms-page';
+import { TemplateMgmtPreviewSubmittedSmsPage } from '../../pages/sms/template-mgmt-preview-submitted-sms-page';
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
@@ -12,7 +12,7 @@ import {
 import {
   assertBackToAllTemplatesBottomLink,
   assertBackToAllTemplatesTopLink,
-} from '../template-mgmt-view-submitted-common.steps';
+} from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
   TestUserId,
@@ -22,7 +22,7 @@ function createTemplates(owner: string) {
   return {
     valid: {
       ...TemplateFactory.createSmsTemplate(
-        'valid-sms-template-view-submitted',
+        'valid-sms-template-preview-submitted',
         owner
       ),
       name: 'test-template-sms',
@@ -31,7 +31,7 @@ function createTemplates(owner: string) {
     },
     invalid: {
       ...TemplateFactory.createSmsTemplate(
-        'invalid-sms-template-view-submitted',
+        'invalid-sms-template-preview-submitted',
         owner
       ),
       name: 'test-template-sms',
@@ -41,7 +41,7 @@ function createTemplates(owner: string) {
   };
 }
 
-test.describe('View submitted sms message template Page', () => {
+test.describe('Preview submitted sms message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let templates: Record<string, Template>;
 
@@ -59,21 +59,20 @@ test.describe('View submitted sms message template Page', () => {
     page,
     baseURL,
   }) => {
-    const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
-      page
-    );
+    const previewSubmittedSMSTemplatePage =
+      new TemplateMgmtPreviewSubmittedSmsPage(page);
 
-    await viewSubmittedSMSTemplatePage.loadPage(templates.valid.id);
+    await previewSubmittedSMSTemplatePage.loadPage(templates.valid.id);
 
     await expect(page).toHaveURL(
       `${baseURL}/templates/preview-submitted-text-message-template/${templates.valid.id}`
     );
 
-    await expect(viewSubmittedSMSTemplatePage.pageHeader).toContainText(
+    await expect(previewSubmittedSMSTemplatePage.pageHeader).toContainText(
       'test-template-sms'
     );
 
-    await expect(viewSubmittedSMSTemplatePage.messageText).toHaveText(
+    await expect(previewSubmittedSMSTemplatePage.messageText).toHaveText(
       'test-template-message'
     );
   });
@@ -81,7 +80,7 @@ test.describe('View submitted sms message template Page', () => {
   test.describe('Page functionality', () => {
     test('common page tests', async ({ page, baseURL }) => {
       const props = {
-        page: new TemplateMgmtViewSubmittedSmsPage(page),
+        page: new TemplateMgmtPreviewSubmittedSmsPage(page),
         id: templates.valid.id,
         baseURL,
       };
@@ -100,11 +99,10 @@ test.describe('View submitted sms message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
-        page
-      );
+      const previewSubmittedSMSTemplatePage =
+        new TemplateMgmtPreviewSubmittedSmsPage(page);
 
-      await viewSubmittedSMSTemplatePage.loadPage(templates.invalid.id);
+      await previewSubmittedSMSTemplatePage.loadPage(templates.invalid.id);
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });
@@ -113,11 +111,10 @@ test.describe('View submitted sms message template Page', () => {
       baseURL,
       page,
     }) => {
-      const viewSubmittedSMSTemplatePage = new TemplateMgmtViewSubmittedSmsPage(
-        page
-      );
+      const previewSubmittedSMSTemplatePage =
+        new TemplateMgmtPreviewSubmittedSmsPage(page);
 
-      await viewSubmittedSMSTemplatePage.loadPage('/fake-template-id');
+      await previewSubmittedSMSTemplatePage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
     });

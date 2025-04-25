@@ -12,7 +12,7 @@ import {
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
-  viewSubmittedTemplatePages,
+  previewSubmittedTemplatePages,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -169,21 +169,21 @@ describe('previewTemplatePages', () => {
   });
 });
 
-describe('viewSubmittedTemplatePages', () => {
+describe('previewSubmittedTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(viewSubmittedTemplatePages('NHS_APP')).toEqual(
+    expect(previewSubmittedTemplatePages('NHS_APP')).toEqual(
       'preview-submitted-nhs-app-template'
     );
   });
 
   test('SMS', () => {
-    expect(viewSubmittedTemplatePages('SMS')).toEqual(
+    expect(previewSubmittedTemplatePages('SMS')).toEqual(
       'preview-submitted-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(viewSubmittedTemplatePages('EMAIL')).toEqual(
+    expect(previewSubmittedTemplatePages('EMAIL')).toEqual(
       'preview-submitted-email-template'
     );
   });

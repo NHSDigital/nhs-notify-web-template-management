@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SubmitTemplate component should render 1`] = `
+exports[`SubmitDigitalTemplate component should render 1`] = `
 <DocumentFragment>
   <main
     class="nhsuk-main-wrapper"
@@ -47,7 +47,7 @@ exports[`SubmitTemplate component should render 1`] = `
         </p>
         <ul>
           <li>
-            is signed off by the relevant stakeholders in your team
+            is approved by the relevant stakeholders in your team
           </li>
           <li>
             does not have any spelling errors

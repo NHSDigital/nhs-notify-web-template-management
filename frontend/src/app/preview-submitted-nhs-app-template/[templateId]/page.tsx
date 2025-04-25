@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const ViewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
+const PreviewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
   const { templateId } = await props.params;
 
   const template = await getTemplate(templateId);
@@ -32,4 +32,4 @@ const ViewSubmittedNHSAppTemplatePage = async (props: PageProps) => {
   return <ViewNHSAppTemplate initialState={validatedTemplate} />;
 };
 
-export default ViewSubmittedNHSAppTemplatePage;
+export default PreviewSubmittedNHSAppTemplatePage;
