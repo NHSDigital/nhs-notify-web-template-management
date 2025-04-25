@@ -11,7 +11,7 @@ data "aws_subnets" "account_vpc_private_subnets" {
   }
 
   tags = {
-    Tier = "Private"
+    Subnet = "Private"
   }
 }
 
