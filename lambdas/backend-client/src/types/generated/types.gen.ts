@@ -85,7 +85,6 @@ export type CreateLetterProperties = {
 export type LetterProperties = CreateLetterProperties & {
   files: LetterFiles;
   personalisationParameters?: Array<string>;
-  templateType: 'LETTER';
 };
 
 export type BaseTemplate = {
