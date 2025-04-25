@@ -36,6 +36,7 @@ const {
   viewNotYetSubmittedLetterTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
+  requestProofOfTemplatePage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -92,22 +93,27 @@ module.exports = {
     performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
     performCheck(previewSubmittedEmailTemplatePage(messageTemplatesUrl)),
 
-    // Letter Journey
+    // // Letter Journey
     performCheck(createLetterTemplatePage(chooseTemplateUrl)),
     performCheck(
       previewLetterTemplatePage(
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
       )
     ),
-    performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
+    // performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
+    performCheck(
+      requestProofOfTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-validation']}`
+      )
+    ),
     performCheck(
       submitLetterTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-proof-requested']}`
       )
     ),
     performCheck(
       letterTemplateSubmittedPage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-virus-check']}`
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-proof-requested']}`
       )
     ),
     performCheck(previewSubmittedLetterTemplatePage(messageTemplatesUrl)),

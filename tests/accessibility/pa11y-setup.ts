@@ -5,7 +5,7 @@ import { generate } from 'generate-password';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { PutCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { VirusScanStatus } from 'nhs-notify-backend-client';
+import { TemplateStatus, VirusScanStatus } from 'nhs-notify-backend-client';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
 
@@ -13,7 +13,8 @@ import path from 'node:path';
 const generateLetterTemplateData = (
   name: string,
   owner: string,
-  virusScanStatus: VirusScanStatus
+  virusScanStatus: VirusScanStatus,
+  templateStatus: TemplateStatus
 ): LetterTemplate & { owner: string } => {
   const now = new Date().toISOString();
 
@@ -38,7 +39,7 @@ const generateLetterTemplateData = (
         virusScanStatus,
       },
     },
-    templateStatus: 'NOT_YET_SUBMITTED',
+    templateStatus,
   };
 };
 
@@ -70,14 +71,40 @@ const setup = async () => {
 
   const templates = [
     generateLetterTemplateData(
-      'pa11y-letter-passed-virus-check',
-      userId,
-      'PASSED'
-    ),
-    generateLetterTemplateData(
       'pa11y-letter-pending-virus-check',
       userId,
-      'PENDING'
+      'PENDING',
+      'PENDING_UPLOAD'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-failed-virus-check',
+      userId,
+      'FAILED',
+      'VIRUS_SCAN_FAILED'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-pending-validation',
+      userId,
+      'PASSED',
+      'PENDING_VALIDATION'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-failed-validation',
+      userId,
+      'PASSED',
+      'VALIDATION_FAILED'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-passed-validation',
+      userId,
+      'PASSED',
+      'PENDING_PROOF_REQUEST'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-proof-requested',
+      userId,
+      'PASSED',
+      'NOT_YET_SUBMITTED'
     ),
   ];
 

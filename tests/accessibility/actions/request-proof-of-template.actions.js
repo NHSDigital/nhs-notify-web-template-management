@@ -5,16 +5,16 @@ const {
 const pageActions = [
   ...goToPreviewLetterTemplateActions,
   'click element #preview-letter-template-cta',
-  'wait for element #submit-template-button to be visible',
+  'wait for element #request-proof-button to be visible',
 ];
 
-const submitLetterTemplatePage = (url) => ({
-  name: 'submit-letter-template',
+const requestProofOfTemplatePage = (url) => ({
+  name: 'request-proof-of-template',
   url,
   actions: pageActions,
 });
 
 module.exports = {
   pageActions,
-  submitLetterTemplatePage,
+  requestProofOfTemplatePage,
 };
