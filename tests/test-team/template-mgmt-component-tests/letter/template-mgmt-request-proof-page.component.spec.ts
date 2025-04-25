@@ -11,7 +11,7 @@ async function createTemplates() {
   const user = await createAuthHelper().getTestUser(TestUserId.User1);
   return {
     valid: TemplateFactory.createLetterTemplate(
-      'letter-request-proof-template',
+      'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',
       user.userId,
       'request-proof'
     ),

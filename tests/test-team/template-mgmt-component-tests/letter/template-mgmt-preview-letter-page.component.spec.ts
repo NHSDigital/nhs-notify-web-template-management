@@ -23,17 +23,17 @@ async function createTemplates() {
       owner: user.userId,
     } as Template,
     notYetSubmitted: TemplateFactory.createLetterTemplate(
-      'nys-letter-preview-template',
+      '9AACCD57-C6A3-4273-854C-3839A081B4D9',
       user.userId,
       'notYetSubmitted'
     ),
     pendingProofRequest: TemplateFactory.createLetterTemplate(
-      'ppr-letter-preview-template',
+      '10AE654B-72B5-4A67-913C-2E103C7FF47B',
       user.userId,
       'pendingProofRequest'
     ),
     pendingUpload: TemplateFactory.createLetterTemplate(
-      'pu-letter-preview-template',
+      '10AE654B-72B5-4A67-913C-2E103C7FF47B',
       user.userId,
       'pendingUpload'
     ),
