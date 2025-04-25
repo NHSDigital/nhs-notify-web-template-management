@@ -32,6 +32,13 @@ module "lambda_send_letter_proof" {
       maximum_concurrency = 5
     }
   }
+
+  vpc = {
+    id                 = data.aws_vpc.account_vpc.id
+    cidr_block         = data.aws_vpc.account_vpc.cidr_block
+    subnet_ids         = data.aws_subnets.account_vpc_private_subnets
+    security_group_ids = [aws_security_group.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
+  }
 }
 
 data "aws_iam_policy_document" "send_letter_proof" {
