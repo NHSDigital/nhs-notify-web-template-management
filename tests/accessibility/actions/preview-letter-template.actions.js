@@ -1,21 +1,17 @@
-const { readFileSync } = require('node:fs');
 const { signInPageActions } = require('./sign-in-page.actions');
-
-const { templateId } = JSON.parse(
-  readFileSync('./pa11y-fixtures.json', 'utf8')
-);
 
 const pageActions = [
   ...signInPageActions,
   'wait for #preview-letter-template-cta to be visible',
 ];
 
-const previewLetterTemplatePage = (baseUrl) => ({
+const previewLetterTemplatePage = (url) => ({
   name: 'preview-letter-template',
-  url: `${baseUrl}/preview-letter-template/${templateId}`,
+  url,
   actions: pageActions,
 });
 
 module.exports = {
+  pageActions,
   previewLetterTemplatePage,
 };

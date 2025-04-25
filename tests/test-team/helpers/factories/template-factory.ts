@@ -41,7 +41,7 @@ export const TemplateFactory = {
     id: string,
     owner: string,
     name: string,
-    virusScanStatus: string = 'PENDING'
+    virusScanStatus = 'PENDING'
   ): Template => {
     return TemplateFactory.create({
       id,
