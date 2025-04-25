@@ -1,14 +1,20 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  TemplateStatus,
+} from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
   letterTypeDisplayMappings,
   previewTemplatePages,
+  templateStatusToColourMappings,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   viewSubmittedTemplatePages,
 } from '../enum';
+import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -113,6 +119,24 @@ describe('templateStatusToDisplayMappings', () => {
   test('DELETED', () => {
     expect(templateStatusToDisplayMappings('DELETED')).toEqual('');
   });
+});
+
+describe('templateStatusToColourMappings', () => {
+  it.each(TEMPLATE_STATUS_LIST)(
+    'should give the expected colour when templateType is %s',
+    (templateStatus) => {
+      const expectedColours: { [key in TemplateStatus]?: string } = {
+        SUBMITTED: 'grey',
+        PENDING_PROOF_REQUEST: 'blue',
+        VIRUS_SCAN_FAILED: 'red',
+        VALIDATION_FAILED: 'red',
+      };
+
+      expect(templateStatusToColourMappings(templateStatus)).toEqual(
+        expectedColours[templateStatus]
+      );
+    }
+  );
 });
 
 describe('templateTypeToUrlTextMappings', () => {

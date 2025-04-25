@@ -84,6 +84,20 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     VALIDATION_FAILED: 'Validation Failed',
   })[status];
 
+export const templateStatusToColourMappings = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: undefined,
+      SUBMITTED: 'grey',
+      DELETED: undefined,
+      PENDING_UPLOAD: undefined,
+      PENDING_PROOF_REQUEST: 'blue',
+      PENDING_VALIDATION: undefined,
+      VIRUS_SCAN_FAILED: 'red',
+      VALIDATION_FAILED: 'red',
+    }) as const
+  )[status];
+
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
     NHS_APP: 'nhs-app',
