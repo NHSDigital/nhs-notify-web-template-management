@@ -1,5 +1,5 @@
 npm ci
 
 npm run generate-dependencies --workspaces --if-present
-
-./layers/pdfjs/build.sh
+find ./lambdas -maxdepth 3
+./lambdas/layers/pdfjs/build.sh
