@@ -9,7 +9,6 @@ module "request_proof_lambda" {
   source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.request_proof].base64sha256
   runtime          = "nodejs20.x"
   handler          = "proof.handler"
-  memory_size      = 256
 
   log_retention_in_days = var.log_retention_in_days
 
