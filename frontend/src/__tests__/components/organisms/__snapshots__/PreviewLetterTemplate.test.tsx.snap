@@ -291,7 +291,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           class="nhsuk-button"
           data-testid="preview-letter-template-cta"
           draggable="false"
-          href="/templates/submit-letter-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
+          href="/templates/request-proof-of-template/53525D03-1BC1-4563-ABF9-A74FF04142AF"
           id="preview-letter-template-cta"
           role="button"
         >
@@ -441,17 +441,6 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             </div>
           </dl>
         </div>
-        <a
-          aria-disabled="false"
-          class="nhsuk-button"
-          data-testid="preview-letter-template-cta"
-          draggable="false"
-          href="/templates/submit-letter-template/template-id"
-          id="preview-letter-template-cta"
-          role="button"
-        >
-          Submit template
-        </a>
         <p>
           <a
             href="/message-templates"
