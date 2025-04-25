@@ -99,17 +99,11 @@ export type BaseCreatedTemplate = BaseTemplate & {
   updatedAt: string;
 };
 
-export type CreateUpdateTemplate =
-  | (BaseTemplate & NhsAppProperties)
-  | (BaseTemplate & SmsProperties)
-  | (BaseTemplate & EmailProperties)
-  | (BaseTemplate & CreateLetterProperties);
+export type CreateUpdateTemplate = BaseTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | CreateLetterProperties);
 
-export type TemplateDto =
-  | (BaseCreatedTemplate & LetterProperties)
-  | (BaseCreatedTemplate & NhsAppProperties)
-  | (BaseCreatedTemplate & SmsProperties)
-  | (BaseCreatedTemplate & EmailProperties);
+export type TemplateDto = BaseCreatedTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
 export type Success = {
   template: TemplateDto;
@@ -346,12 +340,7 @@ export type PatchV1TemplateByTemplateIdSubmitResponse =
   PatchV1TemplateByTemplateIdSubmitResponses[keyof PatchV1TemplateByTemplateIdSubmitResponses];
 
 export type PostV1TemplateByTemplateIdProofData = {
-  /**
-   * Empty or absent request body
-   */
-  body?: {
-    [key: string]: unknown;
-  };
+  body?: never;
   path: {
     /**
      * ID of the template to request a proof of

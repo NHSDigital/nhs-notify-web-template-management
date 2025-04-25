@@ -491,17 +491,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "description": "Empty or absent request body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "200 response",
@@ -838,41 +827,20 @@
       },
       "CreateUpdateTemplate": {
         "type": "object",
-        "oneOf": [
+        "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseTemplate"
-              },
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              }
-            ]
+            "$ref": "#/components/schemas/BaseTemplate"
           },
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseTemplate"
-              },
+            "oneOf": [
               {
                 "$ref": "#/components/schemas/SmsProperties"
-              }
-            ]
-          },
-          {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseTemplate"
               },
               {
                 "$ref": "#/components/schemas/EmailProperties"
-              }
-            ]
-          },
-          {
-            "allOf": [
+              },
               {
-                "$ref": "#/components/schemas/BaseTemplate"
+                "$ref": "#/components/schemas/NhsAppProperties"
               },
               {
                 "$ref": "#/components/schemas/CreateLetterProperties"
@@ -883,44 +851,23 @@
       },
       "TemplateDto": {
         "type": "object",
-        "oneOf": [
+        "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseCreatedTemplate"
-              },
-              {
-                "$ref": "#/components/schemas/LetterProperties"
-              }
-            ]
+            "$ref": "#/components/schemas/BaseCreatedTemplate"
           },
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseCreatedTemplate"
-              },
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              }
-            ]
-          },
-          {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseCreatedTemplate"
-              },
+            "oneOf": [
               {
                 "$ref": "#/components/schemas/SmsProperties"
-              }
-            ]
-          },
-          {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseCreatedTemplate"
               },
               {
                 "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/NhsAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/LetterProperties"
               }
             ]
           }
