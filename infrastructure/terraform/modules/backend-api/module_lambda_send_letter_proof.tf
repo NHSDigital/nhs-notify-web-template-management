@@ -37,7 +37,7 @@ module "lambda_send_letter_proof" {
     id                 = data.aws_vpc.account_vpc.id
     cidr_block         = data.aws_vpc.account_vpc.cidr_block
     subnet_ids         = data.aws_subnets.account_vpc_private_subnets
-    security_group_ids = [aws_security_group.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
+    security_group_ids = [data.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
   }
 }
 
