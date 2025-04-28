@@ -14,7 +14,7 @@ npm install --force
 cp -r node_modules/* dist/layer/nodejs/node_modules
 
 cd dist/layer
-zip -r pdfjs-layer.zip nodejs
+zip -Xr pdfjs-layer.zip nodejs
 
 echo
 echo "PDF.js Lambda Layer packaging done"
