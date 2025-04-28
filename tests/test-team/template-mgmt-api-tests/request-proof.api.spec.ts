@@ -63,15 +63,12 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     const user1templateId = randomUUID();
 
     await templateStorageHelper.seedTemplateData([
-      {
-        ...TemplateFactory.createLetterTemplate(
-          user1templateId,
-          user1.userId,
-          'user1template',
-          'PASSED'
-        ),
-        templateStatus: 'PENDING_PROOF_REQUEST',
-      },
+      TemplateFactory.createLetterTemplate(
+        user1templateId,
+        user1.userId,
+        'user1template',
+        'PENDING_PROOF_REQUEST'
+      ),
     ]);
 
     const updateResponse = await request.post(
@@ -101,9 +98,9 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       ...TemplateFactory.createLetterTemplate(
         templateId,
         user1.userId,
-        'user1template'
+        'user1template',
+        'PENDING_PROOF_REQUEST'
       ),
-      templateStatus: 'PENDING_PROOF_REQUEST',
       files: {
         pdfTemplate: {
           virusScanStatus: 'PASSED',
@@ -161,9 +158,9 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       ...TemplateFactory.createLetterTemplate(
         templateId,
         user1.userId,
-        'user1template'
+        'user1template',
+        'PENDING_VALIDATION'
       ),
-      templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
           virusScanStatus: 'PASSED',

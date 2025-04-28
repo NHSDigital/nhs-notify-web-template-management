@@ -74,9 +74,8 @@ test.describe('SFTP proof send', () => {
         templateId,
         user.userId,
         'send-proof-letter',
-        'PASSED'
+        'PENDING_PROOF_REQUEST'
       ),
-      templateStatus: 'PENDING_PROOF_REQUEST',
       // the template's 'personalisationParameters' has no effect on the test
       // the sender lambda does not read the template
       personalisationParameters,

@@ -32,13 +32,11 @@ function createTemplates(owner: string) {
       message: 'delete-page-confirm-email-message',
       subject: 'template-subject',
     },
-    confirmLetter: {
-      ...TemplateFactory.createLetterTemplate(
-        'delete-page-confirm-letter',
-        owner,
-        'delete-page-confirm-letter-name'
-      ),
-    },
+    confirmLetter: TemplateFactory.createLetterTemplate(
+      'delete-page-confirm-letter',
+      owner,
+      'delete-page-confirm-letter-name'
+    ),
   };
 }
 

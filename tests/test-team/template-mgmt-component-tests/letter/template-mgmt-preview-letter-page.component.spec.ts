@@ -25,17 +25,20 @@ async function createTemplates() {
     notYetSubmitted: TemplateFactory.createLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',
       user.userId,
-      'notYetSubmitted'
+      'notYetSubmitted',
+      'NOT_YET_SUBMITTED'
     ),
     pendingProofRequest: TemplateFactory.createLetterTemplate(
       '10AE654B-72B5-4A67-913C-2E103C7FF47B',
       user.userId,
-      'pendingProofRequest'
+      'pendingProofRequest',
+      'PENDING_PROOF_REQUEST'
     ),
     pendingUpload: TemplateFactory.createLetterTemplate(
-      '10AE654B-72B5-4A67-913C-2E103C7FF47B',
+      '5C442DA9-B555-4CEA-AFE9-143851FD210B',
       user.userId,
-      'pendingUpload'
+      'pendingUpload',
+      'PENDING_UPLOAD'
     ),
   };
 }
