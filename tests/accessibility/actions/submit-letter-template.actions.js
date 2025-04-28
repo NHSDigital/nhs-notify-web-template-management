@@ -4,7 +4,7 @@ const {
 
 const pageActions = [
   ...goToPreviewLetterTemplateActions,
-  'click element #preview-letter-template-submit-button',
+  'click element #preview-letter-template-cta',
   'wait for element #submit-template-button to be visible',
 ];
 
