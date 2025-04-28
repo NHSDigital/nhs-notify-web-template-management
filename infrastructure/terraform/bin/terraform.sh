@@ -426,7 +426,7 @@ if [ "${bootstrap}" == "true" ]; then
 fi;
 
 # Run pre.sh
-if [ -f "pre.sh" ]; then
+if [ -f "pre.sh" && -z "$build_id" ]; then
   source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
