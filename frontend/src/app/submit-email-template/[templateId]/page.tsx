@@ -33,8 +33,7 @@ const SubmitEmailTemplatePage = async (props: PageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-email-template'
-      confirmPath='email-template-submitted'
+      channel='EMAIL'
     />
   );
 };

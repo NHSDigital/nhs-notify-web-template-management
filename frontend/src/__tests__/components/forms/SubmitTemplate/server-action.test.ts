@@ -33,7 +33,7 @@ describe('submitTemplate', () => {
   it('should redirect when templateId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('NHS_APP', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -45,7 +45,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('EMAIL', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -57,7 +57,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('EMAIL', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -73,7 +73,7 @@ describe('submitTemplate', () => {
       templateId: '1',
     });
 
-    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
+    await expect(submitTemplate('SMS', formData)).rejects.toThrow(
       'failed to save template'
     );
   });
@@ -85,10 +85,13 @@ describe('submitTemplate', () => {
       templateId: '1',
     });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('SMS', formData);
 
     expect(setTemplateToSubmittedMock).toHaveBeenCalledWith('1');
 
-    expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/text-message-template-submitted/1',
+      'push'
+    );
   });
 });

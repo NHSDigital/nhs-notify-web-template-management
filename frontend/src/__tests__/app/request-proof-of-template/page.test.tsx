@@ -65,8 +65,7 @@ describe('RequestProofPage', () => {
       <RequestProof
         templateName={state.name}
         templateId={state.id}
-        goBackPath='preview-letter-template'
-        confirmPath='preview-letter-template'
+        channel='LETTER'
       />
     );
   });

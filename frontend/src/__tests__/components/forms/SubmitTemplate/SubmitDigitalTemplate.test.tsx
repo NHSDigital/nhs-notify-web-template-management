@@ -24,8 +24,7 @@ describe('SubmitDigitalTemplate component', () => {
       <SubmitDigitalTemplate
         templateId='template-id'
         templateName='template-name'
-        goBackPath='example'
-        confirmPath='example-submit'
+        channel='SMS'
       />
     );
 

@@ -74,11 +74,10 @@ export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
 };
 
-export type ConfirmCancelProps = {
+export type ActionPageProps = {
   templateName: string;
   templateId: string;
-  goBackPath: string;
-  confirmPath: string;
+  channel: TemplateType;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);

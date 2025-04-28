@@ -52,8 +52,7 @@ describe('SubmitEmailTemplatePage', () => {
       <SubmitDigitalTemplate
         templateName={state.name}
         templateId={state.id}
-        goBackPath='preview-email-template'
-        confirmPath='email-template-submitted'
+        channel='EMAIL'
       />
     );
   });

@@ -39,7 +39,7 @@ describe('requestProof', () => {
   it('should redirect when templateId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await requestProof('preview-letter-template', formData);
+    await requestProof('LETTER', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -51,7 +51,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await requestProof('preview-letter-template', formData);
+    await requestProof('LETTER', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -63,7 +63,7 @@ describe('requestProof', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await requestProof('preview-letter-template', formData);
+    await requestProof('LETTER', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -79,9 +79,9 @@ describe('requestProof', () => {
       templateId: '1',
     });
 
-    await expect(
-      requestProof('preview-letter-template', formData)
-    ).rejects.toThrow('failed to save template');
+    await expect(requestProof('LETTER', formData)).rejects.toThrow(
+      'failed to save template'
+    );
   });
 
   it('should redirect when successfully submitted', async () => {
@@ -91,7 +91,7 @@ describe('requestProof', () => {
       templateId: '1',
     });
 
-    await requestProof('preview-letter-template', formData);
+    await requestProof('LETTER', formData);
 
     expect(requestTemplateProofMock).toHaveBeenCalledWith('1');
 

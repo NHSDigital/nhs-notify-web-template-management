@@ -1,6 +1,5 @@
 'use client';
 
-import { ConfirmCancelProps } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
@@ -8,13 +7,13 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { getBasePath } from '@utils/get-base-path';
 import { useActionState } from 'react';
 import { requestProof } from './server-action';
+import { ActionPageProps } from 'nhs-notify-web-template-management-utils';
 
 export function RequestProof({
   templateName,
   templateId,
-  goBackPath,
-  confirmPath,
-}: ConfirmCancelProps) {
+  channel,
+}: ActionPageProps) {
   const {
     buttons,
     checkTestData,
@@ -25,9 +24,9 @@ export function RequestProof({
     waitTime,
   } = content.components.requestProof;
 
-  const goBackHref = `${getBasePath()}/${goBackPath}/${templateId}`;
+  const goBackHref = `${getBasePath()}/preview-letter-template/${templateId}`;
 
-  const [_, action] = useActionState(requestProof, confirmPath);
+  const [_, action] = useActionState(requestProof, channel);
 
   return (
     <NHSNotifyMain>

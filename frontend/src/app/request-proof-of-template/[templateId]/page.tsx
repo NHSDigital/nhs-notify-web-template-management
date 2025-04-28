@@ -32,8 +32,7 @@ const RequestProofPage = async (props: PageProps) => {
     <RequestProof
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-letter-template'
-      confirmPath='preview-letter-template'
+      channel={validatedTemplate.templateType}
     />
   );
 };

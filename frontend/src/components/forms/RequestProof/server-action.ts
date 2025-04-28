@@ -3,10 +3,14 @@
 import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, requestTemplateProof } from '@utils/form-actions';
 import { z } from 'zod';
-import { validateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  templateTypeToUrlTextMappings,
+  validateLetterTemplate,
+} from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { TemplateType } from 'nhs-notify-backend-client';
 
-export async function requestProof(route: string, formData: FormData) {
+export async function requestProof(channel: TemplateType, formData: FormData) {
   const { success, data: templateId } = z
     .string()
     .safeParse(formData.get('templateId'));
@@ -34,5 +38,10 @@ export async function requestProof(route: string, formData: FormData) {
     throw error;
   }
 
-  return redirect(`/${route}/${templateId}`, RedirectType.push);
+  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+
+  return redirect(
+    `/preview-${channelRedirectSegment}-template/${templateId}`,
+    RedirectType.push
+  );
 }

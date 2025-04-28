@@ -349,6 +349,7 @@ const submitLetterTemplate = {
     'Our service team will send you a proof of this letter template by email.',
     'This email will also tell you what you need to do next.',
   ],
+  goBackPath: 'preview-letter-template',
   warningCalloutLabel: 'Important',
   warningCalloutChecklistIntroduction:
     "If you need to change this template after you've submitted it:",

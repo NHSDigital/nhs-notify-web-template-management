@@ -24,8 +24,7 @@ describe('RequestProof component', () => {
       <RequestProof
         templateId='template-id'
         templateName='template-name'
-        goBackPath='preview-letter'
-        confirmPath='preview-letter'
+        channel='LETTER'
       />
     );
 
