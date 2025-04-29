@@ -1,14 +1,9 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
-  CreateLetterProperties,
   CreateUpdateTemplate,
-  EmailProperties,
   Language,
   LetterFiles,
-  LetterProperties,
   LetterType,
-  NhsAppProperties,
-  SmsProperties,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -33,43 +28,32 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-type NhsAppTemplateType = {
-  templateType: 'NHS_APP';
-};
+export type CreateUpdateNHSAppTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'NHS_APP' }
+>;
 
-type EmailTemplateType = {
-  templateType: 'EMAIL';
-};
+export type CreateUpdateEmailTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'EMAIL' }
+>;
+export type CreateUpdateSMSTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'SMS' }
+>;
 
-type SmsTemplateType = {
-  templateType: 'SMS';
-};
+export type CreateLetterTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'LETTER' }
+>;
 
-type LetterTemplateType = {
-  templateType: 'LETTER';
-};
+export type NHSAppTemplate = Extract<TemplateDto, { templateType: 'NHS_APP' }>;
 
-export type CreateUpdateNHSAppTemplate = CreateUpdateTemplate &
-  NhsAppProperties &
-  NhsAppTemplateType;
-export type CreateUpdateEmailTemplate = CreateUpdateTemplate &
-  EmailProperties &
-  EmailTemplateType;
-export type CreateUpdateSMSTemplate = CreateUpdateTemplate &
-  SmsProperties &
-  SmsTemplateType;
-export type CreateLetterTemplate = CreateUpdateTemplate &
-  CreateLetterProperties &
-  LetterTemplateType;
+export type EmailTemplate = Extract<TemplateDto, { templateType: 'EMAIL' }>;
 
-export type NHSAppTemplate = TemplateDto &
-  NhsAppProperties &
-  NhsAppTemplateType;
-export type EmailTemplate = TemplateDto & EmailProperties & EmailTemplateType;
-export type SMSTemplate = TemplateDto & SmsProperties & SmsTemplateType;
-export type LetterTemplate = TemplateDto &
-  LetterProperties &
-  LetterTemplateType;
+export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
+
+export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
 
 export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
   FormState & T;
@@ -90,11 +74,10 @@ export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
 };
 
-export type SubmitTemplatePageComponentProps = {
+export type ActionPageProps = {
   templateName: string;
   templateId: string;
-  goBackPath: string;
-  submitPath: string;
+  channel: TemplateType;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
@@ -144,3 +127,12 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
 
 export type TemplateKey = { owner: string; id: string };
 export type FileType = 'pdf-template' | 'test-data';
+
+export type ProofingRequest = {
+  owner: string;
+  pdfVersionId: string;
+  personalisationParameters: string[];
+  supplier: string;
+  templateId: string;
+  testDataVersionId?: string;
+};

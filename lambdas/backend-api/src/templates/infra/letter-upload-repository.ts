@@ -86,7 +86,7 @@ export class LetterUploadRepository {
       return success(null);
     } catch (error) {
       return failure(
-        ErrorCase.IO_FAILURE,
+        ErrorCase.INTERNAL,
         'Failed to upload letter files',
         error
       );

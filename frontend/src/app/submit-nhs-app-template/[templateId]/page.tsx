@@ -33,8 +33,7 @@ const SubmitNhsAppTemplatePage = async (props: PageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-nhs-app-template'
-      submitPath='nhs-app-template-submitted'
+      channel='NHS_APP'
     />
   );
 };

@@ -34,6 +34,8 @@ src/
 - `EntityUpdateBuilder<Entity>` - Parent class that Entity builder classes (e.g. RequestItemPlanUpdateBuilder) should extend from.
   - `build` - Calls the `build` method on the class instance's `UpdateCommandBuilder<Entity>` instance.
 
+- `EntityUpdateBuilder<Entity>` - The `UpdateCommandBuilder` methods are public, so they can be unit tested. This class is simply a wrapper for `UpdateCommandBuilder` where the internal builder instance is protected, so its methods aren't exposed in the final domain builders.
+
 The above classes are generic classes which take in a type parameter of `Entity` for the entity you are wanting to perform CRUD operations against. This gives the available CRUD methods type safety using the entity's type definition.
 
 ## Using the package
@@ -54,11 +56,11 @@ If their current functionality was to be extended or a new entity UpdateCommand 
 In order to begin writing a condition, use either an .andCondition or .orCondition on an instance of an EntityUpdateBuilder derived class. The 2 below examples produce the same output as follows:
 
 ```javascript
-this.updateBuilder.andCondition('status', 'CREATED', '=');
-    .orCondition('status', 'SENDING', '=');
+this.updateBuilder.andCondition('status', '=', 'CREATED');
+    .orCondition('status', '=', 'SENDING');
 
-this.updateBuilder.orCondition('status', 'CREATED', '=');
-    .orCondition('status', 'SENDING', '=');
+this.updateBuilder.orCondition('status', '=', 'CREATED');
+    .orCondition('status', '=', 'SENDING');
 ```
 
 ```javascript

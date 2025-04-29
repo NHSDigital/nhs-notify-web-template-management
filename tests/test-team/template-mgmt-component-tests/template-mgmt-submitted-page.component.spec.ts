@@ -45,15 +45,13 @@ function createTemplates(owner: string) {
       name: 'test-template-nhs-app',
       message: 'test example content',
     }),
-    letter: {
-      ...TemplateFactory.createLetterTemplate(
-        'valid-submitted-letter-template',
-        owner,
-        'test-template-letter',
-        'PASSED'
-      ),
-      templateStatus: 'SUBMITTED',
-    },
+    letter: TemplateFactory.createLetterTemplate(
+      'valid-submitted-letter-template',
+      owner,
+      'test-template-letter',
+      'SUBMITTED',
+      'PASSED'
+    ),
   };
 }
 

@@ -80,4 +80,30 @@ describe('PreviewLetterTemplate component', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot when template status is NOT_YET_SUBMITTED', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x0',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

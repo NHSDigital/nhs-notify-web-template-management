@@ -56,8 +56,7 @@ describe('SubmitSmsTemplatePage', () => {
       <SubmitDigitalTemplate
         templateName={state.name}
         templateId={state.id}
-        goBackPath='preview-text-message-template'
-        submitPath='text-message-template-submitted'
+        channel='SMS'
       />
     );
   });

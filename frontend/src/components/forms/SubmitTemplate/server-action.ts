@@ -4,9 +4,16 @@ import { redirect, RedirectType } from 'next/navigation';
 import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { validateTemplate } from 'nhs-notify-web-template-management-utils';
+import {
+  templateTypeToUrlTextMappings,
+  validateTemplate,
+} from 'nhs-notify-web-template-management-utils';
+import type { TemplateType } from 'nhs-notify-backend-client';
 
-export async function submitTemplate(route: string, formData: FormData) {
+export async function submitTemplate(
+  channel: TemplateType,
+  formData: FormData
+) {
   const { success, data: templateId } = z
     .string()
     .safeParse(formData.get('templateId'));
@@ -34,5 +41,10 @@ export async function submitTemplate(route: string, formData: FormData) {
     throw error;
   }
 
-  return redirect(`/${route}/${templateId}`, RedirectType.push);
+  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+
+  return redirect(
+    `/${channelRedirectSegment}-template-submitted/${templateId}`,
+    RedirectType.push
+  );
 }

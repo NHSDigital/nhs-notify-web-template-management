@@ -7,6 +7,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public static readonly urlRegexp = new RegExp(
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
+
   public readonly continueButton: Locator;
 
   constructor(page: Page) {

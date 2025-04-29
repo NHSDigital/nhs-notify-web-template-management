@@ -24,8 +24,6 @@ describe('SubmitLetterTemplate component', () => {
       <SubmitLetterTemplate
         templateId='template-id'
         templateName='template-name'
-        goBackPath='example'
-        submitPath='example-submit'
       />
     );
 

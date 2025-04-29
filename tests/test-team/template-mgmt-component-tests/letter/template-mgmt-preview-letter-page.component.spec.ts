@@ -7,6 +7,8 @@ import {
   TestUserId,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
+import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
+import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(TestUserId.User1);
@@ -20,16 +22,29 @@ async function createTemplates() {
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
-    valid: TemplateFactory.createLetterTemplate(
-      'valid-letter-preview-template',
+    notYetSubmitted: TemplateFactory.createLetterTemplate(
+      '9AACCD57-C6A3-4273-854C-3839A081B4D9',
       user.userId,
-      'test-template-letter'
+      'notYetSubmitted',
+      'NOT_YET_SUBMITTED'
+    ),
+    pendingProofRequest: TemplateFactory.createLetterTemplate(
+      '10AE654B-72B5-4A67-913C-2E103C7FF47B',
+      user.userId,
+      'pendingProofRequest',
+      'PENDING_PROOF_REQUEST'
+    ),
+    pendingUpload: TemplateFactory.createLetterTemplate(
+      '5C442DA9-B555-4CEA-AFE9-143851FD210B',
+      user.userId,
+      'pendingUpload',
+      'PENDING_UPLOAD'
     ),
   };
 }
 
 test.describe('Preview Letter template Page', () => {
-  let templates: { empty: Template; valid: Template };
+  let templates: Awaited<ReturnType<typeof createTemplates>>;
 
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -42,21 +57,65 @@ test.describe('Preview Letter template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  test('when user visits page, then page is loaded', async ({
+  test('when user visits page, then page is loaded, can click to go to submit page', async ({
     page,
     baseURL,
   }) => {
     const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
 
-    await previewLetterTemplatePage.loadPage(templates.valid.id);
+    await previewLetterTemplatePage.loadPage(templates.notYetSubmitted.id);
 
     await expect(page).toHaveURL(
-      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.valid.id}`
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.notYetSubmitted.id}`
     );
 
     await expect(previewLetterTemplatePage.pageHeader).toContainText(
-      'test-template-letter'
+      templates.notYetSubmitted.name
     );
+
+    await previewLetterTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+  });
+
+  test('when template is pending a proof request, user can click to go to request page', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+    await previewLetterTemplatePage.loadPage(templates.pendingProofRequest.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pendingProofRequest.id}`
+    );
+
+    await expect(previewLetterTemplatePage.pageHeader).toContainText(
+      templates.pendingProofRequest.name
+    );
+
+    await previewLetterTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
+  });
+
+  test('when status is not actionable, no continue button is displayed', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+    await previewLetterTemplatePage.loadPage(templates.pendingUpload.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pendingUpload.id}`
+    );
+
+    await expect(previewLetterTemplatePage.pageHeader).toContainText(
+      templates.pendingUpload.name
+    );
+
+    await expect(previewLetterTemplatePage.continueButton).toBeHidden();
   });
 
   test.describe('Error handling', () => {

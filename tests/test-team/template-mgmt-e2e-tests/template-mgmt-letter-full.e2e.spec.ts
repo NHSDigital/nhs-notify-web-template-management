@@ -10,6 +10,7 @@ import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-f
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
+import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -23,7 +24,7 @@ test.describe('letter complete e2e journey', () => {
     await templateStorageHelper.deleteAdHocTemplates();
   });
 
-  test('Full journey - template is created, files are scanned and validated, template is successfully submitted', async ({
+  test('Full journey - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
@@ -64,7 +65,7 @@ test.describe('letter complete e2e journey', () => {
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
-      expect(template.templateStatus).toBe('NOT_YET_SUBMITTED');
+      expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
       expect(template.personalisationParameters).toEqual([
         'address_line_1',
         'address_line_2',
@@ -110,12 +111,22 @@ test.describe('letter complete e2e journey', () => {
       page.reload();
 
       const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
-      previewTemplatePage.clickContinueButton();
+      await expect(previewTemplatePage.continueButton).toBeVisible();
+      await previewTemplatePage.clickContinueButton();
+
+      await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
+
+      const requestProofPage = new TemplateMgmtRequestProofPage(page);
+      await requestProofPage.clickRequestProofButton();
+
+      await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+      await previewTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
 
       const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
-      submitTemplatePage.clickSubmitTemplateButton();
+      await submitTemplatePage.clickSubmitTemplateButton();
 
       await expect(page).toHaveURL(
         TemplateMgmtTemplateSubmittedLetterPage.urlRegexp

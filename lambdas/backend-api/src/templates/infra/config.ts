@@ -1,11 +1,13 @@
 import z from 'zod';
 
 const $Env = z.object({
+  DEFAULT_LETTER_SUPPLIER: z.string(),
   ENABLE_LETTERS_BACKEND: z.enum(['true', 'false']).default('false'),
   ENABLE_PROOFING: z.enum(['true', 'false']).default('false'),
   ENVIRONMENT: z.string(),
-  TEMPLATES_QUARANTINE_BUCKET_NAME: z.string(),
+  REQUEST_PROOF_QUEUE_URL: z.string(),
   TEMPLATES_INTERNAL_BUCKET_NAME: z.string(),
+  TEMPLATES_QUARANTINE_BUCKET_NAME: z.string(),
   TEMPLATES_TABLE_NAME: z.string(),
 });
 
@@ -13,11 +15,13 @@ export function loadConfig() {
   const env = $Env.parse(process.env);
 
   return {
+    defaultLetterSupplier: env.DEFAULT_LETTER_SUPPLIER,
     enableLetters: env.ENABLE_LETTERS_BACKEND === 'true',
     enableProofing: env.ENABLE_PROOFING === 'true',
     environment: env.ENVIRONMENT,
     internalBucket: env.TEMPLATES_INTERNAL_BUCKET_NAME,
     quarantineBucket: env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+    requestProofQueueUrl: env.REQUEST_PROOF_QUEUE_URL,
     templatesTableName: env.TEMPLATES_TABLE_NAME,
   };
 }

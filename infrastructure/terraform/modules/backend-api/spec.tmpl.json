@@ -470,6 +470,71 @@
           "type": "AWS_PROXY"
         }
       }
+    },
+    "/v1/template/{templateId}/proof": {
+      "post": {
+        "summary": "Request a letter proof",
+        "description": "Request a letter proof",
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "templateId",
+            "in": "path",
+            "description": "ID of the template to request a proof of",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "contentHandling": "CONVERT_TO_TEXT",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_PROOF_LAMBDA_ARN}/invocations",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY"
+        }
+      }
     }
   },
   "components": {
@@ -503,8 +568,8 @@
         "enum": [
           "DELETED",
           "NOT_YET_SUBMITTED",
-          "PENDING_UPLOAD",
           "PENDING_PROOF_REQUEST",
+          "PENDING_UPLOAD",
           "PENDING_VALIDATION",
           "SUBMITTED",
           "VALIDATION_FAILED",
@@ -605,11 +670,18 @@
       "NhsAppProperties": {
         "type": "object",
         "required": [
-          "message"
+          "message",
+          "templateType"
         ],
         "properties": {
           "message": {
             "type": "string"
+          },
+          "templateType": {
+            "type": "string",
+            "enum": [
+              "NHS_APP"
+            ]
           }
         }
       },
@@ -617,7 +689,8 @@
         "type": "object",
         "required": [
           "message",
-          "subject"
+          "subject",
+          "templateType"
         ],
         "properties": {
           "message": {
@@ -625,17 +698,30 @@
           },
           "subject": {
             "type": "string"
+          },
+          "templateType": {
+            "type": "string",
+            "enum": [
+              "EMAIL"
+            ]
           }
         }
       },
       "SmsProperties": {
         "type": "object",
         "required": [
-          "message"
+          "message",
+          "templateType"
         ],
         "properties": {
           "message": {
             "type": "string"
+          },
+          "templateType": {
+            "type": "string",
+            "enum": [
+              "SMS"
+            ]
           }
         }
       },
@@ -643,7 +729,8 @@
         "type": "object",
         "required": [
           "letterType",
-          "language"
+          "language",
+          "templateType"
         ],
         "properties": {
           "letterType": {
@@ -654,6 +741,12 @@
           },
           "files": {
             "$ref": "#/components/schemas/LetterFiles"
+          },
+          "templateType": {
+            "type": "string",
+            "enum": [
+              "LETTER"
+            ]
           }
         }
       },
@@ -670,6 +763,12 @@
             "properties": {
               "files": {
                 "$ref": "#/components/schemas/LetterFiles"
+              },
+              "personalisationParameters": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -678,43 +777,15 @@
       "BaseTemplate": {
         "type": "object",
         "required": [
-          "templateType",
           "name"
         ],
         "properties": {
-          "templateType": {
-            "$ref": "#/components/schemas/TemplateType"
-          },
           "name": {
             "type": "string"
           }
         }
       },
-      "CreateUpdateTemplate": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseTemplate"
-          },
-          {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              },
-              {
-                "$ref": "#/components/schemas/EmailProperties"
-              },
-              {
-                "$ref": "#/components/schemas/SmsProperties"
-              },
-              {
-                "$ref": "#/components/schemas/CreateLetterProperties"
-              }
-            ]
-          }
-        ]
-      },
-      "TemplateDto": {
+      "BaseCreatedTemplate": {
         "type": "object",
         "allOf": [
           {
@@ -744,17 +815,49 @@
                 "format": "date-time"
               }
             }
+          }
+        ]
+      },
+      "CreateUpdateTemplate": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseTemplate"
           },
           {
             "oneOf": [
               {
-                "$ref": "#/components/schemas/NhsAppProperties"
+                "$ref": "#/components/schemas/SmsProperties"
               },
               {
                 "$ref": "#/components/schemas/EmailProperties"
               },
               {
+                "$ref": "#/components/schemas/NhsAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/CreateLetterProperties"
+              }
+            ]
+          }
+        ]
+      },
+      "TemplateDto": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseCreatedTemplate"
+          },
+          {
+            "oneOf": [
+              {
                 "$ref": "#/components/schemas/SmsProperties"
+              },
+              {
+                "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/NhsAppProperties"
               },
               {
                 "$ref": "#/components/schemas/LetterProperties"

@@ -1,9 +1,9 @@
-import type { TemplateStatus } from 'nhs-notify-backend-client';
+import type { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 import { BuilderOptionalArgs } from './types/builders';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
-import { UpdateCommandBuilder } from './common/update-command-builder';
+import { EntityUpdateBuilder } from './common/entity-update-builder';
 
-export class TemplateUpdateBuilder extends UpdateCommandBuilder<DatabaseTemplate> {
+export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate> {
   constructor(
     tableName: string,
     owner: string,
@@ -21,16 +21,16 @@ export class TemplateUpdateBuilder extends UpdateCommandBuilder<DatabaseTemplate
   }
 
   setStatus(status: TemplateStatus) {
-    this.setValue('templateStatus', status);
+    this.updateBuilder.setValue('templateStatus', status);
     return this;
   }
 
   expectedStatus(expectedStatus: TemplateStatus | TemplateStatus[]) {
     if (Array.isArray(expectedStatus)) {
-      this.inCondition('templateStatus', expectedStatus);
+      this.updateBuilder.inCondition('templateStatus', expectedStatus);
       return this;
     }
-    this.andCondition('templateStatus', '=', expectedStatus);
+    this.updateBuilder.andCondition('templateStatus', '=', expectedStatus);
     return this;
   }
 
@@ -39,23 +39,34 @@ export class TemplateUpdateBuilder extends UpdateCommandBuilder<DatabaseTemplate
     timeMs: number,
     lockExpiryTimeMs?: number
   ) {
-    this.setValue(lockField, timeMs).fnCondition(
-      'attribute_not_exists',
-      lockField
-    );
+    this.updateBuilder
+      .setValue(lockField, timeMs)
+      .fnCondition('attribute_not_exists', lockField);
 
     if (lockExpiryTimeMs) {
-      this.orCondition(lockField, '>', lockExpiryTimeMs);
+      this.updateBuilder.orCondition(lockField, '>', lockExpiryTimeMs);
     }
     return this;
   }
 
   setLockTimeUnconditional(lockField: 'sftpSendLockTime', timeMs: number) {
-    this.setValue(lockField, timeMs);
+    this.updateBuilder.setValue(lockField, timeMs);
+    return this;
+  }
+
+  expectedTemplateType(type: TemplateType) {
+    this.updateBuilder.andCondition('templateType', '=', type);
+    return this;
+  }
+
+  expectTemplateExists() {
+    this.updateBuilder.fnCondition('attribute_exists', 'id');
     return this;
   }
 
   build() {
-    return this.setValue('updatedAt', new Date().toISOString()).finalise();
+    return this.updateBuilder
+      .setValue('updatedAt', new Date().toISOString())
+      .finalise();
   }
 }

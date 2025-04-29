@@ -62,7 +62,7 @@ test.describe('letter file validation', () => {
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
-      expect(template.templateStatus).toBe('NOT_YET_SUBMITTED');
+      expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
       expect(template.personalisationParameters).toEqual([
         'address_line_1',
         'address_line_2',
@@ -146,7 +146,7 @@ test.describe('letter file validation', () => {
       });
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
-      expect(template.templateStatus).toBe('NOT_YET_SUBMITTED');
+      expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
       expect(template.personalisationParameters).toEqual([
         'address_line_1',
         'address_line_2',
