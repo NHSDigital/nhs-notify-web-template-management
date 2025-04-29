@@ -22,6 +22,13 @@ module "lambda_sftp_poll" {
 
   timeout     = 60 * 10
   memory_size = 2048
+
+  vpc = {
+    id                 = data.aws_vpc.account_vpc.id
+    cidr_block         = data.aws_vpc.account_vpc.cidr_block
+    subnet_ids         = data.aws_subnets.account_vpc_private_subnets.ids
+    security_group_ids = [data.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
+  }
 }
 
 data "aws_iam_policy_document" "sftp_poll" {
