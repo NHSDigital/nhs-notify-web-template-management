@@ -59,6 +59,14 @@ describe('MessageTemplates component', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot with pending proof request status', () => {
+    messageTemplatesProps.templateList[0].templateStatus =
+      'PENDING_PROOF_REQUEST';
+    const container = render(<MessageTemplates {...messageTemplatesProps} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
   it('renders component correctly', () => {
     render(<MessageTemplates {...messageTemplatesProps} />);
 

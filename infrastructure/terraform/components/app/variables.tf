@@ -188,6 +188,12 @@ variable "enable_letters" {
   default     = false
 }
 
+variable "enable_proofing" {
+  type        = string
+  description = "Feature flag for proofing"
+  default     = false
+}
+
 variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"

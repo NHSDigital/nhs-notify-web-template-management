@@ -76,6 +76,11 @@ variable "enable_letters" {
   description = "Enable letters feature flag"
 }
 
+variable "enable_proofing" {
+  type        = bool
+  description = "Enable proofing feature flag"
+}
+
 variable "kms_key_arn" {
   type        = string
   description = "KMS Key ARN"
