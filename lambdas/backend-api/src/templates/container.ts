@@ -17,7 +17,8 @@ export function createContainer() {
 
   const templateRepository = new TemplateRepository(
     ddbDocClient,
-    config.templatesTableName
+    config.templatesTableName,
+    config.enableProofing
   );
 
   const letterUploadRepository = new LetterUploadRepository(

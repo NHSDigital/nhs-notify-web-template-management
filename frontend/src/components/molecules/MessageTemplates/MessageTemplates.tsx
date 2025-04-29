@@ -12,6 +12,7 @@ import {
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
+  templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -79,11 +80,9 @@ export function MessageTemplates({
                 <Table.Cell>{typeDisplayMappings(template)}</Table.Cell>
                 <Table.Cell>
                   <Tag
-                    color={
-                      template.templateStatus === 'SUBMITTED'
-                        ? 'grey'
-                        : undefined
-                    }
+                    color={templateStatusToColourMappings(
+                      template.templateStatus
+                    )}
                   >
                     {templateStatusToDisplayMappings(template.templateStatus)}
                   </Tag>

@@ -11,9 +11,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
 
   constructor(page: Page) {
     super(page);
-    this.continueButton = page.locator(
-      '[id="preview-letter-template-submit-button"]'
-    );
+    this.continueButton = page.locator('[id="preview-letter-template-cta"]');
   }
 
   async clickContinueButton() {

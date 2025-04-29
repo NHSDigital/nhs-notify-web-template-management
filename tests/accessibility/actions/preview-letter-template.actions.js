@@ -2,7 +2,7 @@ const { signInPageActions } = require('./sign-in-page.actions');
 
 const pageActions = [
   ...signInPageActions,
-  'wait for #preview-letter-template-submit-button to be visible',
+  'wait for #preview-letter-template-cta to be visible',
 ];
 
 const previewLetterTemplatePage = (url) => ({
