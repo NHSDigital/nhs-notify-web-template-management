@@ -1,9 +1,10 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
-  repo_root           = abspath("${path.module}/../../../..")
+  repo_root               = abspath("${path.module}/../../../..")
   lambdas_source_code_dir = abspath("${local.repo_root}/lambdas")
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")
+  pdfjs_layer_lockfile    = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/package-lock.json")
 
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     AWS_REGION               = var.region
