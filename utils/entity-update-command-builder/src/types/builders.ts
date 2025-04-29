@@ -18,6 +18,7 @@ export type ConditionJoiner = 'AND' | 'OR';
 
 export type BuilderOptionalArgs = {
   ReturnValuesOnConditionCheckFailure?: 'ALL_OLD';
+  ReturnValues?: 'ALL_NEW';
 };
 
 type BaseConditionAttributes = {

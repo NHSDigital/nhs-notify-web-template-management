@@ -30,4 +30,6 @@ export interface ITemplateClient {
   getTemplate(templateId: string, owner: string): Promise<Result<TemplateDto>>;
 
   listTemplates(owner: string): Promise<Result<TemplateDto[]>>;
+
+  requestProof(templateId: string, owner: string): Promise<Result<TemplateDto>>;
 }

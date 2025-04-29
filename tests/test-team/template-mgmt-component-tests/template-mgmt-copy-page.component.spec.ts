@@ -38,13 +38,11 @@ function createTemplates(owner: string) {
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
-    letter: {
-      ...TemplateFactory.createLetterTemplate(
-        'letter-template-copy-page',
-        owner,
-        'letter-template-copy-page-name'
-      ),
-    },
+    letter: TemplateFactory.createLetterTemplate(
+      'letter-template-copy-page',
+      owner,
+      'letter-template-copy-page-name'
+    ),
   };
 }
 

@@ -23,6 +23,7 @@ export class TemplateMgmtStartPage extends TemplateMgmtBasePageNonDynamic {
     'NHS App messages',
     'emails',
     'text messages (SMS)',
+    'letters',
   ];
 
   async clickStartButton() {

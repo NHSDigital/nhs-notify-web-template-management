@@ -6,17 +6,17 @@ import { SyntheticBatch, Manifest } from '../../domain/synthetic-batch';
 import { Readable } from 'node:stream';
 import { mockTestDataCsv, streamToString } from '../helpers';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { ProofingRequest } from '../../infra/types';
 import { SftpSupplierClientRepository } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
+import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
 const baseUploadDir = 'Incoming';
 const baseDownloadDir = 'Outgoing';
 const owner = 'owner-id';
 const templateId = 'template-id';
-const pdfVersion = 'pdf-version-id';
-const testDataVersion = 'test-data-version-id';
+const pdfVersionId = 'pdf-version-id';
+const testDataVersionId = 'test-data-version-id';
 const messageId = 'message-id';
 const supplier = 'LETTER_SUPPLIER';
 
@@ -57,9 +57,9 @@ function mockEvent(
   return {
     owner,
     templateId,
-    pdfVersion,
+    pdfVersionId,
     supplier,
-    ...(hasTestData && { testDataVersion }),
+    ...(hasTestData && { testDataVersionId }),
     personalisationParameters,
   };
 }
@@ -188,8 +188,8 @@ describe('App', () => {
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
       owner,
       templateId,
-      pdfVersion,
-      testDataVersion
+      pdfVersionId,
+      testDataVersionId
     );
 
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
@@ -518,8 +518,8 @@ describe('App', () => {
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
       owner,
       templateId,
-      pdfVersion,
-      testDataVersion
+      pdfVersionId,
+      testDataVersionId
     );
 
     expect(logMessages).toContainEqual(
@@ -530,7 +530,7 @@ describe('App', () => {
         message: error.message,
         messageId,
         owner,
-        pdfVersion,
+        pdfVersionId,
       })
     );
   });
@@ -585,7 +585,7 @@ describe('App', () => {
         message: err.message,
         messageId,
         owner,
-        pdfVersion,
+        pdfVersionId,
       })
     );
   });

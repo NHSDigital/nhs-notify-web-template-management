@@ -260,4 +260,75 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectTemplateExists', () => {
+    test('asserts id attribute exists', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectTemplateExists()
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwner,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':updatedAt': mockDate.toISOString(),
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#id': 'id',
+        },
+        ConditionExpression: 'attribute_exists (#id)',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+  });
+
+  describe('expectedTemplateType', () => {
+    test('adds templateType condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectedTemplateType('SMS')
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwner,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':updatedAt': mockDate.toISOString(),
+          ':condition_1_templateType': 'SMS',
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#templateType': 'templateType',
+        },
+        ConditionExpression: '#templateType = :condition_1_templateType',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+  });
 });

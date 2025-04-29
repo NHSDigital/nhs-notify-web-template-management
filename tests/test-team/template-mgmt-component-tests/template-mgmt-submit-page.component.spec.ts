@@ -147,20 +147,17 @@ async function createTemplates() {
       submit: TemplateFactory.createLetterTemplate(
         'submit-letter-submit-template',
         user.userId,
-        'test-template-name',
-        'PASSED'
+        'test-template-name'
       ),
       submitAndReturn: TemplateFactory.createLetterTemplate(
         'submit-and-return-letter-template',
         user.userId,
-        'test-template-name',
-        'PASSED'
+        'test-template-name'
       ),
       valid: TemplateFactory.createLetterTemplate(
         'valid-letter-submit-template',
         user.userId,
-        'test-template-name',
-        'PASSED'
+        'test-template-name'
       ),
     },
   };

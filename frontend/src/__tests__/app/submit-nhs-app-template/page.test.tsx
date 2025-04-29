@@ -56,8 +56,7 @@ describe('SubmitNhsAppTemplatePage', () => {
       <SubmitDigitalTemplate
         templateName={state.name}
         templateId={state.id}
-        goBackPath='preview-nhs-app-template'
-        submitPath='nhs-app-template-submitted'
+        channel='NHS_APP'
       />
     );
   });

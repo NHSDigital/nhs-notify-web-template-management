@@ -14,6 +14,7 @@ import {
   createLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
+  requestTemplateProof,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -579,6 +580,68 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
       await expect(setTemplateToDeleted('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+  });
+
+  describe('requestTemplateProof', () => {
+    test('sends proof request successfully', async () => {
+      const responseData = {
+        templateType: 'LETTER',
+        id: 'new-template-id',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: 'template-name',
+        letterType: 'q1',
+        language: 'ar',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: 'pdf-version',
+            virusScanStatus: 'PASSED',
+          },
+        },
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+      } satisfies TemplateDto;
+
+      mockedTemplateClient.requestProof.mockResolvedValueOnce({
+        data: responseData,
+      });
+
+      const response = await requestTemplateProof('id');
+
+      expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+
+      expect(response).toEqual(responseData);
+    });
+
+    test('requestTemplateProof - should throw error when request unexpectedly fails', async () => {
+      mockedTemplateClient.requestProof.mockResolvedValueOnce({
+        error: {
+          code: 400,
+          message: 'Bad request',
+        },
+      });
+
+      await expect(requestTemplateProof('id')).rejects.toThrow(
+        'Failed to request proof'
+      );
+
+      expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+    });
+
+    test('requestTemplateProof - should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+      await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'
       );
     });

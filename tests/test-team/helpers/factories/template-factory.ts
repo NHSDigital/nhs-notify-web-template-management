@@ -41,12 +41,14 @@ export const TemplateFactory = {
     id: string,
     owner: string,
     name: string,
-    virusScanStatus = 'PENDING'
+    templateStatus = 'NOT_YET_SUBMITTED',
+    virusScanStatus = 'PASSED'
   ): Template => {
     return TemplateFactory.create({
       id,
       owner,
       name,
+      templateStatus,
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',

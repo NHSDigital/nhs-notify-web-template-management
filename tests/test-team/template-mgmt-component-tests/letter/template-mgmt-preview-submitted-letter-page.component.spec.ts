@@ -20,23 +20,19 @@ import {
 
 function createTemplates(owner: string) {
   return {
-    valid: {
-      ...TemplateFactory.createLetterTemplate(
-        'valid-email-template-preview-submitted',
-        owner,
-        'valid-email-template-preview-submitted'
-      ),
-      name: 'test-template-letter',
-      templateStatus: 'SUBMITTED',
-    },
+    valid: TemplateFactory.createLetterTemplate(
+      'valid-letter-template-preview-submitted',
+      owner,
+      'valid-email-template-preview-submitted',
+      'SUBMITTED'
+    ),
     invalid: {
       ...TemplateFactory.createLetterTemplate(
         'invalid-letter-template-preview-submitted',
         owner,
-        'invalid-letter-template-preview-submitted'
+        'invalid-letter-template-preview-submitted',
+        'NOT_A_STATUS'
       ),
-      name: 'test-template-letter',
-      templateStatus: 'NOT_YET_SUBMITTED',
     },
   };
 }
@@ -69,7 +65,7 @@ test.describe('Preview submitted Letter message template Page', () => {
     );
 
     await expect(previewSubmittedLetterTemplatePage.pageHeader).toContainText(
-      'test-template-letter'
+      templates.valid.name
     );
   });
 

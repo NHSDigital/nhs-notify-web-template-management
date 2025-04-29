@@ -42,13 +42,21 @@ const setup = (enableProofing = false) => {
 const emailProperties: EmailProperties = {
   message: 'message',
   subject: 'pickles',
+  templateType: 'EMAIL',
 };
 
-const smsProperties: SmsProperties = { message: 'message' };
+const smsProperties: SmsProperties = {
+  message: 'message',
+  templateType: 'SMS',
+};
 
-const nhsAppProperties: NhsAppProperties = { message: 'message' };
+const nhsAppProperties: NhsAppProperties = {
+  message: 'message',
+  templateType: 'NHS_APP',
+};
 
 const letterProperties: LetterProperties = {
+  templateType: 'LETTER',
   letterType: 'x0',
   language: 'en',
   files: {
@@ -82,25 +90,21 @@ const databaseTemplateProperties = {
 };
 
 const emailTemplate: DatabaseTemplate = {
-  templateType: 'EMAIL',
   ...emailProperties,
   ...databaseTemplateProperties,
 };
 
 const smsTemplate: DatabaseTemplate = {
-  templateType: 'SMS',
   ...smsProperties,
   ...databaseTemplateProperties,
 };
 
 const nhsAppTemplate: DatabaseTemplate = {
-  templateType: 'NHS_APP',
   ...nhsAppProperties,
   ...databaseTemplateProperties,
 };
 
 const letterTemplate: DatabaseTemplate = {
-  templateType: 'LETTER',
   ...letterProperties,
   ...databaseTemplateProperties,
 };
@@ -283,10 +287,10 @@ describe('templateRepository', () => {
     });
 
     test.each([
-      { templateType: 'EMAIL' as const, ...emailProperties },
-      { templateType: 'SMS' as const, ...smsProperties },
-      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
-      { templateType: 'LETTER' as const, ...letterProperties },
+      emailProperties,
+      smsProperties,
+      nhsAppProperties,
+      letterProperties,
     ])(
       'should create template of type $templateType',
       async (channelProperties) => {
@@ -405,10 +409,10 @@ describe('templateRepository', () => {
     });
 
     test.each([
-      { templateType: 'EMAIL' as const, ...emailProperties },
-      { templateType: 'SMS' as const, ...smsProperties },
-      { templateType: 'NHS_APP' as const, ...nhsAppProperties },
-      { templateType: 'LETTER' as const, ...letterProperties },
+      emailProperties,
+      smsProperties,
+      nhsAppProperties,
+      letterProperties,
     ])(
       'should update template of type $templateType with name',
       async (channelProperties) => {
@@ -758,8 +762,8 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.updateStatus(
           'abc-def-ghi-jkl-123',
-          'PENDING_VALIDATION',
-          'real-owner'
+          'real-owner',
+          'PENDING_VALIDATION'
         );
 
         expect(response).toEqual({
@@ -781,8 +785,8 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.updateStatus(
         'abc-def-ghi-jkl-123',
-        'PENDING_VALIDATION',
-        'real-owner'
+        'real-owner',
+        'PENDING_VALIDATION'
       );
 
       expect(response).toEqual({
@@ -824,8 +828,8 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.updateStatus(
         'abc-def-ghi-jkl-123',
-        'PENDING_VALIDATION',
-        'real-owner'
+        'real-owner',
+        'PENDING_VALIDATION'
       );
 
       expect(response).toEqual({
@@ -1197,6 +1201,121 @@ describe('templateRepository', () => {
           []
         )
       ).rejects.toThrow('Something went wrong');
+    });
+  });
+
+  describe('proofRequestUpdate', () => {
+    it('updates status to NOT_YET_SUBMITTED', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(UpdateCommand).resolvesOnce({
+        Attributes: {
+          // complete template
+          id: 'template-id',
+        },
+      });
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({ data: { id: 'template-id' } });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        ConditionExpression:
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND attribute_exists (#id)',
+        ExpressionAttributeNames: {
+          '#id': 'id',
+          '#templateStatus': 'templateStatus',
+          '#templateType': 'templateType',
+          '#updatedAt': 'updatedAt',
+        },
+        ExpressionAttributeValues: {
+          ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
+          ':condition_2_templateType': 'LETTER',
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':updatedAt': '2024-12-27T00:00:00.000Z',
+        },
+        Key: { id: 'template-owner', owner: 'template-id' },
+        ReturnValues: 'ALL_NEW',
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        TableName: 'templates',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+
+    it('returns 404 error response when conditional check fails due to template not existing', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 404,
+          message: 'Template not found',
+        },
+      });
+    });
+
+    it('returns 400 error response when conditional check fails, but item exists, with a status other than DELETED or PENDING_PROOF_REQUEST', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new ConditionalCheckFailedException({
+        message: 'condition check failed',
+        $metadata: {},
+        Item: {
+          templateStatus: { S: 'PENDING_UPLOAD' },
+        },
+      });
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 400,
+          message: 'Template cannot be proofed',
+        },
+      });
+    });
+
+    it('returns 500 error response when update fails for reason other than conditional check', async () => {
+      const { templateRepository, mocks } = setup();
+
+      const err = new Error('!');
+
+      mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
+
+      const result = await templateRepository.proofRequestUpdate(
+        'template-owner',
+        'template-id'
+      );
+
+      expect(result).toEqual({
+        error: {
+          actualError: err,
+          code: 500,
+          message: 'Failed to update template',
+        },
+      });
     });
   });
 });

@@ -33,8 +33,7 @@ const SubmitSmsTemplatePage = async (props: PageProps) => {
     <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-text-message-template'
-      submitPath='text-message-template-submitted'
+      channel='SMS'
     />
   );
 };

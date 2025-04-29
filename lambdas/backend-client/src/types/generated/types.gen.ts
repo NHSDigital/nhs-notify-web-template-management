@@ -5,8 +5,8 @@ export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 export type TemplateStatus =
   | 'DELETED'
   | 'NOT_YET_SUBMITTED'
-  | 'PENDING_UPLOAD'
   | 'PENDING_PROOF_REQUEST'
+  | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
   | 'SUBMITTED'
   | 'VALIDATION_FAILED'
@@ -61,41 +61,48 @@ export type LetterFiles = {
 
 export type NhsAppProperties = {
   message: string;
+  templateType: 'NHS_APP';
 };
 
 export type EmailProperties = {
   message: string;
   subject: string;
+  templateType: 'EMAIL';
 };
 
 export type SmsProperties = {
   message: string;
+  templateType: 'SMS';
 };
 
 export type CreateLetterProperties = {
   letterType: LetterType;
   language: Language;
   files?: LetterFiles;
+  templateType: 'LETTER';
 };
 
 export type LetterProperties = CreateLetterProperties & {
   files: LetterFiles;
+  personalisationParameters?: Array<string>;
 };
 
 export type BaseTemplate = {
-  templateType: TemplateType;
   name: string;
 };
 
-export type CreateUpdateTemplate = BaseTemplate &
-  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
-
-export type TemplateDto = BaseTemplate & {
+export type BaseCreatedTemplate = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
   createdAt: string;
   updatedAt: string;
-} & (NhsAppProperties | EmailProperties | SmsProperties | LetterProperties);
+};
+
+export type CreateUpdateTemplate = BaseTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | CreateLetterProperties);
+
+export type TemplateDto = BaseCreatedTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
 export type Success = {
   template: TemplateDto;
@@ -330,6 +337,38 @@ export type PatchV1TemplateByTemplateIdSubmitResponses = {
 
 export type PatchV1TemplateByTemplateIdSubmitResponse =
   PatchV1TemplateByTemplateIdSubmitResponses[keyof PatchV1TemplateByTemplateIdSubmitResponses];
+
+export type PostV1TemplateByTemplateIdProofData = {
+  body?: never;
+  path: {
+    /**
+     * ID of the template to request a proof of
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/proof';
+};
+
+export type PostV1TemplateByTemplateIdProofErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1TemplateByTemplateIdProofError =
+  PostV1TemplateByTemplateIdProofErrors[keyof PostV1TemplateByTemplateIdProofErrors];
+
+export type PostV1TemplateByTemplateIdProofResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type PostV1TemplateByTemplateIdProofResponse =
+  PostV1TemplateByTemplateIdProofResponses[keyof PostV1TemplateByTemplateIdProofResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});
