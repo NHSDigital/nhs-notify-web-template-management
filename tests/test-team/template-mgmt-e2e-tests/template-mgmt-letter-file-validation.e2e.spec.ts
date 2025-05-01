@@ -109,7 +109,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
-    await expect(page.getByTestId('submit-button')).toBeVisible();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeVisible();
   });
 
   test('PDF only - Uploaded pdf file is virus scanned - if scan passes, file is copied to the internal bucket and validated', async ({
@@ -179,7 +179,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
-    await expect(page.getByTestId('submit-button')).toBeVisible();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeVisible();
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if threat detected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
@@ -256,7 +256,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if password protected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
@@ -330,7 +330,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if pdf parameters and test data parameters do not match', async ({
@@ -385,7 +385,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if unexpected csv is uploaded', async ({ page }) => {
@@ -438,7 +438,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if expected csv is not uploaded', async ({ page }) => {
@@ -486,7 +486,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if pdf has incomplete address', async ({ page }) => {
@@ -534,7 +534,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if pdf has empty parameters', async ({ page }) => {
@@ -587,7 +587,7 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
   test('validation fails if pdf has non-sensible parameters', async ({
@@ -642,6 +642,6 @@ test.describe('letter file validation', () => {
     page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
-    await expect(page.getByTestId('submit-button')).toBeHidden();
+    await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 });

@@ -105,22 +105,6 @@ describe('alphabeticalLanguageList', () => {
   });
 });
 
-describe('templateStatusToColourMappings', () => {
-  test('NOT_YET_SUBMITTED', () => {
-    expect(templateStatusToColourMappings('NOT_YET_SUBMITTED')).toEqual(
-      undefined
-    );
-  });
-
-  test('SUBMITTED', () => {
-    expect(templateStatusToColourMappings('SUBMITTED')).toEqual('grey');
-  });
-
-  test('VIRUS_SCAN_FAILED', () => {
-    expect(templateStatusToColourMappings('VIRUS_SCAN_FAILED')).toEqual('red');
-  });
-});
-
 describe('templateStatusToDisplayMappings', () => {
   test('NOT_YET_SUBMITTED', () => {
     expect(templateStatusToDisplayMappings('NOT_YET_SUBMITTED')).toEqual(

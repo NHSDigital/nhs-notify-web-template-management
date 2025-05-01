@@ -44,19 +44,22 @@ async function createTemplates() {
       'pending-letter-preview-template',
       user.userId,
       'test-pending-template-letter',
-      'PENDING_UPLOAD'
+      'PENDING_UPLOAD',
+      'PENDING'
     ),
     virus: TemplateFactory.createLetterTemplate(
       'virus-letter-preview-template',
       user.userId,
       'test-virus-template-letter',
-      'VIRUS_SCAN_FAILED'
+      'VIRUS_SCAN_FAILED',
+      'FAILED'
     ),
     invalid: TemplateFactory.createLetterTemplate(
       'invalid-letter-preview-template',
       user.userId,
       'test-invalid-template-letter',
-      'VALIDATION_FAILED'
+      'VALIDATION_FAILED',
+      'PASSED'
     ),
   };
 }

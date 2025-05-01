@@ -13,7 +13,6 @@ import {
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
-  templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
