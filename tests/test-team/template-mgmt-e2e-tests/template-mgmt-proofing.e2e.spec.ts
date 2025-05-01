@@ -15,79 +15,154 @@ const authHelper = createAuthHelper();
 const sftpHelper = new SftpHelper();
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-beforeAll(async () => {
-  await sftpHelper.connect();
-});
+test.describe('Letter Proofing', () => {
+  test.beforeAll(async () => {
+    await sftpHelper.connect();
+  });
 
-afterAll(async () => {
-  await sftpHelper.end();
-});
+  test.afterAll(async () => {
+    await sftpHelper.end();
+  });
 
-test('proofs are downloaded and linked to the DB entry', async () => {
-  const templateId = 'test-template-id-proofing-e2e-success';
-  const user = await authHelper.getTestUser(TestUserId.User1);
+  test('proofs are downloaded and linked to the DB entry', async () => {
+    const templateId = 'test-template-id-proofing-e2e-success';
+    const user = await authHelper.getTestUser(TestUserId.User1);
 
-  // add entries to database
-  await templateStorageHelper.seedTemplateData([
-    TemplateFactory.createLetterTemplate(
-      templateId,
-      user.userId,
-      templateId,
-      'WAITING_FOR_PROOF'
-    ),
-  ]);
+    // add entries to database
+    await templateStorageHelper.seedTemplateData([
+      TemplateFactory.createLetterTemplate(
+        templateId,
+        user.userId,
+        templateId,
+        'WAITING_FOR_PROOF'
+      ),
+    ]);
 
-  // add proofs to SFTP mock
-  const pdfContent = readFileSync(
-    './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
-  );
+    // add proofs to SFTP mock
+    const pdfContent = readFileSync(
+      './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
+    );
 
-  await sftpHelper.put(
-    pdfContent,
-    `WTMMOCK/Outgoing/proofs/${templateId}/proof-1.pdf`
-  );
-  await sftpHelper.put(
-    pdfContent,
-    `WTMMOCK/Outgoing/proofs/${templateId}/proof-2.pdf`
-  );
-  await sftpHelper.put(
-    pdfContent,
-    `WTMMOCK/Outgoing/proofs/${templateId}/proof-3.pdf`
-  );
+    await sftpHelper.put(
+      pdfContent,
+      `WTMMOCK/Outgoing/proofs/${templateId}/proof-1.pdf`
+    );
+    await sftpHelper.put(
+      pdfContent,
+      `WTMMOCK/Outgoing/proofs/${templateId}/proof-2.pdf`
+    );
+    await sftpHelper.put(
+      pdfContent,
+      `WTMMOCK/Outgoing/proofs/${templateId}/proof-3.pdf`
+    );
 
-  // invoke SFTP poll lambda
-  await lambdaClient.send(
-    new InvokeCommand({
-      FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-    })
-  );
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+      })
+    );
 
-  // check for expected results
-  await expect(async () => {
-    const template = await templateStorageHelper.getTemplate({
-      owner: user.userId,
-      id: templateId,
-    });
+    // check for expected results
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        owner: user.userId,
+        id: templateId,
+      });
 
-    expect(template.files?.proofs).toEqual({
-      'proof-1': {
-        fileName: `proofs/${user.userId}/${templateId}/proof-1.pdf`,
-        virusScanStatus: 'PASSED',
-      },
-      'proof-2': {
-        fileName: `proofs/${user.userId}/${templateId}/proof-2.pdf`,
-        virusScanStatus: 'PASSED',
-      },
-      'proof-3': {
-        fileName: `proofs/${user.userId}/${templateId}/proof-3.pdf`,
-        virusScanStatus: 'PASSED',
-      },
-    });
+      expect(template.files?.proofs).toEqual({
+        'proof-1': {
+          fileName: `proofs/${user.userId}/${templateId}/proof-1.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+        'proof-2': {
+          fileName: `proofs/${user.userId}/${templateId}/proof-2.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+        'proof-3': {
+          fileName: `proofs/${user.userId}/${templateId}/proof-3.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+      });
 
-    expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
+      expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
 
-    for (const fileName of ['proof-1', 'proof-2', 'proof-3']) {
-      const quarantinePdf = await templateStorageHelper.getLetterProofFile(
+      for (const fileName of ['proof-1', 'proof-2', 'proof-3']) {
+        const quarantinePdf = await templateStorageHelper.getLetterProofFile(
+          process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+          'proofs',
+          templateId,
+          'proof',
+          'pdf'
+        );
+
+        expect(quarantinePdf?.ChecksumSHA256).toEqual(
+          pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+        );
+
+        const internalPdf = await templateStorageHelper.getLetterTemplateFile(
+          process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
+          'proofs',
+          { owner: user.userId, id: templateId },
+          fileName,
+          'pdf'
+        );
+
+        expect(internalPdf?.ChecksumSHA256).toEqual(
+          pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+        );
+      }
+    }).toPass({ timeout: 10_000 });
+  });
+
+  test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
+    const templateId = 'test-template-id-proofing-e2e-failure';
+    const user = await authHelper.getTestUser(TestUserId.User1);
+
+    // add entries to database
+    await templateStorageHelper.seedTemplateData([
+      TemplateFactory.createLetterTemplate(
+        templateId,
+        user.userId,
+        templateId,
+        'WAITING_FOR_PROOF'
+      ),
+    ]);
+
+    // add proofs to SFTP mock
+    const pdfContent = readFileSync(
+      './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
+    );
+
+    await sftpHelper.put(
+      pdfContent,
+      `WTMMOCK/Outgoing/proofs/${templateId}/proof.pdf`
+    );
+
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+      })
+    );
+
+    // check for expected results
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate({
+        owner: user.userId,
+        id: templateId,
+      });
+
+      expect(template.files?.proofs).toEqual({
+        proof: {
+          fileName: `proofs/${user.userId}/${templateId}/proof.pdf`,
+          virusScanStatus: 'FAILED',
+        },
+      });
+
+      expect(template.templateStatus).toEqual('WAITING_FOR_PROOF');
+
+      const pdf = await templateStorageHelper.getLetterProofFile(
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
         'proofs',
         templateId,
@@ -95,80 +170,7 @@ test('proofs are downloaded and linked to the DB entry', async () => {
         'pdf'
       );
 
-      expect(quarantinePdf?.ChecksumSHA256).toEqual(
-        pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
-      );
-
-      const internalPdf = await templateStorageHelper.getLetterTemplateFile(
-        process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
-        'proofs',
-        { owner: user.userId, id: templateId },
-        fileName,
-        'pdf'
-      );
-
-      expect(internalPdf?.ChecksumSHA256).toEqual(
-        pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
-      );
-    }
-  }).toPass({ timeout: 10_000 });
-});
-
-test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
-  const templateId = 'test-template-id-proofing-e2e-failure';
-  const user = await authHelper.getTestUser(TestUserId.User1);
-
-  // add entries to database
-  await templateStorageHelper.seedTemplateData([
-    TemplateFactory.createLetterTemplate(
-      templateId,
-      user.userId,
-      templateId,
-      'WAITING_FOR_PROOF'
-    ),
-  ]);
-
-  // add proofs to SFTP mock
-  const pdfContent = readFileSync(
-    './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
-  );
-
-  await sftpHelper.put(
-    pdfContent,
-    `WTMMOCK/Outgoing/proofs/${templateId}/proof.pdf`
-  );
-
-  // invoke SFTP poll lambda
-  await lambdaClient.send(
-    new InvokeCommand({
-      FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-    })
-  );
-
-  // check for expected results
-  await expect(async () => {
-    const template = await templateStorageHelper.getTemplate({
-      owner: user.userId,
-      id: templateId,
-    });
-
-    expect(template.files?.proofs).toEqual({
-      proof: {
-        fileName: `proofs/${user.userId}/${templateId}/proof.pdf`,
-        virusScanStatus: 'FAILED',
-      },
-    });
-
-    expect(template.templateStatus).toEqual('WAITING_FOR_PROOF');
-
-    const pdf = await templateStorageHelper.getLetterProofFile(
-      process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-      'proofs',
-      templateId,
-      'proof',
-      'pdf'
-    );
-
-    expect(pdf).toBe(null);
-  }).toPass({ timeout: 10_000 });
+      expect(pdf).toBe(null);
+    }).toPass({ timeout: 10_000 });
+  });
 });
