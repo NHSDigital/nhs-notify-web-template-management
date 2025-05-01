@@ -18,6 +18,7 @@ const {
   previewEmailTemplateErrorPage,
   previewEmailTemplatePage,
   previewLetterTemplatePage,
+  previewLetterTemplatePageWithError,
   previewNHSAppTemplateErrorPage,
   previewNHSAppTemplatePage,
   previewSubmittedEmailTemplatePage,
@@ -98,6 +99,21 @@ module.exports = {
     performCheck(
       previewLetterTemplatePage(
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
+      )
+    ),
+    performCheck(
+      previewLetterTemplatePageWithError(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-virus-check']}`
+      )
+    ),
+    performCheck(
+      previewLetterTemplatePage(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-validation']}`
+      )
+    ),
+    performCheck(
+      previewLetterTemplatePageWithError(
+        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-validation']}`
       )
     ),
     performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
