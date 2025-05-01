@@ -465,7 +465,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
 </DocumentFragment>
 `;
 
-exports[`PreviewLetterTemplate component matches snapshot when template status is VIRUS_SCAN_FAILED 1`] = `
+exports[`PreviewLetterTemplate component matches snapshot when template status is PENDING_UPLOAD 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-back-link"
@@ -553,9 +553,544 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
+                  class="nhsuk-tag"
+                >
+                  Processing
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot when template status is PENDING_VALIDATION 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/message-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Braille letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag"
+                >
+                  Processing
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot when template status is VALIDATION_FAILED 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/message-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          aria-labelledby="error-summary-title"
+          class="nhsuk-error-summary"
+          role="alert"
+          tabindex="-1"
+        >
+          <h2
+            class="nhsuk-error-summary__title"
+            data-testid="error-summary"
+            id="error-summary-title"
+          >
+            There is a problem
+          </h2>
+          <span
+            class="nhsuk-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            The personalisation fields in your files are missing or do not match.
+          </span>
+          <span
+            class="nhsuk-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Check that the personalisation fields in your template file match the fields in your test personalisation file
+          </span>
+        </div>
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Braille letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
                   class="nhsuk-tag nhsuk-tag--red"
                 >
-                  Virus Scan Failed
+                  Checks failed
+                </strong>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.pdf
+                  </p>
+                </div>
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Test personalisation file
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    file.csv
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <p>
+          <a
+            href="/message-templates"
+          >
+            Back to all templates
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`PreviewLetterTemplate component matches snapshot when template status is VIRUS_SCAN_FAILED 1`] = `
+<DocumentFragment>
+  <div
+    class="nhsuk-back-link"
+  >
+    <a
+      class="nhsuk-back-link__link"
+      href="/templates/message-templates"
+      id="back-link"
+    >
+      <svg
+        aria-hidden="true"
+        class="nhsuk-icon nhsuk-icon__chevron-left"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.5 12c0-.3.1-.5.3-.7l5-5c.4-.4 1-.4 1.4 0s.4 1 0 1.4L10.9 12l4.3 4.3c.4.4.4 1 0 1.4s-1 .4-1.4 0l-5-5c-.2-.2-.3-.4-.3-.7z"
+        />
+      </svg>
+      Back to all templates
+    </a>
+  </div>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-full"
+      >
+        <div
+          aria-labelledby="error-summary-title"
+          class="nhsuk-error-summary"
+          role="alert"
+          tabindex="-1"
+        >
+          <h2
+            class="nhsuk-error-summary__title"
+            data-testid="error-summary"
+            id="error-summary-title"
+          >
+            There is a problem
+          </h2>
+          <span
+            class="nhsuk-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            The file(s) you uploaded may contain a virus.
+          </span>
+          <span
+            class="nhsuk-error-message"
+          >
+            <span
+              class="nhsuk-u-visually-hidden"
+            >
+              Error: 
+            </span>
+            Create a new letter template to upload your file(s) again or upload different file(s).
+          </span>
+        </div>
+        <h1
+          class="preview__heading"
+          data-testid="preview-message__heading"
+        >
+          test-template-letter
+        </h1>
+        <div
+          class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+        >
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template ID
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                template-id
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Type
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                Braille letter
+              </dd>
+            </div>
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Status
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <strong
+                  class="nhsuk-tag nhsuk-tag--red"
+                >
+                  Checks failed
                 </strong>
               </dd>
             </div>

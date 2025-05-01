@@ -40,6 +40,24 @@ async function createTemplates() {
       'pendingUpload',
       'PENDING_UPLOAD'
     ),
+    pending: TemplateFactory.createLetterTemplate(
+      'pending-letter-preview-template',
+      user.userId,
+      'test-pending-template-letter',
+      'PENDING_UPLOAD'
+    ),
+    virus: TemplateFactory.createLetterTemplate(
+      'virus-letter-preview-template',
+      user.userId,
+      'test-virus-template-letter',
+      'VIRUS_SCAN_FAILED'
+    ),
+    invalid: TemplateFactory.createLetterTemplate(
+      'invalid-letter-preview-template',
+      user.userId,
+      'test-invalid-template-letter',
+      'VALIDATION_FAILED'
+    ),
   };
 }
 
@@ -115,6 +133,7 @@ test.describe('Preview Letter template Page', () => {
       templates.pendingUpload.name
     );
 
+    await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
     await expect(previewLetterTemplatePage.continueButton).toBeHidden();
   });
 
@@ -139,6 +158,77 @@ test.describe('Preview Letter template Page', () => {
       await previewLetterTemplatePage.loadPage('/fake-template-id');
 
       await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
+    });
+
+    test('when user visits page with pending files, submit is unavailable', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await previewLetterTemplatePage.loadPage(templates.pending.id);
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.pending.id}`
+      );
+
+      await expect(previewLetterTemplatePage.pageHeader).toContainText(
+        'test-pending-template-letter'
+      );
+
+      await expect(previewLetterTemplatePage.errorSummary).toBeHidden();
+      await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+    });
+
+    test('when user visits page with failed virus scan, submit is unavailable and an error is displayed', async ({
+      page,
+      baseURL,
+    }) => {
+      const errorMessage = 'The file(s) you uploaded may contain a virus.';
+
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await previewLetterTemplatePage.loadPage(templates.virus.id);
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.virus.id}`
+      );
+
+      await expect(previewLetterTemplatePage.pageHeader).toContainText(
+        'test-virus-template-letter'
+      );
+
+      await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
+      await expect(previewLetterTemplatePage.errorSummary).toContainText(
+        errorMessage
+      );
+      await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+    });
+
+    test('when user visits page with failed validation, submit is unavailable and an error is displayed', async ({
+      page,
+      baseURL,
+    }) => {
+      const errorMessage =
+        'The personalisation fields in your files are missing or do not match.';
+
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await previewLetterTemplatePage.loadPage(templates.invalid.id);
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.invalid.id}`
+      );
+
+      await expect(previewLetterTemplatePage.pageHeader).toContainText(
+        'test-invalid-template-letter'
+      );
+
+      await expect(previewLetterTemplatePage.errorSummary).toBeVisible();
+      await expect(previewLetterTemplatePage.errorSummary).toContainText(
+        errorMessage
+      );
+      await expect(previewLetterTemplatePage.continueButton).toBeHidden();
     });
   });
 });

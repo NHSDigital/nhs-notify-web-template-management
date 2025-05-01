@@ -80,8 +80,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Processing',
     PENDING_VALIDATION: 'Processing',
-    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
-    VALIDATION_FAILED: 'Validation Failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    VALIDATION_FAILED: 'Checks failed',
   })[status];
 
 export const templateStatusToColourMappings = (status: TemplateStatus) =>

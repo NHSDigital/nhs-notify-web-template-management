@@ -44,6 +44,7 @@ const getFile = (directory: string, filename: string) => {
 export const pdfUploadFixtures = {
   withPersonalisation: {
     csv: getFile('with-personalisation', 'test-data.csv'),
+    csvFakeVirus: getFile('with-personalisation', 'eicar-threat-test.csv'),
     csvEmptyParams: getFile('with-personalisation', 'empty-params.csv'),
     csvNonsenseParams: getFile('with-personalisation', 'nonsense.csv'),
     csvWrongParams: getFile('with-personalisation', 'wrong-params.csv'),
