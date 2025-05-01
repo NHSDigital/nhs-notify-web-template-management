@@ -45,15 +45,15 @@ test.describe('Letter Proofing', () => {
 
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/proofs/${templateId}/proof-1.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-1.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/proofs/${templateId}/proof-2.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-2.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/proofs/${templateId}/proof-3.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-3.pdf`
     );
 
     // invoke SFTP poll lambda
