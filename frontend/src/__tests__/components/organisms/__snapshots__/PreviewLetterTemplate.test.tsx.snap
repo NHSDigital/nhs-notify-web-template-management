@@ -398,9 +398,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--blue"
                 >
-                  Processing
+                  Checking files
                 </strong>
               </dd>
             </div>
@@ -542,9 +542,9 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 class="nhsuk-summary-list__value"
               >
                 <strong
-                  class="nhsuk-tag"
+                  class="nhsuk-tag nhsuk-tag--blue"
                 >
-                  Processing
+                  Checking files
                 </strong>
               </dd>
             </div>

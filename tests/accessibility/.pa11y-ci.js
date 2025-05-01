@@ -116,7 +116,7 @@ module.exports = {
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-validation']}`
       )
     ),
-    performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl)),
+    performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds['pa11y-letter-passed-validation'])),
     performCheck(
       requestProofOfTemplatePage(
         `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-validation']}`

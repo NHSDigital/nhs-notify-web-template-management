@@ -128,6 +128,8 @@ describe('templateStatusToColourMappings', () => {
       const expectedColours: { [key in TemplateStatus]?: string } = {
         SUBMITTED: 'grey',
         PENDING_PROOF_REQUEST: 'blue',
+        PENDING_UPLOAD: 'blue',
+        PENDING_VALIDATION: 'blue',
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
       };
