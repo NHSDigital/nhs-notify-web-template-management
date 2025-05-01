@@ -220,7 +220,9 @@ describe('guard duty handler', () => {
     const { handler } = setup();
     const event = {
       detail: {
-        s3ObjectDetails: {},
+        s3ObjectDetails: {
+          versionId: 's3-version-id',
+        },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
         },
@@ -236,6 +238,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {},
       },
@@ -252,6 +255,7 @@ describe('guard duty handler', () => {
         detail: {
           s3ObjectDetails: {
             objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+            versionId: 's3-version-id',
           },
           scanResultDetails: {
             scanResultStatus: status,
@@ -269,6 +273,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `pdf-template/${owner}/${versionId}.pdf`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -285,6 +290,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `pdf-template/${templateId}/${versionId}.pdf`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -301,6 +307,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `${owner}/${templateId}/${versionId}.pdf`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -317,6 +324,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `unknown/${owner}/${templateId}/${versionId}.pdf`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
@@ -333,6 +341,7 @@ describe('guard duty handler', () => {
       detail: {
         s3ObjectDetails: {
           objectKey: `pdf-template/${owner}/${templateId}/unexpected-file-name`,
+          versionId: 's3-version-id',
         },
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',

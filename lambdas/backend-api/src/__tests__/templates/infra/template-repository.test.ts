@@ -838,11 +838,204 @@ describe('templateRepository', () => {
     });
   });
 
-  describe('setLetterFileVirusScanStatus', () => {
+  describe('setLetterFileVirusScanStatusForProof', () => {
+    it('adds the virus scan status of the proof to the database record and updates the template status if scan status is passed', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForProof(
+        'template-owner',
+        'template-id',
+        'pdf-template',
+        'path/pdf-template.pdf',
+        'PASSED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+        ConditionExpression:
+          'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#fileName': 'pdf-template',
+        },
+        ExpressionAttributeValues: {
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': new Date().toISOString(),
+          ':virusScanResult': {
+            fileName: 'path/pdf-template.pdf',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+        ExpressionAttributeValues: {
+          ':templateStatusWaitingForProof': 'WAITING_FOR_PROOF',
+          ':templateStatusProofAvailable': 'PROOF_AVAILABLE',
+          ':updatedAt': new Date().toISOString(),
+        },
+        ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
+      });
+    });
+
+    it('adds the virus scan status of the proof to the database record and does not update the template status if scan status is failed', async () => {
+      const { templateRepository, mocks } = setup();
+
+      await templateRepository.setLetterFileVirusScanStatusForProof(
+        'template-owner',
+        'template-id',
+        'pdf-template',
+        'path/pdf-template.pdf',
+        'FAILED'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: 'template-owner' },
+        UpdateExpression:
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+        ConditionExpression:
+          'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#fileName': 'pdf-template',
+        },
+        ExpressionAttributeValues: {
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': new Date().toISOString(),
+          ':virusScanResult': {
+            fileName: 'path/pdf-template.pdf',
+            virusScanStatus: 'FAILED',
+          },
+        },
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandTimes(UpdateCommand, 1);
+    });
+
+    it('swallows ConditionalCheckFailedExceptions for the first update', async () => {
+      const { templateRepository, mocks } = setup();
+      mocks.ddbDocClient.on(UpdateCommand).rejects(
+        new ConditionalCheckFailedException({
+          $metadata: {},
+          message: 'Condition Check Failed',
+        })
+      );
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatusForProof(
+          'template-owner',
+          'template-id',
+          'pdf-template',
+          'path/pdf-template.pdf',
+          'PASSED'
+        )
+      ).resolves.not.toThrow();
+    });
+
+    it('swallows ConditionalCheckFailedExceptions for the second update', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
+        .on(UpdateCommand)
+        .resolvesOnce({})
+        .rejects(
+          new ConditionalCheckFailedException({
+            $metadata: {},
+            message: 'Condition Check Failed',
+          })
+        );
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatusForProof(
+          'template-owner',
+          'template-id',
+          'pdf-template',
+          'path/pdf-template.pdf',
+          'PASSED'
+        )
+      ).resolves.not.toThrow();
+    });
+
+    it('raises other exceptions from the database for the first update', async () => {
+      const { templateRepository, mocks } = setup();
+      mocks.ddbDocClient
+        .on(UpdateCommand)
+        .rejects(new Error('Something went wrong'));
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatusForProof(
+          'template-owner',
+          'template-id',
+          'pdf-template',
+          'path/pdf-template.pdf',
+          'PASSED'
+        )
+      ).rejects.toThrow('Something went wrong');
+    });
+
+    it('raises other exceptions from the database for the second update', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
+        .on(UpdateCommand)
+        .resolvesOnce({})
+        .rejects(new Error('Something went wrong'));
+
+      await expect(
+        templateRepository.setLetterFileVirusScanStatusForProof(
+          'template-owner',
+          'template-id',
+          'pdf-template',
+          'path/pdf-template.pdf',
+          'PASSED'
+        )
+      ).rejects.toThrow('Something went wrong');
+    });
+  });
+
+  describe('getOwner', () => {
+    it('gets owner', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: 'template-owner',
+          },
+        ],
+      });
+
+      const owner = await templateRepository.getOwner('template-id');
+
+      expect(owner).toEqual('template-owner');
+    });
+
+    it('errors when owner cannot be found', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [],
+      });
+
+      await expect(() =>
+        templateRepository.getOwner('template-id')
+      ).rejects.toThrow('Could not identify item by id template-id');
+    });
+  });
+
+  describe('setLetterFileVirusScanStatusForUpload', () => {
     it('updates the virusScanStatus on the pdfTemplate field when the status is PASSED', async () => {
       const { templateRepository, mocks } = setup();
 
-      await templateRepository.setLetterFileVirusScanStatus(
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
         { owner: 'template-owner', id: 'template-id' },
         'pdf-template',
         'pdf-version-id',
@@ -877,7 +1070,7 @@ describe('templateRepository', () => {
     it('updates the virusScanStatus on the testDataCsv field when the status is PASSED', async () => {
       const { templateRepository, mocks } = setup();
 
-      await templateRepository.setLetterFileVirusScanStatus(
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
         { owner: 'template-owner', id: 'template-id' },
         'test-data',
         'csv-version-id',
@@ -912,7 +1105,7 @@ describe('templateRepository', () => {
     it('updates the virusScanStatus on the pdfTemplate field and the overall template status when the status is FAILED', async () => {
       const { templateRepository, mocks } = setup();
 
-      await templateRepository.setLetterFileVirusScanStatus(
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
         { owner: 'template-owner', id: 'template-id' },
         'pdf-template',
         'pdf-version-id',
@@ -948,7 +1141,7 @@ describe('templateRepository', () => {
     it('updates the virusScanStatus on the testDataCsv field and the overall template status when the status is FAILED', async () => {
       const { templateRepository, mocks } = setup();
 
-      await templateRepository.setLetterFileVirusScanStatus(
+      await templateRepository.setLetterFileVirusScanStatusForUpload(
         { owner: 'template-owner', id: 'template-id' },
         'test-data',
         'csv-version-id',
@@ -992,7 +1185,7 @@ describe('templateRepository', () => {
       );
 
       await expect(
-        templateRepository.setLetterFileVirusScanStatus(
+        templateRepository.setLetterFileVirusScanStatusForUpload(
           { owner: 'template-owner', id: 'template-id' },
           'test-data',
           'csv-version-id',
@@ -1007,7 +1200,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient.rejects(new Error('Something went wrong'));
 
       await expect(
-        templateRepository.setLetterFileVirusScanStatus(
+        templateRepository.setLetterFileVirusScanStatusForUpload(
           { owner: 'template-owner', id: 'template-id' },
           'test-data',
           'csv-version-id',

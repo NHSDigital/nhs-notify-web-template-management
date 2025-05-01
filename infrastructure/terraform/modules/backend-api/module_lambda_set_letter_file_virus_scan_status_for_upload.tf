@@ -1,19 +1,22 @@
-module "lambda_set_file_virus_scan_status" {
+module "lambda_set_file_virus_scan_status_for_upload" {
   source      = "../lambda-function"
-  description = "Sets virus scan status on letter files"
+  description = "Sets virus scan status on uploaded letter files"
 
-  dead_letter_target_arn         = module.sqs_virus_scan_set_file_status_dlq.sqs_queue_arn
-  execution_role_policy_document = data.aws_iam_policy_document.set_file_virus_scan_status.json
-  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status].path
-  function_name                  = "${local.csi}-set-file-virus-scan-status"
-  handler                        = "set-letter-file-virus-scan-status.handler"
+  dead_letter_target_arn         = module.sqs_virus_scan_set_file_status_for_upload_dlq.sqs_queue_arn
+  execution_role_policy_document = data.aws_iam_policy_document.set_file_virus_scan_status_for_upload.json
+  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status_for_upload].path
+  function_name                  = "${local.csi}-set-upload-virus-scan-status"
+  handler                        = "set-letter-upload-virus-scan-status.handler"
   log_retention_in_days          = var.log_retention_in_days
-  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status].base64sha256
+  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.set_file_virus_scan_status_for_upload].base64sha256
 
   environment_variables = local.backend_lambda_environment_variables
+
+  timeout     = 20
+  memory_size = 512
 }
 
-data "aws_iam_policy_document" "set_file_virus_scan_status" {
+data "aws_iam_policy_document" "set_file_virus_scan_status_for_upload" {
   statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"
@@ -53,7 +56,7 @@ data "aws_iam_policy_document" "set_file_virus_scan_status" {
     ]
 
     resources = [
-      module.sqs_virus_scan_set_file_status_dlq.sqs_queue_arn,
+      module.sqs_virus_scan_set_file_status_for_upload_dlq.sqs_queue_arn,
     ]
   }
 

@@ -11,6 +11,7 @@ import {
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
   CreateLetterProperties,
+  FileDetails,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import type {
@@ -384,7 +385,107 @@ export class TemplateRepository {
     }
   }
 
-  async setLetterFileVirusScanStatus(
+  async setLetterFileVirusScanStatusForProof(
+    owner: string,
+    templateId: string,
+    fileName: string,
+    fullFilePath: string,
+    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
+  ) {
+    const templateKey = { owner, id: templateId };
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression:
+            'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+          ExpressionAttributeNames: {
+            '#fileName': fileName,
+          },
+          ExpressionAttributeValues: {
+            ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+            ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+            ':updatedAt': new Date().toISOString(),
+            ':virusScanResult': {
+              fileName: fullFilePath,
+              virusScanStatus,
+            } satisfies FileDetails,
+          },
+          ConditionExpression:
+            'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(
+          'Conditional check failed when adding proof details to template',
+          error,
+          { templateKey }
+        );
+
+        // the second update has a stronger condition than the first, so if this one fails no need to try the second
+        return;
+      } else {
+        throw error;
+      }
+    }
+
+    // we do not want to try and update the status to PROOF_AVAILABLE if the scan has not passed
+    if (virusScanStatus === 'FAILED') {
+      return;
+    }
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression:
+            'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+          ExpressionAttributeValues: {
+            ':templateStatusWaitingForProof':
+              'WAITING_FOR_PROOF' satisfies TemplateStatus,
+            ':templateStatusProofAvailable':
+              'PROOF_AVAILABLE' satisfies TemplateStatus,
+            ':updatedAt': new Date().toISOString(),
+          },
+          ConditionExpression:
+            'templateStatus = :templateStatusWaitingForProof',
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error('Conditional check setting template status', error, {
+          templateKey,
+        });
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  async getOwner(id: string): Promise<string> {
+    const dbResponse = await this.client.send(
+      new QueryCommand({
+        TableName: this.templatesTableName,
+        IndexName: 'QueryById',
+        KeyConditionExpression: 'id = :id',
+        ExpressionAttributeValues: {
+          ':id': id,
+        },
+      })
+    );
+
+    if (dbResponse.Items?.length !== 1) {
+      throw new Error(`Could not identify item by id ${id}`);
+    }
+
+    return dbResponse.Items[0].owner;
+  }
+
+  async setLetterFileVirusScanStatusForUpload(
     templateKey: TemplateKey,
     fileType: FileType,
     versionId: string,

@@ -33,3 +33,7 @@ output "internal_bucket_name" {
 output "quarantine_bucket_name" {
   value = module.backend_api.quarantine_bucket_name
 }
+
+output "sftp_poll_lambda_name" {
+  value = module.backend_api.sftp_poll_lambda_name
+}

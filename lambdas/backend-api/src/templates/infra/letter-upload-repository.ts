@@ -5,14 +5,12 @@ import type {
   TemplateKey,
 } from 'nhs-notify-web-template-management-utils';
 import {
-  CopyObjectCommand,
-  DeleteObjectCommand,
   GetObjectCommand,
   NotFound,
   PutObjectCommand,
-  S3Client,
 } from '@aws-sdk/client-s3';
 import { ApplicationResult, failure, success } from '../../utils';
+import { LetterFileRepository } from './letter-file-repository';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
@@ -21,7 +19,11 @@ export type LetterUploadMetadata = {
   'version-id': string;
 };
 
-const $FileType: z.ZodType<FileType> = z.enum(['pdf-template', 'test-data']);
+const $FileType: z.ZodType<FileType> = z.enum([
+  'pdf-template',
+  'test-data',
+  'proofs',
+]);
 
 const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
   'file-type': $FileType,
@@ -30,14 +32,7 @@ const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
   'version-id': z.string(),
 });
 
-export class LetterUploadRepository {
-  private readonly client = new S3Client();
-
-  constructor(
-    private readonly quarantineBucketName: string,
-    private readonly internalBucketName: string
-  ) {}
-
+export class LetterUploadRepository extends LetterFileRepository {
   async upload(
     templateId: string,
     owner: string,
@@ -116,28 +111,6 @@ export class LetterUploadRepository {
     }
   }
 
-  async copyFromQuarantineToInternal(key: string, versionId: string) {
-    await this.client.send(
-      new CopyObjectCommand({
-        CopySource: `/${this.quarantineBucketName}/${key}?versionId=${versionId}`,
-        Bucket: this.internalBucketName,
-        Key: key,
-        MetadataDirective: 'COPY',
-        TaggingDirective: 'COPY',
-      })
-    );
-  }
-
-  async deleteFromQuarantine(key: string, versionId: string) {
-    await this.client.send(
-      new DeleteObjectCommand({
-        Bucket: this.quarantineBucketName,
-        Key: key,
-        VersionId: versionId,
-      })
-    );
-  }
-
   static parseKey(key: string): LetterUploadMetadata {
     const keyParts = key.split('/');
     const [type, owner, templateId, filename = ''] = keyParts;
@@ -156,7 +129,7 @@ export class LetterUploadRepository {
     );
 
     const expectedExtension =
-      parsed['file-type'] === 'pdf-template' ? 'pdf' : 'csv';
+      parsed['file-type'] === 'test-data' ? 'csv' : 'pdf';
 
     if (extension !== expectedExtension) {
       throw new Error(`Unexpected object key "${key}"`);

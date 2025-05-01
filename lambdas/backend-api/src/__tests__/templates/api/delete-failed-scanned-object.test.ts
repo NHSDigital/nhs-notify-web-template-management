@@ -1,11 +1,11 @@
 import { mock } from 'jest-mock-extended';
 import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-template-management-test-helper-utils';
-import { LetterUploadRepository } from '../../../templates/infra';
+import type { LetterFileRepository } from '../../../templates/infra/letter-file-repository';
 import { createHandler } from '../../../templates/api/delete-failed-scanned-object';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 
 function setup() {
-  const mocks = { letterUploadRepository: mock<LetterUploadRepository>() };
+  const mocks = { letterFileRepository: mock<LetterFileRepository>() };
   const handler = createHandler(mocks);
   return { handler, mocks };
 }
@@ -31,7 +31,7 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
     await handler(event);
 
     expect(
-      mocks.letterUploadRepository.deleteFromQuarantine
+      mocks.letterFileRepository.deleteFromQuarantine
     ).toHaveBeenCalledWith('some/object/key', 's3-version-id');
   }
 );
@@ -54,7 +54,7 @@ it('errors if the event has no s3 object key', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
+    mocks.letterFileRepository.deleteFromQuarantine
   ).not.toHaveBeenCalled();
 });
 
@@ -76,7 +76,7 @@ it('errors if the event has no s3 version id', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
+    mocks.letterFileRepository.deleteFromQuarantine
   ).not.toHaveBeenCalled();
 });
 
@@ -97,7 +97,7 @@ it('errors if the event has no virus scan status', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
+    mocks.letterFileRepository.deleteFromQuarantine
   ).not.toHaveBeenCalled();
 });
 
@@ -120,6 +120,6 @@ it('errors if the event has virus scan status NO_THREATS_FOUND', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.deleteFromQuarantine
+    mocks.letterFileRepository.deleteFromQuarantine
   ).not.toHaveBeenCalled();
 });

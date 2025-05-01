@@ -126,7 +126,8 @@ type _Asserted = AssertExtendsMerged<LetterTemplate> &
   AssertExtendsMerged<SMSTemplate>;
 
 export type TemplateKey = { owner: string; id: string };
-export type FileType = 'pdf-template' | 'test-data';
+
+export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
 export type ProofingRequest = {
   owner: string;

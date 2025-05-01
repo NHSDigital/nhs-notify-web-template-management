@@ -251,7 +251,7 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template file from s3
    */
-  private async getLetterTemplateFile(
+  async getLetterTemplateFile(
     bucket: string,
     prefix: string,
     key: TemplateKey,
@@ -263,6 +263,30 @@ export class TemplateStorageHelper {
         new HeadObjectCommand({
           Bucket: bucket,
           Key: this.letterFileKey(prefix, key, version, ext),
+          ChecksumMode: 'ENABLED',
+        })
+      );
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return null;
+      }
+
+      throw error;
+    }
+  }
+
+  async getLetterProofFile(
+    bucket: string,
+    prefix: string,
+    templateId: string,
+    version: string,
+    ext: string
+  ) {
+    try {
+      return await this.s3.send(
+        new HeadObjectCommand({
+          Bucket: bucket,
+          Key: `${prefix}/${templateId}/${version}.${ext}`,
           ChecksumMode: 'ENABLED',
         })
       );
