@@ -9,10 +9,10 @@ import Link from 'next/link';
 import {
   letterTypeDisplayMappings,
   previewTemplatePages,
+  templateStatusToColourMappings,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
-  templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -105,7 +105,7 @@ export function MessageTemplates({
                         </Link>
                       </p>
                     )}
-                    {template.templateStatus === 'NOT_YET_SUBMITTED' ? (
+                    {template.templateStatus === 'SUBMITTED' ? null : (
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
                           href={`/delete-template/${template.id}`}
@@ -114,7 +114,7 @@ export function MessageTemplates({
                           {messageTemplatesContent.tableHeadings.action.delete}
                         </Link>
                       </p>
-                    ) : null}
+                    )}
                   </div>
                 </Table.Cell>
               </Table.Row>

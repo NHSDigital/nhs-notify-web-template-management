@@ -38,10 +38,7 @@ const footer = {
       text: 'Accessibility statement',
       url: '/accessibility',
     },
-    cookies: {
-      text: 'Cookies',
-      url: '/cookies',
-    },
+    cookies: { text: 'Cookies', url: '/cookies' },
     privacy: {
       text: 'Privacy',
       url: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
@@ -129,36 +126,18 @@ const messageFormatting = {
     title: 'Bullet points',
     text: 'Put each item on a separate line with an asterisk and a space in front of each one, for example:',
     codeBlockText: [
-      {
-        id: 'bullet-1',
-        item: '* bullet 1',
-      },
-      {
-        id: 'bullet-2',
-        item: '* bullet 2',
-      },
-      {
-        id: 'bullet-3',
-        item: '* bullet 3',
-      },
+      { id: 'bullet-1', item: '* bullet 1' },
+      { id: 'bullet-2', item: '* bullet 2' },
+      { id: 'bullet-3', item: '* bullet 3' },
     ],
   },
   numberedLists: {
     title: 'Numbered lists',
     text: 'Put each item on a separate line with the number, full stop and a space in front of each one, for example:',
     codeBlockText: [
-      {
-        id: 'first-item',
-        item: '1. first item',
-      },
-      {
-        id: 'second-item',
-        item: '2. second item',
-      },
-      {
-        id: 'third-item',
-        item: '3. third item',
-      },
+      { id: 'first-item', item: '1. first item' },
+      { id: 'second-item', item: '2. second item' },
+      { id: 'third-item', item: '3. third item' },
     ],
   },
   horizontalLine: {
@@ -212,11 +191,7 @@ const messageTemplates = {
     type: 'Type',
     status: 'Status',
     dateCreated: 'Date created',
-    action: {
-      text: 'Action',
-      copy: 'Copy',
-      delete: 'Delete',
-    },
+    action: { text: 'Action', copy: 'Copy', delete: 'Delete' },
   },
   createTemplateButton: {
     text: 'Create template',
@@ -244,6 +219,14 @@ const previewLetterTemplate = {
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
   requestProofText: 'Request a proof',
+  errorHeading: 'There is a problem',
+  virusScanError: 'The file(s) you uploaded may contain a virus.',
+  virusScanErrorAction:
+    'Create a new letter template to upload your file(s) again or upload different file(s).',
+  validationError:
+    'The personalisation fields in your files are missing or do not match.',
+  validationErrorAction:
+    'Check that the personalisation fields in your template file match the fields in your test personalisation file',
 };
 
 const previewNHSAppTemplate = {
@@ -428,10 +411,7 @@ const channelGuidance = {
   EMAIL: {
     heading: 'More about emails',
     guidanceLinks: [
-      {
-        text: 'Email messages (opens in a new tab)',
-        link: '/features/emails',
-      },
+      { text: 'Email messages (opens in a new tab)', link: '/features/emails' },
       {
         text: 'From and reply-to addresses (opens in a new tab)',
         link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
@@ -459,10 +439,7 @@ const channelGuidance = {
       },
     ],
   },
-  LETTER: {
-    heading: 'More about letters',
-    guidanceLinks: [],
-  },
+  LETTER: { heading: 'More about letters', guidanceLinks: [] },
 };
 
 const templateFormNhsApp = {
@@ -591,9 +568,7 @@ const requestProof = {
 };
 
 const content = {
-  global: {
-    mainLayout,
-  },
+  global: { mainLayout },
   components: {
     channelGuidance,
     chooseTemplate,
