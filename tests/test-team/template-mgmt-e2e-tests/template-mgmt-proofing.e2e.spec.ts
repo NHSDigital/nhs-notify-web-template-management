@@ -92,25 +92,27 @@ test.describe('Letter Proofing', () => {
       expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
 
       for (const fileName of ['proof-1', 'proof-2', 'proof-3']) {
-        const quarantinePdf = await templateStorageHelper.getLetterProofFile(
-          process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-          'proofs',
-          templateId,
-          fileName,
-          'pdf'
-        );
+        const quarantinePdf =
+          await templateStorageHelper.getLetterProofMetadata(
+            process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+            'proofs',
+            templateId,
+            fileName,
+            'pdf'
+          );
 
         expect(quarantinePdf?.ChecksumSHA256).toEqual(
           pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
         );
 
-        const internalPdf = await templateStorageHelper.getLetterTemplateFile(
-          process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
-          'proofs',
-          { owner: user.userId, id: templateId },
-          fileName,
-          'pdf'
-        );
+        const internalPdf =
+          await templateStorageHelper.getLetterTemplateMetadata(
+            process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
+            'proofs',
+            { owner: user.userId, id: templateId },
+            fileName,
+            'pdf'
+          );
 
         expect(internalPdf?.ChecksumSHA256).toEqual(
           pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
@@ -169,7 +171,7 @@ test.describe('Letter Proofing', () => {
 
       expect(template.templateStatus).toEqual('WAITING_FOR_PROOF');
 
-      const pdf = await templateStorageHelper.getLetterProofFile(
+      const pdf = await templateStorageHelper.getLetterProofMetadata(
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
         'proofs',
         templateId,

@@ -87,7 +87,7 @@ test.describe('letter file validation', () => {
         'contact_telephone_number',
       ]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -96,7 +96,7 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );
@@ -166,7 +166,7 @@ test.describe('letter file validation', () => {
 
       expect(template.testDataCsvHeaders).toEqual([]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -228,22 +228,23 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('FAILED');
       expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
 
-      const csvInternal = await templateStorageHelper.getScannedCsvTestDataFile(
-        key,
-        template.files?.testDataCsv?.currentVersion as string
-      );
+      const csvInternal =
+        await templateStorageHelper.getScannedCsvTestDataMetadata(
+          key,
+          template.files?.testDataCsv?.currentVersion as string
+        );
 
       expect(csvInternal).toBe(null);
 
       const csvQuarantine =
-        await templateStorageHelper.getQuarantineCsvTestDataFile(
+        await templateStorageHelper.getQuarantineCsvTestDataMetadata(
           key,
           template.files?.testDataCsv?.currentVersion as string
         );
 
       expect(csvQuarantine).toBe(null);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -302,22 +303,23 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
 
-      const pdfInternal = await templateStorageHelper.getScannedPdfTemplateFile(
-        key,
-        template.files?.pdfTemplate?.currentVersion as string
-      );
+      const pdfInternal =
+        await templateStorageHelper.getScannedPdfTemplateMetadata(
+          key,
+          template.files?.pdfTemplate?.currentVersion as string
+        );
 
       expect(pdfInternal).toBe(null);
 
       const pdfQuarantine =
-        await templateStorageHelper.getQuarantinePdfTemplateFile(
+        await templateStorageHelper.getQuarantinePdfTemplateMetadata(
           key,
           template.files?.pdfTemplate?.currentVersion as string
         );
 
       expect(pdfQuarantine).toBe(null);
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );

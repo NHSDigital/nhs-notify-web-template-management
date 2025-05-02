@@ -141,8 +141,8 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template pdf file from the internal bucket
    */
-  async getScannedPdfTemplateFile(key: TemplateKey, version: string) {
-    return await this.getLetterTemplateFile(
+  async getScannedPdfTemplateMetadata(key: TemplateKey, version: string) {
+    return await this.getLetterTemplateMetadata(
       process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
       'pdf-template',
       key,
@@ -154,8 +154,8 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template test data csv file from the internal bucket
    */
-  async getScannedCsvTestDataFile(key: TemplateKey, version: string) {
-    return await this.getLetterTemplateFile(
+  async getScannedCsvTestDataMetadata(key: TemplateKey, version: string) {
+    return await this.getLetterTemplateMetadata(
       process.env.TEMPLATES_INTERNAL_BUCKET_NAME,
       'test-data',
       key,
@@ -203,8 +203,8 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template pdf file from the quarantine bucket
    */
-  async getQuarantinePdfTemplateFile(key: TemplateKey, version: string) {
-    return await this.getLetterTemplateFile(
+  async getQuarantinePdfTemplateMetadata(key: TemplateKey, version: string) {
+    return await this.getLetterTemplateMetadata(
       process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
       'pdf-template',
       key,
@@ -216,8 +216,8 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template test data csv file from the quarantine bucket
    */
-  async getQuarantineCsvTestDataFile(key: TemplateKey, version: string) {
-    return await this.getLetterTemplateFile(
+  async getQuarantineCsvTestDataMetadata(key: TemplateKey, version: string) {
+    return await this.getLetterTemplateMetadata(
       process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
       'test-data',
       key,
@@ -251,7 +251,7 @@ export class TemplateStorageHelper {
   /**
    * Retrieves a letter template file from s3
    */
-  async getLetterTemplateFile(
+  async getLetterTemplateMetadata(
     bucket: string,
     prefix: string,
     key: TemplateKey,
@@ -275,7 +275,7 @@ export class TemplateStorageHelper {
     }
   }
 
-  async getLetterProofFile(
+  async getLetterProofMetadata(
     bucket: string,
     prefix: string,
     templateId: string,

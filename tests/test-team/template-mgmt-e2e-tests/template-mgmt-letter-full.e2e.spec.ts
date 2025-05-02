@@ -90,7 +90,7 @@ test.describe('letter complete e2e journey', () => {
         'contact_telephone_number',
       ]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -99,7 +99,7 @@ test.describe('letter complete e2e journey', () => {
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );
