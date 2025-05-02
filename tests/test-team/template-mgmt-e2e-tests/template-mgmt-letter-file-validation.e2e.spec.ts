@@ -18,7 +18,7 @@ test.describe('letter file validation', () => {
   });
 
   test.afterAll(async () => {
-    //await templateStorageHelper.deleteAdHocTemplates();
+    await templateStorageHelper.deleteAdHocTemplates();
   });
 
   test('Uploaded pdf template files and test data csv files are virus scanned - if scan passes, files are copied to the internal bucket and validated', async ({
