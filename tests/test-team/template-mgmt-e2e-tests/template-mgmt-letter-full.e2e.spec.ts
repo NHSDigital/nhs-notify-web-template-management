@@ -114,6 +114,10 @@ test.describe('letter complete e2e journey', () => {
 
       const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
       await expect(previewTemplatePage.continueButton).toBeVisible();
+    }).toPass({ timeout: 40_000 });
+
+    await expect(async () => {
+      const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
       await previewTemplatePage.clickContinueButton();
 
       await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);

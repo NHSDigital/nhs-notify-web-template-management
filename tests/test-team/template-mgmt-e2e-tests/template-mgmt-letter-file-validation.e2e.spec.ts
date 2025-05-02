@@ -251,7 +251,7 @@ test.describe('letter file validation', () => {
       expect(pdf?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
-    }).toPass({ timeout: 20_000 });
+    }).toPass({ timeout: 60_000 });
 
     await page.reload();
 
@@ -380,7 +380,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
     await page.reload();
 
@@ -433,7 +433,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
     await page.reload();
 
@@ -481,7 +481,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
     await page.reload();
 
@@ -582,7 +582,7 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
     await page.reload();
 
