@@ -1,20 +1,11 @@
 {
-  "name": "nhs-notify-backend-api",
-  "private": true,
-  "version": "0.0.1",
-  "scripts": {
-    "test:unit": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "3.799.0",
-    "@aws-sdk/client-dynamodb": "3.775.0",
-    "@aws-sdk/client-s3": "3.775.0",
-    "@aws-sdk/client-sqs": "3.775.0",
+    "@aws-sdk/client-dynamodb": "3.799.0",
+    "@aws-sdk/client-s3": "3.799.0",
+    "@aws-sdk/client-sqs": "3.799.0",
     "@aws-sdk/lib-dynamodb": "3.799.0",
-    "@aws-sdk/util-dynamodb": "3.775.0",
+    "@aws-sdk/util-dynamodb": "3.799.0",
     "csv-parse": "^5.6.0",
     "handlebars": "^4.7.8",
     "html-entities": "^2.5.3",
@@ -44,5 +35,14 @@
     "nhs-notify-web-template-management-test-helper-utils": "^0.0.1",
     "ts-jest": "^29.3.0",
     "typescript": "^5.8.2"
-  }
+  },
+  "name": "nhs-notify-backend-api",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
 }
