@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_failed_for_proof" {
-  name        = "${local.csi}-quarantine-scan-failed"
+  name        = "${local.csi}-quarantine-scan-failed-for-proof"
   description = "Matches quarantine 'GuardDuty Malware Protection Object Scan Result' events where the scan result is not NO_THREATS_FOUND"
 
   event_pattern = jsonencode({
