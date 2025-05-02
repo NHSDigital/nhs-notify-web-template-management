@@ -2,7 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
+import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   PageProps,
   validateEmailTemplate,
@@ -30,11 +30,10 @@ const SubmitEmailTemplatePage = async (props: PageProps) => {
   }
 
   return (
-    <SubmitTemplate
+    <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-email-template'
-      submitPath='email-template-submitted'
+      channel='EMAIL'
     />
   );
 };

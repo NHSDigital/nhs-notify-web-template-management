@@ -5,9 +5,9 @@ import {
   createAuthHelper,
   TestUserId,
 } from '../helpers/auth/cognito-auth-helper';
-import { ManageTemplatesPage } from '../pages/template-mgmt-manage-templates-page';
+import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
-import { TemplateMgmtViewSubmittedEmailPage } from '../pages/email/template-mgmt-view-submitted-email-page';
+import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
 
 function createTemplates(owner: string) {
   return {
@@ -61,13 +61,13 @@ test.describe('Unauthorised data access Tests', () => {
     page,
     baseURL,
   }) => {
-    const manageTemplatesPage = new ManageTemplatesPage(page);
-    await manageTemplatesPage.loadPage();
-    await expect(page).toHaveURL(`${baseURL}/templates/manage-templates`);
-    await expect(manageTemplatesPage.pageHeader).toHaveText(
+    const messageTemplatesPage = new MessageTemplatesPage(page);
+    await messageTemplatesPage.loadPage();
+    await expect(page).toHaveURL(`${baseURL}/templates/message-templates`);
+    await expect(messageTemplatesPage.pageHeader).toHaveText(
       'Message templates'
     );
-    await expect(manageTemplatesPage.createTemplateButton).toBeVisible();
+    await expect(messageTemplatesPage.createTemplateButton).toBeVisible();
 
     const templateRow = page.locator(
       'tr:has-text("submit-and-return-create-email-template-name")'
@@ -92,7 +92,7 @@ test.describe('Unauthorised data access Tests', () => {
     page,
     baseURL,
   }) => {
-    const previewEmailTemplatePage = new TemplateMgmtViewSubmittedEmailPage(
+    const previewEmailTemplatePage = new TemplateMgmtPreviewSubmittedEmailPage(
       page
     );
 

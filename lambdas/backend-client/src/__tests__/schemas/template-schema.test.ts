@@ -1,18 +1,16 @@
 import {
-  $CreateNonLetterSchema,
-  CreateTemplate,
-  isCreateTemplateValid,
+  $CreateLetterProperties,
+  $CreateUpdateNonLetter,
+  $CreateUpdateTemplate,
+  isCreateUpdateTemplateValid,
   isTemplateDtoValid,
-  isUpdateTemplateValid,
-  TemplateDto,
-  UpdateTemplate,
-} from 'nhs-notify-backend-client';
-import { $CreateTemplateSchema, $UpdateTemplateSchema } from '../../schemas';
+} from '../../schemas';
+import type { CreateUpdateTemplate, TemplateDto } from '../../types/generated';
 
 describe('Template schemas', () => {
   test.each([
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(100_001),
@@ -21,7 +19,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(919),
@@ -29,7 +27,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: 'Test Template',
         message: 'a'.repeat(5001),
@@ -55,7 +53,7 @@ describe('Template schemas', () => {
 
   test.each([
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: ' ',
         message: ' ',
@@ -64,7 +62,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: ' ',
         message: ' ',
@@ -72,11 +70,20 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: ' ',
         message: ' ',
         templateType: 'NHS_APP',
+      },
+    },
+    {
+      schema: $CreateUpdateTemplate,
+      data: {
+        name: ' ',
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
       },
     },
   ])(
@@ -85,18 +92,15 @@ describe('Template schemas', () => {
       const result = schema.safeParse(data);
       const errorMessage = 'String must contain at least 1 character(s)';
 
-      const errors = {
-        fieldErrors: {
-          message: [errorMessage],
-          name: [errorMessage],
-        },
-      };
+      const emptyFields = Object.entries(data).flatMap(([k, v]) =>
+        v === ' ' ? [k] : []
+      );
 
-      if (data.templateType === 'EMAIL') {
-        Object.assign(errors.fieldErrors, {
-          subject: [errorMessage],
-        });
-      }
+      const errors = {
+        fieldErrors: Object.fromEntries(
+          emptyFields.map((field) => [field, [errorMessage]])
+        ),
+      };
 
       expect(result.error?.flatten()).toEqual(expect.objectContaining(errors));
     }
@@ -104,7 +108,7 @@ describe('Template schemas', () => {
 
   test.each([
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: '',
         message: '',
@@ -113,7 +117,7 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: '',
         message: '',
@@ -121,11 +125,20 @@ describe('Template schemas', () => {
       },
     },
     {
-      schema: $CreateTemplateSchema,
+      schema: $CreateUpdateTemplate,
       data: {
         name: '',
         message: '',
         templateType: 'NHS_APP',
+      },
+    },
+    {
+      schema: $CreateUpdateTemplate,
+      data: {
+        name: '',
+        templateType: 'LETTER',
+        letterType: 'x0',
+        language: 'en',
       },
     },
   ])(
@@ -134,32 +147,29 @@ describe('Template schemas', () => {
       const result = schema.safeParse(data);
       const errorMessage = 'String must contain at least 1 character(s)';
 
-      const errors = {
-        fieldErrors: {
-          message: [errorMessage],
-          name: [errorMessage],
-        },
-      };
+      const emptyFields = Object.entries(data).flatMap(([k, v]) =>
+        v === '' ? [k] : []
+      );
 
-      if (data.templateType === 'EMAIL') {
-        Object.assign(errors.fieldErrors, {
-          subject: [errorMessage],
-        });
-      }
+      const errors = {
+        fieldErrors: Object.fromEntries(
+          emptyFields.map((field) => [field, [errorMessage]])
+        ),
+      };
 
       expect(result.error?.flatten()).toEqual(expect.objectContaining(errors));
     }
   );
 
-  test('$CreateNonLetterSchema should fail when input is a letter', () => {
-    const letter: CreateTemplate = {
+  test('$CreateUpdateNonLetter should fail when input is a letter', () => {
+    const letter: CreateUpdateTemplate = {
       templateType: 'LETTER',
       letterType: 'q1',
       language: 'ar',
       name: 'letter',
     };
 
-    const result = $CreateNonLetterSchema.safeParse(letter);
+    const result = $CreateUpdateNonLetter.safeParse(letter);
 
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
@@ -172,8 +182,8 @@ describe('Template schemas', () => {
     );
   });
 
-  test('$EmailTemplateFields - should fail validation, when no subject', async () => {
-    const result = $CreateTemplateSchema.safeParse({
+  test('Email template fields - should fail validation, when no subject', async () => {
+    const result = $CreateUpdateTemplate.safeParse({
       name: 'Test Template',
       message: 'a'.repeat(100_000),
       templateType: 'EMAIL',
@@ -188,14 +198,30 @@ describe('Template schemas', () => {
     );
   });
 
+  test('Letter template fields - should fail validation, when no letterType', async () => {
+    const result = $CreateLetterProperties.safeParse({
+      name: 'Test Template',
+      templateType: 'LETTER',
+      language: 'en',
+    });
+
+    expect(result.error?.flatten()).toEqual(
+      expect.objectContaining({
+        fieldErrors: {
+          letterType: ['Required'],
+        },
+      })
+    );
+  });
+
   test.each([
     '<element>failed</element>',
     '<element><nested>nested</nested></element>',
     '<element attribute="failed">failed</element>',
   ])(
-    '$NhsAppTemplateFields - should fail validation, when invalid characters are present %p',
+    'App template fields - should fail validation, when invalid characters are present %p',
     async (message) => {
-      const result = $CreateTemplateSchema.safeParse({
+      const result = $CreateUpdateTemplate.safeParse({
         name: 'Test Template',
         message,
         templateType: 'NHS_APP',
@@ -213,7 +239,7 @@ describe('Template schemas', () => {
     }
   );
 
-  describe('$CreateTemplateSchema', () => {
+  describe('$CreateUpdateTemplate', () => {
     const commonFields = {
       name: 'Test Template',
     };
@@ -242,94 +268,27 @@ describe('Template schemas', () => {
         language: 'en',
       },
     ])('should pass validation %p', async (template) => {
-      const result = $CreateTemplateSchema.safeParse(template);
+      const result = $CreateUpdateTemplate.safeParse(template);
 
       expect(result.data).toEqual(template);
     });
   });
 
-  describe('$UpdateTemplateSchema', () => {
-    const commonFields = {
-      name: 'Test Template',
-      templateStatus: 'SUBMITTED',
-    };
-
-    test.each([
-      {
-        ...commonFields,
-        subject: 'Test Subject',
-        message: 'This is a test template',
-        templateType: 'EMAIL',
-      },
-      {
-        ...commonFields,
-        message: 'This is a test template',
-        templateType: 'SMS',
-      },
-      {
-        ...commonFields,
-        message: 'This is a test template',
-        templateType: 'NHS_APP',
-      },
-      {
-        ...commonFields,
-        templateType: 'LETTER',
-        letterType: 'x0',
-        language: 'en',
-        files: {
-          pdfTemplate: {
-            fileName: 'template.pdf',
-            currentVersion: '57d8yds',
-            virusScanStatus: 'PASSED',
-          },
-        },
-      },
-    ])('should pass validation %p', async (template) => {
-      const result = $UpdateTemplateSchema.safeParse(template);
-
-      expect(result.data).toEqual(template);
-    });
-  });
-
-  describe('isCreateTemplateValid', () => {
-    const template: CreateTemplate = {
+  describe('isCreateUpdateTemplateValid', () => {
+    const template: CreateUpdateTemplate = {
       name: 'Test Template',
       message: 'This is a test template',
       templateType: 'NHS_APP',
     };
 
     test('Should return template on pass', async () => {
-      const result = isCreateTemplateValid(template);
+      const result = isCreateUpdateTemplateValid(template);
 
       expect(result).toEqual(template);
     });
 
     test('Should return undefined on fail', async () => {
-      const result = isCreateTemplateValid({
-        ...template,
-        name: undefined,
-      });
-
-      expect(result).toEqual(undefined);
-    });
-  });
-
-  describe('isUpdateTemplateValid', () => {
-    const template: UpdateTemplate = {
-      name: 'Test Template',
-      message: 'This is a test template',
-      templateType: 'NHS_APP',
-      templateStatus: 'NOT_YET_SUBMITTED',
-    };
-
-    test('Should return template on pass', async () => {
-      const result = isUpdateTemplateValid(template);
-
-      expect(result).toEqual(template);
-    });
-
-    test('Should return undefined on fail', async () => {
-      const result = isUpdateTemplateValid({
+      const result = isCreateUpdateTemplateValid({
         ...template,
         name: undefined,
       });

@@ -188,7 +188,32 @@ variable "enable_letters" {
   default     = false
 }
 
+variable "enable_proofing" {
+  type        = string
+  description = "Feature flag for proofing"
+  default     = false
+}
+
 variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"
+}
+
+variable "letter_suppliers" {
+  type = map(object({
+    enable_polling   = bool
+    default_supplier = optional(bool)
+  }))
+
+  validation {
+    condition = (
+      length(var.letter_suppliers) == 0 ||
+      length([for s in values(var.letter_suppliers) : s if s.default_supplier]) == 1
+    )
+    error_message = "If letter suppliers are configured, exactly one must be default_supplier"
+  }
+
+  default = {}
+
+  description = "Letter suppliers enabled in the environment"
 }

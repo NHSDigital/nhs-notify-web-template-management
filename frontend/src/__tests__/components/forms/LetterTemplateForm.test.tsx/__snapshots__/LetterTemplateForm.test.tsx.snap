@@ -89,7 +89,7 @@ exports[`Client-side validation triggers 1`] = `
             Upload a letter template
           </h1>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -146,7 +146,7 @@ exports[`Client-side validation triggers 1`] = `
               </div>
             </details>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error nhsuk-u-margin-bottom-0"
             >
               <span
                 class="nhsuk-error-message"
@@ -169,10 +169,10 @@ exports[`Client-side validation triggers 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLetterType"
               id="letterTemplateLetterType--label"
             >
@@ -218,14 +218,14 @@ exports[`Client-side validation triggers 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -387,7 +387,7 @@ exports[`Client-side validation triggers 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -411,7 +411,7 @@ exports[`Client-side validation triggers 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0 nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -433,7 +433,9 @@ exports[`Client-side validation triggers 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
@@ -456,7 +458,7 @@ exports[`Client-side validation triggers 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 accept="text/csv"
@@ -586,7 +588,7 @@ exports[`renders page one error 1`] = `
             Upload a letter template
           </h1>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -643,7 +645,7 @@ exports[`renders page one error 1`] = `
               </div>
             </details>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error nhsuk-u-margin-bottom-0"
             >
               <span
                 class="nhsuk-error-message"
@@ -667,10 +669,10 @@ exports[`renders page one error 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLetterType"
               id="letterTemplateLetterType--label"
             >
@@ -717,14 +719,14 @@ exports[`renders page one error 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -886,7 +888,9 @@ exports[`renders page one error 1`] = `
               </option>
             </select>
           </div>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplatePdf"
@@ -909,7 +913,7 @@ exports[`renders page one error 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 accept="application/pdf"
@@ -921,7 +925,9 @@ exports[`renders page one error 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
@@ -944,7 +950,7 @@ exports[`renders page one error 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 accept="text/csv"
@@ -1092,7 +1098,7 @@ exports[`renders page with multiple errors 1`] = `
             Upload a letter template
           </h1>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -1149,7 +1155,7 @@ exports[`renders page with multiple errors 1`] = `
               </div>
             </details>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-form-group--error nhsuk-u-margin-bottom-0"
             >
               <span
                 class="nhsuk-error-message"
@@ -1173,10 +1179,10 @@ exports[`renders page with multiple errors 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLetterType"
               id="letterTemplateLetterType--label"
             >
@@ -1222,14 +1228,14 @@ exports[`renders page with multiple errors 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -1391,7 +1397,7 @@ exports[`renders page with multiple errors 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -1415,7 +1421,7 @@ exports[`renders page with multiple errors 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0 nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -1438,7 +1444,7 @@ exports[`renders page with multiple errors 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group--error nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -1462,7 +1468,7 @@ exports[`renders page with multiple errors 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group nhsuk-form-group--error"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0 nhsuk-form-group--error"
             >
               <span
                 class="nhsuk-error-message"
@@ -1556,7 +1562,9 @@ exports[`renders page with preloaded field values 1`] = `
           >
             Upload a letter template
           </h1>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateName"
@@ -1612,7 +1620,7 @@ exports[`renders page with preloaded field values 1`] = `
               </div>
             </details>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 class="nhsuk-input"
@@ -1624,10 +1632,10 @@ exports[`renders page with preloaded field values 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLetterType"
               id="letterTemplateLetterType--label"
             >
@@ -1674,14 +1682,14 @@ exports[`renders page with preloaded field values 1`] = `
             </select>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
           >
             <label
-              class="nhsuk-label"
+              class="nhsuk-label nhsuk-label--s"
               for="letterTemplateLanguage"
               id="letterTemplateLanguage--label"
             >
-              Additional language
+              Letter language
             </label>
             <div
               class="nhsuk-hint"
@@ -1843,7 +1851,9 @@ exports[`renders page with preloaded field values 1`] = `
               </option>
             </select>
           </div>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplatePdf"
@@ -1866,7 +1876,7 @@ exports[`renders page with preloaded field values 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 accept="application/pdf"
@@ -1878,7 +1888,9 @@ exports[`renders page with preloaded field values 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-u-margin-bottom-6 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
@@ -1901,7 +1913,7 @@ exports[`renders page with preloaded field values 1`] = `
               </a>
             </p>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-u-margin-bottom-0"
             >
               <input
                 accept="text/csv"

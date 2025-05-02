@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import {
-  $CreateLetterPropertiesWithType,
-  $CreateTemplateSchema,
-  $EmailPropertiesWithType,
+  $CreateLetterProperties,
+  $CreateUpdateTemplate,
+  $EmailProperties,
   $LetterFiles,
-  $LetterPropertiesWithType,
-  $NhsAppPropertiesWithType,
-  $SmsPropertiesWithType,
+  $LetterProperties,
+  $NhsAppProperties,
+  $SmsProperties,
   $TemplateDtoSchema,
   TemplateDto,
 } from 'nhs-notify-backend-client';
@@ -38,12 +38,12 @@ export const $NonSubmittedTemplate = z.intersection(
 );
 
 export const $CreateNHSAppTemplate = z.intersection(
-  $CreateTemplateSchema,
-  $NhsAppPropertiesWithType
+  $CreateUpdateTemplate,
+  $NhsAppProperties
 );
 export const $NHSAppTemplate = z.intersection(
   $TemplateDtoSchema,
-  $NhsAppPropertiesWithType
+  $NhsAppProperties
 );
 export const $SubmittedNHSAppTemplate = z.intersection(
   $SubmittedTemplate,
@@ -51,38 +51,38 @@ export const $SubmittedNHSAppTemplate = z.intersection(
 );
 
 export const $CreateEmailTemplate = z.intersection(
-  $CreateTemplateSchema,
-  $EmailPropertiesWithType
+  $CreateUpdateTemplate,
+  $EmailProperties
 );
+
 export const $EmailTemplate = z.intersection(
   $TemplateDtoSchema,
-  $EmailPropertiesWithType
+  $EmailProperties
 );
+
 export const $SubmittedEmailTemplate = z.intersection(
   $SubmittedTemplate,
   $EmailTemplate
 );
 
 export const $CreateSMSTemplate = z.intersection(
-  $CreateTemplateSchema,
-  $SmsPropertiesWithType
+  $CreateUpdateTemplate,
+  $SmsProperties
 );
-export const $SMSTemplate = z.intersection(
-  $TemplateDtoSchema,
-  $SmsPropertiesWithType
-);
+export const $SMSTemplate = z.intersection($TemplateDtoSchema, $SmsProperties);
+
 export const $SubmittedSMSTemplate = z.intersection(
   $SubmittedTemplate,
   $SMSTemplate
 );
 
 export const $CreateLetterTemplate = z.intersection(
-  $CreateTemplateSchema,
-  $CreateLetterPropertiesWithType
+  $CreateUpdateTemplate,
+  $CreateLetterProperties
 );
 export const $LetterTemplate = z.intersection(
   $TemplateDtoSchema,
-  $LetterPropertiesWithType.extend({ files: $LetterFiles })
+  $LetterProperties.extend({ files: $LetterFiles })
 );
 export const $SubmittedLetterTemplate = z.intersection(
   $SubmittedTemplate,
@@ -112,6 +112,9 @@ export const validateSubmittedNHSAppTemplate = (template?: TemplateDto) =>
 
 export const validateTemplate = (template?: TemplateDto) =>
   zodValidate($TemplateDtoSchema, template);
+
+export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
+  zodValidate($SubmittedLetterTemplate, template);
 
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);

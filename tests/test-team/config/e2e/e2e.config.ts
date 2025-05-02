@@ -4,7 +4,7 @@ import baseConfig from '../playwright.config';
 
 const buildCommand = [
   'INCLUDE_AUTH_PAGES=true',
-  'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
+  'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=900',
   'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
   'NEXT_PUBLIC_ENABLE_LETTERS=true',
   'npm run build && npm run start',

@@ -188,7 +188,6 @@ describe('TemplateAPIClient', () => {
       {
         name: 'test',
         message: '<html></html>',
-        templateStatus: 'SUBMITTED',
         templateType: 'NHS_APP',
       },
       testToken
@@ -228,7 +227,6 @@ describe('TemplateAPIClient', () => {
       {
         name: 'name',
         message: 'message',
-        templateStatus: 'SUBMITTED',
         templateType: 'NHS_APP',
       },
       testToken
@@ -329,5 +327,146 @@ describe('TemplateAPIClient', () => {
     expect(result.data).toEqual([data]);
 
     expect(result.error).toBeUndefined();
+  });
+
+  describe('submitTemplate', () => {
+    test('should return error', async () => {
+      axiosMock.onPatch('/v1/template/real-id/submit').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Contains invalid characters',
+        },
+      });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.submitTemplate('real-id', testToken);
+
+      expect(result.error).toEqual({
+        code: 400,
+        message: 'Bad request',
+        details: {
+          message: 'Contains invalid characters',
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.patch.length).toBe(1);
+    });
+
+    test('should return template', async () => {
+      const data = {
+        id: 'real-id',
+        name: 'name',
+        message: 'message',
+        templateStatus: 'SUBMITTED',
+        templateType: 'NHS_APP',
+      };
+
+      axiosMock.onPatch('/v1/template/real-id/submit').reply(200, {
+        statusCode: 200,
+        template: data,
+      });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.submitTemplate('real-id', testToken);
+
+      expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
+  });
+
+  describe('deleteTemplate', () => {
+    test('should return error', async () => {
+      axiosMock.onDelete('/v1/template/real-id').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Cannot delete a submitted template',
+        },
+      });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.deleteTemplate('real-id', testToken);
+
+      expect(result.error).toEqual({
+        code: 400,
+        message: 'Bad request',
+        details: {
+          message: 'Cannot delete a submitted template',
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.delete.length).toBe(1);
+    });
+
+    test('should return no content', async () => {
+      axiosMock.onDelete('/v1/template/real-id').reply(204);
+
+      const client = new TemplateApiClient();
+
+      const result = await client.deleteTemplate('real-id', testToken);
+
+      expect(result.data).toBeUndefined();
+
+      expect(result.error).toBeUndefined();
+    });
+  });
+
+  describe('requestProof', () => {
+    test('should return error', async () => {
+      axiosMock.onPost('/v1/template/real-id/proof').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Template cannot be proofed',
+        },
+      });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.requestProof('real-id', testToken);
+
+      expect(result.error).toEqual({
+        code: 400,
+        message: 'Bad request',
+        details: {
+          message: 'Template cannot be proofed',
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.post.length).toBe(1);
+    });
+
+    test('should return content', async () => {
+      const data = {
+        id: 'id',
+        name: 'name',
+        message: 'message',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        templateType: 'LETTER',
+      };
+
+      axiosMock
+        .onPost('/v1/template/real-id/proof')
+        .reply(204, { template: data });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.requestProof('real-id', testToken);
+
+      expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
   });
 });

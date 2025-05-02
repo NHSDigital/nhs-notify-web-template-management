@@ -1,10 +1,9 @@
 import { ITemplateClient } from './types/template-client';
 import {
-  CreateTemplate,
+  CreateUpdateTemplate,
   Success,
   SuccessList,
   TemplateDto,
-  UpdateTemplate,
 } from './types/generated';
 import { Result } from './types/result';
 import {
@@ -22,7 +21,7 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
@@ -46,7 +45,7 @@ export class TemplateApiClient implements ITemplateClient {
   }
 
   async createLetterTemplate(
-    template: CreateTemplate,
+    template: CreateUpdateTemplate,
     token: string,
     pdf: File,
     csv?: File
@@ -78,7 +77,7 @@ export class TemplateApiClient implements ITemplateClient {
 
   async updateTemplate(
     templateId: string,
-    template: UpdateTemplate,
+    template: CreateUpdateTemplate,
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
@@ -134,6 +133,86 @@ export class TemplateApiClient implements ITemplateClient {
 
     return {
       data: response.data.templates,
+    };
+  }
+
+  async submitTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      this._client.patch<Success>(
+        `/v1/template/${templateId}/submit`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.template,
+    };
+  }
+
+  async deleteTemplate(
+    templateId: string,
+    owner: string
+  ): Promise<Result<void>> {
+    const response = await catchAxiosError(
+      this._client.delete<Success>(`/v1/template/${templateId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: owner,
+        },
+      })
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: undefined,
+    };
+  }
+
+  async requestProof(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      this._client.post<Success>(
+        `/v1/template/${templateId}/proof`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.template,
     };
   }
 }

@@ -3,7 +3,7 @@
  */
 import {
   CreateLetterTemplate,
-  CreateNHSAppTemplate,
+  CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import {
@@ -12,6 +12,9 @@ import {
   getTemplate,
   getTemplates,
   createLetterTemplate,
+  setTemplateToDeleted,
+  setTemplateToSubmitted,
+  requestTemplateProof,
 } from '@utils/form-actions';
 import { getAccessTokenServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -44,7 +47,7 @@ describe('form-actions', () => {
       data: responseData,
     });
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -60,7 +63,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('createTemplate - should thrown error when saving unexpectedly fails', async () => {
+  test('createTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -68,7 +71,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -84,11 +87,11 @@ describe('form-actions', () => {
     );
   });
 
-  test('createTemplate - should thrown error when no token', async () => {
+  test('createTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
-    const createTemplateInput: CreateNHSAppTemplate = {
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
       message: 'message',
@@ -283,7 +286,7 @@ describe('form-actions', () => {
     });
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'pickle',
+      id: 'id',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -303,7 +306,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('saveTemplate - should thrown error when saving unexpectedly fails', async () => {
+  test('saveTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       error: {
         code: 400,
@@ -312,7 +315,7 @@ describe('form-actions', () => {
     });
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'pickle',
+      id: 'id',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -332,12 +335,12 @@ describe('form-actions', () => {
     );
   });
 
-  test('saveTemplate - should thrown error when no token', async () => {
+  test('saveTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
     const updateTemplateInput: NHSAppTemplate = {
-      id: 'pickle',
+      id: 'id',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -395,7 +398,7 @@ describe('form-actions', () => {
     expect(response).toEqual(undefined);
   });
 
-  test('getTemplate - should thrown error when no token', async () => {
+  test('getTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -440,7 +443,7 @@ describe('form-actions', () => {
     expect(response).toEqual([]);
   });
 
-  test('getTemplates - should thrown error when no token', async () => {
+  test('getTemplates - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce(undefined);
 
@@ -482,5 +485,165 @@ describe('form-actions', () => {
     }
 
     expect(actualOrder).toEqual(expectedOrder);
+  });
+
+  describe('setTemplateToSubmitted', () => {
+    test('submitTemplate successfully', async () => {
+      const responseData = {
+        id: 'id',
+        templateType: 'NHS_APP',
+        templateStatus: 'SUBMITTED',
+        name: 'name',
+        message: 'message',
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+      } satisfies TemplateDto;
+
+      mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
+        data: responseData,
+      });
+
+      const response = await setTemplateToSubmitted('id');
+
+      expect(mockedTemplateClient.submitTemplate).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+
+      expect(response).toEqual(responseData);
+    });
+
+    test('submitTemplate - should throw error when saving unexpectedly fails', async () => {
+      mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
+        error: {
+          code: 400,
+          message: 'Bad request',
+        },
+      });
+
+      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+        'Failed to save template data'
+      );
+
+      expect(mockedTemplateClient.submitTemplate).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+    });
+
+    test('submitTemplate - should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+      await expect(setTemplateToSubmitted('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+  });
+
+  describe('setTemplateToDeleted', () => {
+    test('deleteTemplate successfully', async () => {
+      mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
+        data: undefined,
+      });
+
+      const response = await setTemplateToDeleted('id');
+
+      expect(mockedTemplateClient.deleteTemplate).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+
+      expect(response).toEqual(undefined);
+    });
+
+    test('deleteTemplate - should throw error when saving unexpectedly fails', async () => {
+      mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
+        error: {
+          code: 400,
+          message: 'Bad request',
+        },
+      });
+
+      await expect(setTemplateToDeleted('id')).rejects.toThrow(
+        'Failed to save template data'
+      );
+
+      expect(mockedTemplateClient.deleteTemplate).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+    });
+
+    test('deleteTemplate - should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+      await expect(setTemplateToDeleted('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
+  });
+
+  describe('requestTemplateProof', () => {
+    test('sends proof request successfully', async () => {
+      const responseData = {
+        templateType: 'LETTER',
+        id: 'new-template-id',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        name: 'template-name',
+        letterType: 'q1',
+        language: 'ar',
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            currentVersion: 'pdf-version',
+            virusScanStatus: 'PASSED',
+          },
+        },
+        createdAt: '2025-01-13T10:19:25.579Z',
+        updatedAt: '2025-01-13T10:19:25.579Z',
+      } satisfies TemplateDto;
+
+      mockedTemplateClient.requestProof.mockResolvedValueOnce({
+        data: responseData,
+      });
+
+      const response = await requestTemplateProof('id');
+
+      expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+
+      expect(response).toEqual(responseData);
+    });
+
+    test('requestTemplateProof - should throw error when request unexpectedly fails', async () => {
+      mockedTemplateClient.requestProof.mockResolvedValueOnce({
+        error: {
+          code: 400,
+          message: 'Bad request',
+        },
+      });
+
+      await expect(requestTemplateProof('id')).rejects.toThrow(
+        'Failed to request proof'
+      );
+
+      expect(mockedTemplateClient.requestProof).toHaveBeenCalledWith(
+        'id',
+        'token'
+      );
+    });
+
+    test('requestTemplateProof - should throw error when no token', async () => {
+      authIdTokenServerMock.mockReset();
+      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+
+      await expect(requestTemplateProof('id')).rejects.toThrow(
+        'Failed to get access token'
+      );
+    });
   });
 });

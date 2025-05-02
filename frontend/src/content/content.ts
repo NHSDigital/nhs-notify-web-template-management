@@ -4,6 +4,8 @@ const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
 };
 
+const goBackButtonText = 'Go back';
+
 const header = {
   serviceName: 'Notify',
   links: {
@@ -16,6 +18,10 @@ const header = {
     signOut: {
       text: 'Sign out',
       href: '/auth/signout',
+    },
+    logoLink: {
+      ariaLabel: 'NHS Notify templates',
+      logoTitle: 'NHS logo',
     },
   },
 };
@@ -49,6 +55,7 @@ const footer = {
 
 const personalisation = {
   header: 'Personalisation',
+  hiddenCodeBlockDescription: 'An example of personalised message content:',
   details: {
     title: 'Personalisation fields',
     text1:
@@ -77,6 +84,7 @@ const personalisation = {
 
 const messageFormatting = {
   header: 'Message formatting',
+  hiddenCodeBlockDescription: 'An example of markdown:',
   lineBreaksAndParagraphs: {
     title: 'Line breaks and paragraphs',
     text1:
@@ -178,27 +186,23 @@ const homePage = {
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
   text2: 'You can create templates for:',
-  list: [
-    { key: 'template-1', item: 'NHS App messages' },
-    { key: 'template-2', item: 'emails' },
-    { key: 'template-3', item: 'text messages (SMS)' },
-  ],
+  list: ['NHS App messages', 'emails', 'text messages (SMS)'],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
   text4:
-    'Only use this tool if your message content has been signed off by the relevant stakeholders in your team.',
+    'Only use this tool if your message content has been approved by the relevant stakeholders in your team.',
   text5: 'You can save a template as a draft and edit it later.',
   text6:
     'If you want to change a submitted template, you must create a new template to replace it.',
   text7: 'You can access this tool by signing in with your Care Identity.',
   linkButton: {
     text: 'Start now',
-    url: `${getBasePath()}/manage-templates`,
+    url: `${getBasePath()}/message-templates`,
   },
 };
 
-const manageTemplates = {
+const messageTemplates = {
   pageTitle: generatePageTitle('Message templates'),
   pageHeading: 'Message templates',
   emptyTemplates: 'You do not have any templates yet.',
@@ -236,17 +240,10 @@ const previewEmailTemplate = {
 };
 
 const previewLetterTemplate = {
-  sectionHeading: 'Template saved',
-  form: {
-    errorHeading: 'There is a problem',
-    pageHeading: 'What would you like to do next?',
-    options: [
-      { id: 'letter-edit', text: 'Edit template' },
-      { id: 'letter-submit', text: 'Submit template' },
-    ],
-    buttonText: 'Continue',
-  },
+  pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
+  submitText: 'Submit template',
+  requestProofText: 'Request a proof',
 };
 
 const previewNHSAppTemplate = {
@@ -292,6 +289,14 @@ const previewSMSTemplate = {
   backLinkText: backToAllTemplates,
 };
 
+const previewTemplateDetails = {
+  rowHeadings: {
+    templateId: 'Template ID',
+    templateType: 'Type',
+    templateStatus: 'Status',
+  },
+};
+
 const error404 = {
   pageHeading: 'Sorry, we could not find that page',
   p1: 'You may have typed or pasted a web address incorrectly. ',
@@ -321,7 +326,7 @@ const submitTemplate = {
   submitChecklistHeading: 'Before you submit',
   submitChecklistIntroduction: 'You should check that your template:',
   submitChecklistItems: [
-    'is signed off by the relevant stakeholders in your team',
+    'is approved by the relevant stakeholders in your team',
     'does not have any spelling errors',
     'is formatted correctly',
   ],
@@ -329,8 +334,29 @@ const submitTemplate = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
-  goBackButtonText: 'Go back',
+  goBackButtonText,
   buttonText: 'Submit template',
+};
+
+const submitLetterTemplate = {
+  ...submitTemplate,
+  pageHeading: 'Submit',
+  submitChecklistHeading: 'Before you submit this template',
+  submitChecklistIntroduction: 'Check that the template you uploaded:',
+  submitChecklistParagraphs: [],
+  afterSubmissionHeading: 'After you submit this template',
+  afterSubmissionText: [
+    'Our service team will send you a proof of this letter template by email.',
+    'This email will also tell you what you need to do next.',
+  ],
+  goBackPath: 'preview-letter-template',
+  warningCalloutLabel: 'Important',
+  warningCalloutChecklistIntroduction:
+    "If you need to change this template after you've submitted it:",
+  warningCalloutChecklistItems: [
+    'go back and upload a new letter template',
+    'tell your onboarding manager which template you want to use',
+  ],
 };
 
 const copyTemplate = {
@@ -460,7 +486,7 @@ const templateFormLetter = {
   templateNameHintText: 'This will not be visible to recipients.',
   templateTypeLabelText: 'Letter type',
   templateTypeHintText: 'Choose the type of letter template you are uploading',
-  templateLanguageLabelText: 'Additional language',
+  templateLanguageLabelText: 'Letter language',
   templateLanguageHintText: 'Choose the language of this letter template',
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:
@@ -519,12 +545,8 @@ const templateSubmitted = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  notLiveHeading: "If you're currently onboarding",
-  notLiveText:
-    "Tell your onboarding manager once you've submitted all your templates.",
-  liveHeading: "If you've already onboarded",
-  liveText: "Once you've submitted all your templates",
-  liveLinkText: 'raise a request with the service desk (opens in a new tab).',
+  doNextText:
+    "Tell an onboarding manager once you've submitted all your templates.",
   backLinkText: backToAllTemplates,
 };
 
@@ -532,6 +554,7 @@ const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
+  backLinkText: backToAllTemplates,
 };
 
 const deleteTemplate = {
@@ -545,6 +568,26 @@ const logoutWarning = {
   heading: "For security reasons, you'll be signed out in",
   signIn: 'Stay signed in',
   body: "If you're signed out, any unsaved changes will be lost.",
+};
+
+const requestProof = {
+  pageTitle: generatePageTitle('Request a proof of your template'),
+  heading: (templateName: string) => `Request a proof of '${templateName}'`,
+  subHeading: 'Before you request a proof of this template',
+  requirementsIntro:
+    'You should only request a proof of the final version of a template you’ve created. This means that your template:',
+  requirementsList: [
+    'is approved by the relevant stakeholders in your team',
+    'does not have any spelling errors',
+    'is formatted correctly',
+  ],
+  checkTestData:
+    'If your template uses personalisation, check that you’ve uploaded your example personalisation data.',
+  waitTime: 'It can take 5 to 10 working days to get a proof of your template.',
+  buttons: {
+    confirm: 'Request a proof',
+    back: goBackButtonText,
+  },
 };
 
 const content = {
@@ -566,7 +609,10 @@ const content = {
     previewLetterTemplate,
     previewNHSAppTemplate,
     previewSMSTemplate,
+    previewTemplateDetails,
+    requestProof,
     submitTemplate,
+    submitLetterTemplate,
     templateFormEmail,
     templateFormLetter,
     templateFormNhsApp,
@@ -577,7 +623,7 @@ const content = {
   pages: {
     homePage,
     error404,
-    manageTemplates,
+    messageTemplates,
   },
 };
 

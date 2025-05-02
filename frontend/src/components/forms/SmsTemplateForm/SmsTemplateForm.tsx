@@ -14,7 +14,7 @@ import {
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import {
-  CreateSMSTemplate,
+  CreateUpdateSMSTemplate,
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -30,7 +30,7 @@ import { processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 
 export const SmsTemplateForm: FC<
-  PageComponentProps<SMSTemplate | CreateSMSTemplate>
+  PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
 > = ({ initialState }) => {
   const [state, action] = useActionState(processFormActions, initialState);
 

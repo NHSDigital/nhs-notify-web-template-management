@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useActionState, useState } from 'react';
+import classNames from 'classnames';
 import {
   TextInput,
   HintText,
@@ -25,7 +26,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
-import { $CreateLetterTemplateSchema } from './form-schema';
+import { $CreateLetterTemplateForm } from './form-schema';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -83,12 +84,18 @@ export const LetterTemplateForm: FC<
   const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const data = Object.fromEntries(formData);
-    const validationResult = $CreateLetterTemplateSchema.safeParse(data);
+    const validationResult = $CreateLetterTemplateForm.safeParse(data);
     if (!validationResult.success) {
       event.preventDefault();
       setValidationError(validationResult.error.flatten());
     }
   };
+
+  const formGroupClasses = [
+    'nhsuk-u-margin-bottom-6',
+    'nhsuk-u-padding-top-2',
+    'nhsuk-u-padding-bottom-2',
+  ];
 
   return (
     <>
@@ -110,13 +117,19 @@ export const LetterTemplateForm: FC<
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {pageHeading}
               </h1>
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  templateNameError && 'nhsuk-form-group--error',
+                  ...formGroupClasses
+                )}
+              >
                 <Label htmlFor='letterTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
                 <HintText>{templateNameHintText}</HintText>
                 <TemplateNameGuidance template={'LETTER'} />
                 <TextInput
+                  formGroupProps={{ className: 'nhsuk-u-margin-bottom-0' }}
                   id='letterTemplateName'
                   defaultValue={letterTemplateName}
                   onChange={letterTemplateNameHandler}
@@ -125,7 +138,11 @@ export const LetterTemplateForm: FC<
                 />
               </div>
               <Select
+                formGroupProps={{
+                  className: classNames(...formGroupClasses),
+                }}
                 label={templateTypeLabelText}
+                labelProps={{ size: 's' }}
                 hint={templateTypeHintText}
                 id='letterTemplateLetterType'
                 defaultValue={letterTemplateLetterType}
@@ -140,7 +157,11 @@ export const LetterTemplateForm: FC<
                 ))}
               </Select>
               <Select
+                formGroupProps={{
+                  className: classNames(...formGroupClasses),
+                }}
                 label={templateLanguageLabelText}
+                labelProps={{ size: 's' }}
                 hint={templateLanguageHintText}
                 id='letterTemplateLanguage'
                 defaultValue={letterTemplateLanguage}
@@ -154,7 +175,12 @@ export const LetterTemplateForm: FC<
                   </Select.Option>
                 ))}
               </Select>
-              <div className={templatePdfError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  templatePdfError && 'nhsuk-form-group--error',
+                  ...formGroupClasses
+                )}
+              >
                 <Label htmlFor='letterTemplatePdf' size='s'>
                   {templatePdfLabelText}
                 </Label>
@@ -175,7 +201,12 @@ export const LetterTemplateForm: FC<
                   error={templatePdfError}
                 />
               </div>
-              <div className={templateCsvError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  templateCsvError && 'nhsuk-form-group--error',
+                  ...formGroupClasses
+                )}
+              >
                 <Label htmlFor='letterTemplateCsv' size='s'>
                   {templateCsvLabelText}
                 </Label>

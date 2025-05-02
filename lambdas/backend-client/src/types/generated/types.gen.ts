@@ -3,11 +3,13 @@
 export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 
 export type TemplateStatus =
-  | 'NOT_YET_SUBMITTED'
-  | 'SUBMITTED'
   | 'DELETED'
+  | 'NOT_YET_SUBMITTED'
+  | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
+  | 'SUBMITTED'
+  | 'VALIDATION_FAILED'
   | 'VIRUS_SCAN_FAILED';
 
 export type Language =
@@ -59,49 +61,48 @@ export type LetterFiles = {
 
 export type NhsAppProperties = {
   message: string;
+  templateType: 'NHS_APP';
 };
 
 export type EmailProperties = {
   message: string;
   subject: string;
+  templateType: 'EMAIL';
 };
 
 export type SmsProperties = {
   message: string;
+  templateType: 'SMS';
 };
 
 export type CreateLetterProperties = {
   letterType: LetterType;
   language: Language;
+  files?: LetterFiles;
+  templateType: 'LETTER';
 };
 
 export type LetterProperties = CreateLetterProperties & {
   files: LetterFiles;
+  personalisationParameters?: Array<string>;
 };
 
 export type BaseTemplate = {
-  templateType: TemplateType;
   name: string;
 };
 
-export type CreateTemplate = BaseTemplate &
-  (NhsAppProperties | EmailProperties | SmsProperties | CreateLetterProperties);
-
-export type UpdateTemplate = BaseTemplate & {
-  templateStatus: TemplateStatus;
-} & (
-    | NhsAppProperties
-    | EmailProperties
-    | SmsProperties
-    | CreateLetterProperties
-  );
-
-export type TemplateDto = BaseTemplate & {
+export type BaseCreatedTemplate = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
   createdAt: string;
   updatedAt: string;
-} & (NhsAppProperties | EmailProperties | SmsProperties | LetterProperties);
+};
+
+export type CreateUpdateTemplate = BaseTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | CreateLetterProperties);
+
+export type TemplateDto = BaseCreatedTemplate &
+  (SmsProperties | EmailProperties | NhsAppProperties | LetterProperties);
 
 export type Success = {
   template: TemplateDto;
@@ -118,6 +119,38 @@ export type Failure = {
   statusCode: number;
   details?: unknown;
 };
+
+export type DeleteV1TemplateByTemplateIdData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}';
+};
+
+export type DeleteV1TemplateByTemplateIdErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type DeleteV1TemplateByTemplateIdError =
+  DeleteV1TemplateByTemplateIdErrors[keyof DeleteV1TemplateByTemplateIdErrors];
+
+export type DeleteV1TemplateByTemplateIdResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type DeleteV1TemplateByTemplateIdResponse =
+  DeleteV1TemplateByTemplateIdResponses[keyof DeleteV1TemplateByTemplateIdResponses];
 
 export type GetV1TemplateByTemplateIdData = {
   body?: never;
@@ -155,7 +188,7 @@ export type PostV1TemplateByTemplateIdData = {
   /**
    * Template to update
    */
-  body: UpdateTemplate;
+  body: CreateUpdateTemplate;
   path: {
     /**
      * ID of template to update
@@ -190,7 +223,7 @@ export type PostV1TemplateData = {
   /**
    * Template to create
    */
-  body: CreateTemplate;
+  body: CreateUpdateTemplate;
   path?: never;
   query?: never;
   url: '/v1/template';
@@ -272,6 +305,70 @@ export type GetV1TemplatesResponses = {
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
+
+export type PatchV1TemplateByTemplateIdSubmitData = {
+  body?: never;
+  path: {
+    /**
+     * ID of template to update
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/submit';
+};
+
+export type PatchV1TemplateByTemplateIdSubmitErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitError =
+  PatchV1TemplateByTemplateIdSubmitErrors[keyof PatchV1TemplateByTemplateIdSubmitErrors];
+
+export type PatchV1TemplateByTemplateIdSubmitResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type PatchV1TemplateByTemplateIdSubmitResponse =
+  PatchV1TemplateByTemplateIdSubmitResponses[keyof PatchV1TemplateByTemplateIdSubmitResponses];
+
+export type PostV1TemplateByTemplateIdProofData = {
+  body?: never;
+  path: {
+    /**
+     * ID of the template to request a proof of
+     */
+    templateId: string;
+  };
+  query?: never;
+  url: '/v1/template/{templateId}/proof';
+};
+
+export type PostV1TemplateByTemplateIdProofErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type PostV1TemplateByTemplateIdProofError =
+  PostV1TemplateByTemplateIdProofErrors[keyof PostV1TemplateByTemplateIdProofErrors];
+
+export type PostV1TemplateByTemplateIdProofResponses = {
+  /**
+   * 200 response
+   */
+  200: Success;
+};
+
+export type PostV1TemplateByTemplateIdProofResponse =
+  PostV1TemplateByTemplateIdProofResponses[keyof PostV1TemplateByTemplateIdProofResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});

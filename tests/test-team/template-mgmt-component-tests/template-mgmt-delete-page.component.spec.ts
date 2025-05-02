@@ -23,12 +23,20 @@ function createTemplates(owner: string) {
       message: 'delete-page-go-back-message',
       subject: 'template-subject',
     },
-    confirm: {
-      ...TemplateFactory.createEmailTemplate('delete-page-confirm', owner),
-      name: 'delete-page-confirm-name',
-      message: 'delete-page-confirm-message',
+    confirmDigitial: {
+      ...TemplateFactory.createEmailTemplate(
+        'delete-page-confirm-email',
+        owner
+      ),
+      name: 'delete-page-confirm-email-name',
+      message: 'delete-page-confirm-email-message',
       subject: 'template-subject',
     },
+    confirmLetter: TemplateFactory.createLetterTemplate(
+      'delete-page-confirm-letter',
+      owner,
+      'delete-page-confirm-letter-name'
+    ),
   };
 }
 
@@ -76,7 +84,7 @@ test.describe('Delete Template Page', () => {
     await assertGoBackLinkNotPresent(props);
   });
 
-  test('should go back to manage-templates page with template still visible when "no" button selected', async ({
+  test('should go back to message-templates page with template still visible when "no" button selected', async ({
     page,
   }) => {
     const deleteTemplatePage = new TemplateMgmtDeletePage(page);
@@ -85,22 +93,24 @@ test.describe('Delete Template Page', () => {
 
     await deleteTemplatePage.goBackButton.click();
 
-    await expect(page).toHaveURL('/templates/manage-templates');
+    await expect(page).toHaveURL('/templates/message-templates');
 
     await expect(page.getByText(templates.goBack.name)).toBeVisible();
   });
 
-  test('should go back to manage-templates page with template no longer visible when "yes" button selected', async ({
-    page,
-  }) => {
-    const deleteTemplatePage = new TemplateMgmtDeletePage(page);
+  for (const templateKey of ['confirmDigitial', 'confirmLetter']) {
+    test(`should go back to message-templates page with template "${templateKey}" no longer visible when "yes" button selected`, async ({
+      page,
+    }) => {
+      const deleteTemplatePage = new TemplateMgmtDeletePage(page);
 
-    await deleteTemplatePage.loadPage(templates.confirm.id);
+      await deleteTemplatePage.loadPage(templates[templateKey].id);
 
-    await deleteTemplatePage.confirmButton.click();
+      await deleteTemplatePage.confirmButton.click();
 
-    await expect(page).toHaveURL('/templates/manage-templates');
+      await expect(page).toHaveURL('/templates/message-templates');
 
-    await expect(page.getByText(templates.confirm.name)).toBeHidden();
-  });
+      await expect(page.getByText(templates[templateKey].name)).toBeHidden();
+    });
+  }
 });

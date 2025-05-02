@@ -4,7 +4,7 @@
 import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { getMockFormData } from '@testhelpers';
 import { redirect } from 'next/navigation';
-import { getTemplate, saveTemplate } from '@utils/form-actions';
+import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
 jest.mock('next/navigation');
@@ -13,7 +13,7 @@ jest.mock('@utils/amplify-utils');
 
 const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
-const saveTemplateMock = jest.mocked(saveTemplate);
+const setTemplateToSubmittedMock = jest.mocked(setTemplateToSubmitted);
 
 const mockNhsAppTemplate = {
   templateType: 'NHS_APP',
@@ -26,12 +26,14 @@ const mockNhsAppTemplate = {
 } satisfies TemplateDto;
 
 describe('submitTemplate', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
   it('should redirect when templateId from form is invalid', async () => {
     const formData = getMockFormData({});
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('NHS_APP', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
 
@@ -43,7 +45,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('EMAIL', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -55,7 +57,7 @@ describe('submitTemplate', () => {
 
     const formData = getMockFormData({ templateId: '1' });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('EMAIL', formData);
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
   });
@@ -63,7 +65,7 @@ describe('submitTemplate', () => {
   it('should handle error when failing to save template', async () => {
     getTemplateMock.mockResolvedValueOnce(mockNhsAppTemplate);
 
-    saveTemplateMock.mockImplementationOnce(() => {
+    setTemplateToSubmittedMock.mockImplementationOnce(() => {
       throw new Error('failed to save template');
     });
 
@@ -71,7 +73,7 @@ describe('submitTemplate', () => {
       templateId: '1',
     });
 
-    await expect(submitTemplate('submit-route', formData)).rejects.toThrow(
+    await expect(submitTemplate('SMS', formData)).rejects.toThrow(
       'failed to save template'
     );
   });
@@ -83,19 +85,13 @@ describe('submitTemplate', () => {
       templateId: '1',
     });
 
-    await submitTemplate('submit-route', formData);
+    await submitTemplate('SMS', formData);
 
-    expect(saveTemplateMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        createdAt: '2025-01-13T10:19:25.579Z',
-        id: '1',
-        message: 'body',
-        name: 'name',
-        templateStatus: 'SUBMITTED',
-        templateType: 'NHS_APP',
-        updatedAt: '2025-01-13T10:19:25.579Z',
-      })
+    expect(setTemplateToSubmittedMock).toHaveBeenCalledWith('1');
+
+    expect(redirectMock).toHaveBeenCalledWith(
+      '/text-message-template-submitted/1',
+      'push'
     );
-    expect(redirectMock).toHaveBeenCalledWith('/submit-route/1', 'push');
   });
 });

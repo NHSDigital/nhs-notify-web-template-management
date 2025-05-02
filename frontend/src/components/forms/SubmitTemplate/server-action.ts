@@ -1,17 +1,22 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { getTemplate, saveTemplate } from '@utils/form-actions';
+import { getTemplate, setTemplateToSubmitted } from '@utils/form-actions';
 import { z } from 'zod';
-import { validateTemplate } from 'nhs-notify-web-template-management-utils';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import {
+  templateTypeToUrlTextMappings,
+  validateTemplate,
+} from 'nhs-notify-web-template-management-utils';
+import type { TemplateType } from 'nhs-notify-backend-client';
 
-const $TemplateIdSchema = z.string();
-
-export async function submitTemplate(route: string, formData: FormData) {
-  const { success, data: templateId } = $TemplateIdSchema.safeParse(
-    formData.get('templateId')
-  );
+export async function submitTemplate(
+  channel: TemplateType,
+  formData: FormData
+) {
+  const { success, data: templateId } = z
+    .string()
+    .safeParse(formData.get('templateId'));
 
   if (!success) {
     return redirect('/invalid-template', RedirectType.replace);
@@ -26,10 +31,7 @@ export async function submitTemplate(route: string, formData: FormData) {
   }
 
   try {
-    await saveTemplate({
-      ...validatedTemplate,
-      templateStatus: 'SUBMITTED',
-    });
+    await setTemplateToSubmitted(templateId);
   } catch (error) {
     logger.error('Failed to submit template', {
       error,
@@ -39,5 +41,10 @@ export async function submitTemplate(route: string, formData: FormData) {
     throw error;
   }
 
-  return redirect(`/${route}/${templateId}`, RedirectType.push);
+  const channelRedirectSegment = templateTypeToUrlTextMappings(channel);
+
+  return redirect(
+    `/${channelRedirectSegment}-template-submitted/${templateId}`,
+    RedirectType.push
+  );
 }

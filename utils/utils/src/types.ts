@@ -1,12 +1,12 @@
 import type { GuardDutyScanResultNotificationEventDetail } from 'aws-lambda';
 import {
-  CreateLetterProperties,
-  CreateTemplate,
-  EmailProperties,
-  LetterProperties,
-  NhsAppProperties,
-  SmsProperties,
+  CreateUpdateTemplate,
+  Language,
+  LetterFiles,
+  LetterType,
   TemplateDto,
+  TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-backend-client';
 
 export type FormId =
@@ -28,37 +28,35 @@ export type FormState = {
   validationError?: FormErrorState;
 };
 
-type NhsAppType = {
-  templateType: 'NHS_APP';
-};
+export type CreateUpdateNHSAppTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'NHS_APP' }
+>;
 
-type EmailType = {
-  templateType: 'EMAIL';
-};
+export type CreateUpdateEmailTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'EMAIL' }
+>;
+export type CreateUpdateSMSTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'SMS' }
+>;
 
-type SmsType = {
-  templateType: 'SMS';
-};
+export type CreateLetterTemplate = Extract<
+  CreateUpdateTemplate,
+  { templateType: 'LETTER' }
+>;
 
-type LetterType = {
-  templateType: 'LETTER';
-};
+export type NHSAppTemplate = Extract<TemplateDto, { templateType: 'NHS_APP' }>;
 
-export type CreateNHSAppTemplate = CreateTemplate &
-  NhsAppProperties &
-  NhsAppType;
-export type CreateEmailTemplate = CreateTemplate & EmailProperties & EmailType;
-export type CreateSMSTemplate = CreateTemplate & SmsProperties & SmsType;
-export type CreateLetterTemplate = CreateTemplate &
-  CreateLetterProperties &
-  LetterType;
+export type EmailTemplate = Extract<TemplateDto, { templateType: 'EMAIL' }>;
 
-export type NHSAppTemplate = TemplateDto & NhsAppProperties & NhsAppType;
-export type EmailTemplate = TemplateDto & EmailProperties & EmailType;
-export type SMSTemplate = TemplateDto & SmsProperties & SmsType;
-export type LetterTemplate = TemplateDto & LetterProperties & LetterType;
+export type SMSTemplate = Extract<TemplateDto, { templateType: 'SMS' }>;
 
-export type TemplateFormState<T = CreateTemplate | TemplateDto> = FormState & T;
+export type LetterTemplate = Extract<TemplateDto, { templateType: 'LETTER' }>;
+
+export type TemplateFormState<T = CreateUpdateTemplate | TemplateDto> =
+  FormState & T;
 
 export type PageProps = {
   params: Promise<{
@@ -76,11 +74,10 @@ export type PageComponentProps<T> = {
   initialState: TemplateFormState<T>;
 };
 
-export type SubmitTemplatePageComponentProps = {
+export type ActionPageProps = {
   templateName: string;
   templateId: string;
-  goBackPath: string;
-  submitPath: string;
+  channel: TemplateType;
 };
 
 export type ServerAction = string | ((payload: FormData) => void);
@@ -97,3 +94,45 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
   GuardDutyMalwareScanStatus,
   'NO_THREATS_FOUND'
 >;
+
+export type DatabaseTemplate = {
+  createdAt: string;
+  files?: LetterFiles;
+  id: string;
+  language?: Language;
+  letterType?: LetterType;
+  message?: string;
+  name: string;
+  sftpSendLockTime?: number;
+  subject?: string;
+  templateStatus: TemplateStatus;
+  templateType: TemplateType;
+  updatedAt: string;
+} & DbOnlyTemplateProperties;
+
+type DbOnlyTemplateProperties = {
+  owner: string;
+  version: number;
+};
+
+type AssertExtendsMerged<
+  T extends Omit<DatabaseTemplate, keyof DbOnlyTemplateProperties>,
+> = T;
+
+// assigned only for the purpose of the assertion
+type _Asserted = AssertExtendsMerged<LetterTemplate> &
+  AssertExtendsMerged<NHSAppTemplate> &
+  AssertExtendsMerged<EmailTemplate> &
+  AssertExtendsMerged<SMSTemplate>;
+
+export type TemplateKey = { owner: string; id: string };
+export type FileType = 'pdf-template' | 'test-data';
+
+export type ProofingRequest = {
+  owner: string;
+  pdfVersionId: string;
+  personalisationParameters: string[];
+  supplier: string;
+  templateId: string;
+  testDataVersionId?: string;
+};

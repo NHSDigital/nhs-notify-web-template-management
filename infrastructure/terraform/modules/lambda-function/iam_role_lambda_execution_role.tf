@@ -14,6 +14,12 @@ resource "aws_iam_role_policy_attachment" "lambda_execution" {
   policy_arn = aws_iam_policy.lambda_execution_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_function_vpc" {
+  count      = var.vpc == null ? 0 : 1
+  role       = aws_iam_role.lambda_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 data "aws_iam_policy_document" "lambda_service_trust_policy" {
   statement {
     sid    = "LambdaAssumeRole"
