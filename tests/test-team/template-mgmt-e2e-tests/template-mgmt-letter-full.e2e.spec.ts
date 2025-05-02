@@ -116,30 +116,28 @@ test.describe('letter complete e2e journey', () => {
       await expect(previewTemplatePage.continueButton).toBeVisible();
     }).toPass({ timeout: 40_000 });
 
-    await expect(async () => {
-      const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
-      await previewTemplatePage.clickContinueButton();
+    const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+    await previewTemplatePage.clickContinueButton();
 
-      await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
+    await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
 
-      const requestProofPage = new TemplateMgmtRequestProofPage(page);
-      await requestProofPage.clickRequestProofButton();
+    const requestProofPage = new TemplateMgmtRequestProofPage(page);
+    await requestProofPage.clickRequestProofButton();
 
-      await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
 
-      await previewTemplatePage.clickContinueButton();
+    await previewTemplatePage.clickContinueButton();
 
-      await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
 
-      const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
-      await submitTemplatePage.clickSubmitTemplateButton();
+    const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
+    await submitTemplatePage.clickSubmitTemplateButton();
 
-      await expect(page).toHaveURL(
-        TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
-      );
+    await expect(page).toHaveURL(
+      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
+    );
 
-      const finalTemplate = await templateStorageHelper.getTemplate(key);
-      expect(finalTemplate.templateStatus).toBe('SUBMITTED');
-    }).toPass({ timeout: 40_000 });
+    const finalTemplate = await templateStorageHelper.getTemplate(key);
+    expect(finalTemplate.templateStatus).toBe('SUBMITTED');
   });
 });
