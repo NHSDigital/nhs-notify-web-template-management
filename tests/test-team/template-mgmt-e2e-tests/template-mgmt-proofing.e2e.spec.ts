@@ -143,6 +143,9 @@ test.describe('Letter Proofing', () => {
     await lambdaClient.send(
       new InvokeCommand({
         FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
       })
     );
 
