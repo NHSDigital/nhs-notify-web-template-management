@@ -8,10 +8,12 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
 
+  public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);
+    this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
   }
 

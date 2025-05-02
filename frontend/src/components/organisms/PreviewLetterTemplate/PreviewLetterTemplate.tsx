@@ -5,7 +5,7 @@ import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
-import { BackLink } from 'nhsuk-react-components';
+import { BackLink, ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
@@ -15,8 +15,16 @@ type ButtonDetails = { text: string; href: string };
 export function PreviewLetterTemplate({
   template,
 }: Readonly<{ template: LetterTemplate }>) {
-  const { backLinkText, submitText, requestProofText } =
-    content.components.previewLetterTemplate;
+  const {
+    backLinkText,
+    errorHeading,
+    submitText,
+    requestProofText,
+    virusScanError,
+    virusScanErrorAction,
+    validationError,
+    validationErrorAction,
+  } = content.components.previewLetterTemplate;
 
   const basePath = getBasePath();
 
@@ -31,6 +39,15 @@ export function PreviewLetterTemplate({
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
+  const errors = [];
+  if (template.templateStatus === 'VIRUS_SCAN_FAILED') {
+    errors.push(virusScanError, virusScanErrorAction);
+  }
+
+  if (template.templateStatus === 'VALIDATION_FAILED') {
+    errors.push(validationError, validationErrorAction);
+  }
+
   const continueButton = buttonMap[template.templateStatus];
 
   return (
@@ -41,6 +58,18 @@ export function PreviewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
+            {errors.length > 0 && (
+              <ErrorSummary>
+                <ErrorSummary.Title data-testid='error-summary'>
+                  {errorHeading}
+                </ErrorSummary.Title>
+                {errors.map((error, i) => (
+                  <ErrorMessage key={`error-summary-${i}`}>
+                    {error}
+                  </ErrorMessage>
+                ))}
+              </ErrorSummary>
+            )}
             <PreviewTemplateDetails.Letter template={template} />
             {continueButton && (
               <NHSNotifyButton

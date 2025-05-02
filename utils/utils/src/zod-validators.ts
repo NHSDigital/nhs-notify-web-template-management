@@ -8,6 +8,7 @@ import {
   $NhsAppProperties,
   $SmsProperties,
   $TemplateDtoSchema,
+  TEMPLATE_STATUS_LIST,
   TemplateDto,
 } from 'nhs-notify-backend-client';
 import { GuardDutyMalwareScanStatus } from './types';
@@ -33,7 +34,7 @@ export const $SubmittedTemplate = z.intersection(
 export const $NonSubmittedTemplate = z.intersection(
   $TemplateDtoSchema,
   z.object({
-    templateStatus: z.literal('NOT_YET_SUBMITTED'),
+    templateStatus: z.enum(TEMPLATE_STATUS_LIST).exclude(['SUBMITTED']),
   })
 );
 

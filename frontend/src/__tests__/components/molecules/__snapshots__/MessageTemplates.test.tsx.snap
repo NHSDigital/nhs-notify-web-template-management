@@ -484,6 +484,16 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                     Copy
                   </a>
                 </p>
+                <p
+                  class="nhsuk-u-margin-bottom-2"
+                >
+                  <a
+                    aria-label="Delete Template 1"
+                    href="/delete-template/1"
+                  >
+                    Delete
+                  </a>
+                </p>
               </div>
             </td>
           </tr>
