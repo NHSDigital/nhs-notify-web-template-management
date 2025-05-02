@@ -29,17 +29,19 @@ export const createHandler =
       templateId,
       fileName
     );
+    const virusScanResult =
+      scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
-    await letterFileRepository.copyFromQuarantineToInternal(
-      objectKey,
-      versionId,
-      internalKey
-    );
+    if (virusScanResult === 'PASSED') {
+      await letterFileRepository.copyFromQuarantineToInternal(
+        objectKey,
+        versionId,
+        internalKey
+      );
+    }
 
     // we will copy to the download bucket here as well
 
-    const virusScanResult =
-      scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
     await templateRepository.setLetterFileVirusScanStatusForProof(
       owner,
       templateId,

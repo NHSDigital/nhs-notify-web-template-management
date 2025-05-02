@@ -841,6 +841,11 @@ describe('templateRepository', () => {
   describe('setLetterFileVirusScanStatusForProof', () => {
     it('adds the virus scan status of the proof to the database record and updates the template status if scan status is passed', async () => {
       const { templateRepository, mocks } = setup();
+      mocks.ddbDocClient.on(UpdateCommand).resolves({
+        Attributes: {
+          templateStatus: 'WAITING_FOR_PROOF',
+        },
+      });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
         'template-owner',
@@ -887,6 +892,11 @@ describe('templateRepository', () => {
 
     it('adds the virus scan status of the proof to the database record and does not update the template status if scan status is failed', async () => {
       const { templateRepository, mocks } = setup();
+      mocks.ddbDocClient.on(UpdateCommand).resolves({
+        Attributes: {
+          templateStatus: 'WAITING_FOR_PROOF',
+        },
+      });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
         'template-owner',
@@ -945,7 +955,11 @@ describe('templateRepository', () => {
 
       mocks.ddbDocClient
         .on(UpdateCommand)
-        .resolvesOnce({})
+        .resolvesOnce({
+          Attributes: {
+            templateStatus: 'WAITING_FOR_PROOF',
+          },
+        })
         .rejects(
           new ConditionalCheckFailedException({
             $metadata: {},
@@ -983,10 +997,13 @@ describe('templateRepository', () => {
 
     it('raises other exceptions from the database for the second update', async () => {
       const { templateRepository, mocks } = setup();
-
       mocks.ddbDocClient
         .on(UpdateCommand)
-        .resolvesOnce({})
+        .resolvesOnce({
+          Attributes: {
+            templateStatus: 'WAITING_FOR_PROOF',
+          },
+        })
         .rejects(new Error('Something went wrong'));
 
       await expect(

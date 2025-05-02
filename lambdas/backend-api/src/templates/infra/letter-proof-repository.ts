@@ -11,7 +11,11 @@ export class LetterProofRepository extends LetterFileRepository {
     const [fileType, templateId, fileNameWithExtension] = keyParts;
     const [fileName, extension] = fileNameWithExtension.split('.');
 
-    if (keyParts.length !== 3 || fileType !== 'proofs' || extension !== 'pdf') {
+    if (
+      keyParts.length !== 3 ||
+      fileType !== 'proofs' ||
+      extension.toLowerCase() !== 'pdf'
+    ) {
       throw new Error(`Unexpected object key "${key}"`);
     }
 

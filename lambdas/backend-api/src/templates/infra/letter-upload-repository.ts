@@ -131,7 +131,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     const expectedExtension =
       parsed['file-type'] === 'test-data' ? 'csv' : 'pdf';
 
-    if (extension !== expectedExtension) {
+    if (extension.toLowerCase() !== expectedExtension) {
       throw new Error(`Unexpected object key "${key}"`);
     }
 

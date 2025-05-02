@@ -385,6 +385,58 @@ export class TemplateRepository {
     }
   }
 
+  private async appendFileToProofs(
+    templateKey: TemplateKey,
+    fileName: string,
+    fullFilePath: string,
+    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
+  ) {
+    const dynamoResponse = await this.client.send(
+      new UpdateCommand({
+        TableName: this.templatesTableName,
+        Key: templateKey,
+        UpdateExpression:
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+        ExpressionAttributeNames: {
+          '#fileName': fileName,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+          ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+          ':updatedAt': new Date().toISOString(),
+          ':virusScanResult': {
+            fileName: fullFilePath,
+            virusScanStatus,
+          } satisfies FileDetails,
+        },
+        ConditionExpression:
+          'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ReturnValues: 'ALL_NEW',
+      })
+    );
+
+    return dynamoResponse.Attributes;
+  }
+
+  private async updateStatusToProofAvailable(templateKey: TemplateKey) {
+    await this.client.send(
+      new UpdateCommand({
+        TableName: this.templatesTableName,
+        Key: templateKey,
+        UpdateExpression:
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+        ExpressionAttributeValues: {
+          ':templateStatusWaitingForProof':
+            'WAITING_FOR_PROOF' satisfies TemplateStatus,
+          ':templateStatusProofAvailable':
+            'PROOF_AVAILABLE' satisfies TemplateStatus,
+          ':updatedAt': new Date().toISOString(),
+        },
+        ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
+      })
+    );
+  }
+
   async setLetterFileVirusScanStatusForProof(
     owner: string,
     templateId: string,
@@ -395,28 +447,20 @@ export class TemplateRepository {
     const templateKey = { owner, id: templateId };
 
     try {
-      await this.client.send(
-        new UpdateCommand({
-          TableName: this.templatesTableName,
-          Key: templateKey,
-          UpdateExpression:
-            'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
-          ExpressionAttributeNames: {
-            '#fileName': fileName,
-          },
-          ExpressionAttributeValues: {
-            ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
-            ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
-            ':updatedAt': new Date().toISOString(),
-            ':virusScanResult': {
-              fileName: fullFilePath,
-              virusScanStatus,
-            } satisfies FileDetails,
-          },
-          ConditionExpression:
-            'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
-        })
+      const updatedItem = await this.appendFileToProofs(
+        templateKey,
+        fileName,
+        fullFilePath,
+        virusScanStatus
       );
+
+      // we do not want to try and update the status to PROOF_AVAILABLE if the scan has not passed or if the status has already been changed by another process
+      if (
+        virusScanStatus === 'FAILED' ||
+        updatedItem?.templateStatus !== 'WAITING_FOR_PROOF'
+      ) {
+        return;
+      }
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         logger.error(
@@ -427,34 +471,13 @@ export class TemplateRepository {
 
         // the second update has a stronger condition than the first, so if this one fails no need to try the second
         return;
-      } else {
-        throw error;
       }
-    }
 
-    // we do not want to try and update the status to PROOF_AVAILABLE if the scan has not passed
-    if (virusScanStatus === 'FAILED') {
-      return;
+      throw error;
     }
 
     try {
-      await this.client.send(
-        new UpdateCommand({
-          TableName: this.templatesTableName,
-          Key: templateKey,
-          UpdateExpression:
-            'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
-          ExpressionAttributeValues: {
-            ':templateStatusWaitingForProof':
-              'WAITING_FOR_PROOF' satisfies TemplateStatus,
-            ':templateStatusProofAvailable':
-              'PROOF_AVAILABLE' satisfies TemplateStatus,
-            ':updatedAt': new Date().toISOString(),
-          },
-          ConditionExpression:
-            'templateStatus = :templateStatusWaitingForProof',
-        })
-      );
+      await this.updateStatusToProofAvailable(templateKey);
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         logger.error('Conditional check setting template status', error, {
