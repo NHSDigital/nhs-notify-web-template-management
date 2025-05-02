@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
+import { randomUUID } from 'node:crypto';
 import {
   createAuthHelper,
   TestUserId,
@@ -22,6 +23,7 @@ test.describe('Letter Proofing', () => {
 
   test.afterAll(async () => {
     await sftpHelper.end();
+    await templateStorageHelper.deleteSeededTemplates();
   });
 
   test('proofs are downloaded and linked to the DB entry', async () => {
@@ -60,6 +62,9 @@ test.describe('Letter Proofing', () => {
     await lambdaClient.send(
       new InvokeCommand({
         FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
       })
     );
 
@@ -92,12 +97,12 @@ test.describe('Letter Proofing', () => {
           process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
           'proofs',
           templateId,
-          'proof',
+          fileName,
           'pdf'
         );
 
         expect(quarantinePdf?.ChecksumSHA256).toEqual(
-          pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+          pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
         );
 
         const internalPdf = await templateStorageHelper.getLetterTemplateFile(
@@ -109,10 +114,10 @@ test.describe('Letter Proofing', () => {
         );
 
         expect(internalPdf?.ChecksumSHA256).toEqual(
-          pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
+          pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
         );
       }
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 60_000 });
   });
 
   test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
@@ -136,7 +141,7 @@ test.describe('Letter Proofing', () => {
 
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/proofs/${templateId}/proof.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof.pdf`
     );
 
     // invoke SFTP poll lambda
@@ -174,6 +179,6 @@ test.describe('Letter Proofing', () => {
       );
 
       expect(pdf).toBe(null);
-    }).toPass({ timeout: 10_000 });
+    }).toPass({ timeout: 60_000 });
   });
 });

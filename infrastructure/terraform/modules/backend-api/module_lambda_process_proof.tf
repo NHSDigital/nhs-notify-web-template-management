@@ -23,11 +23,22 @@ data "aws_iam_policy_document" "process_proof" {
 
     actions = [
       "dynamodb:UpdateItem",
-      "dynamodb:Query",
     ]
 
     resources = [
       aws_dynamodb_table.templates.arn,
+    ]
+  }
+  statement {
+    sid    = "AllowDynamoGSIAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.templates.arn}/index/QueryById",
     ]
   }
 

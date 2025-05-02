@@ -6,7 +6,7 @@ resource "aws_iam_role" "quarantine_scan_failed_for_upload" {
 
 resource "aws_iam_role_policy" "quarantine_scan_failed_for_upload" {
   name   = "${local.csi}-quarantine-scan-failed-for-upload"
-  role   = aws_iam_role.quarantine_scan_failed_for_proof.id
+  role   = aws_iam_role.quarantine_scan_failed_for_upload.id
   policy = data.aws_iam_policy_document.quarantine_scan_failed_for_upload.json
 }
 

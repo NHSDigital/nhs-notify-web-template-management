@@ -107,8 +107,10 @@ test.describe('letter complete e2e journey', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
+    }).toPass({ timeout: 40_000 });
 
-      page.reload();
+    await expect(async () => {
+      await page.reload();
 
       const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
       await expect(previewTemplatePage.continueButton).toBeVisible();
