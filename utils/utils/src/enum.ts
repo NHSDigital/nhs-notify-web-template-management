@@ -128,7 +128,7 @@ export const templateStatusCopyAction = (status: TemplateStatus) =>
       VIRUS_SCAN_FAILED: true,
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
-      PROOF_AVAILABLE: true, // TO CHECK
+      PROOF_AVAILABLE: false,
     }) as const
   )[status];
 
@@ -152,7 +152,7 @@ export const templateStatusDeleteAction = (status: TemplateStatus) =>
       VIRUS_SCAN_FAILED: true,
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
-      PROOF_AVAILABLE: true, // TO CHECK
+      PROOF_AVAILABLE: true,
     }) as const
   )[status];
 

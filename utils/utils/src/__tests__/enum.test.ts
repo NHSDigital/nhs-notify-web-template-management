@@ -282,7 +282,7 @@ describe('templateDisplayCopyAction', () => {
     ['LETTER', 'PENDING_VALIDATION', false],
     ['LETTER', 'VIRUS_SCAN_FAILED', false],
     ['LETTER', 'VALIDATION_FAILED', false],
-    ['LETTER', 'PROOF_AVAILABLE', false], // TO CHECK
+    ['LETTER', 'PROOF_AVAILABLE', false],
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
     (type, status, shouldDisplayCopyAction) => {
@@ -320,7 +320,7 @@ describe('templateDisplayDeleteAction', () => {
     ['LETTER', 'PENDING_VALIDATION', true],
     ['LETTER', 'VIRUS_SCAN_FAILED', true],
     ['LETTER', 'VALIDATION_FAILED', true],
-    ['LETTER', 'PROOF_AVAILABLE', true], // TO CHECK
+    ['LETTER', 'PROOF_AVAILABLE', true],
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
     (type, status, shouldDisplayDeleteAction) => {
