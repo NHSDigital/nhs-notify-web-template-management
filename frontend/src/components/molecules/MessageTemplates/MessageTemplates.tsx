@@ -13,6 +13,8 @@ import {
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   previewSubmittedTemplatePages,
+  templateDisplayCopyAction,
+  templateDisplayDeleteAction,
 } from 'nhs-notify-web-template-management-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import style from './MessageTemplates.module.scss';
@@ -94,7 +96,7 @@ export function MessageTemplates({
                 </Table.Cell>
                 <Table.Cell>
                   <div className={style.actionLinksWrapper}>
-                    {template.templateType === 'LETTER' ? null : (
+                    {templateDisplayCopyAction(template) ? (
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
                           href={`/copy-template/${template.id}`}
@@ -104,8 +106,8 @@ export function MessageTemplates({
                           {messageTemplatesContent.tableHeadings.action.copy}
                         </Link>
                       </p>
-                    )}
-                    {template.templateStatus === 'SUBMITTED' ? null : (
+                    ) : null}
+                    {templateDisplayDeleteAction(template) ? (
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
                           href={`/delete-template/${template.id}`}
@@ -114,7 +116,7 @@ export function MessageTemplates({
                           {messageTemplatesContent.tableHeadings.action.delete}
                         </Link>
                       </p>
-                    )}
+                    ) : null}
                   </div>
                 </Table.Cell>
               </Table.Row>
