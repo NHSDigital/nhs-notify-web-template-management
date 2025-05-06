@@ -12,6 +12,7 @@ const buildCommand = [
 
 export default defineConfig({
   ...baseConfig,
+  fullyParallel: true,
 
   timeout: 60_000, // 30 seconds in the playwright default
   expect: {
