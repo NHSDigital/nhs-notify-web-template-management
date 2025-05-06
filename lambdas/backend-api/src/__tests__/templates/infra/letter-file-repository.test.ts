@@ -12,7 +12,8 @@ const setup = () => {
 
   const letterFileRepository = new LetterFileRepository(
     'quarantine-bucket',
-    'internal-bucket'
+    'internal-bucket',
+    'download-bucket'
   );
 
   return { letterFileRepository, mocks: { s3Client } };
@@ -33,6 +34,27 @@ describe('LetterUploadRepository', () => {
         CopySource:
           '/quarantine-bucket/s3/object/key?versionId=s3-object-version',
         Key: 's3/object/key',
+        MetadataDirective: 'COPY',
+        TaggingDirective: 'COPY',
+      });
+    });
+  });
+
+  describe('copyFromQuarantineToDownload', () => {
+    it('copies pdf template files from quarantine to download', async () => {
+      const { letterFileRepository, mocks } = setup();
+
+      await letterFileRepository.copyFromQuarantineToDownload(
+        's3/object/key',
+        's3-object-version',
+        's3/download/key'
+      );
+
+      expect(mocks.s3Client).toHaveReceivedCommandWith(CopyObjectCommand, {
+        Bucket: 'download-bucket',
+        CopySource:
+          '/quarantine-bucket/s3/object/key?versionId=s3-object-version',
+        Key: 's3/download/key',
         MetadataDirective: 'COPY',
         TaggingDirective: 'COPY',
       });
