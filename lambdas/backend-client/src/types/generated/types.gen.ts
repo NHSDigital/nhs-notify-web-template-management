@@ -110,7 +110,6 @@ export type TemplateDto = BaseCreatedTemplate &
 export type TemplateStatus =
   | 'DELETED'
   | 'NOT_YET_SUBMITTED'
-  | 'PENDING_PROOF'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'

@@ -78,12 +78,11 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     NOT_YET_SUBMITTED: 'Not yet submitted',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
-    PENDING_PROOF: 'Waiting for proof',
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Checking files',
     PENDING_VALIDATION: 'Checking files',
-    VIRUS_SCAN_FAILED: 'Checks failed',
     VALIDATION_FAILED: 'Checks failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
     WAITING_FOR_PROOF: 'Waiting for proof',
     PROOF_AVAILABLE: 'Proof available',
   })[status];
@@ -94,13 +93,12 @@ export const templateStatusToColourMappings = (status: TemplateStatus) =>
       NOT_YET_SUBMITTED: undefined,
       SUBMITTED: 'grey',
       DELETED: undefined,
-      PENDING_PROOF: 'yellow',
       PENDING_PROOF_REQUEST: 'blue',
       PENDING_UPLOAD: 'blue',
       PENDING_VALIDATION: 'blue',
       VIRUS_SCAN_FAILED: 'red',
       VALIDATION_FAILED: 'red',
-      WAITING_FOR_PROOF: undefined,
+      WAITING_FOR_PROOF: 'yellow',
       PROOF_AVAILABLE: undefined,
     }) as const
   )[status];
@@ -124,12 +122,13 @@ export const templateStatusCopyAction = (status: TemplateStatus) =>
       NOT_YET_SUBMITTED: true,
       SUBMITTED: true,
       DELETED: false,
-      PENDING_PROOF: false,
       PENDING_PROOF_REQUEST: true,
       PENDING_UPLOAD: true,
       PENDING_VALIDATION: true,
       VIRUS_SCAN_FAILED: true,
       VALIDATION_FAILED: true,
+      WAITING_FOR_PROOF: false,
+      PROOF_AVAILABLE: true, // TO CHECK
     }) as const
   )[status];
 
@@ -147,12 +146,13 @@ export const templateStatusDeleteAction = (status: TemplateStatus) =>
       NOT_YET_SUBMITTED: true,
       SUBMITTED: false,
       DELETED: false,
-      PENDING_PROOF: false,
       PENDING_PROOF_REQUEST: true,
       PENDING_UPLOAD: true,
       PENDING_VALIDATION: true,
       VIRUS_SCAN_FAILED: true,
       VALIDATION_FAILED: true,
+      WAITING_FOR_PROOF: false,
+      PROOF_AVAILABLE: true, // TO CHECK
     }) as const
   )[status];
 
