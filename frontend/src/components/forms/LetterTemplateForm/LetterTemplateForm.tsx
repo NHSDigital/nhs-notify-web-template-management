@@ -82,10 +82,7 @@ export const LetterTemplateForm: FC<
   const templateCsvError =
     validationError?.fieldErrors.letterTemplateCsv?.join(', ');
 
-  const validateForm = validate(
-    $CreateLetterTemplateForm,
-    setValidationError
-  );
+  const validateForm = validate($CreateLetterTemplateForm, setValidationError);
 
   const formGroupClasses = [
     'nhsuk-u-margin-bottom-6',
