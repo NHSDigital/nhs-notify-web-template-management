@@ -5,6 +5,10 @@ const generatePageTitle = (title: string): string => {
 };
 
 const goBackButtonText = 'Go back';
+const enterATemplateName = 'Enter a template name';
+const enterATemplateMessage = 'Enter a template message';
+const templateMessageTooLong = 'Template message too long';
+const selectAnOption = 'Select an option';
 
 const header = {
   serviceName: 'Notify',
@@ -212,7 +216,7 @@ const previewEmailTemplate = {
     buttonText: 'Continue',
     previewEmailTemplateAction: {
       error: {
-        empty: 'Select an option',
+        empty: selectAnOption,
       },
     },
   },
@@ -247,7 +251,7 @@ const previewNHSAppTemplate = {
     buttonText: 'Continue',
     previewNHSAppTemplateAction: {
       error: {
-        empty: 'Select an option',
+        empty: selectAnOption,
       },
     },
   },
@@ -280,7 +284,7 @@ const previewSMSTemplate = {
     buttonText: 'Continue',
     previewSMSTemplateAction: {
       error: {
-        empty: 'Select an option',
+        empty: selectAnOption,
       },
     },
   },
@@ -476,12 +480,12 @@ const templateFormNhsApp = {
   backLinkText: 'Back to choose a template type',
   form: {
     nhsAppTemplateName: {
-      error: { empty: 'Enter a template name' },
+      error: { empty: enterATemplateName },
     },
     nhsAppTemplateMessage: {
       error: {
-        empty: 'Enter a template message',
-        max: 'Template message too long',
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
       },
     },
   },
@@ -514,7 +518,7 @@ const templateFormLetter = {
   form: {
     letterTemplateName: {
       error: {
-        empty: 'Enter a template name',
+        empty: enterATemplateName,
       },
     },
     letterTemplateLetterType: {
@@ -560,7 +564,7 @@ const templateFormEmail = {
   form: {
     emailTemplateName: {
       error: {
-        empty: 'Enter a template name',
+        empty: enterATemplateName,
       },
     },
     emailTemplateSubjectLine: {
@@ -570,8 +574,8 @@ const templateFormEmail = {
     },
     emailTemplateMessage: {
       error: {
-        empty: 'Enter a template message',
-        max: 'Template message too long',
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
       },
     },
   },
@@ -595,13 +599,13 @@ const templateFormSms = {
   form: {
     smsTemplateName: {
       error: {
-        empty: 'Enter a template name',
+        empty: enterATemplateName,
       },
     },
     smsTemplateMessage: {
       error: {
-        empty: 'Enter a template message',
-        max: 'Template message too long',
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
       },
     },
   },
