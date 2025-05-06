@@ -5,6 +5,7 @@ export type TemplateType = 'NHS_APP' | 'EMAIL' | 'SMS' | 'LETTER';
 export type TemplateStatus =
   | 'DELETED'
   | 'NOT_YET_SUBMITTED'
+  | 'PENDING_PROOF'
   | 'PENDING_PROOF_REQUEST'
   | 'PENDING_UPLOAD'
   | 'PENDING_VALIDATION'
