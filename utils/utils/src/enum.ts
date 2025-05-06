@@ -84,6 +84,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     PENDING_VALIDATION: 'Checking files',
     VIRUS_SCAN_FAILED: 'Checks failed',
     VALIDATION_FAILED: 'Checks failed',
+    WAITING_FOR_PROOF: 'Waiting for proof',
+    PROOF_AVAILABLE: 'Proof available',
   })[status];
 
 export const templateStatusToColourMappings = (status: TemplateStatus) =>
@@ -98,6 +100,8 @@ export const templateStatusToColourMappings = (status: TemplateStatus) =>
       PENDING_VALIDATION: 'blue',
       VIRUS_SCAN_FAILED: 'red',
       VALIDATION_FAILED: 'red',
+      WAITING_FOR_PROOF: undefined,
+      PROOF_AVAILABLE: undefined,
     }) as const
   )[status];
 

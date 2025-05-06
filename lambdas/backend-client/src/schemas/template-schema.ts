@@ -4,6 +4,7 @@ import {
   CreateLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
+  VersionedFileDetails,
   FileDetails,
   LetterFiles,
   LetterProperties,
@@ -35,16 +36,21 @@ export type ValidatedTemplateDto = TemplateDto &
 const $FileDetails = schemaFor<FileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
-    currentVersion: z.string(),
     virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
+  })
+);
+
+const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
+  $FileDetails.extend({
+    currentVersion: z.string(),
   })
 );
 
 export const $LetterFiles = schemaFor<LetterFiles>()(
   z.object({
-    pdfTemplate: $FileDetails,
-    testDataCsv: $FileDetails.optional(),
-    proofs: z.array($FileDetails).optional(),
+    pdfTemplate: $VersionedFileDetails,
+    testDataCsv: $VersionedFileDetails.optional(),
+    proofs: z.record($FileDetails).optional(),
   })
 );
 

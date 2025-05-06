@@ -126,6 +126,7 @@ export class TemplateClient implements ITemplateClient {
           virusScanStatus: 'PENDING',
         },
       }),
+      proofs: {},
     };
 
     const withFiles = {

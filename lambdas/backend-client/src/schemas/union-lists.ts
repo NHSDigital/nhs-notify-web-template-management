@@ -45,6 +45,8 @@ export const TEMPLATE_STATUS_LIST = arrayOfAll<TemplateStatus>()([
   'PENDING_VALIDATION',
   'VIRUS_SCAN_FAILED',
   'VALIDATION_FAILED',
+  'WAITING_FOR_PROOF',
+  'PROOF_AVAILABLE',
 ]);
 
 export const LANGUAGE_LIST = arrayOfAll<Language>()([
