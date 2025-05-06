@@ -114,4 +114,18 @@ data "aws_iam_policy_document" "process_proof" {
 
     resources = ["${module.s3bucket_internal.arn}/*"]
   }
+
+  statement {
+    sid    = "AllowS3DownloadWrite"
+    effect = "Allow"
+
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectVersion",
+      "s3:PutObjectTagging",
+      "s3:PutObjectVersionTagging",
+    ]
+
+    resources = ["${module.s3bucket_download.arn}/*"]
+  }
 }
