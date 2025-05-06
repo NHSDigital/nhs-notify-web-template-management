@@ -1,7 +1,10 @@
 import {
   Language,
   LetterType,
+  TEMPLATE_TYPE_LIST,
+  TemplateDto,
   TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
@@ -13,6 +16,12 @@ import {
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   previewSubmittedTemplatePages,
+  templateStatusDeleteAction,
+  templateStatusCopyAction,
+  templateTypeCopyAction,
+  templateTypeDeleteAction,
+  templateDisplayCopyAction,
+  templateDisplayDeleteAction,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -123,10 +132,11 @@ describe('templateStatusToDisplayMappings', () => {
 
 describe('templateStatusToColourMappings', () => {
   it.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected colour when templateType is %s',
+    'should give the expected colour when templateStatus is %s',
     (templateStatus) => {
       const expectedColours: { [key in TemplateStatus]?: string } = {
         SUBMITTED: 'grey',
+        PENDING_PROOF: 'yellow',
         PENDING_PROOF_REQUEST: 'blue',
         PENDING_UPLOAD: 'blue',
         PENDING_VALIDATION: 'blue',
@@ -189,4 +199,137 @@ describe('previewSubmittedTemplatePages', () => {
       'preview-submitted-email-template'
     );
   });
+});
+
+describe('templateStatusCopyAction', () => {
+  test.each(TEMPLATE_STATUS_LIST)(
+    'should give the expected result for display of copy action when templateStatus is %s',
+    (templateStatus) => {
+      const statusWithNoExpectedCopyAction: TemplateStatus[] = [
+        'DELETED',
+        'PENDING_PROOF',
+      ];
+
+      expect(templateStatusCopyAction(templateStatus)).toEqual(
+        !statusWithNoExpectedCopyAction.includes(templateStatus)
+      );
+    }
+  );
+});
+
+describe('templateStatusDeleteAction', () => {
+  test.each(TEMPLATE_STATUS_LIST)(
+    'should give the expected result for display of delete action when templateStatus is %s',
+    (templateStatus) => {
+      const statusWithNoExpectedDeleteAction: TemplateStatus[] = [
+        'DELETED',
+        'SUBMITTED',
+        'PENDING_PROOF',
+      ];
+
+      expect(templateStatusDeleteAction(templateStatus)).toEqual(
+        !statusWithNoExpectedDeleteAction.includes(templateStatus)
+      );
+    }
+  );
+});
+
+describe('templateTypeCopyAction', () => {
+  test.each(TEMPLATE_TYPE_LIST)(
+    'should give the expected result for display of copy action when templateType is %s',
+    (templateType) => {
+      const typesWithNoExpectedCopyAction: TemplateType[] = ['LETTER'];
+
+      expect(templateTypeCopyAction(templateType)).toEqual(
+        !typesWithNoExpectedCopyAction.includes(templateType)
+      );
+    }
+  );
+});
+
+describe('templateTypeDeleteAction', () => {
+  test.each(TEMPLATE_TYPE_LIST as TemplateType[])(
+    'should give the expected result for display of delete action when templateType is %s',
+    (templateType) => {
+      const typesWithNoExpectedDeleteAction: TemplateType[] = [];
+
+      expect(templateTypeDeleteAction(templateType)).toEqual(
+        !typesWithNoExpectedDeleteAction.includes(templateType)
+      );
+    }
+  );
+});
+
+describe('templateDisplayCopyAction', () => {
+  test.each([
+    ['NHS_APP', 'SUBMITTED', true],
+    ['NHS_APP', 'NOT_YET_SUBMITTED', true],
+    ['NHS_APP', 'DELETED', false],
+    ['SMS', 'SUBMITTED', true],
+    ['SMS', 'NOT_YET_SUBMITTED', true],
+    ['SMS', 'DELETED', false],
+    ['EMAIL', 'SUBMITTED', true],
+    ['EMAIL', 'NOT_YET_SUBMITTED', true],
+    ['EMAIL', 'DELETED', false],
+    ['EMAIL', 'PENDING_PROOF', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'SUBMITTED', false],
+    ['LETTER', 'NOT_YET_SUBMITTED', false],
+    ['LETTER', 'DELETED', false],
+    ['LETTER', 'PENDING_PROOF', false],
+    ['LETTER', 'PENDING_PROOF_REQUEST', false],
+    ['LETTER', 'PENDING_UPLOAD', false],
+    ['LETTER', 'PENDING_VALIDATION', false],
+    ['LETTER', 'VIRUS_SCAN_FAILED', false],
+    ['LETTER', 'VALIDATION_FAILED', false],
+  ])(
+    'should give the expected result for display of copy action when template has type of %s and status of %s',
+    (type, status, shouldDisplayCopyAction) => {
+      const templateType = type as TemplateType;
+      const templateStatus = status as TemplateStatus;
+
+      expect(
+        templateDisplayCopyAction({
+          templateType,
+          templateStatus,
+        } as TemplateDto)
+      ).toBe(shouldDisplayCopyAction);
+    }
+  );
+});
+
+describe('templateDisplayDeleteAction', () => {
+  test.each([
+    ['NHS_APP', 'SUBMITTED', false],
+    ['NHS_APP', 'NOT_YET_SUBMITTED', true],
+    ['NHS_APP', 'DELETED', false],
+    ['SMS', 'SUBMITTED', false],
+    ['SMS', 'NOT_YET_SUBMITTED', true],
+    ['SMS', 'DELETED', false],
+    ['EMAIL', 'SUBMITTED', false],
+    ['EMAIL', 'NOT_YET_SUBMITTED', true],
+    ['EMAIL', 'DELETED', false],
+    ['EMAIL', 'PENDING_PROOF', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'SUBMITTED', false],
+    ['LETTER', 'NOT_YET_SUBMITTED', true],
+    ['LETTER', 'DELETED', false],
+    ['LETTER', 'PENDING_PROOF', false],
+    ['LETTER', 'PENDING_PROOF_REQUEST', true],
+    ['LETTER', 'PENDING_UPLOAD', true],
+    ['LETTER', 'PENDING_VALIDATION', true],
+    ['LETTER', 'VIRUS_SCAN_FAILED', true],
+    ['LETTER', 'VALIDATION_FAILED', true],
+  ])(
+    'should give the expected result for display of delete action when template has type of %s and status of %s',
+    (type, status, shouldDisplayDeleteAction) => {
+      const templateType = type as TemplateType;
+      const templateStatus = status as TemplateStatus;
+
+      expect(
+        templateDisplayDeleteAction({
+          templateType,
+          templateStatus,
+        } as TemplateDto)
+      ).toBe(shouldDisplayDeleteAction);
+    }
+  );
 });

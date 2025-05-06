@@ -3,6 +3,7 @@ import {
   TemplateStatus,
   LetterType,
   Language,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 
 const languageMap: Record<Language, string> = {
@@ -77,6 +78,7 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     NOT_YET_SUBMITTED: 'Not yet submitted',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
+    PENDING_PROOF: 'Waiting for proof',
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Checking files',
     PENDING_VALIDATION: 'Checking files',
@@ -90,6 +92,7 @@ export const templateStatusToColourMappings = (status: TemplateStatus) =>
       NOT_YET_SUBMITTED: undefined,
       SUBMITTED: 'grey',
       DELETED: undefined,
+      PENDING_PROOF: 'yellow',
       PENDING_PROOF_REQUEST: 'blue',
       PENDING_UPLOAD: 'blue',
       PENDING_VALIDATION: 'blue',
@@ -110,3 +113,63 @@ export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+
+export const templateStatusCopyAction = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: true,
+      SUBMITTED: true,
+      DELETED: false,
+      PENDING_PROOF: false,
+      PENDING_PROOF_REQUEST: true,
+      PENDING_UPLOAD: true,
+      PENDING_VALIDATION: true,
+      VIRUS_SCAN_FAILED: true,
+      VALIDATION_FAILED: true,
+    }) as const
+  )[status];
+
+export const templateTypeCopyAction = (type: TemplateType) =>
+  ({
+    NHS_APP: true,
+    SMS: true,
+    EMAIL: true,
+    LETTER: false,
+  })[type];
+
+export const templateStatusDeleteAction = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: true,
+      SUBMITTED: false,
+      DELETED: false,
+      PENDING_PROOF: false,
+      PENDING_PROOF_REQUEST: true,
+      PENDING_UPLOAD: true,
+      PENDING_VALIDATION: true,
+      VIRUS_SCAN_FAILED: true,
+      VALIDATION_FAILED: true,
+    }) as const
+  )[status];
+
+export const templateTypeDeleteAction = (type: TemplateType) =>
+  ({
+    NHS_APP: true,
+    SMS: true,
+    EMAIL: true,
+    LETTER: true,
+  })[type];
+
+export const templateDisplayCopyAction = ({
+  templateType,
+  templateStatus,
+}: TemplateDto) =>
+  templateTypeCopyAction(templateType) &&
+  templateStatusCopyAction(templateStatus);
+
+export const templateDisplayDeleteAction = ({
+  templateType,
+  templateStatus,
+}: TemplateDto) =>
+  templateTypeDeleteAction(templateType) &&
+  templateStatusDeleteAction(templateStatus);
