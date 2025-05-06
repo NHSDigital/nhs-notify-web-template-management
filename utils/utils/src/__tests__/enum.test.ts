@@ -1,14 +1,20 @@
-import { Language, LetterType } from 'nhs-notify-backend-client';
+import {
+  Language,
+  LetterType,
+  TemplateStatus,
+} from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
   letterTypeDisplayMappings,
   previewTemplatePages,
+  templateStatusToColourMappings,
   templateStatusToDisplayMappings,
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
-  viewSubmittedTemplatePages,
+  previewSubmittedTemplatePages,
 } from '../enum';
+import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
 describe('templateTypeDisplayMappings', () => {
   test('NHS_APP', () => {
@@ -31,12 +37,16 @@ describe('templateTypeDisplayMappings', () => {
 describe('letterTypeDisplayMappings', () => {
   const letterCases: [LetterType, Language, string][] = [
     ['x0', 'en', 'Standard letter'],
-    ['x0', 'bn', 'Letter - Bengali'],
-    ['x0', 'el', 'Letter - Greek'],
+    ['x0', 'bn', 'Standard letter - Bengali'],
+    ['x0', 'el', 'Standard letter - Greek'],
     ['q1', 'en', 'Braille letter'],
     ['x3', 'en', 'Audio CD letter'],
     ['x1', 'en', 'Large print letter'],
     ['q4', 'en', 'British Sign Language letter'],
+    ['q1', 'fr', 'Braille letter - French'],
+    ['x3', 'it', 'Audio CD letter - Italian'],
+    ['x1', 'de', 'Large print letter - German'],
+    ['q4', 'es', 'British Sign Language letter - Spanish'],
   ];
 
   test.each(letterCases)(
@@ -111,6 +121,26 @@ describe('templateStatusToDisplayMappings', () => {
   });
 });
 
+describe('templateStatusToColourMappings', () => {
+  it.each(TEMPLATE_STATUS_LIST)(
+    'should give the expected colour when templateType is %s',
+    (templateStatus) => {
+      const expectedColours: { [key in TemplateStatus]?: string } = {
+        SUBMITTED: 'grey',
+        PENDING_PROOF_REQUEST: 'blue',
+        PENDING_UPLOAD: 'blue',
+        PENDING_VALIDATION: 'blue',
+        VIRUS_SCAN_FAILED: 'red',
+        VALIDATION_FAILED: 'red',
+      };
+
+      expect(templateStatusToColourMappings(templateStatus)).toEqual(
+        expectedColours[templateStatus]
+      );
+    }
+  );
+});
+
 describe('templateTypeToUrlTextMappings', () => {
   test('NHS_APP', () => {
     expect(templateTypeToUrlTextMappings('NHS_APP')).toEqual('nhs-app');
@@ -141,21 +171,21 @@ describe('previewTemplatePages', () => {
   });
 });
 
-describe('viewSubmittedTemplatePages', () => {
+describe('previewSubmittedTemplatePages', () => {
   test('NHS_APP', () => {
-    expect(viewSubmittedTemplatePages('NHS_APP')).toEqual(
+    expect(previewSubmittedTemplatePages('NHS_APP')).toEqual(
       'preview-submitted-nhs-app-template'
     );
   });
 
   test('SMS', () => {
-    expect(viewSubmittedTemplatePages('SMS')).toEqual(
+    expect(previewSubmittedTemplatePages('SMS')).toEqual(
       'preview-submitted-text-message-template'
     );
   });
 
   test('EMAIL', () => {
-    expect(viewSubmittedTemplatePages('EMAIL')).toEqual(
+    expect(previewSubmittedTemplatePages('EMAIL')).toEqual(
       'preview-submitted-email-template'
     );
   });

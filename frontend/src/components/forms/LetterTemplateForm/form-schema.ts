@@ -8,7 +8,7 @@ const {
   },
 } = content;
 
-export const $CreateUpdateLetterTemplateForm = z.object({
+export const $CreateLetterTemplateForm = z.object({
   letterTemplateName: z
     .string({ message: form.letterTemplateName.error.empty })
     .min(1, { message: form.letterTemplateName.error.empty }),

@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubmitLetterTemplate component should render 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1>
+          Submit 'template-name'
+        </h1>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          Before you submit this template
+        </h2>
+        <p>
+          Check that the template you uploaded:
+        </p>
+        <ul>
+          <li>
+            is approved by the relevant stakeholders in your team
+          </li>
+          <li>
+            does not have any spelling errors
+          </li>
+          <li>
+            is formatted correctly
+          </li>
+        </ul>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          After you submit this template
+        </h2>
+        <p>
+          Our service team will send you a proof of this letter template by email.
+        </p>
+        <p>
+          This email will also tell you what you need to do next.
+        </p>
+        <div
+          class="nhsuk-warning-callout"
+        >
+          <h2
+            class="nhsuk-warning-callout__label"
+          >
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h2>
+          <p>
+            If you need to change this template after you've submitted it:
+          </p>
+          <ul>
+            <li>
+              go back and upload a new letter template
+            </li>
+            <li>
+              tell your onboarding manager which template you want to use
+            </li>
+          </ul>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="submit-template-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            draggable="false"
+            href="/templates/preview-letter-template/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            id="submit-template-button"
+            type="submit"
+          >
+            Submit template
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

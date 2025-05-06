@@ -54,6 +54,7 @@ data "aws_iam_policy_document" "api_gateway_execution_policy" {
       module.delete_template_lambda.function_arn,
       module.get_template_lambda.function_arn,
       module.list_template_lambda.function_arn,
+      module.request_proof_lambda.function_arn,
       module.submit_template_lambda.function_arn,
       module.update_template_lambda.function_arn,
     ]

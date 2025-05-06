@@ -419,4 +419,54 @@ describe('TemplateAPIClient', () => {
       expect(result.error).toBeUndefined();
     });
   });
+
+  describe('requestProof', () => {
+    test('should return error', async () => {
+      axiosMock.onPost('/v1/template/real-id/proof').reply(400, {
+        statusCode: 400,
+        technicalMessage: 'Bad request',
+        details: {
+          message: 'Template cannot be proofed',
+        },
+      });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.requestProof('real-id', testToken);
+
+      expect(result.error).toEqual({
+        code: 400,
+        message: 'Bad request',
+        details: {
+          message: 'Template cannot be proofed',
+        },
+      });
+
+      expect(result.data).toBeUndefined();
+
+      expect(axiosMock.history.post.length).toBe(1);
+    });
+
+    test('should return content', async () => {
+      const data = {
+        id: 'id',
+        name: 'name',
+        message: 'message',
+        templateStatus: 'NOT_YET_SUBMITTED',
+        templateType: 'LETTER',
+      };
+
+      axiosMock
+        .onPost('/v1/template/real-id/proof')
+        .reply(204, { template: data });
+
+      const client = new TemplateApiClient();
+
+      const result = await client.requestProof('real-id', testToken);
+
+      expect(result.data).toEqual(data);
+
+      expect(result.error).toBeUndefined();
+    });
+  });
 });

@@ -7,13 +7,14 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
   public static readonly urlRegexp = new RegExp(
     /\/templates\/preview-letter-template\/([\dA-Fa-f-]+)(?:\?from=edit)?$/
   );
+
+  public readonly errorSummary: Locator;
   public readonly continueButton: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.continueButton = page.locator(
-      '[id="preview-letter-template-submit-button"]'
-    );
+    this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
+    this.continueButton = page.locator('[id="preview-letter-template-cta"]');
   }
 
   async clickContinueButton() {

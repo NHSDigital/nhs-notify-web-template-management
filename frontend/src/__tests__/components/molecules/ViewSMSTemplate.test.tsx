@@ -12,7 +12,10 @@ describe('ViewNHSAppTemplate component', () => {
             name: 'Example template',
             templateStatus: 'SUBMITTED',
             message: 'Example message',
-          } as SMSTemplate
+            templateType: 'SMS',
+            createdAt: '2025-03-28T12:30:54.684Z',
+            updatedAt: '2025-03-28T12:31:54.684Z',
+          } satisfies SMSTemplate
         }
       />
     );

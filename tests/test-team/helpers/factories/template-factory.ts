@@ -37,11 +37,18 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (id: string, owner: string, name: string): Template => {
+  createLetterTemplate: (
+    id: string,
+    owner: string,
+    name: string,
+    templateStatus = 'NOT_YET_SUBMITTED',
+    virusScanStatus = 'PASSED'
+  ): Template => {
     return TemplateFactory.create({
       id,
       owner,
       name,
+      templateStatus,
       templateType: 'LETTER',
       letterType: 'x0',
       language: 'en',
@@ -49,12 +56,12 @@ export const TemplateFactory = {
         pdfTemplate: {
           fileName: 'file.pdf',
           currentVersion: randomUUID(),
-          virusScanStatus: 'PENDING',
+          virusScanStatus,
         },
         testDataCsv: {
           fileName: 'test-data.csv',
           currentVersion: randomUUID(),
-          virusScanStatus: 'PENDING',
+          virusScanStatus,
         },
       },
     });

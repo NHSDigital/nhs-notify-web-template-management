@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import {
   BaseTemplate,
-  CreateUpdateLetterProperties,
+  CreateLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
   FileDetails,
@@ -26,36 +26,11 @@ import {
   VIRUS_SCAN_STATUS_LIST,
 } from './union-lists';
 
-export type EmailPropertiesWithType = EmailProperties & {
-  templateType: 'EMAIL';
-};
-export type NhsAppPropertiesWithType = NhsAppProperties & {
-  templateType: 'NHS_APP';
-};
-export type SmsPropertiesWithType = SmsProperties & { templateType: 'SMS' };
-export type LetterPropertiesWithType = LetterProperties & {
-  templateType: 'LETTER';
-};
-export type CreateUpdateLetterPropertiesWithType =
-  CreateUpdateLetterProperties & {
-    templateType: 'LETTER';
-  };
-
 export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
-  (
-    | EmailPropertiesWithType
-    | NhsAppPropertiesWithType
-    | SmsPropertiesWithType
-    | CreateUpdateLetterPropertiesWithType
-  );
+  (EmailProperties | NhsAppProperties | SmsProperties | CreateLetterProperties);
 
 export type ValidatedTemplateDto = TemplateDto &
-  (
-    | EmailPropertiesWithType
-    | NhsAppPropertiesWithType
-    | SmsPropertiesWithType
-    | LetterPropertiesWithType
-  );
+  (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
 
 const $FileDetails = schemaFor<FileDetails>()(
   z.object({
@@ -73,15 +48,17 @@ export const $LetterFiles = schemaFor<LetterFiles>()(
   })
 );
 
-const $EmailProperties = schemaFor<EmailProperties>()(
+export const $EmailProperties = schemaFor<EmailProperties>()(
   z.object({
+    templateType: z.literal('EMAIL'),
     subject: z.string().trim().min(1),
     message: z.string().trim().min(1).max(MAX_EMAIL_CHARACTER_LENGTH),
   })
 );
 
-const $NhsAppProperties = schemaFor<NhsAppProperties>()(
+export const $NhsAppProperties = schemaFor<NhsAppProperties>()(
   z.object({
+    templateType: z.literal('NHS_APP'),
     message: z
       .string()
       .trim()
@@ -94,21 +71,26 @@ const $NhsAppProperties = schemaFor<NhsAppProperties>()(
   })
 );
 
-const $SmsProperties = schemaFor<SmsProperties>()(
+export const $SmsProperties = schemaFor<SmsProperties>()(
   z.object({
+    templateType: z.literal('SMS'),
     message: z.string().trim().min(1).max(MAX_SMS_CHARACTER_LENGTH),
   })
 );
 
-const $CreateUpdateLetterProperties = schemaFor<CreateUpdateLetterProperties>()(
+export const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
   z.object({
+    templateType: z.literal('LETTER'),
     letterType: z.enum(LETTER_TYPE_LIST),
     language: z.enum(LANGUAGE_LIST),
   })
 );
 
-const $LetterProperties = schemaFor<LetterProperties>()(
-  $CreateUpdateLetterProperties.extend({ files: $LetterFiles })
+export const $LetterProperties = schemaFor<LetterProperties>()(
+  $CreateLetterProperties.extend({
+    files: $LetterFiles,
+    personalisationParameters: z.array(z.string()).optional(),
+  })
 );
 
 export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
@@ -118,31 +100,14 @@ export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   })
 );
 
-export const $SmsPropertiesWithType = $SmsProperties.merge(
-  z.object({ templateType: z.literal('SMS') })
-);
-export const $NhsAppPropertiesWithType = $NhsAppProperties.merge(
-  z.object({ templateType: z.literal('NHS_APP') })
-);
-export const $EmailPropertiesWithType = $EmailProperties.merge(
-  z.object({ templateType: z.literal('EMAIL') })
-);
-export const $CreateUpdateLetterPropertiesWithType =
-  $CreateUpdateLetterProperties.merge(
-    z.object({ templateType: z.literal('LETTER') })
-  );
-export const $LetterPropertiesWithType = $LetterProperties.merge(
-  z.object({ templateType: z.literal('LETTER') })
-);
-
 export const $CreateUpdateNonLetter = schemaFor<
   Exclude<CreateUpdateTemplate, { templateType: 'LETTER' }>,
   Exclude<ValidatedCreateUpdateTemplate, { templateType: 'LETTER' }>
 >()(
   z.discriminatedUnion('templateType', [
-    $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
-    $BaseTemplateSchema.merge($EmailPropertiesWithType),
-    $BaseTemplateSchema.merge($SmsPropertiesWithType),
+    $BaseTemplateSchema.merge($NhsAppProperties),
+    $BaseTemplateSchema.merge($EmailProperties),
+    $BaseTemplateSchema.merge($SmsProperties),
   ])
 );
 
@@ -151,10 +116,10 @@ export const $CreateUpdateTemplate = schemaFor<
   ValidatedCreateUpdateTemplate
 >()(
   z.discriminatedUnion('templateType', [
-    $BaseTemplateSchema.merge($NhsAppPropertiesWithType),
-    $BaseTemplateSchema.merge($EmailPropertiesWithType),
-    $BaseTemplateSchema.merge($SmsPropertiesWithType),
-    $BaseTemplateSchema.merge($CreateUpdateLetterPropertiesWithType),
+    $BaseTemplateSchema.merge($NhsAppProperties),
+    $BaseTemplateSchema.merge($EmailProperties),
+    $BaseTemplateSchema.merge($SmsProperties),
+    $BaseTemplateSchema.merge($CreateLetterProperties),
   ])
 );
 
@@ -172,10 +137,10 @@ export const $TemplateDtoSchema = schemaFor<
   ValidatedTemplateDto
 >()(
   z.discriminatedUnion('templateType', [
-    $TemplateDtoFields.merge($NhsAppPropertiesWithType),
-    $TemplateDtoFields.merge($EmailPropertiesWithType),
-    $TemplateDtoFields.merge($SmsPropertiesWithType),
-    $TemplateDtoFields.merge($LetterPropertiesWithType),
+    $TemplateDtoFields.merge($NhsAppProperties),
+    $TemplateDtoFields.merge($EmailProperties),
+    $TemplateDtoFields.merge($SmsProperties),
+    $TemplateDtoFields.merge($LetterProperties),
   ])
 );
 

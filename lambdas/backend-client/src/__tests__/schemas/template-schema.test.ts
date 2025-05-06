@@ -1,5 +1,5 @@
 import {
-  $CreateUpdateLetterPropertiesWithType,
+  $CreateLetterProperties,
   $CreateUpdateNonLetter,
   $CreateUpdateTemplate,
   isCreateUpdateTemplateValid,
@@ -199,7 +199,7 @@ describe('Template schemas', () => {
   });
 
   test('Letter template fields - should fail validation, when no letterType', async () => {
-    const result = $CreateUpdateLetterPropertiesWithType.safeParse({
+    const result = $CreateLetterProperties.safeParse({
       name: 'Test Template',
       templateType: 'LETTER',
       language: 'en',

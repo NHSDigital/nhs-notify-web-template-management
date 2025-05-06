@@ -11,27 +11,31 @@ import {
   TemplateStatus,
   $CreateUpdateNonLetter,
 } from 'nhs-notify-backend-client';
-import {
-  DatabaseTemplate,
-  TemplateRepository,
-} from '@backend-api/templates/infra';
+import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
-import { $CreateUpdateLetterTemplate } from 'nhs-notify-web-template-management-utils';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import {
+  $CreateLetterTemplate,
+  DatabaseTemplate,
+} from 'nhs-notify-web-template-management-utils';
+import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
+import { ProofingQueue } from '../infra/proofing-queue';
 
 export class TemplateClient implements ITemplateClient {
   constructor(
     private readonly enableLetters: boolean,
     private readonly templateRepository: TemplateRepository,
-    private readonly letterUploadRepository: LetterUploadRepository
+    private readonly letterUploadRepository: LetterUploadRepository,
+    private readonly proofingQueue: ProofingQueue,
+    private readonly defaultLetterSupplier: string,
+    private readonly logger: Logger
   ) {}
 
   async createTemplate(
     template: CreateUpdateTemplate,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ template });
+    const log = this.logger.child({ template, owner });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
@@ -59,7 +63,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -71,8 +75,9 @@ export class TemplateClient implements ITemplateClient {
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       template,
+      owner,
     });
 
     if (!this.enableLetters) {
@@ -80,7 +85,7 @@ export class TemplateClient implements ITemplateClient {
     }
 
     const templateValidationResult = await validate(
-      $CreateUpdateLetterTemplate,
+      $CreateLetterTemplate,
       template
     );
 
@@ -145,7 +150,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(createResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     const uploadResult = await this.letterUploadRepository.upload(
@@ -181,7 +186,7 @@ export class TemplateClient implements ITemplateClient {
     owner: string,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       templateId,
       template,
     });
@@ -210,7 +215,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(updateResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -220,7 +225,7 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId });
 
     const submitResult = await this.templateRepository.submit(
       templateId,
@@ -229,7 +234,7 @@ export class TemplateClient implements ITemplateClient {
 
     if (submitResult.error) {
       log.error('Failed to save template to the database', {
-        createResult: submitResult,
+        submitResult,
       });
 
       return submitResult;
@@ -238,7 +243,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(submitResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -248,7 +253,7 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<void>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId, owner });
 
     const deleteResult = await this.templateRepository.delete(
       templateId,
@@ -272,8 +277,9 @@ export class TemplateClient implements ITemplateClient {
     templateId: string,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({
+    const log = this.logger.child({
       templateId,
+      owner,
     });
 
     const getResult = await this.templateRepository.get(templateId, owner);
@@ -290,7 +296,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTO = this.mapDatabaseObjectToDTO(getResult.data);
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);
@@ -300,7 +306,7 @@ export class TemplateClient implements ITemplateClient {
     const listResult = await this.templateRepository.list(owner);
 
     if (listResult.error) {
-      logger.error('Failed to list templates', { listResult });
+      this.logger.error('Failed to list templates', { listResult, owner });
 
       return listResult;
     }
@@ -313,17 +319,79 @@ export class TemplateClient implements ITemplateClient {
     return success(templateDTOs);
   }
 
+  async requestProof(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const log = this.logger.child({ templateId, owner });
+
+    const proofRequestUpdateResult =
+      await this.templateRepository.proofRequestUpdate(templateId, owner);
+
+    if (proofRequestUpdateResult.error) {
+      log
+        .child({
+          code: proofRequestUpdateResult.error.code,
+          description: proofRequestUpdateResult.error.message,
+          details: proofRequestUpdateResult.error.details,
+        })
+        .error(proofRequestUpdateResult.error.actualError);
+
+      return proofRequestUpdateResult;
+    }
+
+    const templateDTO = this.mapDatabaseObjectToDTO(
+      proofRequestUpdateResult.data
+    );
+
+    if (!templateDTO || templateDTO.templateType !== 'LETTER') {
+      log.error({
+        code: ErrorCase.INTERNAL,
+        description: 'Malformed template',
+      });
+
+      return failure(ErrorCase.INTERNAL, 'Malformed template');
+    }
+
+    const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
+    const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
+    const personalisationParameters = templateDTO.personalisationParameters;
+
+    const sendQueueResult = await this.proofingQueue.send(
+      templateId,
+      owner,
+      personalisationParameters!,
+      pdfVersionId,
+      testDataVersionId,
+      this.defaultLetterSupplier
+    );
+
+    if (sendQueueResult.error) {
+      log
+        .child({
+          code: sendQueueResult.error.code,
+          description: sendQueueResult.error.message,
+          details: sendQueueResult.error.details,
+        })
+        .error(sendQueueResult.error.actualError);
+
+      return sendQueueResult;
+    }
+
+    return success(templateDTO);
+  }
+
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
     owner: string
   ): Promise<Result<TemplateDto>> {
-    const log = logger.child({ templateId });
+    const log = this.logger.child({ templateId });
 
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      status,
-      owner
+      owner,
+      status
     );
 
     if (updateStatusResult.error) {
@@ -337,7 +405,7 @@ export class TemplateClient implements ITemplateClient {
     const templateDTO = this.mapDatabaseObjectToDTO(updateStatusResult.data);
 
     if (!templateDTO) {
-      return failure(ErrorCase.IO_FAILURE, 'Error retrieving template');
+      return failure(ErrorCase.INTERNAL, 'Error retrieving template');
     }
 
     return success(templateDTO);

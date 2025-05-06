@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RequestProof component should render 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1
+          id="request-proof"
+        >
+          Request a proof of 'template-name'
+        </h1>
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Before you request a proof of this template
+        </h2>
+        <p>
+          You should only request a proof of the final version of a template you’ve created. This means that your template:
+        </p>
+        <ul>
+          <li>
+            is approved by the relevant stakeholders in your team
+          </li>
+          <li>
+            does not have any spelling errors
+          </li>
+          <li>
+            is formatted correctly
+          </li>
+        </ul>
+        <p>
+          If your template uses personalisation, check that you’ve uploaded your example personalisation data.
+        </p>
+        <p>
+          It can take 5 to 10 working days to get a proof of your template.
+        </p>
+        <form
+          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="request-proof-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            draggable="false"
+            href="/templates/preview-letter-template/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            id="request-proof-button"
+            type="submit"
+          >
+            Request a proof
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

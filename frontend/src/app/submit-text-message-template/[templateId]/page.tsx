@@ -2,7 +2,7 @@
 
 import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { SubmitTemplate } from '@forms/SubmitTemplate/SubmitTemplate';
+import { SubmitDigitalTemplate } from '@forms/SubmitTemplate/SubmitDigitalTemplate';
 import {
   PageProps,
   validateSMSTemplate,
@@ -30,11 +30,10 @@ const SubmitSmsTemplatePage = async (props: PageProps) => {
   }
 
   return (
-    <SubmitTemplate
+    <SubmitDigitalTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
-      goBackPath='preview-text-message-template'
-      submitPath='text-message-template-submitted'
+      channel='SMS'
     />
   );
 };

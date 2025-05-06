@@ -39,9 +39,12 @@ export const TEMPLATE_STATUS_LIST = arrayOfAll<TemplateStatus>()([
   'NOT_YET_SUBMITTED',
   'SUBMITTED',
   'DELETED',
+  'PENDING_PROOF_REQUEST',
   'PENDING_UPLOAD',
+  'PENDING_PROOF_REQUEST',
   'PENDING_VALIDATION',
   'VIRUS_SCAN_FAILED',
+  'VALIDATION_FAILED',
 ]);
 
 export const LANGUAGE_LIST = arrayOfAll<Language>()([

@@ -1,21 +1,28 @@
-const { readFileSync } = require('node:fs');
 const { signInPageActions } = require('./sign-in-page.actions');
-
-const { templateId } = JSON.parse(
-  readFileSync('./pa11y-fixtures.json', 'utf8')
-);
 
 const pageActions = [
   ...signInPageActions,
-  'wait for #preview-letter-template-submit-button to be visible',
+  'wait for [data-testid="preview-message__heading"] to be visible',
 ];
 
-const previewLetterTemplatePage = (baseUrl) => ({
+const previewLetterTemplatePage = (url) => ({
   name: 'preview-letter-template',
-  url: `${baseUrl}/preview-letter-template/${templateId}`,
+  url,
   actions: pageActions,
 });
 
+const previewLetterTemplatePageWithError = (url) => ({
+  name: 'preview-letter-template',
+  url,
+  actions: pageActions,
+  ignore: [
+    // NHS error summary component has a H2 above the H1.
+    'WCAG2AA.Principle1.Guideline1_3.1_3_1_AAA.G141',
+  ],
+});
+
 module.exports = {
+  pageActions,
   previewLetterTemplatePage,
+  previewLetterTemplatePageWithError,
 };

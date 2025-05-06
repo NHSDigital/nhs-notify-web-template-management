@@ -10,8 +10,13 @@ import {
   CreateUpdateTemplate,
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
-  CreateUpdateLetterProperties,
+  CreateLetterProperties,
 } from 'nhs-notify-backend-client';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import type {
+  FileType,
+  TemplateKey,
+} from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
@@ -23,36 +28,42 @@ import {
   UpdateCommandInput,
 } from '@aws-sdk/lib-dynamodb';
 import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
-import { DatabaseTemplate } from './template';
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
+import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
 
 const nhsAppAttributes: Record<keyof NhsAppProperties, null> = {
+  templateType: null,
   message: null,
 };
 
 const emailAttributes: Record<keyof EmailProperties, null> = {
+  templateType: null,
   message: null,
   subject: null,
 };
 
-const smsAttributes: Record<keyof SmsProperties, null> = { message: null };
+const smsAttributes: Record<keyof SmsProperties, null> = {
+  templateType: null,
+  message: null,
+};
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
+  templateType: null,
   letterType: null,
   language: null,
   files: null,
+  personalisationParameters: null,
 };
-
-type TemplateKey = { owner: string; id: string };
 
 export class TemplateRepository {
   constructor(
     private readonly client: DynamoDBDocumentClient,
-    private readonly templatesTableName: string
+    private readonly templatesTableName: string,
+    private readonly enableProofing: boolean
   ) {}
 
   async get(
@@ -79,7 +90,7 @@ export class TemplateRepository {
 
       return success(item);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to get template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to get template', error);
     }
   }
 
@@ -106,7 +117,7 @@ export class TemplateRepository {
 
       return success(entity);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to create template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to create template', error);
     }
   }
 
@@ -166,7 +177,7 @@ export class TemplateRepository {
         );
       }
 
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -194,7 +205,7 @@ export class TemplateRepository {
 
       return result;
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -233,20 +244,21 @@ export class TemplateRepository {
         );
       }
 
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
   async updateStatus(
     templateId: string,
-    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    owner: string
+    owner: string,
+    status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string | number> = {
       ':newStatus': status,
     };
+
     try {
       const result = await this._update(
         templateId,
@@ -258,7 +270,7 @@ export class TemplateRepository {
       );
       return result;
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to update template', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -293,15 +305,90 @@ export class TemplateRepository {
 
       return success(items);
     } catch (error) {
-      return failure(ErrorCase.IO_FAILURE, 'Failed to list templates', error);
+      return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
+    }
+  }
+
+  async setLetterValidationResult(
+    templateKey: TemplateKey,
+    versionId: string,
+    valid: boolean,
+    personalisationParameters: string[],
+    testDataCsvHeaders: string[]
+  ) {
+    const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
+      {
+        '#files': 'files',
+        '#file': 'pdfTemplate' satisfies keyof LetterFiles,
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
+
+    const resolvedPostValidationSuccessStatus = this.enableProofing
+      ? 'PENDING_PROOF_REQUEST'
+      : 'NOT_YET_SUBMITTED';
+
+    const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
+      {
+        ':templateStatus': (valid
+          ? resolvedPostValidationSuccessStatus
+          : 'VALIDATION_FAILED') satisfies TemplateStatus,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':updatedAt': new Date().toISOString(),
+        ':version': versionId,
+      };
+
+    const updates = [
+      '#templateStatus = :templateStatus',
+      '#updatedAt = :updatedAt',
+    ];
+
+    if (valid) {
+      ExpressionAttributeNames['#personalisationParameters'] =
+        'personalisationParameters';
+      ExpressionAttributeNames['#testDataCsvHeaders'] = 'testDataCsvHeaders';
+
+      ExpressionAttributeValues[':personalisationParameters'] =
+        personalisationParameters;
+      ExpressionAttributeValues[':testDataCsvHeaders'] = testDataCsvHeaders;
+
+      updates.push(
+        '#personalisationParameters = :personalisationParameters',
+        '#testDataCsvHeaders = :testDataCsvHeaders'
+      );
+    }
+
+    try {
+      await this.client.send(
+        new UpdateCommand({
+          TableName: this.templatesTableName,
+          Key: templateKey,
+          UpdateExpression: `SET ${updates.join(' , ')}`,
+          ExpressionAttributeNames,
+          ExpressionAttributeValues,
+          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+        })
+      );
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        logger.error(
+          'Conditional check failed when setting letter validation status:',
+          error,
+          { templateKey }
+        );
+      } else {
+        throw error;
+      }
     }
   }
 
   async setLetterFileVirusScanStatus(
     templateKey: TemplateKey,
-    fileType: Extract<keyof LetterFiles, 'pdfTemplate' | 'testDataCsv'>,
+    fileType: FileType,
     versionId: string,
-    status: VirusScanStatus
+    status: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
     const updates = [
       '#files.#file.#scanStatus = :scanStatus',
@@ -311,7 +398,12 @@ export class TemplateRepository {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
         '#files': 'files',
-        '#file': fileType,
+        '#file': (fileType === 'pdf-template'
+          ? 'pdfTemplate'
+          : 'testDataCsv') satisfies Extract<
+          keyof LetterFiles,
+          'pdfTemplate' | 'testDataCsv'
+        >,
         '#scanStatus': 'virusScanStatus',
         '#templateStatus': 'templateStatus',
         '#updatedAt': 'updatedAt',
@@ -346,10 +438,54 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(error);
+        logger.error(
+          'Conditional check failed when setting file virus scan status:',
+          error,
+          { templateKey }
+        );
       } else {
         throw error;
       }
+    }
+  }
+
+  async proofRequestUpdate(templateId: string, owner: string) {
+    const update = new TemplateUpdateBuilder(
+      this.templatesTableName,
+      owner,
+      templateId,
+      {
+        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+        ReturnValues: 'ALL_NEW',
+      }
+    )
+      .setStatus('NOT_YET_SUBMITTED')
+      .expectedStatus('PENDING_PROOF_REQUEST')
+      .expectedTemplateType('LETTER')
+      .expectTemplateExists()
+      .build();
+
+    try {
+      const response = await this.client.send(new UpdateCommand(update));
+      return success(response.Attributes as DatabaseTemplate);
+    } catch (error) {
+      if (error instanceof ConditionalCheckFailedException) {
+        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
+          return failure(
+            ErrorCase.TEMPLATE_NOT_FOUND,
+            `Template not found`,
+            error
+          );
+        }
+
+        return failure(
+          ErrorCase.VALIDATION_FAILED,
+          'Template cannot be proofed',
+          error
+        );
+      }
+
+      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
     }
   }
 
@@ -517,11 +653,10 @@ export class TemplateRepository {
       );
     }
     if (template.templateType === 'LETTER') {
-      values =
-        this.attributeValuesFromMapAndTemplate<CreateUpdateLetterProperties>(
-          letterAttributes,
-          template
-        );
+      values = this.attributeValuesFromMapAndTemplate<CreateLetterProperties>(
+        letterAttributes,
+        template
+      );
     }
 
     return values;

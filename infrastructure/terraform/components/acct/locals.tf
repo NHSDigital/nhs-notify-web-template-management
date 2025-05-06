@@ -14,4 +14,7 @@ locals {
     for az_index, az in data.aws_availability_zones.available.names :
     cidrsubnet(var.vpc_cidr, max(var.vpc_subnet_cidr_bits.private, local.required_bits_private), az_index + length(data.aws_availability_zones.available.names))
   ]
+
+  mock_letter_supplier_name     = "WTMMOCK"
+  use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
 }

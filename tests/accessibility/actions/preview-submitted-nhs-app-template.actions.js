@@ -7,12 +7,12 @@ const pageActions = [
   'wait for element #preview-heading-message to be visible',
 ];
 
-const viewSubmittedNHSAppTemplatePage = (url) => ({
+const previewSubmittedNHSAppTemplatePage = (url) => ({
   name: 'preview-submitted-nhs-app-template',
   url,
   actions: pageActions,
 });
 
 module.exports = {
-  viewSubmittedNHSAppTemplatePage,
+  previewSubmittedNHSAppTemplatePage,
 };

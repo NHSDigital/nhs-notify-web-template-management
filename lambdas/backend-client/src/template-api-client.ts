@@ -187,6 +187,34 @@ export class TemplateApiClient implements ITemplateClient {
       data: undefined,
     };
   }
+
+  async requestProof(
+    templateId: string,
+    owner: string
+  ): Promise<Result<TemplateDto>> {
+    const response = await catchAxiosError(
+      this._client.post<Success>(
+        `/v1/template/${templateId}/proof`,
+        undefined,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: owner,
+          },
+        }
+      )
+    );
+
+    if (response.error) {
+      return {
+        error: response.error,
+      };
+    }
+
+    return {
+      data: response.data.template,
+    };
+  }
 }
 
 export const templateClient = new TemplateApiClient();

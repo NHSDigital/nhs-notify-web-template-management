@@ -4,6 +4,8 @@ const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
 };
 
+const goBackButtonText = 'Go back';
+
 const header = {
   serviceName: 'Notify',
   links: {
@@ -36,10 +38,7 @@ const footer = {
       text: 'Accessibility statement',
       url: '/accessibility',
     },
-    cookies: {
-      text: 'Cookies',
-      url: '/cookies',
-    },
+    cookies: { text: 'Cookies', url: '/cookies' },
     privacy: {
       text: 'Privacy',
       url: 'https://digital.nhs.uk/services/nhs-notify/transparency-notice',
@@ -127,36 +126,18 @@ const messageFormatting = {
     title: 'Bullet points',
     text: 'Put each item on a separate line with an asterisk and a space in front of each one, for example:',
     codeBlockText: [
-      {
-        id: 'bullet-1',
-        item: '* bullet 1',
-      },
-      {
-        id: 'bullet-2',
-        item: '* bullet 2',
-      },
-      {
-        id: 'bullet-3',
-        item: '* bullet 3',
-      },
+      { id: 'bullet-1', item: '* bullet 1' },
+      { id: 'bullet-2', item: '* bullet 2' },
+      { id: 'bullet-3', item: '* bullet 3' },
     ],
   },
   numberedLists: {
     title: 'Numbered lists',
     text: 'Put each item on a separate line with the number, full stop and a space in front of each one, for example:',
     codeBlockText: [
-      {
-        id: 'first-item',
-        item: '1. first item',
-      },
-      {
-        id: 'second-item',
-        item: '2. second item',
-      },
-      {
-        id: 'third-item',
-        item: '3. third item',
-      },
+      { id: 'first-item', item: '1. first item' },
+      { id: 'second-item', item: '2. second item' },
+      { id: 'third-item', item: '3. third item' },
     ],
   },
   horizontalLine: {
@@ -184,16 +165,12 @@ const homePage = {
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
   text2: 'You can create templates for:',
-  list: [
-    { key: 'template-1', item: 'NHS App messages' },
-    { key: 'template-2', item: 'emails' },
-    { key: 'template-3', item: 'text messages (SMS)' },
-  ],
+  list: ['NHS App messages', 'emails', 'text messages (SMS)'],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
   text4:
-    'Only use this tool if your message content has been signed off by the relevant stakeholders in your team.',
+    'Only use this tool if your message content has been approved by the relevant stakeholders in your team.',
   text5: 'You can save a template as a draft and edit it later.',
   text6:
     'If you want to change a submitted template, you must create a new template to replace it.',
@@ -214,11 +191,7 @@ const messageTemplates = {
     type: 'Type',
     status: 'Status',
     dateCreated: 'Date created',
-    action: {
-      text: 'Action',
-      copy: 'Copy',
-      delete: 'Delete',
-    },
+    action: { text: 'Action', copy: 'Copy', delete: 'Delete' },
   },
   createTemplateButton: {
     text: 'Create template',
@@ -247,8 +220,18 @@ const previewEmailTemplate = {
 };
 
 const previewLetterTemplate = {
+  pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
-  buttonText: 'Submit template',
+  submitText: 'Submit template',
+  requestProofText: 'Request a proof',
+  errorHeading: 'There is a problem',
+  virusScanError: 'The file(s) you uploaded may contain a virus.',
+  virusScanErrorAction:
+    'Create a new letter template to upload your file(s) again or upload different file(s).',
+  validationError:
+    'The personalisation fields in your files are missing or do not match.',
+  validationErrorAction:
+    'Check that the personalisation fields in your template file match the fields in your test personalisation file',
 };
 
 const previewNHSAppTemplate = {
@@ -341,7 +324,7 @@ const submitTemplate = {
   submitChecklistHeading: 'Before you submit',
   submitChecklistIntroduction: 'You should check that your template:',
   submitChecklistItems: [
-    'is signed off by the relevant stakeholders in your team',
+    'is approved by the relevant stakeholders in your team',
     'does not have any spelling errors',
     'is formatted correctly',
   ],
@@ -349,8 +332,29 @@ const submitTemplate = {
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
     'If you want to change a submitted template, you must create and submit a new template to replace it.',
   ],
-  goBackButtonText: 'Go back',
+  goBackButtonText,
   buttonText: 'Submit template',
+};
+
+const submitLetterTemplate = {
+  ...submitTemplate,
+  pageHeading: 'Submit',
+  submitChecklistHeading: 'Before you submit this template',
+  submitChecklistIntroduction: 'Check that the template you uploaded:',
+  submitChecklistParagraphs: [],
+  afterSubmissionHeading: 'After you submit this template',
+  afterSubmissionText: [
+    'Our service team will send you a proof of this letter template by email.',
+    'This email will also tell you what you need to do next.',
+  ],
+  goBackPath: 'preview-letter-template',
+  warningCalloutLabel: 'Important',
+  warningCalloutChecklistIntroduction:
+    "If you need to change this template after you've submitted it:",
+  warningCalloutChecklistItems: [
+    'go back and upload a new letter template',
+    'tell your onboarding manager which template you want to use',
+  ],
 };
 
 const copyTemplate = {
@@ -428,10 +432,7 @@ const channelGuidance = {
   EMAIL: {
     heading: 'More about emails',
     guidanceLinks: [
-      {
-        text: 'Email messages (opens in a new tab)',
-        link: '/features/emails',
-      },
+      { text: 'Email messages (opens in a new tab)', link: '/features/emails' },
       {
         text: 'From and reply-to addresses (opens in a new tab)',
         link: '/using-nhs-notify/tell-recipients-who-your-messages-are-from',
@@ -459,10 +460,7 @@ const channelGuidance = {
       },
     ],
   },
-  LETTER: {
-    heading: 'More about letters',
-    guidanceLinks: [],
-  },
+  LETTER: { heading: 'More about letters', guidanceLinks: [] },
 };
 
 const templateFormNhsApp = {
@@ -629,6 +627,7 @@ const viewSubmittedTemplate = {
   cannotEdit: 'This template cannot be edited because it has been submitted.',
   createNewTemplate:
     'If you want to change a submitted or live template, you must create a new template to replace it.',
+  backLinkText: backToAllTemplates,
 };
 
 const deleteTemplate = {
@@ -644,10 +643,28 @@ const logoutWarning = {
   body: "If you're signed out, any unsaved changes will be lost.",
 };
 
-const content = {
-  global: {
-    mainLayout,
+const requestProof = {
+  pageTitle: generatePageTitle('Request a proof of your template'),
+  heading: (templateName: string) => `Request a proof of '${templateName}'`,
+  subHeading: 'Before you request a proof of this template',
+  requirementsIntro:
+    'You should only request a proof of the final version of a template you’ve created. This means that your template:',
+  requirementsList: [
+    'is approved by the relevant stakeholders in your team',
+    'does not have any spelling errors',
+    'is formatted correctly',
+  ],
+  checkTestData:
+    'If your template uses personalisation, check that you’ve uploaded your example personalisation data.',
+  waitTime: 'It can take 5 to 10 working days to get a proof of your template.',
+  buttons: {
+    confirm: 'Request a proof',
+    back: goBackButtonText,
   },
+};
+
+const content = {
+  global: { mainLayout },
   components: {
     channelGuidance,
     chooseTemplate,
@@ -664,7 +681,9 @@ const content = {
     previewNHSAppTemplate,
     previewSMSTemplate,
     previewTemplateDetails,
+    requestProof,
     submitTemplate,
+    submitLetterTemplate,
     templateFormEmail,
     templateFormLetter,
     templateFormNhsApp,

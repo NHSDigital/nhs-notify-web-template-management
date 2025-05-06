@@ -48,8 +48,10 @@ const letterTypeMap: Record<LetterType, string> = {
   x0: 'Standard',
   x1: 'Large print',
 };
+
 export const letterTypeMapping = (letterType: LetterType) =>
-  letterTypeMap[letterType];
+  `${letterTypeMap[letterType]} letter`;
+
 export const alphabeticalLetterTypeList = Object.entries(letterTypeMap).sort(
   ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
 );
@@ -59,8 +61,8 @@ export const letterTypeDisplayMappings = (
   language: Language
 ) =>
   language === 'en'
-    ? `${letterTypeMapping(letterType)} letter`
-    : `Letter - ${languageMapping(language)}`;
+    ? letterTypeMapping(letterType)
+    : `${letterTypeMapping(letterType)} - ${languageMapping(language)}`;
 
 export const templateTypeDisplayMappings = (type: TemplateType) =>
   ({
@@ -75,10 +77,26 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     NOT_YET_SUBMITTED: 'Not yet submitted',
     SUBMITTED: 'Submitted',
     DELETED: '', // will not be shown in the UI
-    PENDING_UPLOAD: 'Processing',
-    PENDING_VALIDATION: 'Processing',
-    VIRUS_SCAN_FAILED: 'Virus Scan Failed',
+    PENDING_PROOF_REQUEST: 'Files uploaded',
+    PENDING_UPLOAD: 'Checking files',
+    PENDING_VALIDATION: 'Checking files',
+    VIRUS_SCAN_FAILED: 'Checks failed',
+    VALIDATION_FAILED: 'Checks failed',
   })[status];
+
+export const templateStatusToColourMappings = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: undefined,
+      SUBMITTED: 'grey',
+      DELETED: undefined,
+      PENDING_PROOF_REQUEST: 'blue',
+      PENDING_UPLOAD: 'blue',
+      PENDING_VALIDATION: 'blue',
+      VIRUS_SCAN_FAILED: 'red',
+      VALIDATION_FAILED: 'red',
+    }) as const
+  )[status];
 
 export const templateTypeToUrlTextMappings = (type: TemplateType) =>
   ({
@@ -90,5 +108,5 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
 
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
-export const viewSubmittedTemplatePages = (type: TemplateType) =>
+export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;

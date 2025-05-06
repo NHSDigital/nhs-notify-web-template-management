@@ -5,12 +5,14 @@
     "lambdas/backend-api",
     "lambdas/backend-client",
     "lambdas/virus-scan",
+    "lambdas/sftp-letters",
     "frontend",
     "tests/accessibility",
     "tests/test-team",
     "utils/utils",
     "utils/backend-config",
-    "utils/test-helper-utils"
+    "utils/test-helper-utils",
+    "utils/entity-update-command-builder"
   ],
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",
