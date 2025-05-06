@@ -1,583 +1,153 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "NHS Notify - Web UI - Template Management API",
-    "description": "Backend for NHS Notify Template Management Web UI",
-    "version": "v1"
-  },
-  "paths": {
-    "/v1/template/{templateId}": {
-      "get": {
-        "summary": "Get a template",
-        "description": "Get a template template by Id",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "templateId",
-            "in": "path",
-            "description": "ID of template to return",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      },
-      "post": {
-        "summary": "Update a template",
-        "description": "Update a template template by Id",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "templateId",
-            "in": "path",
-            "description": "ID of template to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Template to update",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUpdateTemplate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      },
-      "delete": {
-        "summary": "Delete a template",
-        "description": "Delete a template by Id",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "templateId",
-            "in": "path",
-            "description": "ID of template to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    },
-    "/v1/template": {
-      "post": {
-        "summary": "Create a template",
-        "description": "Create a template",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "requestBody": {
-          "description": "Template to create",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUpdateTemplate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "201 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    },
-    "/v1/letter-template": {
-      "post": {
-        "summary": "Create a letter template",
-        "description": "Create a letter template",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "requestBody": {
-          "description": "Letter template to create",
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "CreateLetterTemplate": {
-                  "type": "object",
-                  "properties": {
-                    "template": {
-                      "$ref": "#/components/schemas/CreateUpdateTemplate"
-                    },
-                    "letterPdf": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "testCsv": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "201 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LETTER_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    },
-    "/v1/templates": {
-      "get": {
-        "summary": "List all templates",
-        "description": "List all templates",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessList"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    },
-    "/v1/template/{templateId}/submit": {
-      "patch": {
-        "summary": "Update a template's status to SUBMITTED",
-        "description": "Update a template status by Id",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "templateId",
-            "in": "path",
-            "description": "ID of template to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    },
-    "/v1/template/{templateId}/proof": {
-      "post": {
-        "summary": "Request a letter proof",
-        "description": "Request a letter proof",
-        "security": [
-          {
-            "authorizer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "templateId",
-            "in": "path",
-            "description": "ID of the template to request a proof of",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "200 response",
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Success"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Failure"
-                }
-              }
-            }
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "contentHandling": "CONVERT_TO_TEXT",
-          "httpMethod": "POST",
-          "passthroughBehavior": "WHEN_NO_TEMPLATES",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_PROOF_LAMBDA_ARN}/invocations",
-          "responses": {
-            ".*": {
-              "statusCode": "200"
-            }
-          },
-          "timeoutInMillis": 29000,
-          "type": "AWS_PROXY"
-        }
-      }
-    }
-  },
   "components": {
-    "securitySchemes": {
-      "authorizer": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
-        "x-amazon-apigateway-authtype": "custom",
-        "x-amazon-apigateway-authorizer": {
-          "type": "request",
-          "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
-          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
-          "identitySource": "method.request.header.authorization",
-          "authorizerResultTtlInSeconds": 300
-        }
-      }
-    },
     "schemas": {
-      "TemplateType": {
-        "type": "string",
-        "enum": [
-          "NHS_APP",
-          "EMAIL",
-          "SMS",
-          "LETTER"
-        ]
+      "BaseCreatedTemplate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseTemplate"
+          },
+          {
+            "properties": {
+              "createdAt": {
+                "format": "date-time",
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "templateStatus": {
+                "$ref": "#/components/schemas/TemplateStatus"
+              },
+              "updatedAt": {
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "templateStatus",
+              "createdAt",
+              "updatedAt"
+            ],
+            "type": "object"
+          }
+        ],
+        "type": "object"
       },
-      "TemplateStatus": {
-        "type": "string",
-        "enum": [
-          "DELETED",
-          "NOT_YET_SUBMITTED",
-          "PENDING_PROOF_REQUEST",
-          "PENDING_UPLOAD",
-          "PENDING_VALIDATION",
-          "SUBMITTED",
-          "VALIDATION_FAILED",
-          "VIRUS_SCAN_FAILED"
-        ]
+      "BaseTemplate": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "CreateLetterProperties": {
+        "properties": {
+          "files": {
+            "$ref": "#/components/schemas/LetterFiles"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "letterType": {
+            "$ref": "#/components/schemas/LetterType"
+          },
+          "templateType": {
+            "enum": [
+              "LETTER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "letterType",
+          "language",
+          "templateType"
+        ],
+        "type": "object"
+      },
+      "CreateUpdateTemplate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseTemplate"
+          },
+          {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SmsProperties"
+              },
+              {
+                "$ref": "#/components/schemas/EmailProperties"
+              },
+              {
+                "$ref": "#/components/schemas/NhsAppProperties"
+              },
+              {
+                "$ref": "#/components/schemas/CreateLetterProperties"
+              }
+            ]
+          }
+        ],
+        "type": "object"
+      },
+      "EmailProperties": {
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "templateType": {
+            "enum": [
+              "EMAIL"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "subject",
+          "templateType"
+        ],
+        "type": "object"
+      },
+      "Failure": {
+        "properties": {
+          "details": {},
+          "statusCode": {
+            "type": "integer"
+          },
+          "technicalMessage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "technicalMessage",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "FileDetails": {
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "virusScanStatus": {
+            "$ref": "#/components/schemas/VirusScanStatus"
+          }
+        },
+        "required": [
+          "fileName",
+          "virusScanStatus"
+        ],
+        "type": "object"
       },
       "Language": {
-        "type": "string",
         "enum": [
           "ar",
           "bg",
@@ -608,147 +178,28 @@
           "tr",
           "ur",
           "zh"
-        ]
-      },
-      "LetterType": {
-        "type": "string",
-        "enum": [
-          "q1",
-          "q4",
-          "x0",
-          "x1",
-          "x3"
-        ]
-      },
-      "VirusScanStatus": {
-        "type": "string",
-        "enum": [
-          "PENDING",
-          "FAILED",
-          "PASSED"
-        ]
-      },
-      "FileDetails": {
-        "type": "object",
-        "required": [
-          "fileName",
-          "currentVersion",
-          "virusScanStatus"
         ],
-        "properties": {
-          "fileName": {
-            "type": "string"
-          },
-          "currentVersion": {
-            "type": "string"
-          },
-          "virusScanStatus": {
-            "$ref": "#/components/schemas/VirusScanStatus"
-          }
-        }
+        "type": "string"
       },
       "LetterFiles": {
-        "type": "object",
+        "properties": {
+          "pdfTemplate": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          },
+          "proofs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/FileDetails"
+            },
+            "type": "object"
+          },
+          "testDataCsv": {
+            "$ref": "#/components/schemas/VersionedFileDetails"
+          }
+        },
         "required": [
           "pdfTemplate"
         ],
-        "properties": {
-          "pdfTemplate": {
-            "$ref": "#/components/schemas/FileDetails"
-          },
-          "testDataCsv": {
-            "$ref": "#/components/schemas/FileDetails"
-          },
-          "proofs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileDetails"
-            }
-          }
-        }
-      },
-      "NhsAppProperties": {
-        "type": "object",
-        "required": [
-          "message",
-          "templateType"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "templateType": {
-            "type": "string",
-            "enum": [
-              "NHS_APP"
-            ]
-          }
-        }
-      },
-      "EmailProperties": {
-        "type": "object",
-        "required": [
-          "message",
-          "subject",
-          "templateType"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "subject": {
-            "type": "string"
-          },
-          "templateType": {
-            "type": "string",
-            "enum": [
-              "EMAIL"
-            ]
-          }
-        }
-      },
-      "SmsProperties": {
-        "type": "object",
-        "required": [
-          "message",
-          "templateType"
-        ],
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "templateType": {
-            "type": "string",
-            "enum": [
-              "SMS"
-            ]
-          }
-        }
-      },
-      "CreateLetterProperties": {
-        "type": "object",
-        "required": [
-          "letterType",
-          "language",
-          "templateType"
-        ],
-        "properties": {
-          "letterType": {
-            "$ref": "#/components/schemas/LetterType"
-          },
-          "language": {
-            "$ref": "#/components/schemas/Language"
-          },
-          "files": {
-            "$ref": "#/components/schemas/LetterFiles"
-          },
-          "templateType": {
-            "type": "string",
-            "enum": [
-              "LETTER"
-            ]
-          }
-        }
+        "type": "object"
       },
       "LetterProperties": {
         "allOf": [
@@ -756,94 +207,104 @@
             "$ref": "#/components/schemas/CreateLetterProperties"
           },
           {
-            "type": "object",
-            "required": [
-              "files"
-            ],
             "properties": {
               "files": {
                 "$ref": "#/components/schemas/LetterFiles"
               },
               "personalisationParameters": {
-                "type": "array",
                 "items": {
                   "type": "string"
-                }
+                },
+                "type": "array"
               }
-            }
+            },
+            "required": [
+              "files"
+            ],
+            "type": "object"
           }
         ]
       },
-      "BaseTemplate": {
-        "type": "object",
-        "required": [
-          "name"
+      "LetterType": {
+        "enum": [
+          "q1",
+          "q4",
+          "x0",
+          "x1",
+          "x3"
         ],
+        "type": "string"
+      },
+      "NhsAppProperties": {
         "properties": {
-          "name": {
+          "message": {
+            "type": "string"
+          },
+          "templateType": {
+            "enum": [
+              "NHS_APP"
+            ],
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "message",
+          "templateType"
+        ],
+        "type": "object"
       },
-      "BaseCreatedTemplate": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseTemplate"
+      "SmsProperties": {
+        "properties": {
+          "message": {
+            "type": "string"
           },
-          {
-            "type": "object",
-            "required": [
-              "id",
-              "templateStatus",
-              "createdAt",
-              "updatedAt"
+          "templateType": {
+            "enum": [
+              "SMS"
             ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "templateStatus": {
-                "$ref": "#/components/schemas/TemplateStatus"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
+            "type": "string"
           }
-        ]
+        },
+        "required": [
+          "message",
+          "templateType"
+        ],
+        "type": "object"
       },
-      "CreateUpdateTemplate": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseTemplate"
+      "Success": {
+        "properties": {
+          "statusCode": {
+            "type": "integer"
           },
-          {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SmsProperties"
-              },
-              {
-                "$ref": "#/components/schemas/EmailProperties"
-              },
-              {
-                "$ref": "#/components/schemas/NhsAppProperties"
-              },
-              {
-                "$ref": "#/components/schemas/CreateLetterProperties"
-              }
-            ]
+          "template": {
+            "$ref": "#/components/schemas/TemplateDto"
           }
-        ]
+        },
+        "required": [
+          "template",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "SuccessList": {
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateDto"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "templates",
+          "statusCode"
+        ],
+        "type": "object"
       },
       "TemplateDto": {
-        "type": "object",
         "allOf": [
           {
             "$ref": "#/components/schemas/BaseCreatedTemplate"
@@ -864,55 +325,611 @@
               }
             ]
           }
-        ]
-      },
-      "Success": {
-        "type": "object",
-        "required": [
-          "template",
-          "statusCode"
         ],
-        "properties": {
-          "template": {
-            "$ref": "#/components/schemas/TemplateDto"
-          },
-          "statusCode": {
-            "type": "integer"
-          }
-        }
+        "type": "object"
       },
-      "SuccessList": {
-        "type": "object",
-        "required": [
-          "templates",
-          "statusCode"
+      "TemplateStatus": {
+        "enum": [
+          "DELETED",
+          "NOT_YET_SUBMITTED",
+          "PENDING_PROOF_REQUEST",
+          "PENDING_UPLOAD",
+          "PENDING_VALIDATION",
+          "SUBMITTED",
+          "VALIDATION_FAILED",
+          "VIRUS_SCAN_FAILED",
+          "WAITING_FOR_PROOF",
+          "PROOF_AVAILABLE"
         ],
-        "properties": {
-          "templates": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TemplateDto"
-            }
-          },
-          "statusCode": {
-            "type": "integer"
-          }
-        }
+        "type": "string"
       },
-      "Failure": {
-        "type": "object",
-        "required": [
-          "technicalMessage",
-          "statusCode"
+      "TemplateType": {
+        "enum": [
+          "NHS_APP",
+          "EMAIL",
+          "SMS",
+          "LETTER"
         ],
+        "type": "string"
+      },
+      "VersionedFileDetails": {
         "properties": {
-          "technicalMessage": {
+          "currentVersion": {
             "type": "string"
           },
-          "statusCode": {
-            "type": "integer"
+          "fileName": {
+            "type": "string"
           },
-          "details": {}
+          "virusScanStatus": {
+            "$ref": "#/components/schemas/VirusScanStatus"
+          }
+        },
+        "required": [
+          "fileName",
+          "currentVersion",
+          "virusScanStatus"
+        ],
+        "type": "object"
+      },
+      "VirusScanStatus": {
+        "enum": [
+          "PENDING",
+          "FAILED",
+          "PASSED"
+        ],
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "authorizer": {
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey",
+        "x-amazon-apigateway-authorizer": {
+          "authorizerCredentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "authorizerResultTtlInSeconds": 300,
+          "authorizerUri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${AUTHORIZER_LAMBDA_ARN}/invocations",
+          "identitySource": "method.request.header.authorization",
+          "type": "request"
+        },
+        "x-amazon-apigateway-authtype": "custom"
+      }
+    }
+  },
+  "info": {
+    "description": "Backend for NHS Notify Template Management Web UI",
+    "title": "NHS Notify - Web UI - Template Management API",
+    "version": "v1"
+  },
+  "openapi": "3.0.1",
+  "paths": {
+    "/v1/letter-template": {
+      "post": {
+        "description": "Create a letter template",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "CreateLetterTemplate": {
+                  "properties": {
+                    "letterPdf": {
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    "template": {
+                      "$ref": "#/components/schemas/CreateUpdateTemplate"
+                    },
+                    "testCsv": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "description": "Letter template to create",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Create a letter template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LETTER_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template": {
+      "post": {
+        "description": "Create a template",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
+              }
+            }
+          },
+          "description": "Template to create",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "201 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Create a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template/{templateId}": {
+      "delete": {
+        "description": "Delete a template by Id",
+        "parameters": [
+          {
+            "description": "ID of template to update",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Delete a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${DELETE_LAMBDA_ARN}/invocations"
+        }
+      },
+      "get": {
+        "description": "Get a template template by Id",
+        "parameters": [
+          {
+            "description": "ID of template to return",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_LAMBDA_ARN}/invocations"
+        }
+      },
+      "post": {
+        "description": "Update a template template by Id",
+        "parameters": [
+          {
+            "description": "ID of template to update",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateTemplate"
+              }
+            }
+          },
+          "description": "Template to update",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a template",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPDATE_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template/{templateId}/proof": {
+      "post": {
+        "description": "Request a letter proof",
+        "parameters": [
+          {
+            "description": "ID of the template to request a proof of",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Request a letter proof",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${REQUEST_PROOF_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/template/{templateId}/submit": {
+      "patch": {
+        "description": "Update a template status by Id",
+        "parameters": [
+          {
+            "description": "ID of template to update",
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Update a template's status to SUBMITTED",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${SUBMIT_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/templates": {
+      "get": {
+        "description": "List all templates",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessList"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "List all templates",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
         }
       }
     }

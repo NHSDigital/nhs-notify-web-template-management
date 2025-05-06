@@ -1,6 +1,4 @@
 import {
-  CopyObjectCommand,
-  DeleteObjectCommand,
   GetObjectCommand,
   GetObjectCommandOutput,
   NotFound,
@@ -126,40 +124,6 @@ describe('LetterUploadRepository', () => {
       });
 
       expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 2);
-    });
-  });
-
-  describe('copyFromQuarantineToInternal', () => {
-    it('copies pdf template files from quarantine to internal', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      await letterUploadRepository.copyFromQuarantineToInternal(
-        's3/object/key',
-        's3-object-version'
-      );
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(CopyObjectCommand, {
-        Bucket: 'internal-bucket',
-        CopySource:
-          '/quarantine-bucket/s3/object/key?versionId=s3-object-version',
-        Key: 's3/object/key',
-        MetadataDirective: 'COPY',
-        TaggingDirective: 'COPY',
-      });
-    });
-  });
-
-  describe('deleteFromQuarantine', () => {
-    it('deletes files from quarantine', async () => {
-      const { letterUploadRepository, mocks } = setup();
-
-      await letterUploadRepository.deleteFromQuarantine('key', 'version');
-
-      expect(mocks.s3Client).toHaveReceivedCommandWith(DeleteObjectCommand, {
-        Bucket: 'quarantine-bucket',
-        Key: 'key',
-        VersionId: 'version',
-      });
     });
   });
 

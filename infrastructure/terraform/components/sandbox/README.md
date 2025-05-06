@@ -36,6 +36,7 @@ No requirements.
 | <a name="output_send_proof_queue_url"></a> [send\_proof\_queue\_url](#output\_send\_proof\_queue\_url) | n/a |
 | <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |
 | <a name="output_sftp_mock_credential_path"></a> [sftp\_mock\_credential\_path](#output\_sftp\_mock\_credential\_path) | n/a |
+| <a name="output_sftp_poll_lambda_name"></a> [sftp\_poll\_lambda\_name](#output\_sftp\_poll\_lambda\_name) | n/a |
 | <a name="output_templates_table_name"></a> [templates\_table\_name](#output\_templates\_table\_name) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->

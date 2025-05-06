@@ -63,6 +63,7 @@ export const TemplateFactory = {
           currentVersion: randomUUID(),
           virusScanStatus,
         },
+        proofs: {},
       },
     });
   },

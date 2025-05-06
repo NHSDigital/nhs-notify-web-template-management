@@ -248,6 +248,7 @@ describe('templateClient', () => {
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        proofs: {},
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
@@ -498,6 +499,7 @@ describe('templateClient', () => {
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        proofs: {},
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
@@ -593,6 +595,7 @@ describe('templateClient', () => {
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        proofs: {},
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
@@ -684,6 +687,7 @@ describe('templateClient', () => {
           currentVersion: versionId,
           virusScanStatus: 'PENDING',
         },
+        proofs: {},
       };
 
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {

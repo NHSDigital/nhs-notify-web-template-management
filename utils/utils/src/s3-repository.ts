@@ -20,6 +20,7 @@ export class S3Repository {
         Bucket: this.bucket,
         Key: key,
         Body: fileData,
+        ChecksumAlgorithm: 'SHA256',
       })
     );
   }

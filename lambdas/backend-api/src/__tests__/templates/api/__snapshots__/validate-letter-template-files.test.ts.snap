@@ -9,12 +9,13 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
     "code": "invalid_enum_value",
     "options": [
       "pdf-template",
-      "test-data"
+      "test-data",
+      "proofs"
     ],
     "path": [
       "file-type"
     ],
-    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data', received 'unknown'"
+    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data' | 'proofs', received 'unknown'"
   }
 ]"
 `;

@@ -1,4 +1,4 @@
 import { createHandler } from './api/delete-failed-scanned-object';
-import { createContainer } from './container';
+import { createLetterFileRepositoryContainer } from './container';
 
-export const handler = createHandler(createContainer());
+export const handler = createHandler(createLetterFileRepositoryContainer());

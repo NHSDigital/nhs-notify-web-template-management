@@ -38,4 +38,11 @@ resource "aws_dynamodb_table" "templates" {
       name, # To support backup and restore which will result in a new name otherwise
     ]
   }
+
+  global_secondary_index {
+    name               = "QueryById"
+    hash_key           = "id"
+    projection_type    = "INCLUDE"
+    non_key_attributes = ["owner"]
+  }
 }

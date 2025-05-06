@@ -142,3 +142,27 @@ export const $GuardDutyMalwareScanStatusFailed =
 
 export const $GuardDutyMalwareScanStatusPassed =
   $GuardDutyMalwareScanStatus.extract(['NO_THREATS_FOUND']);
+
+// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
+// Just typing/validating the parts we use
+export const guardDutyEventValidator = (
+  scanResult: 'PASSED' | 'FAILED' | 'ANY' = 'ANY'
+) => {
+  const $ResultStatusValidator = {
+    PASSED: $GuardDutyMalwareScanStatusPassed,
+    FAILED: $GuardDutyMalwareScanStatusFailed,
+    ANY: $GuardDutyMalwareScanStatus,
+  }[scanResult];
+
+  return z.object({
+    detail: z.object({
+      s3ObjectDetails: z.object({
+        objectKey: z.string(),
+        versionId: z.string(),
+      }),
+      scanResultDetails: z.object({
+        scanResultStatus: $ResultStatusValidator,
+      }),
+    }),
+  });
+};

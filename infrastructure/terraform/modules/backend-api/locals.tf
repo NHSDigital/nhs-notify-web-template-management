@@ -21,19 +21,20 @@ locals {
   })
 
   backend_lambda_entrypoints = {
-    copy_scanned_object_to_internal = "src/templates/copy-scanned-object-to-internal.ts"
-    create_letter_template          = "src/templates/create-letter.ts"
-    create_template                 = "src/templates/create.ts"
-    delete_failed_scanned_object    = "src/templates/delete-failed-scanned-object.ts"
-    delete_template                 = "src/templates/delete.ts"
-    get_template                    = "src/templates/get.ts"
-    list_template                   = "src/templates/list.ts"
-    request_proof                   = "src/templates/proof.ts"
-    set_file_virus_scan_status      = "src/templates/set-letter-file-virus-scan-status.ts"
-    submit_template                 = "src/templates/submit.ts"
-    template_client                 = "src/index.ts"
-    update_template                 = "src/templates/update.ts"
-    validate_letter_template_files  = "src/templates/validate-letter-template-files.ts"
+    copy_scanned_object_to_internal       = "src/templates/copy-scanned-object-to-internal.ts"
+    create_letter_template                = "src/templates/create-letter.ts"
+    create_template                       = "src/templates/create.ts"
+    delete_failed_scanned_object          = "src/templates/delete-failed-scanned-object.ts"
+    delete_template                       = "src/templates/delete.ts"
+    get_template                          = "src/templates/get.ts"
+    list_template                         = "src/templates/list.ts"
+    request_proof                         = "src/templates/proof.ts"
+    set_file_virus_scan_status_for_upload = "src/templates/set-letter-upload-virus-scan-status.ts"
+    process_proof                         = "src/templates/process-proof.ts"
+    submit_template                       = "src/templates/submit.ts"
+    template_client                       = "src/index.ts"
+    update_template                       = "src/templates/update.ts"
+    validate_letter_template_files        = "src/templates/validate-letter-template-files.ts"
   }
 
   backend_lambda_environment_variables = {

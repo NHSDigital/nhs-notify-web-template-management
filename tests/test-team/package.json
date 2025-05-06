@@ -1,23 +1,12 @@
 {
-  "name": "nhs-notify-web-template-management-ui-tests",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "test:local-ui": "playwright test -c config/component/component.config.ts",
-    "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",
-    "test:api": "playwright test --project api -c config/api/api.config.ts",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
-    "test:unit": "echo \"Unit tests not required\"",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
     "@aws-sdk/client-appsync": "3.775.0",
     "@aws-sdk/client-cognito-identity-provider": "3.775.0",
     "@aws-sdk/client-dynamodb": "3.775.0",
+    "@aws-sdk/client-lambda": "3.775.0",
     "@aws-sdk/client-s3": "3.775.0",
-    "@aws-sdk/client-ssm": "3.775.0",
     "@aws-sdk/client-sqs": "3.775.0",
+    "@aws-sdk/client-ssm": "3.775.0",
     "@aws-sdk/lib-dynamodb": "3.775.0",
     "@faker-js/faker": "^9.6.0",
     "@playwright/test": "^1.51.1",
@@ -33,5 +22,17 @@
     "nhs-notify-web-template-management-util-backend-config": "^0.0.1",
     "ssh2-sftp-client": "^9.1.0",
     "zod": "^3.24.2"
-  }
+  },
+  "name": "nhs-notify-web-template-management-ui-tests",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test:api": "playwright test --project api -c config/api/api.config.ts",
+    "test:e2e": "playwright test --project e2e -c config/e2e/e2e.config.ts",
+    "test:local-ui": "playwright test -c config/component/component.config.ts",
+    "test:unit": "echo \"Unit tests not required\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
 }
