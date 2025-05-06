@@ -258,7 +258,10 @@ export class TemplateStorageHelper {
     version: string,
     ext: string
   ) {
-    return await this.getS3Metadata(bucket, this.letterFileKey(prefix, key, version, ext));
+    return await this.getS3Metadata(
+      bucket,
+      this.letterFileKey(prefix, key, version, ext)
+    );
   }
 
   async getLetterProofMetadata(
@@ -268,7 +271,10 @@ export class TemplateStorageHelper {
     version: string,
     ext: string
   ) {
-    return await this.getS3Metadata(bucket, `${prefix}/${templateId}/${version}.${ext}`);
+    return await this.getS3Metadata(
+      bucket,
+      `${prefix}/${templateId}/${version}.${ext}`
+    );
   }
 
   async getS3Metadata(bucket: string, key: string) {

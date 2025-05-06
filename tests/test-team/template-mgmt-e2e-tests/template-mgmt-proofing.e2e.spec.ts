@@ -118,11 +118,10 @@ test.describe('Letter Proofing', () => {
           pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
         );
 
-        const downloadPdf =
-          await templateStorageHelper.getS3Metadata(
-            process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
-            `${user.userId}/proofs/${templateId}/${fileName}.pdf`,
-          );
+        const downloadPdf = await templateStorageHelper.getS3Metadata(
+          process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
+          `${user.userId}/proofs/${templateId}/${fileName}.pdf`
+        );
 
         expect(downloadPdf?.ChecksumSHA256).toEqual(
           pdfUploadFixtures.noCustomPersonalisation.pdf.checksumSha256()
