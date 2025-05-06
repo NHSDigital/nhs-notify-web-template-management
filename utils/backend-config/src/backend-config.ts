@@ -28,8 +28,8 @@ export const BackendConfigHelper = {
         process.env.TEMPLATES_INTERNAL_BUCKET_NAME ?? '',
       templatesQuarantineBucketName:
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME ?? '',
-        templatesDownloadBucketName:
-          process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME ?? '',
+      templatesDownloadBucketName:
+        process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME ?? '',
       userPoolId: process.env.USER_POOL_ID ?? '',
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
@@ -48,8 +48,8 @@ export const BackendConfigHelper = {
       config.templatesInternalBucketName;
     process.env.TEMPLATES_QUARANTINE_BUCKET_NAME =
       config.templatesQuarantineBucketName;
-      process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME =
-        config.templatesDownloadBucketName;
+    process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME =
+      config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
   },
 
@@ -67,8 +67,8 @@ export const BackendConfigHelper = {
         outputsFileContent.internal_bucket_name?.value ?? '',
       templatesQuarantineBucketName:
         outputsFileContent.quarantine_bucket_name?.value ?? '',
-        templatesDownloadBucketName:
-          outputsFileContent.download_bucket_name?.value ?? '',
+      templatesDownloadBucketName:
+        outputsFileContent.download_bucket_name?.value ?? '',
       userPoolId: outputsFileContent.cognito_user_pool_id?.value ?? '',
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
