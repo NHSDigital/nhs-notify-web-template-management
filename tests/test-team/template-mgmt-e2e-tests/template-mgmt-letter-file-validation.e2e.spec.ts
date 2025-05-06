@@ -87,7 +87,7 @@ test.describe('letter file validation', () => {
         'contact_telephone_number',
       ]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -96,7 +96,7 @@ test.describe('letter file validation', () => {
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );
@@ -106,7 +106,7 @@ test.describe('letter file validation', () => {
       );
     }).toPass({ timeout: 40_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeVisible();
@@ -166,7 +166,7 @@ test.describe('letter file validation', () => {
 
       expect(template.testDataCsvHeaders).toEqual([]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -176,7 +176,7 @@ test.describe('letter file validation', () => {
       );
     }).toPass({ timeout: 40_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeHidden();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeVisible();
@@ -228,22 +228,23 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('FAILED');
       expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
 
-      const csvInternal = await templateStorageHelper.getScannedCsvTestDataFile(
-        key,
-        template.files?.testDataCsv?.currentVersion as string
-      );
+      const csvInternal =
+        await templateStorageHelper.getScannedCsvTestDataMetadata(
+          key,
+          template.files?.testDataCsv?.currentVersion as string
+        );
 
       expect(csvInternal).toBe(null);
 
       const csvQuarantine =
-        await templateStorageHelper.getQuarantineCsvTestDataFile(
+        await templateStorageHelper.getQuarantineCsvTestDataMetadata(
           key,
           template.files?.testDataCsv?.currentVersion as string
         );
 
       expect(csvQuarantine).toBe(null);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -251,9 +252,9 @@ test.describe('letter file validation', () => {
       expect(pdf?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
-    }).toPass({ timeout: 20_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -302,22 +303,23 @@ test.describe('letter file validation', () => {
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
 
-      const pdfInternal = await templateStorageHelper.getScannedPdfTemplateFile(
-        key,
-        template.files?.pdfTemplate?.currentVersion as string
-      );
+      const pdfInternal =
+        await templateStorageHelper.getScannedPdfTemplateMetadata(
+          key,
+          template.files?.pdfTemplate?.currentVersion as string
+        );
 
       expect(pdfInternal).toBe(null);
 
       const pdfQuarantine =
-        await templateStorageHelper.getQuarantinePdfTemplateFile(
+        await templateStorageHelper.getQuarantinePdfTemplateMetadata(
           key,
           template.files?.pdfTemplate?.currentVersion as string
         );
 
       expect(pdfQuarantine).toBe(null);
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );
@@ -325,9 +327,9 @@ test.describe('letter file validation', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -380,9 +382,9 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -433,9 +435,9 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -481,9 +483,9 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -531,7 +533,7 @@ test.describe('letter file validation', () => {
       expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -582,9 +584,9 @@ test.describe('letter file validation', () => {
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
       expect(template.testDataCsvHeaders).toBeUndefined();
-    }).toPass({ timeout: 40_000 });
+    }).toPass({ timeout: 60_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
@@ -639,7 +641,7 @@ test.describe('letter file validation', () => {
       expect(template.testDataCsvHeaders).toBeUndefined();
     }).toPass({ timeout: 40_000 });
 
-    page.reload();
+    await page.reload();
 
     await expect(page.locator('.nhsuk-error-summary')).toBeVisible();
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();

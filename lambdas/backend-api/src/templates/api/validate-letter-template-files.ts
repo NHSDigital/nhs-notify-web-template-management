@@ -1,38 +1,10 @@
-import { z } from 'zod';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import {
-  type GuardDutyMalwareScanStatusPassed,
-  $GuardDutyMalwareScanStatusPassed,
-} from 'nhs-notify-web-template-management-utils';
+import { guardDutyEventValidator } from 'nhs-notify-web-template-management-utils';
 import { LetterUploadRepository, TemplateRepository } from '../infra';
 import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
 import { validateLetterTemplateFiles } from '../domain/validate-letter-template-files';
 import { SQSBatchItemFailure, SQSBatchResponse, SQSEvent } from 'aws-lambda';
-
-// Full event is GuardDutyScanResultNotificationEvent from aws-lambda package
-// Just typing/validating the parts we use
-type ValidateLetterTemplateFilesLambdaInput = {
-  detail: {
-    s3ObjectDetails: {
-      objectKey: string;
-    };
-    scanResultDetails: {
-      scanResultStatus: GuardDutyMalwareScanStatusPassed;
-    };
-  };
-};
-const $ValidateLetterTemplateFilesLambdaInput: z.ZodType<ValidateLetterTemplateFilesLambdaInput> =
-  z.object({
-    detail: z.object({
-      s3ObjectDetails: z.object({
-        objectKey: z.string(),
-      }),
-      scanResultDetails: z.object({
-        scanResultStatus: $GuardDutyMalwareScanStatusPassed,
-      }),
-    }),
-  });
 
 export class ValidateLetterTemplateFilesLambda {
   private letterUploadRepository: LetterUploadRepository;
@@ -69,7 +41,7 @@ export class ValidateLetterTemplateFilesLambda {
   };
 
   guardDutyHandler = async (event: unknown) => {
-    const { detail } = $ValidateLetterTemplateFilesLambdaInput.parse(event);
+    const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
     const metadata = LetterUploadRepository.parseKey(
       detail.s3ObjectDetails.objectKey
