@@ -65,7 +65,7 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
               formId='choose-a-template-type'
               radiosId='templateType'
               action={action}
-              state={state}
+              state={{ validationError }}
               pageHeading={radiosLabel}
               options={options}
               buttonText={buttonText}

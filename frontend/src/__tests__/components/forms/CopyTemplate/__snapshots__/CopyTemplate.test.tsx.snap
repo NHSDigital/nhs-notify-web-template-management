@@ -82,7 +82,7 @@ exports[`Choose template page Client-side validation triggers 1`] = `
             value="no_token"
           />
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-form-group--error"
           >
             <fieldset
               class="nhsuk-fieldset"
@@ -94,7 +94,7 @@ exports[`Choose template page Client-side validation triggers 1`] = `
                 Choose a template type
               </legend>
               <div
-                class="nhsuk-form-group"
+                class="nhsuk-form-group nhsuk-form-group--error"
               >
                 <div
                   class="nhsuk-hint"
@@ -102,8 +102,19 @@ exports[`Choose template page Client-side validation triggers 1`] = `
                 >
                   Select one option
                 </div>
+                <span
+                  class="nhsuk-error-message"
+                  id="templateType--error-message"
+                >
+                  <span
+                    class="nhsuk-u-visually-hidden"
+                  >
+                    Error: 
+                  </span>
+                  Select a template type
+                </span>
                 <div
-                  aria-describedby="templateType--hint"
+                  aria-describedby="templateType--hint templateType--error-message"
                   class="nhsuk-radios"
                   id="templateType"
                 >

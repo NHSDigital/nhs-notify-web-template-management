@@ -64,10 +64,10 @@ export const NhsAppTemplateForm: FC<
     useTextInput<HTMLInputElement>(state.name);
 
   const templateNameError =
-    state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
+    validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
 
   const templateMessageError =
-    state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
+    validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 

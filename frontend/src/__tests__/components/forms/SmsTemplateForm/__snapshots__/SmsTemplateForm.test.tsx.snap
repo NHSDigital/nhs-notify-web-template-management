@@ -65,7 +65,9 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             type="hidden"
             value="no_token"
           />
-          <div>
+          <div
+            class="nhsuk-form-group--error"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="smsTemplateName"
@@ -121,11 +123,23 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               </div>
             </details>
             <div
-              class="nhsuk-form-group"
+              class="nhsuk-form-group nhsuk-form-group--error"
             >
+              <span
+                class="nhsuk-error-message"
+                id="smsTemplateName--error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Enter a template name
+              </span>
               <input
+                aria-describedby="smsTemplateName--error-message"
                 autocomplete="off"
-                class="nhsuk-input"
+                class="nhsuk-input nhsuk-input--error"
                 id="smsTemplateName"
                 name="smsTemplateName"
                 type="text"
@@ -134,7 +148,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-form-group--error"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -143,9 +157,21 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             >
               Message
             </label>
+            <span
+              class="nhsuk-error-message"
+              id="smsTemplateMessage--error-message"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              Enter a template message
+            </span>
             <textarea
+              aria-describedby="smsTemplateMessage--error-message"
               autocomplete="off"
-              class="nhsuk-textarea"
+              class="nhsuk-textarea nhsuk-textarea--error"
               id="smsTemplateMessage"
               maxlength="918"
               name="smsTemplateMessage"

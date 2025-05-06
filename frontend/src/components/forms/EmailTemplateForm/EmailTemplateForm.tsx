@@ -63,13 +63,13 @@ export const EmailTemplateForm: FC<
     useTextInput<HTMLTextAreaElement>(state.message);
 
   const templateNameError =
-    state.validationError?.fieldErrors.emailTemplateName?.join(', ');
+    validationError?.fieldErrors.emailTemplateName?.join(', ');
 
   const templateSubjectLineError =
-    state.validationError?.fieldErrors.emailTemplateSubjectLine?.join(', ');
+    validationError?.fieldErrors.emailTemplateSubjectLine?.join(', ');
 
   const templateMessageError =
-    state.validationError?.fieldErrors.emailTemplateMessage?.join(', ');
+    validationError?.fieldErrors.emailTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 

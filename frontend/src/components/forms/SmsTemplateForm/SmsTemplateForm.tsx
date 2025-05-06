@@ -49,10 +49,10 @@ export const SmsTemplateForm: FC<
     useTextInput<HTMLTextAreaElement>(state.message);
 
   const templateNameError =
-    state.validationError?.fieldErrors.smsTemplateName?.join(', ');
+    validationError?.fieldErrors.smsTemplateName?.join(', ');
 
   const templateMessageError =
-    state.validationError?.fieldErrors.smsTemplateMessage?.join(', ');
+    validationError?.fieldErrors.smsTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
