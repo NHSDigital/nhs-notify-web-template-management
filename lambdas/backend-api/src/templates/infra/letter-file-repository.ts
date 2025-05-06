@@ -18,7 +18,7 @@ export class LetterFileRepository {
     versionId: string,
     destinationKey?: string
   ) {
-    this.copy(
+    await this.copy(
       this.quarantineBucketName,
       this.internalBucketName,
       key,
@@ -60,7 +60,7 @@ export class LetterFileRepository {
     versionId: string,
     destinationKey: string
   ) {
-    this.copy(
+    await this.copy(
       this.quarantineBucketName,
       this.downloadBucketName,
       key,
