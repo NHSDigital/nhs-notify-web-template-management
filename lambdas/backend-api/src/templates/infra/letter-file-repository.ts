@@ -9,7 +9,8 @@ export class LetterFileRepository {
 
   constructor(
     protected readonly quarantineBucketName: string,
-    protected readonly internalBucketName: string
+    protected readonly internalBucketName: string,
+    protected readonly downloadBucketName: string
   ) {}
 
   async copyFromQuarantineToInternal(
@@ -17,10 +18,26 @@ export class LetterFileRepository {
     versionId: string,
     destinationKey?: string
   ) {
+    this.copy(
+      this.quarantineBucketName,
+      this.internalBucketName,
+      key,
+      versionId,
+      destinationKey
+    );
+  }
+
+  private async copy(
+    sourceBucket: string,
+    destinationBucket: string,
+    key: string,
+    versionId: string,
+    destinationKey?: string
+  ) {
     await this.client.send(
       new CopyObjectCommand({
-        CopySource: `/${this.quarantineBucketName}/${key}?versionId=${versionId}`,
-        Bucket: this.internalBucketName,
+        CopySource: `/${sourceBucket}/${key}?versionId=${versionId}`,
+        Bucket: destinationBucket,
         Key: destinationKey ?? key,
         MetadataDirective: 'COPY',
         TaggingDirective: 'COPY',
@@ -35,6 +52,20 @@ export class LetterFileRepository {
         Key: key,
         VersionId: versionId,
       })
+    );
+  }
+
+  async copyFromQuarantineToDownload(
+    key: string,
+    versionId: string,
+    destinationKey: string
+  ) {
+    this.copy(
+      this.quarantineBucketName,
+      this.downloadBucketName,
+      key,
+      versionId,
+      destinationKey
     );
   }
 }

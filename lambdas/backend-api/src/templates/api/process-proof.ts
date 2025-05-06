@@ -41,6 +41,18 @@ export const createHandler =
         versionId,
         internalKey
       );
+
+      const downloadKey = LetterProofRepository.getDownloadKey(
+        owner,
+        templateId,
+        fileName
+      );
+
+      await letterFileRepository.copyFromQuarantineToDownload(
+        objectKey,
+        versionId,
+        downloadKey
+      );
     } else {
       logger.error({
         description: 'File found that did not pass virus scan',
