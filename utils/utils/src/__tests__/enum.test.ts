@@ -136,12 +136,13 @@ describe('templateStatusToColourMappings', () => {
     (templateStatus) => {
       const expectedColours: { [key in TemplateStatus]?: string } = {
         SUBMITTED: 'grey',
-        PENDING_PROOF: 'yellow',
+        WAITING_FOR_PROOF: 'yellow',
         PENDING_PROOF_REQUEST: 'blue',
         PENDING_UPLOAD: 'blue',
         PENDING_VALIDATION: 'blue',
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
+        PROOF_AVAILABLE: 'yellow',
       };
 
       expect(templateStatusToColourMappings(templateStatus)).toEqual(
@@ -207,7 +208,7 @@ describe('templateStatusCopyAction', () => {
     (templateStatus) => {
       const statusWithNoExpectedCopyAction: TemplateStatus[] = [
         'DELETED',
-        'PENDING_PROOF',
+        'WAITING_FOR_PROOF',
       ];
 
       expect(templateStatusCopyAction(templateStatus)).toEqual(
@@ -224,7 +225,7 @@ describe('templateStatusDeleteAction', () => {
       const statusWithNoExpectedDeleteAction: TemplateStatus[] = [
         'DELETED',
         'SUBMITTED',
-        'PENDING_PROOF',
+        'WAITING_FOR_PROOF',
       ];
 
       expect(templateStatusDeleteAction(templateStatus)).toEqual(
@@ -271,16 +272,17 @@ describe('templateDisplayCopyAction', () => {
     ['EMAIL', 'SUBMITTED', true],
     ['EMAIL', 'NOT_YET_SUBMITTED', true],
     ['EMAIL', 'DELETED', false],
-    ['EMAIL', 'PENDING_PROOF', false], // should not occur in practice, just for test purposes
+    ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
     ['LETTER', 'SUBMITTED', false],
-    ['LETTER', 'NOT_YET_SUBMITTED', false],
+    ['LETTER', 'NOT_YET_SUBMITTED', false], // should not occur in practice, just for test purposes
     ['LETTER', 'DELETED', false],
-    ['LETTER', 'PENDING_PROOF', false],
+    ['LETTER', 'WAITING_FOR_PROOF', false],
     ['LETTER', 'PENDING_PROOF_REQUEST', false],
     ['LETTER', 'PENDING_UPLOAD', false],
     ['LETTER', 'PENDING_VALIDATION', false],
     ['LETTER', 'VIRUS_SCAN_FAILED', false],
     ['LETTER', 'VALIDATION_FAILED', false],
+    ['LETTER', 'PROOF_AVAILABLE', false], // TO CHECK
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
     (type, status, shouldDisplayCopyAction) => {
@@ -308,16 +310,17 @@ describe('templateDisplayDeleteAction', () => {
     ['EMAIL', 'SUBMITTED', false],
     ['EMAIL', 'NOT_YET_SUBMITTED', true],
     ['EMAIL', 'DELETED', false],
-    ['EMAIL', 'PENDING_PROOF', false], // should not occur in practice, just for test purposes
+    ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
     ['LETTER', 'SUBMITTED', false],
     ['LETTER', 'NOT_YET_SUBMITTED', true],
     ['LETTER', 'DELETED', false],
-    ['LETTER', 'PENDING_PROOF', false],
+    ['LETTER', 'WAITING_FOR_PROOF', false],
     ['LETTER', 'PENDING_PROOF_REQUEST', true],
     ['LETTER', 'PENDING_UPLOAD', true],
     ['LETTER', 'PENDING_VALIDATION', true],
     ['LETTER', 'VIRUS_SCAN_FAILED', true],
     ['LETTER', 'VALIDATION_FAILED', true],
+    ['LETTER', 'PROOF_AVAILABLE', true], // TO CHECK
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
     (type, status, shouldDisplayDeleteAction) => {
