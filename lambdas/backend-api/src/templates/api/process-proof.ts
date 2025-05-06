@@ -2,14 +2,17 @@ import { guardDutyEventValidator } from 'nhs-notify-web-template-management-util
 import type { TemplateRepository } from '../infra';
 import { LetterProofRepository } from '../infra/letter-proof-repository';
 import { LetterFileRepository } from '../infra/letter-file-repository';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
 export const createHandler =
   ({
     templateRepository,
     letterFileRepository,
+    logger,
   }: {
     templateRepository: TemplateRepository;
     letterFileRepository: LetterFileRepository;
+    logger: Logger;
   }) =>
   async (event: unknown) => {
     const {
@@ -38,6 +41,11 @@ export const createHandler =
         versionId,
         internalKey
       );
+    } else {
+      logger.error({
+        description: 'File found that did not pass virus scan',
+        objectKey,
+      });
     }
 
     // we will copy to the download bucket here as well

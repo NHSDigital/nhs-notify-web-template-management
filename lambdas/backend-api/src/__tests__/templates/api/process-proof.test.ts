@@ -2,6 +2,7 @@ import { mockDeep } from 'jest-mock-extended';
 import { createHandler } from '../../../templates/api/process-proof';
 import { TemplateRepository } from '../../../templates/infra';
 import { LetterFileRepository } from '@backend-api/templates/infra/letter-file-repository';
+import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
 test.each([
   [
@@ -35,6 +36,7 @@ test.each([
     const handler = createHandler({
       templateRepository,
       letterFileRepository,
+      logger: mockDeep<Logger>(),
     });
 
     await handler({

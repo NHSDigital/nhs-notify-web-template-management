@@ -83,4 +83,5 @@ export const createTemplateRepositoryContainer = () => {
 export const createLetterFileRepositoryAndTemplateRepositoryContainer = () => ({
   ...createTemplateRepositoryContainer(),
   ...createLetterFileRepositoryContainer(),
+  logger,
 });
