@@ -99,7 +99,7 @@ export const templateStatusToColourMappings = (status: TemplateStatus) =>
       VIRUS_SCAN_FAILED: 'red',
       VALIDATION_FAILED: 'red',
       WAITING_FOR_PROOF: 'yellow',
-      PROOF_AVAILABLE: undefined,
+      PROOF_AVAILABLE: 'yellow',
     }) as const
   )[status];
 
