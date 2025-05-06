@@ -5,16 +5,18 @@ import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
+  FormErrorState,
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { previewSmsTemplateAction } from './server-actions';
+import { $FormSchema, previewSmsTemplateAction } from './server-actions';
+import { validate } from '@utils/client-validate-form';
 
 export function PreviewSMSTemplate({
   initialState,
@@ -28,6 +30,13 @@ export function PreviewSMSTemplate({
     previewSmsTemplateAction,
     initialState
   );
+
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate($FormSchema, setValidationError);
+
   const templateMessage = initialState.message;
   const html = renderSMSMarkdown(templateMessage);
   const isFromEditPage = searchParams.get('from') === 'edit';
@@ -45,10 +54,13 @@ export function PreviewSMSTemplate({
               sectionHeading={isFromEditPage ? sectionHeading : undefined}
               form={{
                 ...form,
-                state,
+                state: {
+                  validationError,
+                },
                 action,
                 formId: 'preview-sms-template',
                 radiosId: 'previewSMSTemplateAction',
+                formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
                 <PreviewTemplateDetails.Sms

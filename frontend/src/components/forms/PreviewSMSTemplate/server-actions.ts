@@ -4,10 +4,17 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
+import content from '@content/content';
+
+const {
+  components: {
+    previewSMSTemplate: { form },
+  },
+} = content;
 
 export const $FormSchema = z.object({
   previewSMSTemplateAction: z.enum(['sms-edit', 'sms-submit'], {
-    message: 'Select an option',
+    message: form.previewSMSTemplateAction.error.empty,
   }),
 });
 
@@ -15,9 +22,9 @@ export async function previewSmsTemplateAction(
   formState: TemplateFormState<SMSTemplate>,
   formData: FormData
 ) {
-  const form = Object.fromEntries(formData.entries());
+  const formFields = Object.fromEntries(formData.entries());
 
-  const { success, error, data } = $FormSchema.safeParse(form);
+  const { success, error, data } = $FormSchema.safeParse(formFields);
 
   if (!success) {
     return {

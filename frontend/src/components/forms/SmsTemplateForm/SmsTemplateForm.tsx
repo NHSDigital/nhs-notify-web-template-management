@@ -15,10 +15,11 @@ import {
 import { getBasePath } from '@utils/get-base-path';
 import {
   CreateUpdateSMSTemplate,
+  FormErrorState,
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
-import { FC, useActionState } from 'react';
+import { FC, useActionState, useState } from 'react';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import content from '@content/content';
@@ -26,13 +27,20 @@ import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
-import { processFormActions } from './server-action';
+import { $CreateSmsTemplateSchema, processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
+import { validate } from '@utils/client-validate-form';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
 > = ({ initialState }) => {
   const [state, action] = useActionState(processFormActions, initialState);
+
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate($CreateSmsTemplateSchema, setValidationError);
 
   const [smsTemplateName, smsTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -72,12 +80,19 @@ export const SmsTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <ZodErrorSummary
+              errorHeading={errorHeading}
+              state={{ validationError }}
+            />
             <h1 data-testid='page-heading'>
               {editMode ? 'Edit ' : 'Create '}
               {pageHeadingSuffix}
             </h1>
-            <NHSNotifyFormWrapper action={action} formId='create-sms-template'>
+            <NHSNotifyFormWrapper
+              action={action}
+              formId='create-sms-template'
+              formAttributes={{ onSubmit: formValidate }}
+            >
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='smsTemplateName' size='s'>
                   {templateNameLabelText}
@@ -127,7 +142,10 @@ export const SmsTemplateForm: FC<
                   {smsPricingText}
                 </a>
               </p>
-              <NHSNotifyButton id='create-sms-template-submit-button'>
+              <NHSNotifyButton
+                id='create-sms-template-submit-button'
+                data-testid='submit-button'
+              >
                 {buttonText}
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>

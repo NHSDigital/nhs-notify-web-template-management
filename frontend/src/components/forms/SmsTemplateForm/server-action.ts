@@ -7,15 +7,24 @@ import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
+import content from '@content/content';
 
-const $CreateSmsTemplateSchema = z.object({
+const {
+  components: {
+    templateFormSms: { form },
+  },
+} = content;
+
+export const $CreateSmsTemplateSchema = z.object({
   smsTemplateName: z
-    .string({ message: 'Enter a template name' })
-    .min(1, { message: 'Enter a template name' }),
+    .string({ message: form.smsTemplateName.error.empty })
+    .min(1, { message: form.smsTemplateName.error.empty }),
   smsTemplateMessage: z
-    .string({ message: 'Enter a template message' })
-    .min(1, { message: 'Enter a template message' })
-    .max(MAX_SMS_CHARACTER_LENGTH, { message: 'Template message too long' }),
+    .string({ message: form.smsTemplateMessage.error.empty })
+    .min(1, { message: form.smsTemplateMessage.error.empty })
+    .max(MAX_SMS_CHARACTER_LENGTH, {
+      message: form.smsTemplateMessage.error.max,
+    }),
 });
 
 export async function processFormActions(

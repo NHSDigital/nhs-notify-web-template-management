@@ -2,6 +2,7 @@ import { Radios, Fieldset } from 'nhsuk-react-components';
 import { FormState } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { DetailedHTMLProps, FormHTMLAttributes } from 'react';
 
 export type NHSNotifyRadioButtonFormProps = {
   formId: string;
@@ -22,6 +23,10 @@ export type NHSNotifyRadioButtonFormProps = {
   };
   learnMoreLink?: string;
   learnMoreText?: string;
+  formAttributes?: DetailedHTMLProps<
+    FormHTMLAttributes<HTMLFormElement>,
+    HTMLFormElement
+  >;
 };
 
 export const NHSNotifyRadioButtonForm = ({
@@ -32,12 +37,17 @@ export const NHSNotifyRadioButtonForm = ({
   pageHeading,
   options,
   buttonText,
+  formAttributes,
   legend = { isPgeHeading: true, size: 'l' },
   hint = '',
   learnMoreLink = '',
   learnMoreText = '',
 }: NHSNotifyRadioButtonFormProps) => (
-  <NHSNotifyFormWrapper action={action} formId={formId}>
+  <NHSNotifyFormWrapper
+    action={action}
+    formId={formId}
+    formAttributes={formAttributes}
+  >
     <Fieldset>
       <Fieldset.Legend
         data-testid={`${radiosId}-form__legend`}

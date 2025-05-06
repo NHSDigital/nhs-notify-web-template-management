@@ -1,15 +1,19 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
-import { templateTypeDisplayMappings } from 'nhs-notify-web-template-management-utils';
+import {
+  FormErrorState,
+  templateTypeDisplayMappings,
+} from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { chooseTemplateAction } from './server-action';
+import { $ChooseTemplate, chooseTemplateAction } from './server-action';
 import { TemplateType } from 'nhs-notify-backend-client';
+import { validate } from '@utils/client-validate-form';
 
 export const ChooseTemplate = ({
   templateTypes,
@@ -17,6 +21,11 @@ export const ChooseTemplate = ({
   templateTypes: TemplateType[];
 }) => {
   const [state, action] = useActionState(chooseTemplateAction, {});
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate($ChooseTemplate, setValidationError);
 
   const options = templateTypes.map((templateType) => ({
     id: templateType,
@@ -39,7 +48,10 @@ export const ChooseTemplate = ({
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
-        <ZodErrorSummary errorHeading={errorHeading} state={state} />
+        <ZodErrorSummary
+          errorHeading={errorHeading}
+          state={{ validationError }}
+        />
         <NHSNotifyRadioButtonForm
           formId='choose-a-template-type'
           radiosId='templateType'
@@ -51,6 +63,7 @@ export const ChooseTemplate = ({
           hint={hint}
           learnMoreLink={learnMoreLink}
           learnMoreText={learnMoreText}
+          formAttributes={{ onSubmit: formValidate }}
         />
       </NHSNotifyMain>
     </>

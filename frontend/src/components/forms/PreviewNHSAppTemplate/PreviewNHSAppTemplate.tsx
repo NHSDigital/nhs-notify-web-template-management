@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
+  FormErrorState,
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -11,10 +12,11 @@ import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { previewNhsAppTemplateAction } from './server-action';
+import { previewNhsAppTemplateAction, schema } from './server-action';
+import { validate } from '@utils/client-validate-form';
 
 export function PreviewNHSAppTemplate({
   initialState,
@@ -25,6 +27,12 @@ export function PreviewNHSAppTemplate({
     previewNhsAppTemplateAction,
     initialState
   );
+
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate(schema, setValidationError);
 
   const { message } = state;
   const html = renderNHSAppMarkdown(message);
@@ -46,10 +54,13 @@ export function PreviewNHSAppTemplate({
               sectionHeading={isFromEditPage ? sectionHeading : undefined}
               form={{
                 ...form,
-                state,
+                state: {
+                  validationError,
+                },
                 action,
                 formId: 'preview-nhs-app-template',
                 radiosId: 'previewNHSAppTemplateAction',
+                formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
                 <PreviewTemplateDetails.NHSApp

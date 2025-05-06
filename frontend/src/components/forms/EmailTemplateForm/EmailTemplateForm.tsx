@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useActionState } from 'react';
+import { FC, useActionState, useState } from 'react';
 import {
   TextInput,
   HintText,
@@ -9,7 +9,10 @@ import {
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
-import { processFormActions } from '@forms/EmailTemplateForm/server-action';
+import {
+  $EmailTemplateFormSchema,
+  processFormActions,
+} from '@forms/EmailTemplateForm/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -18,6 +21,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   CreateUpdateEmailTemplate,
   EmailTemplate,
+  FormErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -25,6 +29,7 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { validate } from '@utils/client-validate-form';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
@@ -41,6 +46,12 @@ export const EmailTemplateForm: FC<
   } = content.components.templateFormEmail;
 
   const [state, action] = useActionState(processFormActions, initialState);
+
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate($EmailTemplateFormSchema, setValidationError);
 
   const [emailTemplateName, emailTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -72,10 +83,14 @@ export const EmailTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <ZodErrorSummary
+              errorHeading={errorHeading}
+              state={{ validationError }}
+            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-email-template'
+              formAttributes={{ onSubmit: formValidate }}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {editMode ? 'Edit ' : 'Create '}
@@ -131,6 +146,7 @@ export const EmailTemplateForm: FC<
               />
               <NHSNotifyButton
                 type='submit'
+                data-testid='submit-button'
                 id='create-email-template-submit-button'
               >
                 {buttonText}

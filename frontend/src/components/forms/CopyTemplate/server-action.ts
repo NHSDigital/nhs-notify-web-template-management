@@ -10,10 +10,11 @@ import {
   TemplateType,
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
+import content from '@content/content';
 
-const $CopyTemplate = z.object({
+export const $CopyTemplate = z.object({
   templateType: z.enum(TEMPLATE_TYPE_LIST, {
-    message: 'Select a template type',
+    message: content.components.copyTemplate.form.templateType.error,
   }),
 });
 
