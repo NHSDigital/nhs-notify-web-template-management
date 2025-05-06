@@ -69,7 +69,7 @@ describe('MessageTemplates component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('matches snapshot with pending proof status', () => {
+  it('matches snapshot with waiting for proof status', () => {
     messageTemplatesProps.templateList[0].templateStatus = 'WAITING_FOR_PROOF';
     const container = render(<MessageTemplates {...messageTemplatesProps} />);
 

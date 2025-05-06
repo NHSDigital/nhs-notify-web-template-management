@@ -668,7 +668,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
 </DocumentFragment>
 `;
 
-exports[`MessageTemplates component matches snapshot with pending proof status 1`] = `
+exports[`MessageTemplates component matches snapshot with waiting for proof status 1`] = `
 <DocumentFragment>
   <div
     class="nhsuk-grid-row"
