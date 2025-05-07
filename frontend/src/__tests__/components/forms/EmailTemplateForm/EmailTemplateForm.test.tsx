@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import {
   TemplateFormState,
@@ -89,5 +89,22 @@ test('renders page with multiple errors', () => {
       })}
     />
   );
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('Client-side validation triggers', () => {
+  const container = render(
+    <EmailTemplateForm
+      initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+        validationError: undefined,
+        name: 'template-name',
+        subject: 'template-subject-line',
+        message: 'template-message',
+        id: 'template-id',
+      })}
+    />
+  );
+  const submitButton = screen.getByTestId('submit-button');
+  fireEvent.click(submitButton);
   expect(container.asFragment()).toMatchSnapshot();
 });

@@ -24,6 +24,7 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
     deleteTemplateYesAction,
     template
   );
+
   const [_, noAction] = useActionState(deleteTemplateNoAction, null);
 
   const fullPageHeading = `${pageHeading} '${yesState.name}'?`;

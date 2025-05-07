@@ -4,6 +4,13 @@ import {
   NHSAppTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
+import content from '@content/content';
+
+const {
+  components: {
+    previewNHSAppTemplate: { form },
+  },
+} = content;
 
 const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
   {
@@ -11,9 +18,9 @@ const radioSelectionToPageMap: Record<'nhsapp-edit' | 'nhsapp-submit', string> =
     'nhsapp-submit': 'submit-nhs-app-template',
   };
 
-const schema = z.object({
+export const schema = z.object({
   previewNHSAppTemplateAction: z.enum(['nhsapp-edit', 'nhsapp-submit'], {
-    message: 'Select an option',
+    message: form.previewNHSAppTemplateAction.error.empty,
   }),
 });
 
@@ -21,8 +28,8 @@ export function previewNhsAppTemplateAction(
   formState: TemplateFormState<NHSAppTemplate>,
   formData: FormData
 ): TemplateFormState<NHSAppTemplate> {
-  const form = Object.fromEntries(formData.entries());
-  const validationResponse = schema.safeParse(form);
+  const formFields = Object.fromEntries(formData.entries());
+  const validationResponse = schema.safeParse(formFields);
 
   if (!validationResponse.success) {
     return {

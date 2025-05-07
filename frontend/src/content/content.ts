@@ -5,6 +5,10 @@ const generatePageTitle = (title: string): string => {
 };
 
 const goBackButtonText = 'Go back';
+const enterATemplateName = 'Enter a template name';
+const enterATemplateMessage = 'Enter a template message';
+const templateMessageTooLong = 'Template message too long';
+const selectAnOption = 'Select an option';
 
 const header = {
   serviceName: 'Notify',
@@ -210,6 +214,11 @@ const previewEmailTemplate = {
       { id: 'email-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
+    previewEmailTemplateAction: {
+      error: {
+        empty: selectAnOption,
+      },
+    },
   },
   backLinkText: backToAllTemplates,
 };
@@ -246,6 +255,11 @@ const previewNHSAppTemplate = {
       { id: 'nhsapp-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
+    previewNHSAppTemplateAction: {
+      error: {
+        empty: selectAnOption,
+      },
+    },
   },
   backLinkText: backToAllTemplates,
 };
@@ -274,6 +288,11 @@ const previewSMSTemplate = {
       { id: 'sms-submit', text: 'Submit template' },
     ],
     buttonText: 'Continue',
+    previewSMSTemplateAction: {
+      error: {
+        empty: selectAnOption,
+      },
+    },
   },
   backLinkText: backToAllTemplates,
 };
@@ -355,6 +374,9 @@ const copyTemplate = {
   buttonText: 'Continue',
   hint: 'Select one option',
   backLinkText: backToAllTemplates,
+  form: {
+    templateType: { error: 'Select a template type' },
+  },
 };
 
 const chooseTemplate = {
@@ -366,6 +388,9 @@ const chooseTemplate = {
   learnMoreLink: '/features',
   learnMoreText: 'Learn more about message channels (opens in a new tab)',
   backLinkText: backToAllTemplates,
+  form: {
+    templateType: { error: 'Select a template type' },
+  },
 };
 
 const nameYourTemplate = {
@@ -459,6 +484,17 @@ const templateFormNhsApp = {
   characterCountText: ' of 5000 characters',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+  form: {
+    nhsAppTemplateName: {
+      error: { empty: enterATemplateName },
+    },
+    nhsAppTemplateMessage: {
+      error: {
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
+      },
+    },
+  },
 };
 
 const templateFormLetter = {
@@ -485,6 +521,39 @@ const templateFormLetter = {
   templateCsvGuidanceLinkText:
     'Learn how to provide test personalisation data (opens in a new tab)',
   buttonText: 'Save and upload',
+  form: {
+    letterTemplateName: {
+      error: {
+        empty: enterATemplateName,
+      },
+    },
+    letterTemplateLetterType: {
+      error: {
+        empty: 'Choose a letter type',
+      },
+    },
+    letterTemplateLanguage: {
+      error: {
+        empty: 'Choose a language',
+      },
+    },
+    letterTemplatePdf: {
+      error: {
+        empty: 'Select a letter template PDF',
+        tooLarge:
+          'The letter template PDF is too large. The file must be smaller than 5MB',
+        wrongFileFormat: 'Select a letter template PDF',
+      },
+    },
+    letterTemplateCsv: {
+      error: {
+        empty: 'Select a valid test data .csv file',
+        tooLarge:
+          'The test data CSV is too large. The file must be smaller than 10KB',
+        wrongFileFormat: 'Select a valid test data .csv file',
+      },
+    },
+  },
 };
 
 const templateFormEmail = {
@@ -498,6 +567,24 @@ const templateFormEmail = {
   templateNameHintText: 'This will not be visible to recipients.',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+  form: {
+    emailTemplateName: {
+      error: {
+        empty: enterATemplateName,
+      },
+    },
+    emailTemplateSubjectLine: {
+      error: {
+        empty: 'Enter a template subject line',
+      },
+    },
+    emailTemplateMessage: {
+      error: {
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
+      },
+    },
+  },
 };
 
 const templateFormSms = {
@@ -515,6 +602,19 @@ const templateFormSms = {
     'Learn more about character counts and text messaging pricing (opens in a new tab)',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
+  form: {
+    smsTemplateName: {
+      error: {
+        empty: enterATemplateName,
+      },
+    },
+    smsTemplateMessage: {
+      error: {
+        empty: enterATemplateMessage,
+        max: templateMessageTooLong,
+      },
+    },
+  },
 };
 
 const templateSubmitted = {
