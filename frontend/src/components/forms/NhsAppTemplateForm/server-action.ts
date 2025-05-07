@@ -6,15 +6,22 @@ import {
 import { z } from 'zod';
 import { saveTemplate, createTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
+import content from '@content/content';
 
-const $CreateNhsAppTemplateSchema = z.object({
+const {
+  components: {
+    templateFormNhsApp: { form },
+  },
+} = content;
+
+export const $CreateNhsAppTemplateSchema = z.object({
   nhsAppTemplateName: z
-    .string({ message: 'Enter a template name' })
-    .min(1, { message: 'Enter a template name' }),
+    .string({ message: form.nhsAppTemplateName.error.empty })
+    .min(1, { message: form.nhsAppTemplateName.error.empty }),
   nhsAppTemplateMessage: z
-    .string({ message: 'Enter a template message' })
-    .min(1, { message: 'Enter a template message' })
-    .max(5000, { message: 'Template message too long' }),
+    .string({ message: form.nhsAppTemplateMessage.error.empty })
+    .min(1, { message: form.nhsAppTemplateMessage.error.empty })
+    .max(5000, { message: form.nhsAppTemplateMessage.error.max }),
 });
 
 export async function processFormActions(

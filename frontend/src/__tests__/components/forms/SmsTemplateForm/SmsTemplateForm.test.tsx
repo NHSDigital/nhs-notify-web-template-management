@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockDeep } from 'jest-mock-extended';
 import {
@@ -126,4 +126,20 @@ describe('CreateSmsTemplate component', () => {
       `${longMessage.length} characters`
     );
   }, 10_000);
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <SmsTemplateForm
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+          validationError: undefined,
+          name: '',
+          message: '',
+          id: 'template-id',
+        })}
+      />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
