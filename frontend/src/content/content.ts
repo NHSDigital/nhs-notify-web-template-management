@@ -220,6 +220,12 @@ const previewLetterTemplate = {
   submitText: 'Submit template',
   requestProofText: 'Request a proof',
   errorHeading: 'There is a problem',
+  footer: {
+    WAITING_FOR_PROOF: [
+      'It can take 5 to 10 working days to get a proof of your template.',
+      'If you still have not received your proof after this time, contact NHS Notify.',
+    ],
+  },
   virusScanError: 'The file(s) you uploaded may contain a virus.',
   virusScanErrorAction:
     'Create a new letter template to upload your file(s) again or upload different file(s).',
