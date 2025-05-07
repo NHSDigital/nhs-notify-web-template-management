@@ -36,23 +36,24 @@ export const createHandler =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
     if (virusScanResult === 'PASSED') {
-      await letterFileRepository.copyFromQuarantineToInternal(
-        objectKey,
-        versionId,
-        internalKey
-      );
-
       const downloadKey = LetterProofRepository.getDownloadKey(
         owner,
         templateId,
         fileName
       );
 
-      await letterFileRepository.copyFromQuarantineToDownload(
-        objectKey,
-        versionId,
-        downloadKey
-      );
+      await Promise.all([
+        letterFileRepository.copyFromQuarantineToInternal(
+          objectKey,
+          versionId,
+          internalKey
+        ),
+        letterFileRepository.copyFromQuarantineToDownload(
+          objectKey,
+          versionId,
+          downloadKey
+        ),
+      ]);
     } else {
       logger.error({
         description: 'File found that did not pass virus scan',
