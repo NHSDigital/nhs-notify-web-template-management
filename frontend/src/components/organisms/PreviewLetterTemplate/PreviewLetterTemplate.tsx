@@ -9,6 +9,7 @@ import { BackLink, ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
+import classNames from 'classnames';
 
 type ButtonDetails = { text: string; href: string };
 
@@ -18,6 +19,7 @@ export function PreviewLetterTemplate({
   const {
     backLinkText,
     errorHeading,
+    footer,
     submitText,
     requestProofText,
     virusScanError,
@@ -50,6 +52,9 @@ export function PreviewLetterTemplate({
 
   const continueButton = buttonMap[template.templateStatus];
 
+  const footerText =
+    (footer as Record<TemplateStatus, string[]>)[template.templateStatus] ?? [];
+
   return (
     <>
       <BackLink href={`${basePath}/message-templates`} id='back-link'>
@@ -71,6 +76,20 @@ export function PreviewLetterTemplate({
               </ErrorSummary>
             )}
             <PreviewTemplateDetails.Letter template={template} />
+
+            {footerText.length > 0 ? (
+              <div
+                className={classNames(
+                  'preview-letter-footer',
+                  'nhsuk-u-margin-bottom-6'
+                )}
+              >
+                {footerText.map((item, i) => (
+                  <p key={`footer-${i}`}>{item}</p>
+                ))}
+              </div>
+            ) : null}
+
             {continueButton && (
               <NHSNotifyButton
                 data-testid='preview-letter-template-cta'
