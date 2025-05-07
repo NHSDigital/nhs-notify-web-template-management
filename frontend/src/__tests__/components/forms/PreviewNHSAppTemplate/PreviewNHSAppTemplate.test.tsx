@@ -1,6 +1,6 @@
 'use client';
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { PreviewNHSAppTemplate } from '@forms/PreviewNHSAppTemplate';
 import {
   NHSAppTemplate,
@@ -10,7 +10,6 @@ import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 
-jest.mock('@forms/PreviewNHSAppTemplate/server-action');
 jest.mock('@utils/markdownit');
 
 jest.mock('react', () => {
@@ -136,5 +135,20 @@ describe('Preview nhs app form renders', () => {
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'
     );
+  });
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <PreviewNHSAppTemplate
+        initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
+          id: 'template-id',
+          name: 'test-template-nhs app',
+          message: 'example',
+        })}
+      />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

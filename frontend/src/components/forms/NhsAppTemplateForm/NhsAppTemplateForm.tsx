@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useActionState } from 'react';
+import { FC, useActionState, useState } from 'react';
 import {
   TextInput,
   HintText,
@@ -9,7 +9,10 @@ import {
   BackLink,
 } from 'nhsuk-react-components';
 import { getBasePath } from '@utils/get-base-path';
-import { processFormActions } from '@forms/NhsAppTemplateForm/server-action';
+import {
+  $CreateNhsAppTemplateSchema,
+  processFormActions,
+} from '@forms/NhsAppTemplateForm/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
@@ -17,6 +20,7 @@ import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
   CreateUpdateNHSAppTemplate,
+  FormErrorState,
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -26,6 +30,7 @@ import { JsEnabled } from '@hooks/js-enabled/JsEnabled';
 import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
+import { validate } from '@utils/client-validate-form';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
@@ -43,6 +48,15 @@ export const NhsAppTemplateForm: FC<
 
   const [state, action] = useActionState(processFormActions, initialState);
 
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate(
+    $CreateNhsAppTemplateSchema,
+    setValidationError
+  );
+
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
 
@@ -50,10 +64,10 @@ export const NhsAppTemplateForm: FC<
     useTextInput<HTMLInputElement>(state.name);
 
   const templateNameError =
-    state.validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
+    validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
 
   const templateMessageError =
-    state.validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
+    validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
@@ -67,10 +81,14 @@ export const NhsAppTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary errorHeading={errorHeading} state={state} />
+            <ZodErrorSummary
+              errorHeading={errorHeading}
+              state={{ validationError }}
+            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-nhs-app-template'
+              formAttributes={{ onSubmit: formValidate }}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
                 {editMode ? 'Edit ' : 'Create '}
@@ -109,7 +127,10 @@ export const NhsAppTemplateForm: FC<
                   {characterCountText}
                 </p>
               </JsEnabled>
-              <NHSNotifyButton id='create-nhs-app-template-submit-button'>
+              <NHSNotifyButton
+                id='create-nhs-app-template-submit-button'
+                data-testid='submit-button'
+              >
                 {buttonText}
               </NHSNotifyButton>
             </NHSNotifyFormWrapper>

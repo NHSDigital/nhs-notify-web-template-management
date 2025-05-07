@@ -91,4 +91,17 @@ describe('Choose template page', () => {
     );
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <CopyTemplate
+        template={mockDeep<
+          ValidatedTemplateDto & { templateType: ValidCopyType }
+        >()}
+      />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });
