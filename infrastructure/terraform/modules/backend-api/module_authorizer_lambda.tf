@@ -16,8 +16,8 @@ module "authorizer_lambda" {
 
   environment_variables = {
     NODE_OPTIONS        = "--enable-source-maps",
-    USER_POOL_ID        = var.cognito_config["USER_POOL_ID"],
-    USER_POOL_CLIENT_ID = var.cognito_config["USER_POOL_CLIENT_ID"],
+    USER_POOL_ID        = "placeholder",
+    USER_POOL_CLIENT_ID = "placeholder",
   }
 }
 
