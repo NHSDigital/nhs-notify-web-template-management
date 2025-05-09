@@ -1,4 +1,5 @@
 import { getBasePath } from '@utils/get-base-path';
+import { TemplateStatus } from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -234,7 +235,7 @@ const previewLetterTemplate = {
       'It can take 5 to 10 working days to get a proof of your template.',
       'If you still have not received your proof after this time, contact NHS Notify.',
     ],
-  },
+  } as Partial<Record<TemplateStatus, string[]>>,
   virusScanError: 'The file(s) you uploaded may contain a virus.',
   virusScanErrorAction:
     'Create a new letter template to upload your file(s) again or upload different file(s).',
