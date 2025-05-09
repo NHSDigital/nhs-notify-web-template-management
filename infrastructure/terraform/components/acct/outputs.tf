@@ -17,6 +17,11 @@ output "s3_buckets" {
       bucket = module.s3bucket_backup_reports.bucket
       id     = module.s3bucket_backup_reports.id
     }
+    access_logs = {
+      arn    = module.s3bucket_access_logs.arn
+      bucket = module.s3bucket_access_logs.bucket
+      id     = module.s3bucket_access_logs.id
+    }
   }
 }
 
