@@ -7,7 +7,7 @@
     "@aws-sdk/client-s3": "3.775.0",
     "@aws-sdk/client-sqs": "3.775.0",
     "@aws-sdk/client-ssm": "3.775.0",
-    "@aws-sdk/lib-dynamodb": "3.775.0",
+    "@aws-sdk/lib-dynamodb": "3.806.0",
     "@faker-js/faker": "^9.6.0",
     "@playwright/test": "^1.51.1",
     "async-mutex": "^0.5.0",
