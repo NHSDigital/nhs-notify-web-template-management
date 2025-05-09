@@ -52,8 +52,7 @@ export function PreviewLetterTemplate({
 
   const continueButton = buttonMap[template.templateStatus];
 
-  const footerText =
-    (footer as Record<TemplateStatus, string[]>)[template.templateStatus] ?? [];
+  const footerText = footer[template.templateStatus] ?? [];
 
   return (
     <>
