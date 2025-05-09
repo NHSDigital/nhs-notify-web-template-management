@@ -137,7 +137,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       statusCode: 200,
       template: expect.objectContaining({
         name: template.name,
-        templateStatus: 'NOT_YET_SUBMITTED',
+        templateStatus: 'WAITING_FOR_PROOF',
         templateType: template.templateType,
       }),
     });

@@ -216,13 +216,14 @@ export class TemplateRepository {
     const expressionAttributeValues: Record<string, string> = {
       ':newStatus': 'SUBMITTED' satisfies TemplateStatus,
       ':expectedStatus': 'NOT_YET_SUBMITTED' satisfies TemplateStatus,
+      ':expectedLetterStatus': 'PROOF_AVAILABLE' satisfies TemplateStatus,
       ':passed': 'PASSED' satisfies VirusScanStatus,
     };
 
     const conditions = [
       '(attribute_not_exists(files.pdfTemplate) OR files.pdfTemplate.virusScanStatus = :passed)',
       '(attribute_not_exists(files.testDataCsv) OR files.testDataCsv.virusScanStatus = :passed)',
-      '#templateStatus = :expectedStatus',
+      '#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus',
     ];
 
     try {
@@ -583,7 +584,7 @@ export class TemplateRepository {
         ReturnValues: 'ALL_NEW',
       }
     )
-      .setStatus('NOT_YET_SUBMITTED')
+      .setStatus('WAITING_FOR_PROOF')
       .expectedStatus('PENDING_PROOF_REQUEST')
       .expectedTemplateType('LETTER')
       .expectTemplateExists()
