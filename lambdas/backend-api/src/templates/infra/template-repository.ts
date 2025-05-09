@@ -319,28 +319,28 @@ export class TemplateRepository {
     testDataCsvHeaders: string[]
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
-    {
-      '#files': 'files',
-      '#file': 'pdfTemplate' satisfies keyof LetterFiles,
-      '#templateStatus': 'templateStatus',
-      '#updatedAt': 'updatedAt',
-      '#version': 'currentVersion',
-    };
+      {
+        '#files': 'files',
+        '#file': 'pdfTemplate' satisfies keyof LetterFiles,
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
 
     const resolvedPostValidationSuccessStatus = this.enableProofing
       ? 'PENDING_PROOF_REQUEST'
       : 'NOT_YET_SUBMITTED';
 
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
-    {
-      ':templateStatus': (valid
-        ? resolvedPostValidationSuccessStatus
-        : 'VALIDATION_FAILED') satisfies TemplateStatus,
-      ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
-      ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
-      ':updatedAt': new Date().toISOString(),
-      ':version': versionId,
-    };
+      {
+        ':templateStatus': (valid
+          ? resolvedPostValidationSuccessStatus
+          : 'VALIDATION_FAILED') satisfies TemplateStatus,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':updatedAt': new Date().toISOString(),
+        ':version': versionId,
+      };
 
     const updates = [
       '#templateStatus = :templateStatus',
@@ -521,28 +521,28 @@ export class TemplateRepository {
     ];
 
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
-    {
-      '#files': 'files',
-      '#file': (fileType === 'pdf-template'
-        ? 'pdfTemplate'
-        : 'testDataCsv') satisfies Extract<
+      {
+        '#files': 'files',
+        '#file': (fileType === 'pdf-template'
+          ? 'pdfTemplate'
+          : 'testDataCsv') satisfies Extract<
           keyof LetterFiles,
           'pdfTemplate' | 'testDataCsv'
         >,
-      '#scanStatus': 'virusScanStatus',
-      '#templateStatus': 'templateStatus',
-      '#updatedAt': 'updatedAt',
-      '#version': 'currentVersion',
-    };
+        '#scanStatus': 'virusScanStatus',
+        '#templateStatus': 'templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#version': 'currentVersion',
+      };
 
     const ExpressionAttributeValues: UpdateCommandInput['ExpressionAttributeValues'] =
-    {
-      ':scanStatus': status,
-      ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
-      ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
-      ':version': versionId,
-      ':updatedAt': new Date().toISOString(),
-    };
+      {
+        ':scanStatus': status,
+        ':templateStatusDeleted': 'DELETED' satisfies TemplateStatus,
+        ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
+        ':version': versionId,
+        ':updatedAt': new Date().toISOString(),
+      };
 
     if (status === 'FAILED') {
       ExpressionAttributeValues[':templateStatusFailed'] =
