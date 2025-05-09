@@ -129,16 +129,18 @@ export const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
-    }) as const
+    }) as Record<TemplateStatus, boolean>
   )[status];
 
 export const templateTypeCopyAction = (type: TemplateType) =>
-  ({
-    NHS_APP: true,
-    SMS: true,
-    EMAIL: true,
-    LETTER: false,
-  })[type];
+  (
+    ({
+      NHS_APP: true,
+      SMS: true,
+      EMAIL: true,
+      LETTER: false,
+    }) as Record<TemplateType, boolean>
+  )[type];
 
 export const templateStatusDeleteAction = (status: TemplateStatus) =>
   (
@@ -153,16 +155,18 @@ export const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
-    }) as const
+    }) as Record<TemplateStatus, boolean>
   )[status];
 
 export const templateTypeDeleteAction = (type: TemplateType) =>
-  ({
-    NHS_APP: true,
-    SMS: true,
-    EMAIL: true,
-    LETTER: true,
-  })[type];
+  (
+    ({
+      NHS_APP: true,
+      SMS: true,
+      EMAIL: true,
+      LETTER: true,
+    }) as Record<TemplateType, boolean>
+  )[type];
 
 export const templateDisplayCopyAction = ({
   templateType,
