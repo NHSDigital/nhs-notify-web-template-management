@@ -36,7 +36,7 @@ resource "aws_cloudfront_distribution" "main" {
     domain_name              = module.backend_api.download_bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     origin_id                = "S3-${local.csi}-download"
-    
+
     custom_header {
       name  = "x-user-pool-id"
       value = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_ID"]

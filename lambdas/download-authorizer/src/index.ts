@@ -1,15 +1,15 @@
-import type { CloudFrontHeaders, CloudFrontRequestEvent } from "aws-lambda";
-import { z } from "zod";
+import type { CloudFrontHeaders, CloudFrontRequestEvent } from 'aws-lambda';
+import { z } from 'zod';
 import {
   CognitoIdentityProviderClient,
   GetUserCommand,
-} from "@aws-sdk/client-cognito-identity-provider";
-import { jwtDecode } from "jwt-decode";
-import { verify } from "jsonwebtoken";
-import getJwksClient from "jwks-rsa";
+} from '@aws-sdk/client-cognito-identity-provider';
+import { jwtDecode } from 'jwt-decode';
+import { verify } from 'jsonwebtoken';
+import getJwksClient from 'jwks-rsa';
 
 const cognitoClient = new CognitoIdentityProviderClient({
-  region: "eu-west-2",
+  region: 'eu-west-2',
 });
 
 const $AccessToken = z.object({
@@ -19,16 +19,16 @@ const $AccessToken = z.object({
 });
 
 const deny = {
-  status: "403",
-  statusDescription: "Forbidden",
-  body: "<h1>Access Denied</h1>",
+  status: '403',
+  statusDescription: 'Forbidden',
+  body: '<h1>Access Denied</h1>',
 };
 
 function authFromCookie(headers: CloudFrontHeaders) {
   const cookie = headers.cookie?.[0]?.value;
-  const parts = (cookie ?? "").split("; ");
-  const kvParts = parts.map((p) => p.split("="));
-  const [, t] = kvParts.find(([k]) => k.endsWith("accessToken")) ?? [];
+  const parts = (cookie ?? '').split('; ');
+  const kvParts = parts.map((p) => p.split('='));
+  const [, t] = kvParts.find(([k]) => k.endsWith('accessToken')) ?? [];
   return t;
 }
 
@@ -41,15 +41,15 @@ export const handler = async (event: CloudFrontRequestEvent) => {
 
   const authorizationToken = authFromCookie(request.headers);
   const userPoolId =
-    request.origin?.s3?.customHeaders["x-user-pool-id"]?.[0].value;
+    request.origin?.s3?.customHeaders['x-user-pool-id']?.[0].value;
   const userPoolClientId =
-    request.origin?.s3?.customHeaders["x-user-pool-client-id"]?.[0].value;
+    request.origin?.s3?.customHeaders['x-user-pool-client-id']?.[0].value;
 
   console.log(userPoolId, userPoolClientId);
 
   try {
     if (!authorizationToken) {
-      console.warn("no token");
+      console.warn('no token');
       return deny;
     }
 
@@ -64,7 +64,7 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     const { kid } = decodedToken;
 
     if (!kid) {
-      console.warn("Authorization token missing kid");
+      console.warn('Authorization token missing kid');
       return deny;
     }
 
@@ -86,7 +86,7 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     }
 
     // token_use claim
-    if (tokenUse !== "access") {
+    if (tokenUse !== 'access') {
       console.warn(
         `Token has invalid token_use, expected access but received ${tokenUse}`
       );
@@ -101,19 +101,19 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     );
 
     if (!Username || !UserAttributes) {
-      console.warn("Missing user");
+      console.warn('Missing user');
       return deny;
     }
 
-    const sub = UserAttributes.find(({ Name }) => Name === "sub")?.Value;
+    const sub = UserAttributes.find(({ Name }) => Name === 'sub')?.Value;
 
     if (!sub) {
-      console.warn("Missing user subject");
+      console.warn('Missing user subject');
       return deny;
     }
 
     if (ownerPath !== sub) {
-      console.warn("owner !== sub");
+      console.warn('owner !== sub');
       return deny;
     }
 
