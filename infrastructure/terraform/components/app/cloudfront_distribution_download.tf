@@ -24,11 +24,10 @@ resource "aws_cloudfront_distribution" "main" {
     ssl_support_method       = "sni-only"
   }
 
-  # Disable logging for now wile we prove out deploying via a pipeline.
-  # logging_config {
-  #   bucket          = module.s3bucket_cf_logs.bucket_regional_domain_name
-  #   include_cookies = false
-  # }
+  logging_config {
+    bucket          = module.s3bucket_cf_logs.bucket_regional_domain_name
+    include_cookies = false
+  }
 
   origin {
     domain_name              = module.backend_api.download_bucket_regional_domain_name
