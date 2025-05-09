@@ -1,8 +1,8 @@
 resource "aws_cloudfront_distribution" "main" {
   provider = aws.us-east-1
 
-  enabled             = true
-  is_ipv6_enabled     = true
+  enabled             = var.enable_file_download
+  is_ipv6_enabled     = var.enable_file_download
   comment             = "NHS Notify Template files CDN (${local.csi})"
   default_root_object = "index.html"
   price_class         = "PriceClass_100" # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
@@ -22,6 +22,11 @@ resource "aws_cloudfront_distribution" "main" {
     acm_certificate_arn      = aws_acm_certificate.cert.arn
     minimum_protocol_version = "TLSv1.2_2021" # Supports 1.2 & 1.3 - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html
     ssl_support_method       = "sni-only"
+  }
+
+  logging_config {
+    bucket          = module.s3bucket_cf_logs.bucket_regional_domain_name
+    include_cookies = false
   }
 
   origin {
