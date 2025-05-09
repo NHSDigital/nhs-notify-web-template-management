@@ -1,7 +1,6 @@
 import {
   Language,
   LetterType,
-  TEMPLATE_TYPE_LIST,
   TemplateDto,
   TemplateStatus,
   TemplateType,
@@ -16,10 +15,6 @@ import {
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   previewSubmittedTemplatePages,
-  templateStatusDeleteAction,
-  templateStatusCopyAction,
-  templateTypeCopyAction,
-  templateTypeDeleteAction,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
 } from '../enum';
