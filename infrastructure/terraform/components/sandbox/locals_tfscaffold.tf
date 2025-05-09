@@ -20,4 +20,11 @@ locals {
       Name        = local.csi
     },
   )
+
+    terraform_state_bucket = format(
+    "%s-tfscaffold-%s-%s",
+    var.project,
+    var.aws_account_id,
+    var.region,
+  )
 }

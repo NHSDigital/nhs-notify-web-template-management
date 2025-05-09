@@ -43,4 +43,36 @@ data "aws_iam_policy_document" "kms" {
       "*",
     ]
   }
+
+  statement {
+    sid    = "AllowCloudFrontServicePrincipalSSE-KMS"
+    effect = "Allow"
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "cloudfront.amazonaws.com",
+      ]
+    }
+
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*"
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+
+      values = [
+        aws_cloudfront_distribution.main.arn,
+      ]
+    }
+  }
 }
