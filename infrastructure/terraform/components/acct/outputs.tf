@@ -30,3 +30,7 @@ output "vpc_subnets" {
 output "vpc_nat_ips" {
   value = module.vpc.nat_public_ips
 }
+
+output "log_subscription_role_arn" {
+  value = module.obs_datasource.log_subscription_role_arn
+}
