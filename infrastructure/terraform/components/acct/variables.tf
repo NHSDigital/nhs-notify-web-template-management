@@ -114,3 +114,9 @@ variable "letter_suppliers" {
 
   default = {}
 }
+
+variable "oam_sink_id" {
+  description = "The ID of the Cloudwatch OAM sink in the appropriate observability account."
+  type        = string
+  default     = ""
+}
