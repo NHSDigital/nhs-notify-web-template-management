@@ -1,7 +1,6 @@
 import {
   Language,
   LetterType,
-  TemplateDto,
   TemplateStatus,
   TemplateType,
 } from 'nhs-notify-backend-client';
