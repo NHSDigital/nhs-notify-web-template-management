@@ -116,7 +116,7 @@ export const previewTemplatePages = (type: TemplateType) =>
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
 
-export const templateStatusCopyAction = (status: TemplateStatus) =>
+const templateStatusCopyAction = (status: TemplateStatus) =>
   (
     ({
       NOT_YET_SUBMITTED: true,
@@ -132,7 +132,7 @@ export const templateStatusCopyAction = (status: TemplateStatus) =>
     }) as Record<TemplateStatus, boolean>
   )[status];
 
-export const templateTypeCopyAction = (type: TemplateType) =>
+const templateTypeCopyAction = (type: TemplateType) =>
   (
     ({
       NHS_APP: true,
@@ -142,7 +142,7 @@ export const templateTypeCopyAction = (type: TemplateType) =>
     }) as Record<TemplateType, boolean>
   )[type];
 
-export const templateStatusDeleteAction = (status: TemplateStatus) =>
+const templateStatusDeleteAction = (status: TemplateStatus) =>
   (
     ({
       NOT_YET_SUBMITTED: true,
@@ -158,7 +158,7 @@ export const templateStatusDeleteAction = (status: TemplateStatus) =>
     }) as Record<TemplateStatus, boolean>
   )[status];
 
-export const templateTypeDeleteAction = (type: TemplateType) =>
+const templateTypeDeleteAction = (type: TemplateType) =>
   (
     ({
       NHS_APP: true,

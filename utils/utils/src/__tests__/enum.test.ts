@@ -202,65 +202,6 @@ describe('previewSubmittedTemplatePages', () => {
   });
 });
 
-describe('templateStatusCopyAction', () => {
-  test.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected result for display of copy action when templateStatus is %s',
-    (templateStatus) => {
-      const statusWithNoExpectedCopyAction: TemplateStatus[] = [
-        'DELETED',
-        'WAITING_FOR_PROOF',
-      ];
-
-      expect(templateStatusCopyAction(templateStatus)).toEqual(
-        !statusWithNoExpectedCopyAction.includes(templateStatus)
-      );
-    }
-  );
-});
-
-describe('templateStatusDeleteAction', () => {
-  test.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected result for display of delete action when templateStatus is %s',
-    (templateStatus) => {
-      const statusWithNoExpectedDeleteAction: TemplateStatus[] = [
-        'DELETED',
-        'SUBMITTED',
-        'WAITING_FOR_PROOF',
-      ];
-
-      expect(templateStatusDeleteAction(templateStatus)).toEqual(
-        !statusWithNoExpectedDeleteAction.includes(templateStatus)
-      );
-    }
-  );
-});
-
-describe('templateTypeCopyAction', () => {
-  test.each(TEMPLATE_TYPE_LIST)(
-    'should give the expected result for display of copy action when templateType is %s',
-    (templateType) => {
-      const typesWithNoExpectedCopyAction: TemplateType[] = ['LETTER'];
-
-      expect(templateTypeCopyAction(templateType)).toEqual(
-        !typesWithNoExpectedCopyAction.includes(templateType)
-      );
-    }
-  );
-});
-
-describe('templateTypeDeleteAction', () => {
-  test.each(TEMPLATE_TYPE_LIST as TemplateType[])(
-    'should give the expected result for display of delete action when templateType is %s',
-    (templateType) => {
-      const typesWithNoExpectedDeleteAction: TemplateType[] = [];
-
-      expect(templateTypeDeleteAction(templateType)).toEqual(
-        !typesWithNoExpectedDeleteAction.includes(templateType)
-      );
-    }
-  );
-});
-
 describe('templateDisplayCopyAction', () => {
   test.each([
     ['NHS_APP', 'SUBMITTED', true],
