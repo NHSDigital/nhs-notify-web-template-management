@@ -36,7 +36,7 @@ function getTestDataInputFinder(testData: Record<string, string>[]) {
   };
 }
 
-test.describe('SFTP proof send @debug', () => {
+test.describe('SFTP proof send', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 

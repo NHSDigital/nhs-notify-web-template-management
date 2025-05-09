@@ -221,15 +221,12 @@ describe('templateDisplayCopyAction', () => {
     ['LETTER', 'PROOF_AVAILABLE', false],
   ])(
     'should give the expected result for display of copy action when template has type of %s and status of %s',
-    (type, status, shouldDisplayCopyAction) => {
-      const templateType = type as TemplateType;
-      const templateStatus = status as TemplateStatus;
-
+    (templateType, templateStatus, shouldDisplayCopyAction) => {
       expect(
         templateDisplayCopyAction({
           templateType,
           templateStatus,
-        } as TemplateDto)
+        })
       ).toBe(shouldDisplayCopyAction);
     }
   );
@@ -259,15 +256,12 @@ describe('templateDisplayDeleteAction', () => {
     ['LETTER', 'PROOF_AVAILABLE', true],
   ])(
     'should give the expected result for display of delete action when template has type of %s and status of %s',
-    (type, status, shouldDisplayDeleteAction) => {
-      const templateType = type as TemplateType;
-      const templateStatus = status as TemplateStatus;
-
+    (templateType, templateStatus, shouldDisplayDeleteAction) => {
       expect(
         templateDisplayDeleteAction({
           templateType,
           templateStatus,
-        } as TemplateDto)
+        })
       ).toBe(shouldDisplayDeleteAction);
     }
   );
