@@ -129,7 +129,7 @@ const templateStatusCopyAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: false,
-    }) as Record<TemplateStatus, boolean>
+    }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
 const templateTypeCopyAction = (type: TemplateType) =>
@@ -139,7 +139,7 @@ const templateTypeCopyAction = (type: TemplateType) =>
       SMS: true,
       EMAIL: true,
       LETTER: false,
-    }) as Record<TemplateType, boolean>
+    }) satisfies Record<TemplateType, boolean>
   )[type];
 
 const templateStatusDeleteAction = (status: TemplateStatus) =>
@@ -155,7 +155,7 @@ const templateStatusDeleteAction = (status: TemplateStatus) =>
       VALIDATION_FAILED: true,
       WAITING_FOR_PROOF: false,
       PROOF_AVAILABLE: true,
-    }) as Record<TemplateStatus, boolean>
+    }) satisfies Record<TemplateStatus, boolean>
   )[status];
 
 const templateTypeDeleteAction = (type: TemplateType) =>
@@ -165,7 +165,7 @@ const templateTypeDeleteAction = (type: TemplateType) =>
       SMS: true,
       EMAIL: true,
       LETTER: true,
-    }) as Record<TemplateType, boolean>
+    }) satisfies Record<TemplateType, boolean>
   )[type];
 
 export const templateDisplayCopyAction = ({
