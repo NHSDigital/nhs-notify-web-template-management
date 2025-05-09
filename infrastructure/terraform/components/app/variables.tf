@@ -194,6 +194,12 @@ variable "enable_proofing" {
   default     = false
 }
 
+variable "enable_file_download" {
+  type        = bool
+  description = "Feature flag for downloading files"
+  default     = true
+}
+
 variable "observability_account_id" {
   type        = string
   description = "The Observability Account ID that needs access"

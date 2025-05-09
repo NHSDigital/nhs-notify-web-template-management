@@ -104,3 +104,8 @@ variable "parent_acct_environment" {
   type        = string
   description = "Name of the environment responsible for the acct resources used"
 }
+
+variable "cloudfront_distribution_arn" {
+  type        = string
+  description = "ARN of the cloudfront distribution to serve files from"
+}

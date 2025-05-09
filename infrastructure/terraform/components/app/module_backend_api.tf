@@ -14,6 +14,8 @@ module "backend_api" {
   kms_key_arn             = module.kms.key_arn
   parent_acct_environment = var.parent_acct_environment
 
+  cloudfront_distribution_arn = aws_cloudfront_distribution.main.arn
+
   cognito_config = jsondecode(aws_ssm_parameter.cognito_config.value)
 
   enable_backup = var.destination_vault_arn != null ? true : false
