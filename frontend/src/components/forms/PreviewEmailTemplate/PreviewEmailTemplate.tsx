@@ -6,15 +6,17 @@ import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   EmailTemplate,
+  FormErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
-import { previewEmailTemplateAction } from './server-actions';
+import { $FormSchema, previewEmailTemplateAction } from './server-actions';
+import { validate } from '@utils/client-validate-form';
 
 export function PreviewEmailTemplate({
   initialState,
@@ -28,6 +30,12 @@ export function PreviewEmailTemplate({
     previewEmailTemplateAction,
     initialState
   );
+
+  const [validationError, setValidationError] = useState<
+    FormErrorState | undefined
+  >(state.validationError);
+
+  const formValidate = validate($FormSchema, setValidationError);
 
   const templateSubjectLine = initialState.subject;
   const templateMessage = initialState.message;
@@ -47,10 +55,13 @@ export function PreviewEmailTemplate({
               sectionHeading={isFromEditPage ? sectionHeading : undefined}
               form={{
                 ...form,
-                state,
+                state: {
+                  validationError,
+                },
                 action,
                 formId: 'preview-email-template',
                 radiosId: 'previewEmailTemplateAction',
+                formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
                 <PreviewTemplateDetails.Email

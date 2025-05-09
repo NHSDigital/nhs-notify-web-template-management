@@ -27,6 +27,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
 import { $CreateLetterTemplateForm } from './form-schema';
+import { validate } from '@utils/client-validate-form';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -81,15 +82,7 @@ export const LetterTemplateForm: FC<
   const templateCsvError =
     validationError?.fieldErrors.letterTemplateCsv?.join(', ');
 
-  const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData);
-    const validationResult = $CreateLetterTemplateForm.safeParse(data);
-    if (!validationResult.success) {
-      event.preventDefault();
-      setValidationError(validationResult.error.flatten());
-    }
-  };
+  const validateForm = validate($CreateLetterTemplateForm, setValidationError);
 
   const formGroupClasses = [
     'nhsuk-u-margin-bottom-6',

@@ -83,4 +83,13 @@ describe('Choose template page', () => {
     );
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
+  });
 });

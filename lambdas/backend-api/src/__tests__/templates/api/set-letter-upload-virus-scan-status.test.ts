@@ -2,7 +2,7 @@ import { mock } from 'jest-mock-extended';
 import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-template-management-test-helper-utils';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRepository } from '../../../templates/infra';
-import { createHandler } from '../../../templates/api/set-letter-file-virus-scan-status';
+import { createHandler } from '../../../templates/api/set-letter-upload-virus-scan-status';
 
 function setup() {
   const mocks = {
@@ -12,7 +12,7 @@ function setup() {
   return { handler, mocks };
 }
 
-it('sets the virus scan status on pdf files identified by file metadata', async () => {
+it('sets the virus scan status on pdf uploads identified by file metadata', async () => {
   const { handler, mocks } = setup();
 
   const event = makeGuardDutyMalwareScanResultNotificationEvent({
@@ -30,7 +30,7 @@ it('sets the virus scan status on pdf files identified by file metadata', async 
   await handler(event);
 
   expect(
-    mocks.templateRepository.setLetterFileVirusScanStatus
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
     { id: 'template-id', owner: 'template-owner' },
     'pdf-template',
@@ -56,7 +56,7 @@ it('sets the virus scan status on csv files identified by file metadata', async 
   await handler(event);
 
   expect(
-    mocks.templateRepository.setLetterFileVirusScanStatus
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).toHaveBeenCalledWith(
     { id: 'template-id', owner: 'template-owner' },
     'test-data',
@@ -85,7 +85,7 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
     await handler(event);
 
     expect(
-      mocks.templateRepository.setLetterFileVirusScanStatus
+      mocks.templateRepository.setLetterFileVirusScanStatusForUpload
     ).toHaveBeenCalledWith(
       { id: 'template-id', owner: 'template-owner' },
       'pdf-template',
@@ -110,7 +110,7 @@ it('errors if event has no object key name', async () => {
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.templateRepository.setLetterFileVirusScanStatus
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).not.toHaveBeenCalled();
 });
 
@@ -131,7 +131,7 @@ it('errors if event has no scan result status', async () => {
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.templateRepository.setLetterFileVirusScanStatus
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).not.toHaveBeenCalled();
 });
 
@@ -152,7 +152,7 @@ it('errors if event has invalid scan result status', async () => {
   await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.templateRepository.setLetterFileVirusScanStatus
+    mocks.templateRepository.setLetterFileVirusScanStatusForUpload
   ).not.toHaveBeenCalled();
 });
 
@@ -172,7 +172,7 @@ it('errors if status update fails', async () => {
 
   const error = new Error('Status Update error');
 
-  mocks.templateRepository.setLetterFileVirusScanStatus.mockRejectedValueOnce(
+  mocks.templateRepository.setLetterFileVirusScanStatusForUpload.mockRejectedValueOnce(
     error
   );
 

@@ -98,6 +98,7 @@ test.describe('POST /v1/letter-template', () => {
             fileName: 'test-data.csv',
             virusScanStatus: 'PENDING',
           },
+          proofs: {},
         },
       },
     });
@@ -176,6 +177,7 @@ test.describe('POST /v1/letter-template', () => {
             fileName: 'template.pdf',
             virusScanStatus: 'PENDING',
           },
+          proofs: {},
         },
       },
     });

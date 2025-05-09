@@ -6,6 +6,7 @@ export type BackendConfig = {
   apiBaseUrl: string;
   sendProofQueueUrl: string;
   sftpEnvironment: string;
+  sftpPollLambdaName: string;
   sftpMockCredentialPath: string;
   templatesTableName: string;
   templatesInternalBucketName: string;
@@ -28,6 +29,7 @@ export const BackendConfigHelper = {
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME ?? '',
       userPoolId: process.env.USER_POOL_ID ?? '',
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
+      sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
     };
   },
 
@@ -43,6 +45,7 @@ export const BackendConfigHelper = {
       config.templatesInternalBucketName;
     process.env.TEMPLATES_QUARANTINE_BUCKET_NAME =
       config.templatesQuarantineBucketName;
+    process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -62,6 +65,7 @@ export const BackendConfigHelper = {
       userPoolId: outputsFileContent.cognito_user_pool_id?.value ?? '',
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
+      sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
     };
   },
 

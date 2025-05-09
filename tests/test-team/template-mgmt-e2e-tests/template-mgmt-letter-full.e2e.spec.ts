@@ -90,7 +90,7 @@ test.describe('letter complete e2e journey', () => {
         'contact_telephone_number',
       ]);
 
-      const pdf = await templateStorageHelper.getScannedPdfTemplateFile(
+      const pdf = await templateStorageHelper.getScannedPdfTemplateMetadata(
         key,
         template.files?.pdfTemplate?.currentVersion as string
       );
@@ -99,7 +99,7 @@ test.describe('letter complete e2e journey', () => {
         pdfUploadFixtures.withPersonalisation.pdf.checksumSha256()
       );
 
-      const csv = await templateStorageHelper.getScannedCsvTestDataFile(
+      const csv = await templateStorageHelper.getScannedCsvTestDataMetadata(
         key,
         template.files?.testDataCsv?.currentVersion as string
       );
@@ -107,33 +107,37 @@ test.describe('letter complete e2e journey', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
+    }).toPass({ timeout: 40_000 });
 
-      page.reload();
+    await expect(async () => {
+      await page.reload();
 
       const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
       await expect(previewTemplatePage.continueButton).toBeVisible();
-      await previewTemplatePage.clickContinueButton();
-
-      await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
-
-      const requestProofPage = new TemplateMgmtRequestProofPage(page);
-      await requestProofPage.clickRequestProofButton();
-
-      await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
-
-      await previewTemplatePage.clickContinueButton();
-
-      await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
-
-      const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
-      await submitTemplatePage.clickSubmitTemplateButton();
-
-      await expect(page).toHaveURL(
-        TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
-      );
-
-      const finalTemplate = await templateStorageHelper.getTemplate(key);
-      expect(finalTemplate.templateStatus).toBe('SUBMITTED');
     }).toPass({ timeout: 40_000 });
+
+    const previewTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+    await previewTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
+
+    const requestProofPage = new TemplateMgmtRequestProofPage(page);
+    await requestProofPage.clickRequestProofButton();
+
+    await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+
+    await previewTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+
+    const submitTemplatePage = new TemplateMgmtSubmitLetterPage(page);
+    await submitTemplatePage.clickSubmitTemplateButton();
+
+    await expect(page).toHaveURL(
+      TemplateMgmtTemplateSubmittedLetterPage.urlRegexp
+    );
+
+    const finalTemplate = await templateStorageHelper.getTemplate(key);
+    expect(finalTemplate.templateStatus).toBe('SUBMITTED');
   });
 });

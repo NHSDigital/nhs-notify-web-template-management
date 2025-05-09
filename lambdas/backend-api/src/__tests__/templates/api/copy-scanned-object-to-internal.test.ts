@@ -1,11 +1,11 @@
-import type { LetterUploadRepository } from '../../../templates/infra';
+import type { LetterFileRepository } from '../../../templates/infra/letter-file-repository';
 import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-template-management-test-helper-utils';
 import { mock } from 'jest-mock-extended';
 import { createHandler } from '../../../templates/api/copy-scanned-object-to-internal';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 
 function setup() {
-  const mocks = { letterUploadRepository: mock<LetterUploadRepository>() };
+  const mocks = { letterFileRepository: mock<LetterFileRepository>() };
   const handler = createHandler(mocks);
   return { handler, mocks };
 }
@@ -29,7 +29,7 @@ it('copies the scanned file to the internal s3 bucket', async () => {
   await handler(event);
 
   expect(
-    mocks.letterUploadRepository.copyFromQuarantineToInternal
+    mocks.letterFileRepository.copyFromQuarantineToInternal
   ).toHaveBeenCalledWith('template.pdf', 's3-version-id');
 });
 
@@ -51,7 +51,7 @@ it('errors if the event has no object key', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.copyFromQuarantineToInternal
+    mocks.letterFileRepository.copyFromQuarantineToInternal
   ).not.toHaveBeenCalled();
 });
 
@@ -73,7 +73,7 @@ it('errors if the event has no version id', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.copyFromQuarantineToInternal
+    mocks.letterFileRepository.copyFromQuarantineToInternal
   ).not.toHaveBeenCalled();
 });
 
@@ -94,7 +94,7 @@ it('errors if the event has no virus scan status', async () => {
   ).rejects.toThrowErrorMatchingSnapshot();
 
   expect(
-    mocks.letterUploadRepository.copyFromQuarantineToInternal
+    mocks.letterFileRepository.copyFromQuarantineToInternal
   ).not.toHaveBeenCalled();
 });
 
@@ -121,7 +121,7 @@ it.each($GuardDutyMalwareScanStatusFailed.options)(
     ).rejects.toThrowErrorMatchingSnapshot();
 
     expect(
-      mocks.letterUploadRepository.copyFromQuarantineToInternal
+      mocks.letterFileRepository.copyFromQuarantineToInternal
     ).not.toHaveBeenCalled();
   }
 );
