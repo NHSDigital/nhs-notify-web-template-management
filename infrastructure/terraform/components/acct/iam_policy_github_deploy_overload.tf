@@ -23,6 +23,8 @@ data "aws_iam_policy_document" "github_deploy" {
       "cloudformation:*",
       "cognito-idp:*",
       "firehose:*",
+      "logs:*",
+      "oam:*",
       "pipes:*",
       "ses:*",
       "sns:*",
