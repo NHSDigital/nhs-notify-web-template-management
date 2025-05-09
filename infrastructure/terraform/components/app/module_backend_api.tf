@@ -13,6 +13,7 @@ module "backend_api" {
   log_retention_in_days   = var.log_retention_in_days
   kms_key_arn             = module.kms.key_arn
   parent_acct_environment = var.parent_acct_environment
+  function_s3_bucket      = local.acct.s3_buckets["artefacts"]["id"]
 
   cognito_config = jsondecode(aws_ssm_parameter.cognito_config.value)
 

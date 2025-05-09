@@ -1,20 +1,33 @@
 module "delete_template_lambda" {
-  depends_on = [module.build_template_lambda, module.build_template_client]
+    source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
 
-  source      = "../lambda-function"
-  description = "Delete a template"
+    project        = var.project
+    environment    = var.environment
+    component      = var.component
+    aws_account_id = var.aws_account_id
+    region         = var.region
 
-  function_name    = "${local.csi}-delete-template"
-  filename         = module.build_template_lambda.zips[local.backend_lambda_entrypoints.delete_template].path
-  source_code_hash = module.build_template_lambda.zips[local.backend_lambda_entrypoints.delete_template].base64sha256
-  runtime          = "nodejs20.x"
-  handler          = "delete.handler"
+    kms_key_arn = var.kms_key_arn
 
-  log_retention_in_days = var.log_retention_in_days
+    function_name = "delete-template"
 
-  environment_variables = local.backend_lambda_environment_variables
+    function_module_name  = "delete"
+    handler_function_name = "handler"
+    description           = "Delete a template"
 
-  execution_role_policy_document = data.aws_iam_policy_document.delete_template_lambda_policy.json
+    memory  = 512
+    timeout = 20
+    runtime = "nodejs20.x"
+
+    log_retention_in_days = var.log_retention_in_days
+    iam_policy_document = {
+        body = data.aws_iam_policy_document.delete_template_lambda_policy.json
+    }
+
+    lambda_env_vars         = local.backend_lambda_environment_variables
+    function_s3_bucket      = var.function_s3_bucket
+    function_code_base_path = ""
+    function_code_dir       = "../../../../lambdas/backend-api/dist"
 }
 
 data "aws_iam_policy_document" "delete_template_lambda_policy" {

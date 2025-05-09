@@ -1,21 +1,34 @@
 module "lambda_validate_letter_template_files" {
-  source      = "../lambda-function"
-  description = "Validates content of letter template files"
+    source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
 
-  environment_variables          = local.backend_lambda_environment_variables
-  execution_role_policy_document = data.aws_iam_policy_document.validate_letter_template_files.json
-  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].path
-  function_name                  = "${local.csi}-validate-letter-template-files"
-  handler                        = "validate-letter-template-files.handler"
-  layer_arns                     = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
-  log_retention_in_days          = var.log_retention_in_days
-  memory_size                    = 1024
-  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
-  sqs_event_source_mapping = {
-    sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
-    batch_size    = 1
-  }
-  timeout = 10
+    project        = var.project
+    environment    = var.environment
+    component      = var.component
+    aws_account_id = var.aws_account_id
+    region         = var.region
+
+    kms_key_arn = var.kms_key_arn
+
+    function_name = "validate-letter-template-files"
+
+    function_module_name  = "validate-letter-template-files"
+    handler_function_name = "handler"
+    description           = "Validates content of letter template files"
+
+    memory     = 512
+    timeout    = 20
+    runtime    = "nodejs20.x"
+    layers = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
+
+    log_retention_in_days = var.log_retention_in_days
+    iam_policy_document = {
+        body = data.aws_iam_policy_document.validate_letter_template_files.json
+    }
+
+    lambda_env_vars         = local.backend_lambda_environment_variables
+    function_s3_bucket      = var.function_s3_bucket
+    function_code_base_path = ""
+    function_code_dir       = "../../../../lambdas/backend-api/dist"
 }
 
 data "aws_iam_policy_document" "validate_letter_template_files" {

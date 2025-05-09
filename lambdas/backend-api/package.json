@@ -1,13 +1,4 @@
 {
-  "name": "nhs-notify-backend-api",
-  "private": true,
-  "version": "0.0.1",
-  "scripts": {
-    "test:unit": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "3.775.0",
     "@aws-sdk/client-dynamodb": "3.775.0",
@@ -44,5 +35,15 @@
     "nhs-notify-web-template-management-test-helper-utils": "^0.0.1",
     "ts-jest": "^29.3.0",
     "typescript": "^5.8.2"
-  }
+  },
+  "name": "nhs-notify-backend-api",
+  "private": true,
+  "scripts": {
+    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist --external:pdfjs-dist src/templates/copy-scanned-object-to-internal.ts src/templates/create-letter.ts src/templates/create.ts src/templates/delete-failed-scanned-object.ts src/templates/delete.ts src/templates/get.ts src/templates/list.ts src/templates/proof.ts src/templates/set-letter-upload-virus-scan-status.ts src/templates/process-proof.ts src/templates/submit.ts src/templates/update.ts src/templates/validate-letter-template-files.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
 }
