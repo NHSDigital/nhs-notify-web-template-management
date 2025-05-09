@@ -12,6 +12,7 @@ declare global {
       TEMPLATES_TABLE_NAME: string;
       TEMPLATES_INTERNAL_BUCKET_NAME: string;
       TEMPLATES_QUARANTINE_BUCKET_NAME: string;
+      TEMPLATES_DOWNLOAD_BUCKET_NAME: string;
     }
   }
 

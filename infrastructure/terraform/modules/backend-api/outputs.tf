@@ -26,6 +26,10 @@ output "quarantine_bucket_name" {
   value = module.s3bucket_quarantine.id
 }
 
+output "download_bucket_name" {
+  value = module.s3bucket_download.id
+}
+
 output "sftp_poll_lambda_name" {
   value = module.lambda_sftp_poll.function_name
 }
