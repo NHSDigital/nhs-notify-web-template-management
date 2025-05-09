@@ -171,13 +171,13 @@ const templateTypeDeleteAction = (type: TemplateType) =>
 export const templateDisplayCopyAction = ({
   templateType,
   templateStatus,
-}: TemplateDto) =>
+}: Pick<TemplateDto, 'templateType' | 'templateStatus'>) =>
   templateTypeCopyAction(templateType) &&
   templateStatusCopyAction(templateStatus);
 
 export const templateDisplayDeleteAction = ({
   templateType,
   templateStatus,
-}: TemplateDto) =>
+}: Pick<TemplateDto, 'templateType' | 'templateStatus'>) =>
   templateTypeDeleteAction(templateType) &&
   templateStatusDeleteAction(templateStatus);
