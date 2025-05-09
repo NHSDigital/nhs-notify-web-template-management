@@ -13,4 +13,8 @@ module "kms_sandbox" {
   deletion_window = var.kms_deletion_window
   alias           = "alias/${local.csi}-sandbox"
   iam_delegation  = true
+
+  key_policy_documents = [
+    aws_iam_policy_document.kms
+  ]
 }
