@@ -203,7 +203,7 @@ describe('previewSubmittedTemplatePages', () => {
 });
 
 describe('templateDisplayCopyAction', () => {
-  test.each([
+  test.each<[TemplateType, TemplateStatus, boolean]>([
     ['NHS_APP', 'SUBMITTED', true],
     ['NHS_APP', 'NOT_YET_SUBMITTED', true],
     ['NHS_APP', 'DELETED', false],
@@ -241,7 +241,7 @@ describe('templateDisplayCopyAction', () => {
 });
 
 describe('templateDisplayDeleteAction', () => {
-  test.each([
+  test.each<[TemplateType, TemplateStatus, boolean]>([
     ['NHS_APP', 'SUBMITTED', false],
     ['NHS_APP', 'NOT_YET_SUBMITTED', true],
     ['NHS_APP', 'DELETED', false],
