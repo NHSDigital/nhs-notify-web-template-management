@@ -1,13 +1,7 @@
-# locals {
-#   # required to avoid a circular dependency between policy and bucket
-#   download_bucket_name = "download"
-#   download_bucket_arn  = "arn:aws:s3:::${local.csi_global}-${local.download_bucket_name}"
-# }
-
 module "s3bucket_download" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v2.0.2"
 
-  name = local.download_bucket_name
+  name = "download"
 
   aws_account_id = var.aws_account_id
   region         = var.region
