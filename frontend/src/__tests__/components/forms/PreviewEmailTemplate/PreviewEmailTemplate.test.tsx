@@ -1,6 +1,6 @@
 'use client';
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { PreviewEmailTemplate } from '@forms/PreviewEmailTemplate';
 import {
   EmailTemplate,
@@ -10,7 +10,6 @@ import { renderEmailMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 
-jest.mock('@forms/PreviewEmailTemplate/server-actions');
 jest.mock('@utils/markdownit');
 
 jest.mock('react', () => {
@@ -144,5 +143,22 @@ describe('Preview email form renders', () => {
     expect(screen.getByTestId('preview__content-1')).toHaveTextContent(
       'Rendered via MD'
     );
+  });
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <PreviewEmailTemplate
+        initialState={mockDeep<TemplateFormState<EmailTemplate>>({
+          validationError: undefined,
+          name: 'test-template-email',
+          subject: 'template-subject-line',
+          message: 'message',
+          id: 'template-id',
+        })}
+      />
+    );
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

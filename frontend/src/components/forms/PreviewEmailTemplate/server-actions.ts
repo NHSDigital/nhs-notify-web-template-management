@@ -4,10 +4,17 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { z } from 'zod';
+import content from '@content/content';
+
+const {
+  components: {
+    previewEmailTemplate: { form },
+  },
+} = content;
 
 export const $FormSchema = z.object({
   previewEmailTemplateAction: z.enum(['email-edit', 'email-submit'], {
-    message: 'Select an option',
+    message: form.previewEmailTemplateAction.error.empty,
   }),
 });
 
@@ -15,9 +22,9 @@ export async function previewEmailTemplateAction(
   formState: TemplateFormState<EmailTemplate>,
   formData: FormData
 ) {
-  const form = Object.fromEntries(formData.entries());
+  const formFields = Object.fromEntries(formData.entries());
 
-  const { success, error, data } = $FormSchema.safeParse(form);
+  const { success, error, data } = $FormSchema.safeParse(formFields);
 
   if (!success) {
     return {

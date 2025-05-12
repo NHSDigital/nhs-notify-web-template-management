@@ -5,10 +5,11 @@ import {
   templateTypeToUrlTextMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
+import content from '@content/content';
 
-const $ChooseTemplate = z.object({
+export const $ChooseTemplate = z.object({
   templateType: z.enum(TEMPLATE_TYPE_LIST, {
-    message: 'Select a template type',
+    message: content.components.chooseTemplate.form.templateType.error,
   }),
 });
 

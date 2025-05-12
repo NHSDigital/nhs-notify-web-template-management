@@ -1,6 +1,6 @@
 'use client';
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { PreviewSMSTemplate } from '@forms/PreviewSMSTemplate';
 import {
   SMSTemplate,
@@ -10,7 +10,6 @@ import { renderSMSMarkdown } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { useSearchParams } from 'next/navigation';
 
-jest.mock('@forms/PreviewSMSTemplate/server-actions');
 jest.mock('@utils/markdownit');
 
 jest.mock('react', () => {
@@ -136,5 +135,20 @@ describe('Review sms form renders', () => {
     expect(screen.getByTestId('preview__content-0')).toHaveTextContent(
       'Rendered via MD'
     );
+  });
+
+  test('Client-side validation triggers', () => {
+    const container = render(
+      <PreviewSMSTemplate
+        initialState={mockDeep<TemplateFormState<SMSTemplate>>({
+          name: 'test-template-sms',
+          message: 'example',
+          id: 'template-id',
+        })}
+      />
+    );
+    const submitButton = screen.getByRole('button');
+    fireEvent.click(submitButton);
+    expect(container.asFragment()).toMatchSnapshot();
   });
 });

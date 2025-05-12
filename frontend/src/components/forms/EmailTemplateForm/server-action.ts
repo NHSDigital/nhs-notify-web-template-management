@@ -7,19 +7,26 @@ import { z } from 'zod';
 import { createTemplate, saveTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import { MAX_EMAIL_CHARACTER_LENGTH } from '@utils/constants';
+import content from '@content/content';
 
-const $EmailTemplateFormSchema = z.object({
+const {
+  components: {
+    templateFormEmail: { form },
+  },
+} = content;
+
+export const $EmailTemplateFormSchema = z.object({
   emailTemplateName: z
-    .string({ message: 'Enter a template name' })
-    .min(1, { message: 'Enter a template name' }),
+    .string({ message: form.emailTemplateName.error.empty })
+    .min(1, { message: form.emailTemplateName.error.empty }),
   emailTemplateSubjectLine: z
-    .string({ message: 'Enter a template subject line' })
-    .min(1, { message: 'Enter a template subject line' }),
+    .string({ message: form.emailTemplateSubjectLine.error.empty })
+    .min(1, { message: form.emailTemplateSubjectLine.error.empty }),
   emailTemplateMessage: z
-    .string({ message: 'Enter a template message' })
-    .min(1, { message: 'Enter a template message' })
+    .string({ message: form.emailTemplateMessage.error.empty })
+    .min(1, { message: form.emailTemplateMessage.error.empty })
     .max(MAX_EMAIL_CHARACTER_LENGTH, {
-      message: 'Template message too long',
+      message: form.emailTemplateMessage.error.max,
     }),
 });
 

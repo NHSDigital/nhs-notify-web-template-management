@@ -7,7 +7,7 @@ import { PreviewTemplateProps } from './preview-digitial-template.types';
 export function PreviewDigitalTemplate({
   form,
   ...props
-}: Readonly<PreviewTemplateProps>) {
+}: PreviewTemplateProps) {
   return (
     <>
       {props.sectionHeading && (
@@ -18,13 +18,7 @@ export function PreviewDigitalTemplate({
       <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
       {props.previewDetailsComponent}
       <NHSNotifyRadioButtonForm
-        formId={form.formId}
-        radiosId={form.radiosId}
-        action={form.action}
-        state={form.state}
-        pageHeading={form.pageHeading}
-        options={form.options}
-        buttonText={form.buttonText}
+        {...form}
         legend={{
           isPgeHeading: false,
           size: 'm',

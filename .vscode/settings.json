@@ -9,5 +9,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.codeActionsOnSave.mode": "problems"
 }
