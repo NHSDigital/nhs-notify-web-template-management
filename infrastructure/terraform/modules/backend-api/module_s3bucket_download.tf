@@ -12,7 +12,7 @@ module "s3bucket_download" {
   kms_key_arn = var.kms_key_arn
 
   policy_documents = flatten([
-    var.cloudfront_distribution_arn != null ? [data.aws_iam_policy_document.s3bucket_download.json[0]] : []
+    var.cloudfront_distribution_arn != null ? [data.aws_iam_policy_document.s3bucket_download[0].json] : []
   ])
 
   public_access = {
