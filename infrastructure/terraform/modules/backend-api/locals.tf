@@ -1,6 +1,19 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
+  csi_global = replace(
+    format(
+      "%s-%s-%s-%s-%s",
+      var.project,
+      var.aws_account_id,
+      var.region,
+      var.environment,
+      var.component,
+    ),
+    "_",
+    "",
+  )
+
   repo_root               = abspath("${path.module}/../../../..")
   lambdas_source_code_dir = abspath("${local.repo_root}/lambdas")
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")

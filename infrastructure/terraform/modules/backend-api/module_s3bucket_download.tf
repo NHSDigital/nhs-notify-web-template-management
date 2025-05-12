@@ -1,7 +1,13 @@
+locals {
+  # required to avoid a circular dependency between policy and bucket
+  download_bucket_name = "download"
+  download_bucket_arn  = "arn:aws:s3:::${local.csi_global}-${download_bucket_name}"
+}
+
 module "s3bucket_download" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v2.0.2"
 
-  name = "download"
+  name = local.download_bucket_name
 
   aws_account_id = var.aws_account_id
   region         = var.region
@@ -11,9 +17,7 @@ module "s3bucket_download" {
 
   kms_key_arn = var.kms_key_arn
 
-  policy_documents = flatten([
-    var.cloudfront_distribution_arn != null ? [data.aws_iam_policy_document.s3bucket_download[0].json] : []
-  ])
+  policy_documents = []
 
   public_access = {
     block_public_acls       = true
@@ -23,6 +27,12 @@ module "s3bucket_download" {
   }
 }
 
+resource "aws_s3_bucket_policy" "download_bucket_policy" {
+  count = var.cloudfront_distribution_arn != null ? 1 : 0
+
+  bucket = module.s3bucket_download.id
+  policy = data.aws_iam_policy_document.s3bucket_download[0].json
+}
 
 data "aws_iam_policy_document" "s3bucket_download" {
   count = var.cloudfront_distribution_arn != null ? 1 : 0
@@ -36,8 +46,8 @@ data "aws_iam_policy_document" "s3bucket_download" {
     ]
 
     resources = [
-      module.s3bucket_download.arn,
-      "${module.s3bucket_download.arn}/*",
+      local.download_bucket_arn,
+      "${local.download_bucket_arn}/*",
     ]
 
     principals {
