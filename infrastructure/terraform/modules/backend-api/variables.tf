@@ -108,4 +108,5 @@ variable "parent_acct_environment" {
 variable "cloudfront_distribution_arn" {
   type        = string
   description = "ARN of the cloudfront distribution to serve files from"
+  default     = null
 }

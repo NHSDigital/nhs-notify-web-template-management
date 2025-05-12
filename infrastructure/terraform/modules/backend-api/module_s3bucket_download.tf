@@ -11,9 +11,9 @@ module "s3bucket_download" {
 
   kms_key_arn = var.kms_key_arn
 
-  policy_documents = [
-    data.aws_iam_policy_document.s3bucket_download.json
-  ]
+  policy_documents = flatten([
+    var.cloudfront_distribution_arn != null ? [data.aws_iam_policy_document.s3bucket_download.json[0]] : []
+  ])
 
   public_access = {
     block_public_acls       = true
@@ -25,6 +25,8 @@ module "s3bucket_download" {
 
 
 data "aws_iam_policy_document" "s3bucket_download" {
+  count = var.cloudfront_distribution_arn != null ? 1 : 0
+
   statement {
     sid    = "AllowCloudFrontServicePrincipalReadOnly"
     effect = "Allow"

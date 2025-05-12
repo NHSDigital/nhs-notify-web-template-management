@@ -13,45 +13,4 @@ module "kms_sandbox" {
   deletion_window = var.kms_deletion_window
   alias           = "alias/${local.csi}-sandbox"
   iam_delegation  = true
-
-  key_policy_documents = [
-    aws_iam_policy_document.kms
-  ]
-}
-
-data "aws_iam_policy_document" "kms" {
-  # '*' resource scope is permitted in access policies as as the resource is itself
-  # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
-
-  statement {
-    sid    = "AllowCloudFrontServicePrincipalSSE-KMS"
-    effect = "Allow"
-
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "cloudfront.amazonaws.com",
-      ]
-    }
-
-    actions = [
-      "kms:Decrypt",
-      "kms:Encrypt",
-      "kms:GenerateDataKey*"
-    ]
-
-    resources = [
-      "*",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-
-      values = [
-        module.backend_api.cloudfront_distribution_arn
-      ]
-    }
-  }
 }
