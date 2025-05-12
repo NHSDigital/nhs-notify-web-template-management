@@ -1,8 +1,8 @@
-locals {
-  # required to avoid a circular dependency between policy and bucket
-  download_bucket_name = "download"
-  download_bucket_arn  = "arn:aws:s3:::${local.csi_global}-${local.download_bucket_name}"
-}
+# locals {
+#   # required to avoid a circular dependency between policy and bucket
+#   download_bucket_name = "download"
+#   download_bucket_arn  = "arn:aws:s3:::${local.csi_global}-${local.download_bucket_name}"
+# }
 
 module "s3bucket_download" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v2.0.2"
@@ -17,7 +17,7 @@ module "s3bucket_download" {
 
   kms_key_arn = var.kms_key_arn
 
-  policy_documents = []
+  policy_documents = [data.aws_iam_policy_document.s3bucket_download.json]
 
   public_access = {
     block_public_acls       = true
@@ -27,44 +27,39 @@ module "s3bucket_download" {
   }
 }
 
-resource "aws_s3_bucket_policy" "download_bucket_policy" {
-  count = var.cloudfront_distribution_arn != null ? 1 : 0
-
-  bucket = module.s3bucket_download.id
-  policy = data.aws_iam_policy_document.s3bucket_download[0].json
-}
-
 data "aws_iam_policy_document" "s3bucket_download" {
-  for_each = var.cloudfront_distribution_arn != null ? toset([var.cloudfront_distribution_arn]) : []
+  dynamic "statement" {
+    for_each = var.cloudfront_distribution_arn != null ? [1] : []
 
-  statement {
-    sid    = "AllowCloudFrontServicePrincipalReadOnly"
-    effect = "Allow"
+    content {
+      sid    = "AllowCloudFrontServicePrincipalReadOnly"
+      effect = "Allow"
 
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      local.download_bucket_arn,
-      "${local.download_bucket_arn}/*",
-    ]
-
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "cloudfront.amazonaws.com"
+      actions = [
+        "s3:GetObject",
       ]
-    }
 
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-
-      values = [
-        var.cloudfront_distribution_arn,
+      resources = [
+        module.s3bucket_download.arn,
+        "${module.s3bucket_download.arn}/*",
       ]
+
+      principals {
+        type = "Service"
+
+        identifiers = [
+          "cloudfront.amazonaws.com"
+        ]
+      }
+
+      condition {
+        test     = "StringEquals"
+        variable = "AWS:SourceArn"
+
+        values = [
+          var.cloudfront_distribution_arn,
+        ]
+      }
     }
   }
 }
