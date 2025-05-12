@@ -1,16 +1,17 @@
 resource "aws_cloudfront_distribution" "main" {
   provider = aws.us-east-1
 
-  enabled             = var.enable_file_download
-  is_ipv6_enabled     = var.enable_file_download
+  enabled             = true
+  is_ipv6_enabled     = true
   comment             = "NHS Notify Template files CDN (${local.csi})"
   default_root_object = "index.html"
-  price_class         = "PriceClass_100" # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
+  # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
+  price_class         = "PriceClass_100"
 
   restrictions {
     geo_restriction {
-      restriction_type = "whitelist"
-      locations        = ["GB"]
+      restriction_type = "none"
+      locations        = []
     }
   }
 
@@ -20,13 +21,9 @@ resource "aws_cloudfront_distribution" "main" {
 
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cert.arn
-    minimum_protocol_version = "TLSv1.2_2021" # Supports 1.2 & 1.3 - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html
+    # Supports 1.2 & 1.3 - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html
+    minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
-  }
-
-  logging_config {
-    bucket          = module.s3bucket_cf_logs.bucket_regional_domain_name
-    include_cookies = false
   }
 
   origin {
