@@ -35,7 +35,7 @@ resource "aws_s3_bucket_policy" "download_bucket_policy" {
 }
 
 data "aws_iam_policy_document" "s3bucket_download" {
-  count = var.cloudfront_distribution_arn != null ? 1 : 0
+  for_each = var.cloudfront_distribution_arn != null ? toset([var.cloudfront_distribution_arn]) : []
 
   statement {
     sid    = "AllowCloudFrontServicePrincipalReadOnly"
