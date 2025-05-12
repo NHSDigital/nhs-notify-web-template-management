@@ -155,7 +155,7 @@ exports[`Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Enter a template name
               </span>
@@ -644,7 +644,7 @@ exports[`renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1144,7 +1144,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1399,7 +1399,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 PDF error
               </span>
@@ -1446,7 +1446,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 CSV error
               </span>
