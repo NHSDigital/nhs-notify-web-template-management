@@ -21,7 +21,7 @@ output "s3_buckets" {
       arn    = module.s3bucket_backup_reports.arn
       bucket = module.s3bucket_backup_reports.bucket
       id     = module.s3bucket_backup_reports.id
-    },
+    }
   }
 }
 
