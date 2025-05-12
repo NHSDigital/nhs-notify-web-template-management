@@ -155,7 +155,7 @@ exports[`Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Enter a template name
               </span>
@@ -190,16 +190,6 @@ exports[`Client-side validation triggers 1`] = `
               id="letterTemplateLetterType"
               name="letterTemplateLetterType"
             >
-              <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
               <option
                 value="q4"
               >
@@ -419,7 +409,7 @@ exports[`Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Select a letter template PDF
               </span>
@@ -654,7 +644,7 @@ exports[`renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -690,16 +680,6 @@ exports[`renders page one error 1`] = `
               id="letterTemplateLetterType"
               name="letterTemplateLetterType"
             >
-              <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
               <option
                 value="q4"
               >
@@ -1164,7 +1144,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 Template name error
               </span>
@@ -1200,16 +1180,6 @@ exports[`renders page with multiple errors 1`] = `
               id="letterTemplateLetterType"
               name="letterTemplateLetterType"
             >
-              <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
               <option
                 value="q4"
               >
@@ -1429,7 +1399,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 PDF error
               </span>
@@ -1476,7 +1446,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error: 
+                  Error:
                 </span>
                 CSV error
               </span>
@@ -1654,22 +1624,12 @@ exports[`renders page with preloaded field values 1`] = `
               name="letterTemplateLetterType"
             >
               <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                selected=""
-                value="q1"
-              >
-                Braille
-              </option>
-              <option
                 value="q4"
               >
                 British Sign Language
               </option>
               <option
+                selected=""
                 value="x1"
               >
                 Large print

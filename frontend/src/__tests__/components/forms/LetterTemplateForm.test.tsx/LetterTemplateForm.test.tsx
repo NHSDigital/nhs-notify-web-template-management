@@ -29,7 +29,7 @@ test('renders page with preloaded field values', () => {
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
         validationError: undefined,
         name: 'template-name',
-        letterType: 'q1',
+        letterType: 'x1',
         language: 'ar',
       })}
     />

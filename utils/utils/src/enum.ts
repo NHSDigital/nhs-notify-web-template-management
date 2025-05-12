@@ -42,8 +42,6 @@ export const alphabeticalLanguageList = Object.entries(languageMap).sort(
 );
 
 const letterTypeMap: Record<LetterType, string> = {
-  x3: 'Audio CD',
-  q1: 'Braille',
   q4: 'British Sign Language',
   x0: 'Standard',
   x1: 'Large print',
