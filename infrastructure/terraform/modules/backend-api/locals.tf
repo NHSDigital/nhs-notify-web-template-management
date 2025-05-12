@@ -38,7 +38,7 @@ locals {
   }
 
   backend_lambda_environment_variables = {
-    DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier.name
+    DEFAULT_LETTER_SUPPLIER          = try(local.default_letter_supplier.name, "unset")
     ENABLE_LETTERS_BACKEND           = var.enable_letters
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"

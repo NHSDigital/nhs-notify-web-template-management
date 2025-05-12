@@ -6,7 +6,7 @@ module "download_authorizer_lambda" {
   }
 
   function_name = "download-authorizer"
-  description   = "Download authorizer for s3 origin"
+  description   = "Download authorizer for s3 download bucket"
 
   aws_account_id = var.aws_account_id
   component      = var.component
@@ -22,19 +22,16 @@ module "download_authorizer_lambda" {
     body = data.aws_iam_policy_document.authorizer.json
   }
 
-  function_s3_bucket      = local.acct.s3_buckets["lambda_function_artefacts"]["id"]
-  function_code_base_path = local.aws_lambda_functions_dir_path
-  function_code_dir       = "${lambdas_source_code_dir}/download-authorizer/dist"
-  function_include_common = true
-  function_module_name    = "handler"
-  runtime                 = "nodejs20.x"
-  memory                  = 128
-  timeout                 = 5
-  log_level               = var.log_level
-  lambda_at_edge          = true
-
-  force_lambda_code_deploy = var.force_lambda_code_deploy
+  function_s3_bucket       = local.acct.s3_buckets["lambda_function_artefacts"]["id"]
+  function_code_base_path  = local.lambdas_source_code_dir
+  function_code_dir        = "download-authorizer/dist"
+  handler_function_name    = "handler"
+  runtime                  = "nodejs20.x"
+  memory                   = 128
+  timeout                  = 3
+  lambda_at_edge           = true
   enable_lambda_insights   = false
+  force_lambda_code_deploy = true
 }
 
 data "aws_iam_policy_document" "authorizer" {
