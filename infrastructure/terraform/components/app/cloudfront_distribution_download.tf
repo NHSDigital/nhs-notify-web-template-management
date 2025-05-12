@@ -6,7 +6,7 @@ resource "aws_cloudfront_distribution" "main" {
   comment             = "NHS Notify Template files CDN (${local.csi})"
   default_root_object = "index.html"
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
-  price_class         = "PriceClass_100"
+  price_class = "PriceClass_100"
 
   restrictions {
     geo_restriction {
@@ -20,10 +20,15 @@ resource "aws_cloudfront_distribution" "main" {
   ]
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
+    acm_certificate_arn = aws_acm_certificate.cert.arn
     # Supports 1.2 & 1.3 - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
+  }
+
+  logging_config {
+    bucket          = module.s3bucket_cf_logs.bucket_regional_domain_name
+    include_cookies = false
   }
 
   origin {
