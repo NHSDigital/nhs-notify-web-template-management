@@ -4,7 +4,7 @@
 # A wrapper for running terraform projects
 # - handles remote state
 # - uses consistent .tfvars files for each environment
-
+export TF_LOG=DEBUG
 ##
 # Set Script Version
 ##
