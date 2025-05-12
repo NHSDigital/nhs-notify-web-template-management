@@ -65,10 +65,9 @@ module "s3bucket_cf_logs" {
     data.aws_iam_policy_document.s3bucket_cf_logs.json
   ]
 
-  # Ignore access logs while we prove out deploying
-  # bucket_logging_target = {
-  #   bucket = local.s3_buckets["access_logs"]["id"]
-  # }
+  bucket_logging_target = {
+    bucket = local.s3_buckets["access_logs"]["id"]
+  }
 
   public_access = {
     block_public_acls       = true
