@@ -30,7 +30,6 @@
 | <a name="input_enable_amplify_branch_auto_build"></a> [enable\_amplify\_branch\_auto\_build](#input\_enable\_amplify\_branch\_auto\_build) | Enable automatic building of branches | `bool` | `false` | no |
 | <a name="input_enable_cognito_built_in_idp"></a> [enable\_cognito\_built\_in\_idp](#input\_enable\_cognito\_built\_in\_idp) | Enable the use of Cognito as an IDP; CIS2 is prefered | `bool` | `false` | no |
 | <a name="input_enable_event_caching"></a> [enable\_event\_caching](#input\_enable\_event\_caching) | Enable caching of events to an S3 bucket | `bool` | `true` | no |
-| <a name="input_enable_file_download"></a> [enable\_file\_download](#input\_enable\_file\_download) | Feature flag for downloading files | `bool` | `true` | no |
 | <a name="input_enable_letters"></a> [enable\_letters](#input\_enable\_letters) | Feature flag for letters | `string` | `false` | no |
 | <a name="input_enable_proofing"></a> [enable\_proofing](#input\_enable\_proofing) | Feature flag for proofing | `string` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |

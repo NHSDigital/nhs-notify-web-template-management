@@ -14,9 +14,7 @@ resource "aws_cloudfront_distribution" "main" {
     }
   }
 
-  aliases = [
-    local.cloudfront_domain_name
-  ]
+  aliases = [local.cloudfront_files_domain_name]
 
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cert.arn
