@@ -11,6 +11,9 @@ import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-pre
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+
+const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -108,6 +111,16 @@ test.describe('letter complete e2e journey', () => {
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
     }).toPass({ timeout: 40_000 });
+
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
+      })
+    );
 
     await expect(async () => {
       await page.reload();
