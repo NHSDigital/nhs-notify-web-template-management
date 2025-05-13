@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "main" {
     compress               = true
 
     function_association {
-      function_arn = module.download_authorizer_lambda.arn
+      function_arn = module.download_authorizer_lambda.function_arn
       event_type   = "origin-request"
     }
   }
