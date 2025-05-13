@@ -41,7 +41,10 @@ export default function HomePage() {
           <p>{homePageContent.text6}</p>
           <p>{homePageContent.text7}</p>
 
-          <NHSNotifyButton href={homePageContent.linkButton.url}>
+          <NHSNotifyButton
+            data-testid='start-now-button'
+            href={homePageContent.linkButton.url}
+          >
             {homePageContent.linkButton.text}
           </NHSNotifyButton>
         </div>

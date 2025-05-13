@@ -144,6 +144,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 >
                   <a
                     aria-label="Copy Template 1"
+                    data-testid="copy-link"
                     href="/copy-template/1"
                     id="copy-template-link-0"
                   >
@@ -155,6 +156,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 >
                   <a
                     aria-label="Delete Template 1"
+                    data-testid="delete-link"
                     href="/delete-template/1"
                   >
                     Delete
@@ -242,6 +244,7 @@ exports[`MessageTemplates component matches snapshot with not submitted status 1
                 >
                   <a
                     aria-label="Copy Template 2"
+                    data-testid="copy-link"
                     href="/copy-template/2"
                     id="copy-template-link-1"
                   >
@@ -478,6 +481,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 >
                   <a
                     aria-label="Copy Template 1"
+                    data-testid="copy-link"
                     href="/copy-template/1"
                     id="copy-template-link-0"
                   >
@@ -489,6 +493,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 >
                   <a
                     aria-label="Delete Template 1"
+                    data-testid="delete-link"
                     href="/delete-template/1"
                   >
                     Delete
@@ -576,6 +581,7 @@ exports[`MessageTemplates component matches snapshot with pending proof request 
                 >
                   <a
                     aria-label="Copy Template 2"
+                    data-testid="copy-link"
                     href="/copy-template/2"
                     id="copy-template-link-1"
                   >
@@ -812,6 +818,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 >
                   <a
                     aria-label="Copy Template 1"
+                    data-testid="copy-link"
                     href="/copy-template/1"
                     id="copy-template-link-0"
                   >
@@ -900,6 +907,7 @@ exports[`MessageTemplates component matches snapshot with submitted status 1`] =
                 >
                   <a
                     aria-label="Copy Template 2"
+                    data-testid="copy-link"
                     href="/copy-template/2"
                     id="copy-template-link-1"
                   >

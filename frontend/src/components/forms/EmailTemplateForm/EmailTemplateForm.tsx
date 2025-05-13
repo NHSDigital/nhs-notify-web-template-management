@@ -76,7 +76,10 @@ export const EmailTemplateForm: FC<
   return (
     <>
       {editMode ? null : (
-        <BackLink href={`${getBasePath()}/choose-a-template-type`}>
+        <BackLink
+          data-testid='back-to-templates-link'
+          href={`${getBasePath()}/choose-a-template-type`}
+        >
           {backLinkText}
         </BackLink>
       )}

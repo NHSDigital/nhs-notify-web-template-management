@@ -92,7 +92,10 @@ export const LetterTemplateForm: FC<
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/choose-a-template-type`}>
+      <BackLink
+        data-testid='back-to-templates-link'
+        href={`${getBasePath()}/choose-a-template-type`}
+      >
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
