@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test:unit": "jest",
-    "lint": "eslint .",
+    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
     "lint:fix": "eslint . --fix",
+    "lint": "eslint .",
+    "test:unit": "jest",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

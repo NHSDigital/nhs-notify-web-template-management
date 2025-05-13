@@ -22,7 +22,7 @@ module "download_authorizer_lambda" {
     body = data.aws_iam_policy_document.authorizer.json
   }
 
-  function_s3_bucket       = local.acct.s3_buckets["lambda_function_artefacts"]["id"]
+  function_s3_bucket       = local.acct.s3_buckets["artefacts"]["id"]
   function_code_base_path  = local.lambdas_source_code_dir
   function_code_dir        = "download-authorizer/dist"
   handler_function_name    = "handler"
