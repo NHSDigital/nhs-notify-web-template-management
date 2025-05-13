@@ -11,6 +11,8 @@ module "lambda_copy_scanned_object_to_internal" {
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.copy_scanned_object_to_internal].base64sha256
 
   environment_variables = local.backend_lambda_environment_variables
+  destination_arn       = var.destination_arn
+  subscription_role_arn = var.subscription_role_arn
 }
 
 data "aws_iam_policy_document" "copy_scanned_object_to_internal" {

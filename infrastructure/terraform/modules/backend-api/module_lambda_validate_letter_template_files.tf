@@ -15,7 +15,9 @@ module "lambda_validate_letter_template_files" {
     sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
     batch_size    = 1
   }
-  timeout = 10
+  timeout               = 10
+  destination_arn       = var.destination_arn
+  subscription_role_arn = var.subscription_role_arn
 }
 
 data "aws_iam_policy_document" "validate_letter_template_files" {

@@ -104,3 +104,13 @@ variable "parent_acct_environment" {
   type        = string
   description = "Name of the environment responsible for the acct resources used"
 }
+
+variable "destination_arn" {
+  type        = string
+  description = "The Observability Destination ARN"
+}
+
+variable "subscription_role_arn" {
+  type        = string
+  description = "The cloudwatch subscription role ARN"
+}

@@ -15,6 +15,8 @@ module "list_template_lambda" {
   environment_variables = local.backend_lambda_environment_variables
 
   execution_role_policy_document = data.aws_iam_policy_document.list_template_lambda_policy.json
+  destination_arn                = var.destination_arn
+  subscription_role_arn          = var.subscription_role_arn
 }
 
 data "aws_iam_policy_document" "list_template_lambda_policy" {

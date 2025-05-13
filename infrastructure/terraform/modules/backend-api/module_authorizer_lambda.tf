@@ -19,6 +19,8 @@ module "authorizer_lambda" {
     USER_POOL_ID        = var.cognito_config["USER_POOL_ID"],
     USER_POOL_CLIENT_ID = var.cognito_config["USER_POOL_CLIENT_ID"],
   }
+  destination_arn       = var.destination_arn
+  subscription_role_arn = var.subscription_role_arn
 }
 
 module "authorizer_build" {

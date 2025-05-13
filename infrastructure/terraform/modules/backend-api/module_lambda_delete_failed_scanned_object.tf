@@ -10,6 +10,8 @@ module "lambda_delete_failed_scanned_object" {
   log_retention_in_days          = var.log_retention_in_days
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.delete_failed_scanned_object].base64sha256
   environment_variables          = local.backend_lambda_environment_variables
+  destination_arn                = var.destination_arn
+  subscription_role_arn          = var.subscription_role_arn
 }
 
 data "aws_iam_policy_document" "delete_failed_scanned_object" {
