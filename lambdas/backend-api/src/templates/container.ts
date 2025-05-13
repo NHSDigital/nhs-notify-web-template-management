@@ -29,7 +29,8 @@ export function createContainer() {
 
   const letterUploadRepository = new LetterUploadRepository(
     config.quarantineBucket,
-    config.internalBucket
+    config.internalBucket,
+    config.downloadBucket
   );
 
   const proofingQueue = new ProofingQueue(
@@ -54,11 +55,12 @@ export function createContainer() {
 }
 
 export const createLetterFileRepositoryContainer = () => {
-  const { quarantineBucket, internalBucket } = loadConfig();
+  const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
 
   const letterFileRepository = new LetterFileRepository(
     quarantineBucket,
-    internalBucket
+    internalBucket,
+    downloadBucket
   );
 
   return {

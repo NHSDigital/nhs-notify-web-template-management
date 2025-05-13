@@ -28,4 +28,8 @@ export class LetterProofRepository extends LetterFileRepository {
   static getInternalKey(owner: string, templateId: string, fileName: string) {
     return `proofs/${owner}/${templateId}/${fileName}.pdf`;
   }
+
+  static getDownloadKey(owner: string, templateId: string, fileName: string) {
+    return `${owner}/proofs/${templateId}/${fileName}.pdf`;
+  }
 }

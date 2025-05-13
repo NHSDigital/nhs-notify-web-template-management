@@ -8,22 +8,34 @@ test.each([
   [
     'NO_THREATS_FOUND',
     'PASSED',
-    (letterFileRepository: LetterFileRepository) =>
+    (letterFileRepository: LetterFileRepository) => {
       expect(
         letterFileRepository.copyFromQuarantineToInternal
       ).toHaveBeenCalledWith(
         'proofs/template-id/proof.pdf',
         'version-id',
         'proofs/template-owner/template-id/proof.pdf'
-      ),
+      );
+      expect(
+        letterFileRepository.copyFromQuarantineToDownload
+      ).toHaveBeenCalledWith(
+        'proofs/template-id/proof.pdf',
+        'version-id',
+        'template-owner/proofs/template-id/proof.pdf'
+      );
+    },
   ],
   [
     'THREATS_FOUND',
     'FAILED',
-    (letterFileRepository) =>
+    (letterFileRepository) => {
       expect(
         letterFileRepository.copyFromQuarantineToInternal
-      ).not.toHaveBeenCalled(),
+      ).not.toHaveBeenCalled();
+      expect(
+        letterFileRepository.copyFromQuarantineToDownload
+      ).not.toHaveBeenCalled();
+    },
   ],
 ])(
   'calls dependencies as expected for a %s virus scan',
