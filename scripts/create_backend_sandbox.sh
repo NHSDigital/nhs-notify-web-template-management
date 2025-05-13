@@ -21,7 +21,7 @@ component_dir=$terraform_dir/components/$COMPONENT
 
 echo "Creating backend sandbox \"$ENVIRONMENT\""
 
-# ./lambdas/layers/pdfjs/build.sh
+./lambdas/layers/pdfjs/build.sh
 
 cd $terraform_dir
 
@@ -65,7 +65,7 @@ readonly backend_config="terraform {
 # write the backend file
 echo -e "${backend_config}" > backend_tfscaffold.tf
 
-# # clean up the file on exit
+# clean up the file on exit
 trap "rm -f $(pwd)/backend_tfscaffold.tf" EXIT;
 
 # create the outputs file

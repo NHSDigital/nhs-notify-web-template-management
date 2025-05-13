@@ -1,4 +1,3 @@
-#trivy:ignore:AVD-AWS-0010 todo?
 resource "aws_cloudfront_distribution" "main" {
   provider = aws.us-east-1
 
