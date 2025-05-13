@@ -64,6 +64,11 @@ resource "aws_cloudfront_distribution" "main" {
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
+
+    function_association {
+      function_arn = module.download_authorizer_lambda.arn
+      event_type   = "origin-request"
+    }
   }
 }
 
