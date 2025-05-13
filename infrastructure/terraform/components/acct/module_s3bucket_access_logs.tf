@@ -1,5 +1,5 @@
 module "s3bucket_access_logs" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v=2.0.2"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v=1.0.9"
 
   name = "access-logs"
 

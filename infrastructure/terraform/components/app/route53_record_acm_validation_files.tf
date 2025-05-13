@@ -1,6 +1,6 @@
-resource "aws_route53_record" "acm_validation" {
+resource "aws_route53_record" "acm_validation_files" {
   for_each = {
-    for dvo in aws_acm_certificate.cert.domain_validation_options :
+    for dvo in aws_acm_certificate.files.domain_validation_options :
     dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value

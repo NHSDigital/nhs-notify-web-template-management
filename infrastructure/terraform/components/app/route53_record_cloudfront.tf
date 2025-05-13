@@ -1,6 +1,6 @@
-resource "aws_route53_record" "cloudfront" {
+resource "aws_route53_record" "cloudfront_files" {
   zone_id = aws_route53_record.root.zone_id
-  name    = local.cloudfront_domain_name
+  name    = local.cloudfront_files_domain_name
   type    = "A"
 
   alias {

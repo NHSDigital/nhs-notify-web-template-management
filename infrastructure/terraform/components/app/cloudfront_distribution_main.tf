@@ -3,7 +3,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "NHS Notify Template files CDN (${local.csi})"
+  comment             = "NHS Notify templates files CDN (${local.csi})"
   default_root_object = "index.html"
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
   price_class = "PriceClass_100"
@@ -16,11 +16,11 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   aliases = [
-    local.cloudfront_domain_name
+    local.cloudfront_files_domain_name
   ]
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.cert.arn
+    acm_certificate_arn = aws_acm_certificate_validation.files.certificate_arn
     # Supports 1.2 & 1.3 - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
@@ -33,7 +33,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   origin {
     domain_name              = module.backend_api.download_bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.main.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     origin_id                = "S3-${local.csi}-download"
   }
 
