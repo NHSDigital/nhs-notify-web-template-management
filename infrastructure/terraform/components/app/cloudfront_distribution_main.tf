@@ -68,7 +68,7 @@ resource "aws_cloudfront_distribution" "main" {
 }
 
 resource "aws_cloudfront_cache_policy" "no_cache" {
-  name = "no-cache-policy"
+  name = "${local.csi}-no-cache-policy"
 
   default_ttl = 0
   max_ttl     = 0
@@ -82,7 +82,7 @@ resource "aws_cloudfront_cache_policy" "no_cache" {
 }
 
 resource "aws_cloudfront_origin_request_policy" "forward_cookies" {
-  name = "forward-cookies"
+  name = "${local.csi}-forward-cookies"
   cookies_config { cookie_behavior = "all" }
   headers_config { header_behavior = "none" }
   query_strings_config { query_string_behavior = "none" }
