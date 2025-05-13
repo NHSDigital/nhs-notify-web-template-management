@@ -1,4 +1,4 @@
-]module "s3bucket_download" {
+module "s3bucket_download" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v2.0.2"
 
   name = "download"
