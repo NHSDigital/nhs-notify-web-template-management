@@ -9,6 +9,11 @@ resource "aws_ssm_parameter" "github_pat" {
   }
 }
 
+data "aws_ssm_parameter" "oam_sink_id" {
+  provider = aws.obs
+  name = "/oam/sink_id"
+}
+
 # This can be set at provision time like:
 # PARAM_OBJECT=$(jq -n \
 #   --arg github_pat "github_pat_123abc" \
