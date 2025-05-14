@@ -143,6 +143,25 @@ test.describe('letter complete e2e journey', () => {
 
       const template = await templateStorageHelper.getTemplate(key);
 
+      const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
+
+      const batchId = `${templateId}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
+
+      expect(template.files?.proofs).toEqual({
+        [`${batchId}_proof_1`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_1.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+        [`${batchId}_proof_2`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_2.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+        [`${batchId}_proof_3`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_3.pdf`,
+          virusScanStatus: 'PASSED',
+        },
+      });
+
       expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
     }).toPass({ timeout: 60_000 });
 
