@@ -25,92 +25,64 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('download authorizer handler', () => {});
+const userPoolId = 'user-pool-id';
+const userPoolClientId = 'user-pool-client-id';
 
-test('returns request, when request is valid', async () => {
-  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
-    success: true,
-    subject: 'sub',
-  });
-
-  const res = await handler(
-    mock<CloudFrontRequestEvent>({
-      Records: [
-        {
-          cf: {
-            request: {
-              uri: '',
-              headers: {
-                cookies: [{ value: '' }],
-              },
-              origin: {
-                s3: {
-                  customHeaders: {},
+function makeEvent(
+  uri: string,
+  cookie: string | undefined,
+  customHeaders?: Record<string, string | undefined>
+) {
+  return {
+    Records: [
+      {
+        cf: {
+          request: {
+            uri,
+            headers: {
+              cookie: [{ value: cookie }],
+            },
+            origin: {
+              s3: {
+                customHeaders: {
+                  'x-user-pool-id': [{ value: userPoolId }],
+                  'x-user-pool-client-id': [{ value: userPoolClientId }],
+                  ...customHeaders,
                 },
               },
             },
           },
         },
-      ],
-    })
-  );
+      },
+    ],
+  };
+}
 
-  expect(res).toEqual({});
-  expect(mockLogger.warn).not.toHaveBeenCalled();
-  expect(mockLogger.error).not.toHaveBeenCalled();
+describe('download authorizer handler', () => {
+  test('returns request, when request is valid', async () => {
+    const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
 
-  expect(lambdaCognitoAuthorizer.authorize).toHaveBeenCalledWith(
-    'user-pool-id',
-    'user-pool-client-id',
-    'jwt'
-  );
+    lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+      success: true,
+      subject,
+    });
+
+    const uri = `/${subject}/template-id/proof1.pdf`;
+    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.${subject}.AccessToken=jwt`;
+
+    const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
+
+    const res = await handler(event);
+
+    expect(res).toEqual(event.Records[0].cf.request);
+    expect(mockLogger.warn).not.toHaveBeenCalled();
+    expect(mockLogger.error).not.toHaveBeenCalled();
+
+    expect(lambdaCognitoAuthorizer.authorize).toHaveBeenCalledWith(
+      'user-pool-id',
+      'user-pool-client-id',
+      'jwt',
+      subject
+    );
+  });
 });
-
-// test('returns Deny policy on lambda misconfiguration', async () => {
-//   process.env.USER_POOL_ID = '';
-
-//   const res = await handler(
-//     mock<APIGatewayRequestAuthorizerEvent>({
-//       requestContext,
-//       headers: { Authorization: '123' },
-//       type: 'REQUEST',
-//     }),
-//     mock<Context>(),
-//     jest.fn()
-//   );
-
-//   expect(res).toEqual(denyPolicy);
-//   expect(mockLogger.error).toHaveBeenCalledWith('Lambda misconfiguration');
-// });
-
-// test('returns Deny policy if no Authorization token in header', async () => {
-//   const res = await handler(
-//     mock<APIGatewayRequestAuthorizerEvent>({
-//       requestContext,
-//       headers: { Authorization: undefined },
-//       type: 'REQUEST',
-//     }),
-//     mock<Context>(),
-//     jest.fn()
-//   );
-
-//   expect(res).toEqual(denyPolicy);
-// });
-
-// test('returns Deny policy when authorization fails', async () => {
-//   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
-//     success: false,
-//   });
-
-//   const res = await handler(
-//     mock<APIGatewayRequestAuthorizerEvent>({
-//       requestContext,
-//       headers: { Authorization: 'jwt' },
-//       type: 'REQUEST',
-//     }),
-//     mock<Context>(),
-//     jest.fn()
-//   );
-
-//   expect(res).toEqual(denyPolicy);
-// });

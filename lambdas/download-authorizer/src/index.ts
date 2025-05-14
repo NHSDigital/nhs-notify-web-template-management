@@ -14,7 +14,7 @@ const denial = {
   body: '<h1>Access Denied</h1>',
 };
 
-export function parseRequest(request: CloudFrontRequest) {
+function parseRequest(request: CloudFrontRequest) {
   const [, ownerPathComponent] = request.uri.split('/');
 
   const customHeaders = request.origin?.s3?.customHeaders;
@@ -62,14 +62,14 @@ export const handler = async (event: CloudFrontRequestEvent) => {
 
   const authorizer = new LambdaCognitoAuthorizer(cognitoClient, logger);
 
-  if (
-    await authorizer.authorize(
-      userPoolId,
-      userPoolClientId,
-      authorizationToken,
-      ownerPathComponent
-    )
-  ) {
+  const authResult = await authorizer.authorize(
+    userPoolId,
+    userPoolClientId,
+    authorizationToken,
+    ownerPathComponent
+  );
+
+  if (authResult.success) {
     return request;
   }
 
