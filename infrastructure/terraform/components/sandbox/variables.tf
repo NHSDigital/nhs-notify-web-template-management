@@ -87,8 +87,3 @@ variable "letter_suppliers" {
   description = "Letter suppliers enabled in the environment"
 }
 
-variable "observability_account_id" {
-  type        = string
-  description = "The Observability Account ID that needs access"
-}
-
