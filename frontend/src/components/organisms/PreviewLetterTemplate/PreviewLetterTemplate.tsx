@@ -35,6 +35,10 @@ export function PreviewLetterTemplate({
       text: submitText,
       href: `${basePath}/submit-letter-template/${template.id}`,
     },
+    PROOF_AVAILABLE: {
+      text: submitText,
+      href: `${basePath}/submit-letter-template/${template.id}`,
+    },
     PENDING_PROOF_REQUEST: {
       text: requestProofText,
       href: `${basePath}/request-proof-of-template/${template.id}`,
