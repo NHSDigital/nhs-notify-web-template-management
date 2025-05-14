@@ -1,125 +1,77 @@
-import type { CloudFrontHeaders, CloudFrontRequestEvent } from 'aws-lambda';
-import { z } from 'zod';
-import {
-  CognitoIdentityProviderClient,
-  GetUserCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
-import { jwtDecode } from 'jwt-decode';
-import { verify } from 'jsonwebtoken';
-import getJwksClient from 'jwks-rsa';
+import type { CloudFrontRequest, CloudFrontRequestEvent } from 'aws-lambda';
+import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { parse as parseCookie } from 'cookie';
+import { LambdaCognitoAuthorizer } from 'nhs-notify-web-template-management-utils/lambda-cognito-authorizer';
 
 const cognitoClient = new CognitoIdentityProviderClient({
   region: 'eu-west-2',
 });
 
-const $AccessToken = z.object({
-  client_id: z.string(),
-  iss: z.string(),
-  token_use: z.string(),
-});
-
-const deny = {
+const denial = {
   status: '403',
   statusDescription: 'Forbidden',
   body: '<h1>Access Denied</h1>',
 };
 
-function authFromCookie(headers: CloudFrontHeaders) {
-  const cookie = headers.cookie?.[0]?.value;
-  const parts = (cookie ?? '').split('; ');
-  const kvParts = parts.map((p) => p.split('='));
-  const [, t] = kvParts.find(([k]) => k.endsWith('accessToken')) ?? [];
-  return t;
+export function parseRequest(request: CloudFrontRequest) {
+  const [, ownerPathComponent] = request.uri.split('/');
+
+  const customHeaders = request.origin?.s3?.customHeaders;
+  const userPoolId = customHeaders?.['x-user-pool-id']?.[0]?.value;
+  const userPoolClientId = customHeaders?.['x-user-pool-client-id']?.[0]?.value;
+
+  const accessTokenKey = `CognitoIdentityServiceProvider.${userPoolClientId}.${ownerPathComponent}.AccessToken`;
+
+  const cookies = parseCookie(request.headers.cookie?.[0]?.value ?? '');
+  const authorizationToken = cookies[accessTokenKey];
+
+  return {
+    userPoolId,
+    userPoolClientId,
+    authorizationToken,
+    ownerPathComponent,
+  };
 }
 
 export const handler = async (event: CloudFrontRequestEvent) => {
-  console.log(event);
-
+  logger.info(event);
   const { request } = event.Records[0].cf;
 
-  const [, ownerPath] = request.uri.match(/^\/poc\/([^/]+)\/.*/) ?? [];
+  const {
+    userPoolId,
+    userPoolClientId,
+    authorizationToken,
+    ownerPathComponent,
+  } = parseRequest(request);
 
-  const authorizationToken = authFromCookie(request.headers);
-  const userPoolId =
-    request.origin?.s3?.customHeaders['x-user-pool-id']?.[0].value;
-  const userPoolClientId =
-    request.origin?.s3?.customHeaders['x-user-pool-client-id']?.[0].value;
-
-  console.log(userPoolId, userPoolClientId);
-
-  try {
-    if (!authorizationToken) {
-      console.warn('no token');
-      return deny;
-    }
-
-    const issuer = `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`;
-
-    const jwksClient = getJwksClient({
-      jwksUri: `${issuer}/.well-known/jwks.json`,
-    });
-
-    const decodedToken = jwtDecode(authorizationToken, { header: true });
-
-    const { kid } = decodedToken;
-
-    if (!kid) {
-      console.warn('Authorization token missing kid');
-      return deny;
-    }
-
-    const key = await jwksClient.getSigningKey(kid);
-
-    const verifiedToken = verify(authorizationToken, key.getPublicKey(), {
-      issuer,
-    });
-
-    const { client_id: clientId, token_use: tokenUse } =
-      $AccessToken.parse(verifiedToken);
-
-    // client_id claim
-    if (clientId !== userPoolClientId) {
-      console.warn(
-        `Token has invalid client ID, expected ${userPoolClientId} but received ${clientId}`
-      );
-      return deny;
-    }
-
-    // token_use claim
-    if (tokenUse !== 'access') {
-      console.warn(
-        `Token has invalid token_use, expected access but received ${tokenUse}`
-      );
-      return deny;
-    }
-
-    // cognito SDK call - this will error if the user has been deleted
-    const { Username, UserAttributes } = await cognitoClient.send(
-      new GetUserCommand({
-        AccessToken: authorizationToken,
-      })
-    );
-
-    if (!Username || !UserAttributes) {
-      console.warn('Missing user');
-      return deny;
-    }
-
-    const sub = UserAttributes.find(({ Name }) => Name === 'sub')?.Value;
-
-    if (!sub) {
-      console.warn('Missing user subject');
-      return deny;
-    }
-
-    if (ownerPath !== sub) {
-      console.warn('owner !== sub');
-      return deny;
-    }
-
-    return request;
-  } catch (error) {
-    console.error(error);
-    return deny;
+  if (!userPoolId || !userPoolClientId) {
+    logger.error('Lambda misconfiguration');
+    return denial;
   }
+
+  if (!authorizationToken) {
+    logger.warn('Cookie is missing');
+    return denial;
+  }
+
+  if (!ownerPathComponent) {
+    logger.warn('Could not determine expected subject');
+    return denial;
+  }
+
+  const authorizer = new LambdaCognitoAuthorizer(cognitoClient, logger);
+
+  if (
+    await authorizer.authorize(
+      userPoolId,
+      userPoolClientId,
+      authorizationToken,
+      ownerPathComponent
+    )
+  ) {
+    return request;
+  }
+
+  return denial;
 };

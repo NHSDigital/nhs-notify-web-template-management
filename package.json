@@ -1,18 +1,19 @@
 {
   "name": "nhs-notify-web-template-management",
   "workspaces": [
+    "frontend",
     "lambdas/authorizer",
     "lambdas/backend-api",
     "lambdas/backend-client",
-    "lambdas/virus-scan",
+    "lambdas/download-authorizer",
     "lambdas/sftp-letters",
-    "frontend",
+    "lambdas/virus-scan",
     "tests/accessibility",
     "tests/test-team",
-    "utils/utils",
     "utils/backend-config",
+    "utils/entity-update-command-builder",
     "utils/test-helper-utils",
-    "utils/entity-update-command-builder"
+    "utils/utils"
   ],
   "scripts": {
     "build": "npm run create-env-file && npm run build --workspace frontend",
