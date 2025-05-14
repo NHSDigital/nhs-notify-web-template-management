@@ -105,7 +105,7 @@ variable "parent_acct_environment" {
   description = "Name of the environment responsible for the acct resources used"
 }
 
-variable "cloudwatch_log_destination_arn" {
+variable "log_destination_arn" {
   type        = string
   description = "Destination ARN to use for the log subscription filter"
   default     = ""

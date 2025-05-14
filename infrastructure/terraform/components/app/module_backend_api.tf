@@ -21,7 +21,7 @@ module "backend_api" {
   enable_letters                 = var.enable_letters
   enable_proofing                = var.enable_proofing
   letter_suppliers               = var.letter_suppliers
-  cloudwatch_log_destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
   log_subscription_role_arn      = local.acct.log_subscription_role_arn
 
 }

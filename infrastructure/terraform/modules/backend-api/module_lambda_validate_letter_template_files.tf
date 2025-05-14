@@ -16,7 +16,7 @@ module "lambda_validate_letter_template_files" {
     batch_size    = 1
   }
   timeout                        = 10
-  cloudwatch_log_destination_arn = var.cloudwatch_log_destination_arn
+  log_destination_arn = var.log_destination_arn
   log_subscription_role_arn      = var.log_subscription_role_arn
 }
 

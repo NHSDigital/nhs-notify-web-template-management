@@ -11,7 +11,7 @@ module "lambda_copy_scanned_object_to_internal" {
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.copy_scanned_object_to_internal].base64sha256
 
   environment_variables          = local.backend_lambda_environment_variables
-  cloudwatch_log_destination_arn = var.cloudwatch_log_destination_arn
+  log_destination_arn = var.log_destination_arn
   log_subscription_role_arn      = var.log_subscription_role_arn
 }
 
