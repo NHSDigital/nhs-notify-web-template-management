@@ -94,9 +94,3 @@ variable "sqs_event_source_mapping" {
   })
   default = null
 }
-
-variable "publish" {
-  type        = bool
-  description = "Whether to publish creation/change as new Lambda Function Version"
-  default     = false
-}
