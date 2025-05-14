@@ -33,7 +33,7 @@ export async function retrieveTemplates(
 
     const queryResult = await client.send(new QueryCommand(query));
     lastEvaluatedKey = queryResult.LastEvaluatedKey;
-    allItems = [...allItems, ...(queryResult.Items || [])];
+    allItems = [...allItems, ...(queryResult.Items ?? [])];
   } while (lastEvaluatedKey);
   return allItems;
 }
