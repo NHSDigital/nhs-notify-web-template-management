@@ -23,4 +23,6 @@ module "backend_api" {
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
   dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
+  cloudwatch_log_destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_subscription_role_arn      = local.acct.log_subscription_role_arn
 }
