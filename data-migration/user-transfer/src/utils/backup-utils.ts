@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { Parameters } from '@/src/user-transfer';
+import { Parameters } from '@/src/utils/constants';
 
 const backupDir = './backups';
 

@@ -33,7 +33,7 @@ const config: Config = {
 
   collectCoverageFrom: ['src/**/*.ts*'],
 
-  coveragePathIgnorePatterns: ['handler.ts'],
+  coveragePathIgnorePatterns: ['handler.ts', 'constants.ts'],
 
   // Set the absolute path for imports
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {

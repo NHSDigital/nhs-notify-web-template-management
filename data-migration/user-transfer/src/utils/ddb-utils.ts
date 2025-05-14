@@ -5,7 +5,7 @@ import {
   QueryCommandInput,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
-import { Parameters } from '@/src/user-transfer';
+import { Parameters } from '@/src/utils/constants';
 
 const client = new DynamoDBClient({ region: 'eu-west-2' });
 
