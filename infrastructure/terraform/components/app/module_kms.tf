@@ -67,12 +67,15 @@ data "aws_iam_policy_document" "kms" {
     ]
 
     condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
+      test     = "StringLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:cloudfront::${var.aws_account_id}:distribution/*"]
+    }
 
-      values = [
-        aws_cloudfront_distribution.main.arn,
-      ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/Environment"
+      values   = [var.environment]
     }
   }
 }

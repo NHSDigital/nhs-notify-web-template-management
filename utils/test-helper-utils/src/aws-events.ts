@@ -112,7 +112,3 @@ export const makeGuardDutyMalwareScanResultNotificationEvent = (
     'detail-type': 'GuardDuty Malware Protection Object Scan Result',
     detail: makeGuardDutyMalwareScanResultNotificationEventDetail(event.detail),
   });
-
-// type MakeCloudFrontRequestParams = Partial<SQSRecord> & Pick<SQSRecord, 'body'>;
-
-//   export const makeCloudFrontRequest = ()
