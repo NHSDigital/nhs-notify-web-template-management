@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "resolveJsonModule": true
+  },
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": [
+    "**/*.ts"
+  ]
+}
