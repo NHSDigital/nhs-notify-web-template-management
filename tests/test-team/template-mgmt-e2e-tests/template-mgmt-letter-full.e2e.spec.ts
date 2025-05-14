@@ -143,17 +143,21 @@ test.describe('letter complete e2e journey', () => {
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
+      const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
+
+      const batchId = `${templateId}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
+
       expect(template.files?.proofs).toEqual({
-        'proof-1': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-1.pdf`,
+        [`${batchId}_proof-1`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-1.pdf`,
           virusScanStatus: 'PASSED',
         },
-        'proof-2': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-2.pdf`,
+        [`${batchId}_proof-2`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-2.pdf`,
           virusScanStatus: 'PASSED',
         },
-        'proof-3': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-3.pdf`,
+        [`${batchId}_proof-3`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-3.pdf`,
           virusScanStatus: 'PASSED',
         },
       });
