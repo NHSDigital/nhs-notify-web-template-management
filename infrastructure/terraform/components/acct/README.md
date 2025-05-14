@@ -36,7 +36,6 @@
 | <a name="module_kms_sandbox"></a> [kms\_sandbox](#module\_kms\_sandbox) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms | v1.0.8 |
 | <a name="module_obs_datasource"></a> [obs\_datasource](#module\_obs\_datasource) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/obs-datasource | v2.0.3 |
 | <a name="module_s3bucket_access_logs"></a> [s3bucket\_access\_logs](#module\_s3bucket\_access\_logs) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.9 |
-| <a name="module_s3bucket_artefacts"></a> [s3bucket\_artefacts](#module\_s3bucket\_artefacts) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.2 |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
 ## Outputs

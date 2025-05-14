@@ -9,6 +9,7 @@ resource "aws_lambda_function" "main" {
   memory_size      = var.memory_size
   layers           = var.layer_arns
   timeout          = var.timeout
+  publish          = var.publish
 
   environment {
     variables = var.environment_variables

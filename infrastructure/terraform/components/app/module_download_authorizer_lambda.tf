@@ -7,6 +7,7 @@ module "download_authorizer_lambda" {
   source_code_hash = module.download_authorizer_build.zips[local.authorizer_entrypoint].base64sha256
   runtime          = "nodejs20.x"
   handler          = "index.handler"
+  publish          = true
 
   log_retention_in_days = var.log_retention_in_days
   # source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
