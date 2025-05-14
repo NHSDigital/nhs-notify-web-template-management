@@ -18,10 +18,10 @@ module "backend_api" {
 
   enable_backup = var.destination_vault_arn != null ? true : false
 
-  enable_letters   = var.enable_letters
-  enable_proofing  = var.enable_proofing
-  letter_suppliers = var.letter_suppliers
-  destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
-  subscription_role_arn = local.acct.log_subscription_role_arn
+  enable_letters                 = var.enable_letters
+  enable_proofing                = var.enable_proofing
+  letter_suppliers               = var.letter_suppliers
+  cloudwatch_log_destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_subscription_role_arn      = local.acct.log_subscription_role_arn
 
 }

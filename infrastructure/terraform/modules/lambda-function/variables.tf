@@ -101,13 +101,13 @@ variable "filter_pattern" {
   default     = ""
 }
 
-variable "destination_arn" {
+variable "cloudwatch_log_destination_arn" {
   type        = string
   description = "Destination ARN to use for the log subscription filter"
   default     = ""
 }
 
-variable "subscription_role_arn" {
+variable "log_subscription_role_arn" {
   type        = string
   description = "The ARN of the IAM role to use for the log subscription filter"
   default     = ""
