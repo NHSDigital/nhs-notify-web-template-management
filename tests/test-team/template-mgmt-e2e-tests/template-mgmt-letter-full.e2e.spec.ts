@@ -130,17 +130,17 @@ test.describe('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    // invoke SFTP poll lambda
-    await lambdaClient.send(
-      new InvokeCommand({
-        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-        Payload: JSON.stringify({
-          supplier: 'WTMMOCK',
-        }),
-      })
-    );
-
     await expect(async () => {
+      // invoke SFTP poll lambda
+      await lambdaClient.send(
+        new InvokeCommand({
+          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+          Payload: JSON.stringify({
+            supplier: 'WTMMOCK',
+          }),
+        })
+      );
+
       const template = await templateStorageHelper.getTemplate(key);
 
       const pdfVersionId = template.files?.pdfTemplate?.currentVersion;
@@ -148,16 +148,16 @@ test.describe('letter complete e2e journey', () => {
       const batchId = `${templateId}-0000000000000_${pdfVersionId!.replaceAll('-', '').slice(0, 27)}`;
 
       expect(template.files?.proofs).toEqual({
-        [`${batchId}_proof-1`]: {
-          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-1.pdf`,
+        [`${batchId}_proof_1`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_1.pdf`,
           virusScanStatus: 'PASSED',
         },
-        [`${batchId}_proof-2`]: {
-          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-2.pdf`,
+        [`${batchId}_proof_2`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_2.pdf`,
           virusScanStatus: 'PASSED',
         },
-        [`${batchId}_proof-3`]: {
-          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof-3.pdf`,
+        [`${batchId}_proof_3`]: {
+          fileName: `proofs/${user.userId}/${templateId}/${batchId}_proof_3.pdf`,
           virusScanStatus: 'PASSED',
         },
       });
