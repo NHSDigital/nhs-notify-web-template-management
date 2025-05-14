@@ -18,7 +18,8 @@ const setup = () => {
 
   const letterUploadRepository = new LetterUploadRepository(
     quarantineBucketName,
-    internalBucketName
+    internalBucketName,
+    'download-bucket'
   );
 
   return { letterUploadRepository, mocks: { s3Client } };

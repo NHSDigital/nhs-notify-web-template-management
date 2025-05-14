@@ -47,6 +47,7 @@ locals {
     TEMPLATES_EVENT_SOURCE           = local.event_source
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
     TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
+    TEMPLATES_DOWNLOAD_BUCKET_NAME   = module.s3bucket_download.id
     TEMPLATES_TABLE_NAME             = aws_dynamodb_table.templates.name
     ENABLE_PROOFING                  = var.enable_proofing
   }
