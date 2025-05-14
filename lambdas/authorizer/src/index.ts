@@ -60,9 +60,6 @@ export const handler: APIGatewayRequestAuthorizerHandler = async ({
     logger
   );
 
-  console.log(lambdaCognitoAuthorizer);
-  
-
   const authResult = await lambdaCognitoAuthorizer.authorize(
     userPoolId,
     userPoolClientId,

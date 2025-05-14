@@ -3,6 +3,7 @@ import { mock } from 'jest-mock-extended';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { handler } from '../index';
 import { LambdaCognitoAuthorizer } from 'nhs-notify-web-template-management-utils/lambda-cognito-authorizer';
+import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
 
 const requestContext = {
   accountId: '000000000000',
@@ -12,15 +13,21 @@ const requestContext = {
 
 const methodArn = 'arn:aws:execute-api:eu-west-2:000000000000:api-id/stage/*';
 
-const warnMock = jest.spyOn(logger, 'warn');
-const errorMock = jest.spyOn(logger, 'error');
+jest.mock('nhs-notify-web-template-management-utils/logger');
+const mockLogger = jest.mocked(logger);
 
 jest.mock('nhs-notify-web-template-management-utils/lambda-cognito-authorizer');
-
 const lambdaCognitoAuthorizer = mock<LambdaCognitoAuthorizer>();
+jest
+  .mocked(LambdaCognitoAuthorizer)
+  .mockImplementation(() => lambdaCognitoAuthorizer);
 
-const authorizerConstructorMock = jest.mocked(LambdaCognitoAuthorizer);
-// .mockReturnValue(lambdaCognitoAuthorizer);
+jest.mock('@aws-sdk/client-cognito-identity-provider');
+const cognitoClientMock = mock<CognitoIdentityProviderClient>();
+
+jest
+  .mocked(CognitoIdentityProviderClient)
+  .mockImplementation(() => cognitoClientMock);
 
 const allowPolicy = {
   principalId: 'api-caller',
@@ -56,7 +63,7 @@ const denyPolicy = {
 const originalEnv = { ...process.env };
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
   process.env.USER_POOL_ID = 'user-pool-id';
   process.env.USER_POOL_CLIENT_ID = 'user-pool-client-id';
 });
@@ -65,38 +72,7 @@ afterEach(() => {
   process.env = originalEnv;
 });
 
-test('returns Deny policy on lambda misconfiguration', async () => {
-  process.env.USER_POOL_ID = '';
-
-  const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>({
-      requestContext,
-      headers: { Authorization: '123' },
-      type: 'REQUEST',
-    }),
-    mock<Context>(),
-    jest.fn()
-  );
-
-  expect(res).toEqual(denyPolicy);
-  expect(errorMock).toHaveBeenCalledWith('Lambda misconfiguration');
-});
-
-test('returns Deny policy if no Authorization token in header', async () => {
-  const res = await handler(
-    mock<APIGatewayRequestAuthorizerEvent>({
-      requestContext,
-      headers: { Authorization: undefined },
-      type: 'REQUEST',
-    }),
-    mock<Context>(),
-    jest.fn()
-  );
-
-  expect(res).toEqual(denyPolicy);
-});
-
-test.only('returns Allow policy on valid token', async () => {
+test('returns Allow policy on valid token', async () => {
   lambdaCognitoAuthorizer.authorize.mockResolvedValue({
     success: true,
     subject: 'sub',
@@ -113,38 +89,61 @@ test.only('returns Allow policy on valid token', async () => {
   );
 
   expect(res).toEqual(allowPolicy);
-  expect(warnMock).not.toHaveBeenCalled();
-  expect(errorMock).not.toHaveBeenCalled();
+  expect(mockLogger.warn).not.toHaveBeenCalled();
+  expect(mockLogger.error).not.toHaveBeenCalled();
+
+  expect(lambdaCognitoAuthorizer.authorize).toHaveBeenCalledWith(
+    'user-pool-id',
+    'user-pool-client-id',
+    'jwt'
+  );
 });
 
-// test('returns Deny policy on expired token', async () => {
-//   const jwt = sign(
-//     {
-//       token_use: 'access',
-//       client_id: 'user-pool-client-id',
-//       iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-//       exp: 1_640_995_200,
-//     },
-//     'key',
-//     {
-//       keyid: 'key-id',
-//     }
-//   );
+test('returns Deny policy on lambda misconfiguration', async () => {
+  process.env.USER_POOL_ID = '';
 
-//   const res = await handler(
-//     mock<APIGatewayRequestAuthorizerEvent>({
-//       requestContext,
-//       headers: { Authorization: jwt },
-//       type: 'REQUEST',
-//     }),
-//     mock<Context>(),
-//     jest.fn()
-//   );
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      requestContext,
+      headers: { Authorization: '123' },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
 
-//   expect(res).toEqual(denyPolicy);
-//   expect(errorMock).toHaveBeenCalledWith(
-//     expect.objectContaining({
-//       message: 'jwt expired',
-//     })
-//   );
-// });
+  expect(res).toEqual(denyPolicy);
+  expect(mockLogger.error).toHaveBeenCalledWith('Lambda misconfiguration');
+});
+
+test('returns Deny policy if no Authorization token in header', async () => {
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      requestContext,
+      headers: { Authorization: undefined },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});
+
+test('returns Deny policy when authorization fails', async () => {
+  lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+    success: false,
+  });
+
+  const res = await handler(
+    mock<APIGatewayRequestAuthorizerEvent>({
+      requestContext,
+      headers: { Authorization: 'jwt' },
+      type: 'REQUEST',
+    }),
+    mock<Context>(),
+    jest.fn()
+  );
+
+  expect(res).toEqual(denyPolicy);
+});

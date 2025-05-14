@@ -12,9 +12,9 @@ module "download_authorizer_lambda" {
   log_retention_in_days = var.log_retention_in_days
   # source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
 
-  # providers = {
-  #   aws = aws.us-east-1
-  # }
+  providers = {
+    aws = aws.us-east-1
+  }
 
   # function_name = "download-authorizer"
   # description   = "Download authorizer for s3 download bucket"
