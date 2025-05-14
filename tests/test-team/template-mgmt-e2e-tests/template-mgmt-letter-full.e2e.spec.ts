@@ -142,7 +142,6 @@ test.describe('letter complete e2e journey', () => {
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
-      expect(template.files).toContain({ proofs: {} });
 
       expect(template.files?.proofs).toEqual({
         'proof-1': {
