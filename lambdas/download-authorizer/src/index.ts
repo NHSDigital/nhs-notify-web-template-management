@@ -8,14 +8,14 @@ const cognitoClient = new CognitoIdentityProviderClient({
   region: 'eu-west-2',
 });
 
-const denial = {
+export const denial = {
   status: '403',
   statusDescription: 'Forbidden',
   body: '<h1>Access Denied</h1>',
 };
 
-function parseRequest(request: CloudFrontRequest) {
-  const [, ownerPathComponent] = request.uri.split('/');
+export function parseRequest(request: CloudFrontRequest) {
+  const ownerPathComponent = request.uri.split('/')[1] ?? '';
 
   const customHeaders = request.origin?.s3?.customHeaders;
   const userPoolId = customHeaders?.['x-user-pool-id']?.[0]?.value;
@@ -35,7 +35,6 @@ function parseRequest(request: CloudFrontRequest) {
 }
 
 export const handler = async (event: CloudFrontRequestEvent) => {
-  logger.info(event);
   const { request } = event.Records[0].cf;
 
   const {
@@ -55,11 +54,6 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     return denial;
   }
 
-  if (!ownerPathComponent) {
-    logger.warn('Could not determine expected subject');
-    return denial;
-  }
-
   const authorizer = new LambdaCognitoAuthorizer(cognitoClient, logger);
 
   const authResult = await authorizer.authorize(
@@ -69,9 +63,7 @@ export const handler = async (event: CloudFrontRequestEvent) => {
     ownerPathComponent
   );
 
-  if (authResult.success) {
-    return request;
-  }
+  if (authResult.success) return request;
 
   return denial;
 };

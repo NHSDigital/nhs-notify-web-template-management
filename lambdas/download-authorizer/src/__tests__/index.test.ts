@@ -1,7 +1,7 @@
-import type { CloudFrontRequestEvent } from 'aws-lambda';
+import type { CloudFrontRequest, CloudFrontRequestEvent } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { handler } from '../index';
+import { denial, handler, parseRequest } from '../index';
 import { LambdaCognitoAuthorizer } from 'nhs-notify-web-template-management-utils/lambda-cognito-authorizer';
 import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
 
@@ -84,5 +84,73 @@ describe('download authorizer handler', () => {
       'jwt',
       subject
     );
+  });
+
+  test('returns denial if cognito configuration is not present in custom headers', async () => {
+    const uri = '/subject/template-id/proof1.pdf';
+    const cookie =
+      'CognitoIdentityServiceProvider.user-pool-client-id.subject.AccessToken=jwt';
+
+    const event = mock<CloudFrontRequestEvent>(
+      makeEvent(uri, cookie, {
+        'x-user-pool-id': undefined,
+        'x-user-pool-client-id': undefined,
+      })
+    );
+
+    const res = await handler(event);
+
+    expect(res).toEqual(denial);
+    expect(mockLogger.error).toHaveBeenCalledWith('Lambda misconfiguration');
+
+    expect(lambdaCognitoAuthorizer.authorize).not.toHaveBeenCalled();
+  });
+
+  test('returns denial if required cookie is not available', async () => {
+    const uri = '/subject/template-id/proof1.pdf';
+    const cookie = 'k=v; k2=v2';
+
+    const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
+
+    const res = await handler(event);
+
+    expect(res).toEqual(denial);
+    expect(mockLogger.warn).toHaveBeenCalledWith('Cookie is missing');
+
+    expect(lambdaCognitoAuthorizer.authorize).not.toHaveBeenCalled();
+  });
+
+  test('returns denial if authorization fails', async () => {
+    const uri = '/subject/template-id/proof1.pdf';
+    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.subject.AccessToken=jwt`;
+
+    lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+      success: false,
+    });
+
+    const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
+
+    const res = await handler(event);
+
+    expect(res).toEqual(denial);
+  });
+});
+
+describe('parseRequest', () => {
+  test('path defaults to empty string if owner segment cant be extracted', () => {
+    const uri = '';
+    const request = mock<CloudFrontRequest>(
+      makeEvent(uri, 'cookie').Records[0].cf.request
+    );
+
+    expect(parseRequest(request).ownerPathComponent).toBe('');
+  });
+
+  test('cookie header defaults to empty string if it is not present on request', () => {
+    const request = mock<CloudFrontRequest>(
+      makeEvent('/subject/file.txt', undefined).Records[0].cf.request
+    );
+
+    expect(parseRequest(request).authorizationToken).toBe(undefined);
   });
 });
