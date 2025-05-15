@@ -383,7 +383,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dd
                 class="nhsuk-summary-list__value"
               >
-                Braille letter
+                Large print letter
               </dd>
             </div>
             <div
@@ -527,7 +527,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dd
                 class="nhsuk-summary-list__value"
               >
-                Braille letter
+                Large print letter
               </dd>
             </div>
             <div
@@ -705,7 +705,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dd
                 class="nhsuk-summary-list__value"
               >
-                Braille letter
+                Large print letter
               </dd>
             </div>
             <div
@@ -918,7 +918,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dd
                 class="nhsuk-summary-list__value"
               >
-                Braille letter
+                Large print letter
               </dd>
             </div>
             <div

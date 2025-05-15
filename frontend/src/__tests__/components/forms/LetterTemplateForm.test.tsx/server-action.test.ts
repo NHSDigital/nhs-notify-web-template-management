@@ -48,7 +48,7 @@ describe('CreateLetterTemplate server actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
-      letterType: 'q1',
+      letterType: 'x1',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -77,7 +77,7 @@ describe('CreateLetterTemplate server actions', () => {
       initialState,
       getMockFormData({
         letterTemplateName: 'template-name',
-        letterTemplateLetterType: 'q1',
+        letterTemplateLetterType: 'x1',
         letterTemplateLanguage: 'ar',
         letterTemplatePdf,
         letterTemplateCsv,
@@ -88,7 +88,7 @@ describe('CreateLetterTemplate server actions', () => {
       {
         ...initialState,
         name: 'template-name',
-        letterType: 'q1',
+        letterType: 'x1',
         language: 'ar',
       },
       letterTemplatePdf,
@@ -107,7 +107,7 @@ describe('CreateLetterTemplate server actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
-      letterType: 'q1',
+      letterType: 'x1',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -137,7 +137,7 @@ describe('CreateLetterTemplate server actions', () => {
         { ...initialState, id: 'existing-id' },
         getMockFormData({
           letterTemplateName: 'template-name',
-          letterTemplateLetterType: 'q1',
+          letterTemplateLetterType: 'x1',
           letterTemplateLanguage: 'ar',
           letterTemplatePdf,
           letterTemplateCsv,

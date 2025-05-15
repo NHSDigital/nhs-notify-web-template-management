@@ -92,7 +92,7 @@ describe('TemplateAPIClient', () => {
         name: 'test',
         templateType: 'LETTER',
         language: 'de',
-        letterType: 'q1',
+        letterType: 'x1',
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' })
@@ -119,7 +119,7 @@ describe('TemplateAPIClient', () => {
         name: 'test',
         templateType: 'LETTER',
         language: 'de',
-        letterType: 'q1',
+        letterType: 'x1',
         files: {
           pdfTemplate: {
             fileName: 'template.pdf',
@@ -142,7 +142,7 @@ describe('TemplateAPIClient', () => {
         name: 'test',
         templateType: 'LETTER',
         language: 'de',
-        letterType: 'q1',
+        letterType: 'x1',
       },
       testToken,
       new File(['pdf'], 'template.pdf', { type: 'application/pdf' }),
@@ -154,7 +154,7 @@ describe('TemplateAPIClient', () => {
       name: 'test',
       templateType: 'LETTER',
       language: 'de',
-      letterType: 'q1',
+      letterType: 'x1',
       files: {
         pdfTemplate: {
           fileName: 'template.pdf',
