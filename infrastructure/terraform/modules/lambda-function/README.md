@@ -33,7 +33,6 @@ No modules.
 |------|-------------|
 | <a name="output_function_arn"></a> [function\_arn](#output\_function\_arn) | n/a |
 | <a name="output_function_name"></a> [function\_name](#output\_function\_name) | n/a |
-| <a name="output_function_qualified_arn"></a> [function\_qualified\_arn](#output\_function\_qualified\_arn) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
