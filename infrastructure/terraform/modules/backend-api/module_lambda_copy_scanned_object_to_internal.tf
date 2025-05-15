@@ -10,7 +10,9 @@ module "lambda_copy_scanned_object_to_internal" {
   log_retention_in_days          = var.log_retention_in_days
   source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.copy_scanned_object_to_internal].base64sha256
 
-  environment_variables = local.backend_lambda_environment_variables
+  environment_variables          = local.backend_lambda_environment_variables
+  log_destination_arn = var.log_destination_arn
+  log_subscription_role_arn      = var.log_subscription_role_arn
 }
 
 data "aws_iam_policy_document" "copy_scanned_object_to_internal" {

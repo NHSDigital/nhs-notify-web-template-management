@@ -11,7 +11,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -90,7 +90,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -121,7 +121,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -147,7 +147,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
