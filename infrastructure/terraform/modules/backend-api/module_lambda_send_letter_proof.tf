@@ -13,6 +13,8 @@ module "lambda_send_letter_proof" {
   log_retention_in_days = var.log_retention_in_days
 
   execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
+  log_destination_arn = var.log_destination_arn
+  log_subscription_role_arn      = var.log_subscription_role_arn
 
   environment_variables = {
     CREDENTIALS_TTL_SECONDS = 900

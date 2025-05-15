@@ -94,3 +94,21 @@ variable "sqs_event_source_mapping" {
   })
   default = null
 }
+
+variable "filter_pattern" {
+  type        = string
+  description = "Filter pattern to use for the log subscription filter"
+  default     = ""
+}
+
+variable "log_destination_arn" {
+  type        = string
+  description = "Destination ARN to use for the log subscription filter"
+  default     = ""
+}
+
+variable "log_subscription_role_arn" {
+  type        = string
+  description = "The ARN of the IAM role to use for the log subscription filter"
+  default     = ""
+}
