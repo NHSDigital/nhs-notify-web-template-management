@@ -1,7 +1,7 @@
 module "s3bucket_data_migration_backups" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket?ref=v1.0.8"
 
-  name = "data-migration-backups"
+  name = "migration-backup"
 
   aws_account_id = var.aws_account_id
   region         = var.region
