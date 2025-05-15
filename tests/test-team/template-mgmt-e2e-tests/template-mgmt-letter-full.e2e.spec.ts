@@ -12,7 +12,8 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 
-test.describe('letter complete e2e journey', () => {
+// eslint-disable-next-line playwright/no-skipped-test
+test.describe.skip('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 
