@@ -66,13 +66,11 @@ data "aws_iam_policy_document" "kms" {
       "*",
     ]
 
+    // TODO, tag conditions don't work
     condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-
-      values = [
-        aws_cloudfront_distribution.main.arn,
-      ]
+      test     = "StringLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:cloudfront::${var.aws_account_id}:distribution/*"]
     }
   }
 }

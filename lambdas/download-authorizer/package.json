@@ -1,11 +1,12 @@
 {
-  "name": "nhs-notify-templates-api-authorizer",
+  "name": "nhs-notify-download-authorizer",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test:unit": "jest",
-    "lint": "eslint .",
+    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
     "lint:fix": "eslint . --fix",
+    "lint": "eslint .",
+    "test:unit": "jest",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "3.775.0",
+    "cookie": "^1.0.2",
     "nhs-notify-web-template-management-utils": "^0.0.1"
   }
 }
