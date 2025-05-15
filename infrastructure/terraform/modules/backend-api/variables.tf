@@ -105,6 +105,12 @@ variable "parent_acct_environment" {
   description = "Name of the environment responsible for the acct resources used"
 }
 
+variable "cloudfront_distribution_arn" {
+  type        = string
+  description = "ARN of the cloudfront distribution to serve files from"
+  default     = null
+}
+
 variable "log_destination_arn" {
   type        = string
   description = "Destination ARN to use for the log subscription filter"
