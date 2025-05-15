@@ -164,7 +164,7 @@ describe('Template schemas', () => {
   test('$CreateUpdateNonLetter should fail when input is a letter', () => {
     const letter: CreateUpdateTemplate = {
       templateType: 'LETTER',
-      letterType: 'q1',
+      letterType: 'x1',
       language: 'ar',
       name: 'letter',
     };
