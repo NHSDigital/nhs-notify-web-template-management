@@ -11,6 +11,39 @@ module "s3bucket_download" {
 
   kms_key_arn = var.kms_key_arn
 
-  // source_policy_documents variable to be added here to manage bucket access
-  // once we have the cloudfront distribution
+  policy_documents = [data.aws_iam_policy_document.s3bucket_download.json]
+}
+
+data "aws_iam_policy_document" "s3bucket_download" {
+  dynamic "statement" {
+    for_each = var.cloudfront_distribution_arn != null ? [1] : []
+
+    content {
+      sid    = "AllowCloudFrontServicePrincipalReadOnly"
+      effect = "Allow"
+
+      actions = [
+        "s3:GetObject",
+      ]
+
+      resources = ["${module.s3bucket_download.arn}/*"]
+
+      principals {
+        type = "Service"
+
+        identifiers = [
+          "cloudfront.amazonaws.com"
+        ]
+      }
+
+      condition {
+        test     = "StringEquals"
+        variable = "AWS:SourceArn"
+
+        values = [
+          var.cloudfront_distribution_arn,
+        ]
+      }
+    }
+  }
 }

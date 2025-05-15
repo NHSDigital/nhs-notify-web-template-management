@@ -14,4 +14,3 @@ module "kms_sandbox" {
   alias           = "alias/${local.csi}-sandbox"
   iam_delegation  = true
 }
-

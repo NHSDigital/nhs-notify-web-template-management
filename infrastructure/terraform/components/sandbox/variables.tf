@@ -86,4 +86,3 @@ variable "letter_suppliers" {
 
   description = "Letter suppliers enabled in the environment"
 }
-

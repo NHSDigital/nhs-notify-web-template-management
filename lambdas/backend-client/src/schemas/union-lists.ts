@@ -80,13 +80,7 @@ export const LANGUAGE_LIST = arrayOfAll<Language>()([
   'zh',
 ]);
 
-export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()([
-  'x3',
-  'q1',
-  'q4',
-  'x0',
-  'x1',
-]);
+export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()(['q4', 'x0', 'x1']);
 
 export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([
   'PENDING',

@@ -916,7 +916,7 @@ describe('templateClient', () => {
         name: 'name',
         templateType: 'LETTER',
         language: 'it',
-        letterType: 'q1',
+        letterType: 'x1',
       };
 
       const result = await templateClient.updateTemplate(
@@ -1567,7 +1567,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         personalisationParameters,
-        letterType: 'q1',
+        letterType: 'x1',
         language: 'en',
         files: {
           pdfTemplate: {
@@ -1632,7 +1632,7 @@ describe('templateClient', () => {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         personalisationParameters,
-        letterType: 'q1',
+        letterType: 'x1',
         language: 'en',
         files: {
           pdfTemplate: {
