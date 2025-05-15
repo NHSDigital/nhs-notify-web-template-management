@@ -1,5 +1,6 @@
 import { backupData } from '@/src/utils/backup-utils';
-import * as fileSystem from 'node:fs';
+import { getAccountId } from '@/src/utils/sts-utils';
+import { writeJsonToFile } from '@/src/utils/s3-utils';
 
 const mockItem1 = {
   templateType: {
@@ -31,25 +32,20 @@ const mockItem2 = {
   },
 };
 
-jest.mock('node:fs', () => ({
-  __esModule: true,
-  ...jest.requireActual('node:fs'),
-}));
-
-const writeFileSyncSpy = jest.spyOn(fileSystem, 'writeFileSync');
-const existsSyncSpy = jest.spyOn(fileSystem, 'existsSync');
-const mkdirSyncSpy = jest.spyOn(fileSystem, 'mkdirSync');
+jest.mock('@/src/utils/sts-utils');
+jest.mock('@/src/utils/s3-utils');
 
 describe('backup-utils', () => {
   describe('backupData', () => {
-    test('should backup data', () => {
+    test('should backup data', async () => {
       // arrange
       jest.useFakeTimers();
       jest.setSystemTime(new Date('2025-05-13'));
 
-      writeFileSyncSpy.mockImplementation(() => {});
-      existsSyncSpy.mockImplementation(() => false);
-      mkdirSyncSpy.mockImplementation(() => '');
+      jest
+        .mocked(getAccountId)
+        .mockImplementation(() => Promise.resolve('000000000000'));
+      const mockedWriteJsonToFile = jest.mocked(writeJsonToFile);
 
       const testParameters = {
         destinationOwner: 'def-456',
@@ -59,24 +55,25 @@ describe('backup-utils', () => {
 
       const mockItems = [mockItem1, mockItem2];
       const expectedBackupFilePath =
-        './backups/usr_tsfr-2025-05-13T00:00:00.000Z-env-testenv-src-abc-123-dest-def-456.json';
+        'user-transfer/testenv/2025_05_13_00_00_00_000Z-source-abc-123-destination-def-456.json';
+      const expectedBucketName =
+        'nhs-notify-000000000000-eu-west-2-main-acct-migration-backup';
+      const expectedContent = JSON.stringify(mockItems);
 
       // act
-      backupData(mockItems, testParameters);
+      await backupData(mockItems, testParameters);
 
       // assert
-      expect(mkdirSyncSpy).toHaveBeenCalledWith('./backups');
-      expect(writeFileSyncSpy).toHaveBeenCalledWith(
+      expect(mockedWriteJsonToFile).toHaveBeenCalledWith(
         expectedBackupFilePath,
-        JSON.stringify(mockItems)
+        expectedContent,
+        expectedBucketName
       );
     });
 
-    test('should handle existing backup dir', () => {
+    test('should no-op the backup when no items have been found', async () => {
       // arrange
-      writeFileSyncSpy.mockImplementation(() => {});
-      existsSyncSpy.mockImplementation(() => true);
-      mkdirSyncSpy.mockImplementation(() => '');
+      const mockedWriteJsonToFile = jest.mocked(writeJsonToFile);
 
       const testParameters = {
         destinationOwner: 'def-456',
@@ -85,10 +82,10 @@ describe('backup-utils', () => {
       };
 
       // act
-      backupData([], testParameters);
+      await backupData([], testParameters);
 
       // assert
-      expect(mkdirSyncSpy).not.toHaveBeenCalled();
+      expect(mockedWriteJsonToFile).not.toHaveBeenCalled();
     });
   });
 

@@ -4,12 +4,7 @@ import { hideBin } from 'yargs/helpers';
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { retrieveTemplates, updateItem } from '@/src/utils/ddb-utils';
 import { backupData } from '@/src/utils/backup-utils';
-
-export type Parameters = {
-  sourceOwner: string;
-  destinationOwner: string;
-  environment: string;
-};
+import { Parameters } from '@/src/utils/constants';
 
 function getParameters(): Parameters {
   return yargs(hideBin(process.argv))
@@ -46,6 +41,6 @@ async function updateItems(
 export async function performTransfer() {
   const parameters = getParameters();
   const items = await retrieveTemplates(parameters);
-  backupData(items, parameters);
+  await backupData(items, parameters);
   await updateItems(items, parameters);
 }
