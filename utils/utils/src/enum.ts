@@ -3,6 +3,7 @@ import {
   TemplateStatus,
   LetterType,
   Language,
+  TemplateDto,
 } from 'nhs-notify-backend-client';
 
 const languageMap: Record<Language, string> = {
@@ -78,8 +79,8 @@ export const templateStatusToDisplayMappings = (status: TemplateStatus) =>
     PENDING_PROOF_REQUEST: 'Files uploaded',
     PENDING_UPLOAD: 'Checking files',
     PENDING_VALIDATION: 'Checking files',
-    VIRUS_SCAN_FAILED: 'Checks failed',
     VALIDATION_FAILED: 'Checks failed',
+    VIRUS_SCAN_FAILED: 'Checks failed',
     WAITING_FOR_PROOF: 'Waiting for proof',
     PROOF_AVAILABLE: 'Proof available',
   })[status];
@@ -95,8 +96,8 @@ export const templateStatusToColourMappings = (status: TemplateStatus) =>
       PENDING_VALIDATION: 'blue',
       VIRUS_SCAN_FAILED: 'red',
       VALIDATION_FAILED: 'red',
-      WAITING_FOR_PROOF: undefined,
-      PROOF_AVAILABLE: undefined,
+      WAITING_FOR_PROOF: 'yellow',
+      PROOF_AVAILABLE: 'yellow',
     }) as const
   )[status];
 
@@ -112,3 +113,69 @@ export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>
   `preview-submitted-${templateTypeToUrlTextMappings(type)}-template`;
+
+const templateStatusCopyAction = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: true,
+      SUBMITTED: true,
+      DELETED: false,
+      PENDING_PROOF_REQUEST: true,
+      PENDING_UPLOAD: true,
+      PENDING_VALIDATION: true,
+      VIRUS_SCAN_FAILED: true,
+      VALIDATION_FAILED: true,
+      WAITING_FOR_PROOF: false,
+      PROOF_AVAILABLE: false,
+    }) satisfies Record<TemplateStatus, boolean>
+  )[status];
+
+const templateTypeCopyAction = (type: TemplateType) =>
+  (
+    ({
+      NHS_APP: true,
+      SMS: true,
+      EMAIL: true,
+      LETTER: false,
+    }) satisfies Record<TemplateType, boolean>
+  )[type];
+
+const templateStatusDeleteAction = (status: TemplateStatus) =>
+  (
+    ({
+      NOT_YET_SUBMITTED: true,
+      SUBMITTED: false,
+      DELETED: false,
+      PENDING_PROOF_REQUEST: true,
+      PENDING_UPLOAD: true,
+      PENDING_VALIDATION: true,
+      VIRUS_SCAN_FAILED: true,
+      VALIDATION_FAILED: true,
+      WAITING_FOR_PROOF: false,
+      PROOF_AVAILABLE: true,
+    }) satisfies Record<TemplateStatus, boolean>
+  )[status];
+
+const templateTypeDeleteAction = (type: TemplateType) =>
+  (
+    ({
+      NHS_APP: true,
+      SMS: true,
+      EMAIL: true,
+      LETTER: true,
+    }) satisfies Record<TemplateType, boolean>
+  )[type];
+
+export const templateDisplayCopyAction = ({
+  templateType,
+  templateStatus,
+}: Pick<TemplateDto, 'templateType' | 'templateStatus'>) =>
+  templateTypeCopyAction(templateType) &&
+  templateStatusCopyAction(templateStatus);
+
+export const templateDisplayDeleteAction = ({
+  templateType,
+  templateStatus,
+}: Pick<TemplateDto, 'templateType' | 'templateStatus'>) =>
+  templateTypeDeleteAction(templateType) &&
+  templateStatusDeleteAction(templateStatus);
