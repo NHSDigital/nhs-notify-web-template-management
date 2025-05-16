@@ -1,8 +1,9 @@
 locals {
   csi = "${var.csi}-${var.module}"
 
-  repo_root               = abspath("${path.module}/../../../..")
-  lambdas_source_code_dir = abspath("${local.repo_root}/lambdas")
+  lambdas_dir = "../../../../lambdas"
+
+  lambdas_source_code_dir = abspath("${path.module}/${local.lambdas_dir}")
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")
   pdfjs_layer_lockfile    = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/package-lock.json")
 

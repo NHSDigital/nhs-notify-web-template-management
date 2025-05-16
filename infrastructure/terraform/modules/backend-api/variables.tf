@@ -122,3 +122,8 @@ variable "log_subscription_role_arn" {
   description = "The ARN of the IAM role to use for the log subscription filter"
   default     = ""
 }
+
+variable "function_s3_bucket" {
+  type        = string
+  description = "Name of S3 bucket to upload lambda artefacts to"
+}
