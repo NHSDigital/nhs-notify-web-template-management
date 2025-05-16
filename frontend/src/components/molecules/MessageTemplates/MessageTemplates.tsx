@@ -99,6 +99,7 @@ export function MessageTemplates({
                     {templateDisplayCopyAction(template) ? (
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
+                          data-testid='copy-link'
                           href={`/copy-template/${template.id}`}
                           id={`copy-template-link-${index}`}
                           aria-label={`${messageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
@@ -110,6 +111,7 @@ export function MessageTemplates({
                     {templateDisplayDeleteAction(template) ? (
                       <p className='nhsuk-u-margin-bottom-2'>
                         <Link
+                          data-testid='delete-link'
                           href={`/delete-template/${template.id}`}
                           aria-label={`${messageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
                         >

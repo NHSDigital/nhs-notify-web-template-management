@@ -44,14 +44,19 @@ export const DeleteTemplate: FC<DeleteTemplateProps> = ({ template }) => {
               ),
             }}
           >
-            <NHSNotifyButton secondary>{noButtonText}</NHSNotifyButton>
+            <NHSNotifyButton data-testid='back-to-templates-link' secondary>
+              {noButtonText}
+            </NHSNotifyButton>
           </NHSNotifyFormWrapper>
           <NHSNotifyFormWrapper
             action={yesAction}
             formAttributes={{ className: 'inline-form' }}
             formId='delete-template-yes'
           >
-            <NHSNotifyButton className='nhsuk-button--warning'>
+            <NHSNotifyButton
+              data-testid='delete-template-button'
+              className='nhsuk-button--warning'
+            >
               {yesButtonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>

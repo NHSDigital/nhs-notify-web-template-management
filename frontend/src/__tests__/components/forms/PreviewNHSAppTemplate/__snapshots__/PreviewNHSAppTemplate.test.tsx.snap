@@ -7,6 +7,7 @@ exports[`Preview nhs app form renders Client-side validation triggers 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
       id="back-link"
     >
@@ -251,6 +252,7 @@ exports[`Preview nhs app form renders Client-side validation triggers 1`] = `
         </form>
         <p>
           <a
+            data-testid="back-to-templates-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -269,6 +271,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
       id="back-link"
     >
@@ -511,6 +514,7 @@ exports[`Preview nhs app form renders matches error snapshot 1`] = `
         </form>
         <p>
           <a
+            data-testid="back-to-templates-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -529,6 +533,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
       id="back-link"
     >
@@ -734,6 +739,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from edit
         </form>
         <p>
           <a
+            data-testid="back-to-templates-link-bottom"
             href="/message-templates"
           >
             Back to all templates
@@ -752,6 +758,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
       id="back-link"
     >
@@ -952,6 +959,7 @@ exports[`Preview nhs app form renders matches snapshot when navigating from mana
         </form>
         <p>
           <a
+            data-testid="back-to-templates-link-bottom"
             href="/message-templates"
           >
             Back to all templates

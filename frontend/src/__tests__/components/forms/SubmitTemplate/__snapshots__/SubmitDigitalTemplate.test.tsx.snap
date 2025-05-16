@@ -86,6 +86,7 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
           <a
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            data-testid="go-back-button"
             draggable="false"
             href="/templates/preview-text-message-template/template-id"
             id="go-back-button"
@@ -96,6 +97,7 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
           <button
             aria-disabled="false"
             class="nhsuk-button"
+            data-testid="submit-template-button"
             id="submit-template-button"
             type="submit"
           >

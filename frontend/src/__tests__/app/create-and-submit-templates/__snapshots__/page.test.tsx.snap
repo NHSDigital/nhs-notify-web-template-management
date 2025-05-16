@@ -66,6 +66,7 @@ exports[`matches the snapshot 1`] = `
         <a
           aria-disabled="false"
           class="nhsuk-button"
+          data-testid="start-now-button"
           draggable="false"
           href="/templates/message-templates"
           role="button"
@@ -141,6 +142,7 @@ exports[`matches the snapshot with letters feature flag disabled 1`] = `
         <a
           aria-disabled="false"
           class="nhsuk-button"
+          data-testid="start-now-button"
           draggable="false"
           href="/templates/message-templates"
           role="button"

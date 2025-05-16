@@ -69,10 +69,14 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
               id='go-back-button'
               className='nhsuk-u-margin-right-3'
               href={`${getBasePath()}/${goBackPath}/${templateId}`}
+              data-testid='go-back-button'
             >
               {goBackButtonText}
             </NHSNotifyButton>
-            <NHSNotifyButton id='submit-template-button'>
+            <NHSNotifyButton
+              id='submit-template-button'
+              data-testid='submit-template-button'
+            >
               {buttonText}
             </NHSNotifyButton>
           </NHSNotifyFormWrapper>

@@ -43,7 +43,11 @@ export function PreviewSMSTemplate({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/message-templates`} id='back-link'>
+      <BackLink
+        data-testid='back-to-templates-link'
+        href={`${getBasePath()}/message-templates`}
+        id='back-link'
+      >
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
@@ -70,7 +74,12 @@ export function PreviewSMSTemplate({
               }
             />
             <p>
-              <Link href='/message-templates'>{backLinkText}</Link>
+              <Link
+                data-testid='back-to-templates-link-bottom'
+                href='/message-templates'
+              >
+                {backLinkText}
+              </Link>
             </p>
           </div>
         </div>
