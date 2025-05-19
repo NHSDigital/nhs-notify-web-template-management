@@ -11,6 +11,9 @@ import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-pre
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
+import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+
+const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe.skip('letter complete e2e journey', () => {
@@ -126,8 +129,30 @@ test.describe.skip('letter complete e2e journey', () => {
     await requestProofPage.clickRequestProofButton();
 
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
+    await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    await previewTemplatePage.clickContinueButton();
+    await expect(async () => {
+      // invoke SFTP poll lambda
+      await lambdaClient.send(
+        new InvokeCommand({
+          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+          Payload: JSON.stringify({
+            supplier: 'WTMMOCK',
+          }),
+        })
+      );
+
+      const template = await templateStorageHelper.getTemplate(key);
+
+      expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
+    }).toPass({ timeout: 60_000 });
+
+    await expect(async () => {
+      await page.reload();
+
+      await expect(previewTemplatePage.continueButton).toBeVisible();
+      await previewTemplatePage.clickContinueButton();
+    }).toPass({ timeout: 60_000 });
 
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
 

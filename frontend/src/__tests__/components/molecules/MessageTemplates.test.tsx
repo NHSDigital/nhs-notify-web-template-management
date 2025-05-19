@@ -53,6 +53,7 @@ describe('MessageTemplates component', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
   it('matches snapshot with submitted status', () => {
     messageTemplatesProps.templateList[0].templateStatus = 'SUBMITTED';
     const container = render(<MessageTemplates {...messageTemplatesProps} />);
@@ -67,6 +68,14 @@ describe('MessageTemplates component', () => {
 
     expect(container.asFragment()).toMatchSnapshot();
   });
+
+  it('matches snapshot with waiting for proof status', () => {
+    messageTemplatesProps.templateList[0].templateStatus = 'WAITING_FOR_PROOF';
+    const container = render(<MessageTemplates {...messageTemplatesProps} />);
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('renders component correctly', () => {
     render(<MessageTemplates {...messageTemplatesProps} />);
 

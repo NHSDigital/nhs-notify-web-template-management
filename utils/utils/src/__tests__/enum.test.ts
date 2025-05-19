@@ -2,6 +2,7 @@ import {
   Language,
   LetterType,
   TemplateStatus,
+  TemplateType,
 } from 'nhs-notify-backend-client';
 import {
   alphabeticalLanguageList,
@@ -13,6 +14,8 @@ import {
   templateTypeDisplayMappings,
   templateTypeToUrlTextMappings,
   previewSubmittedTemplatePages,
+  templateDisplayCopyAction,
+  templateDisplayDeleteAction,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -117,15 +120,17 @@ describe('templateStatusToDisplayMappings', () => {
 
 describe('templateStatusToColourMappings', () => {
   it.each(TEMPLATE_STATUS_LIST)(
-    'should give the expected colour when templateType is %s',
+    'should give the expected colour when templateStatus is %s',
     (templateStatus) => {
       const expectedColours: { [key in TemplateStatus]?: string } = {
         SUBMITTED: 'grey',
+        WAITING_FOR_PROOF: 'yellow',
         PENDING_PROOF_REQUEST: 'blue',
         PENDING_UPLOAD: 'blue',
         PENDING_VALIDATION: 'blue',
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
+        PROOF_AVAILABLE: 'yellow',
       };
 
       expect(templateStatusToColourMappings(templateStatus)).toEqual(
@@ -183,4 +188,74 @@ describe('previewSubmittedTemplatePages', () => {
       'preview-submitted-email-template'
     );
   });
+});
+
+describe('templateDisplayCopyAction', () => {
+  test.each<[TemplateType, TemplateStatus, boolean]>([
+    ['NHS_APP', 'SUBMITTED', true],
+    ['NHS_APP', 'NOT_YET_SUBMITTED', true],
+    ['NHS_APP', 'DELETED', false],
+    ['SMS', 'SUBMITTED', true],
+    ['SMS', 'NOT_YET_SUBMITTED', true],
+    ['SMS', 'DELETED', false],
+    ['EMAIL', 'SUBMITTED', true],
+    ['EMAIL', 'NOT_YET_SUBMITTED', true],
+    ['EMAIL', 'DELETED', false],
+    ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'SUBMITTED', false],
+    ['LETTER', 'NOT_YET_SUBMITTED', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'DELETED', false],
+    ['LETTER', 'WAITING_FOR_PROOF', false],
+    ['LETTER', 'PENDING_PROOF_REQUEST', false],
+    ['LETTER', 'PENDING_UPLOAD', false],
+    ['LETTER', 'PENDING_VALIDATION', false],
+    ['LETTER', 'VIRUS_SCAN_FAILED', false],
+    ['LETTER', 'VALIDATION_FAILED', false],
+    ['LETTER', 'PROOF_AVAILABLE', false],
+  ])(
+    'should give the expected result for display of copy action when template has type of %s and status of %s',
+    (templateType, templateStatus, shouldDisplayCopyAction) => {
+      expect(
+        templateDisplayCopyAction({
+          templateType,
+          templateStatus,
+        })
+      ).toBe(shouldDisplayCopyAction);
+    }
+  );
+});
+
+describe('templateDisplayDeleteAction', () => {
+  test.each<[TemplateType, TemplateStatus, boolean]>([
+    ['NHS_APP', 'SUBMITTED', false],
+    ['NHS_APP', 'NOT_YET_SUBMITTED', true],
+    ['NHS_APP', 'DELETED', false],
+    ['SMS', 'SUBMITTED', false],
+    ['SMS', 'NOT_YET_SUBMITTED', true],
+    ['SMS', 'DELETED', false],
+    ['EMAIL', 'SUBMITTED', false],
+    ['EMAIL', 'NOT_YET_SUBMITTED', true],
+    ['EMAIL', 'DELETED', false],
+    ['EMAIL', 'WAITING_FOR_PROOF', false], // should not occur in practice, just for test purposes
+    ['LETTER', 'SUBMITTED', false],
+    ['LETTER', 'NOT_YET_SUBMITTED', true],
+    ['LETTER', 'DELETED', false],
+    ['LETTER', 'WAITING_FOR_PROOF', false],
+    ['LETTER', 'PENDING_PROOF_REQUEST', true],
+    ['LETTER', 'PENDING_UPLOAD', true],
+    ['LETTER', 'PENDING_VALIDATION', true],
+    ['LETTER', 'VIRUS_SCAN_FAILED', true],
+    ['LETTER', 'VALIDATION_FAILED', true],
+    ['LETTER', 'PROOF_AVAILABLE', true],
+  ])(
+    'should give the expected result for display of delete action when template has type of %s and status of %s',
+    (templateType, templateStatus, shouldDisplayDeleteAction) => {
+      expect(
+        templateDisplayDeleteAction({
+          templateType,
+          templateStatus,
+        })
+      ).toBe(shouldDisplayDeleteAction);
+    }
+  );
 });
