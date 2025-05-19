@@ -1,20 +1,24 @@
-module "kms" {
+module "kms_us_east_1" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms?ref=v1.0.8"
+
+  providers = {
+    aws = aws.us-east-1
+  }
 
   aws_account_id = var.aws_account_id
   component      = var.component
   environment    = var.environment
   project        = var.project
-  region         = var.region
+  region         = "us-east-1"
 
   name                 = "main"
   deletion_window      = var.kms_deletion_window
   alias                = "alias/${local.csi}"
-  key_policy_documents = [data.aws_iam_policy_document.kms.json]
+  key_policy_documents = [data.aws_iam_policy_document.kms_us_east_1.json]
   iam_delegation       = true
 }
 
-data "aws_iam_policy_document" "kms" {
+data "aws_iam_policy_document" "kms_us_east_1" {
   # '*' resource scope is permitted in access policies as as the resource is itself
   # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-services.html
 
@@ -27,7 +31,6 @@ data "aws_iam_policy_document" "kms" {
 
       identifiers = [
         "logs.${var.region}.amazonaws.com",
-        "sns.amazonaws.com",
       ]
     }
 
@@ -42,36 +45,5 @@ data "aws_iam_policy_document" "kms" {
     resources = [
       "*",
     ]
-  }
-
-  statement {
-    sid    = "AllowCloudFrontServicePrincipalSSE-KMS"
-    effect = "Allow"
-
-    principals {
-      type = "Service"
-
-      identifiers = [
-        "cloudfront.amazonaws.com",
-      ]
-    }
-
-    actions = [
-      "kms:Decrypt",
-      "kms:Encrypt",
-      "kms:GenerateDataKey*"
-    ]
-
-    resources = [
-      "*",
-    ]
-
-    condition {
-      test     = "StringLike"
-      variable = "aws:SourceArn"
-      values = [
-        aws_cloudfront_distribution.main.arn
-      ]
-    }
   }
 }

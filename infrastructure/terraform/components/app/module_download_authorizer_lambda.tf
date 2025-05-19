@@ -16,13 +16,13 @@ module "download_authorizer_lambda" {
   group          = var.group
 
   log_retention_in_days = var.log_retention_in_days
-  kms_key_arn           = module.kms.key_arn
+  kms_key_arn           = module.kms_us_east_1.key_arn
 
   iam_policy_document = {
     body = data.aws_iam_policy_document.authorizer.json
   }
 
-  function_s3_bucket       = local.acct.s3_buckets["artefacts"]["id"]
+  function_s3_bucket       = local.acct.s3_buckets["artefacts_us_east_1"]["id"]
   function_code_base_path  = local.lambdas_source_code_dir
   function_code_dir        = "download-authorizer/dist"
   handler_function_name    = "handler"
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "authorizer" {
     ]
 
     resources = [
-      module.kms.key_arn,
+      module.kms_us_east_1.key_arn,
     ]
   }
 }
