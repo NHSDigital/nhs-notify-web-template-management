@@ -43,10 +43,6 @@ module "s3bucket_artefacts_us_east_1" {
     data.aws_iam_policy_document.s3bucket_artefacts_us_east_1.json
   ]
 
-  bucket_logging_target = {
-    bucket = module.s3bucket_access_logs.id
-  }
-
   public_access = {
     block_public_acls       = true
     block_public_policy     = true
