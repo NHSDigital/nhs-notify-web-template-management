@@ -227,11 +227,9 @@
       },
       "LetterType": {
         "enum": [
-          "q1",
           "q4",
           "x0",
-          "x1",
-          "x3"
+          "x1"
         ],
         "type": "string"
       },

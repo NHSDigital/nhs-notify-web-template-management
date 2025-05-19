@@ -108,7 +108,7 @@ describe('form-actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
-      letterType: 'q1',
+      letterType: 'x1',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -166,7 +166,7 @@ describe('form-actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
-      letterType: 'q1',
+      letterType: 'x1',
       language: 'ar',
       files: {
         pdfTemplate: {
@@ -592,7 +592,7 @@ describe('form-actions', () => {
         id: 'new-template-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
-        letterType: 'q1',
+        letterType: 'x1',
         language: 'ar',
         files: {
           pdfTemplate: {

@@ -191,16 +191,6 @@ exports[`Client-side validation triggers 1`] = `
               name="letterTemplateLetterType"
             >
               <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
-              <option
                 value="q4"
               >
                 British Sign Language
@@ -690,16 +680,6 @@ exports[`renders page one error 1`] = `
               id="letterTemplateLetterType"
               name="letterTemplateLetterType"
             >
-              <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
               <option
                 value="q4"
               >
@@ -1201,16 +1181,6 @@ exports[`renders page with multiple errors 1`] = `
               name="letterTemplateLetterType"
             >
               <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                value="q1"
-              >
-                Braille
-              </option>
-              <option
                 value="q4"
               >
                 British Sign Language
@@ -1654,22 +1624,12 @@ exports[`renders page with preloaded field values 1`] = `
               name="letterTemplateLetterType"
             >
               <option
-                value="x3"
-              >
-                Audio CD
-              </option>
-              <option
-                selected=""
-                value="q1"
-              >
-                Braille
-              </option>
-              <option
                 value="q4"
               >
                 British Sign Language
               </option>
               <option
+                selected=""
                 value="x1"
               >
                 Large print

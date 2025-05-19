@@ -11,7 +11,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -37,6 +37,32 @@ describe('PreviewLetterTemplate component', () => {
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'PENDING_PROOF_REQUEST',
+          letterType: 'q4',
+          language: 'ar',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'a',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template status is WAITING_FOR_PROOF', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '53525D03-1BC1-4563-ABF9-A74FF04142AF',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'WAITING_FOR_PROOF',
           letterType: 'q4',
           language: 'ar',
           files: {
@@ -90,7 +116,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -121,7 +147,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',
@@ -147,7 +173,7 @@ describe('PreviewLetterTemplate component', () => {
           id: 'template-id',
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',
-          letterType: 'q1',
+          letterType: 'x1',
           files: {
             pdfTemplate: {
               fileName: 'file.pdf',

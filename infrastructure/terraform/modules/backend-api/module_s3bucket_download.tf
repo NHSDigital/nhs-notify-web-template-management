@@ -12,13 +12,6 @@ module "s3bucket_download" {
   kms_key_arn = var.kms_key_arn
 
   policy_documents = [data.aws_iam_policy_document.s3bucket_download.json]
-
-  public_access = {
-    block_public_acls       = true
-    block_public_policy     = true
-    ignore_public_acls      = true
-    restrict_public_buckets = true
-  }
 }
 
 data "aws_iam_policy_document" "s3bucket_download" {
@@ -33,10 +26,7 @@ data "aws_iam_policy_document" "s3bucket_download" {
         "s3:GetObject",
       ]
 
-      resources = [
-        module.s3bucket_download.arn,
-        "${module.s3bucket_download.arn}/*",
-      ]
+      resources = ["${module.s3bucket_download.arn}/*"]
 
       principals {
         type = "Service"

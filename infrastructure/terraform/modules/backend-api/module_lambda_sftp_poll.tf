@@ -29,6 +29,8 @@ module "lambda_sftp_poll" {
     subnet_ids         = data.aws_subnets.account_vpc_private_subnets.ids
     security_group_ids = [data.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
   }
+  log_destination_arn = var.log_destination_arn
+  log_subscription_role_arn      = var.log_subscription_role_arn
 }
 
 data "aws_iam_policy_document" "sftp_poll" {

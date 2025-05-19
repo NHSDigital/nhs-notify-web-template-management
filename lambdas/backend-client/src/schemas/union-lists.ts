@@ -36,17 +36,16 @@ export const TEMPLATE_TYPE_LIST = arrayOfAll<TemplateType>()([
 ]);
 
 export const TEMPLATE_STATUS_LIST = arrayOfAll<TemplateStatus>()([
-  'NOT_YET_SUBMITTED',
-  'SUBMITTED',
   'DELETED',
+  'NOT_YET_SUBMITTED',
   'PENDING_PROOF_REQUEST',
   'PENDING_UPLOAD',
-  'PENDING_PROOF_REQUEST',
   'PENDING_VALIDATION',
-  'VIRUS_SCAN_FAILED',
-  'VALIDATION_FAILED',
-  'WAITING_FOR_PROOF',
   'PROOF_AVAILABLE',
+  'SUBMITTED',
+  'VALIDATION_FAILED',
+  'VIRUS_SCAN_FAILED',
+  'WAITING_FOR_PROOF',
 ]);
 
 export const LANGUAGE_LIST = arrayOfAll<Language>()([
@@ -81,13 +80,7 @@ export const LANGUAGE_LIST = arrayOfAll<Language>()([
   'zh',
 ]);
 
-export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()([
-  'x3',
-  'q1',
-  'q4',
-  'x0',
-  'x1',
-]);
+export const LETTER_TYPE_LIST = arrayOfAll<LetterType>()(['q4', 'x0', 'x1']);
 
 export const VIRUS_SCAN_STATUS_LIST = arrayOfAll<VirusScanStatus>()([
   'PENDING',

@@ -12,8 +12,10 @@ module "lambda_set_file_virus_scan_status_for_upload" {
 
   environment_variables = local.backend_lambda_environment_variables
 
-  timeout     = 20
-  memory_size = 512
+  timeout                        = 20
+  memory_size                    = 512
+  log_destination_arn = var.log_destination_arn
+  log_subscription_role_arn      = var.log_subscription_role_arn
 }
 
 data "aws_iam_policy_document" "set_file_virus_scan_status_for_upload" {

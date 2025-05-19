@@ -59,11 +59,12 @@ resource "aws_cloudfront_distribution" "main" {
     ]
     target_origin_id = "S3-${local.csi}-download"
 
+    viewer_protocol_policy = "redirect-to-https"
+    compress               = true
+
     cache_policy_id          = aws_cloudfront_cache_policy.no_cache.id
     origin_request_policy_id = aws_cloudfront_origin_request_policy.forward_cookies.id
 
-    viewer_protocol_policy = "redirect-to-https"
-    compress               = true
 
     lambda_function_association {
       lambda_arn = module.download_authorizer_lambda.function_qualified_arn

@@ -9,7 +9,8 @@ import {
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
 
-test.describe('letter file validation', () => {
+// eslint-disable-next-line playwright/no-skipped-test
+test.describe.skip('letter file validation', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 

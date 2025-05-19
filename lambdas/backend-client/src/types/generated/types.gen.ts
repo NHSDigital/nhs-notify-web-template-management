@@ -82,7 +82,7 @@ export type LetterProperties = CreateLetterProperties & {
   personalisationParameters?: Array<string>;
 };
 
-export type LetterType = 'q1' | 'q4' | 'x0' | 'x1' | 'x3';
+export type LetterType = 'q4' | 'x0' | 'x1';
 
 export type NhsAppProperties = {
   message: string;
