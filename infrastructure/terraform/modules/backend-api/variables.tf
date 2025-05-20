@@ -110,8 +110,6 @@ variable "cloudfront_distribution_arn" {
   description = "ARN of the cloudfront distribution to serve files from"
   default     = null
 }
-<<<<<<< HEAD
-=======
 
 variable "log_destination_arn" {
   type        = string
@@ -124,4 +122,3 @@ variable "log_subscription_role_arn" {
   description = "The ARN of the IAM role to use for the log subscription filter"
   default     = ""
 }
->>>>>>> main
