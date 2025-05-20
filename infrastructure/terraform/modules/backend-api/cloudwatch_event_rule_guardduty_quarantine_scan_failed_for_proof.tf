@@ -3,7 +3,7 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_failed_for_proof
   description = "Matches quarantine 'GuardDuty Malware Protection Object Scan Result' events where the scan result is not NO_THREATS_FOUND"
 
   event_pattern = jsonencode({
-    source      = ["aws.guardduty"]
+    source      = compact(["aws.guardduty", var.test_environment_mock_guardduty_event_source])
     detail-type = ["GuardDuty Malware Protection Object Scan Result"]
     resources   = [aws_guardduty_malware_protection_plan.quarantine.arn]
     detail = {

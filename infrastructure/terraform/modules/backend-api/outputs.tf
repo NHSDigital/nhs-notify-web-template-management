@@ -10,6 +10,10 @@ output "download_bucket_regional_domain_name" {
   value = module.s3bucket_download.bucket_regional_domain_name
 }
 
+output "guardduty_quarantine_arn" {
+  value = aws_guardduty_malware_protection_plan.quarantine.arn
+}
+
 output "internal_bucket_name" {
   value = module.s3bucket_internal.id
 }

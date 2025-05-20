@@ -122,3 +122,9 @@ variable "log_subscription_role_arn" {
   description = "The ARN of the IAM role to use for the log subscription filter"
   default     = ""
 }
+
+variable "test_environment_mock_guardduty_event_source" {
+  type        = string
+  description = "Adds a new source to the EventBridge Guard Duty filter rules"
+  default     = ""
+}

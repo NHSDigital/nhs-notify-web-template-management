@@ -22,4 +22,6 @@ module "backend_api" {
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
   dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
+
+  test_environment_mock_guardduty_event_source = "test.guardduty"
 }

@@ -8,10 +8,14 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
+import {
+  SimulateGuardDutyScan,
+  UseCaseOrchestrator,
+} from '../helpers/use-cases';
 
-// eslint-disable-next-line playwright/no-skipped-test
-test.describe.skip('letter file validation', () => {
+test.describe('letter file validation', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+  const useCase = new UseCaseOrchestrator();
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -60,6 +64,25 @@ test.describe.skip('letter file validation', () => {
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -151,6 +174,20 @@ test.describe.skip('letter file validation', () => {
         owner: user.userId,
       });
 
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
+
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
       expect(template.personalisationParameters).toEqual([
@@ -224,6 +261,25 @@ test.describe.skip('letter file validation', () => {
         id: templateId,
         owner: user.userId,
       });
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('FAILED');
@@ -299,6 +355,25 @@ test.describe.skip('letter file validation', () => {
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'UNSUPPORTED',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('FAILED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -378,6 +453,25 @@ test.describe.skip('letter file validation', () => {
         owner: user.userId,
       });
 
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
+
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -431,6 +525,25 @@ test.describe.skip('letter file validation', () => {
         owner: user.userId,
       });
 
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
+
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -480,6 +593,20 @@ test.describe.skip('letter file validation', () => {
         owner: user.userId,
       });
 
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
+
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
       expect(template.personalisationParameters).toBeUndefined();
@@ -527,6 +654,25 @@ test.describe.skip('letter file validation', () => {
         id: templateId,
         owner: user.userId,
       });
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -579,6 +725,25 @@ test.describe.skip('letter file validation', () => {
         id: templateId,
         owner: user.userId,
       });
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -634,6 +799,25 @@ test.describe.skip('letter file validation', () => {
         id: templateId,
         owner: user.userId,
       });
+
+      await useCase.send(
+        new SimulateGuardDutyScan({
+          templateId: template.id,
+          templateOwner: template.owner,
+          files: [
+            {
+              name: template.files?.pdfTemplate?.fileName,
+              currentVersion: template.files?.pdfTemplate?.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+            {
+              name: template.files!.testDataCsv!.fileName,
+              currentVersion: template.files!.testDataCsv!.currentVersion,
+              eventType: 'NO_THREATS_FOUND',
+            },
+          ],
+        })
+      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
