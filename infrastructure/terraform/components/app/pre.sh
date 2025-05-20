@@ -1,4 +1,4 @@
-npm ci
+npm ci --omit=dev
 
 npm run generate-dependencies --workspaces --if-present
 
