@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "kms_us_east_1" {
       type = "Service"
 
       identifiers = [
-        "logs.${var.region}.amazonaws.com",
+        "logs.us-east-1.amazonaws.com",
       ]
     }
 
