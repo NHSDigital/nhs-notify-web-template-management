@@ -16,7 +16,7 @@ module "request_proof_lambda" {
   environment_variables = local.backend_lambda_environment_variables
 
   execution_role_policy_document = data.aws_iam_policy_document.request_proof_lambda_policy.json
-  log_destination_arn = var.log_destination_arn
+  log_destination_arn            = var.log_destination_arn
   log_subscription_role_arn      = var.log_subscription_role_arn
 }
 
@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
   }
 
   statement {
-    sid    = "AllowKMSAccess"
+    sid    = "AllowDdbKMSAccess"
     effect = "Allow"
 
     actions = [
@@ -61,6 +61,20 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
 
     resources = [
       local.dynamodb_kms_key_arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowSqsKMSAccess"
+    effect = "Allow"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey",
+    ]
+
+    resources = [
+      var.kms_key_arn,
     ]
   }
 }
