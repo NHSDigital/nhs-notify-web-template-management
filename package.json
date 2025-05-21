@@ -54,7 +54,6 @@
     "lambdas/backend-client",
     "lambdas/download-authorizer",
     "lambdas/sftp-letters",
-    "lambdas/virus-scan",
     "tests/accessibility",
     "tests/test-team",
     "utils/backend-config",
