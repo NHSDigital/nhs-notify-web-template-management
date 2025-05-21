@@ -38,6 +38,7 @@ dist
 # misc
 .DS_Store
 *.pem
+data-migration/user-transfer/backups/
 
 # debug
 npm-debug.log*

@@ -1,39 +1,12 @@
 {
-  "name": "nhs-notify-web-template-management",
-  "workspaces": [
-    "lambdas/authorizer",
-    "lambdas/backend-api",
-    "lambdas/backend-client",
-    "lambdas/virus-scan",
-    "lambdas/sftp-letters",
-    "frontend",
-    "tests/accessibility",
-    "tests/test-team",
-    "utils/utils",
-    "utils/backend-config",
-    "utils/test-helper-utils",
-    "utils/entity-update-command-builder"
-  ],
-  "scripts": {
-    "build": "npm run create-env-file && npm run build --workspace frontend",
-    "create-amplify-outputs": "tsx ./scripts/create-amplify-outputs.ts",
-    "create-env-file": "tsx ./scripts/create-env-file.ts",
-    "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
-    "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
-    "generate-dependencies": "npm run generate-dependencies --workspaces --if-present",
-    "start": "npm run start --workspace frontend",
-    "test:unit": "npm run test:unit --workspaces",
-    "typecheck": "npm run typecheck --workspaces",
-    "lint": "npm run lint --workspaces",
-    "lint:fix": "npm run lint:fix --workspaces",
-    "dev": "npm run dev --workspace frontend --if-present"
+  "dependencies": {
+    "esbuild": "^0.24.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.5",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^8.27.0",
     "@typescript-eslint/parser": "^8.27.0",
-    "esbuild": "^0.24.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.9.1",
@@ -52,10 +25,40 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.19.3"
   },
+  "name": "nhs-notify-web-template-management",
   "overrides": {
     "pretty-format": {
       "react-is": "19.0.0"
     },
     "react": "^19.0.0"
-  }
+  },
+  "scripts": {
+    "build": "npm run create-env-file && npm run build --workspace frontend",
+    "create-amplify-outputs": "tsx ./scripts/create-amplify-outputs.ts",
+    "create-backend-sandbox": "./scripts/create_backend_sandbox.sh",
+    "create-env-file": "tsx ./scripts/create-env-file.ts",
+    "destroy-backend-sandbox": "./scripts/destroy_backend_sandbox.sh",
+    "dev": "npm run dev --workspace frontend --if-present",
+    "generate-dependencies": "npm run generate-dependencies --workspaces --if-present",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "start": "npm run start --workspace frontend",
+    "test:unit": "npm run test:unit --workspaces",
+    "typecheck": "npm run typecheck --workspaces"
+  },
+  "workspaces": [
+    "data-migration/user-transfer",
+    "lambdas/authorizer",
+    "lambdas/backend-api",
+    "lambdas/backend-client",
+    "lambdas/virus-scan",
+    "lambdas/sftp-letters",
+    "frontend",
+    "tests/accessibility",
+    "tests/test-team",
+    "utils/utils",
+    "utils/backend-config",
+    "utils/test-helper-utils",
+    "utils/entity-update-command-builder"
+  ]
 }

@@ -1,24 +1,9 @@
 {
-  "name": "nhs-notify-backend-client",
-  "version": "0.0.1",
-  "private": true,
-  "main": "./src/index.ts",
-  "scripts": {
-    "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test:unit": "jest",
-    "typecheck": "tsc --noEmit",
-    "generate-dependencies": "npx @hey-api/openapi-ts"
-  },
-  "files": [
-    "src/index.ts"
-  ],
-  "types": "src/index.ts",
   "dependencies": {
     "@hey-api/openapi-ts": "^0.64.13",
     "axios": "^1.8.4",
     "axios-retry": "^4.5.0",
+    "esbuild": "^0.24.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -26,9 +11,24 @@
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.5",
     "axios-mock-adapter": "^2.1.0",
-    "esbuild": "^0.24.0",
     "jest-mock-extended": "^3.0.7",
     "nhs-notify-web-template-management-utils": "^0.0.1",
     "typescript": "^5.8.2"
-  }
+  },
+  "files": [
+    "src/index.ts"
+  ],
+  "main": "./src/index.ts",
+  "name": "nhs-notify-backend-client",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
+    "generate-dependencies": "npx @hey-api/openapi-ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "types": "src/index.ts",
+  "version": "0.0.1"
 }
