@@ -1,21 +1,40 @@
 module "lambda_process_proof" {
-  source      = "../lambda-function"
-  description = "Sets virus scan status on letter files"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
-  dead_letter_target_arn         = module.sqs_process_proof_dlq.sqs_queue_arn
-  execution_role_policy_document = data.aws_iam_policy_document.process_proof.json
-  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.process_proof].path
-  function_name                  = "${local.csi}-process-proof"
-  handler                        = "process-proof.handler"
-  log_retention_in_days          = var.log_retention_in_days
-  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.process_proof].base64sha256
+  project        = var.project
+  environment    = var.environment
+  component      = var.component
+  aws_account_id = var.aws_account_id
+  region         = var.region
 
-  environment_variables = local.backend_lambda_environment_variables
+  kms_key_arn = var.kms_key_arn
 
-  timeout                        = 30
-  memory_size                    = 512
-  log_destination_arn = var.log_destination_arn
-  log_subscription_role_arn      = var.log_subscription_role_arn
+  function_name = "process-proof"
+
+  function_module_name  = "process-proof"
+  handler_function_name = "handler"
+  description           = "Processes letter proofs"
+
+  memory  = 512
+  timeout = 20
+  runtime = "nodejs20.x"
+
+  log_retention_in_days = var.log_retention_in_days
+  iam_policy_document = {
+    body = data.aws_iam_policy_document.process_proof.json
+  }
+
+  lambda_env_vars         = local.backend_lambda_environment_variables
+  function_s3_bucket      = var.function_s3_bucket
+  function_code_base_path = local.lambdas_dir
+  function_code_dir       = "backend-api/dist"
+
+  send_to_firehose             = var.send_to_firehose
+  log_destination_arn          = var.log_destination_arn
+  log_subscription_role_arn    = var.log_subscription_role_arn
+  enable_dlq_and_notifications = true
+  sns_destination              = aws_sns_topic.main.arn
+  sns_destination_kms_key      = var.kms_key_arn
 }
 
 data "aws_iam_policy_document" "process_proof" {
@@ -58,19 +77,6 @@ data "aws_iam_policy_document" "process_proof" {
 
     resources = [
       local.dynamodb_kms_key_arn,
-    ]
-  }
-
-  statement {
-    sid    = "AllowSQSDLQ"
-    effect = "Allow"
-
-    actions = [
-      "sqs:SendMessage",
-    ]
-
-    resources = [
-      module.sqs_process_proof_dlq.sqs_queue_arn,
     ]
   }
 
