@@ -4,6 +4,7 @@ set -euo pipefail
 
 # feature flag
 export NEXT_PUBLIC_ENABLE_LETTERS=true
+export NEXT_PUBLIC_ENABLE_PROOFING=true
 
 export INCLUDE_AUTH_PAGES=true
 
