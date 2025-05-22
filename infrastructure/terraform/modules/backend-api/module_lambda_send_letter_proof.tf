@@ -1,22 +1,30 @@
 module "lambda_send_letter_proof" {
-  source      = "../lambda-function"
-  description = "Send proof and test data to letter supplier via SFTP"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
-  function_name    = "${local.csi}-send-letter-proof"
-  filename         = module.build_sftp_letters_lambdas.zips["src/send-proof.ts"].path
-  source_code_hash = module.build_sftp_letters_lambdas.zips["src/send-proof.ts"].base64sha256
-  handler          = "send-proof.handler"
+  project        = var.project
+  environment    = var.environment
+  component      = var.component
+  aws_account_id = var.aws_account_id
+  region         = var.region
 
-  memory_size = 512
-  timeout     = 20
+  kms_key_arn = var.kms_key_arn
+
+  function_name = "send-letter-proof"
+
+  function_module_name  = "send-proof"
+  handler_function_name = "handler"
+  description           = "Send proof and test data to letter supplier via SFTP"
+
+  memory  = 512
+  timeout = 20
+  runtime = "nodejs20.x"
 
   log_retention_in_days = var.log_retention_in_days
+  iam_policy_document = {
+    body = data.aws_iam_policy_document.send_letter_proof.json
+  }
 
-  execution_role_policy_document = data.aws_iam_policy_document.send_letter_proof.json
-  log_destination_arn = var.log_destination_arn
-  log_subscription_role_arn      = var.log_subscription_role_arn
-
-  environment_variables = {
+  lambda_env_vars = {
     CREDENTIALS_TTL_SECONDS = 900
     CSI                     = local.csi
     INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
@@ -27,19 +35,31 @@ module "lambda_send_letter_proof" {
     TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
   }
 
-  sqs_event_source_mapping = {
-    sqs_queue_arn = module.sqs_sftp_upload.sqs_queue_arn
-    batch_size    = 5
-    scaling_config = {
-      maximum_concurrency = 5
-    }
-  }
+  function_s3_bucket      = var.function_s3_bucket
+  function_code_base_path = local.lambdas_dir
+  function_code_dir       = "sftp-letters/dist"
 
-  vpc = {
-    id                 = data.aws_vpc.account_vpc.id
-    cidr_block         = data.aws_vpc.account_vpc.cidr_block
+  vpc_config = {
     subnet_ids         = data.aws_subnets.account_vpc_private_subnets.ids
     security_group_ids = [data.aws_security_group.account_vpc_sg_allow_sftp_egress.id]
+  }
+
+  send_to_firehose          = var.send_to_firehose
+  log_destination_arn       = var.log_destination_arn
+  log_subscription_role_arn = var.log_subscription_role_arn
+}
+
+resource "aws_lambda_event_source_mapping" "send_letter_proof" {
+  event_source_arn                   = module.sqs_sftp_upload.sqs_queue_arn
+  function_name                      = module.lambda_send_letter_proof.function_name
+  batch_size                         = 5
+  maximum_batching_window_in_seconds = 0
+  function_response_types = [
+    "ReportBatchItemFailures"
+  ]
+
+  scaling_config {
+    maximum_concurrency = 5
   }
 }
 
@@ -148,6 +168,23 @@ data "aws_iam_policy_document" "send_letter_proof" {
 
     resources = [
       var.kms_key_arn,
+    ]
+  }
+
+  statement {
+    sid    = "AllowVPC"
+    effect = "Allow"
+
+    actions = [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DescribeInstances",
+      "ec2:AttachNetworkInterface",
+    ]
+
+    resources = [
+      "*"
     ]
   }
 }

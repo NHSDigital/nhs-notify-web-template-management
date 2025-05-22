@@ -117,8 +117,18 @@ variable "log_destination_arn" {
   default     = ""
 }
 
+variable "send_to_firehose" {
+  type        = bool
+  description = "Flag indicating whether logs should be sent to firehose"
+}
+
 variable "log_subscription_role_arn" {
   type        = string
   description = "The ARN of the IAM role to use for the log subscription filter"
   default     = ""
+}
+
+variable "function_s3_bucket" {
+  type        = string
+  description = "Name of S3 bucket to upload lambda artefacts to"
 }
