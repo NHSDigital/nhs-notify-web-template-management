@@ -7,7 +7,7 @@
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.4.4",
     "date-fns": "^4.1.0",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.4",
     "ksuid": "^3.0.0",
     "nhs-notify-entity-update-command-builder": "*",
     "nhs-notify-web-template-management-utils": "*",
