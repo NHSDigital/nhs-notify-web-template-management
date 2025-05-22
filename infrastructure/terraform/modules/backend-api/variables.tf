@@ -132,3 +132,9 @@ variable "function_s3_bucket" {
   type        = string
   description = "Name of S3 bucket to upload lambda artefacts to"
 }
+
+variable "test_environment_mock_guardduty_event_source" {
+  type        = string
+  description = "Adds a new source to the EventBridge Guard Duty filter rules"
+  default     = ""
+}

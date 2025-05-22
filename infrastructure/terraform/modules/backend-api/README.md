@@ -31,6 +31,7 @@ No requirements.
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
+| <a name="input_test_environment_mock_guardduty_event_source"></a> [test\_environment\_mock\_guardduty\_event\_source](#input\_test\_environment\_mock\_guardduty\_event\_source) | Adds a new source to the EventBridge Guard Duty filter rules | `string` | `""` | no |
 ## Modules
 
 | Name | Source | Version |
@@ -63,6 +64,7 @@ No requirements.
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
+| <a name="output_guardduty_quarantine_arn"></a> [guardduty\_quarantine\_arn](#output\_guardduty\_quarantine\_arn) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
 | <a name="output_send_proof_queue_url"></a> [send\_proof\_queue\_url](#output\_send\_proof\_queue\_url) | n/a |
