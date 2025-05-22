@@ -68,7 +68,7 @@ describe('download authorizer handler', () => {
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
-    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.${subject}.AccessToken=jwt`;
+    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.${subject}.accessToken=jwt`;
 
     const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
 
@@ -89,7 +89,7 @@ describe('download authorizer handler', () => {
   test('returns denial if cognito configuration is not present in custom headers', async () => {
     const uri = '/subject/template-id/proof1.pdf';
     const cookie =
-      'CognitoIdentityServiceProvider.user-pool-client-id.subject.AccessToken=jwt';
+      'CognitoIdentityServiceProvider.user-pool-client-id.subject.accessToken=jwt';
 
     const event = mock<CloudFrontRequestEvent>(
       makeEvent(uri, cookie, {
@@ -122,7 +122,7 @@ describe('download authorizer handler', () => {
 
   test('returns denial if authorization fails', async () => {
     const uri = '/subject/template-id/proof1.pdf';
-    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.subject.AccessToken=jwt`;
+    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.subject.accessToken=jwt`;
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: false,

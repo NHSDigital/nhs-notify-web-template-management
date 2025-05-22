@@ -21,7 +21,7 @@ export function parseRequest(request: CloudFrontRequest) {
   const userPoolId = customHeaders?.['x-user-pool-id']?.[0]?.value;
   const userPoolClientId = customHeaders?.['x-user-pool-client-id']?.[0]?.value;
 
-  const accessTokenKey = `CognitoIdentityServiceProvider.${userPoolClientId}.${ownerPathComponent}.AccessToken`;
+  const accessTokenKey = `CognitoIdentityServiceProvider.${userPoolClientId}.${ownerPathComponent}.accessToken`;
 
   const cookies = parseCookie(request.headers.cookie?.[0]?.value ?? '');
   const authorizationToken = cookies[accessTokenKey];
