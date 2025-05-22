@@ -62,7 +62,7 @@ resource "aws_cloudfront_distribution" "main" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
 
-    cache_policy_id          = aws_cloudfront_cache_policy.no_cache.id
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
     origin_request_policy_id = aws_cloudfront_origin_request_policy.forward_cookies.id
 
 
@@ -73,18 +73,8 @@ resource "aws_cloudfront_distribution" "main" {
   }
 }
 
-resource "aws_cloudfront_cache_policy" "no_cache" {
-  name = "${local.csi}-no-cache-policy"
-
-  default_ttl = 0
-  max_ttl     = 0
-  min_ttl     = 0
-
-  parameters_in_cache_key_and_forwarded_to_origin {
-    cookies_config { cookie_behavior = "none" }
-    headers_config { header_behavior = "none" }
-    query_strings_config { query_string_behavior = "none" }
-  }
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
 }
 
 resource "aws_cloudfront_origin_request_policy" "forward_cookies" {
