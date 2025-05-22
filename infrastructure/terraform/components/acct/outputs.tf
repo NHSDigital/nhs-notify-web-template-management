@@ -12,6 +12,11 @@ output "github_pat_ssm_param_name" {
 
 output "s3_buckets" {
   value = {
+    access_logs = {
+      arn    = module.s3bucket_access_logs.arn
+      bucket = module.s3bucket_access_logs.bucket
+      id     = module.s3bucket_access_logs.id
+    }
     artefacts = {
       arn    = module.s3bucket_artefacts.arn
       bucket = module.s3bucket_artefacts.bucket

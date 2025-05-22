@@ -1,23 +1,52 @@
 module "lambda_validate_letter_template_files" {
-  source      = "../lambda-function"
-  description = "Validates content of letter template files"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
-  environment_variables          = local.backend_lambda_environment_variables
-  execution_role_policy_document = data.aws_iam_policy_document.validate_letter_template_files.json
-  filename                       = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].path
-  function_name                  = "${local.csi}-validate-letter-template-files"
-  handler                        = "validate-letter-template-files.handler"
-  layer_arns                     = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
-  log_retention_in_days          = var.log_retention_in_days
-  memory_size                    = 1024
-  source_code_hash               = module.build_template_lambda.zips[local.backend_lambda_entrypoints.validate_letter_template_files].base64sha256
-  sqs_event_source_mapping = {
-    sqs_queue_arn = module.sqs_validate_letter_template_files.sqs_queue_arn
-    batch_size    = 1
+  project        = var.project
+  environment    = var.environment
+  component      = var.component
+  aws_account_id = var.aws_account_id
+  region         = var.region
+
+  kms_key_arn = var.kms_key_arn
+
+  function_name = "validate-letter-template-files"
+
+  function_module_name  = "validate-letter-template-files"
+  handler_function_name = "handler"
+  description           = "Validates content of letter template files"
+
+  memory  = 512
+  timeout = 10
+  runtime = "nodejs20.x"
+  layers  = [aws_lambda_layer_version.lambda_layer_pdfjs.arn]
+
+  log_retention_in_days = var.log_retention_in_days
+  iam_policy_document = {
+    body = data.aws_iam_policy_document.validate_letter_template_files.json
   }
-  timeout                        = 10
-  log_destination_arn = var.log_destination_arn
-  log_subscription_role_arn      = var.log_subscription_role_arn
+
+  lambda_env_vars         = local.backend_lambda_environment_variables
+  function_s3_bucket      = var.function_s3_bucket
+  function_code_base_path = local.lambdas_dir
+  function_code_dir       = "backend-api/dist"
+
+  send_to_firehose          = var.send_to_firehose
+  log_destination_arn       = var.log_destination_arn
+  log_subscription_role_arn = var.log_subscription_role_arn
+}
+
+resource "aws_lambda_event_source_mapping" "validate_letter_template_files" {
+  event_source_arn                   = module.sqs_validate_letter_template_files.sqs_queue_arn
+  function_name                      = module.lambda_validate_letter_template_files.function_name
+  batch_size                         = 1
+  maximum_batching_window_in_seconds = 0
+  function_response_types = [
+    "ReportBatchItemFailures"
+  ]
+
+  scaling_config {
+    maximum_concurrency = 5
+  }
 }
 
 data "aws_iam_policy_document" "validate_letter_template_files" {

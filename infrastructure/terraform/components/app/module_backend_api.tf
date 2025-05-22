@@ -13,6 +13,7 @@ module "backend_api" {
   log_retention_in_days   = var.log_retention_in_days
   kms_key_arn             = module.kms.key_arn
   parent_acct_environment = var.parent_acct_environment
+  function_s3_bucket      = local.acct.s3_buckets["artefacts"]["id"]
 
   cloudfront_distribution_arn = aws_cloudfront_distribution.main.arn
 
@@ -20,10 +21,11 @@ module "backend_api" {
 
   enable_backup = var.destination_vault_arn != null ? true : false
 
-  enable_letters                 = var.enable_letters
-  enable_proofing                = var.enable_proofing
-  letter_suppliers               = var.letter_suppliers
-  log_destination_arn = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
-  log_subscription_role_arn      = local.acct.log_subscription_role_arn
+  enable_letters            = var.enable_letters
+  enable_proofing           = var.enable_proofing
+  letter_suppliers          = var.letter_suppliers
+  log_destination_arn       = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_subscription_role_arn = local.acct.log_subscription_role_arn
 
+  send_to_firehose = true
 }
