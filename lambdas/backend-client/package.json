@@ -22,7 +22,6 @@
   "name": "nhs-notify-backend-client",
   "private": true,
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outdir=.build --format=cjs --platform=node",
     "generate-dependencies": "npx @hey-api/openapi-ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

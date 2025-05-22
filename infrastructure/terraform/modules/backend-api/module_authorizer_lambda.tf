@@ -1,31 +1,36 @@
-locals {
-  authorizer_entrypoint = "src/index.ts"
-}
-
 module "authorizer_lambda" {
-  source      = "../lambda-function"
-  description = "templates api authorizer"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
-  function_name    = "${local.csi}-authorizer"
-  filename         = module.authorizer_build.zips[local.authorizer_entrypoint].path
-  source_code_hash = module.authorizer_build.zips[local.authorizer_entrypoint].base64sha256
-  runtime          = "nodejs20.x"
-  handler          = "index.handler"
+  project        = var.project
+  environment    = var.environment
+  component      = var.component
+  aws_account_id = var.aws_account_id
+  region         = var.region
+
+  kms_key_arn = var.kms_key_arn
+
+  function_name = "authorizer"
+
+  function_module_name  = "index"
+  handler_function_name = "handler"
+  description           = "templates api authorizer"
+
+  memory  = 512
+  timeout = 20
+  runtime = "nodejs20.x"
 
   log_retention_in_days = var.log_retention_in_days
 
-  environment_variables = {
+  lambda_env_vars = {
     NODE_OPTIONS        = "--enable-source-maps",
     USER_POOL_ID        = var.cognito_config["USER_POOL_ID"],
     USER_POOL_CLIENT_ID = var.cognito_config["USER_POOL_CLIENT_ID"],
   }
-  log_destination_arn = var.log_destination_arn
-  log_subscription_role_arn      = var.log_subscription_role_arn
-}
+  function_s3_bucket      = var.function_s3_bucket
+  function_code_base_path = local.lambdas_dir
+  function_code_dir       = "authorizer/dist"
 
-module "authorizer_build" {
-  source = "../typescript-build-zip"
-
-  source_code_dir = "${local.lambdas_source_code_dir}/authorizer"
-  entrypoints     = [local.authorizer_entrypoint]
+  send_to_firehose          = var.send_to_firehose
+  log_destination_arn       = var.log_destination_arn
+  log_subscription_role_arn = var.log_subscription_role_arn
 }
