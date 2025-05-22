@@ -1,15 +1,21 @@
 import { IUseCase } from './use-case-orchestrator';
-import { EventBridgeHelper } from '../eventbridge/eventbridge-helper';
+import {
+  EventBridgeHelper,
+  GuardDutyScanResult,
+} from '../eventbridge/eventbridge-helper';
 import { S3Helper } from '../s3/s3-helper';
+import { Template } from '../types';
+
+type FileConfig = {
+  currentVersion?: string;
+  event: GuardDutyScanResult;
+  type: 'pdf' | 'csv';
+};
 
 type Config = {
   templateId: string;
   templateOwner: string;
-  files: Array<{
-    name?: string;
-    currentVersion?: string;
-    eventType: 'THREATS_FOUND' | 'NO_THREATS_FOUND' | 'UNSUPPORTED';
-  }>;
+  files: FileConfig[];
 };
 
 export class SimulateGuardDutyScan implements IUseCase<void> {
@@ -25,13 +31,13 @@ export class SimulateGuardDutyScan implements IUseCase<void> {
 
   async execute() {
     for (const file of this.#config.files) {
-      if (!file.name || !file.currentVersion) {
+      if (!file.currentVersion) {
         throw new Error('No file name or file currentVersion', {
           cause: file,
         });
       }
 
-      const s3FilePath = this.s3ObjectPath(file.name, file.currentVersion);
+      const s3FilePath = this.s3ObjectPath(file.type, file.currentVersion);
 
       const s3VersionId = await this.#s3Helper.getVersionId(
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
@@ -45,16 +51,46 @@ export class SimulateGuardDutyScan implements IUseCase<void> {
       this.#eventBridgeHelper.publishGuardDutyEvent(
         s3FilePath,
         s3VersionId,
-        file.eventType
+        file.event
       );
     }
   }
 
-  private s3ObjectPath(file: string, versionId: string) {
-    return `${this.parentFolderByFileType(file)}/${this.#config.templateOwner}/${this.#config.templateId}/${versionId}/${file}`;
+  private s3ObjectPath(fileType: 'pdf' | 'csv', versionId: string) {
+    const parentFolder = fileType === 'pdf' ? 'pdf-template' : 'test-data';
+
+    return `${parentFolder}/${this.#config.templateOwner}/${this.#config.templateId}/${versionId}.${fileType}`;
   }
 
-  private parentFolderByFileType(file: string) {
-    return file.endsWith('.pdf') ? 'pdf-template' : 'csv-test-data';
+  static async publish(
+    template: Template,
+    events: {
+      pdfTemplateEvent?: GuardDutyScanResult;
+      csvTestDataEvent?: GuardDutyScanResult;
+    }
+  ) {
+    const files: FileConfig[] = [];
+
+    if (events.pdfTemplateEvent) {
+      files.push({
+        currentVersion: template.files?.pdfTemplate?.currentVersion,
+        event: events.pdfTemplateEvent,
+        type: 'pdf',
+      });
+    }
+
+    if (events.csvTestDataEvent) {
+      files.push({
+        currentVersion: template.files?.pdfTemplate?.currentVersion,
+        event: events.csvTestDataEvent,
+        type: 'csv',
+      });
+    }
+
+    await new SimulateGuardDutyScan({
+      templateId: template.id,
+      templateOwner: template.owner,
+      files,
+    }).execute();
   }
 }

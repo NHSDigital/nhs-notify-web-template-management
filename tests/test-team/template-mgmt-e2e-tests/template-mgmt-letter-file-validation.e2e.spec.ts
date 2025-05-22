@@ -8,14 +8,10 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
-import {
-  SimulateGuardDutyScan,
-  UseCaseOrchestrator,
-} from '../helpers/use-cases';
+import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
 test.describe('letter file validation', () => {
   const templateStorageHelper = new TemplateStorageHelper();
-  const useCase = new UseCaseOrchestrator();
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -62,27 +58,15 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
+    let template = await templateStorageHelper.getTemplate(key);
 
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
+    await expect(async () => {
+      template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -168,25 +152,17 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
@@ -256,30 +232,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('FAILED');
@@ -353,27 +317,15 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
+    let template = await templateStorageHelper.getTemplate(key);
 
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'UNSUPPORTED',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'UNSUPPORTED',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
+    await expect(async () => {
+      template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('FAILED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -447,30 +399,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -519,30 +459,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -587,25 +515,17 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -649,30 +569,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -720,30 +628,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -794,30 +690,18 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
+    await SimulateGuardDutyScan.publish(template, {
+      pdfTemplateEvent: 'NO_THREATS_FOUND',
+      csvTestDataEvent: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
+      template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
       });
-
-      await useCase.send(
-        new SimulateGuardDutyScan({
-          templateId: template.id,
-          templateOwner: template.owner,
-          files: [
-            {
-              name: template.files?.pdfTemplate?.fileName,
-              currentVersion: template.files?.pdfTemplate?.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-            {
-              name: template.files!.testDataCsv!.fileName,
-              currentVersion: template.files!.testDataCsv!.currentVersion,
-              eventType: 'NO_THREATS_FOUND',
-            },
-          ],
-        })
-      );
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');

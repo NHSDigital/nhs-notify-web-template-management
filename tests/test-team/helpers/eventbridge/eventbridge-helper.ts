@@ -3,6 +3,11 @@ import {
   PutEventsCommand,
 } from '@aws-sdk/client-eventbridge';
 
+export type GuardDutyScanResult =
+  | 'NO_THREATS_FOUND'
+  | 'THREATS_FOUND'
+  | 'UNSUPPORTED';
+
 export class EventBridgeHelper {
   readonly #client: EventBridgeClient;
 
@@ -13,10 +18,7 @@ export class EventBridgeHelper {
   async publishGuardDutyEvent(
     s3ObjectKey: string,
     s3VersionId: string,
-    guardDutyScanResultStatus:
-      | 'NO_THREATS_FOUND'
-      | 'THREATS_FOUND'
-      | 'UNSUPPORTED'
+    guardDutyScanResultStatus: GuardDutyScanResult
   ) {
     const resp = await this.#client.send(
       new PutEventsCommand({
@@ -42,7 +44,7 @@ export class EventBridgeHelper {
 
   private createGuardDutyEvent(
     s3ObjectKey: string,
-    scanResultStatus: 'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED',
+    scanResultStatus: GuardDutyScanResult,
     versionId: string
   ) {
     const SOURCE = 'test.guardduty';
