@@ -9,9 +9,6 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
-// breaking sonarqube rules about duplication, but the code is temporary
-// remove this in https://nhsd-jira.digital.nhs.uk/browse/CCM-9752
-// BEGIN-NOSCAN
 export const SubmitLetterTemplateProofingDisabled: FC<{
   templateName: string;
   templateId: string;
@@ -168,4 +165,3 @@ export const SubmitLetterTemplate: FC<{
     </NHSNotifyMain>
   );
 };
-// END-NOSCAN
