@@ -10,26 +10,27 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
 // breaking sonarqube rules about duplication, but the code is temporary
+// remove this in https://nhsd-jira.digital.nhs.uk/browse/CCM-9752
 // BEGIN-NOSCAN
-export const SubmitLetterTemplareProofingDisabled: FC<{
+export const SubmitLetterTemplateProofingDisabled: FC<{
   templateName: string;
   templateId: string;
   action: (payload: FormData) => void;
 }> = ({ templateName, templateId, action }) => {
   const {
     proofingFlagDisabled: {
-      goBackButtonText,
-      buttonText,
-      submitChecklistItems,
-      pageHeading,
-      warningCalloutLabel,
-      warningCalloutChecklistIntroduction,
-      warningCalloutChecklistItems,
-      submitChecklistHeading,
-      submitChecklistIntroduction,
-      goBackPath,
       afterSubmissionHeading,
       afterSubmissionText,
+      buttonText,
+      goBackButtonText,
+      goBackPath,
+      pageHeading,
+      submitChecklistHeading,
+      submitChecklistIntroduction,
+      submitChecklistItems,
+      warningCalloutChecklistIntroduction,
+      warningCalloutChecklistItems,
+      warningCalloutLabel,
     },
   } = content.components.submitLetterTemplate;
 
@@ -86,7 +87,6 @@ export const SubmitLetterTemplareProofingDisabled: FC<{
     </NHSNotifyMain>
   );
 };
-// END-NOSCAN
 
 export const SubmitLetterTemplate: FC<{
   templateName: string;
@@ -110,7 +110,7 @@ export const SubmitLetterTemplate: FC<{
 
   if (process.env.NEXT_PUBLIC_ENABLE_PROOFING !== 'true') {
     return (
-      <SubmitLetterTemplareProofingDisabled
+      <SubmitLetterTemplateProofingDisabled
         templateName={templateName}
         templateId={templateId}
         action={action}
@@ -168,3 +168,4 @@ export const SubmitLetterTemplate: FC<{
     </NHSNotifyMain>
   );
 };
+// END-NOSCAN
