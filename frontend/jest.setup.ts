@@ -33,3 +33,4 @@ createMocks();
 
 // set feature flag
 process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'true';
+process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'true';

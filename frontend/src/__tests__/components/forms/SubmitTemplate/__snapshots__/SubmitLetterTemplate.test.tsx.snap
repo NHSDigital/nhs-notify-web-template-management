@@ -14,6 +14,121 @@ exports[`SubmitLetterTemplate component should render 1`] = `
         class="nhsuk-grid-column-two-thirds"
       >
         <h1>
+          Approve and submit 'template-name'
+        </h1>
+        <p
+          class="nhsuk-body-l"
+        >
+          When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.
+        </p>
+        <h2
+          class="nhsuk-heading-s"
+        >
+          Before you submit this template
+        </h2>
+        <p>
+          You should check that your template proof:
+        </p>
+        <ul>
+          <li>
+            appears exactly as you'd like a recipient to receive it
+          </li>
+          <li>
+            uses personalisation in the way you expect
+          </li>
+          <li>
+            displays QR codes correctly (if included)
+          </li>
+        </ul>
+        <div
+          class="nhsuk-warning-callout"
+        >
+          <h2
+            class="nhsuk-warning-callout__label"
+          >
+            <span
+              role="text"
+            >
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Important: 
+              </span>
+              Important
+            </span>
+          </h2>
+          <p>
+            If you need to change this template after you've submitted it:
+          </p>
+          <ul>
+            <li>
+              go back and upload a new letter template
+            </li>
+            <li>
+              tell your onboarding manager which template you want to use
+            </li>
+          </ul>
+        </div>
+        <form
+          action="/action"
+        >
+          <input
+            name="form-id"
+            readonly=""
+            type="hidden"
+            value="submit-template-form"
+          />
+          <input
+            name="csrf_token"
+            readonly=""
+            type="hidden"
+            value="no_token"
+          />
+          <input
+            name="templateId"
+            readonly=""
+            type="hidden"
+            value="template-id"
+          />
+          <a
+            aria-disabled="false"
+            class="nhsuk-button nhsuk-button--secondary nhsuk-u-margin-right-3"
+            draggable="false"
+            href="/templates/preview-letter-template/template-id"
+            id="go-back-button"
+            role="button"
+          >
+            Go back
+          </a>
+          <button
+            aria-disabled="false"
+            class="nhsuk-button"
+            id="submit-template-button"
+            type="submit"
+          >
+            Approve and submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`SubmitLetterTemplate component should render with proofing flag disabled 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1>
           Submit 'template-name'
         </h1>
         <h2

@@ -182,26 +182,30 @@ test.describe('Submit template Page', () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
 
-  for (const { channelName, channelIdentifier, PageModel } of [
+  for (const { channelName, channelIdentifier, PageModel, expectedHeading } of [
     {
       channelName: 'Email',
       channelIdentifier: 'email',
       PageModel: TemplateMgmtSubmitEmailPage,
+      expectedHeading: "Submit 'test-template-name'",
     },
     {
       channelName: 'SMS',
       channelIdentifier: 'text-message',
       PageModel: TemplateMgmtSubmitSmsPage,
+      expectedHeading: "Submit 'test-template-name'",
     },
     {
       channelName: 'NHS App',
       channelIdentifier: 'nhs-app',
       PageModel: TemplateMgmtSubmitNhsAppPage,
+      expectedHeading: "Submit 'test-template-name'",
     },
     {
       channelName: 'Letter',
       channelIdentifier: 'letter',
       PageModel: TemplateMgmtSubmitLetterPage,
+      expectedHeading: "Approve and submit 'test-template-name'",
     },
   ] as const) {
     // disabling this rule because it doesn't like referencing the templates variable in a loop
@@ -218,9 +222,7 @@ test.describe('Submit template Page', () => {
         `${baseURL}/templates/submit-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`
       );
 
-      await expect(submitTemplatePage.pageHeader).toHaveText(
-        "Submit 'test-template-name'"
-      );
+      await expect(submitTemplatePage.pageHeader).toHaveText(expectedHeading);
     });
 
     // eslint-disable-next-line no-loop-func

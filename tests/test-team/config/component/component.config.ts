@@ -7,6 +7,7 @@ const buildCommand = [
   'NEXT_PUBLIC_TIME_TILL_LOGOUT_SECONDS=25',
   'NEXT_PUBLIC_PROMPT_SECONDS_BEFORE_LOGOUT=5',
   'NEXT_PUBLIC_ENABLE_LETTERS=true',
+  'NEXT_PUBLIC_ENABLE_PROOFING=true',
   'npm run build && npm run start',
 ].join(' ');
 
