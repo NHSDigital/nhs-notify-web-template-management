@@ -1,5 +1,5 @@
 import type { Config } from 'jest';
-import { baseJestConfig } from 'nhs-notify-web-template-management-utils'; // eslint-disable-line no-restricted-exports
+import { baseJestConfig } from 'nhs-notify-web-template-management-utils';
 
 const config: Config = {
   ...baseJestConfig,

@@ -1,10 +1,10 @@
 resource "aws_cloudfront_distribution" "main" {
   provider = aws.us-east-1
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "NHS Notify templates files CDN (${local.csi})"
-  default_root_object = "index.html"
+  enabled         = true
+  is_ipv6_enabled = true
+  comment         = "NHS Notify templates files CDN (${local.csi})"
+
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
   price_class = "PriceClass_100"
 

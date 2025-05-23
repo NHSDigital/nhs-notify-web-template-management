@@ -22,16 +22,15 @@ module "download_authorizer_lambda" {
     body = data.aws_iam_policy_document.authorizer.json
   }
 
-  function_s3_bucket       = local.acct.s3_buckets["artefacts_us_east_1"]["id"]
-  function_code_base_path  = local.lambdas_source_code_dir
-  function_code_dir        = "download-authorizer/dist"
-  handler_function_name    = "handler"
-  runtime                  = "nodejs20.x"
-  memory                   = 128
-  timeout                  = 3
-  lambda_at_edge           = true
-  enable_lambda_insights   = false
-  force_lambda_code_deploy = true
+  function_s3_bucket      = local.acct.s3_buckets["artefacts_us_east_1"]["id"]
+  function_code_base_path = local.lambdas_source_code_dir
+  function_code_dir       = "download-authorizer/dist"
+  handler_function_name   = "handler"
+  runtime                 = "nodejs20.x"
+  memory                  = 128
+  timeout                 = 3
+  lambda_at_edge          = true
+  enable_lambda_insights  = false
 }
 
 data "aws_iam_policy_document" "authorizer" {
