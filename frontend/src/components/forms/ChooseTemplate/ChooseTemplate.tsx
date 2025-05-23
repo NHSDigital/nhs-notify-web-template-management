@@ -44,7 +44,10 @@ export const ChooseTemplate = ({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/message-templates`}>
+      <BackLink
+        href={`${getBasePath()}/message-templates`}
+        data-testid='back-to-templates-link'
+      >
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>

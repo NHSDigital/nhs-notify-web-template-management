@@ -102,6 +102,7 @@ export function MessageTemplates({
                           href={`/copy-template/${template.id}`}
                           id={`copy-template-link-${index}`}
                           aria-label={`${messageTemplatesContent.tableHeadings.action.copy} ${template.name}`}
+                          data-testid='copy-link'
                         >
                           {messageTemplatesContent.tableHeadings.action.copy}
                         </Link>
@@ -112,6 +113,7 @@ export function MessageTemplates({
                         <Link
                           href={`/delete-template/${template.id}`}
                           aria-label={`${messageTemplatesContent.tableHeadings.action.delete} ${template.name}`}
+                          data-testid='delete-link'
                         >
                           {messageTemplatesContent.tableHeadings.action.delete}
                         </Link>

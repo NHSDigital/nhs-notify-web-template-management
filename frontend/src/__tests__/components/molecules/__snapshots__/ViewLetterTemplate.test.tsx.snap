@@ -7,6 +7,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
     >
       <svg
@@ -135,6 +136,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
         </p>
         <p>
           <a
+            data-testid="back-to-templates-link-bottom"
             href="/message-templates"
           >
             Back to all templates

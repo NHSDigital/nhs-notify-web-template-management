@@ -40,6 +40,7 @@ exports[`renders component correctly 1`] = `
           <button
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--secondary"
+            data-testid="back-to-templates-link"
             type="submit"
           >
             No, go back
@@ -64,6 +65,7 @@ exports[`renders component correctly 1`] = `
           <button
             aria-disabled="false"
             class="nhsuk-button nhsuk-button--warning"
+            data-testid="delete-template-button"
             type="submit"
           >
             Yes, delete template

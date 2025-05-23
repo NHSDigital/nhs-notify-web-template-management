@@ -32,6 +32,7 @@ export default async function MessageTemplatesPage() {
           </h1>
 
           <NHSNotifyButton
+            data-testid='create-template-button'
             id='create-template-button'
             href={messageTemplatesContent.createTemplateButton.url}
           >
