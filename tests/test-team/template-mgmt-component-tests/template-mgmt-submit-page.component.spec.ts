@@ -219,7 +219,7 @@ test.describe('Submit template Page', () => {
       );
 
       await expect(submitTemplatePage.pageHeader).toHaveText(
-        "Submit 'test-template-name'"
+        "Approve and submit 'test-template-name'"
       );
     });
 
