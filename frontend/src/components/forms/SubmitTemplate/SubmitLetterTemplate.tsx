@@ -9,6 +9,8 @@ import { submitTemplate } from '@forms/SubmitTemplate/server-action';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 
+// breaking sonarqube rules about duplication, but the code is temporary
+// BEGIN-NOSCAN
 export const SubmitLetterTemplareProofingDisabled: FC<{
   templateName: string;
   templateId: string;
@@ -84,6 +86,7 @@ export const SubmitLetterTemplareProofingDisabled: FC<{
     </NHSNotifyMain>
   );
 };
+// END-NOSCAN
 
 export const SubmitLetterTemplate: FC<{
   templateName: string;
@@ -122,7 +125,7 @@ export const SubmitLetterTemplate: FC<{
           <h1>
             {pageHeading} {`'${templateName}'`}
           </h1>
-          <p>{intro}</p>
+          <p className='nhsuk-body-l'>{intro}</p>
           <h2 className='nhsuk-heading-s'>{submitChecklistHeading}</h2>
           <p>{submitChecklistIntroduction}</p>
           <ul>

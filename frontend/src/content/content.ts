@@ -374,12 +374,12 @@ const submitLetterTemplate = {
   },
   pageHeading: 'Approve and submit',
   intro:
-    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send',
+    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
   submitChecklistHeading: 'Before you submit this template',
   submitChecklistIntroduction: 'You should check that your template proof:',
   submitChecklistItems: [
-    `appears exactly as you'd like a recipient to receieve it`,
-    'uses personalisation in the way yuo expect',
+    `appears exactly as you'd like a recipient to receive it`,
+    'uses personalisation in the way you expect',
     'displays QR codes correctly (if included)',
   ],
   warningCalloutLabel: 'Important',
@@ -390,7 +390,7 @@ const submitLetterTemplate = {
   ],
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
-  buttonText: submitTemplate.buttonText,
+  buttonText: 'Approve and submit',
 };
 
 const copyTemplate = {

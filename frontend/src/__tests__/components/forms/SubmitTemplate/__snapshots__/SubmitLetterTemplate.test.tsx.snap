@@ -16,8 +16,10 @@ exports[`SubmitLetterTemplate component should render 1`] = `
         <h1>
           Approve and submit 'template-name'
         </h1>
-        <p>
-          When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send
+        <p
+          class="nhsuk-body-l"
+        >
+          When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.
         </p>
         <h2
           class="nhsuk-heading-s"
@@ -29,10 +31,10 @@ exports[`SubmitLetterTemplate component should render 1`] = `
         </p>
         <ul>
           <li>
-            appears exactly as you'd like a recipient to receieve it
+            appears exactly as you'd like a recipient to receive it
           </li>
           <li>
-            uses personalisation in the way yuo expect
+            uses personalisation in the way you expect
           </li>
           <li>
             displays QR codes correctly (if included)
@@ -104,7 +106,7 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             id="submit-template-button"
             type="submit"
           >
-            Submit template
+            Approve and submit
           </button>
         </form>
       </div>
