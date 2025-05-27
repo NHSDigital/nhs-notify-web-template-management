@@ -16,7 +16,6 @@ No requirements.
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
 | <a name="input_dynamodb_kms_key_arn"></a> [dynamodb\_kms\_key\_arn](#input\_dynamodb\_kms\_key\_arn) | KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created. | `string` | `""` | no |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
-| <a name="input_enable_letters"></a> [enable\_letters](#input\_enable\_letters) | Enable letters feature flag | `bool` | n/a | yes |
 | <a name="input_enable_proofing"></a> [enable\_proofing](#input\_enable\_proofing) | Enable proofing feature flag | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_function_s3_bucket"></a> [function\_s3\_bucket](#input\_function\_s3\_bucket) | Name of S3 bucket to upload lambda artefacts to | `string` | n/a | yes |
