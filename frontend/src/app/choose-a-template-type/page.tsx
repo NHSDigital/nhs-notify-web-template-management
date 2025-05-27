@@ -14,11 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const ChooseATemplateTypePage = async () => {
-  const templateTypes = TEMPLATE_TYPE_LIST.filter(
-    (t) => process.env.NEXT_PUBLIC_ENABLE_LETTERS === 'true' || t !== 'LETTER'
-  );
-
-  return <ChooseTemplate templateTypes={templateTypes} />;
+  return <ChooseTemplate templateTypes={TEMPLATE_TYPE_LIST} />;
 };
 
 export default ChooseATemplateTypePage;

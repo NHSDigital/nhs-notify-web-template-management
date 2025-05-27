@@ -40,7 +40,6 @@ locals {
 
   backend_lambda_environment_variables = {
     DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier.name
-    ENABLE_LETTERS_BACKEND           = var.enable_letters
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"
     REQUEST_PROOF_QUEUE_URL          = module.sqs_sftp_upload.sqs_queue_url
