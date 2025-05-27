@@ -50,7 +50,11 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
 
   return (
     <>
-      <BackLink id='back-link' href={`${getBasePath()}/message-templates`}>
+      <BackLink
+        id='back-link'
+        href={`${getBasePath()}/message-templates`}
+        data-testid='back-to-templates-link'
+      >
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
