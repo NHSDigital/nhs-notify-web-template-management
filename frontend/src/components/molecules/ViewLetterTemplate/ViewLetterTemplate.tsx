@@ -19,7 +19,10 @@ export function ViewLetterTemplate({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/message-templates`}>
+      <BackLink
+        href={`${getBasePath()}/message-templates`}
+        data-testid='back-to-templates-link'
+      >
         {backLinkText}
       </BackLink>
       <NHSNotifyMain>
@@ -28,7 +31,12 @@ export function ViewLetterTemplate({
             <PreviewTemplateDetails.Letter template={initialState} />
             <p>{createNewTemplate}</p>
             <p>
-              <Link href='/message-templates'>{backLinkText}</Link>
+              <Link
+                href='/message-templates'
+                data-testid='back-to-templates-link-bottom'
+              >
+                {backLinkText}
+              </Link>
             </p>
           </div>
         </div>
