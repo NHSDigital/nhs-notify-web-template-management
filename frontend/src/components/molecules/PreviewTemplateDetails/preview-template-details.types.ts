@@ -7,17 +7,13 @@ type PreviewTemplateHeadingsType =
   | 'Subject'
   | 'Message';
 
+export type ContentPreviewField = {
+  heading: PreviewTemplateHeadingsType;
+  id: string;
+  value: string;
+};
+
 export type PreviewTemplateDetailsProps = {
   template: TemplateDto;
-  templateTypeText: string;
-  additionalMetaFields?: {
-    title: string;
-    id: string;
-    content: React.ReactElement;
-  }[];
-  contentPreview?: {
-    heading: PreviewTemplateHeadingsType;
-    id: string;
-    value: string;
-  }[];
+  children: React.ReactNode;
 };

@@ -11,18 +11,80 @@ import {
   templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplateDetails.module.scss';
-import { PreviewTemplateDetailsProps } from './preview-template-details.types';
+import {
+  ContentPreviewField,
+  PreviewTemplateDetailsProps,
+} from './preview-template-details.types';
 import { JSX } from 'react';
 import { Filename } from '@atoms/Filename/Filename';
 import content from '@content/content';
+import { TemplateDto } from 'nhs-notify-backend-client';
+
+function ContentPreview({
+  fields,
+}: Readonly<{ fields: ContentPreviewField[] }>): JSX.Element {
+  return (
+    <SummaryList noBorder={false} className={styles.preview}>
+      {fields.map(({ heading, value, id }, idx) => (
+        <SummaryList.Row key={id}>
+          <SummaryList.Key>
+            <div
+              id={`preview-heading-${id}`}
+              data-testid={`preview__heading-${idx}`}
+            >
+              {heading}
+            </div>
+          </SummaryList.Key>
+          <SummaryList.Value>
+            <div
+              id={`preview-content-${id}`}
+              data-testid={`preview__content-${idx}`}
+              className={styles.preview__content}
+              dangerouslySetInnerHTML={{ __html: value }}
+            />
+          </SummaryList.Value>
+        </SummaryList.Row>
+      ))}
+    </SummaryList>
+  );
+}
+
+function StandardDetailRows({
+  template,
+  templateTypeText,
+}: Readonly<{
+  template: TemplateDto;
+  templateTypeText: string;
+}>): JSX.Element {
+  const { rowHeadings } = content.components.previewTemplateDetails;
+
+  return (
+    <>
+      <SummaryList.Row>
+        <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
+        <SummaryList.Value>{template.id}</SummaryList.Value>
+      </SummaryList.Row>
+      <SummaryList.Row>
+        <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
+        <SummaryList.Value>{templateTypeText}</SummaryList.Value>
+      </SummaryList.Row>
+      <SummaryList.Row>
+        <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
+        <SummaryList.Value>
+          <Tag color={templateStatusToColourMappings(template.templateStatus)}>
+            {templateStatusToDisplayMappings(template.templateStatus)}
+          </Tag>
+        </SummaryList.Value>
+      </SummaryList.Row>
+    </>
+  );
+}
 
 export function PreviewTemplateDetails({
   template,
-  templateTypeText,
-  additionalMetaFields,
-  contentPreview,
+  children,
 }: Readonly<PreviewTemplateDetailsProps>): JSX.Element {
-  const { rowHeadings } = content.components.previewTemplateDetails;
+  console.log(template);
 
   return (
     <>
@@ -35,63 +97,7 @@ export function PreviewTemplateDetails({
       <Container
         className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
       >
-        <SummaryList
-          noBorder={false}
-          className={concatClassNames(
-            'nhsuk-u-margin-bottom-4',
-            styles.preview
-          )}
-        >
-          <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.templateId}</SummaryList.Key>
-            <SummaryList.Value>{template.id}</SummaryList.Value>
-          </SummaryList.Row>
-          <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.templateType}</SummaryList.Key>
-            <SummaryList.Value>{templateTypeText}</SummaryList.Value>
-          </SummaryList.Row>
-          <SummaryList.Row>
-            <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
-            <SummaryList.Value>
-              <Tag
-                color={templateStatusToColourMappings(template.templateStatus)}
-              >
-                {templateStatusToDisplayMappings(template.templateStatus)}
-              </Tag>
-            </SummaryList.Value>
-          </SummaryList.Row>
-          {additionalMetaFields?.map((row) => (
-            <SummaryList.Row key={row.id}>
-              <SummaryList.Key>{row.title}</SummaryList.Key>
-              <SummaryList.Value>{row.content}</SummaryList.Value>
-            </SummaryList.Row>
-          ))}
-        </SummaryList>
-
-        {contentPreview ? (
-          <SummaryList noBorder={false} className={styles.preview}>
-            {contentPreview.map(({ heading, value, id }, idx) => (
-              <SummaryList.Row key={id}>
-                <SummaryList.Key>
-                  <div
-                    id={`preview-heading-${id}`}
-                    data-testid={`preview__heading-${idx}`}
-                  >
-                    {heading}
-                  </div>
-                </SummaryList.Key>
-                <SummaryList.Value>
-                  <div
-                    id={`preview-content-${id}`}
-                    data-testid={`preview__content-${idx}`}
-                    className={styles.preview__content}
-                    dangerouslySetInnerHTML={{ __html: value }}
-                  />
-                </SummaryList.Value>
-              </SummaryList.Row>
-            ))}
-          </SummaryList>
-        ) : null}
+        {children}
       </Container>
     </>
   );
@@ -106,15 +112,23 @@ PreviewTemplateDetails.Email = ({
   subject: string;
   message: string;
 }) => (
-  <PreviewTemplateDetails
-    template={template}
-    templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    additionalMetaFields={[]}
-    contentPreview={[
-      { heading: 'Subject', id: 'subject', value: subject },
-      { heading: 'Message', id: 'message', value: message },
-    ]}
-  />
+  <PreviewTemplateDetails template={template}>
+    <SummaryList
+      noBorder={false}
+      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+    >
+      <StandardDetailRows
+        template={template}
+        templateTypeText={templateTypeDisplayMappings(template.templateType)}
+      />
+    </SummaryList>
+    <ContentPreview
+      fields={[
+        { heading: 'Subject', id: 'subject', value: subject },
+        { heading: 'Message', id: 'message', value: message },
+      ]}
+    />
+  </PreviewTemplateDetails>
 );
 
 PreviewTemplateDetails.NHSApp = ({
@@ -124,11 +138,20 @@ PreviewTemplateDetails.NHSApp = ({
   template: NHSAppTemplate;
   message: string;
 }) => (
-  <PreviewTemplateDetails
-    template={template}
-    templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    contentPreview={[{ heading: 'Message', id: 'message', value: message }]}
-  />
+  <PreviewTemplateDetails template={template}>
+    <SummaryList
+      noBorder={false}
+      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+    >
+      <StandardDetailRows
+        template={template}
+        templateTypeText={templateTypeDisplayMappings(template.templateType)}
+      />
+    </SummaryList>
+    <ContentPreview
+      fields={[{ heading: 'Message', id: 'message', value: message }]}
+    />
+  </PreviewTemplateDetails>
 );
 
 PreviewTemplateDetails.Sms = ({
@@ -138,11 +161,20 @@ PreviewTemplateDetails.Sms = ({
   template: SMSTemplate;
   message: string;
 }) => (
-  <PreviewTemplateDetails
-    template={template}
-    templateTypeText={templateTypeDisplayMappings(template.templateType)}
-    contentPreview={[{ heading: 'Message', id: 'message', value: message }]}
-  />
+  <PreviewTemplateDetails template={template}>
+    <SummaryList
+      noBorder={false}
+      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+    >
+      <StandardDetailRows
+        template={template}
+        templateTypeText={templateTypeDisplayMappings(template.templateType)}
+      />
+    </SummaryList>
+    <ContentPreview
+      fields={[{ heading: 'Message', id: 'message', value: message }]}
+    />
+  </PreviewTemplateDetails>
 );
 
 PreviewTemplateDetails.Letter = ({
@@ -150,29 +182,49 @@ PreviewTemplateDetails.Letter = ({
 }: {
   template: LetterTemplate;
 }) => (
-  <PreviewTemplateDetails
-    template={template}
-    templateTypeText={letterTypeDisplayMappings(
-      template.letterType,
-      template.language
+  <PreviewTemplateDetails template={template}>
+    <SummaryList
+      noBorder={false}
+      className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+    >
+      <StandardDetailRows
+        template={template}
+        templateTypeText={letterTypeDisplayMappings(
+          template.letterType,
+          template.language
+        )}
+      />
+      <SummaryList.Row>
+        <SummaryList.Key>Template file</SummaryList.Key>
+        <SummaryList.Value>
+          <Filename filename={template.files.pdfTemplate.fileName} />
+        </SummaryList.Value>
+      </SummaryList.Row>
+      {template.files.testDataCsv?.fileName && (
+        <SummaryList.Row>
+          <SummaryList.Key>Test personalisation file</SummaryList.Key>
+          <SummaryList.Value>
+            <Filename filename={template.files.testDataCsv.fileName} />
+          </SummaryList.Value>
+        </SummaryList.Row>
+      )}
+    </SummaryList>
+
+    {(template.templateStatus === 'PROOF_AVAILABLE' ||
+      template.templateStatus === 'SUBMITTED') && (
+      <SummaryList
+        noBorder={false}
+        className={concatClassNames('nhsuk-u-margin-bottom-4', styles.preview)}
+      >
+        <SummaryList.Row>
+          <SummaryList.Key>Template proof files</SummaryList.Key>
+          <SummaryList.Value>
+            {Object.keys(template.files.proofs ?? {}).map((proof) => (
+              <Filename key={proof} filename={`${proof}.pdf`} />
+            ))}
+          </SummaryList.Value>
+        </SummaryList.Row>
+      </SummaryList>
     )}
-    additionalMetaFields={[
-      {
-        title: 'Template file',
-        id: 'templatefile',
-        content: <Filename filename={template.files.pdfTemplate.fileName} />,
-      },
-      ...(template.files.testDataCsv
-        ? [
-            {
-              title: 'Test personalisation file',
-              id: 'testdatafile',
-              content: (
-                <Filename filename={template.files.testDataCsv.fileName} />
-              ),
-            },
-          ]
-        : []),
-    ]}
-  />
+  </PreviewTemplateDetails>
 );

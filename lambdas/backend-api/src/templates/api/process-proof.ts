@@ -61,8 +61,6 @@ export const createHandler =
       });
     }
 
-    // we will copy to the download bucket here as well
-
     await templateRepository.setLetterFileVirusScanStatusForProof(
       owner,
       templateId,
