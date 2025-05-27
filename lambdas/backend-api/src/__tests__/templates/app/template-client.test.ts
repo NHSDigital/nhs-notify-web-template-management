@@ -21,8 +21,6 @@ const versionId = '28F-D4-72-A93-A6';
 const defaultLetterSupplier = 'SUPPLIER';
 
 const setup = () => {
-  const enableLetters = true;
-
   const templateRepository = mock<TemplateRepository>();
 
   const letterUploadRepository = mock<LetterUploadRepository>();
@@ -32,7 +30,6 @@ const setup = () => {
   const { logger, logMessages } = createMockLogger();
 
   const templateClient = new TemplateClient(
-    enableLetters,
     templateRepository,
     letterUploadRepository,
     queueMock,
@@ -847,42 +844,6 @@ describe('templateClient', () => {
         },
       });
     });
-
-    test('should return a failure result when letters feature flag is not enabled', async () => {
-      const { mocks } = setup();
-
-      const client = new TemplateClient(
-        false,
-        mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.queueMock,
-        defaultLetterSupplier,
-        mocks.logger
-      );
-
-      const data: CreateUpdateTemplate = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
-      };
-
-      const pdf = new File(['pdf'], 'template.pdf', {
-        type: 'application/pdf',
-      });
-
-      const result = await client.createLetterTemplate(data, owner, pdf);
-
-      expect(result).toEqual({
-        error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-        }),
-      });
-
-      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
-      expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
-    });
   });
 
   describe('updateTemplate', () => {
@@ -1128,48 +1089,6 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when fetching a letter, if letter flag is not enabled', async () => {
-      const { mocks } = setup();
-
-      const noLettersClient = new TemplateClient(
-        false,
-        mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.queueMock,
-        defaultLetterSupplier,
-        mocks.logger
-      );
-
-      mocks.templateRepository.get.mockResolvedValueOnce({
-        data: {
-          id: templateId,
-          templateType: 'LETTER',
-          name: 'name',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          templateStatus: 'NOT_YET_SUBMITTED',
-          letterType: 'q4',
-          language: 'fr',
-          owner,
-          version: 1,
-        },
-      });
-
-      const result = await noLettersClient.getTemplate(templateId, owner);
-
-      expect(mocks.templateRepository.get).toHaveBeenCalledWith(
-        templateId,
-        owner
-      );
-
-      expect(result).toEqual({
-        error: {
-          code: 404,
-          message: 'Template not found',
-        },
-      });
-    });
-
     test('should return template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1221,54 +1140,6 @@ describe('templateClient', () => {
           code: 500,
           message: 'Internal server error',
         },
-      });
-    });
-
-    test('filters out letters if the feature flag is not enabled', async () => {
-      const { mocks } = setup();
-
-      const noLettersClient = new TemplateClient(
-        false,
-        mocks.templateRepository,
-        mocks.letterUploadRepository,
-        mocks.queueMock,
-        defaultLetterSupplier,
-        mocks.logger
-      );
-
-      const template: TemplateDto = {
-        id: templateId,
-        templateType: 'LETTER',
-        name: 'name',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        templateStatus: 'NOT_YET_SUBMITTED',
-        letterType: 'q4',
-        language: 'fr',
-        files: {
-          pdfTemplate: {
-            fileName: 'file.pdf',
-            currentVersion: 'uuid',
-            virusScanStatus: 'PENDING',
-          },
-          testDataCsv: {
-            fileName: 'file.csv',
-            currentVersion: 'uuid',
-            virusScanStatus: 'PENDING',
-          },
-        },
-      };
-
-      mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [{ ...template, owner, version: 1 }],
-      });
-
-      const result = await noLettersClient.listTemplates(owner);
-
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
-
-      expect(result).toEqual({
-        data: [],
       });
     });
 
