@@ -65,7 +65,6 @@ export const createHandler =
       owner,
       templateId,
       fileName,
-      internalKey,
       virusScanResult
     );
   };

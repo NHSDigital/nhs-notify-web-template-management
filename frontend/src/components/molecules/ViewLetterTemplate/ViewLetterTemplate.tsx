@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import { PreviewTemplateDetailsLetter } from '@molecules/PreviewTemplateDetails';
 import {
   LetterTemplate,
   PageComponentProps,
@@ -28,7 +28,7 @@ export function ViewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetails.Letter template={initialState} />
+            <PreviewTemplateDetailsLetter template={initialState} />
             <p>{createNewTemplate}</p>
             <p>
               <Link

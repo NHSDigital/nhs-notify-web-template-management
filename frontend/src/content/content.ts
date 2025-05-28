@@ -302,9 +302,12 @@ const previewSMSTemplate = {
 
 const previewTemplateDetails = {
   rowHeadings: {
+    templateFile: 'Template file',
     templateId: 'Template ID',
-    templateType: 'Type',
+    templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
+    templateType: 'Type',
+    testPersonalisationFile: 'Test personalisation file',
   },
 };
 

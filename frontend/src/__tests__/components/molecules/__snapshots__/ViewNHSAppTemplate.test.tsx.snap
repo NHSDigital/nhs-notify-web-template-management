@@ -95,7 +95,7 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
             </div>
           </dl>
           <dl
-            class="nhsuk-summary-list preview"
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
               class="nhsuk-summary-list__row"
