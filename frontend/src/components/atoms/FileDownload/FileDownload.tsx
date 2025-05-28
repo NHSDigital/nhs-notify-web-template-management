@@ -1,14 +1,21 @@
 import { JSX } from 'react';
-import styles from './Filename.module.scss';
+import styles from './FileDownload.module.scss';
+import Link from 'next/link';
 
-export function Filename({
+export function FileDownload({
   filename,
+  href,
 }: {
   filename: string;
-  href?: string;
+  href: string;
 }): JSX.Element {
   return (
-    <div className={styles.container}>
+    <Link
+      href={href}
+      className={styles.container}
+      target='_blank'
+      rel='noopener noreferrer'
+    >
       <svg
         className={styles.icon}
         width='20'
@@ -23,6 +30,6 @@ export function Filename({
         />
       </svg>
       <p className={styles.text}>{filename}</p>
-    </div>
+    </Link>
   );
 }

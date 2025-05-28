@@ -11,19 +11,31 @@ import {
   StandardDetailRows,
 } from './common';
 import styles from './PreviewTemplateDetails.module.scss';
+import { useUserSub } from '@app/UserContext';
+import { getBasePath } from '@utils/get-base-path';
+import { FileDownload } from '@atoms/FileDownload/FileDownload';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
+
+function downloadHref(template: LetterTemplate, sub: string, filename: string) {
+  return `/files/${sub}/proofs/${template.id}/${filename}`;
+}
 
 export function PreviewTemplateDetailsLetter({
   template,
 }: {
   template: LetterTemplate;
 }) {
+  const us = useUserSub();
+
+  console.log('sub', us);
+
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
     .map(({ fileName }) => fileName);
 
   const showProofs =
+    us &&
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
       template.templateStatus === 'SUBMITTED');
@@ -62,7 +74,11 @@ export function PreviewTemplateDetailsLetter({
             <SummaryList.Key>{rowHeadings.templateProofFiles}</SummaryList.Key>
             <SummaryList.Value className={styles.proofsList}>
               {proofFilenames.map((file) => (
-                <Filename key={file} filename={file} />
+                <FileDownload
+                  key={file}
+                  filename={file}
+                  href={downloadHref(template, us, file)}
+                />
               ))}
             </SummaryList.Value>
           </SummaryList.Row>

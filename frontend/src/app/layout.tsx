@@ -4,6 +4,7 @@ import '@styles/app.scss';
 import { ClientLayout } from '@layouts/client/client-layout';
 import content from '@content/content';
 import { getBasePath } from '@utils/get-base-path';
+import { getSubServer } from '@utils/amplify-utils';
 
 // https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-object
 export const metadata: Metadata = {
@@ -41,11 +42,13 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userSub = await getSubServer();
+
   return (
     <html lang='en'>
       <head>
@@ -54,7 +57,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <script src={`${getBasePath()}/lib/nhs-frontend-js-check.js`} defer />
         <CookiesProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <ClientLayout userSub={userSub}>{children}</ClientLayout>
         </CookiesProvider>
       </body>
     </html>
