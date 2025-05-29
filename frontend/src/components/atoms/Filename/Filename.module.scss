@@ -1,5 +1,6 @@
 .icon {
   margin-right: 6px;
+  margin-top: 5px;
   height: 19px;
   width: 24px;
   flex-shrink: 0;
@@ -7,7 +8,8 @@
 
 .container {
   display: flex;
-  align-items: center;
+  // align-items: center;
+    align-items: flex-start;
 }
 
 .text {
