@@ -2,12 +2,12 @@
  * @jest-environment node
  */
 import { NextRequest } from 'next/server';
-import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getSessionServer } from '@utils/amplify-utils';
 import { middleware } from '../middleware';
 
 jest.mock('@utils/amplify-utils');
 
-const getTokenMock = jest.mocked(getAccessTokenServer);
+const getTokenMock = jest.mocked(getSessionServer);
 
 function getCsp(response: Response) {
   const csp = response.headers.get('Content-Security-Policy');
@@ -46,7 +46,7 @@ describe('middleware function', () => {
   });
 
   it('if request path is protected, and access token is obtained, respond with CSP', async () => {
-    getTokenMock.mockResolvedValueOnce('token');
+    getTokenMock.mockResolvedValueOnce({ accessToken: 'token', sub: 'sub' });
 
     const url = new URL('https://url.com/message-templates');
     const request = new NextRequest(url);
