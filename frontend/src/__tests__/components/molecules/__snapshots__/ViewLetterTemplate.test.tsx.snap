@@ -150,6 +150,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                   <li>
                     <a
                       class="container"
+                      data-testid="proof-link"
                       href="/files/undefined/proofs/template-id/supplier-proof.pdf"
                       rel="noopener noreferrer"
                       target="_blank"

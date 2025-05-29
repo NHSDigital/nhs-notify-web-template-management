@@ -33,6 +33,11 @@ describe('middleware function', () => {
     const request = new NextRequest(url);
     request.cookies.set('csrf_token', 'some-csrf-value');
 
+    getTokenMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      sub: undefined,
+    });
+
     const response = await middleware(request);
 
     expect(getTokenMock).toHaveBeenCalledWith({ forceRefresh: true });
