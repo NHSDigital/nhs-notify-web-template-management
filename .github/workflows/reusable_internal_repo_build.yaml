@@ -90,7 +90,7 @@ jobs:
             run_id=$(echo "$in_progress" | jq -r \
               --arg env "${{ inputs.targetEnvironment }}" \
               --arg component "${{ inputs.targetComponent }}" \
-              --arg group "${{ inputs.targetAccountGroup }} \
+              --arg group "${{ inputs.targetAccountGroup }}" \
               --arg releaseVersion "${{ inputs.releaseVersion }}" \
               '.workflow_runs[]
                 | select(.name | contains($env) and contains($component) and contains($group) and contains($releaseVersion))
