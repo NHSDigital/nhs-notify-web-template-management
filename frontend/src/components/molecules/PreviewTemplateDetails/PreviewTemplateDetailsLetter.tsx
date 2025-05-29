@@ -72,6 +72,7 @@ export function PreviewTemplateDetailsLetter({
                       className={styles.container}
                       target='_blank'
                       rel='noopener noreferrer'
+                      data-testid='proof-link'
                     >
                       <Filename filename={file} />
                     </Link>
