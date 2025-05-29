@@ -11,14 +11,12 @@ import {
   StandardDetailRows,
 } from './common';
 import styles from './PreviewTemplateDetails.module.scss';
-import { useUserSub } from '@app/UserContext';
-import { getBasePath } from '@utils/get-base-path';
 import { FileDownload } from '@atoms/FileDownload/FileDownload';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
-function downloadHref(template: LetterTemplate, sub: string, filename: string) {
-  return `/files/${sub}/proofs/${template.id}/${filename}`;
+function downloadHref(template: LetterTemplate, filename: string) {
+  return `/files/${template.owner}/proofs/${template.id}/${filename}`;
 }
 
 export function PreviewTemplateDetailsLetter({
@@ -26,16 +24,11 @@ export function PreviewTemplateDetailsLetter({
 }: {
   template: LetterTemplate;
 }) {
-  const us = useUserSub();
-
-  console.log('sub', us);
-
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
     .map(({ fileName }) => fileName);
 
   const showProofs =
-    us &&
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
       template.templateStatus === 'SUBMITTED');
@@ -77,7 +70,7 @@ export function PreviewTemplateDetailsLetter({
                 <FileDownload
                   key={file}
                   filename={file}
-                  href={downloadHref(template, us, file)}
+                  href={downloadHref(template, file)}
                 />
               ))}
             </SummaryList.Value>

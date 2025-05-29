@@ -44,14 +44,3 @@ export const getSessionId = async () => {
 
   return sessionId.toString();
 };
-
-export async function getSubServer(): Promise<string | undefined> {
-  const session = await runWithAmplifyServerContext({
-    nextServerContext: { cookies },
-    operation: (ctx) => fetchAuthSession(ctx),
-  }).catch(() => {
-    // no-op
-  });
-
-  return session?.userSub;
-}
