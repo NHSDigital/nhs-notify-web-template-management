@@ -26,7 +26,6 @@ describe('PreviewSubmittedSMSTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      owner: 'owner',
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
       name: 'template-name',

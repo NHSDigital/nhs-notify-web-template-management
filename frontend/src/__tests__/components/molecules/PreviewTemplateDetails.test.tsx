@@ -12,7 +12,6 @@ describe('PreviewTemplateDetailsNhsApp', () => {
       <PreviewTemplateDetailsNhsApp
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example template',
           message: 'app message message',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -34,7 +33,6 @@ describe('PreviewTemplateDetailsEmail', () => {
       <PreviewTemplateDetailsEmail
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example Email template',
           message: 'email message message',
           subject: 'subject',
@@ -58,7 +56,6 @@ describe('PreviewTemplateDetailsSms', () => {
       <PreviewTemplateDetailsSms
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'SMS template',
           message: 'SMS message',
           templateStatus: 'SUBMITTED',
@@ -80,7 +77,6 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example template',
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
@@ -112,7 +108,6 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example template',
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
@@ -139,7 +134,6 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
@@ -176,7 +170,6 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
-          owner: 'owner',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',

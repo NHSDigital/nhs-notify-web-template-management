@@ -9,7 +9,6 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           name: 'test-template-letter',
           id: 'template-id',
-          owner: 'owner',
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
           letterType: 'x1',
@@ -35,7 +34,6 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '53525D03-1BC1-4563-ABF9-A74FF04142AF',
-          owner: 'owner',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'PENDING_PROOF_REQUEST',
@@ -62,7 +60,6 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '53525D03-1BC1-4563-ABF9-A74FF04142AF',
-          owner: 'owner',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'WAITING_FOR_PROOF',
@@ -89,7 +86,6 @@ describe('PreviewLetterTemplate component', () => {
       <PreviewLetterTemplate
         template={{
           id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
-          owner: 'owner',
           name: 'letter',
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
@@ -118,7 +114,6 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           name: 'test-template-letter',
           id: 'template-id',
-          owner: 'owner',
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
           letterType: 'x1',
@@ -150,7 +145,6 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           name: 'test-template-letter',
           id: 'template-id',
-          owner: 'owner',
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
           letterType: 'x1',
@@ -177,7 +171,6 @@ describe('PreviewLetterTemplate component', () => {
           templateType: 'LETTER',
           name: 'test-template-letter',
           id: 'template-id',
-          owner: 'owner',
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',
           letterType: 'x1',

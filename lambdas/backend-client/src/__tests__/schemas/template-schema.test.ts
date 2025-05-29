@@ -304,7 +304,6 @@ describe('Template schemas', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       id: 'id',
-      owner: 'owner',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
     };

@@ -22,7 +22,6 @@ const getTemplateMock = jest.mocked(getTemplate);
 
 const templateDTO = {
   id: 'template-id',
-  owner: 'owner',
   templateType: 'LETTER',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'template-name',

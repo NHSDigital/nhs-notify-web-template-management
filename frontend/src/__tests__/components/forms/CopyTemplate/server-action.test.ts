@@ -20,7 +20,6 @@ beforeAll(() => {
 test('submit form - validation error', async () => {
   const template: NHSAppTemplate = {
     id: 'template-id',
-    owner: 'owner',
     templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'NHS_APP',
     name: 'template-name',
@@ -59,7 +58,6 @@ test('submit form - create email template from non-email template', async () => 
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
-    owner: 'owner',
   };
 
   await copyTemplateAction(
@@ -99,7 +97,6 @@ test('submit form - create email template from email template', async () => {
     subject: 'template-subject',
     createdAt: 'today',
     updatedAt: 'today',
-    owner: 'owner',
   };
 
   await copyTemplateAction(
@@ -138,7 +135,6 @@ test('submit form - create non-email template', async () => {
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
-    owner: 'owner',
   };
 
   await copyTemplateAction(

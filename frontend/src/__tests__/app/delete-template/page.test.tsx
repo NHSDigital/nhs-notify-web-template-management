@@ -20,7 +20,6 @@ describe('PreviewEmailTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      owner: 'owner',
       templateType: 'EMAIL',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
@@ -61,7 +60,6 @@ describe('PreviewEmailTemplatePage', () => {
   test('should redirect to invalid-template when template is already submitted', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-      owner: 'owner',
       templateStatus: 'SUBMITTED',
       templateType: 'NHS_APP',
       name: 'template-name',
@@ -82,7 +80,6 @@ describe('PreviewEmailTemplatePage', () => {
   test('should redirect to message-templates when template is already deleted', async () => {
     getTemplateMock.mockResolvedValueOnce({
       id: 'template-id',
-      owner: 'owner',
       templateStatus: 'DELETED',
       templateType: 'NHS_APP',
       name: 'template-name',

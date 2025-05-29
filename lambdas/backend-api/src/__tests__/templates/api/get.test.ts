@@ -91,7 +91,6 @@ describe('Template API - Get', () => {
 
     const template: TemplateDto = {
       id: 'id',
-      owner: 'sub',
       templateType: 'EMAIL',
       name: 'name',
       message: 'message',

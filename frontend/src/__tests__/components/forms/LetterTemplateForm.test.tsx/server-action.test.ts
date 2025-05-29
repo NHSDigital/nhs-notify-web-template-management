@@ -46,7 +46,6 @@ describe('CreateLetterTemplate server actions', () => {
     createLetterTemplateMock.mockResolvedValue({
       ...initialState,
       id: 'new-template-id',
-      owner: 'owner',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -106,7 +105,6 @@ describe('CreateLetterTemplate server actions', () => {
     createLetterTemplateMock.mockResolvedValue({
       ...initialState,
       id: 'new-template-id',
-      owner: 'owner',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',

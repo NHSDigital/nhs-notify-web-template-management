@@ -3,7 +3,6 @@
 export type BaseCreatedTemplate = BaseTemplate & {
   createdAt: string;
   id: string;
-  owner: string;
   templateStatus: TemplateStatus;
   updatedAt: string;
 };

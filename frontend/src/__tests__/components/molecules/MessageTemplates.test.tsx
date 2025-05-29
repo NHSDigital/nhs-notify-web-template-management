@@ -11,7 +11,6 @@ const messageTemplatesProps: {
   templateList: [
     {
       id: '1',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template 1',
@@ -21,7 +20,6 @@ const messageTemplatesProps: {
     },
     {
       id: '2',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
       name: 'Template 2',
@@ -31,7 +29,6 @@ const messageTemplatesProps: {
     },
     {
       id: '3',
-      owner: 'owner',
       templateType: 'LETTER',
       templateStatus: 'SUBMITTED',
       name: 'Template 3',

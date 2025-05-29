@@ -93,7 +93,6 @@ describe('Template API - Submit', () => {
 
     const response: TemplateDto = {
       id: '1-2-3',
-      owner: 'owner',
       name: 'updated-name',
       message: 'message',
       templateStatus: 'SUBMITTED',

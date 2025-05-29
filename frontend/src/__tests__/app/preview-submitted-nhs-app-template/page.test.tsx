@@ -26,7 +26,6 @@ describe('PreviewSubmittedNHSAppTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
       name: 'template-name',

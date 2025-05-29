@@ -3,7 +3,11 @@
  */
 import { sign } from 'jsonwebtoken';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { getAccessTokenServer, getSessionId } from '../../utils/amplify-utils';
+import {
+  getAccessTokenServer,
+  getSessionId,
+  getSubServer,
+} from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
@@ -48,6 +52,34 @@ describe('amplify-utils', () => {
     });
 
     const result = await getAccessTokenServer();
+
+    expect(result).toBeUndefined();
+  });
+
+  test('getSubServer - should return the user subject', async () => {
+    fetchAuthSessionMock.mockResolvedValueOnce({
+      userSub: 'sub',
+    });
+
+    const result = await getSubServer();
+
+    expect(result).toEqual('sub');
+  });
+
+  test('getSubServer - should return undefined when no auth session', async () => {
+    fetchAuthSessionMock.mockResolvedValueOnce({});
+
+    const result = await getSubServer();
+
+    expect(result).toBeUndefined();
+  });
+
+  test('getSubServer - should return undefined an error occurs', async () => {
+    fetchAuthSessionMock.mockImplementationOnce(() => {
+      throw new Error('JWT Expired');
+    });
+
+    const result = await getSubServer();
 
     expect(result).toBeUndefined();
   });

@@ -35,7 +35,6 @@ describe('form-actions', () => {
   test('createTemplate', async () => {
     const responseData = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -107,7 +106,6 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
-      owner: 'owner',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -166,7 +164,6 @@ describe('form-actions', () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
-      owner: 'owner',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
       letterType: 'x1',
@@ -276,7 +273,6 @@ describe('form-actions', () => {
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -291,7 +287,6 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -321,7 +316,6 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -347,7 +341,6 @@ describe('form-actions', () => {
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -364,7 +357,6 @@ describe('form-actions', () => {
   test('getTemplate', async () => {
     const responseData = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -418,7 +410,6 @@ describe('form-actions', () => {
   test('getTemplates', async () => {
     const responseData = {
       id: 'id',
-      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
@@ -466,7 +457,6 @@ describe('form-actions', () => {
       name: 'Template',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',
-      owner: 'owner',
     } satisfies Partial<TemplateDto>;
 
     const templates = [
@@ -501,7 +491,6 @@ describe('form-actions', () => {
     test('submitTemplate successfully', async () => {
       const responseData = {
         id: 'id',
-        owner: 'owner',
         templateType: 'NHS_APP',
         templateStatus: 'SUBMITTED',
         name: 'name',
@@ -601,7 +590,6 @@ describe('form-actions', () => {
       const responseData = {
         templateType: 'LETTER',
         id: 'new-template-id',
-        owner: 'owner',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
         letterType: 'x1',

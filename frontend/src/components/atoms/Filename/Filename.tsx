@@ -1,12 +1,7 @@
 import { JSX } from 'react';
 import styles from './Filename.module.scss';
 
-export function Filename({
-  filename,
-}: {
-  filename: string;
-  href?: string;
-}): JSX.Element {
+export function Filename({ filename }: { filename: string }): JSX.Element {
   return (
     <div className={styles.container}>
       <svg

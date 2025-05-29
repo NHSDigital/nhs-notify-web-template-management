@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;

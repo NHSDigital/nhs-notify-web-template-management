@@ -142,15 +142,15 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                 Template proof files
               </dt>
               <dd
-                class="nhsuk-summary-list__value proofsList"
+                class="nhsuk-summary-list__value"
               >
-                <ul>
-                  <li
-                    class="proofs"
-                  >
+                <ul
+                  class="proofs"
+                >
+                  <li>
                     <a
                       class="container"
-                      href="/files/owner/proofs/template-id/supplier-proof.pdf"
+                      href="/files/undefined/proofs/template-id/supplier-proof.pdf"
                       rel="noopener noreferrer"
                       target="_blank"
                     >

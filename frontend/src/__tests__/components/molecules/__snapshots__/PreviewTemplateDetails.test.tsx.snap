@@ -362,15 +362,15 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
           Template proof files
         </dt>
         <dd
-          class="nhsuk-summary-list__value proofsList"
+          class="nhsuk-summary-list__value"
         >
-          <ul>
-            <li
-              class="proofs"
-            >
+          <ul
+            class="proofs"
+          >
+            <li>
               <a
                 class="container"
-                href="/files/owner/proofs/template-id/a.pdf"
+                href="/files/undefined/proofs/template-id/a.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -398,12 +398,10 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
                 </div>
               </a>
             </li>
-            <li
-              class="proofs"
-            >
+            <li>
               <a
                 class="container"
-                href="/files/owner/proofs/template-id/b.pdf"
+                href="/files/undefined/proofs/template-id/b.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
               >

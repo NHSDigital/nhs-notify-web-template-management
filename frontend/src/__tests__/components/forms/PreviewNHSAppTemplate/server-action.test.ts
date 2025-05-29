@@ -13,7 +13,6 @@ const redirectMock = jest.mocked(redirect);
 describe('previewNhsAppTemplateAction', () => {
   const currentState: TemplateFormState<NHSAppTemplate> = {
     id: 'template-id',
-    owner: 'owner',
     templateType: 'NHS_APP',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Example name',

@@ -31,7 +31,6 @@ test('calls form action and redirects', async () => {
 
   const mockTemplate: NHSAppTemplate = {
     id: 'template-id',
-    owner: 'owner',
     name: 'template-name',
     message: 'template-message',
     templateType: 'NHS_APP',

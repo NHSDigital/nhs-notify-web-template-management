@@ -12,7 +12,6 @@ const messageTemplatesContent = content.pages.messageTemplates;
 const mockTemplates: TemplateDto[] = [
   {
     id: '1',
-    owner: 'owner',
     templateType: 'NHS_APP',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Template 1',
