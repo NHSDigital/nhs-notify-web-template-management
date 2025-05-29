@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetailsEmail } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {

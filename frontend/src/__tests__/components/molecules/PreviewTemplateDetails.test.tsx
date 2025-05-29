@@ -1,10 +1,8 @@
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
+import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { render } from '@testing-library/react';
-import {
-  PreviewTemplateDetailsEmail,
-  PreviewTemplateDetailsLetter,
-  PreviewTemplateDetailsNhsApp,
-  PreviewTemplateDetailsSms,
-} from '@molecules/PreviewTemplateDetails';
 
 describe('PreviewTemplateDetailsNhsApp', () => {
   it('matches snapshot', () => {

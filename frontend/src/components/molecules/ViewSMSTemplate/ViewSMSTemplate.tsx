@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetailsSms } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import {
   PageComponentProps,
   SMSTemplate,

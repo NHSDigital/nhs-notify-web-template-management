@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetailsNhsApp } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
   FormErrorState,

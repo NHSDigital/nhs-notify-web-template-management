@@ -9,7 +9,7 @@ import {
   StandardDetailRows,
 } from './common';
 
-export function PreviewTemplateDetailsNhsApp({
+export default function PreviewTemplateDetailsNhsApp({
   template,
   message,
 }: {

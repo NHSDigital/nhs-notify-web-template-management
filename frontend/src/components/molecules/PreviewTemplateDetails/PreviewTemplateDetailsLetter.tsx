@@ -15,7 +15,7 @@ import Link from 'next/link';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
-export function PreviewTemplateDetailsLetter({
+export default function PreviewTemplateDetailsLetter({
   template,
   user,
 }: {

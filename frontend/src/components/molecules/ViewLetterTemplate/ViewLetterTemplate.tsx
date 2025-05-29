@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetailsLetter } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import {
   LetterTemplate,
   PageComponentProps,

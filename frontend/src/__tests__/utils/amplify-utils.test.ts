@@ -19,7 +19,7 @@ jest.mock('@/amplify_outputs.json', () => ({
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
 describe('amplify-utils', () => {
-  test('getSessionServer - should return the auth token and sub', async () => {
+  test('getSessionServer - should return the auth token and userSub', async () => {
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
         accessToken: {
@@ -32,7 +32,7 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: 'mockToken', sub: 'sub' });
+    expect(result).toEqual({ accessToken: 'mockToken', userSub: 'sub' });
   });
 
   test('getSessionServer - should return undefined properties when no auth session', async () => {
@@ -40,7 +40,7 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined, sub: undefined });
+    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
   });
 
   test('getSessionServer - should return undefined properties if an error occurs', async () => {
@@ -50,7 +50,7 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined, sub: undefined });
+    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
   });
 
   describe('getSessionId', () => {

@@ -24,7 +24,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: PageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const { sub } = await getSessionServer();
+  const { userSub } = await getSessionServer();
 
   const validatedTemplate = validateSubmittedLetterTemplate(template);
 
@@ -32,7 +32,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ViewLetterTemplate initialState={validatedTemplate} user={sub} />;
+  return <ViewLetterTemplate initialState={validatedTemplate} user={userSub} />;
 };
 
 export default PreviewSubmittedLetterTemplatePage;

@@ -24,7 +24,7 @@ const PreviewLetterTemplatePage = async (props: PageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const { sub } = await getSessionServer();
+  const { userSub } = await getSessionServer();
 
   const validatedTemplate = validateLetterTemplate(template);
 
@@ -32,7 +32,7 @@ const PreviewLetterTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate template={validatedTemplate} user={sub} />;
+  return <PreviewLetterTemplate template={validatedTemplate} user={userSub} />;
 };
 
 export default PreviewLetterTemplatePage;

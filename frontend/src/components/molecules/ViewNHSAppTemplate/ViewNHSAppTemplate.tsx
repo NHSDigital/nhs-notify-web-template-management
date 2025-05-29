@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetailsNhsApp } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import {
   NHSAppTemplate,
   PageComponentProps,

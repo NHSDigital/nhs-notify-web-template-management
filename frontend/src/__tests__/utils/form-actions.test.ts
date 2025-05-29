@@ -31,7 +31,7 @@ describe('form-actions', () => {
     jest.resetAllMocks();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      sub: 'sub',
+      userSub: 'sub',
     });
   });
 
@@ -94,7 +94,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      sub: undefined,
+      userSub: undefined,
     });
 
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
@@ -257,7 +257,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      sub: undefined,
+      userSub: undefined,
     });
 
     const createLetterTemplateInput: CreateLetterTemplate = {
@@ -348,7 +348,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      sub: undefined,
+      userSub: undefined,
     });
 
     const updateTemplateInput: NHSAppTemplate = {
@@ -414,7 +414,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      sub: undefined,
+      userSub: undefined,
     });
 
     await expect(getTemplate('id')).rejects.toThrow(
@@ -462,7 +462,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      sub: undefined,
+      userSub: undefined,
     });
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
@@ -553,7 +553,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
-        sub: undefined,
+        userSub: undefined,
       });
 
       await expect(setTemplateToSubmitted('id')).rejects.toThrow(
@@ -600,7 +600,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
-        sub: undefined,
+        userSub: undefined,
       });
 
       await expect(setTemplateToDeleted('id')).rejects.toThrow(
@@ -665,7 +665,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
-        sub: undefined,
+        userSub: undefined,
       });
 
       await expect(requestTemplateProof('id')).rejects.toThrow(

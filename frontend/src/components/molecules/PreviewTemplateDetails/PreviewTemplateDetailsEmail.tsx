@@ -9,7 +9,7 @@ import {
   StandardDetailRows,
 } from './common';
 
-export function PreviewTemplateDetailsEmail({
+export default function PreviewTemplateDetailsEmail({
   template,
   subject,
   message,
