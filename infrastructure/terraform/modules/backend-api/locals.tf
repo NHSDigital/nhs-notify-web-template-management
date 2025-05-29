@@ -43,7 +43,6 @@ locals {
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"
     REQUEST_PROOF_QUEUE_URL          = module.sqs_sftp_upload.sqs_queue_url
-    TEMPLATES_EVENT_BUS_NAME         = data.aws_cloudwatch_event_bus.default.name
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
     TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
     TEMPLATES_DOWNLOAD_BUCKET_NAME   = module.s3bucket_download.id
