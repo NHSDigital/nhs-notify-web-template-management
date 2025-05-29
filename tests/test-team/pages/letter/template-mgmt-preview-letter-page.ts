@@ -16,7 +16,7 @@ export class TemplateMgmtPreviewLetterPage extends TemplateMgmtPreviewBasePage {
     super(page);
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.continueButton = page.locator('[id="preview-letter-template-cta"]');
-    this.pdfLinks = page.locator('[data-testid="proof-link"]');
+    this.pdfLinks = page.locator('[data-testid^="proof-link"]');
   }
 
   async clickContinueButton() {

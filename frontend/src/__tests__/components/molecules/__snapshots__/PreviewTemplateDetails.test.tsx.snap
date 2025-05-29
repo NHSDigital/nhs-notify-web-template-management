@@ -369,7 +369,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
           >
             <li>
               <a
-                data-testid="proof-link"
+                data-testid="proof-link_a.pdf"
                 href="/files/undefined/proofs/template-id/a.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -400,7 +400,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             </li>
             <li>
               <a
-                data-testid="proof-link"
+                data-testid="proof-link_b.pdf"
                 href="/files/undefined/proofs/template-id/b.pdf"
                 rel="noopener noreferrer"
                 target="_blank"

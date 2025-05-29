@@ -71,7 +71,7 @@ export default function PreviewTemplateDetailsLetter({
                       href={`/files/${user}/proofs/${template.id}/${file}`}
                       target='_blank'
                       rel='noopener noreferrer'
-                      data-testid='proof-link'
+                      data-testid={`proof-link_${file}`}
                     >
                       <Filename filename={file} />
                     </Link>
