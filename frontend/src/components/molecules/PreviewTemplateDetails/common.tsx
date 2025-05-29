@@ -5,13 +5,22 @@ import {
   templateStatusToColourMappings,
 } from 'nhs-notify-web-template-management-utils';
 import styles from './PreviewTemplateDetails.module.scss';
-import {
-  ContentPreviewField,
-  PreviewTemplateDetailsProps,
-} from './preview-template-details.types';
 import { JSX } from 'react';
 import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
+
+type PreviewTemplateHeadingsType =
+  | 'Id'
+  | 'Heading'
+  | 'Body text'
+  | 'Subject'
+  | 'Message';
+
+type ContentPreviewField = {
+  heading: PreviewTemplateHeadingsType;
+  id: string;
+  value: string;
+};
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
@@ -83,7 +92,10 @@ export function StandardDetailRows({
 export function PreviewTemplateDetailsContainer({
   template,
   children,
-}: Readonly<PreviewTemplateDetailsProps>): JSX.Element {
+}: Readonly<{
+  template: TemplateDto;
+  children: React.ReactNode;
+}>): JSX.Element {
   return (
     <>
       <h1
