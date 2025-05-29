@@ -31,6 +31,7 @@ describe('RequestProofPage', () => {
   test('should load page', async () => {
     const state = {
       id: 'template-id',
+      owner: 'owner',
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',

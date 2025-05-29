@@ -15,6 +15,7 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: EmailTemplate = {
   id: 'template-id',
+  owner: 'owner',
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',

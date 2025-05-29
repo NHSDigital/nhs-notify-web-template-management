@@ -25,6 +25,7 @@ describe('EmailTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
+      owner: 'owner',
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
       name: 'template-name',

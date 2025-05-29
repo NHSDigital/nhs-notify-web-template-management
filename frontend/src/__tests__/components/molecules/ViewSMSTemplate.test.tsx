@@ -9,6 +9,7 @@ describe('ViewNHSAppTemplate component', () => {
         initialState={
           {
             id: 'template-id',
+            owner: 'owner',
             name: 'Example template',
             templateStatus: 'SUBMITTED',
             message: 'Example message',

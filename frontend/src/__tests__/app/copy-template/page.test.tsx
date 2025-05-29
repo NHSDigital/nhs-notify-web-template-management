@@ -20,6 +20,7 @@ describe('CopyTemplatePage', () => {
 
   const template = {
     id: 'template-id',
+    owner: 'owner',
     templateType: 'EMAIL',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
@@ -31,6 +32,7 @@ describe('CopyTemplatePage', () => {
 
   const letterTemplate: LetterTemplate = {
     id: 'template-id',
+    owner: 'owner',
     templateType: 'LETTER',
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',

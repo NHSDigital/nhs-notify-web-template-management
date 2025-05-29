@@ -21,6 +21,7 @@ const mockNhsAppTemplate = {
   name: 'name',
   message: 'body',
   id: '1',
+  owner: 'owner',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',
 } satisfies TemplateDto;

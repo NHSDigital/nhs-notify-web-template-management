@@ -142,10 +142,13 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                 Template proof files
               </dt>
               <dd
-                class="nhsuk-summary-list__value"
+                class="nhsuk-summary-list__value proofsList"
               >
-                <div
+                <a
                   class="container"
+                  href="/files/$template.owner/proofs/template-id/supplier-proof.pdf"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <svg
                     class="icon"
@@ -165,7 +168,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                   >
                     supplier-proof.pdf
                   </p>
-                </div>
+                </a>
               </dd>
             </div>
           </dl>

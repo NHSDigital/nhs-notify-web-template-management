@@ -24,6 +24,7 @@ const initialState: CreateUpdateNHSAppTemplate = {
 const savedState: NHSAppTemplate = {
   ...initialState,
   id: 'template-id',
+  owner: 'owner',
   templateStatus: 'NOT_YET_SUBMITTED',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',

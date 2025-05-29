@@ -25,6 +25,7 @@ describe('NhsAppTemplateSubmittedPage', () => {
   test('should load page', async () => {
     const template = {
       id: 'template-id',
+      owner: 'owner',
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
       name: 'template-name',

@@ -15,6 +15,7 @@ const redirectMock = jest.mocked(redirect);
 
 const initialState: SMSTemplate = {
   id: 'template-id',
+  owner: 'owner',
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',

@@ -32,6 +32,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
     const templateDTO = {
       templateType: 'LETTER',
       id: 'template-id',
+      owner: 'owner',
       templateStatus: 'SUBMITTED',
       name: 'template-name',
       files: {

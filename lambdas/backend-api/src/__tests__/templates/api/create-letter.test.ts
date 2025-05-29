@@ -83,6 +83,7 @@ describe('create-letter', () => {
     const created: TemplateDto = {
       ...initialTemplate,
       id: templateId,
+      owner: 'owner',
       createdAt: now,
       updatedAt: now,
       templateStatus: 'PENDING_VALIDATION',
@@ -154,6 +155,7 @@ describe('create-letter', () => {
     const created: TemplateDto = {
       ...initialTemplate,
       id: templateId,
+      owner: 'owner',
       createdAt: now,
       updatedAt: now,
       templateStatus: 'PENDING_VALIDATION',

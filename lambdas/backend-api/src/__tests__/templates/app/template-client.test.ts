@@ -141,6 +141,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...data,
         id: templateId,
+        owner: 'owner',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -185,6 +186,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...data,
         id: templateId,
+        owner,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -192,7 +194,6 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
         version: 1,
       };
 
@@ -276,7 +277,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+      const { version: _, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -606,6 +607,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...dataWithFiles,
         id: templateId,
+        owner: 'owner',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
@@ -698,6 +700,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...dataWithFiles,
         id: templateId,
+        owner: 'owner',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'PENDING_VALIDATION',
@@ -947,6 +950,7 @@ describe('templateClient', () => {
       const expectedTemplateDto: TemplateDto = {
         ...data,
         id: templateId,
+        owner: 'owner',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'NOT_YET_SUBMITTED',
@@ -995,6 +999,7 @@ describe('templateClient', () => {
       const template: TemplateDto = {
         ...data,
         id: templateId,
+        owner,
         templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
         createdAt: new Date().toISOString(),
@@ -1002,7 +1007,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.update.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, version: 1 },
       });
 
       const result = await templateClient.updateTemplate(
@@ -1055,6 +1060,7 @@ describe('templateClient', () => {
 
       const templateDTO: TemplateDto = {
         id: templateId,
+        owner: 'owner',
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -1094,6 +1100,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        owner,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -1104,7 +1111,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, version: 1 },
       });
 
       const result = await templateClient.getTemplate(templateId, owner);
@@ -1148,6 +1155,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        owner,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -1158,6 +1166,7 @@ describe('templateClient', () => {
       };
       const template2: TemplateDto = {
         id: undefined as unknown as string,
+        owner,
         templateType: 'EMAIL',
         name: undefined as unknown as string,
         message: 'message',
@@ -1169,8 +1178,8 @@ describe('templateClient', () => {
 
       mocks.templateRepository.list.mockResolvedValueOnce({
         data: [
-          { ...template, owner, version: 1 },
-          { ...template2, owner, version: 1 },
+          { ...template, version: 1 },
+          { ...template2, version: 1 },
         ],
       });
 
@@ -1188,6 +1197,7 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         id: templateId,
+        owner,
         templateType: 'EMAIL',
         name: 'name',
         message: 'message',
@@ -1198,7 +1208,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [{ ...template, owner, version: 1 }],
+        data: [{ ...template, version: 1 }],
       });
 
       const result = await templateClient.listTemplates(owner);
@@ -1242,6 +1252,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         id: templateId,
+        owner: 'owner',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
@@ -1284,12 +1295,13 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'SMS',
         id: templateId,
+        owner,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, version: 1 },
       });
 
       const result = await templateClient.submitTemplate(templateId, owner);
@@ -1351,6 +1363,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         id: templateId,
+        owner: 'owner',
         createdAt: undefined as unknown as string,
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
@@ -1389,6 +1402,7 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         id: templateId,
+        owner: 'owner',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
@@ -1435,6 +1449,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
+        owner: 'owner',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         personalisationParameters,
@@ -1500,6 +1515,7 @@ describe('templateClient', () => {
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
+        owner,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         personalisationParameters,
@@ -1515,7 +1531,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, version: 1 },
       });
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
@@ -1578,6 +1594,7 @@ describe('templateClient', () => {
         templateStatus: 'DELETED',
         templateType: 'SMS',
         id: templateId,
+        owner: 'owner',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };

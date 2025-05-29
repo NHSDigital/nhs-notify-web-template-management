@@ -9,6 +9,7 @@ describe('ViewEmailTemplate component', () => {
         initialState={
           {
             id: 'template-id',
+            owner: 'owner',
             templateType: 'EMAIL',
             name: 'Example template',
             templateStatus: 'SUBMITTED',

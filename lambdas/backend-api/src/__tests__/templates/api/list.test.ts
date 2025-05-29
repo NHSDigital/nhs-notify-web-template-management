@@ -69,6 +69,7 @@ describe('Template API - List', () => {
 
     const template: TemplateDto = {
       id: 'id',
+      owner: 'sub',
       templateType: 'EMAIL',
       name: 'name',
       message: 'message',

@@ -5,6 +5,7 @@ describe('responses', () => {
   it('should return success response', () => {
     const dto: TemplateDto = {
       id: '1',
+      owner: 'owner',
       name: 'name',
       message: 'message',
       subject: 'subject',

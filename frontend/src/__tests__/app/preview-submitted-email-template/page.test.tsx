@@ -26,6 +26,7 @@ describe('ViewSubmittedEmailTemplatePage', () => {
   it('should load page', async () => {
     const templateDTO = {
       id: 'template-id',
+      owner: 'owner',
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
       name: 'template-name',

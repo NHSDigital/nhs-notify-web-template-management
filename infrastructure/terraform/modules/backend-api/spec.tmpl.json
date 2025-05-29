@@ -15,6 +15,9 @@
               "id": {
                 "type": "string"
               },
+              "owner": {
+                "type": "string"
+              },
               "templateStatus": {
                 "$ref": "#/components/schemas/TemplateStatus"
               },
@@ -25,6 +28,7 @@
             },
             "required": [
               "id",
+              "owner",
               "templateStatus",
               "createdAt",
               "updatedAt"
