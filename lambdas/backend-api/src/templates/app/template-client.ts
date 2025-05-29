@@ -405,7 +405,7 @@ export class TemplateClient implements ITemplateClient {
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
   ): TemplateDto | undefined {
-    const { version: _, ...templateDTO } = databaseTemplate;
+    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
 
     return isTemplateDtoValid(templateDTO);
   }
