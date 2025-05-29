@@ -9,7 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { Metadata } from 'next';
 import content from '@content/content';
 import { ViewLetterTemplate } from '@molecules/ViewLetterTemplate/ViewLetterTemplate';
-import { getSubServer } from '@utils/amplify-utils';
+import { getSessionServer } from '@utils/amplify-utils';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -24,7 +24,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: PageProps) => {
 
   const template = await getTemplate(templateId);
 
-  const user = await getSubServer();
+  const { sub } = await getSessionServer();
 
   const validatedTemplate = validateSubmittedLetterTemplate(template);
 
@@ -32,7 +32,7 @@ const PreviewSubmittedLetterTemplatePage = async (props: PageProps) => {
     redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <ViewLetterTemplate initialState={validatedTemplate} user={user} />;
+  return <ViewLetterTemplate initialState={validatedTemplate} user={sub} />;
 };
 
 export default PreviewSubmittedLetterTemplatePage;
