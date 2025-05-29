@@ -5,5 +5,5 @@ const secret = process.env.CSRF_SECRET ?? randomBytes(16).toString('hex');
 
 writeFileSync(
   './frontend/.env',
-  [`CSRF_SECRET=${secret}`, 'NEXT_PUBLIC_ENABLE_LETTERS=true', 'NEXT_PUBLIC_ENABLE_PROOFING=true'].join('\n')
+  [`CSRF_SECRET=${secret}`, 'NEXT_PUBLIC_ENABLE_PROOFING=true'].join('\n')
 );
