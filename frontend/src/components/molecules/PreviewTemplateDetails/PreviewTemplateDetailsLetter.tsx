@@ -69,7 +69,6 @@ export default function PreviewTemplateDetailsLetter({
                   <li key={file}>
                     <Link
                       href={`/files/${user}/proofs/${template.id}/${file}`}
-                      className={styles.container}
                       target='_blank'
                       rel='noopener noreferrer'
                       data-testid='proof-link'

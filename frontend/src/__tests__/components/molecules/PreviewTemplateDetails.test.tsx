@@ -163,7 +163,7 @@ describe('PreviewTemplateDetailsLetter', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('if status is PROOF_AVAILABLE, but not proofs are registed on the template, proof section is hidden (should not happen)', () => {
+  it('if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected)', () => {
     const container = render(
       <PreviewTemplateDetailsLetter
         template={{

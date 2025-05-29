@@ -119,7 +119,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but not proofs are registed on the template, proof section is hidden (should not happen) 1`] = `
+exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected) 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
@@ -369,7 +369,6 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
           >
             <li>
               <a
-                class="container"
                 data-testid="proof-link"
                 href="/files/undefined/proofs/template-id/a.pdf"
                 rel="noopener noreferrer"
@@ -401,7 +400,6 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             </li>
             <li>
               <a
-                class="container"
                 data-testid="proof-link"
                 href="/files/undefined/proofs/template-id/b.pdf"
                 rel="noopener noreferrer"
