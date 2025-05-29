@@ -17,8 +17,10 @@ const { rowHeadings } = content.components.previewTemplateDetails;
 
 export function PreviewTemplateDetailsLetter({
   template,
+  user,
 }: {
   template: LetterTemplate;
+  user?: string;
 }) {
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
@@ -61,12 +63,12 @@ export function PreviewTemplateDetailsLetter({
         <DetailSection>
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateProofFiles}</SummaryList.Key>
-            <SummaryList.Value className={styles.proofsList}>
-              <ul>
+            <SummaryList.Value>
+              <ul className={styles.proofs}>
                 {proofFilenames.map((file) => (
-                  <li key={file} className={styles.proofs}>
+                  <li key={file}>
                     <Link
-                      href={`/files/${template.owner}/proofs/${template.id}/${file}`}
+                      href={`/files/${user}/proofs/${template.id}/${file}`}
                       className={styles.container}
                       target='_blank'
                       rel='noopener noreferrer'

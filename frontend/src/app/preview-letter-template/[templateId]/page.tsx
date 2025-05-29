@@ -9,6 +9,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import content from '@content/content';
 import type { Metadata } from 'next';
+import { getSubServer } from '@utils/amplify-utils';
 
 const { pageTitle } = content.components.previewLetterTemplate;
 
@@ -23,13 +24,15 @@ const PreviewLetterTemplatePage = async (props: PageProps) => {
 
   const template = await getTemplate(templateId);
 
+  const user = await getSubServer();
+
   const validatedTemplate = validateLetterTemplate(template);
 
   if (!validatedTemplate) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  return <PreviewLetterTemplate template={validatedTemplate} />;
+  return <PreviewLetterTemplate template={validatedTemplate} user={user} />;
 };
 
 export default PreviewLetterTemplatePage;

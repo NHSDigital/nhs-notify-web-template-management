@@ -9,12 +9,12 @@ export class LetterProofRepository extends LetterFileRepository {
   static parseQuarantineKey(key: string): LetterProofMetadata {
     const keyParts = key.split('/');
     const [fileType, templateId, fileName] = keyParts;
-    const [, extension] = fileName.split('.');
+    const extension = fileName.split('.').at(-1);
 
     if (
       keyParts.length !== 3 ||
       fileType !== 'proofs' ||
-      extension.toLowerCase() !== 'pdf'
+      extension?.toLowerCase() !== 'pdf'
     ) {
       throw new Error(`Unexpected object key "${key}"`);
     }

@@ -15,7 +15,8 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-}: Readonly<{ template: LetterTemplate }>) {
+  user,
+}: Readonly<{ template: LetterTemplate; user?: string }>) {
   const {
     backLinkText,
     errorHeading,
@@ -78,7 +79,7 @@ export function PreviewLetterTemplate({
                 ))}
               </ErrorSummary>
             )}
-            <PreviewTemplateDetailsLetter template={template} />
+            <PreviewTemplateDetailsLetter template={template} user={user} />
 
             {footerText.length > 0 ? (
               <div
