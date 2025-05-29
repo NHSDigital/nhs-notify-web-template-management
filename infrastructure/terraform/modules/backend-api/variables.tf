@@ -71,11 +71,6 @@ variable "enable_backup" {
   default     = true
 }
 
-variable "enable_letters" {
-  type        = bool
-  description = "Enable letters feature flag"
-}
-
 variable "enable_proofing" {
   type        = bool
   description = "Enable proofing feature flag"
