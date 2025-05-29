@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-nested-functions */
 import { test, expect } from '@playwright/test';
 import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';

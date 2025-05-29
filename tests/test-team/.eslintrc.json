@@ -8,9 +8,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**"
-        ]
+        "devDependencies": ["**"]
       }
     ],
     "playwright/expect-expect": "off",
