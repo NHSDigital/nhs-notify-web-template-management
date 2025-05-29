@@ -364,56 +364,74 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
         <dd
           class="nhsuk-summary-list__value proofsList"
         >
-          <a
-            class="container"
-            href="/files/$template.owner/proofs/template-id/a.pdf"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <svg
-              class="icon"
-              fill="none"
-              height="26"
-              viewBox="0 0 20 26"
-              width="20"
-              xmlns="http://www.w3.org/2000/svg"
+          <ul>
+            <li
+              class="proofs"
             >
-              <path
-                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                fill="#4C6272"
-              />
-            </svg>
-            <p
-              class="text"
+              <a
+                class="container"
+                href="/files/owner/proofs/template-id/a.pdf"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    a.pdf
+                  </p>
+                </div>
+              </a>
+            </li>
+            <li
+              class="proofs"
             >
-              a.pdf
-            </p>
-          </a>
-          <a
-            class="container"
-            href="/files/$template.owner/proofs/template-id/b.pdf"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <svg
-              class="icon"
-              fill="none"
-              height="26"
-              viewBox="0 0 20 26"
-              width="20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
-                fill="#4C6272"
-              />
-            </svg>
-            <p
-              class="text"
-            >
-              b.pdf
-            </p>
-          </a>
+              <a
+                class="container"
+                href="/files/owner/proofs/template-id/b.pdf"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    b.pdf
+                  </p>
+                </div>
+              </a>
+            </li>
+          </ul>
         </dd>
       </div>
     </dl>

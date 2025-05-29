@@ -11,13 +11,9 @@ import {
   StandardDetailRows,
 } from './common';
 import styles from './PreviewTemplateDetails.module.scss';
-import { FileDownload } from '@atoms/FileDownload/FileDownload';
+import Link from 'next/link';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
-
-function downloadHref(template: LetterTemplate, filename: string) {
-  return `/files/${template.owner}/proofs/${template.id}/${filename}`;
-}
 
 export function PreviewTemplateDetailsLetter({
   template,
@@ -66,13 +62,20 @@ export function PreviewTemplateDetailsLetter({
           <SummaryList.Row>
             <SummaryList.Key>{rowHeadings.templateProofFiles}</SummaryList.Key>
             <SummaryList.Value className={styles.proofsList}>
-              {proofFilenames.map((file) => (
-                <FileDownload
-                  key={file}
-                  filename={file}
-                  href={downloadHref(template, file)}
-                />
-              ))}
+              <ul>
+                {proofFilenames.map((file) => (
+                  <li key={file} className={styles.proofs}>
+                    <Link
+                      href={`/files/${template.owner}/proofs/${template.id}/${file}`}
+                      className={styles.container}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <Filename filename={file} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </SummaryList.Value>
           </SummaryList.Row>
         </DetailSection>
