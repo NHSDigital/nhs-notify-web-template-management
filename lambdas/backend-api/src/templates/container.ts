@@ -39,7 +39,6 @@ export function createContainer() {
   );
 
   const templateClient = new TemplateClient(
-    config.enableLetters,
     templateRepository,
     letterUploadRepository,
     proofingQueue,

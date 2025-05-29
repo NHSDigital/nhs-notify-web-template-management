@@ -170,7 +170,7 @@ const homePage = {
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
   text2: 'You can create templates for:',
-  list: ['NHS App messages', 'emails', 'text messages (SMS)'],
+  channelList: ['NHS App messages', 'emails', 'text messages (SMS)', 'letters'],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
