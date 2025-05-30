@@ -1,4 +1,4 @@
-import { Container, Tag, SummaryList } from 'nhsuk-react-components';
+import { Tag, SummaryList } from 'nhsuk-react-components';
 import concatClassNames from '@utils/concat-class-names';
 import {
   templateStatusToDisplayMappings,
@@ -9,15 +9,8 @@ import { JSX } from 'react';
 import content from '@content/content';
 import { TemplateDto } from 'nhs-notify-backend-client';
 
-type PreviewTemplateHeadingsType =
-  | 'Id'
-  | 'Heading'
-  | 'Body text'
-  | 'Subject'
-  | 'Message';
-
 type ContentPreviewField = {
-  heading: PreviewTemplateHeadingsType;
+  heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
   id: string;
   value: string;
 };
@@ -89,26 +82,17 @@ export function StandardDetailRows({
   );
 }
 
-export function PreviewTemplateDetailsContainer({
-  template,
-  children,
+export function DetailsHeader({
+  templateName,
 }: Readonly<{
-  template: TemplateDto;
-  children: React.ReactNode;
+  templateName: string;
 }>): JSX.Element {
   return (
-    <>
-      <h1
-        data-testid='preview-message__heading'
-        className={styles.preview__heading}
-      >
-        {template.name}
-      </h1>
-      <Container
-        className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
-      >
-        {children}
-      </Container>
-    </>
+    <h1
+      data-testid='preview-message__heading'
+      className={styles.preview__heading}
+    >
+      {templateName}
+    </h1>
   );
 }

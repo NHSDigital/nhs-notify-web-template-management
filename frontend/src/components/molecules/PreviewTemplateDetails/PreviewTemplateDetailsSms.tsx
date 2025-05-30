@@ -5,9 +5,11 @@ import {
 import {
   ContentPreview,
   DetailSection,
-  PreviewTemplateDetailsContainer,
+  DetailsHeader,
   StandardDetailRows,
 } from './common';
+import { Container } from 'nhsuk-react-components';
+import concatClassNames from '@utils/concat-class-names';
 
 export default function PreviewTemplateDetailsSms({
   template,
@@ -17,18 +19,25 @@ export default function PreviewTemplateDetailsSms({
   message: string;
 }) {
   return (
-    <PreviewTemplateDetailsContainer template={template}>
-      <DetailSection>
-        <StandardDetailRows
-          template={template}
-          templateTypeText={templateTypeDisplayMappings(template.templateType)}
-        />
-      </DetailSection>
-      <DetailSection>
-        <ContentPreview
-          fields={[{ heading: 'Message', id: 'message', value: message }]}
-        />
-      </DetailSection>
-    </PreviewTemplateDetailsContainer>
+    <>
+      <DetailsHeader templateName={template.name} />
+      <Container
+        className={concatClassNames('nhsuk-u-margin-bottom-6', 'nhsuk-body-m')}
+      >
+        <DetailSection>
+          <StandardDetailRows
+            template={template}
+            templateTypeText={templateTypeDisplayMappings(
+              template.templateType
+            )}
+          />
+        </DetailSection>
+        <DetailSection>
+          <ContentPreview
+            fields={[{ heading: 'Message', id: 'message', value: message }]}
+          />
+        </DetailSection>
+      </Container>
+    </>
   );
 }
