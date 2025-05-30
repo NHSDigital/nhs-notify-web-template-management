@@ -12,12 +12,15 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+  const guardDutyScan = new SimulateGuardDutyScan();
+
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -64,8 +67,32 @@ test.describe('letter complete e2e journey', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    let template = await templateStorageHelper.getTemplate(key);
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
+      const published = await guardDutyScan.publish({
+        key,
+        type: 'NO_THREATS_FOUND',
+        fileType: 'pdf',
+        fileName: template.files?.pdfTemplate?.currentVersion,
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        key,
+        type: 'NO_THREATS_FOUND',
+        fileType: 'csv',
+        fileName: template.files?.testDataCsv?.currentVersion,
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -131,18 +158,51 @@ test.describe('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    await expect(async () => {
-      // invoke SFTP poll lambda
-      await lambdaClient.send(
-        new InvokeCommand({
-          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-          Payload: JSON.stringify({
-            supplier: 'WTMMOCK',
-          }),
-        })
-      );
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
+      })
+    );
 
-      const template = await templateStorageHelper.getTemplate(key);
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        key,
+        type: 'NO_THREATS_FOUND',
+        fileType: 'pdf',
+        fileName: `proofs/${user.userId}/${templateId}/proof-1`,
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        key,
+        type: 'NO_THREATS_FOUND',
+        fileType: 'pdf',
+        fileName: `proofs/${user.userId}/${templateId}/proof-2`,
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        key,
+        type: 'NO_THREATS_FOUND',
+        fileType: 'pdf',
+        fileName: `proofs/${user.userId}/${templateId}/proof-3`,
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      template = await templateStorageHelper.getTemplate(key);
 
       expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
     }).toPass({ timeout: 60_000 });
