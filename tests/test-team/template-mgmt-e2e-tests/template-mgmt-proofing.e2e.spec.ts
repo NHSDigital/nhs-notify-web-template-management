@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-dead-store */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import {
@@ -9,6 +11,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const authHelper = createAuthHelper();
@@ -28,6 +31,7 @@ test.describe('Letter Proofing', () => {
   test('proofs are downloaded and linked to the DB entry', async () => {
     const templateId = 'test-template-id-proofing-e2e-success';
     const user = await authHelper.getTestUser(TestUserId.User1);
+    const guardDutyScan = new SimulateGuardDutyScan();
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
@@ -67,12 +71,47 @@ test.describe('Letter Proofing', () => {
       })
     );
 
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
     // check for expected results
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
         'proof-1': {

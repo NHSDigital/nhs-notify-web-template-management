@@ -12,12 +12,15 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
 // eslint-disable-next-line playwright/no-skipped-test
-test.describe.skip('letter complete e2e journey', () => {
+test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+  const guardDutyScan = new SimulateGuardDutyScan();
+
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -63,6 +66,34 @@ test.describe.skip('letter complete e2e journey', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -131,17 +162,44 @@ test.describe.skip('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    await expect(async () => {
-      // invoke SFTP poll lambda
-      await lambdaClient.send(
-        new InvokeCommand({
-          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-          Payload: JSON.stringify({
-            supplier: 'WTMMOCK',
-          }),
-        })
-      );
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
+      })
+    );
 
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.templateStatus).toEqual('PROOF_AVAILABLE');

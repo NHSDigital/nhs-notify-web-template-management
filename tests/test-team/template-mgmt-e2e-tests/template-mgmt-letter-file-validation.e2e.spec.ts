@@ -8,10 +8,11 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
+import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
-// eslint-disable-next-line playwright/no-skipped-test
-test.describe.skip('letter file validation', () => {
+test.describe('letter file validation', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+  const guardDutyScan = new SimulateGuardDutyScan();
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -57,6 +58,34 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -146,6 +175,20 @@ test.describe.skip('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
@@ -218,6 +261,34 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -300,6 +371,34 @@ test.describe.skip('letter file validation', () => {
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
+      const published = await guardDutyScan.publish({
+        type: 'UNSUPPORTED',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('FAILED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VIRUS_SCAN_FAILED');
@@ -373,10 +472,35 @@ test.describe.skip('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
       });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -424,6 +548,34 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -475,6 +627,20 @@ test.describe.skip('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
         id: templateId,
         owner: user.userId,
@@ -523,10 +689,21 @@ test.describe.skip('letter file validation', () => {
     templateStorageHelper.addAdHocTemplateKey(key);
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
       });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -573,6 +750,34 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -628,6 +833,34 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
