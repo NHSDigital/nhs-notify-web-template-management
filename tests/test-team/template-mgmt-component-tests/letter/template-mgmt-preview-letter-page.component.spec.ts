@@ -12,6 +12,32 @@ import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-
 
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(TestUserId.User1);
+
+  const withProofsBase = TemplateFactory.createLetterTemplate(
+    'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
+    user.userId,
+    'proofs-template-letter',
+    'PROOF_AVAILABLE',
+    'PASSED'
+  );
+
+  const withProofs: Template = {
+    ...withProofsBase,
+    files: {
+      ...withProofsBase.files,
+      proofs: {
+        'a.pdf': {
+          virusScanStatus: 'FAILED',
+          fileName: 'a.pdf',
+        },
+        'b.pdf': {
+          virusScanStatus: 'PASSED',
+          fileName: 'b.pdf',
+        },
+      },
+    },
+  };
+
   return {
     empty: {
       id: 'preview-page-invalid-letter-template',
@@ -61,6 +87,7 @@ async function createTemplates() {
       'VALIDATION_FAILED',
       'PASSED'
     ),
+    withProofs,
   };
 }
 
@@ -232,6 +259,36 @@ test.describe('Preview Letter template Page', () => {
         errorMessage
       );
       await expect(previewLetterTemplatePage.continueButton).toBeHidden();
+    });
+
+    test('when the template has proofs, only those passing the virus scan are displayed', async ({
+      page,
+      baseURL,
+    }) => {
+      const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+      await previewLetterTemplatePage.loadPage(templates.withProofs.id);
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.withProofs.id}`
+      );
+
+      await expect(previewLetterTemplatePage.pageHeader).toContainText(
+        templates.withProofs.name
+      );
+
+      await expect(previewLetterTemplatePage.pdfLinks).toHaveCount(1);
+
+      const pdfLink = previewLetterTemplatePage.pdfLinks.first();
+
+      await expect(pdfLink).toHaveText('b.pdf');
+      await expect(pdfLink).toHaveAttribute(
+        'href',
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        new RegExp(
+          `^/templates/files/[^/]+/proofs/${templates.withProofs.id}/b.pdf$`
+        )
+      );
     });
   });
 });

@@ -12,6 +12,7 @@ import {
 } from './common';
 import styles from './PreviewTemplateDetails.module.scss';
 import Link from 'next/link';
+import { getBasePath } from '@utils/get-base-path';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
@@ -67,14 +68,14 @@ export default function PreviewTemplateDetailsLetter({
               <ul className={styles.proofs}>
                 {proofFilenames.map((file) => (
                   <li key={file}>
-                    <Link
-                      href={`/files/${user}/proofs/${template.id}/${file}`}
+                    <a
+                      href={`${getBasePath()}/files/${user}/proofs/${template.id}/${file}`}
                       target='_blank'
                       rel='noopener noreferrer'
                       data-testid={`proof-link_${file}`}
                     >
                       <Filename filename={file} />
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
