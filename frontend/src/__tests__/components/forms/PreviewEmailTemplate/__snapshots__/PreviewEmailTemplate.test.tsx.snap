@@ -123,7 +123,7 @@ exports[`Preview email form renders Client-side validation triggers 1`] = `
             </div>
           </dl>
           <dl
-            class="nhsuk-summary-list preview"
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -412,7 +412,7 @@ exports[`Preview email form renders matches error snapshot 1`] = `
             </div>
           </dl>
           <dl
-            class="nhsuk-summary-list preview"
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -674,7 +674,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
             </div>
           </dl>
           <dl
-            class="nhsuk-summary-list preview"
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
               class="nhsuk-summary-list__row"
@@ -919,7 +919,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
             </div>
           </dl>
           <dl
-            class="nhsuk-summary-list preview"
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
           >
             <div
               class="nhsuk-summary-list__row"

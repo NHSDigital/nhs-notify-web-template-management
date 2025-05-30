@@ -70,8 +70,7 @@ test.each([
     ).toHaveBeenCalledWith(
       'template-owner',
       'template-id',
-      'proof',
-      'proofs/template-owner/template-id/proof.pdf',
+      'proof.pdf',
       virusScanStatus
     );
   }

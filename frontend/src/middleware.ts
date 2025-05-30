@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getSessionServer } from '@utils/amplify-utils';
 import { getBasePath } from '@utils/get-base-path';
 
 const protectedPaths = [
@@ -95,9 +95,9 @@ export async function middleware(request: NextRequest) {
     return new NextResponse('Page not found', { status: 404 });
   }
 
-  const token = await getAccessTokenServer({ forceRefresh: true });
+  const { accessToken } = await getSessionServer({ forceRefresh: true });
 
-  if (!token) {
+  if (!accessToken) {
     const redirectResponse = NextResponse.redirect(
       new URL(
         `/auth?redirect=${encodeURIComponent(

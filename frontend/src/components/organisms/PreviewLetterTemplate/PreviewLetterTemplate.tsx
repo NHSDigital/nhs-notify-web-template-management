@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
@@ -15,7 +15,8 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-}: Readonly<{ template: LetterTemplate }>) {
+  user,
+}: Readonly<{ template: LetterTemplate; user?: string }>) {
   const {
     backLinkText,
     errorHeading,
@@ -78,7 +79,7 @@ export function PreviewLetterTemplate({
                 ))}
               </ErrorSummary>
             )}
-            <PreviewTemplateDetails.Letter template={template} />
+            <PreviewTemplateDetailsLetter template={template} user={user} />
 
             {footerText.length > 0 ? (
               <div

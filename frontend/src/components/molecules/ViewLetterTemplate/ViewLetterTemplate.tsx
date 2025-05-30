@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import {
   LetterTemplate,
   PageComponentProps,
@@ -13,7 +13,8 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewLetterTemplate({
   initialState,
-}: Readonly<PageComponentProps<LetterTemplate>>) {
+  user,
+}: Readonly<PageComponentProps<LetterTemplate> & { user?: string }>) {
   const { createNewTemplate, backLinkText } =
     content.components.viewSubmittedTemplate;
 
@@ -28,7 +29,7 @@ export function ViewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetails.Letter template={initialState} />
+            <PreviewTemplateDetailsLetter template={initialState} user={user} />
             <p>{createNewTemplate}</p>
             <p>
               <Link

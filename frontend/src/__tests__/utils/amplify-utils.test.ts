@@ -3,7 +3,7 @@
  */
 import { sign } from 'jsonwebtoken';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { getAccessTokenServer, getSessionId } from '../../utils/amplify-utils';
+import { getSessionServer, getSessionId } from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
@@ -19,7 +19,7 @@ jest.mock('@/amplify_outputs.json', () => ({
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
 describe('amplify-utils', () => {
-  test('getAccessTokenServer - should return the auth token', async () => {
+  test('getSessionServer - should return the auth token and userSub', async () => {
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
         accessToken: {
@@ -27,29 +27,30 @@ describe('amplify-utils', () => {
           payload: {},
         },
       },
+      userSub: 'sub',
     });
 
-    const result = await getAccessTokenServer();
+    const result = await getSessionServer();
 
-    expect(result).toEqual('mockToken');
+    expect(result).toEqual({ accessToken: 'mockToken', userSub: 'sub' });
   });
 
-  test('getAccessTokenServer - should return undefined when no auth session', async () => {
+  test('getSessionServer - should return undefined properties when no auth session', async () => {
     fetchAuthSessionMock.mockResolvedValueOnce({});
 
-    const result = await getAccessTokenServer();
+    const result = await getSessionServer();
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
   });
 
-  test('getAccessTokenServer - should return undefined an error occurs', async () => {
+  test('getSessionServer - should return undefined properties if an error occurs', async () => {
     fetchAuthSessionMock.mockImplementationOnce(() => {
       throw new Error('JWT Expired');
     });
 
-    const result = await getAccessTokenServer();
+    const result = await getSessionServer();
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
   });
 
   describe('getSessionId', () => {

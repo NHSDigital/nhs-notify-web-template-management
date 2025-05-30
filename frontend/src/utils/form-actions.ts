@@ -1,6 +1,6 @@
 'use server';
 
-import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getSessionServer } from '@utils/amplify-utils';
 import {
   CreateUpdateTemplate,
   isTemplateDtoValid,
@@ -13,13 +13,16 @@ import { templateClient } from 'nhs-notify-backend-client/src/template-api-clien
 export async function createTemplate(
   template: CreateUpdateTemplate
 ): Promise<TemplateDto> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.createTemplate(template, token);
+  const { data, error } = await templateClient.createTemplate(
+    template,
+    accessToken
+  );
 
   if (error) {
     logger.error('Failed to create template', { error });
@@ -34,15 +37,15 @@ export async function createLetterTemplate(
   pdf: File,
   csv: File
 ) {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
   const { data, error } = await templateClient.createLetterTemplate(
     template,
-    token,
+    accessToken,
     pdf,
     csv?.size > 0 ? csv : undefined
   );
@@ -58,16 +61,16 @@ export async function createLetterTemplate(
 export async function saveTemplate(
   template: TemplateDto
 ): Promise<TemplateDto> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
   const { data, error } = await templateClient.updateTemplate(
     template.id,
     template,
-    token
+    accessToken
   );
 
   if (error) {
@@ -81,15 +84,15 @@ export async function saveTemplate(
 export async function setTemplateToSubmitted(
   templateId: string
 ): Promise<TemplateDto> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
   const { data, error } = await templateClient.submitTemplate(
     templateId,
-    token
+    accessToken
   );
 
   if (error) {
@@ -101,13 +104,16 @@ export async function setTemplateToSubmitted(
 }
 
 export async function setTemplateToDeleted(templateId: string): Promise<void> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { error } = await templateClient.deleteTemplate(templateId, token);
+  const { error } = await templateClient.deleteTemplate(
+    templateId,
+    accessToken
+  );
 
   if (error) {
     logger.error('Failed to save template', { error });
@@ -118,13 +124,16 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
 export async function requestTemplateProof(
   templateId: string
 ): Promise<TemplateDto> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.requestProof(templateId, token);
+  const { data, error } = await templateClient.requestProof(
+    templateId,
+    accessToken
+  );
 
   if (error) {
     logger.error('Failed to request proof', { error });
@@ -137,13 +146,16 @@ export async function requestTemplateProof(
 export async function getTemplate(
   templateId: string
 ): Promise<TemplateDto | undefined> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.getTemplate(templateId, token);
+  const { data, error } = await templateClient.getTemplate(
+    templateId,
+    accessToken
+  );
 
   if (error) {
     logger.error('Failed to get template', { error });
@@ -153,13 +165,13 @@ export async function getTemplate(
 }
 
 export async function getTemplates(): Promise<TemplateDto[]> {
-  const token = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.listTemplates(token);
+  const { data, error } = await templateClient.listTemplates(accessToken);
 
   if (error) {
     logger.error('Failed to get templates', { error });

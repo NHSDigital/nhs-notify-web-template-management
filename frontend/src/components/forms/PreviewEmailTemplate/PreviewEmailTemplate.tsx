@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
@@ -68,7 +68,7 @@ export function PreviewEmailTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
-                <PreviewTemplateDetails.Email
+                <PreviewTemplateDetailsEmail
                   template={initialState}
                   subject={templateSubjectLine}
                   message={html}

@@ -14,9 +14,9 @@ export const { runWithAmplifyServerContext } = createServerRunner({
   config,
 });
 
-export async function getAccessTokenServer(
+export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
-): Promise<string | undefined> {
+): Promise<{ accessToken: string | undefined; userSub: string | undefined }> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     operation: (ctx) => fetchAuthSession(ctx, options),
@@ -24,11 +24,14 @@ export async function getAccessTokenServer(
     // no-op
   });
 
-  return session?.tokens?.accessToken?.toString();
+  return {
+    accessToken: session?.tokens?.accessToken?.toString(),
+    userSub: session?.userSub,
+  };
 }
 
 export const getSessionId = async () => {
-  const accessToken = await getAccessTokenServer();
+  const { accessToken } = await getSessionServer();
 
   if (!accessToken) {
     return;

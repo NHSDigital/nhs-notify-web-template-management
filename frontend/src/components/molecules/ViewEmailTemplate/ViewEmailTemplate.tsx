@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsEmail from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsEmail';
 import {
   EmailTemplate,
   PageComponentProps,
@@ -31,7 +31,7 @@ export function ViewEmailTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetails.Email
+            <PreviewTemplateDetailsEmail
               template={initialState}
               subject={templateSubjectLine}
               message={html}

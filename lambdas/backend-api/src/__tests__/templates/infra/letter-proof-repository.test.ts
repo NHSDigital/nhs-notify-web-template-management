@@ -8,7 +8,7 @@ describe('parseQuarantineKey', () => {
 
     expect(parsedKey).toEqual({
       templateId: 'template-id',
-      fileName: 'proof',
+      fileName: 'proof.pdf',
     });
   });
 
@@ -42,7 +42,7 @@ test('getInternalKey', () => {
     LetterProofRepository.getInternalKey(
       'template-owner',
       'template-id',
-      'proof'
+      'proof.pdf'
     )
   ).toEqual('proofs/template-owner/template-id/proof.pdf');
 });

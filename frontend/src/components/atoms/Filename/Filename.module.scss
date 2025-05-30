@@ -1,16 +1,19 @@
 .icon {
-  margin-right: 4px;
+  margin-right: 6px;
+  margin-top: 5px;
   height: 19px;
-  width: 24px
+  width: 24px;
+  flex-shrink: 0;
 }
 
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .text {
   margin: 0;
   padding: 0;
   display: block;
+  word-break: break-all;
 }

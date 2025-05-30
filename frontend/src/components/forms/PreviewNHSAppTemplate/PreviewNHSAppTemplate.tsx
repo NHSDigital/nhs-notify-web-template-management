@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
   FormErrorState,
@@ -67,7 +67,7 @@ export function PreviewNHSAppTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
-                <PreviewTemplateDetails.NHSApp
+                <PreviewTemplateDetailsNhsApp
                   template={initialState}
                   message={html}
                 />
