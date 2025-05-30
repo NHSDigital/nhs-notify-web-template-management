@@ -170,7 +170,7 @@ const homePage = {
   text1:
     'Use this tool to create and submit templates you want to send as messages using NHS Notify.',
   text2: 'You can create templates for:',
-  list: ['NHS App messages', 'emails', 'text messages (SMS)'],
+  channelList: ['NHS App messages', 'emails', 'text messages (SMS)', 'letters'],
   text3:
     'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   pageSubHeading: 'Before you start',
@@ -350,24 +350,47 @@ const submitTemplate = {
 };
 
 const submitLetterTemplate = {
-  ...submitTemplate,
-  pageHeading: 'Submit',
+  proofingFlagDisabled: {
+    goBackButtonText: submitTemplate.goBackButtonText,
+    buttonText: submitTemplate.buttonText,
+    submitChecklistItems: submitTemplate.submitChecklistItems,
+    pageHeading: 'Submit',
+    submitChecklistHeading: 'Before you submit this template',
+    submitChecklistIntroduction: 'Check that the template you uploaded:',
+    submitChecklistParagraphs: [],
+    afterSubmissionHeading: 'After you submit this template',
+    afterSubmissionText: [
+      'Our service team will send you a proof of this letter template by email.',
+      'This email will also tell you what you need to do next.',
+    ],
+    goBackPath: 'preview-letter-template',
+    warningCalloutLabel: 'Important',
+    warningCalloutChecklistIntroduction:
+      "If you need to change this template after you've submitted it:",
+    warningCalloutChecklistItems: [
+      'go back and upload a new letter template',
+      'tell your onboarding manager which template you want to use',
+    ],
+  },
+  pageHeading: 'Approve and submit',
+  intro:
+    'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
   submitChecklistHeading: 'Before you submit this template',
-  submitChecklistIntroduction: 'Check that the template you uploaded:',
-  submitChecklistParagraphs: [],
-  afterSubmissionHeading: 'After you submit this template',
-  afterSubmissionText: [
-    'Our service team will send you a proof of this letter template by email.',
-    'This email will also tell you what you need to do next.',
+  submitChecklistIntroduction: 'You should check that your template proof:',
+  submitChecklistItems: [
+    `appears exactly as you'd like a recipient to receive it`,
+    'uses personalisation in the way you expect',
+    'displays QR codes correctly (if included)',
   ],
-  goBackPath: 'preview-letter-template',
   warningCalloutLabel: 'Important',
-  warningCalloutChecklistIntroduction:
-    "If you need to change this template after you've submitted it:",
+  warningCalloutChecklistIntroduction: `If you need to change this template after you've submitted it:`,
   warningCalloutChecklistItems: [
     'go back and upload a new letter template',
     'tell your onboarding manager which template you want to use',
   ],
+  goBackPath: 'preview-letter-template',
+  goBackButtonText: submitTemplate.goBackButtonText,
+  buttonText: 'Approve and submit',
 };
 
 const copyTemplate = {

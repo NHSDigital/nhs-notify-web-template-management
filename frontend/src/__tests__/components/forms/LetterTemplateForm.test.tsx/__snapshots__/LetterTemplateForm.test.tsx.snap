@@ -7,6 +7,7 @@ exports[`Client-side validation triggers 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/choose-a-template-type"
     >
       <svg
@@ -483,6 +484,7 @@ exports[`renders page one error 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/choose-a-template-type"
     >
       <svg
@@ -965,6 +967,7 @@ exports[`renders page with multiple errors 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/choose-a-template-type"
     >
       <svg
@@ -1483,6 +1486,7 @@ exports[`renders page with preloaded field values 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
+      data-testid="back-to-templates-link"
       href="/templates/choose-a-template-type"
     >
       <svg

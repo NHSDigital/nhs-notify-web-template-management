@@ -23,7 +23,6 @@ import { ProofingQueue } from '../infra/proofing-queue';
 
 export class TemplateClient implements ITemplateClient {
   constructor(
-    private readonly enableLetters: boolean,
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
@@ -79,10 +78,6 @@ export class TemplateClient implements ITemplateClient {
       template,
       owner,
     });
-
-    if (!this.enableLetters) {
-      return failure(ErrorCase.VALIDATION_FAILED, 'Request failed validation');
-    }
 
     const templateValidationResult = await validate(
       $CreateLetterTemplate,
@@ -291,10 +286,6 @@ export class TemplateClient implements ITemplateClient {
       return getResult;
     }
 
-    if (getResult.data.templateType === 'LETTER' && !this.enableLetters) {
-      return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
-    }
-
     const templateDTO = this.mapDatabaseObjectToDTO(getResult.data);
     if (!templateDTO) {
       return failure(ErrorCase.INTERNAL, 'Error retrieving template');
@@ -314,8 +305,7 @@ export class TemplateClient implements ITemplateClient {
 
     const templateDTOs = listResult.data
       .map((template) => this.mapDatabaseObjectToDTO(template))
-      .flatMap((t) => t ?? [])
-      .filter((t) => this.enableLetters || t.templateType !== 'LETTER');
+      .flatMap((t) => t ?? []);
 
     return success(templateDTOs);
   }

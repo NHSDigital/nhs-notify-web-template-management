@@ -17,7 +17,6 @@ module "backend_api" {
     USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.sandbox.id
   }
 
-  enable_letters   = true
   enable_proofing  = true
   letter_suppliers = var.letter_suppliers
 
