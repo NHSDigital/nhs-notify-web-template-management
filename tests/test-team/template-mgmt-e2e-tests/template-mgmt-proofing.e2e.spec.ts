@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-dead-store */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import {
@@ -74,36 +76,34 @@ test.describe('Letter Proofing', () => {
       owner: user.userId,
     };
 
-    let template = await templateStorageHelper.getTemplate(key);
-
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-1`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-2`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-3`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
       });
 
       expect(published).toEqual(true);
@@ -111,7 +111,7 @@ test.describe('Letter Proofing', () => {
 
     // check for expected results
     await expect(async () => {
-      template = await templateStorageHelper.getTemplate(key);
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
         'proof-1': {

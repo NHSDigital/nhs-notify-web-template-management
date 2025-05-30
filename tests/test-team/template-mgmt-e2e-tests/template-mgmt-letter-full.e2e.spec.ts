@@ -67,32 +67,36 @@ test.describe('letter complete e2e journey', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    let template = await templateStorageHelper.getTemplate(key);
-
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: template.files?.pdfTemplate?.currentVersion,
+        path: SimulateGuardDutyScan.pdfTemplatePath(
+          key,
+          template.files?.pdfTemplate?.currentVersion
+        ),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'csv',
-        fileName: template.files?.testDataCsv?.currentVersion,
+        path: SimulateGuardDutyScan.testDataPath(
+          key,
+          template.files?.testDataCsv?.currentVersion
+        ),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
-      template = await templateStorageHelper.getTemplate(key);
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -170,10 +174,8 @@ test.describe('letter complete e2e journey', () => {
 
     await expect(async () => {
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-1`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
       });
 
       expect(published).toEqual(true);
@@ -181,10 +183,8 @@ test.describe('letter complete e2e journey', () => {
 
     await expect(async () => {
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-2`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
       });
 
       expect(published).toEqual(true);
@@ -192,17 +192,15 @@ test.describe('letter complete e2e journey', () => {
 
     await expect(async () => {
       const published = await guardDutyScan.publish({
-        key,
         type: 'NO_THREATS_FOUND',
-        fileType: 'pdf',
-        fileName: `proofs/${user.userId}/${templateId}/proof-3`,
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
-      template = await templateStorageHelper.getTemplate(key);
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
     }).toPass({ timeout: 60_000 });
