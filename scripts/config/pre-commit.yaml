@@ -9,13 +9,10 @@ repos:
       - id: check-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
-        exclude: .+\.cs
       - id: forbid-new-submodules
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix']
-        exclude: package-lock.json
-
     # -   id: ...
   - repo: local
     hooks:
