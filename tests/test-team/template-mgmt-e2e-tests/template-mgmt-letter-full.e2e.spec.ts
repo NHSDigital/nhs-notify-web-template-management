@@ -16,6 +16,9 @@ import { SimulateGuardDutyScan } from '../helpers/use-cases';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
+const getProofRandomSegment = (value?: string) =>
+  value?.replaceAll('-', '').slice(0, 27);
+
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -162,38 +165,53 @@ test.describe('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    // invoke SFTP poll lambda
-    await lambdaClient.send(
-      new InvokeCommand({
-        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-        Payload: JSON.stringify({
-          supplier: 'WTMMOCK',
-        }),
-      })
-    );
-
     await expect(async () => {
+      // invoke SFTP poll lambda
+      await lambdaClient.send(
+        new InvokeCommand({
+          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+          Payload: JSON.stringify({
+            supplier: 'WTMMOCK',
+          }),
+        })
+      );
+
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
         type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
+        path: SimulateGuardDutyScan.proofsPath(
+          key,
+          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_1`
+        ),
+      });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 30_000 });
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
+      const published = await guardDutyScan.publish({
+        type: 'NO_THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(
+          key,
+          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_2`
+        ),
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
+
       const published = await guardDutyScan.publish({
         type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 10_000 });
-
-    await expect(async () => {
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
+        path: SimulateGuardDutyScan.proofsPath(
+          key,
+          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_3`
+        ),
       });
 
       expect(published).toEqual(true);

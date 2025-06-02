@@ -1,8 +1,8 @@
+import { TemplateStorageHelper } from '../db/template-storage-helper';
 import {
   EventBridgeHelper,
   GuardDutyScanResult,
 } from '../eventbridge/eventbridge-helper';
-import { S3Helper } from '../s3/s3-helper';
 
 type TemplateKey = { owner: string; id: string };
 
@@ -13,26 +13,26 @@ type S3GuardDutyEvent = {
 
 export class SimulateGuardDutyScan {
   readonly #eventBridgeHelper: EventBridgeHelper;
-  readonly #s3Helper: S3Helper;
+  readonly #storageHelper: TemplateStorageHelper;
 
   constructor() {
     this.#eventBridgeHelper = new EventBridgeHelper();
-    this.#s3Helper = new S3Helper();
+    this.#storageHelper = new TemplateStorageHelper();
   }
 
   async publish(event: S3GuardDutyEvent): Promise<boolean> {
-    const s3VersionId = await this.#s3Helper.getVersionId(
+    const metadata = await this.#storageHelper.getS3Metadata(
       process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
       event.path
     );
 
-    if (!s3VersionId) {
+    if (!metadata?.VersionId) {
       throw new Error(`Unable to get S3 versionId for ${event.path}`);
     }
 
     this.#eventBridgeHelper.publishGuardDutyEvent(
       event.path,
-      s3VersionId,
+      metadata.VersionId,
       event.type
     );
 

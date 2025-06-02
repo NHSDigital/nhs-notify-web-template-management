@@ -77,8 +77,6 @@ test.describe('Letter Proofing', () => {
     };
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
       const published = await guardDutyScan.publish({
         type: 'NO_THREATS_FOUND',
         path: SimulateGuardDutyScan.proofsPath(key, 'proof-1'),
@@ -88,8 +86,6 @@ test.describe('Letter Proofing', () => {
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
       const published = await guardDutyScan.publish({
         type: 'NO_THREATS_FOUND',
         path: SimulateGuardDutyScan.proofsPath(key, 'proof-2'),
@@ -99,8 +95,6 @@ test.describe('Letter Proofing', () => {
     }).toPass({ timeout: 10_000 });
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
       const published = await guardDutyScan.publish({
         type: 'NO_THREATS_FOUND',
         path: SimulateGuardDutyScan.proofsPath(key, 'proof-3'),
@@ -172,6 +166,7 @@ test.describe('Letter Proofing', () => {
   test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
     const templateId = 'test-template-id-proofing-e2e-failure';
     const user = await authHelper.getTestUser(TestUserId.User1);
+    const guardDutyScan = new SimulateGuardDutyScan();
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
@@ -203,12 +198,22 @@ test.describe('Letter Proofing', () => {
       })
     );
 
-    // check for expected results
+    const key = {
+      owner: user.userId,
+      id: templateId,
+    };
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
+      const published = await guardDutyScan.publish({
+        type: 'THREATS_FOUND',
+        path: SimulateGuardDutyScan.proofsPath(key, 'proof'),
       });
+
+      expect(published).toEqual(true);
+    }).toPass({ timeout: 10_000 }); // check for expected results
+
+    await expect(async () => {
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
         proof: {
