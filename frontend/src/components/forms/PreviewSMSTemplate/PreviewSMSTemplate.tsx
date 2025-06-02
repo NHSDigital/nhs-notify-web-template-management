@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsSms';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
@@ -67,7 +67,7 @@ export function PreviewSMSTemplate({
                 formAttributes: { onSubmit: formValidate },
               }}
               previewDetailsComponent={
-                <PreviewTemplateDetails.Sms
+                <PreviewTemplateDetailsSms
                   template={initialState}
                   message={html}
                 />

@@ -130,6 +130,58 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
               </dd>
             </div>
           </dl>
+          <dl
+            class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+          >
+            <div
+              class="nhsuk-summary-list__row"
+            >
+              <dt
+                class="nhsuk-summary-list__key"
+              >
+                Template proof files
+              </dt>
+              <dd
+                class="nhsuk-summary-list__value"
+              >
+                <ul
+                  class="proofs"
+                >
+                  <li>
+                    <a
+                      data-testid="proof-link_supplier-proof.pdf"
+                      href="/templates/files/undefined/proofs/template-id/supplier-proof.pdf"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <div
+                        class="container"
+                      >
+                        <svg
+                          class="icon"
+                          fill="none"
+                          height="26"
+                          viewBox="0 0 20 26"
+                          width="20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                            fill="#4C6272"
+                          />
+                        </svg>
+                        <p
+                          class="text"
+                        >
+                          supplier-proof.pdf
+                        </p>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
         </div>
         <p>
           If you want to change a submitted or live template, you must create a new template to replace it.

@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`] = `
+exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
     data-testid="preview-message__heading"
   >
-    Example template
+    Example Email template
   </h1>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
@@ -39,101 +39,7 @@ exports[`PreviewTemplateDetails component matches not yet submitted snapshot 1`]
         <dd
           class="nhsuk-summary-list__value"
         >
-          Channel template
-        </dd>
-      </div>
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
-          Status
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        >
-          <strong
-            class="nhsuk-tag"
-          >
-            Not yet submitted
-          </strong>
-        </dd>
-      </div>
-    </dl>
-    <dl
-      class="nhsuk-summary-list preview"
-    >
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
-          <div
-            data-testid="preview__heading-0"
-            id="preview-heading-heading"
-          >
-            Heading
-          </div>
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        >
-          <div
-            class="preview__content"
-            data-testid="preview__content-0"
-            id="preview-content-heading"
-          >
-            Test value-1
-          </div>
-        </dd>
-      </div>
-    </dl>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
-<DocumentFragment>
-  <h1
-    class="preview__heading"
-    data-testid="preview-message__heading"
-  >
-    Example template
-  </h1>
-  <div
-    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
-  >
-    <dl
-      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
-    >
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
-          Template ID
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        >
-          template-id
-        </dd>
-      </div>
-      <div
-        class="nhsuk-summary-list__row"
-      >
-        <dt
-          class="nhsuk-summary-list__key"
-        >
-          Type
-        </dt>
-        <dd
-          class="nhsuk-summary-list__value"
-        >
-          Channel template
+          Email
         </dd>
       </div>
       <div
@@ -156,7 +62,7 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
       </div>
     </dl>
     <dl
-      class="nhsuk-summary-list preview"
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
     >
       <div
         class="nhsuk-summary-list__row"
@@ -166,9 +72,9 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
         >
           <div
             data-testid="preview__heading-0"
-            id="preview-heading-heading"
+            id="preview-heading-subject"
           >
-            Heading
+            Subject
           </div>
         </dt>
         <dd
@@ -177,9 +83,34 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
           <div
             class="preview__content"
             data-testid="preview__content-0"
-            id="preview-content-heading"
+            id="preview-content-subject"
           >
-            Test value-1
+            email subject
+          </div>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-1"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-1"
+            id="preview-content-message"
+          >
+            email content
           </div>
         </dd>
       </div>
@@ -188,13 +119,13 @@ exports[`PreviewTemplateDetails component matches submitted snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetails component renders letter template when testDataCsv is not present 1`] = `
+exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proofs are registered on the template, proof section is hidden (this is unexpected) 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
     data-testid="preview-message__heading"
   >
-    Example template
+    Example letter
   </h1>
   <div
     class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
@@ -227,7 +158,7 @@ exports[`PreviewTemplateDetails component renders letter template when testDataC
         <dd
           class="nhsuk-summary-list__value"
         >
-          Standard letter - French
+          Standard letter
         </dd>
       </div>
       <div
@@ -242,9 +173,9 @@ exports[`PreviewTemplateDetails component renders letter template when testDataC
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag nhsuk-tag--grey"
+            class="nhsuk-tag nhsuk-tag--orange"
           >
-            Submitted
+            Proof available
           </strong>
         </dd>
       </div>
@@ -288,7 +219,225 @@ exports[`PreviewTemplateDetails component renders letter template when testDataC
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetails component renders letter template when testPersonalisationInputFile is set 1`] = `
+exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, proofs failing virus scan are not displayed 1`] = `
+<DocumentFragment>
+  <h1
+    class="preview__heading"
+    data-testid="preview-message__heading"
+  >
+    Example letter
+  </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Standard letter
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--orange"
+          >
+            Proof available
+          </strong>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="container"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              height="26"
+              viewBox="0 0 20 26"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                fill="#4C6272"
+              />
+            </svg>
+            <p
+              class="text"
+            >
+              file.pdf
+            </p>
+          </div>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Test personalisation file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="container"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              height="26"
+              viewBox="0 0 20 26"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                fill="#4C6272"
+              />
+            </svg>
+            <p
+              class="text"
+            >
+              file.csv
+            </p>
+          </div>
+        </dd>
+      </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template proof files
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <ul
+            class="proofs"
+          >
+            <li>
+              <a
+                data-testid="proof-link_a.pdf"
+                href="/templates/files/undefined/proofs/template-id/a.pdf"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    a.pdf
+                  </p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a
+                data-testid="proof-link_b.pdf"
+                href="/templates/files/undefined/proofs/template-id/b.pdf"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div
+                  class="container"
+                >
+                  <svg
+                    class="icon"
+                    fill="none"
+                    height="26"
+                    viewBox="0 0 20 26"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                      fill="#4C6272"
+                    />
+                  </svg>
+                  <p
+                    class="text"
+                  >
+                    b.pdf
+                  </p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is absent 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
@@ -342,9 +491,109 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag nhsuk-tag--grey"
+            class="nhsuk-tag nhsuk-tag--blue"
           >
-            Submitted
+            Checking files
+          </strong>
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template file
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="container"
+          >
+            <svg
+              class="icon"
+              fill="none"
+              height="26"
+              viewBox="0 0 20 26"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0V26H20V6.59375L19.7188 6.28125L13.7188 0.28125L13.4062 0H0ZM2 2H12V8H18V24H2V2ZM14 3.4375L16.5625 6H14V3.4375Z"
+                fill="#4C6272"
+              />
+            </svg>
+            <p
+              class="text"
+            >
+              file.pdf
+            </p>
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
+<DocumentFragment>
+  <h1
+    class="preview__heading"
+    data-testid="preview-message__heading"
+  >
+    Example template
+  </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Standard letter - French
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag nhsuk-tag--blue"
+          >
+            Checking files
           </strong>
         </dd>
       </div>
@@ -423,7 +672,7 @@ exports[`PreviewTemplateDetails component renders letter template when testPerso
 </DocumentFragment>
 `;
 
-exports[`PreviewTemplateDetails component renders without content preview 1`] = `
+exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
 <DocumentFragment>
   <h1
     class="preview__heading"
@@ -462,7 +711,101 @@ exports[`PreviewTemplateDetails component renders without content preview 1`] = 
         <dd
           class="nhsuk-summary-list__value"
         >
-          Channel template
+          NHS App message
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Status
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <strong
+            class="nhsuk-tag"
+          >
+            Not yet submitted
+          </strong>
+        </dd>
+      </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          <div
+            data-testid="preview__heading-0"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+            id="preview-content-message"
+          >
+            app content
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
+<DocumentFragment>
+  <h1
+    class="preview__heading"
+    data-testid="preview-message__heading"
+  >
+    SMS template
+  </h1>
+  <div
+    class="nhsuk-width-container nhsuk-u-margin-bottom-6 nhsuk-body-m"
+  >
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Template ID
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          template-id
+        </dd>
+      </div>
+      <div
+        class="nhsuk-summary-list__row"
+      >
+        <dt
+          class="nhsuk-summary-list__key"
+        >
+          Type
+        </dt>
+        <dd
+          class="nhsuk-summary-list__value"
+        >
+          Text message (SMS)
         </dd>
       </div>
       <div
@@ -483,20 +826,33 @@ exports[`PreviewTemplateDetails component renders without content preview 1`] = 
           </strong>
         </dd>
       </div>
+    </dl>
+    <dl
+      class="nhsuk-summary-list nhsuk-u-margin-bottom-4 preview"
+    >
       <div
         class="nhsuk-summary-list__row"
       >
         <dt
           class="nhsuk-summary-list__key"
         >
-          Meta
+          <div
+            data-testid="preview__heading-0"
+            id="preview-heading-message"
+          >
+            Message
+          </div>
         </dt>
         <dd
           class="nhsuk-summary-list__value"
         >
-          <p>
-            metadata
-          </p>
+          <div
+            class="preview__content"
+            data-testid="preview__content-0"
+            id="preview-content-message"
+          >
+            SMS content
+          </div>
         </dd>
       </div>
     </dl>

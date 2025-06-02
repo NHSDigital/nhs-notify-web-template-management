@@ -26,7 +26,7 @@ type TypeSpecificProperties = {
   files?: {
     pdfTemplate?: File;
     testDataCsv?: File;
-    proofs?: Record<string, File>;
+    proofs?: Record<string, Pick<File, 'fileName' | 'virusScanStatus'>>;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];

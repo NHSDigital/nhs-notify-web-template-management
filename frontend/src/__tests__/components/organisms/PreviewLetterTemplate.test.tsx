@@ -81,6 +81,38 @@ describe('PreviewLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
+  it('matches snapshot when template status is PROOF_AVAILABLE', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'PROOF_AVAILABLE',
+          letterType: 'x1',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+              },
+            },
+          },
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
   it('matches snapshot when template status is NOT_YET_SUBMITTED', () => {
     const container = render(
       <PreviewLetterTemplate
@@ -96,6 +128,12 @@ describe('PreviewLetterTemplate component', () => {
               fileName: 'file.pdf',
               currentVersion: 'b',
               virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+              },
             },
           },
           createdAt: '2025-04-02T09:33:25.729Z',

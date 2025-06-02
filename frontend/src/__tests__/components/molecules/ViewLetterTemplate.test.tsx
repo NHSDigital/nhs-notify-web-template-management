@@ -22,6 +22,12 @@ describe('ViewLetterTemplate component', () => {
                 currentVersion: 'a',
                 virusScanStatus: 'PASSED',
               },
+              proofs: {
+                'supplier-proof.pdf': {
+                  fileName: 'supplier-proof.pdf',
+                  virusScanStatus: 'PASSED',
+                },
+              },
             },
           } satisfies LetterTemplate
         }

@@ -231,6 +231,25 @@ const previewLetterFooter: Partial<Record<TemplateStatus, string[]>> = {
   ],
 };
 
+const previewLetterPreSubmissionText = {
+  ifDoesNotMatch: {
+    summary: 'If this proof does not match the template',
+    paragraphs: [
+      "If the content or formatting of your proof does not match the template you originally provided, contact NHS Notify to describe what's wrong with the proof.",
+      'NHS Notify will make the relevant changes and reproof your template.',
+      'It can take 5 to 10 working days to get another proof of your template.',
+      "If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.",
+    ],
+  },
+  ifNeedsEdit: {
+    summary: 'If you need to edit the template',
+    paragraph:
+      'Edit your original template on your computer, convert it to PDF and then upload as a new template.',
+  },
+  ifYouAreHappyParagraph:
+    "If you're happy with this proof, submit the template and NHS Notify will use it to set up the messages you want to send.",
+};
+
 const previewLetterTemplate = {
   pageTitle: generatePageTitle('Preview letter template'),
   backLinkText: backToAllTemplates,
@@ -245,6 +264,7 @@ const previewLetterTemplate = {
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your test personalisation file',
+  preSubmissionText: previewLetterPreSubmissionText,
 };
 
 const previewNHSAppTemplate = {
@@ -302,9 +322,12 @@ const previewSMSTemplate = {
 
 const previewTemplateDetails = {
   rowHeadings: {
+    templateFile: 'Template file',
     templateId: 'Template ID',
-    templateType: 'Type',
+    templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
+    templateType: 'Type',
+    testPersonalisationFile: 'Test personalisation file',
   },
 };
 

@@ -1,11 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { PreviewTemplateDetails } from '@molecules/PreviewTemplateDetails';
+import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
-import { BackLink, ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
+import {
+  BackLink,
+  Details,
+  ErrorMessage,
+  ErrorSummary,
+} from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
@@ -15,17 +20,19 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-}: Readonly<{ template: LetterTemplate }>) {
+  user,
+}: Readonly<{ template: LetterTemplate; user?: string }>) {
   const {
     backLinkText,
     errorHeading,
     footer,
-    submitText,
+    preSubmissionText,
     requestProofText,
-    virusScanError,
-    virusScanErrorAction,
+    submitText,
     validationError,
     validationErrorAction,
+    virusScanError,
+    virusScanErrorAction,
   } = content.components.previewLetterTemplate;
 
   const basePath = getBasePath();
@@ -78,7 +85,33 @@ export function PreviewLetterTemplate({
                 ))}
               </ErrorSummary>
             )}
-            <PreviewTemplateDetails.Letter template={template} />
+            <PreviewTemplateDetailsLetter template={template} user={user} />
+
+            {template.templateStatus === 'PROOF_AVAILABLE' ? (
+              <section className='nhsuk-u-reading-width'>
+                <Details>
+                  <Details.Summary>
+                    {preSubmissionText.ifDoesNotMatch.summary}
+                  </Details.Summary>
+                  <Details.Text>
+                    {preSubmissionText.ifDoesNotMatch.paragraphs.map(
+                      (text, i) => (
+                        <p key={i}>{text}</p>
+                      )
+                    )}
+                  </Details.Text>
+                </Details>
+                <Details>
+                  <Details.Summary>
+                    {preSubmissionText.ifNeedsEdit.summary}
+                  </Details.Summary>
+                  <Details.Text>
+                    <p>{preSubmissionText.ifNeedsEdit.paragraph}</p>
+                  </Details.Text>
+                </Details>
+                <p>{preSubmissionText.ifYouAreHappyParagraph}</p>
+              </section>
+            ) : null}
 
             {footerText.length > 0 ? (
               <div
