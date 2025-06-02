@@ -5,7 +5,12 @@ import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/Prev
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { getBasePath } from '@utils/get-base-path';
-import { BackLink, ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
+import {
+  BackLink,
+  Details,
+  ErrorMessage,
+  ErrorSummary,
+} from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
@@ -21,12 +26,13 @@ export function PreviewLetterTemplate({
     backLinkText,
     errorHeading,
     footer,
-    submitText,
+    preSubmissionText,
     requestProofText,
-    virusScanError,
-    virusScanErrorAction,
+    submitText,
     validationError,
     validationErrorAction,
+    virusScanError,
+    virusScanErrorAction,
   } = content.components.previewLetterTemplate;
 
   const basePath = getBasePath();
@@ -80,6 +86,32 @@ export function PreviewLetterTemplate({
               </ErrorSummary>
             )}
             <PreviewTemplateDetailsLetter template={template} user={user} />
+
+            {template.templateStatus === 'PROOF_AVAILABLE' ? (
+              <>
+                <Details>
+                  <Details.Summary>
+                    {preSubmissionText.ifDoesNotMatch.summary}
+                  </Details.Summary>
+                  <Details.Text>
+                    {preSubmissionText.ifDoesNotMatch.paragraphs.map(
+                      (text, i) => (
+                        <p key={i}>{text}</p>
+                      )
+                    )}
+                  </Details.Text>
+                </Details>
+                <Details>
+                  <Details.Summary>
+                    {preSubmissionText.ifNeedsEdit.summary}
+                  </Details.Summary>
+                  <Details.Text>
+                    <p>{preSubmissionText.ifNeedsEdit.paragraph}</p>
+                  </Details.Text>
+                </Details>
+                <p>{preSubmissionText.ifYouAreHappyParagraph}</p>
+              </>
+            ) : null}
 
             {footerText.length > 0 ? (
               <div

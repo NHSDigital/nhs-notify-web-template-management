@@ -173,7 +173,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag nhsuk-tag--yellow"
+            class="nhsuk-tag nhsuk-tag--orange"
           >
             Proof available
           </strong>
@@ -273,7 +273,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
           class="nhsuk-summary-list__value"
         >
           <strong
-            class="nhsuk-tag nhsuk-tag--yellow"
+            class="nhsuk-tag nhsuk-tag--orange"
           >
             Proof available
           </strong>
