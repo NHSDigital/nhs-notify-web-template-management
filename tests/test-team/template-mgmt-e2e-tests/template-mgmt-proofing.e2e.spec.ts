@@ -108,16 +108,16 @@ test.describe('Letter Proofing', () => {
       const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
-        'proof-1': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-1.pdf`,
+        'proof-1.pdf': {
+          fileName: 'proof-1.pdf',
           virusScanStatus: 'PASSED',
         },
-        'proof-2': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-2.pdf`,
+        'proof-2.pdf': {
+          fileName: 'proof-2.pdf',
           virusScanStatus: 'PASSED',
         },
-        'proof-3': {
-          fileName: `proofs/${user.userId}/${templateId}/proof-3.pdf`,
+        'proof-3.pdf': {
+          fileName: 'proof-3.pdf',
           virusScanStatus: 'PASSED',
         },
       });
@@ -216,8 +216,8 @@ test.describe('Letter Proofing', () => {
       const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
-        proof: {
-          fileName: `proofs/${user.userId}/${templateId}/proof.pdf`,
+        'proof.pdf': {
+          fileName: `proof.pdf`,
           virusScanStatus: 'FAILED',
         },
       });

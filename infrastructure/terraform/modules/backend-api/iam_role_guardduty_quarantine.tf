@@ -73,10 +73,10 @@ data "aws_iam_policy_document" "guardduty_quarantine" {
     sid    = "AllowPostScanTag"
     effect = "Allow"
     actions = [
-      "S3:PutObjectTagging",
-      "S3:GetObjectTagging",
-      "S3:PutObjectVersionTagging",
-      "S3:GetObjectVersionTagging"
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:PutObjectVersionTagging",
+      "s3:GetObjectVersionTagging"
     ]
 
     resources = [

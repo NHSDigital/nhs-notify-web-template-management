@@ -850,8 +850,7 @@ describe('templateRepository', () => {
       await templateRepository.setLetterFileVirusScanStatusForProof(
         'template-owner',
         'template-id',
-        'pdf-template',
-        'path/pdf-template.pdf',
+        'pdf-template.pdf',
         'PASSED'
       );
 
@@ -863,14 +862,14 @@ describe('templateRepository', () => {
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
-          '#fileName': 'pdf-template',
+          '#fileName': 'pdf-template.pdf',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED',
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': new Date().toISOString(),
           ':virusScanResult': {
-            fileName: 'path/pdf-template.pdf',
+            fileName: 'pdf-template.pdf',
             virusScanStatus: 'PASSED',
           },
         },
@@ -901,8 +900,7 @@ describe('templateRepository', () => {
       await templateRepository.setLetterFileVirusScanStatusForProof(
         'template-owner',
         'template-id',
-        'pdf-template',
-        'path/pdf-template.pdf',
+        'pdf-template.pdf',
         'FAILED'
       );
 
@@ -914,14 +912,14 @@ describe('templateRepository', () => {
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
         ExpressionAttributeNames: {
-          '#fileName': 'pdf-template',
+          '#fileName': 'pdf-template.pdf',
         },
         ExpressionAttributeValues: {
           ':templateStatusDeleted': 'DELETED',
           ':templateStatusSubmitted': 'SUBMITTED',
           ':updatedAt': new Date().toISOString(),
           ':virusScanResult': {
-            fileName: 'path/pdf-template.pdf',
+            fileName: 'pdf-template.pdf',
             virusScanStatus: 'FAILED',
           },
         },
@@ -944,7 +942,6 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'path/pdf-template.pdf',
           'PASSED'
         )
       ).resolves.not.toThrow();
@@ -972,7 +969,6 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'path/pdf-template.pdf',
           'PASSED'
         )
       ).resolves.not.toThrow();
@@ -989,7 +985,6 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'path/pdf-template.pdf',
           'PASSED'
         )
       ).rejects.toThrow('Something went wrong');
@@ -1011,7 +1006,6 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'path/pdf-template.pdf',
           'PASSED'
         )
       ).rejects.toThrow('Something went wrong');

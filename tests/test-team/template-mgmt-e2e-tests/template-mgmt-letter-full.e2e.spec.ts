@@ -227,6 +227,15 @@ test.describe('letter complete e2e journey', () => {
       await page.reload();
 
       await expect(previewTemplatePage.continueButton).toBeVisible();
+
+      const pdfHrefs = await previewTemplatePage.pdfLinks.evaluateAll(
+        (anchors) => anchors.map((a) => 'href' in a && a.href)
+      );
+
+      expect(pdfHrefs.length).toBeGreaterThan(0);
+
+      for (const href of pdfHrefs) expect(href).toContain(templateId);
+
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
 
