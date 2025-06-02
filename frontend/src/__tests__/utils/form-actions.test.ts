@@ -16,12 +16,12 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
 } from '@utils/form-actions';
-import { getAccessTokenServer } from '@utils/amplify-utils';
+import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 const mockedTemplateClient = jest.mocked(templateClient);
-const authIdTokenServerMock = jest.mocked(getAccessTokenServer);
+const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
@@ -29,7 +29,10 @@ jest.mock('nhs-notify-backend-client/src/template-api-client');
 describe('form-actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    authIdTokenServerMock.mockResolvedValueOnce('token');
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: 'token',
+      userSub: 'sub',
+    });
   });
 
   test('createTemplate', async () => {
@@ -89,7 +92,10 @@ describe('form-actions', () => {
 
   test('createTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      userSub: undefined,
+    });
 
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
@@ -249,7 +255,10 @@ describe('form-actions', () => {
 
   test('createLetterTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      userSub: undefined,
+    });
 
     const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
@@ -337,7 +346,10 @@ describe('form-actions', () => {
 
   test('saveTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      userSub: undefined,
+    });
 
     const updateTemplateInput: NHSAppTemplate = {
       id: 'id',
@@ -400,7 +412,10 @@ describe('form-actions', () => {
 
   test('getTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      userSub: undefined,
+    });
 
     await expect(getTemplate('id')).rejects.toThrow(
       'Failed to get access token'
@@ -445,7 +460,10 @@ describe('form-actions', () => {
 
   test('getTemplates - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
-    authIdTokenServerMock.mockResolvedValueOnce(undefined);
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: undefined,
+      userSub: undefined,
+    });
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
   });
@@ -533,7 +551,10 @@ describe('form-actions', () => {
 
     test('submitTemplate - should throw error when no token', async () => {
       authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        userSub: undefined,
+      });
 
       await expect(setTemplateToSubmitted('id')).rejects.toThrow(
         'Failed to get access token'
@@ -577,7 +598,10 @@ describe('form-actions', () => {
 
     test('deleteTemplate - should throw error when no token', async () => {
       authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        userSub: undefined,
+      });
 
       await expect(setTemplateToDeleted('id')).rejects.toThrow(
         'Failed to get access token'
@@ -639,7 +663,10 @@ describe('form-actions', () => {
 
     test('requestTemplateProof - should throw error when no token', async () => {
       authIdTokenServerMock.mockReset();
-      authIdTokenServerMock.mockResolvedValueOnce(undefined);
+      authIdTokenServerMock.mockResolvedValueOnce({
+        accessToken: undefined,
+        userSub: undefined,
+      });
 
       await expect(requestTemplateProof('id')).rejects.toThrow(
         'Failed to get access token'

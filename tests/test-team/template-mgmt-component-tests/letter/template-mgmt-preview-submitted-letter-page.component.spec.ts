@@ -19,13 +19,28 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 
 function createTemplates(owner: string) {
+  const validBase = TemplateFactory.createLetterTemplate(
+    'valid-letter-template-preview-submitted',
+    owner,
+    'valid-email-template-preview-submitted',
+    'SUBMITTED'
+  );
+
+  const valid: Template = {
+    ...validBase,
+    files: {
+      ...validBase.files,
+      proofs: {
+        'first.pdf': {
+          virusScanStatus: 'PASSED',
+          fileName: 'first.pdf',
+        },
+      },
+    },
+  };
+
   return {
-    valid: TemplateFactory.createLetterTemplate(
-      'valid-letter-template-preview-submitted',
-      owner,
-      'valid-email-template-preview-submitted',
-      'SUBMITTED'
-    ),
+    valid,
     invalid: {
       ...TemplateFactory.createLetterTemplate(
         'invalid-letter-template-preview-submitted',

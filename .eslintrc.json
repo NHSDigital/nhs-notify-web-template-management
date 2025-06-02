@@ -89,12 +89,13 @@
     },
     {
       "files": [
-        "*.test.{ts,tsx}"
+        "*.{test,spec}.{ts,tsx}"
       ],
       "rules": {
         "unicorn/no-useless-undefined": "off",
         "unicorn/consistent-function-scoping": "off",
-        "max-classes-per-file": "off"
+        "max-classes-per-file": "off",
+        "sonarjs/no-nested-functions": "off"
       }
     }
   ]
