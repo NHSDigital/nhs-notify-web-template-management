@@ -781,58 +781,62 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             </div>
           </dl>
         </div>
-        <details
-          class="nhsuk-details"
+        <section
+          class="nhsuk-u-reading-width"
         >
-          <summary
-            class="nhsuk-details__summary"
+          <details
+            class="nhsuk-details"
           >
-            <span
-              class="nhsuk-details__summary-text"
+            <summary
+              class="nhsuk-details__summary"
             >
-              If this proof does not match the template
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-          >
-            <p>
-              If the content or formatting of your proof does not match the template you originally provided, contact NHS Notify to describe what's wrong with the proof.
-            </p>
-            <p>
-              NHS Notify will make the relevant changes and reproof your template.
-            </p>
-            <p>
-              It can take 5 to 10 working days to get another proof of your template.
-            </p>
-            <p>
-              If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.
-            </p>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                If this proof does not match the template
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
             >
-              If you need to edit the template
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
+              <p>
+                If the content or formatting of your proof does not match the template you originally provided, contact NHS Notify to describe what's wrong with the proof.
+              </p>
+              <p>
+                NHS Notify will make the relevant changes and reproof your template.
+              </p>
+              <p>
+                It can take 5 to 10 working days to get another proof of your template.
+              </p>
+              <p>
+                If any personalisation does not appear how you expect, you may need to check if you're using the correct personalisation fields or if your example data is correct.
+              </p>
+            </div>
+          </details>
+          <details
+            class="nhsuk-details"
           >
-            <p>
-              Edit your original template on your computer, convert it to PDF and then upload as a new template.
-            </p>
-          </div>
-        </details>
-        <p>
-          If you're happy with this proof, submit the template and NHS Notify will use it to set up the messages you want to send.
-        </p>
+            <summary
+              class="nhsuk-details__summary"
+            >
+              <span
+                class="nhsuk-details__summary-text"
+              >
+                If you need to edit the template
+              </span>
+            </summary>
+            <div
+              class="nhsuk-details__text"
+            >
+              <p>
+                Edit your original template on your computer, convert it to PDF and then upload as a new template.
+              </p>
+            </div>
+          </details>
+          <p>
+            If you're happy with this proof, submit the template and NHS Notify will use it to set up the messages you want to send.
+          </p>
+        </section>
         <a
           aria-disabled="false"
           class="nhsuk-button"

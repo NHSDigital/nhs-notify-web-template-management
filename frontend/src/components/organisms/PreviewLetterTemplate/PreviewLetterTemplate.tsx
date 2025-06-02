@@ -88,7 +88,7 @@ export function PreviewLetterTemplate({
             <PreviewTemplateDetailsLetter template={template} user={user} />
 
             {template.templateStatus === 'PROOF_AVAILABLE' ? (
-              <>
+              <section className='nhsuk-u-reading-width'>
                 <Details>
                   <Details.Summary>
                     {preSubmissionText.ifDoesNotMatch.summary}
@@ -110,7 +110,7 @@ export function PreviewLetterTemplate({
                   </Details.Text>
                 </Details>
                 <p>{preSubmissionText.ifYouAreHappyParagraph}</p>
-              </>
+              </section>
             ) : null}
 
             {footerText.length > 0 ? (
