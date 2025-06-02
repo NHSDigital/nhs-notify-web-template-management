@@ -130,7 +130,7 @@ describe('templateStatusToColourMappings', () => {
         PENDING_VALIDATION: 'blue',
         VIRUS_SCAN_FAILED: 'red',
         VALIDATION_FAILED: 'red',
-        PROOF_AVAILABLE: 'yellow',
+        PROOF_AVAILABLE: 'orange',
       };
 
       expect(templateStatusToColourMappings(templateStatus)).toEqual(
