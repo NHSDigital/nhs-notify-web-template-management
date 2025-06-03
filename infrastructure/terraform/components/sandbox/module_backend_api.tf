@@ -24,4 +24,6 @@ module "backend_api" {
   dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
 
   send_to_firehose = false
+
+  enable_event_stream = true
 }

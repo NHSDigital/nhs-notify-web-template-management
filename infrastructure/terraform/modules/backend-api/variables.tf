@@ -76,6 +76,12 @@ variable "enable_proofing" {
   description = "Enable proofing feature flag"
 }
 
+variable "enable_event_stream" {
+  type        = bool
+  description = "Enable DynamoDB streaming to SQS?"
+  default     = false
+}
+
 variable "kms_key_arn" {
   type        = string
   description = "KMS Key ARN"
