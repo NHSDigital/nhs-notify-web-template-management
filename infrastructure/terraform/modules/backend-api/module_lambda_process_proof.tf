@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "process_proof" {
   }
 
   statement {
-    sid    = "AllowKMSAccessDynamoDB"
+    sid    = "AllowKMSAccess"
     effect = "Allow"
 
     actions = [
@@ -73,20 +73,6 @@ data "aws_iam_policy_document" "process_proof" {
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
-    ]
-
-    resources = [
-      var.kms_key_arn,
-    ]
-  }
-
-  statement {
-    sid    = "AllowKMSAccessSQSDLQ"
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey",
     ]
 
     resources = [

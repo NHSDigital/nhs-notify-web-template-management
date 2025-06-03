@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
   }
 
   statement {
-    sid    = "AllowDdbKMSAccess"
+    sid    = "AllowKMSAccess"
     effect = "Allow"
 
     actions = [
@@ -75,20 +75,6 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
 
     resources = [
       var.kms_key_arn
-    ]
-  }
-
-  statement {
-    sid    = "AllowSqsKMSAccess"
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey",
-    ]
-
-    resources = [
-      var.kms_key_arn,
     ]
   }
 }
