@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
     ]
 
     resources = [
-      local.dynamodb_kms_key_arn
+      var.kms_key_arn
     ]
   }
 

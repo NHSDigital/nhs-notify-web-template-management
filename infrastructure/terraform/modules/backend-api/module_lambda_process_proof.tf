@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "process_proof" {
     ]
 
     resources = [
-      local.dynamodb_kms_key_arn,
+      var.kms_key_arn,
     ]
   }
 

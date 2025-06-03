@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "update_template_lambda_policy" {
     ]
 
     resources = [
-      local.dynamodb_kms_key_arn
+      var.kms_key_arn
     ]
   }
 }

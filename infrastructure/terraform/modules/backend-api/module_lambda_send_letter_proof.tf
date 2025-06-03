@@ -124,7 +124,7 @@ data "aws_iam_policy_document" "send_letter_proof" {
     ]
 
     resources = [
-      local.dynamodb_kms_key_arn
+      var.kms_key_arn
     ]
   }
 
