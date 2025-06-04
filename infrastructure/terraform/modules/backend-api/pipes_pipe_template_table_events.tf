@@ -1,9 +1,10 @@
 resource "aws_pipes_pipe" "template_table_events" {
-  name          = "${local.csi}-template-table-events"
-  role_arn      = aws_iam_role.pipe_template_table_events.arn
-  source        = aws_dynamodb_table.templates.stream_arn
-  target        = module.sqs_template_table_events.sqs_queue_arn
-  desired_state = var.enable_event_stream ? "RUNNING" : "STOPPED"
+  name               = "${local.csi}-template-table-events"
+  role_arn           = aws_iam_role.pipe_template_table_events.arn
+  source             = aws_dynamodb_table.templates.stream_arn
+  target             = module.sqs_template_table_events.sqs_queue_arn
+  desired_state      = var.enable_event_stream ? "RUNNING" : "STOPPED"
+  kms_key_identifier = var.kms_key_arn
 
   source_parameters {
     dynamodb_stream_parameters {
@@ -16,6 +17,19 @@ resource "aws_pipes_pipe" "template_table_events" {
       message_group_id = "$.dynamodb.Keys.id.S"
     }
   }
+
+  log_configuration {
+    level = "ERROR"
+    cloudwatch_logs_log_destination {
+      log_group_arn = aws_cloudwatch_log_group.pipe_template_table_events.arn
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "pipe_template_table_events" {
+  name              = "/aws/vendedlogs/pipes/${local.csi}-template-table-events"
+  kms_key_id        = var.kms_key_arn
+  retention_in_days = var.log_retention_in_days
 }
 
 resource "aws_iam_role" "pipe_template_table_events" {
