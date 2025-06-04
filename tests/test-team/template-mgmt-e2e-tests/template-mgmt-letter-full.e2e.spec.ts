@@ -13,6 +13,11 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { SimulateGuardDutyScan } from '../helpers/use-cases';
+import {
+  assertPdfTemplateGuardDutyEvent,
+  assertProofGuardDutyEvent,
+  assertTestDataGuardDutyEvent,
+} from './template-mgmt-letter-guardduty.steps';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
@@ -70,33 +75,15 @@ test.describe('letter complete e2e journey', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
 
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.pdfTemplatePath(
-          key,
-          template.files?.pdfTemplate?.currentVersion
-        ),
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 10_000 });
-
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.testDataPath(
-          key,
-          template.files?.testDataCsv?.currentVersion
-        ),
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 10_000 });
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -165,62 +152,40 @@ test.describe('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    await expect(async () => {
-      // invoke SFTP poll lambda
-      await lambdaClient.send(
-        new InvokeCommand({
-          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-          Payload: JSON.stringify({
-            supplier: 'WTMMOCK',
-          }),
-        })
-      );
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
+      })
+    );
 
-      const template = await templateStorageHelper.getTemplate(key);
+    const template = await templateStorageHelper.getTemplate(key);
 
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(
-          key,
-          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_1`
-        ),
-      });
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_1.pdf`,
+    });
 
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 30_000 });
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_2.pdf`,
+    });
 
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(
-          key,
-          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_2`
-        ),
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 10_000 });
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_3.pdf`,
+    });
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
+      const { templateStatus } = await templateStorageHelper.getTemplate(key);
 
-      const published = await guardDutyScan.publish({
-        type: 'NO_THREATS_FOUND',
-        path: SimulateGuardDutyScan.proofsPath(
-          key,
-          `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_3`
-        ),
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout: 10_000 });
-
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(key);
-
-      expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
+      expect(templateStatus).toEqual('PROOF_AVAILABLE');
     }).toPass({ timeout: 60_000 });
 
     await expect(async () => {

@@ -4,8 +4,6 @@ import {
   GuardDutyScanResult,
 } from '../eventbridge/eventbridge-helper';
 
-type TemplateKey = { owner: string; id: string };
-
 type S3GuardDutyEvent = {
   type: GuardDutyScanResult;
   path: string;
@@ -37,17 +35,5 @@ export class SimulateGuardDutyScan {
     );
 
     return true;
-  }
-
-  static testDataPath(key: TemplateKey, fileName?: string): string {
-    return `test-data/${key.owner}/${key.id}/${fileName}.csv`;
-  }
-
-  static pdfTemplatePath(key: TemplateKey, fileName?: string): string {
-    return `pdf-template/${key.owner}/${key.id}/${fileName}.pdf`;
-  }
-
-  static proofsPath(key: TemplateKey, fileName: string): string {
-    return `proofs/${key.id}/${fileName}.pdf`;
   }
 }
