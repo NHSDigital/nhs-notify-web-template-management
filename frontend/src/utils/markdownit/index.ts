@@ -1,9 +1,17 @@
+/* eslint-disable sonarjs/no-commented-code */
 import MarkdownIt from 'markdown-it';
 import { lineBreak } from './plugins/line-break';
 
 export class MarkdownItWrapper extends MarkdownIt {
   constructor() {
     super('zero');
+
+    // rendered links should open in a new tab
+    this.renderer.rules.link_open = (tokens, idx) => {
+      const href = tokens[idx].attrGet('href');
+
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">`;
+    };
   }
 
   /**
