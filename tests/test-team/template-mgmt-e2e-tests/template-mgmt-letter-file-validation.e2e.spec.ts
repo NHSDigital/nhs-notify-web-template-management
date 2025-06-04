@@ -328,7 +328,6 @@ test.describe('letter file validation', () => {
     await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'UNSUPPORTED',
-      timeout: 30_000,
     });
 
     await assertTestDataGuardDutyEvent({

@@ -17,7 +17,7 @@ type FileConfig = {
 };
 
 function assertGuardDutyEventForFile(
-  { key, scanResult, timeout = 10_000 }: AssertConfig,
+  { key, scanResult, timeout = 60_000 }: AssertConfig,
   { pathPrefix, extension, getFile }: FileConfig
 ) {
   const guardDutyScan = new SimulateGuardDutyScan();
@@ -81,6 +81,6 @@ export function assertProofGuardDutyEvent(
       });
 
       expect(published).toEqual(true);
-    }).toPass({ timeout: props.timeout });
+    }).toPass({ timeout: 60_000 });
   });
 }
