@@ -1,5 +1,6 @@
 act 0.2.64
 gitleaks 8.24.0
+python 3.13.2
 jq 1.6
 nodejs 20.18.2
 pre-commit 3.6.0
