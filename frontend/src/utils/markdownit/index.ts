@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-commented-code */
 import MarkdownIt from 'markdown-it';
 import { lineBreak } from './plugins/line-break';
 
