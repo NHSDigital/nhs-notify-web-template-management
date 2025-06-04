@@ -12,7 +12,6 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
-import { SimulateGuardDutyScan } from '../helpers/use-cases';
 import {
   assertPdfTemplateGuardDutyEvent,
   assertProofGuardDutyEvent,
@@ -27,7 +26,6 @@ const getProofRandomSegment = (value?: string) =>
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
-  const guardDutyScan = new SimulateGuardDutyScan();
 
   let user: TestUser;
 
