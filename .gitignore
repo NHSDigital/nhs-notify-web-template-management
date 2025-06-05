@@ -90,3 +90,5 @@ lambdas/backend-api/src/email/email-template.json
 
 # vscode
 .vscode/settings.local.json
+
+test-runs

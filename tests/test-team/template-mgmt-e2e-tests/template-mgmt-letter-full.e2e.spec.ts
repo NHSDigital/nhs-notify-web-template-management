@@ -20,9 +20,6 @@ import {
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-const getProofRandomSegment = (value?: string) =>
-  value?.replaceAll('-', '').slice(0, 27);
-
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -162,22 +159,24 @@ test.describe('letter complete e2e journey', () => {
 
     const template = await templateStorageHelper.getTemplate(key);
 
+    const batchId = `${key.id}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+
     await assertProofGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
-      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_1.pdf`,
+      fileName: `${batchId}_proof_1.pdf`,
     });
 
     await assertProofGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
-      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_2.pdf`,
+      fileName: `${batchId}_proof_2.pdf`,
     });
 
     await assertProofGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
-      fileName: `${key.id}-0000000000000_${getProofRandomSegment(template.files?.pdfTemplate?.currentVersion)}_proof_3.pdf`,
+      fileName: `${batchId}_proof_3.pdf`,
     });
 
     await expect(async () => {

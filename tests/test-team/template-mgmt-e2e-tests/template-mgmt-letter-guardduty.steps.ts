@@ -4,24 +4,26 @@ import { GuardDutyScanResult } from '../helpers/eventbridge/eventbridge-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { Template, TemplateFile } from '../helpers/types';
 
-type AssertConfig = {
+type EventConfig = {
   key: { id: string; owner: string };
   scanResult: GuardDutyScanResult;
-  timeout?: number;
 };
 
 type FileConfig = {
   pathPrefix: 'pdf-template' | 'test-data' | 'proofs';
-  extension: '.pdf' | '.csv';
   getFile: (template: Template) => TemplateFile | undefined;
+  getPath: (template: Template, file?: TemplateFile) => string;
 };
 
+const guardDutyScan = new SimulateGuardDutyScan();
+const templateStorageHelper = new TemplateStorageHelper();
+
 function assertGuardDutyEventForFile(
-  { key, scanResult, timeout = 60_000 }: AssertConfig,
-  { pathPrefix, extension, getFile }: FileConfig
+  event: EventConfig,
+  fileConfig: FileConfig
 ) {
-  const guardDutyScan = new SimulateGuardDutyScan();
-  const templateStorageHelper = new TemplateStorageHelper();
+  const { key, scanResult } = event;
+  const { pathPrefix, getFile, getPath } = fileConfig;
 
   return test.step(`when user uploads ${pathPrefix} file, then guardduty triggers ${scanResult}`, async () => {
     await expect(async () => {
@@ -33,54 +35,48 @@ function assertGuardDutyEventForFile(
         return true;
       }
 
+      const path = getPath(template, file);
+
       const published = await guardDutyScan.publish({
         type: scanResult,
-        path: `${pathPrefix}/${template.owner}/${template.id}/${file?.currentVersion}${extension}`,
-      });
-
-      expect(published).toEqual(true);
-    }).toPass({ timeout });
-  });
-}
-
-export function assertPdfTemplateGuardDutyEvent(props: AssertConfig) {
-  return assertGuardDutyEventForFile(props, {
-    pathPrefix: 'pdf-template',
-    extension: '.pdf',
-    getFile: (template) => template.files?.pdfTemplate,
-  });
-}
-
-export function assertTestDataGuardDutyEvent(props: AssertConfig) {
-  return assertGuardDutyEventForFile(props, {
-    pathPrefix: 'test-data',
-    extension: '.csv',
-    getFile: (template) => template.files?.testDataCsv,
-  });
-}
-
-export function assertProofGuardDutyEvent(
-  props: AssertConfig & { fileName: string }
-) {
-  const guardDutyScan = new SimulateGuardDutyScan();
-  const templateStorageHelper = new TemplateStorageHelper();
-
-  return test.step(`when user receives proof file, then guardduty triggers ${props.scanResult}`, async () => {
-    await expect(async () => {
-      const template = await templateStorageHelper.getTemplate(props.key);
-
-      const proof = template.files?.proofs?.[props.fileName];
-
-      if (proof && proof.virusScanStatus !== 'PENDING') {
-        return true;
-      }
-
-      const published = await guardDutyScan.publish({
-        type: props.scanResult,
-        path: `proofs/${props.key.id}/${props.fileName}`,
+        path,
       });
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 60_000 });
+  });
+}
+
+export function assertPdfTemplateGuardDutyEvent(props: EventConfig) {
+  return assertGuardDutyEventForFile(props, {
+    pathPrefix: 'pdf-template',
+    getFile: (template) => template.files?.pdfTemplate,
+    getPath: (template, file) =>
+      `pdf-template/${template.owner}/${template.id}/${file?.currentVersion}.pdf`,
+  });
+}
+
+export function assertTestDataGuardDutyEvent(props: EventConfig) {
+  return assertGuardDutyEventForFile(props, {
+    pathPrefix: 'test-data',
+    getFile: (template) => template.files?.testDataCsv,
+    getPath: (template, file) =>
+      `test-data/${template.owner}/${template.id}/${file?.currentVersion}.csv`,
+  });
+}
+
+export function assertProofGuardDutyEvent(
+  props: EventConfig & { fileName: string }
+) {
+  return assertGuardDutyEventForFile(props, {
+    pathPrefix: 'proofs',
+    getFile: (template) => {
+      const file = template.files?.proofs?.[props.fileName];
+
+      if (file) {
+        return { ...file, currentVersion: 'unknown' };
+      }
+    },
+    getPath: () => `proofs/${props.key.id}/${props.fileName}`,
   });
 }

@@ -706,10 +706,7 @@ test.describe('letter file validation', () => {
     });
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
