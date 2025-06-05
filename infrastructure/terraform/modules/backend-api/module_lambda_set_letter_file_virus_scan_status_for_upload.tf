@@ -64,21 +64,7 @@ data "aws_iam_policy_document" "set_file_virus_scan_status_for_upload" {
     ]
 
     resources = [
-      local.dynamodb_kms_key_arn,
-    ]
-  }
-
-  statement {
-    sid    = "AllowKMSAccessSQSDLQ"
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:GenerateDataKey",
-    ]
-
-    resources = [
-      var.kms_key_arn,
+      var.kms_key_arn
     ]
   }
 }
