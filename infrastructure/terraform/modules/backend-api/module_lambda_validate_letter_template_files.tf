@@ -65,23 +65,6 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
   }
 
   statement {
-    sid    = "AllowKMSAccessDynamo"
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:DescribeKey",
-      "kms:Encrypt",
-      "kms:GenerateDataKey*",
-      "kms:ReEncrypt*",
-    ]
-
-    resources = [
-      local.dynamodb_kms_key_arn
-    ]
-  }
-
-  statement {
     sid    = "AllowS3InternalGetObject"
     effect = "Allow"
 
@@ -120,12 +103,15 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
   }
 
   statement {
-    sid    = "AllowKMSAccessS3SQS"
+    sid    = "AllowKMSAccess"
     effect = "Allow"
 
     actions = [
       "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:Encrypt",
       "kms:GenerateDataKey",
+      "kms:ReEncrypt*",
     ]
 
     resources = [
