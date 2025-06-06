@@ -8,18 +8,28 @@ resource "aws_pipes_pipe" "template_table_events" {
 
   source_parameters {
     dynamodb_stream_parameters {
-      starting_position = "TRIM_HORIZON"
+      starting_position                  = "TRIM_HORIZON"
+      maximum_retry_attempts             = 3
+      maximum_record_age_in_seconds      = -1
+      maximum_batching_window_in_seconds = 5
+
+      dead_letter_config {
+        arn = module.sqs_template_table_events_pipe_dlq.sqs_queue_arn
+      }
     }
   }
 
   target_parameters {
     sqs_queue_parameters {
-      message_group_id = "$.dynamodb.Keys.id.S"
+      message_group_id         = "$.dynamodb.Keys.id.S"
+      message_deduplication_id = "$.eventID"
     }
   }
 
   log_configuration {
-    level = "ERROR"
+    level                  = "ERROR"
+    include_execution_data = ["ALL"]
+
     cloudwatch_logs_log_destination {
       log_group_arn = aws_cloudwatch_log_group.pipe_template_table_events.arn
     }
@@ -61,7 +71,7 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
   version = "2012-10-17"
 
   statement {
-    sid    = "AllowDDBStreamRead"
+    sid    = "AllowDynamoStreamRead"
     effect = "Allow"
     actions = [
       "dynamodb:DescribeStream",
@@ -73,24 +83,28 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
   }
 
   statement {
-    sid       = "AllowSQSSendMessage"
-    effect    = "Allow"
-    actions   = ["sqs:SendMessage"]
-    resources = [module.sqs_template_table_events.sqs_queue_arn]
+    sid     = "AllowSqsSendMessage"
+    effect  = "Allow"
+    actions = ["sqs:SendMessage"]
+    resources = [
+      module.sqs_template_table_events.sqs_queue_arn,
+      module.sqs_template_table_events_pipe_dlq.sqs_queue_arn,
+    ]
   }
 
   statement {
-    sid    = "AllowSqsKMS"
+    sid    = "AllowKmsUsage"
     effect = "Allow"
     actions = [
       "kms:Decrypt",
-      "kms:GenerateDataKey"
+      "kms:Encrypt",
+      "kms:GenerateDataKey*"
     ]
     resources = [var.kms_key_arn]
   }
 
   statement {
-    sid       = "AllowDynamoKMS"
+    sid       = "AllowDynamoKms"
     effect    = "Allow"
     actions   = ["kms:Decrypt"]
     resources = [local.dynamodb_kms_key_arn]
