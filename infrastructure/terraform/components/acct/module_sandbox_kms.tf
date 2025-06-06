@@ -54,4 +54,35 @@ data "aws_iam_policy_document" "kms" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowLogDeliveryEncrypt"
+    effect = "Allow"
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "delivery.logs.amazonaws.com"
+      ]
+    }
+
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey*",
+    ]
+
+    resources = [
+      "*",
+    ]
+
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:SourceArn"
+
+      values = [
+        "arn:aws:logs:${var.region}:${var.aws_account_id}:*",
+      ]
+    }
+  }
 }
