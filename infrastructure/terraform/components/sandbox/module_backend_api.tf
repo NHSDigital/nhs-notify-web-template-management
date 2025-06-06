@@ -21,7 +21,6 @@ module "backend_api" {
   letter_suppliers = var.letter_suppliers
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
-  dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
 
   send_to_firehose = false
 

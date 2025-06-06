@@ -102,11 +102,4 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
     ]
     resources = [var.kms_key_arn]
   }
-
-  statement {
-    sid       = "AllowDynamoKms"
-    effect    = "Allow"
-    actions   = ["kms:Decrypt"]
-    resources = [local.dynamodb_kms_key_arn]
-  }
 }

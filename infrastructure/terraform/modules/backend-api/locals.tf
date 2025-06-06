@@ -50,8 +50,6 @@ locals {
     ENABLE_PROOFING                  = var.enable_proofing
   }
 
-  dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
-
   mock_letter_supplier_name = "WTMMOCK"
 
   use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
