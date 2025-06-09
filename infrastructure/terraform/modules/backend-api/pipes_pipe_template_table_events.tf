@@ -2,7 +2,7 @@ resource "aws_pipes_pipe" "template_table_events" {
   name               = "${local.csi}-template-table-events"
   role_arn           = aws_iam_role.pipe_template_table_events.arn
   source             = aws_dynamodb_table.templates.stream_arn
-  target             = module.sqs_template_table_events.sqs_queue_arn
+  target             = module.sqs_template_mgmt_events.sqs_queue_arn
   desired_state      = var.enable_event_stream ? "RUNNING" : "STOPPED"
   kms_key_identifier = var.kms_key_arn
 
@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "pipe_template_table_events" {
     effect  = "Allow"
     actions = ["sqs:SendMessage"]
     resources = [
-      module.sqs_template_table_events.sqs_queue_arn,
+      module.sqs_template_mgmt_events.sqs_queue_arn,
       module.sqs_template_table_events_pipe_dlq.sqs_queue_arn,
     ]
   }
