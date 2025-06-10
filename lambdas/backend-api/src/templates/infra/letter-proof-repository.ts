@@ -8,13 +8,13 @@ export type LetterProofMetadata = {
 export class LetterProofRepository extends LetterFileRepository {
   static parseQuarantineKey(key: string): LetterProofMetadata {
     const keyParts = key.split('/');
-    const [fileType, templateId, fileNameWithExtension] = keyParts;
-    const [fileName, extension] = fileNameWithExtension.split('.');
+    const [fileType, templateId, fileName] = keyParts;
+    const extension = fileName.split('.').at(-1);
 
     if (
       keyParts.length !== 3 ||
       fileType !== 'proofs' ||
-      extension.toLowerCase() !== 'pdf'
+      extension?.toLowerCase() !== 'pdf'
     ) {
       throw new Error(`Unexpected object key "${key}"`);
     }
@@ -26,10 +26,10 @@ export class LetterProofRepository extends LetterFileRepository {
   }
 
   static getInternalKey(owner: string, templateId: string, fileName: string) {
-    return `proofs/${owner}/${templateId}/${fileName}.pdf`;
+    return `proofs/${owner}/${templateId}/${fileName}`;
   }
 
   static getDownloadKey(owner: string, templateId: string, fileName: string) {
-    return `${owner}/proofs/${templateId}/${fileName}.pdf`;
+    return `${owner}/proofs/${templateId}/${fileName}`;
   }
 }

@@ -21,7 +21,6 @@ module "backend_api" {
 
   enable_backup = var.destination_vault_arn != null ? true : false
 
-  enable_letters            = var.enable_letters
   enable_proofing           = var.enable_proofing
   letter_suppliers          = var.letter_suppliers
   log_destination_arn       = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"

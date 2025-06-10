@@ -389,7 +389,6 @@ export class TemplateRepository {
   private async appendFileToProofs(
     templateKey: TemplateKey,
     fileName: string,
-    fullFilePath: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
     const dynamoResponse = await this.client.send(
@@ -406,7 +405,7 @@ export class TemplateRepository {
           ':templateStatusSubmitted': 'SUBMITTED' satisfies TemplateStatus,
           ':updatedAt': new Date().toISOString(),
           ':virusScanResult': {
-            fileName: fullFilePath,
+            fileName,
             virusScanStatus,
           } satisfies FileDetails,
         },
@@ -442,7 +441,6 @@ export class TemplateRepository {
     owner: string,
     templateId: string,
     fileName: string,
-    fullFilePath: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
     const templateKey = { owner, id: templateId };
@@ -451,7 +449,6 @@ export class TemplateRepository {
       const updatedItem = await this.appendFileToProofs(
         templateKey,
         fileName,
-        fullFilePath,
         virusScanStatus
       );
 

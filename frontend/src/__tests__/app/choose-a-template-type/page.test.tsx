@@ -41,13 +41,3 @@ test('ChooseATemplateTypePage', async () => {
   expect(await generateMetadata()).toEqual({ title: pageTitle });
   expect(container.asFragment()).toMatchSnapshot();
 });
-
-test('ChooseATemplateTypePage - LETTER option is hidden when feature flag is not enabled', async () => {
-  process.env.NEXT_PUBLIC_ENABLE_LETTERS = 'false';
-
-  const page = await ChooseATemplateTypePage();
-
-  const container = render(page);
-
-  expect(container.asFragment()).toMatchSnapshot();
-});

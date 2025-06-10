@@ -4,7 +4,7 @@ declare global {
       API_BASE_URL: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
-      NEXT_PUBLIC_ENABLE_LETTERS: string;
+      NEXT_PUBLIC_ENABLE_PROOFING: string;
       PLAYWRIGHT_RUN_ID: string;
       SEND_PROOF_QUEUE_URL: string;
       SFTP_ENVIRONMENT: string;

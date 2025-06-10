@@ -4,6 +4,7 @@ resource "aws_cloudfront_distribution" "main" {
   enabled         = true
   is_ipv6_enabled = true
   comment         = "NHS Notify templates files CDN (${local.csi})"
+
   # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cloudfront-distribution-distributionconfig.html#cfn-cloudfront-distribution-distributionconfig-priceclass
   price_class = "PriceClass_100"
 
@@ -34,6 +35,16 @@ resource "aws_cloudfront_distribution" "main" {
     domain_name              = module.backend_api.download_bucket_regional_domain_name
     origin_access_control_id = aws_cloudfront_origin_access_control.s3.id
     origin_id                = "S3-${local.csi}-download"
+
+    custom_header {
+      name  = "x-user-pool-id"
+      value = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_ID"]
+    }
+
+    custom_header {
+      name  = "x-user-pool-client-id"
+      value = jsondecode(aws_ssm_parameter.cognito_config.value)["USER_POOL_CLIENT_ID"]
+    }
   }
 
   default_cache_behavior {
@@ -48,19 +59,27 @@ resource "aws_cloudfront_distribution" "main" {
     ]
     target_origin_id = "S3-${local.csi}-download"
 
-    forwarded_values {
-      query_string = true
-      headers      = ["Origin"]
-
-      cookies {
-        forward = "all"
-      }
-    }
-
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
     compress               = true
+
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.forward_cookies.id
+
+
+    lambda_function_association {
+      lambda_arn = module.download_authorizer_lambda.function_qualified_arn
+      event_type = "origin-request"
+    }
   }
+}
+
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+resource "aws_cloudfront_origin_request_policy" "forward_cookies" {
+  name = "${local.csi}-forward-cookies"
+  cookies_config { cookie_behavior = "all" }
+  headers_config { header_behavior = "none" }
+  query_strings_config { query_string_behavior = "none" }
 }

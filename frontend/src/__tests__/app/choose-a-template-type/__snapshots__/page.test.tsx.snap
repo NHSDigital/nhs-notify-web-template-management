@@ -167,6 +167,7 @@ exports[`ChooseATemplateTypePage 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
+      data-testid="back-to-templates-link"
       href="/templates/message-templates"
     >
       <svg

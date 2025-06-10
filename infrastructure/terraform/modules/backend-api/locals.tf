@@ -39,13 +39,10 @@ locals {
   }
 
   backend_lambda_environment_variables = {
-    DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier.name
-    ENABLE_LETTERS_BACKEND           = var.enable_letters
+    DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier_name
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"
     REQUEST_PROOF_QUEUE_URL          = module.sqs_sftp_upload.sqs_queue_url
-    TEMPLATES_EVENT_BUS_NAME         = data.aws_cloudwatch_event_bus.default.name
-    TEMPLATES_EVENT_SOURCE           = local.event_source
     TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
     TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
     TEMPLATES_DOWNLOAD_BUCKET_NAME   = module.s3bucket_download.id
@@ -53,17 +50,13 @@ locals {
     ENABLE_PROOFING                  = var.enable_proofing
   }
 
-  dynamodb_kms_key_arn = var.dynamodb_kms_key_arn == "" ? aws_kms_key.dynamo[0].arn : var.dynamodb_kms_key_arn
-
   mock_letter_supplier_name = "WTMMOCK"
 
   use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
 
-  default_letter_supplier = try([
-    for k, v in var.letter_suppliers : merge(v, { name = k }) if v.default_supplier
-  ][0], null)
+  default_letter_supplier_name = try([
+    for k, v in var.letter_suppliers : k if v.default_supplier
+  ][0], "")
 
   sftp_environment = "${var.group}-${var.environment}-${var.component}"
-
-  event_source = "templates.${var.environment}.${var.project}"
 }

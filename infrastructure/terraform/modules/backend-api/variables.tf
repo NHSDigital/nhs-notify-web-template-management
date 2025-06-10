@@ -71,11 +71,6 @@ variable "enable_backup" {
   default     = true
 }
 
-variable "enable_letters" {
-  type        = bool
-  description = "Enable letters feature flag"
-}
-
 variable "enable_proofing" {
   type        = bool
   description = "Enable proofing feature flag"
@@ -84,12 +79,6 @@ variable "enable_proofing" {
 variable "kms_key_arn" {
   type        = string
   description = "KMS Key ARN"
-}
-
-variable "dynamodb_kms_key_arn" {
-  type        = string
-  description = "KMS Key ARN for encrypting DynamoDB data. If not given, a key will be created."
-  default     = ""
 }
 
 variable "letter_suppliers" {
