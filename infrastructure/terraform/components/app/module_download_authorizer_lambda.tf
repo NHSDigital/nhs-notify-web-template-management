@@ -1,5 +1,5 @@
 module "download_authorizer_lambda" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=feature/CCM-10246_test"
 
   providers = {
     aws = aws.us-east-1
@@ -47,4 +47,9 @@ data "aws_iam_policy_document" "authorizer" {
       module.kms_us_east_1.key_arn,
     ]
   }
+}
+
+import {
+  to =  module.download_authorizer_lambda.aws_cloudwatch_log_group.main_edge[0]
+  id = "/aws/lambda/us-east-1.${var.project}-${var.environment}-app-download-authorizer"
 }
