@@ -16,6 +16,8 @@ import {
   previewSubmittedTemplatePages,
   templateDisplayCopyAction,
   templateDisplayDeleteAction,
+  isRightToLeft,
+  languageMapping,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -69,35 +71,35 @@ describe('alphabeticalLetterTypeList', () => {
 describe('alphabeticalLanguageList', () => {
   test('Alphabetical language list produced', () => {
     expect(alphabeticalLanguageList).toEqual([
-      ['sq', 'Albanian'],
-      ['ar', 'Arabic'],
-      ['bn', 'Bengali'],
-      ['bg', 'Bulgarian'],
-      ['zh', 'Chinese'],
-      ['en', 'English'],
-      ['fr', 'French'],
-      ['de', 'German'],
-      ['el', 'Greek'],
-      ['gu', 'Gujurati'],
-      ['hi', 'Hindi'],
-      ['hu', 'Hungarian'],
-      ['it', 'Italian'],
-      ['ku', 'Kurdish'],
-      ['lv', 'Latvian'],
-      ['lt', 'Lithuanian'],
-      ['ne', 'Nepali'],
-      ['fa', 'Persian'],
-      ['pl', 'Polish'],
-      ['pt', 'Portuguese'],
-      ['pa', 'Punjabi'],
-      ['ro', 'Romanian'],
-      ['ru', 'Russian'],
-      ['sk', 'Slovak'],
-      ['so', 'Somali'],
-      ['es', 'Spanish'],
-      ['ta', 'Tamil'],
-      ['tr', 'Turkish'],
-      ['ur', 'Urdu'],
+      ['sq', { name: 'Albanian', rtl: false }],
+      ['ar', { name: 'Arabic', rtl: true }],
+      ['bn', { name: 'Bengali', rtl: false }],
+      ['bg', { name: 'Bulgarian', rtl: false }],
+      ['zh', { name: 'Chinese', rtl: false }],
+      ['en', { name: 'English', rtl: false }],
+      ['fr', { name: 'French', rtl: false }],
+      ['de', { name: 'German', rtl: false }],
+      ['el', { name: 'Greek', rtl: false }],
+      ['gu', { name: 'Gujurati', rtl: false }],
+      ['hi', { name: 'Hindi', rtl: false }],
+      ['hu', { name: 'Hungarian', rtl: false }],
+      ['it', { name: 'Italian', rtl: false }],
+      ['ku', { name: 'Kurdish', rtl: true }],
+      ['lv', { name: 'Latvian', rtl: false }],
+      ['lt', { name: 'Lithuanian', rtl: false }],
+      ['ne', { name: 'Nepali', rtl: false }],
+      ['fa', { name: 'Persian', rtl: true }],
+      ['pl', { name: 'Polish', rtl: false }],
+      ['pt', { name: 'Portuguese', rtl: false }],
+      ['pa', { name: 'Punjabi', rtl: false }],
+      ['ro', { name: 'Romanian', rtl: false }],
+      ['ru', { name: 'Russian', rtl: false }],
+      ['sk', { name: 'Slovak', rtl: false }],
+      ['so', { name: 'Somali', rtl: false }],
+      ['es', { name: 'Spanish', rtl: false }],
+      ['ta', { name: 'Tamil', rtl: false }],
+      ['tr', { name: 'Turkish', rtl: false }],
+      ['ur', { name: 'Urdu', rtl: true }],
     ]);
   });
 });
@@ -258,4 +260,18 @@ describe('templateDisplayDeleteAction', () => {
       ).toBe(shouldDisplayDeleteAction);
     }
   );
+});
+
+describe('Right-to-left language indicator', () => {
+  test('should flag expected languages as right-to-left and all others as left-to-right', () => {
+    // arrange
+    const expectedRtlLanguages = ['Arabic', 'Kurdish', 'Persian', 'Urdu'];
+    const allLanguages = alphabeticalLanguageList.map((entry) => entry[0]);
+
+    // act
+    const result = allLanguages.filter(isRightToLeft).map(languageMapping);
+
+    // assert
+    expect(result).toEqual(expectedRtlLanguages);
+  });
 });
