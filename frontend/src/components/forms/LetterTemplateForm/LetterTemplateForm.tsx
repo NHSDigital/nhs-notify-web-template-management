@@ -165,9 +165,9 @@ export const LetterTemplateForm: FC<
                 error={templateLanguageError}
                 errorProps={{ id: 'letterTemplateLanguage--error-message' }}
               >
-                {alphabeticalLanguageList.map(([langCode, langName]) => (
+                {alphabeticalLanguageList.map(([langCode, langMetadata]) => (
                   <Select.Option key={`option-${langCode}`} value={langCode}>
-                    {langName}
+                    {langMetadata.name}
                   </Select.Option>
                 ))}
               </Select>
