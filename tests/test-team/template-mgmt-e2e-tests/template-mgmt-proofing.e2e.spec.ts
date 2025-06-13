@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-dead-store */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import {
@@ -9,6 +11,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { assertProofGuardDutyEvent } from './template-mgmt-letter-guardduty.steps';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const authHelper = createAuthHelper();
@@ -67,12 +70,32 @@ test.describe('Letter Proofing', () => {
       })
     );
 
+    const key = {
+      id: templateId,
+      owner: user.userId,
+    };
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `proof-1.pdf`,
+    });
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `proof-2.pdf`,
+    });
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `proof-3.pdf`,
+    });
+
     // check for expected results
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
         'proof-1.pdf': {
@@ -164,12 +187,19 @@ test.describe('Letter Proofing', () => {
       })
     );
 
-    // check for expected results
+    const key = {
+      owner: user.userId,
+      id: templateId,
+    };
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'THREATS_FOUND',
+      fileName: `proof.pdf`,
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        owner: user.userId,
-        id: templateId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.proofs).toEqual({
         'proof.pdf': {
