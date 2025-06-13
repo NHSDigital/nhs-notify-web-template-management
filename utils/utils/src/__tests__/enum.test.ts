@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-array-callback-reference */
 import {
   Language,
   LetterType,
