@@ -1,5 +1,5 @@
 module "download_authorizer_lambda" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.2"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.13"
 
   providers = {
     aws = aws.us-east-1
