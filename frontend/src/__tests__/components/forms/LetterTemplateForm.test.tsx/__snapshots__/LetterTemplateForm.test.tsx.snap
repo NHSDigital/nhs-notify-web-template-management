@@ -156,7 +156,7 @@ exports[`Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Enter a template name
               </span>
@@ -411,7 +411,7 @@ exports[`Client-side validation triggers 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Select a letter template PDF
               </span>
@@ -1074,7 +1074,7 @@ exports[`renders page one error 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1576,7 +1576,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 Template name error
               </span>
@@ -1832,7 +1832,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 PDF error
               </span>
@@ -1879,7 +1879,7 @@ exports[`renders page with multiple errors 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Error:
+                  Error: 
                 </span>
                 CSV error
               </span>
@@ -2259,13 +2259,13 @@ exports[`renders page with preloaded field values 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Important:
+                  Important: 
                 </span>
-                Right-to-left languages
+                Right-to-left language scripts
               </span>
             </h3>
             <p>
-              We are currently unable to check personalisation fields within right-to-left language letters so please ensure that they meet
+              We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet 
               <a
                 href="/using-nhs-notify/personalisation"
                 rel="noopener noreferrer"
@@ -2716,13 +2716,13 @@ exports[`shows right-to-left language warning when language changes 1`] = `
                 <span
                   class="nhsuk-u-visually-hidden"
                 >
-                  Important:
+                  Important: 
                 </span>
-                Right-to-left languages
+                Right-to-left language scripts
               </span>
             </h3>
             <p>
-              We are currently unable to check personalisation fields within right-to-left language letters so please ensure that they meet
+              We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet 
               <a
                 href="/using-nhs-notify/personalisation"
                 rel="noopener noreferrer"

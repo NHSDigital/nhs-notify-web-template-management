@@ -54,6 +54,7 @@ export const LetterTemplateForm: FC<
     templateCsvGuidanceLink,
     templatePdfGuidanceLinkText,
     buttonText,
+    rtlWarning,
   } = content.components.templateFormLetter;
 
   const [state, action] = useActionState(processFormActions, initialState);
@@ -61,15 +62,11 @@ export const LetterTemplateForm: FC<
     FormErrorState | undefined
   >(state.validationError);
 
-  const [letterTemplateName, letterTemplateNameHandler] = useTextInput<
-    HTMLInputElement,
-    string
-  >(state.name);
+  const [letterTemplateName, letterTemplateNameHandler] =
+    useTextInput<HTMLInputElement>(state.name);
 
-  const [letterTemplateLetterType, letterTypeHandler] = useTextInput<
-    HTMLSelectElement,
-    string
-  >(state.letterType);
+  const [letterTemplateLetterType, letterTypeHandler] =
+    useTextInput<HTMLSelectElement>(state.letterType);
 
   const [letterTemplateLanguage, letterLanguageHandler] = useTextInput<
     HTMLSelectElement,
@@ -186,20 +183,18 @@ export const LetterTemplateForm: FC<
                 isRightToLeft(letterTemplateLanguage) && (
                   <WarningCallout data-testid='rtl-language-warning'>
                     <WarningCallout.Label>
-                      Right-to-left languages
+                      {rtlWarning.heading}
                     </WarningCallout.Label>
                     <p>
-                      We are currently unable to check personalisation fields
-                      within right-to-left language letters so please ensure
-                      that they meet{' '}
+                      {rtlWarning.bodyPrefix}
                       <a
-                        href='/using-nhs-notify/personalisation'
+                        href={rtlWarning.bodyLinkHref}
                         target='_blank'
                         rel='noopener noreferrer'
                       >
-                        the guidance
-                      </a>{' '}
-                      prior to submitting the letter for proofing.
+                        {rtlWarning.bodyLinkDisplay}
+                      </a>
+                      {rtlWarning.bodySuffix}
                     </p>
                   </WarningCallout>
                 )}

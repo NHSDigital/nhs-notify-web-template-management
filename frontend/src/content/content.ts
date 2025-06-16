@@ -603,6 +603,14 @@ const templateFormLetter = {
       },
     },
   },
+  rtlWarning: {
+    heading: 'Right-to-left language scripts',
+    bodyPrefix:
+      'We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet ',
+    bodyLinkDisplay: 'the guidance',
+    bodyLinkHref: '/using-nhs-notify/personalisation',
+    bodySuffix: ' prior to submitting the letter for proofing.',
+  },
 };
 
 const templateFormEmail = {
