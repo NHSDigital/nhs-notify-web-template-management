@@ -8,6 +8,7 @@ import {
   Label,
   Select,
   BackLink,
+  WarningCallout,
 } from 'nhsuk-react-components';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -18,6 +19,7 @@ import {
   alphabeticalLetterTypeList,
   CreateLetterTemplate,
   FormErrorState,
+  isRightToLeft,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -28,6 +30,7 @@ import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
 import { $CreateLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
+import { Language } from 'nhs-notify-backend-client';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -58,14 +61,20 @@ export const LetterTemplateForm: FC<
     FormErrorState | undefined
   >(state.validationError);
 
-  const [letterTemplateName, letterTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.name);
+  const [letterTemplateName, letterTemplateNameHandler] = useTextInput<
+    HTMLInputElement,
+    string
+  >(state.name);
 
-  const [letterTemplateLetterType, letterTypeHandler] =
-    useTextInput<HTMLSelectElement>(state.letterType);
+  const [letterTemplateLetterType, letterTypeHandler] = useTextInput<
+    HTMLSelectElement,
+    string
+  >(state.letterType);
 
-  const [letterTemplateLanguage, letterLanguageHandler] =
-    useTextInput<HTMLSelectElement>(state.language);
+  const [letterTemplateLanguage, letterLanguageHandler] = useTextInput<
+    HTMLSelectElement,
+    Language
+  >(state.language);
 
   const templateNameError =
     validationError?.fieldErrors.letterTemplateName?.join(', ');
@@ -164,6 +173,7 @@ export const LetterTemplateForm: FC<
                 onChange={letterLanguageHandler}
                 error={templateLanguageError}
                 errorProps={{ id: 'letterTemplateLanguage--error-message' }}
+                data-testid='language-select'
               >
                 {alphabeticalLanguageList.map(([langCode, langMetadata]) => (
                   <Select.Option key={`option-${langCode}`} value={langCode}>
@@ -171,6 +181,29 @@ export const LetterTemplateForm: FC<
                   </Select.Option>
                 ))}
               </Select>
+
+              {letterTemplateLanguage &&
+                isRightToLeft(letterTemplateLanguage) && (
+                  <WarningCallout data-testid='rtl-language-warning'>
+                    <WarningCallout.Label>
+                      Right-to-left languages
+                    </WarningCallout.Label>
+                    <p>
+                      We are currently unable to check personalisation fields
+                      within right-to-left language letters so please ensure
+                      that they meet{' '}
+                      <a
+                        href='/using-nhs-notify/personalisation'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        the guidance
+                      </a>{' '}
+                      prior to submitting the letter for proofing.
+                    </p>
+                  </WarningCallout>
+                )}
+
               <div
                 className={classNames(
                   templatePdfError && 'nhsuk-form-group--error',
