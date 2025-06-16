@@ -21,7 +21,7 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-RANDOM_DIGITS=0056
+RANDOM_DIGITS=0082
 ENVIRONMENT_NAME="${RANDOM_DIGITS}flaky"
 TOTAL_RUNS=1
 export CI=1
@@ -64,14 +64,31 @@ for i in $(seq 1 $TOTAL_RUNS); do
       cp -r tests/test-team/playwright-report/* "$RUN_DIR/" 2>/dev/null || true
   fi
 
-  #  Destory environment
-  print_status "Destorying $ENVIRONMENT_NAME env... "
-  if ./scripts/destroy_backend_sandbox.sh "$ENVIRONMENT_NAME"; then
-      print_status "Environment destroyed successfully"
-  else
-      print_warning "Could not automagically destroy environment. You may need to clean up manually."
-      print_warning "Environment name: $ENVIRONMENT_NAME"
-  fi
+  echo
+  while true; do
+      read -p "Do you want to destroy the environment '$ENVIRONMENT_NAME'? [Y/n]: " choice
+
+      case $choice in
+          [Yy]* | "" )  # Default to Yes if user just presses Enter
+              print_status "Destorying environment '$ENVIRONMENT_NAME'..."
+              if ./scripts/destroy_backend_sandbox.sh "$ENVIRONMENT_NAME"; then
+                  print_status "Environment destroyed successfully"
+              else
+                  print_warning "Could not automaically destroy environment. You may need to clean up manually."
+                  print_warning "Environment name: $ENVIRONMENT_NAME"
+              fi
+              break
+              ;;
+          [Nn]* )
+              print_warning "Environment '$ENVIRONMENT_NAME' left running"
+              print_status "Remember to clean it up later to avoid unnecessary costs"
+              break
+              ;;
+          * )
+              echo "Please answer Y (yes) or n (no)"
+              ;;
+      esac
+  done
 done
 
 print_status "Script completed"

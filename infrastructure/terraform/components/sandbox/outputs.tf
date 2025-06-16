@@ -14,10 +14,6 @@ output "download_bucket_name" {
   value = module.backend_api.download_bucket_name
 }
 
-output "guardduty_quarantine_arn" {
-  value = module.backend_api.guardduty_quarantine_arn
-}
-
 output "internal_bucket_name" {
   value = module.backend_api.internal_bucket_name
 }

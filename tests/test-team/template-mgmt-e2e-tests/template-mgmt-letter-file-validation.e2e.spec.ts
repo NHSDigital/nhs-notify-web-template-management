@@ -61,12 +61,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -158,16 +158,13 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
@@ -237,12 +234,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'THREATS_FOUND',
     });
@@ -410,12 +407,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -470,12 +467,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -529,7 +526,7 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -579,7 +576,7 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -633,12 +630,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
@@ -659,6 +656,7 @@ test.describe('letter file validation', () => {
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
+  // Note: Skipping due to expect(template.templateStatus).toBe('VALIDATION_FAILED'); failing due to status being "PENDING_VALIDATION"
   test('validation fails if pdf has non-sensible parameters', async ({
     page,
   }) => {
@@ -695,12 +693,12 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    assertPdfTemplateGuardDutyEvent({
+    await assertPdfTemplateGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });
 
-    assertTestDataGuardDutyEvent({
+    await assertTestDataGuardDutyEvent({
       key,
       scanResult: 'NO_THREATS_FOUND',
     });

@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { SimulateGuardDutyScan } from '../helpers/use-cases/simulate-guard-duty-scan';
-import { GuardDutyScanResult } from '../helpers/eventbridge/eventbridge-helper';
+import {
+  EventBridgeHelper,
+  GuardDutyScanResult,
+} from '../helpers/eventbridge/eventbridge-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { Template, TemplateFile } from '../helpers/types';
 
@@ -15,8 +17,8 @@ type FileConfig = {
   getPath: (template: Template, file?: TemplateFile) => string;
 };
 
-const guardDutyScan = new SimulateGuardDutyScan();
 const templateStorageHelper = new TemplateStorageHelper();
+const eventBridgeHelper = new EventBridgeHelper();
 
 function assertGuardDutyEventForFile(
   event: EventConfig,
@@ -31,16 +33,22 @@ function assertGuardDutyEventForFile(
 
       const file = getFile(template);
 
-      if (file?.virusScanStatus !== 'PENDING') {
-        return true;
-      }
-
       const path = getPath(template, file);
 
-      const published = await guardDutyScan.publish({
-        type: scanResult,
+      const metadata = await templateStorageHelper.getS3Metadata(
+        process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+        path
+      );
+
+      if (!metadata?.VersionId) {
+        throw new Error(`Unable to get S3 versionId for ${path}`);
+      }
+
+      const published = await eventBridgeHelper.publishGuardDutyEvent(
         path,
-      });
+        metadata.VersionId,
+        scanResult
+      );
 
       expect(published).toEqual(true);
     }).toPass({ timeout: 60_000 });

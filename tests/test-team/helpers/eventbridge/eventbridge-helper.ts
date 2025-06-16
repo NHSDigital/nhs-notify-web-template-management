@@ -40,6 +40,8 @@ export class EventBridgeHelper {
         }
       );
     }
+
+    return true;
   }
 
   private createGuardDutyEvent(
@@ -47,8 +49,9 @@ export class EventBridgeHelper {
     scanResultStatus: GuardDutyScanResult,
     versionId: string
   ) {
-    const SOURCE = 'test.guardduty';
     const DETAIL_TYPE = 'GuardDuty Malware Protection Object Scan Result';
+    const RESOURCE = 'test:guardduty';
+    const SOURCE = 'test.guardduty';
 
     return {
       Source: SOURCE,
@@ -61,11 +64,11 @@ export class EventBridgeHelper {
         s3ObjectDetails: {
           bucketName: process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
           objectKey: s3ObjectKey,
-          eTag: `test-etag-${Date.now()}`,
+          eTag: `etag-${Date.now()}`,
           versionId: versionId,
         },
       }),
-      Resources: [process.env.TEMPLATES_GUARDDUTY_RESOURCE_ARN],
+      Resources: [RESOURCE],
     };
   }
 }

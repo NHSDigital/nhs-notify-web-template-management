@@ -61,4 +61,8 @@ locals {
   ][0], "")
 
   sftp_environment = "${var.group}-${var.environment}-${var.component}"
+
+  guardduty_source = var.enable_guardduty ? "aws.guardduty" : "test.guardduty"
+
+  guardduty_resource = var.enable_guardduty ? aws_guardduty_malware_protection_plan.quarantine[0].arn : "test:guardduty"
 }
