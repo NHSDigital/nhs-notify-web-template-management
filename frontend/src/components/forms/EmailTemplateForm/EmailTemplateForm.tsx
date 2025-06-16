@@ -54,13 +54,13 @@ export const EmailTemplateForm: FC<
   const formValidate = validate($EmailTemplateFormSchema, setValidationError);
 
   const [emailTemplateName, emailTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.name);
+    useTextInput<HTMLInputElement, string>(state.name);
 
   const [emailTemplateSubjectLine, emailTemplateSubjectLineHandler] =
-    useTextInput<HTMLInputElement>(state.subject);
+    useTextInput<HTMLInputElement, string>(state.subject);
 
   const [emailTemplateMessage, emailTemplateMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.message);
+    useTextInput<HTMLTextAreaElement, string>(state.message);
 
   const templateNameError =
     validationError?.fieldErrors.emailTemplateName?.join(', ');

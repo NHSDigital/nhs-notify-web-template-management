@@ -58,10 +58,10 @@ export const NhsAppTemplateForm: FC<
   );
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.message);
+    useTextInput<HTMLTextAreaElement, string>(state.message);
 
   const [nhsAppTemplateName, nhsAppTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.name);
+    useTextInput<HTMLInputElement, string>(state.name);
 
   const templateNameError =
     validationError?.fieldErrors.nhsAppTemplateName?.join(', ');

@@ -43,10 +43,10 @@ export const SmsTemplateForm: FC<
   const formValidate = validate($CreateSmsTemplateSchema, setValidationError);
 
   const [smsTemplateName, smsTemplateNameHandler] =
-    useTextInput<HTMLInputElement>(state.name);
+    useTextInput<HTMLInputElement, string>(state.name);
 
   const [smsTemplateMessage, smsTemplateMessageHandler] =
-    useTextInput<HTMLTextAreaElement>(state.message);
+    useTextInput<HTMLTextAreaElement, string>(state.message);
 
   const templateNameError =
     validationError?.fieldErrors.smsTemplateName?.join(', ');
