@@ -4,7 +4,7 @@ import {
   GuardDutyScanResult,
 } from '../helpers/eventbridge/eventbridge-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
-import { Template, TemplateFile } from '../helpers/types';
+import { Template, File } from '../helpers/types';
 
 type EventConfig = {
   key: { id: string; owner: string };
@@ -13,8 +13,8 @@ type EventConfig = {
 
 type FileConfig = {
   pathPrefix: 'pdf-template' | 'test-data' | 'proofs';
-  getFile: (template: Template) => TemplateFile | undefined;
-  getPath: (template: Template, file?: TemplateFile) => string;
+  getFile: (template: Template) => File | undefined;
+  getPath: (template: Template, file?: File) => string;
 };
 
 const templateStorageHelper = new TemplateStorageHelper();
@@ -33,7 +33,7 @@ function assertGuardDutyEventForFile(
 
       const file = getFile(template);
 
-      const path = getPath(template, file);
+      const path = `${pathPrefix}/${getPath(template, file)}`;
 
       const metadata = await templateStorageHelper.getS3Metadata(
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
@@ -60,7 +60,7 @@ export function assertPdfTemplateGuardDutyEvent(props: EventConfig) {
     pathPrefix: 'pdf-template',
     getFile: (template) => template.files?.pdfTemplate,
     getPath: (template, file) =>
-      `pdf-template/${template.owner}/${template.id}/${file?.currentVersion}.pdf`,
+      `${template.owner}/${template.id}/${file?.currentVersion}.pdf`,
   });
 }
 
@@ -69,7 +69,7 @@ export function assertTestDataGuardDutyEvent(props: EventConfig) {
     pathPrefix: 'test-data',
     getFile: (template) => template.files?.testDataCsv,
     getPath: (template, file) =>
-      `test-data/${template.owner}/${template.id}/${file?.currentVersion}.csv`,
+      `${template.owner}/${template.id}/${file?.currentVersion}.csv`,
   });
 }
 
@@ -85,6 +85,6 @@ export function assertProofGuardDutyEvent(
         return { ...file, currentVersion: 'unknown' };
       }
     },
-    getPath: () => `proofs/${props.key.id}/${props.fileName}`,
+    getPath: () => `${props.key.id}/${props.fileName}`,
   });
 }

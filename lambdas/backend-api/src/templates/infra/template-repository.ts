@@ -500,10 +500,7 @@ export class TemplateRepository {
     );
 
     if (dbResponse.Items?.length !== 1) {
-      throw new Error(
-        `Could not identify item by id ${id}. Items found: ${dbResponse.Items?.length || 0}`,
-        { cause: dbResponse }
-      );
+      throw new Error(`Could not identify item by id ${id}`);
     }
 
     return dbResponse.Items[0].owner;

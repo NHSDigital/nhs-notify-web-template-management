@@ -13,7 +13,6 @@ declare global {
       TEMPLATES_INTERNAL_BUCKET_NAME: string;
       TEMPLATES_QUARANTINE_BUCKET_NAME: string;
       TEMPLATES_DOWNLOAD_BUCKET_NAME: string;
-      TEMPLATES_GUARDDUTY_RESOURCE_ARN: string;
     }
   }
 

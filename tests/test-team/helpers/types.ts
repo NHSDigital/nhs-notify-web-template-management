@@ -12,7 +12,7 @@ export const templateTypeToUrlTextMappings: Record<string, string> = {
   LETTER: 'letter',
 };
 
-export type TemplateFile = {
+export type File = {
   fileName: string;
   currentVersion: string;
   virusScanStatus: string;
@@ -24,9 +24,9 @@ type TypeSpecificProperties = {
   letterType?: string;
   language?: string;
   files?: {
-    pdfTemplate?: TemplateFile;
-    testDataCsv?: TemplateFile;
-    proofs?: Record<string, Pick<TemplateFile, 'fileName' | 'virusScanStatus'>>;
+    pdfTemplate?: File;
+    testDataCsv?: File;
+    proofs?: Record<string, Pick<File, 'fileName' | 'virusScanStatus'>>;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];

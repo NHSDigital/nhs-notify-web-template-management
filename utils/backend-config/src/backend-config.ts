@@ -8,7 +8,6 @@ export type BackendConfig = {
   sftpEnvironment: string;
   sftpPollLambdaName: string;
   sftpMockCredentialPath: string;
-  templatesGuardDutyResourceArn: string;
   templatesTableName: string;
   templatesInternalBucketName: string;
   templatesQuarantineBucketName: string;
@@ -24,8 +23,6 @@ export const BackendConfigHelper = {
       sendProofQueueUrl: process.env.SEND_PROOF_QUEUE_URL ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
-      templatesGuardDutyResourceArn:
-        process.env.TEMPLATES_GUARDDUTY_RESOURCE_ARN ?? '',
       templatesTableName: process.env.TEMPLATES_TABLE_NAME ?? '',
       templatesInternalBucketName:
         process.env.TEMPLATES_INTERNAL_BUCKET_NAME ?? '',
@@ -47,8 +44,6 @@ export const BackendConfigHelper = {
     process.env.SEND_PROOF_QUEUE_URL = config.sendProofQueueUrl;
     process.env.SFTP_ENVIRONMENT = config.sftpEnvironment;
     process.env.SFTP_MOCK_CREDENTIAL_PATH = config.sftpMockCredentialPath;
-    process.env.TEMPLATES_GUARDDUTY_RESOURCE_ARN =
-      config.templatesGuardDutyResourceArn;
     process.env.TEMPLATES_INTERNAL_BUCKET_NAME =
       config.templatesInternalBucketName;
     process.env.TEMPLATES_QUARANTINE_BUCKET_NAME =
