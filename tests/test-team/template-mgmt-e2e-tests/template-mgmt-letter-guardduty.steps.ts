@@ -33,6 +33,10 @@ function assertGuardDutyEventForFile(
 
       const file = getFile(template);
 
+      if (file?.virusScanStatus && file.virusScanStatus !== 'PENDING') {
+        return true;
+      }
+
       const path = `${pathPrefix}/${getPath(template, file)}`;
 
       const metadata = await templateStorageHelper.getS3Metadata(
