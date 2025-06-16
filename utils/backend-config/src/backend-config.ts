@@ -62,8 +62,6 @@ export const BackendConfigHelper = {
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',
       sftpMockCredentialPath:
         outputsFileContent.sftp_mock_credential_path?.value ?? '',
-      templatesGuardDutyResourceArn:
-        outputsFileContent.guardduty_quarantine_arn?.value ?? '',
       templatesTableName: outputsFileContent.templates_table_name?.value ?? '',
       templatesInternalBucketName:
         outputsFileContent.internal_bucket_name?.value ?? '',
