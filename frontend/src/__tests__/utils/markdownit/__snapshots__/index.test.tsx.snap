@@ -12,7 +12,7 @@ exports[`renderEmailMarkdown should only process email markdown rules 1`] = `
 <li>ordered list item 1</li>
 <li>ordered list item 2</li>
 </ol>
-<p><a href="https://www.nhs.uk/example">Read more</a></p>
+<p><a href="https://www.nhs.uk/example" target="_blank" rel="noopener noreferrer">Read more</a></p>
 <p>https://www.nhs.uk/example</p>
 <p>Before page break</p>
 <hr>
@@ -38,7 +38,7 @@ exports[`renderNHSAppMarkdown should only process nhs app markdown rules 1`] = `
 <li>ordered list item 1</li>
 <li>ordered list item 2</li>
 </ol>
-<p><a href="https://www.nhs.uk/example">Read more</a></p>
+<p><a href="https://www.nhs.uk/example" target="_blank" rel="noopener noreferrer">Read more</a></p>
 <p>https://www.nhs.uk/example</p>
 <p>Before page break
 ***

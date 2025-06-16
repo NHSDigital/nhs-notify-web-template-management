@@ -21,9 +21,10 @@ module "backend_api" {
   letter_suppliers = var.letter_suppliers
 
   kms_key_arn          = data.aws_kms_key.sandbox.arn
-  dynamodb_kms_key_arn = data.aws_kms_key.sandbox.arn
 
   test_environment_mock_guardduty_event_source = "test.guardduty"
 
   send_to_firehose = false
+
+  enable_event_stream = true
 }

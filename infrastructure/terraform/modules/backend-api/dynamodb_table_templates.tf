@@ -26,7 +26,7 @@ resource "aws_dynamodb_table" "templates" {
 
   server_side_encryption {
     enabled     = true
-    kms_key_arn = local.dynamodb_kms_key_arn
+    kms_key_arn = var.kms_key_arn
   }
 
   tags = {
@@ -45,4 +45,7 @@ resource "aws_dynamodb_table" "templates" {
     projection_type    = "INCLUDE"
     non_key_attributes = ["owner"]
   }
+
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
 }
