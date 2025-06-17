@@ -8,7 +8,9 @@ export type BaseCreatedTemplate = BaseTemplate & {
 };
 
 export type BaseTemplate = {
+  clientId: string;
   name: string;
+  userId: string;
 };
 
 export type CreateLetterProperties = {

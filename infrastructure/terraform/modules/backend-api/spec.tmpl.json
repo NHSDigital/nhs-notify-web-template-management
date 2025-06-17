@@ -36,12 +36,20 @@
       },
       "BaseTemplate": {
         "properties": {
+          "clientId": {
+            "type": "string"
+          },
           "name": {
+            "type": "string"
+          },
+          "userId": {
             "type": "string"
           }
         },
         "required": [
-          "name"
+          "clientId",
+          "name",
+          "userId"
         ],
         "type": "object"
       },
