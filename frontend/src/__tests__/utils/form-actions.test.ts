@@ -16,23 +16,32 @@ import {
   setTemplateToSubmitted,
   requestTemplateProof,
 } from '@utils/form-actions';
-import { getSessionServer } from '@utils/amplify-utils';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { getSessionServer, getClientId } from '@utils/amplify-utils';
+import { CreateUpdateTemplate, TemplateDto } from 'nhs-notify-backend-client';
 import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 const mockedTemplateClient = jest.mocked(templateClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
+const mockGetClientId = jest.mocked(getClientId)
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
 
+const testUser = 'sub'
+const testClient = 'test-client'
+
+const withUserAndClientId = (template: CreateUpdateTemplate) => ({ ...template, clientId: testClient, userId: testUser })
+
 describe('form-actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'sub',
+      userSub: testUser,
     });
+
+    mockGetClientId.mockResolvedValueOnce(testClient)
   });
 
   test('createTemplate', async () => {
@@ -41,6 +50,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: testClient,
+      userId: testUser,
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -53,13 +64,15 @@ describe('form-actions', () => {
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
     };
 
     const response = await createTemplate(createTemplateInput);
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput,
+      withUserAndClientId(createTemplateInput),
       'token'
     );
 
@@ -77,6 +90,8 @@ describe('form-actions', () => {
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
     };
 
@@ -85,7 +100,7 @@ describe('form-actions', () => {
     );
 
     expect(mockedTemplateClient.createTemplate).toHaveBeenCalledWith(
-      createTemplateInput,
+      withUserAndClientId(createTemplateInput),
       'token'
     );
   });
@@ -100,11 +115,50 @@ describe('form-actions', () => {
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
       templateType: 'NHS_APP',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
     };
 
     await expect(createTemplate(createTemplateInput)).rejects.toThrow(
       'Failed to get access token'
+    );
+  });
+
+  test('createTemplate - should throw error when no clientId', async () => {
+    mockGetClientId.mockReset();
+    mockGetClientId.mockResolvedValueOnce(undefined);
+
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
+      templateType: 'NHS_APP',
+      name: 'name',
+      clientId: '',
+      userId: '',
+      message: 'message',
+    };
+
+    await expect(createTemplate(createTemplateInput)).rejects.toThrow(
+      'Missing configuration'
+    );
+  });
+
+  test('createTemplate - should throw error when no user ID', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: 'token',
+      userSub: undefined,
+    });
+
+    const createTemplateInput: CreateUpdateNHSAppTemplate = {
+      templateType: 'NHS_APP',
+      name: 'name',
+      clientId: '',
+      userId: '',
+      message: 'message',
+    };
+
+    await expect(createTemplate(createTemplateInput)).rejects.toThrow(
+      'Missing configuration'
     );
   });
 
@@ -114,6 +168,8 @@ describe('form-actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
+      clientId: testClient,
+      userId: testUser,
       letterType: 'x1',
       language: 'ar',
       files: {
@@ -139,6 +195,8 @@ describe('form-actions', () => {
     const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
+      clientId: '',
+      userId: '',
       letterType: 'x0',
       language: 'en',
     };
@@ -157,7 +215,7 @@ describe('form-actions', () => {
     );
 
     expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+      withUserAndClientId(createLetterTemplateInput),
       'token',
       pdf,
       csv
@@ -172,6 +230,8 @@ describe('form-actions', () => {
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
+      clientId: testClient,
+      userId: testUser,
       letterType: 'x1',
       language: 'ar',
       files: {
@@ -192,6 +252,8 @@ describe('form-actions', () => {
     const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
+      clientId: '',
+      userId: '',
       letterType: 'x0',
       language: 'en',
     };
@@ -210,7 +272,7 @@ describe('form-actions', () => {
     );
 
     expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+      withUserAndClientId(createLetterTemplateInput),
       'token',
       pdf,
       undefined
@@ -230,6 +292,8 @@ describe('form-actions', () => {
     const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
+      clientId: '',
+      userId: '',
       letterType: 'x0',
       language: 'en',
     };
@@ -246,7 +310,7 @@ describe('form-actions', () => {
     ).rejects.toThrow('Failed to create new letter template');
 
     expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+      withUserAndClientId(createLetterTemplateInput),
       'token',
       pdf,
       csv
@@ -263,6 +327,8 @@ describe('form-actions', () => {
     const createLetterTemplateInput: CreateLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
+      clientId: '',
+      userId: '',
       letterType: 'x0',
       language: 'en',
     };
@@ -279,12 +345,67 @@ describe('form-actions', () => {
     ).rejects.toThrow('Failed to get access token');
   });
 
+  test('createLetterTemplate - should throw error when no clientId', async () => {
+    mockGetClientId.mockReset();
+    mockGetClientId.mockResolvedValueOnce(undefined);
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      clientId: '',
+      userId: '',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File(['file contents'], 'sample.csv', {
+      type: 'text/csv',
+    });
+
+    await expect(
+      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+    ).rejects.toThrow('Missing configuration');
+  });
+
+  test('createLetterTemplate - should throw error when no user ID', async () => {
+    authIdTokenServerMock.mockReset();
+    authIdTokenServerMock.mockResolvedValueOnce({
+      accessToken: 'token',
+      userSub: undefined,
+    });
+
+    const createLetterTemplateInput: CreateLetterTemplate = {
+      templateType: 'LETTER',
+      name: 'name',
+      clientId: '',
+      userId: '',
+      letterType: 'x0',
+      language: 'en',
+    };
+
+    const pdf = new File(['file contents'], 'template.pdf', {
+      type: 'application/pdf',
+    });
+    const csv = new File(['file contents'], 'sample.csv', {
+      type: 'text/csv',
+    });
+
+    await expect(
+      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+    ).rejects.toThrow('Missing configuration');
+  });
+
   test('saveTemplate', async () => {
     const responseData = {
       id: 'id',
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -299,6 +420,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -328,6 +451,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -356,6 +481,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -372,6 +499,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -428,6 +557,8 @@ describe('form-actions', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'name',
+      clientId: '',
+      userId: '',
       message: 'message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',
@@ -473,6 +604,8 @@ describe('form-actions', () => {
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'Template',
+      clientId: '',
+      userId: '',
       message: 'Message',
       updatedAt: '2021-01-01T00:00:00.000Z',
     } satisfies Partial<TemplateDto>;
@@ -512,6 +645,8 @@ describe('form-actions', () => {
         templateType: 'NHS_APP',
         templateStatus: 'SUBMITTED',
         name: 'name',
+        clientId: '',
+        userId: '',
         message: 'message',
         createdAt: '2025-01-13T10:19:25.579Z',
         updatedAt: '2025-01-13T10:19:25.579Z',
@@ -616,6 +751,8 @@ describe('form-actions', () => {
         id: 'new-template-id',
         templateStatus: 'NOT_YET_SUBMITTED',
         name: 'template-name',
+        clientId: '',
+        userId: '',
         letterType: 'x1',
         language: 'ar',
         files: {

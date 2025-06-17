@@ -1,6 +1,6 @@
 'use server';
 
-import { getSessionServer } from '@utils/amplify-utils';
+import { getClientId, getSessionServer } from '@utils/amplify-utils';
 import {
   CreateUpdateTemplate,
   isTemplateDtoValid,
@@ -13,14 +13,27 @@ import { templateClient } from 'nhs-notify-backend-client/src/template-api-clien
 export async function createTemplate(
   template: CreateUpdateTemplate
 ): Promise<TemplateDto> {
-  const { accessToken } = await getSessionServer();
+  const { accessToken, userSub } = await getSessionServer();
 
   if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
+  const clientId = await getClientId(accessToken)
+  const userId = userSub
+
+  if (!clientId || !userId) {
+    throw new Error('Missing configuration')
+  }
+
+  const templateWithAdditionalProperties: CreateUpdateTemplate = {
+    ...template,
+    clientId,
+    userId
+  }
+
   const { data, error } = await templateClient.createTemplate(
-    template,
+    templateWithAdditionalProperties,
     accessToken
   );
 
@@ -37,14 +50,27 @@ export async function createLetterTemplate(
   pdf: File,
   csv: File
 ) {
-  const { accessToken } = await getSessionServer();
+  const { accessToken, userSub } = await getSessionServer();
 
   if (!accessToken) {
     throw new Error('Failed to get access token');
   }
 
+  const clientId = await getClientId(accessToken)
+  const userId = userSub
+
+  if (!clientId || !userId) {
+    throw new Error('Missing configuration')
+  }
+
+  const templateWithAdditionalProperties = {
+    ...template,
+    clientId,
+    userId
+  }
+
   const { data, error } = await templateClient.createLetterTemplate(
-    template,
+    templateWithAdditionalProperties,
     accessToken,
     pdf,
     csv?.size > 0 ? csv : undefined
