@@ -6,40 +6,59 @@ import {
   TemplateDto,
 } from 'nhs-notify-backend-client';
 
-const languageMap: Record<Language, string> = {
-  ar: 'Arabic',
-  bg: 'Bulgarian',
-  bn: 'Bengali',
-  de: 'German',
-  el: 'Greek',
-  en: 'English',
-  es: 'Spanish',
-  fa: 'Persian',
-  fr: 'French',
-  gu: 'Gujurati',
-  hi: 'Hindi',
-  hu: 'Hungarian',
-  it: 'Italian',
-  ku: 'Kurdish',
-  lt: 'Lithuanian',
-  lv: 'Latvian',
-  ne: 'Nepali',
-  pa: 'Punjabi',
-  pl: 'Polish',
-  pt: 'Portuguese',
-  ro: 'Romanian',
-  ru: 'Russian',
-  sk: 'Slovak',
-  so: 'Somali',
-  sq: 'Albanian',
-  ta: 'Tamil',
-  tr: 'Turkish',
-  ur: 'Urdu',
-  zh: 'Chinese',
+/**
+ * @typedef {Object} LanguageMetadata
+ * @property {string} [name] - The display name of the language in English
+ * @property {boolean} [rtl] - Right-to-left indicator
+ * Strictly speaking a language is not directional, the script that a language
+ * is written in is directional, so here we are assuming that a language will
+ * be written in the most common script, in order to determine the writing direction.
+ *
+ * https://www.w3.org/International/questions/qa-scripts
+ */
+type LanguageMetadata = {
+  name: string;
+  rtl: boolean;
 };
-export const languageMapping = (language: Language) => languageMap[language];
-export const alphabeticalLanguageList = Object.entries(languageMap).sort(
-  ([, nameA], [, nameB]) => nameA.localeCompare(nameB)
+
+const languageMap: Record<Language, LanguageMetadata> = {
+  ar: { name: 'Arabic', rtl: true },
+  bg: { name: 'Bulgarian', rtl: false },
+  bn: { name: 'Bengali', rtl: false },
+  de: { name: 'German', rtl: false },
+  el: { name: 'Greek', rtl: false },
+  en: { name: 'English', rtl: false },
+  es: { name: 'Spanish', rtl: false },
+  fa: { name: 'Persian', rtl: true },
+  fr: { name: 'French', rtl: false },
+  gu: { name: 'Gujurati', rtl: false },
+  hi: { name: 'Hindi', rtl: false },
+  hu: { name: 'Hungarian', rtl: false },
+  it: { name: 'Italian', rtl: false },
+  ku: { name: 'Kurdish', rtl: true },
+  lt: { name: 'Lithuanian', rtl: false },
+  lv: { name: 'Latvian', rtl: false },
+  ne: { name: 'Nepali', rtl: false },
+  pa: { name: 'Punjabi', rtl: false },
+  pl: { name: 'Polish', rtl: false },
+  pt: { name: 'Portuguese', rtl: false },
+  ro: { name: 'Romanian', rtl: false },
+  ru: { name: 'Russian', rtl: false },
+  sk: { name: 'Slovak', rtl: false },
+  so: { name: 'Somali', rtl: false },
+  sq: { name: 'Albanian', rtl: false },
+  ta: { name: 'Tamil', rtl: false },
+  tr: { name: 'Turkish', rtl: false },
+  ur: { name: 'Urdu', rtl: true },
+  zh: { name: 'Chinese', rtl: false },
+};
+export const languageMapping = (language: Language) =>
+  languageMap[language].name;
+
+export const alphabeticalLanguageList: Array<[Language, LanguageMetadata]> = (
+  Object.entries(languageMap) as Array<[Language, LanguageMetadata]>
+).sort(([, languageMetadataA], [, languageMetadataB]) =>
+  languageMetadataA.name.localeCompare(languageMetadataB.name)
 );
 
 const letterTypeMap: Record<LetterType, string> = {
@@ -179,3 +198,7 @@ export const templateDisplayDeleteAction = ({
 }: Pick<TemplateDto, 'templateType' | 'templateStatus'>) =>
   templateTypeDeleteAction(templateType) &&
   templateStatusDeleteAction(templateStatus);
+
+export function isRightToLeft(language: Language): boolean {
+  return languageMap[language].rtl;
+}
