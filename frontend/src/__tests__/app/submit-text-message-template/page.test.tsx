@@ -34,6 +34,8 @@ describe('SubmitSmsTemplatePage', () => {
       templateType: 'SMS',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'template-message',
     } satisfies Partial<TemplateDto>;
 

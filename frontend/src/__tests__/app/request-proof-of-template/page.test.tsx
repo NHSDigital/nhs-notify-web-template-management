@@ -34,6 +34,8 @@ describe('RequestProofPage', () => {
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       letterType: 'x0',
       language: 'en',
       files: {

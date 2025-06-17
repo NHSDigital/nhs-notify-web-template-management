@@ -34,6 +34,8 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
       id: 'template-id',
       templateStatus: 'SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',

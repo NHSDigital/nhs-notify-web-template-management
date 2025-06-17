@@ -19,6 +19,8 @@ const mockNhsAppTemplate = {
   templateType: 'NHS_APP',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
+  clientId: 'client1',
+  userId: 'user1',
   message: 'body',
   id: '1',
   createdAt: '2025-01-13T10:19:25.579Z',

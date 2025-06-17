@@ -28,6 +28,8 @@ describe('EmailTemplateSubmittedPage', () => {
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'example',
       subject: 'subject',
       createdAt: 'today',

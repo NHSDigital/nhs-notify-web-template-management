@@ -28,6 +28,8 @@ describe('NhsAppTemplateSubmittedPage', () => {
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'example',
     } satisfies Partial<TemplateDto>;
 

@@ -4,10 +4,12 @@ exports[`CreateLetterTemplatePage should render CreateLetterTemplatePage 1`] = `
 <LetterTemplateForm
   initialState={
     {
+      "clientId": "",
       "language": "en",
       "letterType": "x0",
       "name": "",
       "templateType": "LETTER",
+      "userId": "",
     }
   }
 />

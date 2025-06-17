@@ -25,6 +25,8 @@ const templateDTO = {
   templateType: 'SMS',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
+      clientId: 'client1',
+      userId: 'user1',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',
   updatedAt: '2025-01-13T10:19:25.579Z',

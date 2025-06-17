@@ -28,6 +28,8 @@ describe('TextMessageTemplateSubmittedPage', () => {
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'example',
     } satisfies Partial<TemplateDto>;
 

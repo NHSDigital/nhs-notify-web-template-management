@@ -4,10 +4,12 @@ exports[`CreateEmailTemplatePage should render CreateEmailTemplatePage 1`] = `
 <EmailTemplateForm
   initialState={
     {
+      "clientId": "",
       "message": "",
       "name": "",
       "subject": "",
       "templateType": "EMAIL",
+      "userId": "",
     }
   }
 />

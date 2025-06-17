@@ -4,9 +4,11 @@ exports[`CreateNHSAppTemplatePage should render CreateNHSAppTemplatePage 1`] = `
 <NhsAppTemplateForm
   initialState={
     {
+      "clientId": "",
       "message": "",
       "name": "",
       "templateType": "NHS_APP",
+      "userId": "",
     }
   }
 />

@@ -35,6 +35,8 @@ describe('PreviewNhsAppTemplatePage', () => {
       templateType: 'NHS_APP',
       templateStatus: 'NOT_YET_SUBMITTED',
       name: 'template-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'template-message',
       createdAt: '2025-01-13T10:19:25.579Z',
       updatedAt: '2025-01-13T10:19:25.579Z',

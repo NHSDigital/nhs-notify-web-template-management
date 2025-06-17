@@ -4,9 +4,11 @@ exports[`CreateSMSTemplatePage should render CreateSMSTemplatePage 1`] = `
 <SmsTemplateForm
   initialState={
     {
+      "clientId": "",
       "message": "",
       "name": "",
       "templateType": "SMS",
+      "userId": "",
     }
   }
 />
