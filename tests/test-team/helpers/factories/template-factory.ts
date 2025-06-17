@@ -11,6 +11,8 @@ export const TemplateFactory = {
       id,
       owner,
       name,
+      clientId: randomUUID(),
+      userId: randomUUID(),
       templateType: 'EMAIL',
       message: 'test-message',
       subject: 'test-subject',
@@ -22,6 +24,8 @@ export const TemplateFactory = {
       id,
       owner,
       name: 'test',
+      clientId: randomUUID(),
+      userId: randomUUID(),
       templateType: 'SMS',
       message: 'test-message',
     });
@@ -32,6 +36,8 @@ export const TemplateFactory = {
       id,
       owner,
       name: 'test-name',
+      clientId: randomUUID(),
+      userId: randomUUID(),
       templateType: 'NHS_APP',
       message: 'test-message',
     });
@@ -48,6 +54,8 @@ export const TemplateFactory = {
       id,
       owner,
       name,
+      clientId: randomUUID(),
+      userId: randomUUID(),
       templateStatus,
       templateType: 'LETTER',
       letterType: 'x0',
@@ -77,6 +85,8 @@ export const TemplateFactory = {
     }
   ): Template => {
     return {
+      clientId: randomUUID(),
+      userId: randomUUID(),
       templateStatus: 'NOT_YET_SUBMITTED',
       version: 1,
       createdAt: new Date().toISOString(),
