@@ -4,6 +4,7 @@ import {
   pdfLetterMultipart,
   type PdfUploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
+import { randomUUID } from 'node:crypto';
 
 type TemplatePayload = CreateTemplatePayload | UpdateTemplatePayload;
 
@@ -30,6 +31,8 @@ type TemplateOutput<
 
 const createTemplateBaseData = (templateType: unknown) => ({
   name: faker.word.noun(),
+  clientId: randomUUID(),
+  userId: randomUUID(),
   message: faker.word.words(5),
   ...(templateType === 'EMAIL' && {
     subject: faker.word.interjection(),
