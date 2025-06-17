@@ -2267,8 +2267,8 @@ exports[`renders page with preloaded field values 1`] = `
             </h3>
             <p>
               We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.
-              <br />
-              <br />
+            </p>
+            <p>
               You must check they match before you save and upload.
             </p>
           </div>
@@ -2720,8 +2720,8 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             </h3>
             <p>
               We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.
-              <br />
-              <br />
+            </p>
+            <p>
               You must check they match before you save and upload.
             </p>
           </div>

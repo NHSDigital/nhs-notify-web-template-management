@@ -188,12 +188,8 @@ export const LetterTemplateForm: FC<
                     <WarningCallout.Label>
                       {rtlWarning.heading}
                     </WarningCallout.Label>
-                    <p>
-                      {rtlWarning.bodyPart1}
-                      <br />
-                      <br />
-                      {rtlWarning.bodyPart2}
-                    </p>
+                    <p>{rtlWarning.bodyPart1}</p>
+                    <p>{rtlWarning.bodyPart2}</p>
                   </WarningCallout>
                 )}
 
