@@ -1,5 +1,8 @@
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { guardDutyEventValidator } from 'nhs-notify-web-template-management-utils';
+import {
+  guardDutyEventValidator,
+  isRightToLeft,
+} from 'nhs-notify-web-template-management-utils';
 import { LetterUploadRepository, TemplateRepository } from '../infra';
 import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
@@ -167,7 +170,8 @@ export class ValidateLetterTemplateFilesLambda {
       return;
     }
 
-    const valid = validateLetterTemplateFiles(pdf, csv);
+    const rtl = isRightToLeft(template.language || 'en');
+    const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
       { id: templateId, owner },
