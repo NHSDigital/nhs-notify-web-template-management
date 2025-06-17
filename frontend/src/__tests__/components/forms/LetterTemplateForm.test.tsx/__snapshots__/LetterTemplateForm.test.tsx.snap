@@ -2247,6 +2247,7 @@ exports[`renders page with preloaded field values 1`] = `
             </select>
           </div>
           <div
+            aria-live="assertive"
             class="nhsuk-warning-callout"
             data-testid="rtl-language-warning"
           >
@@ -2699,6 +2700,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             </select>
           </div>
           <div
+            aria-live="assertive"
             class="nhsuk-warning-callout"
             data-testid="rtl-language-warning"
           >

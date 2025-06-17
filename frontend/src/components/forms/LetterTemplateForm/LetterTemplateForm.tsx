@@ -181,7 +181,10 @@ export const LetterTemplateForm: FC<
 
               {letterTemplateLanguage &&
                 isRightToLeft(letterTemplateLanguage) && (
-                  <WarningCallout data-testid='rtl-language-warning'>
+                  <WarningCallout
+                    data-testid='rtl-language-warning'
+                    aria-live='assertive'
+                  >
                     <WarningCallout.Label>
                       {rtlWarning.heading}
                     </WarningCallout.Label>
