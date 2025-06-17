@@ -37,6 +37,56 @@ test('renders page with preloaded field values', () => {
   expect(container.asFragment()).toMatchSnapshot();
 });
 
+test('shows right-to-left language warning when language changes', () => {
+  const initialLanguage = 'en';
+  const selectedLanguage = 'fa';
+
+  const container = render(
+    <LetterTemplateForm
+      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+        validationError: undefined,
+        name: 'template-name',
+        letterType: 'x1',
+        language: initialLanguage,
+      })}
+    />
+  );
+
+  fireEvent.change(container.getByTestId('language-select'), {
+    target: { value: selectedLanguage },
+  });
+
+  const warningElements = container.queryAllByTestId('rtl-language-warning');
+
+  expect(warningElements.length).toBe(1);
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
+test('hides right-to-left language warning when language changes', () => {
+  const initialLanguage = 'fa';
+  const selectedLanguage = 'en';
+
+  const container = render(
+    <LetterTemplateForm
+      initialState={mockDeep<TemplateFormState<LetterTemplate>>({
+        validationError: undefined,
+        name: 'template-name',
+        letterType: 'x1',
+        language: initialLanguage,
+      })}
+    />
+  );
+
+  fireEvent.change(container.getByTestId('language-select'), {
+    target: { value: selectedLanguage },
+  });
+
+  const warningElements = container.queryAllByTestId('rtl-language-warning');
+
+  expect(warningElements.length).toBe(0);
+  expect(container.asFragment()).toMatchSnapshot();
+});
+
 test('renders page one error', () => {
   const container = render(
     <LetterTemplateForm

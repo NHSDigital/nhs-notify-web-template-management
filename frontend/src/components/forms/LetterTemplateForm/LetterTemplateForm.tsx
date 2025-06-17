@@ -8,6 +8,7 @@ import {
   Label,
   Select,
   BackLink,
+  WarningCallout,
 } from 'nhsuk-react-components';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
@@ -18,6 +19,7 @@ import {
   alphabeticalLetterTypeList,
   CreateLetterTemplate,
   FormErrorState,
+  isRightToLeft,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -28,6 +30,7 @@ import FileUpload from '@atoms/FileUpload/FileUpload';
 import { getBasePath } from '@utils/get-base-path';
 import { $CreateLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
+import { Language } from 'nhs-notify-backend-client';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -51,6 +54,7 @@ export const LetterTemplateForm: FC<
     templateCsvGuidanceLink,
     templatePdfGuidanceLinkText,
     buttonText,
+    rtlWarning,
   } = content.components.templateFormLetter;
 
   const [state, action] = useActionState(processFormActions, initialState);
@@ -64,8 +68,10 @@ export const LetterTemplateForm: FC<
   const [letterTemplateLetterType, letterTypeHandler] =
     useTextInput<HTMLSelectElement>(state.letterType);
 
-  const [letterTemplateLanguage, letterLanguageHandler] =
-    useTextInput<HTMLSelectElement>(state.language);
+  const [letterTemplateLanguage, letterLanguageHandler] = useTextInput<
+    HTMLSelectElement,
+    Language
+  >(state.language);
 
   const templateNameError =
     validationError?.fieldErrors.letterTemplateName?.join(', ');
@@ -164,13 +170,29 @@ export const LetterTemplateForm: FC<
                 onChange={letterLanguageHandler}
                 error={templateLanguageError}
                 errorProps={{ id: 'letterTemplateLanguage--error-message' }}
+                data-testid='language-select'
               >
-                {alphabeticalLanguageList.map(([langCode, langName]) => (
+                {alphabeticalLanguageList.map(([langCode, langMetadata]) => (
                   <Select.Option key={`option-${langCode}`} value={langCode}>
-                    {langName}
+                    {langMetadata.name}
                   </Select.Option>
                 ))}
               </Select>
+
+              {letterTemplateLanguage &&
+                isRightToLeft(letterTemplateLanguage) && (
+                  <WarningCallout
+                    data-testid='rtl-language-warning'
+                    aria-live='polite'
+                  >
+                    <WarningCallout.Label>
+                      {rtlWarning.heading}
+                    </WarningCallout.Label>
+                    <p>{rtlWarning.bodyPart1}</p>
+                    <p>{rtlWarning.bodyPart2}</p>
+                  </WarningCallout>
+                )}
+
               <div
                 className={classNames(
                   templatePdfError && 'nhsuk-form-group--error',

@@ -603,6 +603,12 @@ const templateFormLetter = {
       },
     },
   },
+  rtlWarning: {
+    heading: 'Check your personalisation fields',
+    bodyPart1:
+      "We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.",
+    bodyPart2: 'You must check they match before you save and upload.',
+  },
 };
 
 const templateFormEmail = {
