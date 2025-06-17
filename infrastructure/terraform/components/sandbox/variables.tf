@@ -57,11 +57,6 @@ variable "log_retention_in_days" {
   default     = 0
 }
 
-variable "kms_deletion_window" {
-  type        = string
-  description = "When a kms key is deleted, how long should it wait in the pending deletion state?"
-  default     = "30"
-}
 
 variable "letter_suppliers" {
   type = map(object({
