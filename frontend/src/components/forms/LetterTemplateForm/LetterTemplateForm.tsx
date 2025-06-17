@@ -186,15 +186,10 @@ export const LetterTemplateForm: FC<
                       {rtlWarning.heading}
                     </WarningCallout.Label>
                     <p>
-                      {rtlWarning.bodyPrefix}
-                      <a
-                        href={rtlWarning.bodyLinkHref}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        {rtlWarning.bodyLinkDisplay}
-                      </a>
-                      {rtlWarning.bodySuffix}
+                      {rtlWarning.bodyPart1}
+                      <br />
+                      <br />
+                      {rtlWarning.bodyPart2}
                     </p>
                   </WarningCallout>
                 )}

@@ -604,12 +604,10 @@ const templateFormLetter = {
     },
   },
   rtlWarning: {
-    heading: 'Right-to-left language scripts',
-    bodyPrefix:
-      'We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet ',
-    bodyLinkDisplay: 'the guidance',
-    bodyLinkHref: '/using-nhs-notify/personalisation',
-    bodySuffix: ' prior to submitting the letter for proofing.',
+    heading: 'Check your personalisation fields',
+    bodyPart1:
+      "We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.",
+    bodyPart2: 'You must check they match before you save and upload.',
   },
 };
 

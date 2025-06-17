@@ -2261,19 +2261,14 @@ exports[`renders page with preloaded field values 1`] = `
                 >
                   Important: 
                 </span>
-                Right-to-left language scripts
+                Check your personalisation fields
               </span>
             </h3>
             <p>
-              We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet 
-              <a
-                href="/using-nhs-notify/personalisation"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                the guidance
-              </a>
-               prior to submitting the letter for proofing.
+              We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.
+              <br />
+              <br />
+              You must check they match before you save and upload.
             </p>
           </div>
           <div
@@ -2718,19 +2713,14 @@ exports[`shows right-to-left language warning when language changes 1`] = `
                 >
                   Important: 
                 </span>
-                Right-to-left language scripts
+                Check your personalisation fields
               </span>
             </h3>
             <p>
-              We are currently unable to check personalisation fields within right-to-left language script letters so please ensure that they meet 
-              <a
-                href="/using-nhs-notify/personalisation"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                the guidance
-              </a>
-               prior to submitting the letter for proofing.
+              We cannot automatically check if the personalisation fields in your PDF match the example data in your CSV file because of the language you've chosen.
+              <br />
+              <br />
+              You must check they match before you save and upload.
             </p>
           </div>
           <div
