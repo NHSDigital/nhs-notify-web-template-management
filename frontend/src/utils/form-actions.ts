@@ -19,18 +19,18 @@ export async function createTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const clientId = await getClientId(accessToken)
-  const userId = userSub
+  const clientId = await getClientId(accessToken);
+  const userId = userSub;
 
   if (!clientId || !userId) {
-    throw new Error('Missing configuration')
+    throw new Error('Missing configuration');
   }
 
   const templateWithAdditionalProperties: CreateUpdateTemplate = {
     ...template,
     clientId,
-    userId
-  }
+    userId,
+  };
 
   const { data, error } = await templateClient.createTemplate(
     templateWithAdditionalProperties,
@@ -56,18 +56,18 @@ export async function createLetterTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const clientId = await getClientId(accessToken)
-  const userId = userSub
+  const clientId = await getClientId(accessToken);
+  const userId = userSub;
 
   if (!clientId || !userId) {
-    throw new Error('Missing configuration')
+    throw new Error('Missing configuration');
   }
 
   const templateWithAdditionalProperties = {
     ...template,
     clientId,
-    userId
-  }
+    userId,
+  };
 
   const { data, error } = await templateClient.createLetterTemplate(
     templateWithAdditionalProperties,

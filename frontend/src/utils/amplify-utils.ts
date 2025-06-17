@@ -39,19 +39,20 @@ export const getClientId = async (accessToken?: string) => {
 };
 
 const getAccessTokenParam = async (key: string, accessToken?: string) => {
-  accessToken ??= (await getSessionServer()).accessToken
-
   if (!accessToken) {
-    return;
+    const authSession = await getSessionServer();
+    accessToken = authSession.accessToken;
+
+    if (!accessToken) return;
   }
 
   const jwt = jwtDecode<JWT['payload']>(accessToken);
 
-  const value = jwt[key]
+  const value = jwt[key];
 
   if (!value) {
     return;
   }
 
   return value.toString();
-}
+};

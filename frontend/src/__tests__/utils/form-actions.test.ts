@@ -22,15 +22,19 @@ import { templateClient } from 'nhs-notify-backend-client/src/template-api-clien
 
 const mockedTemplateClient = jest.mocked(templateClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
-const mockGetClientId = jest.mocked(getClientId)
+const mockGetClientId = jest.mocked(getClientId);
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client/src/template-api-client');
 
-const testUser = 'sub'
-const testClient = 'test-client'
+const testUser = 'sub';
+const testClient = 'test-client';
 
-const withUserAndClientId = (template: CreateUpdateTemplate) => ({ ...template, clientId: testClient, userId: testUser })
+const withUserAndClientId = (template: CreateUpdateTemplate) => ({
+  ...template,
+  clientId: testClient,
+  userId: testUser,
+});
 
 describe('form-actions', () => {
   beforeEach(() => {
@@ -41,7 +45,7 @@ describe('form-actions', () => {
       userSub: testUser,
     });
 
-    mockGetClientId.mockResolvedValueOnce(testClient)
+    mockGetClientId.mockResolvedValueOnce(testClient);
   });
 
   test('createTemplate', async () => {

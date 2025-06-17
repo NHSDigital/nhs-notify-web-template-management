@@ -3,7 +3,11 @@
  */
 import { sign } from 'jsonwebtoken';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { getSessionServer, getSessionId, getClientId } from '../../utils/amplify-utils';
+import {
+  getSessionServer,
+  getSessionId,
+  getClientId,
+} from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
@@ -19,10 +23,9 @@ jest.mock('@/amplify_outputs.json', () => ({
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
 describe('amplify-utils', () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
-  })
+  });
 
   test('getSessionServer - should return the auth token and userSub', async () => {
     fetchAuthSessionMock.mockResolvedValueOnce({
@@ -157,7 +160,10 @@ describe('amplify-utils', () => {
         },
       });
 
-      const mockAccessToken = sign({ ['nhs-notify:client-id']: 'client2' }, 'key')
+      const mockAccessToken = sign(
+        { ['nhs-notify:client-id']: 'client2' },
+        'key'
+      );
 
       const clientId = await getClientId(mockAccessToken);
 

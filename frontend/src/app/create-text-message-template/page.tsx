@@ -17,7 +17,7 @@ const CreateSMSTemplatePage = async () => {
     name: '',
     message: '',
     clientId: '',
-    userId: ''
+    userId: '',
   };
 
   return <SmsTemplateForm initialState={initialState} />;

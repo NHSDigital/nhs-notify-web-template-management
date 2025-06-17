@@ -82,7 +82,7 @@ describe('templateClient', () => {
         userId: 'user1',
         message: 'message',
         subject: 'subject',
-      } as unknown as CreateUpdateTemplate
+      } as unknown as CreateUpdateTemplate;
 
       const result = await templateClient.createTemplate(data, owner);
 
@@ -90,7 +90,7 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: { clientId: "Required" },
+          details: { clientId: 'Required' },
         }),
       });
     });
@@ -414,7 +414,7 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: { clientId: "Required" },
+          details: { clientId: 'Required' },
         }),
       });
 
