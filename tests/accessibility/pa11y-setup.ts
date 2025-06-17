@@ -22,6 +22,8 @@ const generateLetterTemplateData = (
     name,
     owner,
     id: randomUUID(),
+    clientId: 'client',
+    userId: 'user',
     templateType: 'LETTER',
     letterType: 'x0',
     language: 'en',

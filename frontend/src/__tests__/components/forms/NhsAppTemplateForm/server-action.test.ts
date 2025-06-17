@@ -18,6 +18,8 @@ const redirectMock = jest.mocked(redirect);
 const initialState: CreateUpdateNHSAppTemplate = {
   templateType: 'NHS_APP',
   name: 'name',
+  clientId: 'client1',
+  userId: 'user1',
   message: 'message',
 };
 

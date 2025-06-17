@@ -94,6 +94,8 @@ describe('Template API - Submit', () => {
     const response: TemplateDto = {
       id: '1-2-3',
       name: 'updated-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'message',
       templateStatus: 'SUBMITTED',
       templateType: 'SMS',

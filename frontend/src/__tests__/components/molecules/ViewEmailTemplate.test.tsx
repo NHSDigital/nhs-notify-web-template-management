@@ -11,6 +11,8 @@ describe('ViewEmailTemplate component', () => {
             id: 'template-id',
             templateType: 'EMAIL',
             name: 'Example template',
+            clientId: 'client1',
+            userId: 'user1',
             templateStatus: 'SUBMITTED',
             subject: 'Example subject',
             message: 'Example message',

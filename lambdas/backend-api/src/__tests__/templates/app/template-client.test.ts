@@ -1270,6 +1270,8 @@ describe('templateClient', () => {
         id: undefined as unknown as string,
         templateType: 'EMAIL',
         name: undefined as unknown as string,
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
         createdAt: new Date().toISOString(),

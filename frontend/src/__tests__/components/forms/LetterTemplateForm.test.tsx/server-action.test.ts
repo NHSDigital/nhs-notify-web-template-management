@@ -14,6 +14,8 @@ const redirectMock = jest.mocked(redirect);
 const initialState: CreateLetterTemplate = {
   templateType: 'LETTER',
   name: 'name',
+  clientId: 'client1',
+  userId: 'user1',
   letterType: 'x0',
   language: 'en',
 };

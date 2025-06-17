@@ -71,6 +71,8 @@ describe('Template API - List', () => {
       id: 'id',
       templateType: 'EMAIL',
       name: 'name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'message',
       subject: 'subject',
       createdAt: new Date().toISOString(),

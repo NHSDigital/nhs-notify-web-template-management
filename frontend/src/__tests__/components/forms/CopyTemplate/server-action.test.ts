@@ -23,6 +23,8 @@ test('submit form - validation error', async () => {
     templateStatus: 'NOT_YET_SUBMITTED',
     templateType: 'NHS_APP',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
@@ -55,6 +57,8 @@ test('submit form - create email template from non-email template', async () => 
   const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',
@@ -93,6 +97,8 @@ test('submit form - create email template from email template', async () => {
   const testTemplate: Omit<EmailTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     message: 'template-message',
     subject: 'template-subject',
     createdAt: 'today',
@@ -132,6 +138,8 @@ test('submit form - create non-email template', async () => {
   const testTemplate: Omit<NHSAppTemplate, 'id' | 'templateType'> = {
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     message: 'template-message',
     createdAt: 'today',
     updatedAt: 'today',

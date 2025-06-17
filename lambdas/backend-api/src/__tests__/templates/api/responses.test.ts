@@ -6,6 +6,8 @@ describe('responses', () => {
     const dto: TemplateDto = {
       id: '1',
       name: 'name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'message',
       subject: 'subject',
       templateStatus: 'SUBMITTED',

@@ -11,6 +11,8 @@ describe('ViewLetterTemplate component', () => {
             templateType: 'LETTER',
             id: 'template-id',
             name: 'Example template',
+            clientId: 'client1',
+            userId: 'user1',
             templateStatus: 'SUBMITTED',
             createdAt: '2025-03-28T12:30:54.684Z',
             updatedAt: '2025-03-28T12:31:54.684Z',

@@ -25,6 +25,8 @@ describe('TemplateAPIClient', () => {
     const result = await client.createTemplate(
       {
         name: 'test',
+        clientId: 'client1',
+        userId: 'user1',
         message: '<html></html>',
         templateType: 'NHS_APP',
       },
@@ -60,6 +62,8 @@ describe('TemplateAPIClient', () => {
     const result = await client.createTemplate(
       {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'NHS_APP',
       },
@@ -90,6 +94,8 @@ describe('TemplateAPIClient', () => {
     const result = await client.createLetterTemplate(
       {
         name: 'test',
+        clientId: 'client1',
+        userId: 'user1',
         templateType: 'LETTER',
         language: 'de',
         letterType: 'x1',
@@ -140,6 +146,8 @@ describe('TemplateAPIClient', () => {
     const result = await client.createLetterTemplate(
       {
         name: 'test',
+        clientId: 'client1',
+        userId: 'user1',
         templateType: 'LETTER',
         language: 'de',
         letterType: 'x1',
@@ -187,6 +195,8 @@ describe('TemplateAPIClient', () => {
       'real-id',
       {
         name: 'test',
+        clientId: 'client1',
+        userId: 'user1',
         message: '<html></html>',
         templateType: 'NHS_APP',
       },
@@ -226,6 +236,8 @@ describe('TemplateAPIClient', () => {
       'real-id',
       {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'NHS_APP',
       },

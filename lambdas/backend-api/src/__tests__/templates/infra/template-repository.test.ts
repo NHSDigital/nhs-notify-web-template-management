@@ -73,7 +73,11 @@ const letterProperties: LetterProperties = {
   },
 };
 
-const createTemplateProperties = { name: 'name' };
+const createTemplateProperties = {
+  name: 'name',
+  clientId: 'client1',
+  userId: 'user1',
+};
 
 const updateTemplateProperties = {
   ...createTemplateProperties,
@@ -271,6 +275,8 @@ describe('templateRepository', () => {
         {
           templateType: 'EMAIL',
           name: 'name',
+          clientId: 'client1',
+          userId: 'user1',
           message: 'message',
           subject: 'pickles',
         },
@@ -366,6 +372,8 @@ describe('templateRepository', () => {
           'abc-def-ghi-jkl-123',
           {
             name: 'name',
+            clientId: 'client1',
+            userId: 'user1',
             message: 'message',
             subject: 'subject',
             templateType: 'EMAIL',
@@ -391,6 +399,8 @@ describe('templateRepository', () => {
         'abc-def-ghi-jkl-123',
         {
           name: 'name',
+          clientId: 'client1',
+          userId: 'user1',
           message: 'message',
           subject: 'subject',
           templateType: 'EMAIL',

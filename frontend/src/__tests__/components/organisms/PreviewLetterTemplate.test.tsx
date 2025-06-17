@@ -8,6 +8,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           templateType: 'LETTER',
           name: 'test-template-letter',
+          clientId: 'client1',
+          userId: 'user1',
           id: 'template-id',
           templateStatus: 'VIRUS_SCAN_FAILED',
           language: 'en',
@@ -35,6 +37,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           id: '53525D03-1BC1-4563-ABF9-A74FF04142AF',
           name: 'letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateType: 'LETTER',
           templateStatus: 'PENDING_PROOF_REQUEST',
           letterType: 'q4',
@@ -61,6 +65,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           id: '53525D03-1BC1-4563-ABF9-A74FF04142AF',
           name: 'letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateType: 'LETTER',
           templateStatus: 'WAITING_FOR_PROOF',
           letterType: 'q4',
@@ -87,6 +93,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           id: '2C56C5F6-B3AD-4FF8-A8A2-52E4FA8AF2BE',
           name: 'letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateType: 'LETTER',
           templateStatus: 'PROOF_AVAILABLE',
           letterType: 'x1',
@@ -119,6 +127,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
           name: 'letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateType: 'LETTER',
           templateStatus: 'NOT_YET_SUBMITTED',
           letterType: 'x0',
@@ -151,6 +161,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           templateType: 'LETTER',
           name: 'test-template-letter',
+          clientId: 'client1',
+          userId: 'user1',
           id: 'template-id',
           templateStatus: 'VALIDATION_FAILED',
           language: 'en',
@@ -182,6 +194,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           templateType: 'LETTER',
           name: 'test-template-letter',
+          clientId: 'client1',
+          userId: 'user1',
           id: 'template-id',
           templateStatus: 'PENDING_UPLOAD',
           language: 'en',
@@ -208,6 +222,8 @@ describe('PreviewLetterTemplate component', () => {
         template={{
           templateType: 'LETTER',
           name: 'test-template-letter',
+          clientId: 'client1',
+          userId: 'user1',
           id: 'template-id',
           templateStatus: 'PENDING_VALIDATION',
           language: 'en',

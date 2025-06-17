@@ -32,6 +32,8 @@ test('calls form action and redirects', async () => {
   const mockTemplate: NHSAppTemplate = {
     id: 'template-id',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     message: 'template-message',
     templateType: 'NHS_APP',
     templateStatus: 'NOT_YET_SUBMITTED',

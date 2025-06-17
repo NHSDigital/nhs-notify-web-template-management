@@ -110,6 +110,8 @@ describe('Template API - Create', () => {
 
     const create: CreateUpdateTemplate = {
       name: 'updated-name',
+      clientId: 'client1',
+      userId: 'user1',
       message: 'message',
       templateType: 'SMS',
     };

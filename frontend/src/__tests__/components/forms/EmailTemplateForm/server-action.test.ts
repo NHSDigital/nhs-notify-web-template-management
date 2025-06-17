@@ -18,6 +18,8 @@ const initialState: EmailTemplate = {
   templateType: 'EMAIL',
   templateStatus: 'NOT_YET_SUBMITTED',
   name: 'name',
+  clientId: 'client1',
+  userId: 'user1',
   subject: 'subject',
   message: 'message',
   createdAt: '2025-01-13T10:19:25.579Z',

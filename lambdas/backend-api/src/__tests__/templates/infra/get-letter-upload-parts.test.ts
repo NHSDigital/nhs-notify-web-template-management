@@ -6,6 +6,8 @@ describe('getLetterUploadParts', () => {
   const initialTemplate: CreateUpdateTemplate = {
     templateType: 'LETTER',
     name: 'template-name',
+    clientId: 'client1',
+    userId: 'user1',
     letterType: 'x0',
     language: 'en',
   };

@@ -10,6 +10,8 @@ describe('ViewNHSAppTemplate component', () => {
           {
             id: 'template-id',
             name: 'Example template',
+            clientId: 'client1',
+            userId: 'user1',
             templateStatus: 'SUBMITTED',
             message: 'Example message',
             templateType: 'NHS_APP',

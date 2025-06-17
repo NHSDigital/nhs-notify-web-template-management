@@ -55,6 +55,8 @@ export const copyTemplateAction: CopyTemplateAction = async (
     case 'SMS': {
       await createTemplate({
         name: copyName,
+        clientId: 'client1',
+        userId: 'user1',
         message,
         templateType: newTemplateType,
       });
@@ -64,6 +66,8 @@ export const copyTemplateAction: CopyTemplateAction = async (
     case 'EMAIL': {
       await createTemplate({
         name: copyName,
+        clientId: 'client1',
+        userId: 'user1',
         message,
         templateType: newTemplateType,
         subject,

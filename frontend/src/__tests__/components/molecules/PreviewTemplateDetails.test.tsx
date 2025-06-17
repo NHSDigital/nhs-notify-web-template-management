@@ -11,6 +11,8 @@ describe('PreviewTemplateDetailsNhsApp', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
+          clientId: 'client1',
+          userId: 'user1',
           message: 'app message message',
           templateStatus: 'NOT_YET_SUBMITTED',
           templateType: 'NHS_APP',
@@ -32,6 +34,8 @@ describe('PreviewTemplateDetailsEmail', () => {
         template={{
           id: 'template-id',
           name: 'Example Email template',
+          clientId: 'client1',
+          userId: 'user1',
           message: 'email message message',
           subject: 'subject',
           templateStatus: 'SUBMITTED',
@@ -55,6 +59,8 @@ describe('PreviewTemplateDetailsSms', () => {
         template={{
           id: 'template-id',
           name: 'SMS template',
+          clientId: 'client1',
+          userId: 'user1',
           message: 'SMS message',
           templateStatus: 'SUBMITTED',
           templateType: 'SMS',
@@ -76,6 +82,8 @@ describe('PreviewTemplateDetailsLetter', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
+          clientId: 'client1',
+          userId: 'user1',
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
           letterType: 'x0',
@@ -107,6 +115,8 @@ describe('PreviewTemplateDetailsLetter', () => {
         template={{
           id: 'template-id',
           name: 'Example template',
+          clientId: 'client1',
+          userId: 'user1',
           templateStatus: 'PENDING_VALIDATION',
           templateType: 'LETTER',
           letterType: 'x0',
@@ -133,6 +143,8 @@ describe('PreviewTemplateDetailsLetter', () => {
         template={{
           id: 'template-id',
           name: 'Example letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
           letterType: 'x0',
@@ -169,6 +181,8 @@ describe('PreviewTemplateDetailsLetter', () => {
         template={{
           id: 'template-id',
           name: 'Example letter',
+          clientId: 'client1',
+          userId: 'user1',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
           letterType: 'x0',
