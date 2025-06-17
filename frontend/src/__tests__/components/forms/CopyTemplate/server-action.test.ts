@@ -86,6 +86,8 @@ test('submit form - create email template from non-email template', async () => 
     message: testTemplate.message,
     subject: 'Enter a subject line',
     name: 'COPY (2022-01-01 09:00:00): template-name',
+    clientId: 'client1',
+    userId: 'user1',
     templateType: 'EMAIL',
   });
 });
@@ -127,6 +129,8 @@ test('submit form - create email template from email template', async () => {
     message: testTemplate.message,
     subject: testTemplate.subject,
     name: 'COPY (2022-01-01 09:00:00): template-name',
+    clientId: 'client1',
+    userId: 'user1',
     templateType: 'EMAIL',
   });
 });
@@ -166,6 +170,8 @@ test('submit form - create non-email template', async () => {
   expect(mockCreateTemplate).toHaveBeenCalledWith({
     message: testTemplate.message,
     name: 'COPY (2022-01-01 09:00:00): template-name',
+    clientId: 'client1',
+    userId: 'user1',
     templateType: 'NHS_APP',
   });
 });
