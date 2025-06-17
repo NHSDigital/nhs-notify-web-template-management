@@ -57,6 +57,8 @@ describe('templateClient', () => {
       const data = {
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: undefined,
         subject: 'subject',
       } as unknown as CreateUpdateTemplate;
@@ -71,12 +73,36 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when template data is missing client ID', async () => {
+      const { templateClient } = setup();
+
+      const data = {
+        templateType: 'EMAIL',
+        name: 'name',
+        userId: 'user1',
+        message: 'message',
+        subject: 'subject',
+      } as unknown as CreateUpdateTemplate
+
+      const result = await templateClient.createTemplate(data, owner);
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: { clientId: "Required" },
+        }),
+      });
+    });
+
     test('should return a failure result when attempting to create a letter', async () => {
       const { templateClient } = setup();
 
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         letterType: 'x0',
         language: 'en',
       };
@@ -101,6 +127,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
       };
@@ -134,6 +162,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
       };
@@ -178,6 +208,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
       };
@@ -224,6 +256,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -251,6 +285,8 @@ describe('templateClient', () => {
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
         files: filesWithVerions,
@@ -326,6 +362,8 @@ describe('templateClient', () => {
       const data = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: undefined,
       } as unknown as CreateUpdateTemplate;
@@ -351,12 +389,46 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
 
+    test('should return a failure result, when template data is missing client ID', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data = {
+        templateType: 'LETTER',
+        name: 'name',
+        userId: 'user1',
+        language: 'en',
+        letterType: 'x0',
+      } as unknown as CreateUpdateTemplate;
+
+      const pdf = new File(['pdf'], 'template.pdf', {
+        type: 'application/pdf',
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        owner,
+        pdf
+      );
+
+      expect(result).toEqual({
+        error: expect.objectContaining({
+          code: 400,
+          message: 'Request failed validation',
+          details: { clientId: "Required" },
+        }),
+      });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
     test('should return a failure result, when attempting to create a non-letter', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
         templateType: 'NHS_APP',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'app message',
       };
 
@@ -406,6 +478,8 @@ describe('templateClient', () => {
         const data: CreateUpdateTemplate = {
           templateType: 'LETTER',
           name: 'name',
+          clientId: 'client1',
+          userId: 'user1',
           language: 'en',
           letterType: 'x0',
         };
@@ -450,6 +524,8 @@ describe('templateClient', () => {
         const data: CreateUpdateTemplate = {
           templateType: 'LETTER',
           name: 'name',
+          clientId: 'client1',
+          userId: 'user1',
           language: 'en',
           letterType: 'x0',
         };
@@ -482,6 +558,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -502,6 +580,8 @@ describe('templateClient', () => {
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
         files: filesWithVerions,
@@ -543,6 +623,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -578,6 +660,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -598,6 +682,8 @@ describe('templateClient', () => {
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
         files: filesWithVerions,
@@ -670,6 +756,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -690,6 +778,8 @@ describe('templateClient', () => {
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
         files: filesWithVerions,
@@ -764,6 +854,8 @@ describe('templateClient', () => {
       const data: CreateUpdateTemplate = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
       };
@@ -790,6 +882,8 @@ describe('templateClient', () => {
       const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
         templateType: 'LETTER',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         language: 'en',
         letterType: 'x0',
         files: filesWithVerions,
@@ -852,6 +946,8 @@ describe('templateClient', () => {
 
       const data = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         templateStatus: 'NOT_YET_SUBMITTED',
         templateType: 'SMS',
       };
@@ -875,6 +971,8 @@ describe('templateClient', () => {
 
       const data: CreateUpdateTemplate = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         templateType: 'LETTER',
         language: 'it',
         letterType: 'x1',
@@ -903,6 +1001,8 @@ describe('templateClient', () => {
 
       const data: CreateUpdateTemplate = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -940,6 +1040,8 @@ describe('templateClient', () => {
 
       const data: CreateUpdateTemplate = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -988,6 +1090,8 @@ describe('templateClient', () => {
 
       const data: CreateUpdateTemplate = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -1057,6 +1161,8 @@ describe('templateClient', () => {
         id: templateId,
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
         createdAt: undefined as unknown as string,
@@ -1096,6 +1202,8 @@ describe('templateClient', () => {
         id: templateId,
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
         createdAt: new Date().toISOString(),
@@ -1150,6 +1258,8 @@ describe('templateClient', () => {
         id: templateId,
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
         createdAt: new Date().toISOString(),
@@ -1190,6 +1300,8 @@ describe('templateClient', () => {
         id: templateId,
         templateType: 'EMAIL',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         subject: 'subject',
         createdAt: new Date().toISOString(),
@@ -1246,6 +1358,8 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -1280,6 +1394,8 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateStatus: 'SUBMITTED',
         templateType: 'SMS',
@@ -1355,6 +1471,8 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -1393,6 +1511,8 @@ describe('templateClient', () => {
         updatedAt: new Date().toISOString(),
         templateStatus: 'SUBMITTED',
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateType: 'SMS',
       };
@@ -1432,6 +1552,8 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
@@ -1497,6 +1619,8 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
@@ -1574,6 +1698,8 @@ describe('templateClient', () => {
 
       const template: TemplateDto = {
         name: 'name',
+        clientId: 'client1',
+        userId: 'user1',
         message: 'message',
         templateStatus: 'DELETED',
         templateType: 'SMS',

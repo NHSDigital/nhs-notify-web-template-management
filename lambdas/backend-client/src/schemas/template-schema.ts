@@ -103,6 +103,8 @@ export const $BaseTemplateSchema = schemaFor<BaseTemplate>()(
   z.object({
     name: z.string().trim().min(1),
     templateType: z.enum(TEMPLATE_TYPE_LIST),
+    clientId: z.string(),
+    userId: z.string()
   })
 );
 
