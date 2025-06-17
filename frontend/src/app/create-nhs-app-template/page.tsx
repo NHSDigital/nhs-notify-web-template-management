@@ -16,6 +16,8 @@ const CreateNHSAppTemplatePage = async () => {
     templateType: 'NHS_APP',
     name: '',
     message: '',
+    clientId: '',
+    userId: ''
   };
 
   return <NhsAppTemplateForm initialState={initialState} />;

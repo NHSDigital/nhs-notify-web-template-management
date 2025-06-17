@@ -17,6 +17,8 @@ const CreateEmailTemplatePage = async () => {
     name: '',
     subject: '',
     message: '',
+    clientId: '',
+    userId: ''
   };
 
   return <EmailTemplateForm initialState={initialState} />;

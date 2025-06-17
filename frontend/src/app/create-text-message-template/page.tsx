@@ -16,6 +16,8 @@ const CreateSMSTemplatePage = async () => {
     templateType: 'SMS',
     name: '',
     message: '',
+    clientId: '',
+    userId: ''
   };
 
   return <SmsTemplateForm initialState={initialState} />;

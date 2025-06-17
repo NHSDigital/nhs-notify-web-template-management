@@ -7,6 +7,8 @@ const CreateLetterTemplatePage = async () => {
     name: '',
     letterType: 'x0',
     language: 'en',
+    clientId: '',
+    userId: '',
   };
 
   return <LetterTemplateForm initialState={initialState} />;
