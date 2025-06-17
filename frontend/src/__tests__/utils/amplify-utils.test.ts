@@ -3,7 +3,7 @@
  */
 import { sign } from 'jsonwebtoken';
 import { fetchAuthSession } from 'aws-amplify/auth/server';
-import { getSessionServer, getSessionId } from '../../utils/amplify-utils';
+import { getSessionServer, getSessionId, getClientId } from '../../utils/amplify-utils';
 
 jest.mock('aws-amplify/auth/server');
 jest.mock('@aws-amplify/adapter-nextjs/api');
@@ -19,6 +19,11 @@ jest.mock('@/amplify_outputs.json', () => ({
 const fetchAuthSessionMock = jest.mocked(fetchAuthSession);
 
 describe('amplify-utils', () => {
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  })
+
   test('getSessionServer - should return the auth token and userSub', async () => {
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
@@ -54,13 +59,13 @@ describe('amplify-utils', () => {
   });
 
   describe('getSessionId', () => {
-    test('returns void when access token not found', async () => {
+    test('returns undefined when access token not found', async () => {
       fetchAuthSessionMock.mockResolvedValueOnce({});
 
       await expect(getSessionId()).resolves.toBeUndefined();
     });
 
-    test('errors when session ID not found', async () => {
+    test('returns undefined when session ID not found', async () => {
       fetchAuthSessionMock.mockResolvedValueOnce({
         tokens: {
           accessToken: {
@@ -92,6 +97,71 @@ describe('amplify-utils', () => {
       const sessionId = await getSessionId();
 
       expect(sessionId).toEqual('jti');
+    });
+  });
+
+  describe('getClientId', () => {
+    test('returns undefined when access token not found', async () => {
+      fetchAuthSessionMock.mockResolvedValueOnce({});
+
+      await expect(getClientId()).resolves.toBeUndefined();
+    });
+
+    test('returns undefined when client ID not found', async () => {
+      fetchAuthSessionMock.mockResolvedValueOnce({
+        tokens: {
+          accessToken: {
+            toString: () => sign({}, 'key'),
+            payload: {},
+          },
+        },
+      });
+
+      await expect(getClientId()).resolves.toBeUndefined();
+    });
+
+    test('returns client id', async () => {
+      fetchAuthSessionMock.mockResolvedValueOnce({
+        tokens: {
+          accessToken: {
+            toString: () =>
+              sign(
+                {
+                  ['nhs-notify:client-id']: 'client1',
+                },
+                'key'
+              ),
+            payload: {},
+          },
+        },
+      });
+
+      const clientId = await getClientId();
+
+      expect(clientId).toEqual('client1');
+    });
+
+    test('retrieves client id from access token param if provided', async () => {
+      fetchAuthSessionMock.mockResolvedValueOnce({
+        tokens: {
+          accessToken: {
+            toString: () =>
+              sign(
+                {
+                  ['nhs-notify:client-id']: 'client1',
+                },
+                'key'
+              ),
+            payload: {},
+          },
+        },
+      });
+
+      const mockAccessToken = sign({ ['nhs-notify:client-id']: 'client2' }, 'key')
+
+      const clientId = await getClientId(mockAccessToken);
+
+      expect(clientId).toEqual('client2');
     });
   });
 });

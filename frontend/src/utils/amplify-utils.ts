@@ -31,7 +31,15 @@ export async function getSessionServer(
 }
 
 export const getSessionId = async () => {
-  const { accessToken } = await getSessionServer();
+  return getAccessTokenParam('origin_jti');
+};
+
+export const getClientId = async (accessToken?: string) => {
+  return getAccessTokenParam('nhs-notify:client-id', accessToken);
+};
+
+const getAccessTokenParam = async (key: string, accessToken?: string) => {
+  accessToken ??= (await getSessionServer()).accessToken
 
   if (!accessToken) {
     return;
@@ -39,11 +47,11 @@ export const getSessionId = async () => {
 
   const jwt = jwtDecode<JWT['payload']>(accessToken);
 
-  const sessionId = jwt.origin_jti;
+  const value = jwt[key]
 
-  if (!sessionId) {
+  if (!value) {
     return;
   }
 
-  return sessionId.toString();
-};
+  return value.toString();
+}
