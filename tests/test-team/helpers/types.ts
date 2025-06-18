@@ -12,7 +12,7 @@ export const templateTypeToUrlTextMappings: Record<string, string> = {
   LETTER: 'letter',
 };
 
-type File = {
+export type File = {
   fileName: string;
   currentVersion: string;
   virusScanStatus: string;
