@@ -43,7 +43,6 @@
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_retention_period"></a> [retention\_period](#input\_retention\_period) | Backup Vault Retention Period | `number` | `14` | no |
-| <a name="input_ses_domain_name"></a> [ses\_domain\_name](#input\_ses\_domain\_name) | Domain name to use as SES domain identity | `string` | n/a | yes |
 | <a name="input_url_prefix"></a> [url\_prefix](#input\_url\_prefix) | The url prefix to use for the deployed branch | `string` | `"main"` | no |
 ## Modules
 

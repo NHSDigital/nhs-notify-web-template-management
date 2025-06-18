@@ -211,8 +211,3 @@ variable "letter_suppliers" {
 
   description = "Letter suppliers enabled in the environment"
 }
-
-variable "ses_domain_name" {
-  type        = string
-  description = "Domain name to use as SES domain identity"
-}
