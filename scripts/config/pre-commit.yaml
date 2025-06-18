@@ -3,6 +3,7 @@ repos:
     rev: v4.6.0 # Use the ref you want to point at
     hooks:
       - id: trailing-whitespace
+        exclude: .+\.snap
       - id: detect-aws-credentials
         args: [--allow-missing-credentials]
       - id: check-added-large-files
