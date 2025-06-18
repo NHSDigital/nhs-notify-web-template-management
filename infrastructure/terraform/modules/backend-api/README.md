@@ -31,7 +31,6 @@ No requirements.
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
-| <a name="input_test_environment_mock_guardduty_event_source"></a> [test\_environment\_mock\_guardduty\_event\_source](#input\_test\_environment\_mock\_guardduty\_event\_source) | Adds a new source to the EventBridge Guard Duty filter rules | `string` | `""` | no |
 ## Modules
 
 | Name | Source | Version |
