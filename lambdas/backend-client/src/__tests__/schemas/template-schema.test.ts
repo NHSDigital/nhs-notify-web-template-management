@@ -336,7 +336,6 @@ describe('Template schemas', () => {
     const result = $CreateLetterProperties.safeParse({
       name: 'Test Template',
       clientId: 'client1',
-      campaignId: 'campaign1',
       userId: 'user1',
       templateType: 'LETTER',
       language: 'en',
