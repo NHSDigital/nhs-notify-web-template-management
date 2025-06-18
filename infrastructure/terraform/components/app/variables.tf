@@ -211,3 +211,9 @@ variable "letter_suppliers" {
 
   description = "Letter suppliers enabled in the environment"
 }
+
+variable "ses_overload_domain" {
+  type        = string
+  default     = null
+  description = "Additional SES domain identity (e.g. from an external domain). Validation DNS records will need to be manually configured in the DNS provider."
+}

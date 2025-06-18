@@ -1,4 +1,4 @@
-resource "aws_route53_record" "ses_dkim_validation" {
+resource "aws_route53_record" "ses_dkim_validation_main" {
   count = 3
 
   zone_id = local.acct.dns_zone["id"]

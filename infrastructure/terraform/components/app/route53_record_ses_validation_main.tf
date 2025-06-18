@@ -1,4 +1,4 @@
-resource "aws_route53_record" "ses_validation" {
+resource "aws_route53_record" "ses_validation_main" {
   zone_id = local.acct.dns_zone["id"]
   name    = "_amazonses.${aws_ses_domain_identity.main.id}"
   type    = "TXT"
