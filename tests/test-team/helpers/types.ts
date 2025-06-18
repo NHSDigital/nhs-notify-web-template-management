@@ -36,7 +36,7 @@ export type CreateTemplatePayload = TypeSpecificProperties & {
   clientId: string;
   name: string;
   templateType: string;
-  userId: string
+  userId: string;
 };
 
 export type UpdateTemplatePayload = TypeSpecificProperties & {
@@ -44,7 +44,7 @@ export type UpdateTemplatePayload = TypeSpecificProperties & {
   name: string;
   templateType: string;
   templateStatus: string;
-  userId: string
+  userId: string;
 };
 
 export type Template = TypeSpecificProperties & {
@@ -57,5 +57,5 @@ export type Template = TypeSpecificProperties & {
   templateType: string;
   templateStatus: string;
   owner: string;
-  userId: string
+  userId: string;
 };
