@@ -12,12 +12,18 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import {
+  assertPdfTemplateGuardDutyEvent,
+  assertProofGuardDutyEvent,
+  assertTestDataGuardDutyEvent,
+} from './template-mgmt-letter-guardduty.steps';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe.skip('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+
   let user: TestUser;
 
   test.beforeAll(async () => {
@@ -63,6 +69,16 @@ test.describe.skip('letter complete e2e journey', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -131,20 +147,42 @@ test.describe.skip('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
+    // invoke SFTP poll lambda
+    await lambdaClient.send(
+      new InvokeCommand({
+        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+        Payload: JSON.stringify({
+          supplier: 'WTMMOCK',
+        }),
+      })
+    );
+
+    const template = await templateStorageHelper.getTemplate(key);
+
+    const batchId = `${key.id}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${batchId}_proof_1.pdf`,
+    });
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${batchId}_proof_2.pdf`,
+    });
+
+    await assertProofGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+      fileName: `${batchId}_proof_3.pdf`,
+    });
+
     await expect(async () => {
-      // invoke SFTP poll lambda
-      await lambdaClient.send(
-        new InvokeCommand({
-          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-          Payload: JSON.stringify({
-            supplier: 'WTMMOCK',
-          }),
-        })
-      );
+      const { templateStatus } = await templateStorageHelper.getTemplate(key);
 
-      const template = await templateStorageHelper.getTemplate(key);
-
-      expect(template.templateStatus).toEqual('PROOF_AVAILABLE');
+      expect(templateStatus).toEqual('PROOF_AVAILABLE');
     }).toPass({ timeout: 60_000 });
 
     await expect(async () => {
