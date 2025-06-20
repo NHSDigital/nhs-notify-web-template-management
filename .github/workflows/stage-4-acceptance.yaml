@@ -14,7 +14,7 @@ jobs:
     secrets: inherit
     with:
       jobName: Sandbox set up
-      infraRepoName: nhs-notify-template-management
+      infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-deploy-dynamic-env.yaml
       targetEnvironment: pr${{ github.event.number }}
@@ -33,7 +33,7 @@ jobs:
     secrets: inherit
     with:
       jobName: Acceptance tests
-      infraRepoName: nhs-notify-template-management
+      infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-acceptance-tests-dynamic-env.yaml
       targetEnvironment: pr${{ github.event.number }}
@@ -49,7 +49,7 @@ jobs:
     secrets: inherit
     with:
       jobName: Sandbox tear down
-      infraRepoName: nhs-notify-template-management
+      infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-deploy-dynamic-env.yaml
       targetEnvironment: pr${{ github.event.number }}
