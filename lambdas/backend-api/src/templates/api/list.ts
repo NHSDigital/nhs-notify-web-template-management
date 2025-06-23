@@ -9,12 +9,13 @@ export function createHandler({
 }): APIGatewayProxyHandler {
   return async function (event) {
     const user = event.requestContext.authorizer?.user;
+    const clientId = event.requestContext.authorizer?.clientId;
 
     if (!user) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.listTemplates(user);
+    const { data, error } = await templateClient.listTemplates(user, clientId);
 
     if (error) {
       return apiFailure(error.code, error.message, error.details);

@@ -19,7 +19,9 @@ describe('Template API - Submit', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined } },
+      requestContext: {
+        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1-2-3' },
     });
 
@@ -40,7 +42,9 @@ describe('Template API - Submit', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: undefined },
     });
@@ -69,7 +73,9 @@ describe('Template API - Submit', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1-2-3' },
     });
 
@@ -85,7 +91,8 @@ describe('Template API - Submit', () => {
 
     expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
       '1-2-3',
-      'sub'
+      'sub',
+      'nhs-notify-client-id'
     );
   });
 
@@ -107,7 +114,9 @@ describe('Template API - Submit', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1-2-3' },
     });
 
@@ -120,7 +129,8 @@ describe('Template API - Submit', () => {
 
     expect(mocks.templateClient.submitTemplate).toHaveBeenCalledWith(
       '1-2-3',
-      'sub'
+      'sub',
+      'nhs-notify-client-id'
     );
   });
 });

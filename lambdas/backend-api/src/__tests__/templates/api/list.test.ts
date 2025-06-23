@@ -21,7 +21,9 @@ describe('Template API - List', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined } },
+      requestContext: {
+        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -48,7 +50,9 @@ describe('Template API - List', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1' },
     });
 
@@ -62,7 +66,10 @@ describe('Template API - List', () => {
       }),
     });
 
-    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      'sub',
+      'nhs-notify-client-id'
+    );
   });
 
   test('should return template', async () => {
@@ -84,7 +91,9 @@ describe('Template API - List', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -94,6 +103,9 @@ describe('Template API - List', () => {
       body: JSON.stringify({ statusCode: 200, templates: [template] }),
     });
 
-    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith('sub');
+    expect(mocks.templateClient.listTemplates).toHaveBeenCalledWith(
+      'sub',
+      'nhs-notify-client-id'
+    );
   });
 });

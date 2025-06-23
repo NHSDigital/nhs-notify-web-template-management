@@ -9,6 +9,7 @@ export function createHandler({
 }): APIGatewayProxyHandler {
   return async function (event) {
     const user = event.requestContext.authorizer?.user;
+    const clientId = event.requestContext.authorizer?.clientId;
 
     const templateId = event.pathParameters?.templateId;
 
@@ -21,7 +22,8 @@ export function createHandler({
     const { data, error } = await templateClient.updateTemplate(
       templateId,
       dto,
-      user
+      user,
+      clientId
     );
 
     if (error) {

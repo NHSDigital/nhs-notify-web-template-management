@@ -21,7 +21,9 @@ describe('Template API - Get', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined } },
+      requestContext: {
+        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1' },
     });
 
@@ -42,7 +44,9 @@ describe('Template API - Get', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: undefined },
     });
 
@@ -70,7 +74,9 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1' },
     });
 
@@ -84,7 +90,11 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', 'sub');
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith(
+      '1',
+      'sub',
+      'nhs-notify-client-id'
+    );
   });
 
   test('should return template', async () => {
@@ -106,7 +116,9 @@ describe('Template API - Get', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       pathParameters: { templateId: '1' },
     });
 
@@ -117,6 +129,10 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', 'sub');
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith(
+      '1',
+      'sub',
+      'nhs-notify-client-id'
+    );
   });
 });

@@ -34,7 +34,7 @@ export class TemplateClient {
     userId: string,
     clientId: string | undefined
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ template, userId });
+    const log = this.logger.child({ template, userId, clientId });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
@@ -79,6 +79,7 @@ export class TemplateClient {
     const log = this.logger.child({
       template,
       userId,
+      clientId,
     });
 
     const templateValidationResult = await validate(
@@ -171,7 +172,8 @@ export class TemplateClient {
     const updateTemplateResult = await this.updateTemplateStatus(
       templateDTO.id,
       'PENDING_VALIDATION',
-      userId
+      userId,
+      log
     );
 
     if (updateTemplateResult.error) return updateTemplateResult;
@@ -183,11 +185,13 @@ export class TemplateClient {
     templateId: string,
     template: CreateUpdateTemplate,
     userId: string,
+    clientId: string | undefined,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
       template,
+      clientId,
     });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
@@ -222,9 +226,10 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    userId: string
+    userId: string,
+    clientId: string | undefined
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ templateId });
+    const log = this.logger.child({ templateId, userId, clientId });
 
     const submitResult = await this.templateRepository.submit(
       templateId,
@@ -250,9 +255,10 @@ export class TemplateClient {
 
   async deleteTemplate(
     templateId: string,
-    userId: string
+    userId: string,
+    clientId: string | undefined
   ): Promise<Result<void>> {
-    const log = this.logger.child({ templateId, userId });
+    const log = this.logger.child({ templateId, userId, clientId });
 
     const deleteResult = await this.templateRepository.delete(
       templateId,
@@ -274,11 +280,13 @@ export class TemplateClient {
 
   async getTemplate(
     templateId: string,
-    userId: string
+    userId: string,
+    clientId: string | undefined
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
       userId,
+      clientId,
     });
 
     const getResult = await this.templateRepository.get(templateId, userId);
@@ -297,11 +305,18 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(owner: string): Promise<Result<TemplateDto[]>> {
-    const listResult = await this.templateRepository.list(owner);
+  async listTemplates(
+    userId: string,
+    clientId: string | undefined
+  ): Promise<Result<TemplateDto[]>> {
+    const listResult = await this.templateRepository.list(userId);
 
     if (listResult.error) {
-      this.logger.error('Failed to list templates', { listResult, owner });
+      this.logger.error('Failed to list templates', {
+        listResult,
+        userId,
+        clientId,
+      });
 
       return listResult;
     }
@@ -315,9 +330,10 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    userId: string
+    userId: string,
+    clientId: string | undefined
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ templateId, userId });
+    const log = this.logger.child({ templateId, userId, clientId });
 
     const proofRequestUpdateResult =
       await this.templateRepository.proofRequestUpdate(templateId, userId);
@@ -378,10 +394,9 @@ export class TemplateClient {
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    userId: string
+    userId: string,
+    logger: Logger
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ templateId });
-
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
       userId,
@@ -389,7 +404,7 @@ export class TemplateClient {
     );
 
     if (updateStatusResult.error) {
-      log.error('Failed to save template to the database', {
+      logger.error('Failed to save template to the database', {
         createResult: updateStatusResult,
       });
 
