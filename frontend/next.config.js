@@ -12,7 +12,9 @@ const nextConfig = (phase) => {
     process.env.INCLUDE_AUTH_PAGES === 'true' || isDevServer;
 
   return {
-    assetPrefix: basePath,
+    assetPrefix: isDevServer
+      ? undefined
+      : 'https://miha12.web-gateway.dev.nhsnotify.national.nhs.uk/templates',
     basePath,
     env: {
       basePath,
