@@ -28,7 +28,6 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_client_config_parameter_path_prefix"></a> [client\_config\_parameter\_path\_prefix](#output\_client\_config\_parameter\_path\_prefix) | n/a |
 | <a name="output_pre_token_generation_lambda_function_arn"></a> [pre\_token\_generation\_lambda\_function\_arn](#output\_pre\_token\_generation\_lambda\_function\_arn) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
