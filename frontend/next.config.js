@@ -12,6 +12,7 @@ const nextConfig = (phase) => {
     process.env.INCLUDE_AUTH_PAGES === 'true' || isDevServer;
 
   return {
+    assetPrefix: basePath,
     basePath,
     env: {
       basePath,
