@@ -35,35 +35,35 @@ export const testUsers = {
    * User2 provides an alternative user allowing to check for things like template ownership
    */
   User2: {
-    userId: 'User1',
+    userId: 'User2',
     clientId: 'Client1',
   },
   /**
    * User3 idle user that stays stayed in
    */
   User3: {
-    userId: 'User1',
+    userId: 'User3',
     clientId: 'Client1',
   },
   /**
    * User4 idle user which signs out automatically
    */
   User4: {
-    userId: 'User1',
+    userId: 'User4',
     clientId: 'Client1',
   },
   /**
    * User5 idle user which signs out manually
    */
   User5: {
-    userId: 'User1',
+    userId: 'User5',
     clientId: 'Client1',
   },
   /**
    * User6 does not belong to a client
    */
   User6: {
-    userId: 'User1',
+    userId: 'User6',
     clientId: undefined,
   },
 } as const satisfies Record<string, TestUserStaticDetails>;
