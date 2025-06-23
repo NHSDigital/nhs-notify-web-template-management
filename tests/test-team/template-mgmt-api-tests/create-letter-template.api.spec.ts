@@ -16,9 +16,11 @@ test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
+  let user6: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
+    user6 = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -145,6 +147,81 @@ test.describe('POST /v1/letter-template', () => {
         data: multipart,
         headers: {
           Authorization: await user1.getAccessToken(),
+          'Content-Type': contentType,
+        },
+      }
+    );
+
+    const result = await response.json();
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(response.status(), debug).toBe(201);
+
+    templateStorageHelper.addAdHocTemplateKey({
+      id: result.template.id,
+      owner: user1.userId,
+    });
+
+    expect(result).toEqual({
+      statusCode: 201,
+      template: {
+        createdAt: expect.stringMatching(isoDateRegExp),
+        id: expect.stringMatching(uuidRegExp),
+        name: templateData.name,
+        language: 'en',
+        letterType: 'x0',
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: templateData.templateType,
+        updatedAt: expect.stringMatching(isoDateRegExp),
+        files: {
+          pdfTemplate: {
+            currentVersion: expect.stringMatching(uuidRegExp),
+            fileName: 'template.pdf',
+            virusScanStatus: 'PENDING',
+          },
+          proofs: {},
+        },
+      },
+    });
+
+    expect(result.template.createdAt).toBeDateRoughlyBetween([
+      start,
+      new Date(),
+    ]);
+    expect(result.template.createdAt).not.toEqual(result.template.updatedAt);
+  });
+
+  test('user without a clientId assigned can create a template', async ({
+    request,
+  }) => {
+    const { templateData, multipart, contentType } =
+      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        {
+          templateType: 'LETTER',
+        },
+        [
+          {
+            _type: 'json',
+            partName: 'template',
+          },
+          {
+            _type: 'file',
+            partName: 'letterPdf',
+            fileName: 'template.pdf',
+            fileType: 'application/pdf',
+            file: pdfUploadFixtures.noCustomPersonalisation.pdf.open(),
+          },
+        ]
+      );
+
+    const start = new Date();
+
+    const response = await request.post(
+      `${process.env.API_BASE_URL}/v1/letter-template`,
+      {
+        data: multipart,
+        headers: {
+          Authorization: await user6.getAccessToken(),
           'Content-Type': contentType,
         },
       }

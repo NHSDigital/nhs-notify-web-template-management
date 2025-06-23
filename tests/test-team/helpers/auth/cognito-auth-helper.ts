@@ -11,16 +11,20 @@ import {
 import { faker } from '@faker-js/faker';
 import { CredentialsFile } from './credentials-file';
 
-export type TestUserCredential = {
-  user: { email: string; userId: string; clientId: string | undefined };
-  password: string;
-  accessToken: string;
-  refreshToken: string;
-};
-
 type TestUserStaticDetails = {
   userId: string;
   clientId: string | undefined;
+};
+
+type TestUserDetails = TestUserStaticDetails & {
+  email: string;
+};
+
+export type TestUserCredential = {
+  user: TestUserDetails;
+  password: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
 export const testUsers = {
@@ -70,8 +74,7 @@ export const testUsers = {
 
 type TestUserId = keyof typeof testUsers;
 
-export type TestUser = TestUserStaticDetails & {
-  email: string;
+export type TestUser = TestUserDetails & {
   password: string;
   /**
    * Gets an access token for a test user
