@@ -9,9 +9,6 @@
     "test:unit": "jest",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@nhs-notify-web-template-management": "*"
-  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.148",
     "esbuild": "^0.25.0",
