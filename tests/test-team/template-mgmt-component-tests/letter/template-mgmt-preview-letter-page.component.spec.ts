@@ -4,14 +4,14 @@ import { TemplateFactory } from '../../helpers/factories/template-factory';
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtPreviewLetterPage } from '../../pages/letter/template-mgmt-preview-letter-page';
 import { TemplateMgmtSubmitLetterPage } from '../../pages/letter/template-mgmt-submit-letter-page';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(TestUserId.User1);
+  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
   const withProofsBase = TemplateFactory.createLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',

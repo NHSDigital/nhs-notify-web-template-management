@@ -12,42 +12,66 @@ import { faker } from '@faker-js/faker';
 import { CredentialsFile } from './credentials-file';
 
 export type TestUserCredential = {
-  user: { email: string; userId: string };
+  user: { email: string; userId: string; clientId: string | undefined };
   password: string;
   accessToken: string;
   refreshToken: string;
 };
 
-export enum TestUserId {
+type TestUserStaticDetails = {
+  userId: string;
+  clientId: string | undefined;
+};
+
+export const testUsers = {
   /**
    * User1 is generally the signed in user
    */
-  User1 = 'User1',
-
+  User1: {
+    userId: 'User1',
+    clientId: 'Client1',
+  },
   /**
    * User2 provides an alternative user allowing to check for things like template ownership
    */
-  User2 = 'User2',
-
+  User2: {
+    userId: 'User1',
+    clientId: 'Client1',
+  },
   /**
    * User3 idle user that stays stayed in
    */
-  User3 = 'User3',
-
+  User3: {
+    userId: 'User1',
+    clientId: 'Client1',
+  },
   /**
    * User4 idle user which signs out automatically
    */
-  User4 = 'User4',
-
+  User4: {
+    userId: 'User1',
+    clientId: 'Client1',
+  },
   /**
    * User5 idle user which signs out manually
    */
-  User5 = 'User5',
-}
+  User5: {
+    userId: 'User1',
+    clientId: 'Client1',
+  },
+  /**
+   * User6 does not belong to a client
+   */
+  User6: {
+    userId: 'User1',
+    clientId: undefined,
+  },
+} as const satisfies Record<string, TestUserStaticDetails>;
 
-export type TestUser = {
+type TestUserId = keyof typeof testUsers;
+
+export type TestUser = TestUserStaticDetails & {
   email: string;
-  userId: string;
   password: string;
   /**
    * Gets an access token for a test user
@@ -79,7 +103,9 @@ export class CognitoAuthHelper {
 
   public async setup() {
     await Promise.all(
-      Object.values(TestUserId).map((id) => this.createUser(id))
+      Object.values(testUsers).map((userDetails) =>
+        this.createUser(userDetails)
+      )
     );
   }
 
@@ -142,9 +168,18 @@ export class CognitoAuthHelper {
     return user;
   }
 
-  private async createUser(id: TestUserId): Promise<void> {
+  private async createUser(userDetails: TestUserStaticDetails): Promise<void> {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
+
+    const clientAttribute = userDetails.clientId
+      ? [
+          {
+            Name: 'custom:sbx:client_id',
+            Value: userDetails.clientId,
+          },
+        ]
+      : [];
 
     const user = await this.client.send(
       new AdminCreateUserCommand({
@@ -153,21 +188,27 @@ export class CognitoAuthHelper {
         UserAttributes: [
           { Name: 'email', Value: email },
           { Name: 'email_verified', Value: 'True' },
+          ...clientAttribute,
         ],
         TemporaryPassword: tempPassword,
         MessageAction: 'SUPPRESS',
       })
     );
 
-    await CognitoAuthHelper.credentialsFile.set(this.runId, id, {
-      user: {
-        email,
-        userId:
-          user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
-          '',
-      },
-      password: tempPassword,
-    });
+    await CognitoAuthHelper.credentialsFile.set(
+      this.runId,
+      userDetails.userId,
+      {
+        user: {
+          email,
+          clientId: userDetails.clientId,
+          userId:
+            user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
+            '',
+        },
+        password: tempPassword,
+      }
+    );
   }
 
   private async deleteUser(email: string) {

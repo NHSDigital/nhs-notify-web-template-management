@@ -125,7 +125,6 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(res).toEqual({
       success: true,
       subject: 'sub',
-      clientId: 'nhs-notify-client-id',
     });
     expect(mockLogger.logMessages).toEqual([]);
   });

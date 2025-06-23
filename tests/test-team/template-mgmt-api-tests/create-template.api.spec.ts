@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
-  TestUser,
-  TestUserId,
+  type TestUser,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
@@ -17,7 +17,7 @@ test.describe('POST /v1/template', () => {
   let user1: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(TestUserId.User1);
+    user1 = await authHelper.getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

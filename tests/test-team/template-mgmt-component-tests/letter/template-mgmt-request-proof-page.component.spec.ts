@@ -3,12 +3,12 @@ import { TemplateStorageHelper } from '../../helpers/db/template-storage-helper'
 import { TemplateFactory } from '../../helpers/factories/template-factory';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-proof-page';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(TestUserId.User1);
+  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     valid: TemplateFactory.createLetterTemplate(
       'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',

@@ -12,7 +12,7 @@ export class TestUserClient {
 
   constructor(private readonly userPoolId: string) {}
 
-  async createTestUser(email: string, password: string) {
+  async createTestUser(email: string, password: string, clientId: string) {
     const res = await this.cognitoClient.send(
       new AdminCreateUserCommand({
         UserPoolId: this.userPoolId,
@@ -25,6 +25,10 @@ export class TestUserClient {
           {
             Name: 'email_verified',
             Value: 'true',
+          },
+          {
+            Name: 'custom:sbx:client_id',
+            Value: clientId,
           },
         ],
         MessageAction: 'SUPPRESS',
