@@ -83,9 +83,6 @@ describe('create-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
-      clientId,
-      createdBy: user,
-      updatedBy: user,
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
