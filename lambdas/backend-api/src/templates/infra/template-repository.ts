@@ -69,13 +69,13 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    owner: string
+    userId: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
       const response = await this.client.send(
         new GetCommand({
           TableName: this.templatesTableName,
-          Key: { id: templateId, owner },
+          Key: { id: templateId, owner: userId },
         })
       );
 
@@ -97,18 +97,22 @@ export class TemplateRepository {
 
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
-    owner: string,
+    userId: string,
+    clientId: string | undefined,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner,
+      owner: userId,
+      clientId: clientId,
       version: 1,
       templateStatus: initialStatus,
       createdAt: date,
       updatedAt: date,
+      updatedBy: userId,
+      createdBy: userId,
     };
 
     try {
@@ -125,7 +129,7 @@ export class TemplateRepository {
   async update(
     templateId: string,
     template: ValidatedCreateUpdateTemplate,
-    owner: string,
+    userId: string,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = [
@@ -154,7 +158,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        owner,
+        userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -182,7 +186,7 @@ export class TemplateRepository {
     }
   }
 
-  async delete(templateId: string, owner: string) {
+  async delete(templateId: string, userId: string) {
     const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
 
     const expressionAttributeNames: Record<string, string> = {
@@ -197,7 +201,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        owner,
+        userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -210,7 +214,7 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, owner: string) {
+  async submit(templateId: string, userId: string) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -229,7 +233,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        owner,
+        userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -252,7 +256,7 @@ export class TemplateRepository {
 
   async updateStatus(
     templateId: string,
-    owner: string,
+    userId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
@@ -264,7 +268,7 @@ export class TemplateRepository {
     try {
       const result = await this._update(
         templateId,
-        owner,
+        userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -276,7 +280,7 @@ export class TemplateRepository {
     }
   }
 
-  async list(owner: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  async list(userId: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
     try {
       const input: QueryCommandInput = {
         TableName: this.templatesTableName,
@@ -286,7 +290,7 @@ export class TemplateRepository {
           '#status': 'templateStatus',
         },
         ExpressionAttributeValues: {
-          ':owner': owner,
+          ':owner': userId,
           ':deletedStatus': 'DELETED',
         },
         FilterExpression: '#status <> :deletedStatus',
@@ -438,12 +442,12 @@ export class TemplateRepository {
   }
 
   async setLetterFileVirusScanStatusForProof(
-    owner: string,
+    userId: string,
     templateId: string,
     fileName: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
   ) {
-    const templateKey = { owner, id: templateId };
+    const templateKey = { owner: userId, id: templateId };
 
     try {
       const updatedItem = await this.appendFileToProofs(
@@ -571,10 +575,10 @@ export class TemplateRepository {
     }
   }
 
-  async proofRequestUpdate(templateId: string, owner: string) {
+  async proofRequestUpdate(templateId: string, userId: string) {
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      owner,
+      userId,
       templateId,
       {
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
@@ -613,7 +617,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    owner: string,
+    userId: string,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
@@ -623,7 +627,7 @@ export class TemplateRepository {
 
     const andConditions = [
       'attribute_exists(id)',
-      'NOT #templateStatus IN (:deleted, :submitted)',
+      'NOT templateStatus IN (:deleted, :submitted)',
       ...(conditionExpression.$and || []),
     ].join(' AND ');
 
@@ -631,17 +635,19 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner,
+        owner: userId,
       },
-      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updateAt`,
+      UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
         ...expressionAttributeNames,
-        '#updatedAt': 'updatedAt',
-        '#templateStatus': 'templateStatus',
+        '#updatedAt': ':updatedAt',
+        '#updatedBy': ':updatedBy',
+        '#templateStatus': ':templateStatus',
       },
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
-        ':updateAt': updatedAt,
+        ':updatedAt': updatedAt,
+        ':updatedBy': userId,
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
       },

@@ -48,6 +48,7 @@
     "data-migration/user-transfer",
     "frontend",
     "lambdas/authorizer",
+    "lambdas/cognito-triggers",
     "lambdas/backend-api",
     "lambdas/backend-client",
     "lambdas/download-authorizer",

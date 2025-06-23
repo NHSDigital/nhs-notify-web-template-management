@@ -97,6 +97,7 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
 
 export type DatabaseTemplate = {
   createdAt: string;
+  createdBy?: string;
   files?: LetterFiles;
   id: string;
   language?: Language;
@@ -108,6 +109,8 @@ export type DatabaseTemplate = {
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
+  updatedBy?: string;
+  clientId?: string;
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {

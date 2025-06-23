@@ -15,7 +15,8 @@ import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-ut
 
 jest.mock('node:crypto');
 
-const owner = '58890285E473';
+const userId = '58890285E473';
+const clientId = '00F2EF8D16FD';
 const templateId = 'E1F5088E5B77';
 const versionId = '28F-D4-72-A93-A6';
 const defaultLetterSupplier = 'SUPPLIER';
@@ -61,7 +62,11 @@ describe('templateClient', () => {
         subject: 'subject',
       } as unknown as CreateUpdateTemplate;
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        userId,
+        clientId
+      );
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -81,7 +86,11 @@ describe('templateClient', () => {
         language: 'en',
       };
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        userId,
+        clientId
+      );
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -112,11 +121,16 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        userId,
+        clientId
+      );
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        owner,
+        userId,
+        clientId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -148,7 +162,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -156,11 +170,16 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        userId,
+        clientId
+      );
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        owner,
+        userId,
+        clientId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -192,7 +211,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -200,11 +219,16 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        userId,
+        clientId
+      );
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        owner,
+        userId,
+        clientId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -264,7 +288,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -290,7 +314,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf,
         csv
       );
@@ -301,13 +326,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
-        owner,
+        userId,
+        clientId,
         'PENDING_UPLOAD'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         versionId,
         pdf,
         csv
@@ -315,7 +341,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         'PENDING_VALIDATION'
       );
     });
@@ -336,7 +362,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -366,7 +393,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -412,7 +440,8 @@ describe('templateClient', () => {
 
         const result = await templateClient.createLetterTemplate(
           data,
-          owner,
+          userId,
+          clientId,
           pdf
         );
 
@@ -460,7 +489,8 @@ describe('templateClient', () => {
 
         const result = await templateClient.createLetterTemplate(
           data,
-          owner,
+          userId,
+          clientId,
           pdf,
           csv
         );
@@ -521,7 +551,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -529,7 +560,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
-        owner,
+        userId,
+        clientId,
         'PENDING_UPLOAD'
       );
 
@@ -557,7 +589,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -614,7 +647,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -641,7 +674,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -649,13 +683,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
-        owner,
+        userId,
+        clientId,
         'PENDING_UPLOAD'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         versionId,
         pdf,
         undefined
@@ -706,7 +741,7 @@ describe('templateClient', () => {
       const initialCreatedTemplate: DatabaseTemplate = {
         ...expectedTemplateDto,
         templateStatus: 'PENDING_UPLOAD',
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -728,7 +763,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf
       );
 
@@ -736,13 +772,14 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
-        owner,
+        userId,
+        clientId,
         'PENDING_UPLOAD'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         versionId,
         pdf,
         undefined
@@ -750,7 +787,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         'PENDING_VALIDATION'
       );
     });
@@ -803,7 +840,7 @@ describe('templateClient', () => {
         createdAt: creationTime,
         updatedAt: creationTime,
         templateStatus: 'PENDING_UPLOAD',
-        owner,
+        owner: clientId,
         version: 1,
       };
 
@@ -832,7 +869,8 @@ describe('templateClient', () => {
 
       const result = await templateClient.createLetterTemplate(
         data,
-        owner,
+        userId,
+        clientId,
         pdf,
         csv
       );
@@ -859,7 +897,7 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data as unknown as CreateUpdateTemplate,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -883,7 +921,7 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -917,13 +955,13 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        owner
+        userId
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        owner,
+        userId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -954,7 +992,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -965,13 +1003,13 @@ describe('templateClient', () => {
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        owner
+        userId
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        owner,
+        userId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1002,19 +1040,19 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.update.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
       const result = await templateClient.updateTemplate(
         templateId,
         data,
-        owner
+        userId
       );
 
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        owner,
+        userId,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1035,11 +1073,11 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.getTemplate(templateId, owner);
+      const result = await templateClient.getTemplate(templateId, userId);
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1066,7 +1104,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...templateDTO,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -1074,11 +1112,11 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.getTemplate(templateId, owner);
+      const result = await templateClient.getTemplate(templateId, userId);
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1104,14 +1142,14 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.get.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
-      const result = await templateClient.getTemplate(templateId, owner);
+      const result = await templateClient.getTemplate(templateId, userId);
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1131,9 +1169,9 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.listTemplates(owner);
+      const result = await templateClient.listTemplates(userId);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(userId);
 
       expect(result).toEqual({
         error: {
@@ -1169,14 +1207,14 @@ describe('templateClient', () => {
 
       mocks.templateRepository.list.mockResolvedValueOnce({
         data: [
-          { ...template, owner, version: 1 },
-          { ...template2, owner, version: 1 },
+          { ...template, owner: userId, version: 1 },
+          { ...template2, owner: userId, version: 1 },
         ],
       });
 
-      const result = await templateClient.listTemplates(owner);
+      const result = await templateClient.listTemplates(userId);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(userId);
 
       expect(result).toEqual({
         data: [template],
@@ -1198,12 +1236,12 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.list.mockResolvedValueOnce({
-        data: [{ ...template, owner, version: 1 }],
+        data: [{ ...template, owner: userId, version: 1 }],
       });
 
-      const result = await templateClient.listTemplates(owner);
+      const result = await templateClient.listTemplates(userId);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(owner);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(userId);
 
       expect(result).toEqual({
         data: [template],
@@ -1222,11 +1260,11 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.submitTemplate(templateId, owner);
+      const result = await templateClient.submitTemplate(templateId, userId);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1252,7 +1290,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -1260,11 +1298,11 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.submitTemplate(templateId, owner);
+      const result = await templateClient.submitTemplate(templateId, userId);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1289,14 +1327,14 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
-      const result = await templateClient.submitTemplate(templateId, owner);
+      const result = await templateClient.submitTemplate(templateId, userId);
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1319,11 +1357,11 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, owner);
+      const result = await templateClient.requestProof(templateId, userId);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1339,7 +1377,7 @@ describe('templateClient', () => {
         description: 'Internal server error',
         level: 'error',
         message: 'from db',
-        owner,
+        userId: userId,
         stack: expect.any(String),
         templateId,
         timestamp: expect.stringMatching(isoDateRegExp),
@@ -1361,7 +1399,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -1369,11 +1407,11 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.requestProof(templateId, owner);
+      const result = await templateClient.requestProof(templateId, userId);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1399,7 +1437,7 @@ describe('templateClient', () => {
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
-        owner,
+        owner: userId,
         version: 1,
       };
 
@@ -1409,11 +1447,11 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.requestProof(templateId, owner);
+      const result = await templateClient.requestProof(templateId, userId);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1450,7 +1488,7 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
       const clientErr = new Error('sqs err');
@@ -1463,17 +1501,17 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.requestProof(templateId, owner);
+      const result = await templateClient.requestProof(templateId, userId);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         personalisationParameters,
         pdfVersionId,
         undefined,
@@ -1515,22 +1553,22 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
       mocks.queueMock.send.mockResolvedValueOnce({ data: { $metadata: {} } });
 
-      const result = await templateClient.requestProof(templateId, owner);
+      const result = await templateClient.requestProof(templateId, userId);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
-        owner,
+        userId,
         personalisationParameters,
         pdfVersionId,
         undefined,
@@ -1554,11 +1592,11 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, owner);
+      const result = await templateClient.deleteTemplate(templateId, userId);
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({
@@ -1583,14 +1621,14 @@ describe('templateClient', () => {
       };
 
       mocks.templateRepository.delete.mockResolvedValueOnce({
-        data: { ...template, owner, version: 1 },
+        data: { ...template, owner: userId, version: 1 },
       });
 
-      const result = await templateClient.deleteTemplate(templateId, owner);
+      const result = await templateClient.deleteTemplate(templateId, userId);
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        owner
+        userId
       );
 
       expect(result).toEqual({

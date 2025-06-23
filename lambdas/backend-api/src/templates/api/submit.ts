@@ -1,11 +1,11 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import { ITemplateClient } from 'nhs-notify-backend-client';
+import { TemplateClient } from '../app/template-client';
 
 export function createHandler({
   templateClient,
 }: {
-  templateClient: ITemplateClient;
+  templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
     const user = event.requestContext.authorizer?.user;

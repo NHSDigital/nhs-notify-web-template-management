@@ -1,14 +1,11 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  TemplateDto,
-  CreateUpdateTemplate,
-  ITemplateClient,
-} from 'nhs-notify-backend-client';
+import { TemplateDto, CreateUpdateTemplate } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/create';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
 const setup = () => {
-  const templateClient = mock<ITemplateClient>();
+  const templateClient = mock<TemplateClient>();
 
   const handler = createHandler({ templateClient });
 
@@ -54,7 +51,9 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       body: undefined,
     });
 
@@ -71,7 +70,11 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith({}, 'sub');
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
+      {},
+      'sub',
+      'nhs-notify-client-id'
+    );
   });
 
   test('should return error when creating template fails', async () => {
@@ -85,7 +88,9 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'nhs-notify-client-id' },
+      },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -101,7 +106,8 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       { id: 1 },
-      'sub'
+      'sub',
+      'nhs-notify-client-id'
     );
   });
 
@@ -126,7 +132,9 @@ describe('Template API - Create', () => {
     });
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: {
+        authorizer: { user: 'sub', clientId: 'notify-client-id' },
+      },
       body: JSON.stringify(create),
     });
 
@@ -139,7 +147,49 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       create,
-      'sub'
+      'sub',
+      'notify-client-id'
+    );
+  });
+
+  test('should return template when no clientId in auth context', async () => {
+    const { handler, mocks } = setup();
+
+    const create: CreateUpdateTemplate = {
+      name: 'updated-name',
+      message: 'message',
+      templateType: 'SMS',
+    };
+    const response: TemplateDto = {
+      ...create,
+      id: 'id',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    mocks.templateClient.createTemplate.mockResolvedValueOnce({
+      data: response,
+    });
+
+    const event = {
+      requestContext: {
+        authorizer: { user: 'sub' },
+      },
+      body: JSON.stringify(create),
+    } as unknown as APIGatewayProxyEvent;
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({
+      statusCode: 201,
+      body: JSON.stringify({ statusCode: 201, template: response }),
+    });
+
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
+      create,
+      'sub',
+      undefined
     );
   });
 });

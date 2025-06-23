@@ -5,6 +5,9 @@ export type BaseCreatedTemplate = BaseTemplate & {
   id: string;
   templateStatus: TemplateStatus;
   updatedAt: string;
+  updatedBy?: string;
+  createdBy?: string;
+  clientId?: string;
 };
 
 export type BaseTemplate = {

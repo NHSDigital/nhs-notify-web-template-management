@@ -1,10 +1,11 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { ITemplateClient, TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/get';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
 
 const setup = () => {
-  const templateClient = mock<ITemplateClient>();
+  const templateClient = mock<TemplateClient>();
 
   const handler = createHandler({ templateClient });
 

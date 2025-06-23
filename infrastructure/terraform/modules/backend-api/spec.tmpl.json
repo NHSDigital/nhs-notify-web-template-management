@@ -21,6 +21,15 @@
               "updatedAt": {
                 "format": "date-time",
                 "type": "string"
+              },
+              "updatedBy": {
+                "type": "string"
+              },
+              "createdBy": {
+                "type": "string"
+              },
+              "clientId": {
+                "type": "string"
               }
             },
             "required": [
