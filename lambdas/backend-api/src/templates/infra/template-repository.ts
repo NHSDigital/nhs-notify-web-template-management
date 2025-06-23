@@ -627,7 +627,7 @@ export class TemplateRepository {
 
     const andConditions = [
       'attribute_exists(id)',
-      'NOT templateStatus IN (:deleted, :submitted)',
+      'NOT #templateStatus IN (:deleted, :submitted)',
       ...(conditionExpression.$and || []),
     ].join(' AND ');
 
@@ -640,9 +640,9 @@ export class TemplateRepository {
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
         ...expressionAttributeNames,
-        '#updatedAt': ':updatedAt',
-        '#updatedBy': ':updatedBy',
-        '#templateStatus': ':templateStatus',
+        '#updatedAt': 'updatedAt',
+        '#updatedBy': 'updatedBy',
+        '#templateStatus': 'templateStatus',
       },
       ExpressionAttributeValues: {
         ...expressionAttributeValues,

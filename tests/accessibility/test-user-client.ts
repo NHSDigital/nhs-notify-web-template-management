@@ -28,9 +28,6 @@ export class TestUserClient {
           },
         ],
         MessageAction: 'SUPPRESS',
-        ClientMetadata: {
-          'nhs-notify-client-id': 'client-id',
-        },
       })
     );
 

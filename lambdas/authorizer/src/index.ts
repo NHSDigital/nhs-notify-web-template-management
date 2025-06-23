@@ -20,7 +20,7 @@ const generateMethodArn = (
 const generatePolicy = (
   Resource: string,
   Effect: 'Allow' | 'Deny',
-  context?: { user: string; clientId: string | undefined }
+  context?: { user: string; clientId?: string }
 ) => ({
   principalId: 'api-caller',
   policyDocument: {

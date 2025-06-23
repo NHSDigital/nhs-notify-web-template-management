@@ -89,6 +89,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -98,7 +99,34 @@ describe('LambdaCognitoAuthorizer', () => {
 
     const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
 
-    expect(res).toEqual({ success: true, subject: 'sub' });
+    expect(res).toEqual({
+      success: true,
+      subject: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
+    expect(mockLogger.logMessages).toEqual([]);
+  });
+
+  test('returns success on valid token without notify-client-id', async () => {
+    const jwt = sign(
+      {
+        token_use: 'access',
+        client_id: 'user-pool-client-id',
+        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      },
+      'key',
+      {
+        keyid: 'key-id',
+      }
+    );
+
+    const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
+
+    expect(res).toEqual({
+      success: true,
+      subject: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
     expect(mockLogger.logMessages).toEqual([]);
   });
 
@@ -125,6 +153,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        clientId: 'nhs-notify-client-id',
       },
       'key'
     );
@@ -146,6 +175,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id-2',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -171,6 +201,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-2',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -196,6 +227,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'id',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -222,6 +254,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-error',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -253,6 +286,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: `https://cognito-idp.eu-west-2.amazonaws.com/${iss}`,
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -279,6 +313,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-sub',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -307,6 +342,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {
@@ -337,6 +373,7 @@ describe('LambdaCognitoAuthorizer', () => {
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
         exp: 1_640_995_200,
+        clientId: 'nhs-notify-client-id',
       },
       'key',
       {

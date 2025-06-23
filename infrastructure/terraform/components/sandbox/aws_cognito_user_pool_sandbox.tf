@@ -9,10 +9,10 @@ resource "aws_cognito_user_pool" "sandbox" {
   }
 
   schema {
-    name                     = "sbx:client_id"
-    attribute_data_type      = "String"
-    mutable                  = true
-    required                 = false
+    name                = "sbx:client_id"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
     string_attribute_constraints {}
   }
 }
