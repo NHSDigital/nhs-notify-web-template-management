@@ -77,6 +77,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -138,6 +139,164 @@ describe('guard duty handler', () => {
     );
   });
 
+  test('skips personalisation field validation for RTL languages', async () => {
+    // arrange
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: mock<DatabaseTemplate>({
+        files: {
+          pdfTemplate: {
+            fileName: '',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+          testDataCsv: {
+            fileName: '',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+        },
+        templateStatus: 'PENDING_VALIDATION',
+        language: 'fa',
+      }),
+    });
+
+    const pdfData = Uint8Array.from('pdf');
+    const csvData = Uint8Array.from('csv');
+
+    mocks.letterUploadRepository.download
+      .mockResolvedValueOnce(pdfData)
+      .mockResolvedValueOnce(csvData);
+
+    const pdf = {
+      personalisationParameters: [
+        'firstName',
+        'parameter_1',
+        'unknown_parameter',
+      ],
+      parse: jest.fn(),
+    } as unknown as TemplatePdf;
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    const csv = {
+      parameters: ['parameter_1', 'missing_parameter'],
+      parse: jest.fn(),
+    } as unknown as TestDataCsv;
+    mocks.TestDataCsv.mockImplementation(() => csv);
+
+    // act
+    await handler(event);
+
+    // assert
+    expect(mocks.TemplatePdf).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      pdfData
+    );
+    expect(mocks.TestDataCsv).toHaveBeenCalledWith(csvData);
+    expect(pdf.parse).toHaveBeenCalled();
+    expect(csv.parse).toHaveBeenCalled();
+    expect(mocks.validateLetterTemplateFiles).not.toHaveBeenCalled();
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      true,
+      ['firstName', 'parameter_1', 'unknown_parameter'],
+      ['parameter_1', 'missing_parameter']
+    );
+  });
+
+  test('handles missing language', async () => {
+    // arrange
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: mock<DatabaseTemplate>({
+        files: {
+          pdfTemplate: {
+            fileName: '',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+          testDataCsv: {
+            fileName: '',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+        },
+        templateStatus: 'PENDING_VALIDATION',
+        language: undefined,
+      }),
+    });
+
+    const pdfData = Uint8Array.from('pdf');
+    const csvData = Uint8Array.from('csv');
+
+    mocks.letterUploadRepository.download
+      .mockResolvedValueOnce(pdfData)
+      .mockResolvedValueOnce(csvData);
+
+    const pdf = {
+      personalisationParameters: [
+        'firstName',
+        'parameter_1',
+        'unknown_parameter',
+      ],
+      parse: jest.fn(),
+    } as unknown as TemplatePdf;
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    const csv = {
+      parameters: ['parameter_1', 'missing_parameter'],
+      parse: jest.fn(),
+    } as unknown as TestDataCsv;
+    mocks.TestDataCsv.mockImplementation(() => csv);
+    mocks.validateLetterTemplateFiles.mockReturnValueOnce(false);
+
+    // act
+    await handler(event);
+
+    // assert
+    expect(pdf.parse).toHaveBeenCalled();
+    expect(csv.parse).toHaveBeenCalled();
+    expect(mocks.validateLetterTemplateFiles).toHaveBeenCalled();
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      false,
+      ['firstName', 'parameter_1', 'unknown_parameter'],
+      ['parameter_1', 'missing_parameter']
+    );
+  });
+
   test('loads the template data and associated files (pdf only), validates the file contents and saves the result to the database', async () => {
     const { handler, mocks } = setup();
 
@@ -164,6 +323,7 @@ describe('guard duty handler', () => {
           testDataCsv: undefined,
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -403,6 +563,7 @@ describe('guard duty handler', () => {
       data: mock<DatabaseTemplate>({
         files: undefined,
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -443,6 +604,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -483,6 +645,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -523,6 +686,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'NOT_YET_SUBMITTED',
+        language: 'en',
       }),
     });
 
@@ -563,6 +727,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'VALIDATION_FAILED',
+        language: 'en',
       }),
     });
 
@@ -603,6 +768,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -643,6 +809,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -683,6 +850,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -725,6 +893,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -767,6 +936,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -813,6 +983,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -859,6 +1030,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -909,6 +1081,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 
@@ -963,6 +1136,7 @@ describe('guard duty handler', () => {
           },
         },
         templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
       }),
     });
 

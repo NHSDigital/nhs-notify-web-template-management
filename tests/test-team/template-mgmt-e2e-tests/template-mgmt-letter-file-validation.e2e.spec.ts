@@ -8,6 +8,10 @@ import {
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { TemplateMgmtPreviewLetterPage } from '../pages/letter/template-mgmt-preview-letter-page';
+import {
+  assertPdfTemplateGuardDutyEvent,
+  assertTestDataGuardDutyEvent,
+} from './template-mgmt-letter-guardduty.steps';
 
 // eslint-disable-next-line playwright/no-skipped-test
 test.describe.skip('letter file validation', () => {
@@ -57,6 +61,16 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -145,11 +159,13 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('PENDING_PROOF_REQUEST');
@@ -218,6 +234,16 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'THREATS_FOUND',
+    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -297,6 +323,16 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'UNSUPPORTED',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -372,11 +408,18 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -424,6 +467,16 @@ test.describe.skip('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
+
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -474,11 +527,13 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -522,11 +577,13 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.templateStatus).toBe('VALIDATION_FAILED');
@@ -574,11 +631,18 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');
@@ -593,6 +657,7 @@ test.describe.skip('letter file validation', () => {
     await expect(page.getByTestId('preview-letter-template-cta')).toBeHidden();
   });
 
+  // Note: Skipping due to expect(template.templateStatus).toBe('VALIDATION_FAILED'); failing due to status being "PENDING_VALIDATION"
   test('validation fails if pdf has non-sensible parameters', async ({
     page,
   }) => {
@@ -629,11 +694,18 @@ test.describe.skip('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
+    await assertPdfTemplateGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
+    await assertTestDataGuardDutyEvent({
+      key,
+      scanResult: 'NO_THREATS_FOUND',
+    });
+
     await expect(async () => {
-      const template = await templateStorageHelper.getTemplate({
-        id: templateId,
-        owner: user.userId,
-      });
+      const template = await templateStorageHelper.getTemplate(key);
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
       expect(template.files?.testDataCsv?.virusScanStatus).toBe('PASSED');

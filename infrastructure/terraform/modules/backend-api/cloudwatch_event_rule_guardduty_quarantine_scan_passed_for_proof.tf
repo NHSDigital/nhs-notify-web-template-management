@@ -3,9 +3,9 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_passed_for_proof
   description = "Matches quarantine 'GuardDuty Malware Protection Object Scan Result' events where the scan result is NO_THREATS_FOUND"
 
   event_pattern = jsonencode({
-    source      = ["aws.guardduty"]
+    source      = [local.guardduty_source]
     detail-type = ["GuardDuty Malware Protection Object Scan Result"]
-    resources   = [aws_guardduty_malware_protection_plan.quarantine.arn]
+    resources   = [local.guardduty_resource]
     detail = {
       s3ObjectDetails = {
         bucketName = [module.s3bucket_quarantine.id]
