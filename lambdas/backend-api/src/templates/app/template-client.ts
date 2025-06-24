@@ -32,9 +32,13 @@ export class TemplateClient implements ITemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    owner: string
+    owner: string,
+    campaignId?: string
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ template, owner });
+    const log = this.logger.child({
+      template,
+      owner,
+    });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
@@ -49,7 +53,8 @@ export class TemplateClient implements ITemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       owner,
-      'NOT_YET_SUBMITTED'
+      'NOT_YET_SUBMITTED',
+      campaignId
     );
 
     if (createResult.error) {
@@ -72,7 +77,8 @@ export class TemplateClient implements ITemplateClient {
     template: CreateUpdateTemplate,
     owner: string,
     pdf: File,
-    csv?: File
+    csv?: File,
+    campaignId?: string
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       template,
@@ -132,7 +138,8 @@ export class TemplateClient implements ITemplateClient {
     const createResult = await this.templateRepository.create(
       withFiles,
       owner,
-      'PENDING_UPLOAD'
+      'PENDING_UPLOAD',
+      campaignId
     );
 
     if (createResult.error) {
@@ -312,9 +319,23 @@ export class TemplateClient implements ITemplateClient {
 
   async requestProof(
     templateId: string,
-    owner: string
+    owner: string,
+    // Note: default mark this as false once we have the ability to fetch client configuration
+    canRequestProof: boolean = true
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, owner });
+
+    if (!canRequestProof) {
+      log.error({
+        code: ErrorCase.FEATURE_DISABLED,
+        description: 'User can not request a proof',
+      });
+
+      return failure(
+        ErrorCase.FEATURE_DISABLED,
+        'User can not request a proof'
+      );
+    }
 
     const proofRequestUpdateResult =
       await this.templateRepository.proofRequestUpdate(templateId, owner);

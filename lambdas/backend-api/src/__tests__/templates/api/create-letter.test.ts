@@ -2,7 +2,7 @@ import { createHandler } from '@backend-api/templates/api/create-letter';
 import { mock } from 'jest-mock-extended';
 import {
   CreateUpdateTemplate,
-  ITemplateClient,
+  ClientConfiguration,
   TemplateDto,
 } from 'nhs-notify-backend-client';
 import {
@@ -14,13 +14,18 @@ import {
   pdfLetterMultipart,
   PdfUploadPartSpec,
 } from 'nhs-notify-web-template-management-test-helper-utils';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
+
+jest.mock('nhs-notify-backend-client/src/client-configuration-client');
 
 const setup = () => {
-  const templateClient = mock<ITemplateClient>();
+  const templateClient = mock<TemplateClient>();
+
+  const clientConfigurationFetch = jest.mocked(ClientConfiguration.fetch);
 
   const handler = createHandler({ templateClient });
 
-  return { handler, mocks: { templateClient } };
+  return { handler, mocks: { templateClient, clientConfigurationFetch } };
 };
 
 const user = '8B892046';
@@ -43,6 +48,12 @@ describe('create-letter', () => {
 
   test('successfully handles multipart form input and forwards PDF and CSV', async () => {
     const { handler, mocks } = setup();
+
+    mocks.clientConfigurationFetch.mockResolvedValueOnce(
+      mock<ClientConfiguration>({
+        campaignId: 'campaignId',
+      })
+    );
 
     const pdfFilename = 'template.pdf';
     const csvFilename = 'data.csv';
@@ -74,6 +85,7 @@ describe('create-letter', () => {
       body: multipart.toString('base64'),
       headers: {
         'Content-Type': contentType,
+        Authorization: 'example',
       },
       requestContext: { authorizer: { user } },
     });
@@ -117,8 +129,11 @@ describe('create-letter', () => {
       initialTemplate,
       user,
       new File([pdf], pdfFilename, { type: pdfType }),
-      new File([csv], csvFilename, { type: csvType })
+      new File([csv], csvFilename, { type: csvType }),
+      'campaignId'
     );
+
+    expect(mocks.clientConfigurationFetch).toHaveBeenCalledWith('example');
   });
 
   test('successfully handles multipart form input without test data', async () => {
@@ -183,6 +198,7 @@ describe('create-letter', () => {
       initialTemplate,
       user,
       new File([pdf], pdfFilename, { type: pdfType }),
+      undefined,
       undefined
     );
   });
@@ -364,6 +380,7 @@ describe('create-letter', () => {
       initialTemplate,
       user,
       new File([pdf], pdfFilename, { type: pdfType }),
+      undefined,
       undefined
     );
   });

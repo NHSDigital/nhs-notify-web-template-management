@@ -98,7 +98,8 @@ export class TemplateRepository {
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     owner: string,
-    initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
+    initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
+    campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {
@@ -109,6 +110,7 @@ export class TemplateRepository {
       templateStatus: initialStatus,
       createdAt: date,
       updatedAt: date,
+      campaignId,
     };
 
     try {

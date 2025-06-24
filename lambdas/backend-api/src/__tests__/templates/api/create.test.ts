@@ -3,16 +3,21 @@ import { mock } from 'jest-mock-extended';
 import {
   TemplateDto,
   CreateUpdateTemplate,
-  ITemplateClient,
+  ClientConfiguration,
 } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/create';
+import { TemplateClient } from '@backend-api/templates/app/template-client';
+
+jest.mock('nhs-notify-backend-client/src/client-configuration-client');
 
 const setup = () => {
-  const templateClient = mock<ITemplateClient>();
+  const templateClient = mock<TemplateClient>();
+
+  const clientConfigurationFetch = jest.mocked(ClientConfiguration.fetch);
 
   const handler = createHandler({ templateClient });
 
-  return { handler, mocks: { templateClient } };
+  return { handler, mocks: { templateClient, clientConfigurationFetch } };
 };
 
 describe('Template API - Create', () => {
@@ -71,7 +76,11 @@ describe('Template API - Create', () => {
       }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith({}, 'sub');
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
+      {},
+      'sub',
+      undefined
+    );
   });
 
   test('should return error when creating template fails', async () => {
@@ -101,12 +110,19 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       { id: 1 },
-      'sub'
+      'sub',
+      undefined
     );
   });
 
   test('should return template', async () => {
     const { handler, mocks } = setup();
+
+    mocks.clientConfigurationFetch.mockResolvedValueOnce(
+      mock<ClientConfiguration>({
+        campaignId: 'campaignId',
+      })
+    );
 
     const create: CreateUpdateTemplate = {
       name: 'updated-name',
@@ -127,6 +143,7 @@ describe('Template API - Create', () => {
 
     const event = mock<APIGatewayProxyEvent>({
       requestContext: { authorizer: { user: 'sub' } },
+      headers: { Authorization: 'example' },
       body: JSON.stringify(create),
     });
 
@@ -139,7 +156,10 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       create,
-      'sub'
+      'sub',
+      'campaignId'
     );
+
+    expect(mocks.clientConfigurationFetch).toHaveBeenCalledWith('example');
   });
 });

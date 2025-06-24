@@ -117,7 +117,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         owner,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -161,7 +162,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         owner,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -200,12 +202,17 @@ describe('templateClient', () => {
         data: template,
       });
 
-      const result = await templateClient.createTemplate(data, owner);
+      const result = await templateClient.createTemplate(
+        data,
+        owner,
+        'campaignId'
+      );
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         owner,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        'campaignId'
       );
 
       expect(result).toEqual({
@@ -292,7 +299,8 @@ describe('templateClient', () => {
         data,
         owner,
         pdf,
-        csv
+        csv,
+        'campaignId'
       );
 
       expect(result).toEqual({
@@ -302,7 +310,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
         owner,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        'campaignId'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -530,7 +539,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
         owner,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
@@ -650,7 +660,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
         owner,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -737,7 +748,8 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         dataWithFiles,
         owner,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -1306,6 +1318,27 @@ describe('templateClient', () => {
   });
 
   describe('requestProof', () => {
+    test('should return a failure result, when proofing is disabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.requestProof(
+        templateId,
+        owner,
+        false
+      );
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 403,
+          message: 'User can not request a proof',
+        },
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 

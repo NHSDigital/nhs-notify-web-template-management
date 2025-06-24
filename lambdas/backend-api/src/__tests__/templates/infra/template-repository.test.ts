@@ -313,6 +313,36 @@ describe('templateRepository', () => {
         });
       }
     );
+
+    test('should create template of type $templateType with campaignId', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient
+        .on(PutCommand, {
+          TableName: templatesTableName,
+          Item: {
+            ...emailProperties,
+            ...databaseTemplateProperties,
+            campaignId: 'campaignId',
+          },
+        })
+        .resolves({});
+
+      const response = await templateRepository.create(
+        { ...emailProperties, ...createTemplateProperties },
+        'real-owner',
+        'NOT_YET_SUBMITTED',
+        'campaignId'
+      );
+
+      expect(response).toEqual({
+        data: {
+          ...emailProperties,
+          ...databaseTemplateProperties,
+          campaignId: 'campaignId',
+        },
+      });
+    });
   });
 
   describe('update', () => {

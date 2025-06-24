@@ -108,6 +108,7 @@ export type DatabaseTemplate = {
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
+  campaignId?: string;
 } & DbOnlyTemplateProperties;
 
 type DbOnlyTemplateProperties = {
