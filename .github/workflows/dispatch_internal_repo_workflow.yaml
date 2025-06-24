@@ -38,7 +38,7 @@ on:
       internalRef:
         type: string
         description: Internal repo reference (branch or tag)
-        default: "main"
+        default: "feature/CCM-10294_standardise-cicd-tests"
 
 permissions:
   id-token: write

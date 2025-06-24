@@ -35,7 +35,7 @@ jobs:
       jobName: Acceptance tests
       infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
-      targetWorkflow: dispatch-acceptance-tests-dynamic-env.yaml
+      targetWorkflow: dispatch-dynamic-acceptance-tests-dynamic-env.yaml
       targetEnvironment: pr${{ github.event.number }}
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
