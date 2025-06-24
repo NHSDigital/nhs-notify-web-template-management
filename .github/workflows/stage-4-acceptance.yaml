@@ -238,14 +238,6 @@ jobs:
       - test-e2e
     environment: dev
     steps:
-      - uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.GITHUB_TOKEN }}
-          approvers: alexnuttall
-          minimum-approvals: 1
-          issue-title: "Confirm sandbox destroy"
-          issue-body: ""
-          exclude-workflow-initiator-as-approver: false
       - uses: hashicorp/setup-terraform@v3
       - uses: asdf-vm/actions/setup@v3
       - name: "Checkout code"
