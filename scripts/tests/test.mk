@@ -48,8 +48,14 @@ test-response-time: # Test your API response times from scripts/test/response-ti
 test-security: # Run your security tests from scripts/test/security @Testing
 	make _test name="security"
 
-test-ui: # Run your UI tests from scripts/test/ui @Testing
-	make _test name="ui"
+test-ui-component: # Run your UI tests from scripts/test/ui @Testing
+	make _test name="ui-component"
+
+test-ui-e2e: # Run your UI tests from scripts/test/ui @Testing
+	make _test name="ui-e2e"
+
+test-api: # Run your UI tests from scripts/test/ui @Testing
+	make _test name="api"
 
 test-ui-performance: # Run UI render tests from scripts/test/ui-performance @Testing
 	make _test name="ui-performance"
@@ -62,7 +68,9 @@ test: # Run all the test tasks @Testing
 		test-coverage \
 		test-contract \
 		test-security \
-		test-ui \
+		test-ui-component \
+		test-ui-e2e \
+		test-api \
 		test-ui-performance \
 		test-integration \
 		test-accessibility \
@@ -91,6 +99,8 @@ ${VERBOSE}.SILENT: \
 	test-load \
 	test-response-time \
 	test-security \
-	test-ui \
+	test-ui-component \
+	test-api \
+	test-ui-e2e \
 	test-ui-performance \
 	test-unit \
