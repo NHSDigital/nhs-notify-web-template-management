@@ -13,8 +13,7 @@ import {
   assertTestDataGuardDutyEvent,
 } from './template-mgmt-letter-guardduty.steps';
 
-// eslint-disable-next-line playwright/no-skipped-test
-test.describe.skip('letter file validation', () => {
+test.describe('letter file validation', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user: TestUser;
 
