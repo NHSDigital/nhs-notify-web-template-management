@@ -8,6 +8,19 @@ permissions:
   contents: read
 
 jobs:
+  log-event:
+    name: Log event
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: "Log event"
+        run: |
+          echo number${{ github.event.number }}
+          echo action${{ github.event.action }}
+          echo id${{ github.event.id }}
+          echo event${{ github.event }}
+          echo github${{ github }}
+
   sandbox-set-up:
     name: Step 1
     uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
