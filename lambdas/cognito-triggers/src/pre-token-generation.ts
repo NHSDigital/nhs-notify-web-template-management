@@ -24,13 +24,21 @@ export class PreTokenGenerationLambda {
     const clientId = event.request.userAttributes['custom:sbx:client_id'];
 
     if (clientId) {
-      response = PreTokenGenerationLambda.setTokenClaims(event, 'accessToken', {
-        'nhs-notify:client-id': clientId,
-      });
+      response = PreTokenGenerationLambda.setTokenClaims(
+        event,
+        'accessTokenGeneration',
+        {
+          'nhs-notify:client-id': clientId,
+        }
+      );
 
-      response = PreTokenGenerationLambda.setTokenClaims(event, 'idToken', {
-        'nhs-notify:client-id': clientId,
-      });
+      response = PreTokenGenerationLambda.setTokenClaims(
+        event,
+        'idTokenGeneration',
+        {
+          'nhs-notify:client-id': clientId,
+        }
+      );
     }
 
     return response;
@@ -38,19 +46,17 @@ export class PreTokenGenerationLambda {
 
   private static setTokenClaims(
     event: PreTokenGenerationV2Event,
-    token: 'accessToken' | 'idToken',
+    tokenKey: 'accessTokenGeneration' | 'idTokenGeneration',
     claim: Record<string, string>
   ): PreTokenGenerationV2Event {
     const e = { ...event };
 
-    const key = `${token}Generation` as const;
-
     const tokenGeneration =
-      e.response.claimsAndScopeOverrideDetails?.[key] || {}; // eslint-disable-line security/detect-object-injection
+      e.response.claimsAndScopeOverrideDetails?.[tokenKey] || {}; // eslint-disable-line security/detect-object-injection
 
     e.response.claimsAndScopeOverrideDetails = {
       ...e.response.claimsAndScopeOverrideDetails,
-      [key]: {
+      [tokenKey]: {
         ...tokenGeneration,
         claimsToAddOrOverride: {
           ...tokenGeneration.claimsToAddOrOverride,
