@@ -11,7 +11,6 @@ import {
 } from '@aws-sdk/client-s3';
 import { ApplicationResult, failure, success } from '../../utils';
 import { LetterFileRepository } from './letter-file-repository';
-import { User } from '../types';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
