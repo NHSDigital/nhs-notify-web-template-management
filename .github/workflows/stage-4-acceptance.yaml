@@ -17,6 +17,12 @@ jobs:
         run: |
           echo number${{ github.event.number }}
           echo action${{ github.event.action }}
+          echo pull_request${{ github.event.pull_request }}
+          echo push${{ github.event.push }}
+          echo issue${{ github.event.issue }}
+          echo workflow${{ github.workflow }}
+          echo ref${{ github.ref }}
+          echo repository${{ github.repository }}
           echo id${{ github.event.id }}
           echo event${{ github.event }}
           echo github${{ github }}
