@@ -10,10 +10,9 @@ export function createHandler({
   templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    const user = event.requestContext.authorizer?.user;
-    const clientId = event.requestContext.authorizer?.clientId;
+    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    if (!user) {
+    if (!userId) {
       return apiFailure(400, 'Invalid request');
     }
 
@@ -34,8 +33,7 @@ export function createHandler({
     const { data: created, error: createTemplateError } =
       await templateClient.createLetterTemplate(
         template as CreateUpdateTemplate,
-        user,
-        clientId,
+        { userId, clientId },
         pdf,
         csv
       );

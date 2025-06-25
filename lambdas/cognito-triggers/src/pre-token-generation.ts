@@ -43,8 +43,7 @@ export class PreTokenGenerationLambda {
   ): PreTokenGenerationV2Event {
     const e = { ...event };
 
-    const key =
-      token === 'accessToken' ? 'accessTokenGeneration' : 'idTokenGeneration';
+    const key = `${token}Generation` as const;
 
     const tokenGeneration =
       e.response.claimsAndScopeOverrideDetails?.[key] || {}; // eslint-disable-line security/detect-object-injection

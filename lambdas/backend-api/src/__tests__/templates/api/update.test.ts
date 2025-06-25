@@ -19,9 +19,7 @@ describe('Template API - Update', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: {
-        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
-      },
+      requestContext: { authorizer: undefined },
       body: JSON.stringify({ name: 'test' }),
       pathParameters: { templateId: '1-2-3' },
     });
@@ -77,8 +75,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       {},
-      'sub',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -137,8 +134,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       { name: 'name' },
-      'sub',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -181,8 +177,7 @@ describe('Template API - Update', () => {
     expect(mocks.templateClient.updateTemplate).toHaveBeenCalledWith(
       '1-2-3',
       update,
-      'sub',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 });

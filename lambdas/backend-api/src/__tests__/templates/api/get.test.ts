@@ -21,9 +21,7 @@ describe('Template API - Get', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: {
-        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
-      },
+      requestContext: { authorizer: undefined },
       pathParameters: { templateId: '1' },
     });
 
@@ -90,11 +88,10 @@ describe('Template API - Get', () => {
       }),
     });
 
-    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith(
-      '1',
-      'sub',
-      'nhs-notify-client-id'
-    );
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', {
+      userId: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
   });
 
   test('should return template', async () => {
@@ -129,10 +126,9 @@ describe('Template API - Get', () => {
       body: JSON.stringify({ statusCode: 200, template }),
     });
 
-    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith(
-      '1',
-      'sub',
-      'nhs-notify-client-id'
-    );
+    expect(mocks.templateClient.getTemplate).toHaveBeenCalledWith('1', {
+      userId: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
   });
 });

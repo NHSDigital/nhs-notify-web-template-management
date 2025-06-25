@@ -19,7 +19,7 @@ describe('Template API - Create', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined } },
+      requestContext: { authorizer: undefined },
       body: JSON.stringify({ id: 1 }),
     });
 
@@ -72,8 +72,7 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       {},
-      'sub',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -106,8 +105,7 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       { id: 1 },
-      'sub',
-      'nhs-notify-client-id'
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -145,11 +143,10 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      create,
-      'sub',
-      'notify-client-id'
-    );
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
+      userId: 'sub',
+      clientId: 'notify-client-id',
+    });
   });
 
   test('should return template when no clientId in auth context', async () => {
@@ -186,10 +183,9 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      create,
-      'sub',
-      undefined
-    );
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
+      userId: 'sub',
+      clientId: undefined,
+    });
   });
 });

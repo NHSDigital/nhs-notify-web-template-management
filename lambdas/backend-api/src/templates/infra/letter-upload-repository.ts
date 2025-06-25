@@ -11,6 +11,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { ApplicationResult, failure, success } from '../../utils';
 import { LetterFileRepository } from './letter-file-repository';
+import { User } from '../types';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
@@ -35,12 +36,12 @@ const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
 export class LetterUploadRepository extends LetterFileRepository {
   async upload(
     templateId: string,
-    owner: string,
+    userId: string,
     versionId: string,
     pdf: File,
     csv?: File
   ): Promise<ApplicationResult<null>> {
-    const pdfKey = this.key('pdf-template', owner, templateId, versionId);
+    const pdfKey = this.key('pdf-template', userId, templateId, versionId);
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
@@ -49,7 +50,7 @@ export class LetterUploadRepository extends LetterFileRepository {
         Body: await pdf.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
-          owner,
+          userId,
           templateId,
           versionId,
           'pdf-template'
@@ -58,7 +59,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (csv) {
-      const csvKey = this.key('test-data', owner, templateId, versionId);
+      const csvKey = this.key('test-data', userId, templateId, versionId);
 
       commands.push(
         new PutObjectCommand({
@@ -67,7 +68,7 @@ export class LetterUploadRepository extends LetterFileRepository {
           Body: await csv.bytes(),
           ChecksumAlgorithm: 'SHA256',
           Metadata: LetterUploadRepository.metadata(
-            owner,
+            userId,
             templateId,
             versionId,
             'test-data'

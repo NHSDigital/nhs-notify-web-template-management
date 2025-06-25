@@ -14,13 +14,11 @@ const setup = () => {
 describe('Template API - Delete', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no user in requestContext', async () => {
+  test('should return 400 - Invalid request when no user in requestContext', async () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: {
-        authorizer: { user: undefined, clientId: 'nhs-notify-client-id' },
-      },
+      requestContext: { authorizer: undefined },
       pathParameters: { templateId: '1-2-3' },
     });
 
@@ -88,11 +86,10 @@ describe('Template API - Delete', () => {
       }),
     });
 
-    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith(
-      '1-2-3',
-      'sub',
-      'nhs-notify-client-id'
-    );
+    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith('1-2-3', {
+      userId: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
   });
 
   test('should return no content', async () => {
@@ -116,10 +113,9 @@ describe('Template API - Delete', () => {
       body: JSON.stringify({ statusCode: 204, template: undefined }),
     });
 
-    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith(
-      '1-2-3',
-      'sub',
-      'nhs-notify-client-id'
-    );
+    expect(mocks.templateClient.deleteTemplate).toHaveBeenCalledWith('1-2-3', {
+      userId: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
   });
 });

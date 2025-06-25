@@ -20,7 +20,7 @@ const setup = () => {
   return { handler, mocks: { templateClient } };
 };
 
-const user = '8B892046';
+const userId = '8B892046';
 const clientId = 'A6C062FBAEBC';
 const now = '2025-03-05T17:42:47.978Z';
 
@@ -73,7 +73,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user, clientId } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -113,8 +113,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
-      clientId,
+      { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       new File([csv], csvFilename, { type: csvType })
     );
@@ -145,7 +144,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user, clientId } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -155,8 +154,8 @@ describe('create-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
-      updatedBy: user,
-      createdBy: user,
+      updatedBy: userId,
+      createdBy: userId,
       clientId,
       templateStatus: 'PENDING_VALIDATION',
       files: {
@@ -183,8 +182,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
-      clientId,
+      { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );
@@ -215,7 +213,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user } },
+      requestContext: { authorizer: { user: userId } },
     } as unknown as APIGatewayProxyEvent;
 
     const templateId = 'generated-template-id';
@@ -225,8 +223,8 @@ describe('create-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
-      updatedBy: user,
-      createdBy: user,
+      updatedBy: userId,
+      createdBy: userId,
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
@@ -252,8 +250,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
-      undefined,
+      { userId, clientId: undefined },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );
@@ -263,7 +260,7 @@ describe('create-letter', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined, clientId } },
+      requestContext: { authorizer: undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -323,7 +320,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user, clientId } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -372,7 +369,7 @@ describe('create-letter', () => {
         headers: {
           'Content-Type': contentType,
         },
-        requestContext: { authorizer: { user, clientId } },
+        requestContext: { authorizer: { user: userId, clientId } },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -412,7 +409,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user, clientId } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
@@ -434,8 +431,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
-      clientId,
+      { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined
     );

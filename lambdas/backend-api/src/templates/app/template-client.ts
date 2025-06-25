@@ -19,6 +19,7 @@ import {
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
+import type { User } from '../types';
 
 export class TemplateClient {
   constructor(
@@ -31,10 +32,9 @@ export class TemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    userId: string,
-    clientId: string | undefined
+    user: User
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ template, userId, clientId });
+    const log = this.logger.child({ template, user });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
@@ -48,8 +48,8 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
-      userId,
-      clientId,
+      user.userId,
+      user.clientId,
       'NOT_YET_SUBMITTED'
     );
 
@@ -71,15 +71,13 @@ export class TemplateClient {
 
   async createLetterTemplate(
     template: CreateUpdateTemplate,
-    userId: string,
-    clientId: string | undefined,
+    user: User,
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       template,
-      userId,
-      clientId,
+      user,
     });
 
     const templateValidationResult = await validate(
@@ -134,8 +132,8 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       withFiles,
-      userId,
-      clientId,
+      user.userId,
+      user.clientId,
       'PENDING_UPLOAD'
     );
 
@@ -155,7 +153,7 @@ export class TemplateClient {
 
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
-      userId,
+      user.userId,
       versionId,
       pdf,
       csv
@@ -172,8 +170,7 @@ export class TemplateClient {
     const updateTemplateResult = await this.updateTemplateStatus(
       templateDTO.id,
       'PENDING_VALIDATION',
-      userId,
-      log
+      user
     );
 
     if (updateTemplateResult.error) return updateTemplateResult;
@@ -184,14 +181,13 @@ export class TemplateClient {
   async updateTemplate(
     templateId: string,
     template: CreateUpdateTemplate,
-    userId: string,
-    clientId: string | undefined,
+    user: User,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
       template,
-      clientId,
+      user,
     });
 
     const validationResult = await validate($CreateUpdateNonLetter, template);
@@ -205,7 +201,7 @@ export class TemplateClient {
     const updateResult = await this.templateRepository.update(
       templateId,
       validationResult.data,
-      userId,
+      user.userId,
       expectedStatus
     );
 
@@ -226,14 +222,13 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    userId: string,
-    clientId: string | undefined
+    user: User
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ templateId, userId, clientId });
+    const log = this.logger.child({ templateId, user });
 
     const submitResult = await this.templateRepository.submit(
       templateId,
-      userId
+      user.userId
     );
 
     if (submitResult.error) {
@@ -253,16 +248,12 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async deleteTemplate(
-    templateId: string,
-    userId: string,
-    clientId: string | undefined
-  ): Promise<Result<void>> {
-    const log = this.logger.child({ templateId, userId, clientId });
+  async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
+    const log = this.logger.child({ templateId, user });
 
     const deleteResult = await this.templateRepository.delete(
       templateId,
-      userId
+      user.userId
     );
 
     if (deleteResult.error) {
@@ -280,16 +271,17 @@ export class TemplateClient {
 
   async getTemplate(
     templateId: string,
-    userId: string,
-    clientId: string | undefined
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
-      userId,
-      clientId,
+      user,
     });
 
-    const getResult = await this.templateRepository.get(templateId, userId);
+    const getResult = await this.templateRepository.get(
+      templateId,
+      user.userId
+    );
 
     if (getResult.error) {
       log.error('Failed to get template', { getResult });
@@ -305,17 +297,13 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(
-    userId: string,
-    clientId: string | undefined
-  ): Promise<Result<TemplateDto[]>> {
-    const listResult = await this.templateRepository.list(userId);
+  async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
+    const listResult = await this.templateRepository.list(user.userId);
 
     if (listResult.error) {
       this.logger.error('Failed to list templates', {
         listResult,
-        userId,
-        clientId,
+        user,
       });
 
       return listResult;
@@ -330,13 +318,12 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    userId: string,
-    clientId: string | undefined
+    user: User
   ): Promise<Result<TemplateDto>> {
-    const log = this.logger.child({ templateId, userId, clientId });
+    const log = this.logger.child({ templateId, user });
 
     const proofRequestUpdateResult =
-      await this.templateRepository.proofRequestUpdate(templateId, userId);
+      await this.templateRepository.proofRequestUpdate(templateId, user.userId);
 
     if (proofRequestUpdateResult.error) {
       log
@@ -369,7 +356,7 @@ export class TemplateClient {
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
-      userId,
+      user.userId,
       personalisationParameters!,
       pdfVersionId,
       testDataVersionId,
@@ -394,18 +381,19 @@ export class TemplateClient {
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    userId: string,
-    logger: Logger
+    user: User
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      userId,
+      user.userId,
       status
     );
 
     if (updateStatusResult.error) {
-      logger.error('Failed to save template to the database', {
+      this.logger.error('Failed to save template to the database', {
         createResult: updateStatusResult,
+        templateId,
+        user,
       });
 
       return updateStatusResult;
