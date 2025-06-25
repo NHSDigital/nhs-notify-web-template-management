@@ -78,6 +78,7 @@ export const createTemplateRepositoryContainer = () => {
 
   return {
     templateRepository,
+    logger,
   };
 };
 
