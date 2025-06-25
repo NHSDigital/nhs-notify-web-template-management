@@ -59,7 +59,7 @@ const eventWithCustomAttr = (): PreTokenGenerationV2Event => ({
       email: 'example@example.com',
       email_verified: 'True',
       sub: '76c25234-b041-70f2-8ba4-caf538363b35',
-      'custom:sbx:client_id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
+      'custom:sbx_client_id': 'f58d4b65-870c-42c0-8bb6-2941c5be2bec',
     },
   },
   response: {
@@ -71,7 +71,7 @@ const eventWithCustomAttr = (): PreTokenGenerationV2Event => ({
   version: '2',
 });
 
-describe('when user has custom:sbx:client_id attribute', () => {
+describe('when user has custom:sbx_client_id attribute', () => {
   test('adds nhs-notify:client-id claim from custom attribute in event', async () => {
     const result = await new PreTokenGenerationLambda().handler(
       eventWithCustomAttr()

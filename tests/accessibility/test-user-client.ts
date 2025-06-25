@@ -27,7 +27,7 @@ export class TestUserClient {
             Value: 'true',
           },
           {
-            Name: 'custom:sbx:client_id',
+            Name: 'custom:sbx_client_id',
             Value: clientId,
           },
         ],

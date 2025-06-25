@@ -178,7 +178,7 @@ export class CognitoAuthHelper {
     const clientAttribute = userDetails.clientId
       ? [
           {
-            Name: 'custom:sbx:client_id',
+            Name: 'custom:sbx_client_id',
             Value: userDetails.clientId,
           },
         ]

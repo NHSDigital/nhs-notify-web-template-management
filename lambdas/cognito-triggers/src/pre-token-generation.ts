@@ -21,7 +21,7 @@ export type PreTokenGenerationV2Event = Omit<
 export class PreTokenGenerationLambda {
   handler = async (event: PreTokenGenerationV2Event) => {
     let response = { ...event };
-    const clientId = event.request.userAttributes['custom:sbx:client_id'];
+    const clientId = event.request.userAttributes['custom:sbx_client_id'];
 
     if (clientId) {
       response = PreTokenGenerationLambda.setTokenClaims(
