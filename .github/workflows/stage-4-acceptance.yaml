@@ -26,7 +26,7 @@ jobs:
           echo id${{ github.event.id }}
           echo event${{ github.event }}
           echo github${{ github }}
-          echo event${{ toJson(github.event) }}
+          echo event_name${{ github.event_name }}
           echo github${{ toJson(github) }}
 
   sandbox-set-up:
