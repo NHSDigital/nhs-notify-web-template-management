@@ -8,40 +8,28 @@ permissions:
   contents: read
 
 jobs:
-  log-event:
-    name: Log event
+  generate-sandbox-name:
+    name: Generate sandbox name
     runs-on: ubuntu-latest
+    outputs:
+      SANDBOX_NAME: ${{ steps.calc-sbx-name.outputs.SANDBOX_NAME }}
     timeout-minutes: 5
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-      - name: "Log event"
+      - id: calc-sbx-name
+        name: Calculate sandbox name
         run: |
-          echo number${{ github.event.number }}
-          echo action${{ github.event.action }}
-          echo pull_request${{ github.event.pull_request }}
-          echo push${{ github.event.push }}
-          echo issue${{ github.event.issue }}
-          echo workflow${{ github.workflow }}
-          echo ref${{ github.ref }}
-          echo repository${{ github.repository }}
-          echo id${{ github.event.id }}
-          echo event${{ github.event }}
-          echo github${{ github }}
-          echo event_name${{ github.event_name }}
-          echo '${{ toJson(github) }}'
           REF=${{ github.ref }}
           echo "REF=$REF"
           SANDBOX_NAME=$(./scripts/sandbox-utils.sh "$REF")
           echo "SANDBOX_NAME=$SANDBOX_NAME"
-          echo "BEFORE: $GITHUB_ENV"
-          cat $GITHUB_ENV
-          echo "SANDBOX_NAME=$SANDBOX_NAME" >> $GITHUB_ENV
-          echo "AFTER: $GITHUB_ENV"
-          cat $GITHUB_ENV
+          echo "SANDBOX_NAME=$SANDBOX_NAME" >> $GITHUB_OUTPUT
+
 
   sandbox-set-up:
     name: Step 1
+    needs: generate-sandbox-name
     uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
     secrets: inherit
     with:
@@ -49,14 +37,16 @@ jobs:
       infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-deploy-dynamic-env.yaml
-      targetEnvironment: pr${{ github.event.number }}
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
       terraformAction: apply
 
   acceptance-tests:
     name: Step 2
-    needs: sandbox-set-up
+    needs:
+      - sandbox-set-up
+      - generate-sandbox-name
 
     # Calls out to the nhs-notify-internal repo.
     # The nhs-notify-internal repo will run the tests
@@ -68,13 +58,15 @@ jobs:
       infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-acceptance-tests-dynamic-env.yaml
-      targetEnvironment: pr${{ github.event.number }}
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
 
   sandbox-tear-down:
     name: Step 3
-    needs: acceptance-tests
+    needs:
+      - acceptance-tests
+      - generate-sandbox-name
     if: always()
 
     uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
@@ -84,7 +76,7 @@ jobs:
       infraRepoName: nhs-notify-web-template-management
       releaseVersion: ${{ github.head_ref || github.ref_name }}
       targetWorkflow: dispatch-deploy-dynamic-env.yaml
-      targetEnvironment: pr${{ github.event.number }}
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
       terraformAction: destroy
