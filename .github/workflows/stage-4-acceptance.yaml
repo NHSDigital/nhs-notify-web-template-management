@@ -35,8 +35,10 @@ jobs:
           SANDBOX_NAME=$(./scripts/sandbox-utils.sh "$REF")
           echo "SANDBOX_NAME=$SANDBOX_NAME"
           echo "BEFORE: $GITHUB_ENV"
+          cat $GITHUB_ENV
           echo "SANDBOX_NAME=$SANDBOX_NAME" >> $GITHUB_ENV
           echo "AFTER: $GITHUB_ENV"
+          cat $GITHUB_ENV
 
   sandbox-set-up:
     name: Step 1

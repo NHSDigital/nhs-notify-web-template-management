@@ -59,6 +59,8 @@ jobs:
         shell: bash
         run: |
           echo "debugging=$GITHUB_ENV"
+          cat $GITHUB_ENV
+          echo $SANDBOX_NAME
           DISPATCH_EVENT=$(jq -ncM \
             --arg infraRepoName "${{ inputs.infraRepoName }}" \
             --arg releaseVersion ${{ inputs.releaseVersion }} \
