@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
       - name: "Log event"
         run: |
           echo number${{ github.event.number }}
@@ -29,10 +31,10 @@ jobs:
           echo event_name${{ github.event_name }}
           echo '${{ toJson(github) }}'
           REF=${{ github.ref }}
+          echo "REF=$REF"
           pwd
           ls
           ls ./scripts
-
           . ./scripts/sandbox-utils.sh "$REF"
 
   sandbox-set-up:
