@@ -77,6 +77,10 @@ test: # Run all the test tasks @Testing
 		test-load
 
 _test:
+	pwd
+	ls
+	ls ./scripts
+	ls ./scripts/tests/
 	set -e
 	script="./scripts/tests/${name}.sh"
 	if [ -e "$${script}" ]; then
