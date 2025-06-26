@@ -29,7 +29,7 @@ function generateSandboxName() {
 
   # Example: 0000004f
   SANDBOX_NAME=${LONG_SANDBOX_NAME:0:MAX_SANDBOX_LENGTH}
-  echo "SANDBOX_NAME=$SANDBOX_NAME"
+  echo "$SANDBOX_NAME"
 }
 
 generateSandboxName $1
