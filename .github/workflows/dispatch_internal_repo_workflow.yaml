@@ -38,7 +38,7 @@ on:
       internalRef:
         type: string
         description: Internal repo reference (branch or tag)
-        default: "feature/CCM-10294_standardise-cicd-tests"
+        default: "main"
 
 permissions:
   id-token: write
@@ -58,7 +58,6 @@ jobs:
       - name: Trigger nhs-notify-internal workflow
         shell: bash
         run: |
-          echo "targetEnvironment=${{ inputs.targetEnvironment }}"
           DISPATCH_EVENT=$(jq -ncM \
             --arg infraRepoName "${{ inputs.infraRepoName }}" \
             --arg releaseVersion ${{ inputs.releaseVersion }} \
