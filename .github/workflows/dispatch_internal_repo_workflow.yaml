@@ -58,6 +58,7 @@ jobs:
       - name: Trigger nhs-notify-internal workflow
         shell: bash
         run: |
+          echo "debugging=$GITHUB_ENV"
           DISPATCH_EVENT=$(jq -ncM \
             --arg infraRepoName "${{ inputs.infraRepoName }}" \
             --arg releaseVersion ${{ inputs.releaseVersion }} \
