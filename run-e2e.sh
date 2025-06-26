@@ -25,6 +25,7 @@ RANDOM_DIGITS=0074
 ENVIRONMENT_NAME="${RANDOM_DIGITS}flaky"
 TOTAL_RUNS=1
 DESTROY_ONLY=false
+SKIP_APPLY=false
 export CI=1
 export SKIP_SANDBOX_INSTALL=1
 
@@ -42,13 +43,15 @@ for i in $(seq 1 $TOTAL_RUNS); do
   print_status "Generated environment name: $ENVIRONMENT_NAME"
 
   if [ $DESTROY_ONLY != "true" ]; then
-    # Create backend sandbox
-    print_status "Creating backend sandbox environment..."
-    if ./scripts/create_backend_sandbox.sh "$ENVIRONMENT_NAME"; then
-        print_status "Backend sandbox created successfully"
-    else
-        print_error "Failed to create backend sandbox"
-        exit 1
+    if [ $SKIP_APPLY != "true" ]; then
+      # Create backend sandbox
+      print_status "Creating backend sandbox environment..."
+      if ./scripts/create_backend_sandbox.sh "$ENVIRONMENT_NAME"; then
+          print_status "Backend sandbox created successfully"
+      else
+          print_error "Failed to create backend sandbox"
+          exit 1
+      fi
     fi
 
     # Run E2E tests

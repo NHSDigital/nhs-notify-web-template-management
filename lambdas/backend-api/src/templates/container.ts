@@ -64,6 +64,7 @@ export const createLetterFileRepositoryContainer = () => {
 
   return {
     letterFileRepository,
+    logger
   };
 };
 

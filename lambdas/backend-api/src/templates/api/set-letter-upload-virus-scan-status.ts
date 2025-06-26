@@ -31,11 +31,12 @@ export const createHandler =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
     logger.info('Setting virus scan status', {
-      templateId: templateKey,
-      virusScanResult,
       fileType,
-      versionId,
       owner,
+      scanResultStatus,
+      templateId,
+      versionId,
+      virusScanResult,
     });
 
     await templateRepository.setLetterFileVirusScanStatusForUpload(

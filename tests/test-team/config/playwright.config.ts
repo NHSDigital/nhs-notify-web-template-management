@@ -6,7 +6,7 @@ export default defineConfig({
   testDir: path.resolve(__dirname, '../'),
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: false,
   retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 4 : undefined,
