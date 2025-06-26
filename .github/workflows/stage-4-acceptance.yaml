@@ -29,7 +29,11 @@ jobs:
           echo event_name${{ github.event_name }}
           echo '${{ toJson(github) }}'
           REF=${{ github.ref }}
-          ./scripts/sandbox-utils.sh "$REF"
+          pwd
+          ls
+          ls ./scripts
+
+          . ./scripts/sandbox-utils.sh "$REF"
 
   sandbox-set-up:
     name: Step 1
