@@ -19,16 +19,17 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_passed_for_uploa
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_passed_set_file_status_for_upload" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
-  arn      = module.lambda_set_file_virus_scan_status_for_upload.function_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
+  arn  = module.lambda_set_file_virus_scan_status_for_upload.function_arn
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_passed_copy_object_for_upload" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
-  arn      = module.lambda_copy_scanned_object_to_internal.function_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
+  arn  = module.lambda_copy_scanned_object_to_internal.function_arn
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_passed_validate_files" {
   rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
   arn      = module.sqs_validate_letter_template_files.sqs_queue_arn
+  role_arn = aws_iam_role.eventbridge_upload_validation_queue.arn
 }
