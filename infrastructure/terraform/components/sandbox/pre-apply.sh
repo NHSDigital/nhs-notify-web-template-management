@@ -1,1 +1,3 @@
-source pre.sh
+echo "Running app pre-plan.sh"
+
+source pre-tf.sh

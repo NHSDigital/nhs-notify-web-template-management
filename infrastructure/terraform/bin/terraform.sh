@@ -391,6 +391,7 @@ rm -rf ${component_path}/.terraform;
 
 # Run global pre.sh
 if [ -f "pre.sh" ]; then
+  echo "Running gloal pre.sh"
   source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Global pre script execution failed with exit code ${?}";
 fi;
@@ -427,6 +428,7 @@ fi;
 
 # Run pre-plan.sh / pre-apply.sh / pre-output.sh etc
 if [ -f "pre-${action}.sh" ]; then
+  echo "Running pre-${action}.sh"
   source pre-${action}.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Component pre-${action}.sh script execution failed with exit code ${?}";
 fi;
