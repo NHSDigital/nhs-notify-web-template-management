@@ -28,6 +28,7 @@ jobs:
 
 
   sandbox-set-up:
+    secrets: inherit
     steps:
       - name: "Get normalized branch name"
         id: normalize_branch_name
@@ -35,7 +36,6 @@ jobs:
       - name: Step 1
         needs: generate-sandbox-name
         uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        secrets: inherit
         with:
           jobName: Sandbox set up
           infraRepoName: nhs-notify-web-template-management
@@ -47,6 +47,7 @@ jobs:
           terraformAction: apply
 
   acceptance-tests:
+    secrets: inherit
     steps:
       - name: "Get normalized branch name"
         id: normalize_branch_name
@@ -60,7 +61,6 @@ jobs:
         # The nhs-notify-internal repo will run the tests
         # setup in ./.github/actions/acceptance-tests/action.yaml
         uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        secrets: inherit
         with:
           jobName: Acceptance tests
           infraRepoName: nhs-notify-web-template-management
@@ -71,6 +71,7 @@ jobs:
           targetComponent: sandbox
 
   sandbox-tear-down:
+    secrets: inherit
     steps:
       - name: "Get normalized branch name"
         id: normalize_branch_name
@@ -82,7 +83,6 @@ jobs:
         if: always()
 
         uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        secrets: inherit
         with:
           jobName: Sandbox tear down
           infraRepoName: nhs-notify-web-template-management
