@@ -57,16 +57,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -154,11 +144,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -229,16 +214,6 @@ test.describe('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
-
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'THREATS_FOUND',
-    // });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
@@ -318,16 +293,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'UNSUPPORTED',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -403,16 +368,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -463,16 +418,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
         id: templateId,
@@ -522,11 +467,6 @@ test.describe('letter file validation', () => {
 
     templateStorageHelper.addAdHocTemplateKey(key);
 
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
 
@@ -571,11 +511,6 @@ test.describe('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
-
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -625,16 +560,6 @@ test.describe('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
-
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -687,16 +612,6 @@ test.describe('letter file validation', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
-
-    // await assertPdfTemplateGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
-
-    // await assertTestDataGuardDutyEvent({
-    //   key,
-    //   scanResult: 'NO_THREATS_FOUND',
-    // });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
