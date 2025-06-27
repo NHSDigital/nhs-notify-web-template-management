@@ -34,6 +34,7 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_event_delivery_logging"></a> [event\_delivery\_logging](#input\_event\_delivery\_logging) | Enable SNS Event Delivery logging | `bool` | `true` | no |
 | <a name="input_event_delivery_logging_success_sample_percentage"></a> [event\_delivery\_logging\_success\_sample\_percentage](#input\_event\_delivery\_logging\_success\_sample\_percentage) | Enable caching of events to an S3 bucket | `number` | `0` | no |
+| <a name="input_external_email_domain"></a> [external\_email\_domain](#input\_external\_email\_domain) | Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider. | `string` | `null` | no |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
 | <a name="input_kms_deletion_window"></a> [kms\_deletion\_window](#input\_kms\_deletion\_window) | When a kms key is deleted, how long should it wait in the pending deletion state? | `string` | `"30"` | no |
 | <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br/>    enable_polling   = bool<br/>    default_supplier = optional(bool)<br/>  }))</pre> | `{}` | no |

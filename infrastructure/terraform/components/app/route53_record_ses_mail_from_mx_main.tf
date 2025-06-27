@@ -1,4 +1,4 @@
-resource "aws_route53_record" "ses_mail_from_mx" {
+resource "aws_route53_record" "ses_mail_from_mx_main" {
   zone_id = local.acct.dns_zone["id"]
   name    = aws_ses_domain_mail_from.main.mail_from_domain
   type    = "MX"
