@@ -85,4 +85,27 @@ data "aws_iam_policy_document" "kms" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowEventBridgeSQS"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    actions = [
+      "kms:GenerateDataKey*",
+      "kms:Decrypt",
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["sqs.${var.region}.amazonaws.com"]
+    }
+  }
 }
