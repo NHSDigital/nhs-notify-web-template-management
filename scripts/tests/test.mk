@@ -20,16 +20,16 @@ test-typecheck: # Typecheck your code from scripts/test/typecheck @Testing
 test-coverage: # Evaluate code coverage from scripts/test/coverage @Testing
 	make _test name="coverage"
 
-test-accessibility: # Run your accessibility tests from scripts/test/accessibility @Testing
+test-accessibility: # Run tests from scripts/tests/accessibility.sh @Testing
 	make _test name="accessibility"
 
-test-ui-component: # Run your UI tests from scripts/test/ui @Testing
+test-ui-component: # Run tests from scripts/tests/ui-component.sh @Testing
 	make _test name="ui-component"
 
-test-ui-e2e: # Run your UI tests from scripts/test/ui @Testing
+test-ui-e2e: # Run tests from scripts/tests/ui-e2e.sh @Testing
 	make _test name="ui-e2e"
 
-test-api: # Run your UI tests from scripts/test/ui @Testing
+test-api: # Run tests from scripts/tests/api.sh @Testing
 	make _test name="api"
 
 test: # Run all the test tasks @Testing
