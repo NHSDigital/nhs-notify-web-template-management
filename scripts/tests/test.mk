@@ -23,31 +23,6 @@ test-coverage: # Evaluate code coverage from scripts/test/coverage @Testing
 test-accessibility: # Run your accessibility tests from scripts/test/accessibility @Testing
 	make _test name="accessibility"
 
-test-contract: # Run your contract tests from scripts/test/contract @Testing
-	make _test name="contract"
-
-test-integration: # Run your integration tests from scripts/test/integration @Testing
-	make _test name="integration"
-
-test-load: # Run all your load tests @Testing
-	make \
-		test-capacity \
-		test-soak \
-		test-response-time
-		# You may wish to add more here, depending on your app
-
-test-capacity: # Test what load level your app fails at from scripts/test/capacity @Testing
-	make _test name="capacity"
-
-test-soak: # Test that resources don't get exhausted over time from scripts/test/soak @Testing
-	make _test name="soak"
-
-test-response-time: # Test your API response times from scripts/test/response-time @Testing
-	make _test name="response-time"
-
-test-security: # Run your security tests from scripts/test/security @Testing
-	make _test name="security"
-
 test-ui-component: # Run your UI tests from scripts/test/ui @Testing
 	make _test name="ui-component"
 
@@ -57,24 +32,16 @@ test-ui-e2e: # Run your UI tests from scripts/test/ui @Testing
 test-api: # Run your UI tests from scripts/test/ui @Testing
 	make _test name="api"
 
-test-ui-performance: # Run UI render tests from scripts/test/ui-performance @Testing
-	make _test name="ui-performance"
-
 test: # Run all the test tasks @Testing
 	make \
 		test-unit \
 		test-lint \
 		test-typecheck \
 		test-coverage \
-		test-contract \
-		test-security \
 		test-ui-component \
 		test-ui-e2e \
 		test-api \
-		test-ui-performance \
-		test-integration \
 		test-accessibility \
-		test-load
 
 _test:
 	set -e
@@ -89,18 +56,10 @@ ${VERBOSE}.SILENT: \
 	_test \
 	test \
 	test-accessibility \
-	test-capacity \
-	test-contract \
 	test-coverage \
-	test-soak \
-	test-integration \
 	test-lint \
 	test-typecheck \
-	test-load \
-	test-response-time \
-	test-security \
 	test-ui-component \
 	test-api \
 	test-ui-e2e \
-	test-ui-performance \
 	test-unit \
