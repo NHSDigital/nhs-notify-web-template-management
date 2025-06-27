@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "@pact-foundation/pact": "^15.0.1",
+    "@swc/core": "^1.11.13",
+    "@swc/jest": "^0.2.37",
+    "@tsconfig/node20": "^20.1.5",
+    "jest": "^29.7.0",
+    "zod": "^3.24.2"
+  },
+  "name": "contract-tests",
+  "private": true,
+  "scripts": {
+    "pact:clean": "./scripts/clean.sh",
+    "test:consumers": "jest consumer consumer-2",
+    "test:producer": "cp -r consumer/pacts producer && cp -r consumer-2/pacts producer && jest producer/",
+    "upload:consumer-pacts": "./scripts/upload-consumer-pacts.sh"
+  },
+  "version": "1.0.0"
+}
