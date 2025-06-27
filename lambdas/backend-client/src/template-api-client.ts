@@ -1,4 +1,3 @@
-import { ITemplateClient } from './types/template-client';
 import {
   CreateUpdateTemplate,
   Success,
@@ -13,7 +12,7 @@ import {
 } from './axios-client';
 import { LETTER_MULTIPART } from './schemas/constants';
 
-export class TemplateApiClient implements ITemplateClient {
+export class TemplateApiClient {
   private readonly _client: AxiosRetryClient;
 
   constructor() {

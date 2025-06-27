@@ -8,7 +8,7 @@ import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-bac
 import { TemplateMgmtSignInPage } from '../../pages/templates-mgmt-login-page';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
 setup('component test setup', async ({ page }) => {
@@ -22,7 +22,7 @@ setup('component test setup', async ({ page }) => {
 
   await auth.setup();
 
-  const user = await auth.getTestUser(TestUserId.User1);
+  const user = await auth.getTestUser(testUsers.User1.userId);
 
   const loginPage = new TemplateMgmtSignInPage(page);
 

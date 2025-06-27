@@ -9,8 +9,8 @@ import {
 } from '../template-mgmt-common.steps';
 import {
   createAuthHelper,
-  TestUser,
-  TestUserId,
+  type TestUser,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtCreateLetterPage } from '../../pages/letter/template-mgmt-create-letter-page';
 
@@ -19,7 +19,7 @@ test.describe('Create Letter Template Page', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(TestUserId.User1);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

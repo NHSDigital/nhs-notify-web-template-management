@@ -3,7 +3,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
@@ -49,7 +49,7 @@ test.describe('Unauthorised data access Tests', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(TestUserId.User2);
+    const user = await createAuthHelper().getTestUser(testUsers.User2.userId);
     templates = createTemplates(user.userId);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

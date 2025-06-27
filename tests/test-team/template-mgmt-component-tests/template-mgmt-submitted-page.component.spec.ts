@@ -11,7 +11,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
@@ -61,7 +61,7 @@ test.describe('Template Submitted Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(TestUserId.User1);
+    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
     templates = createTemplates(user.userId);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

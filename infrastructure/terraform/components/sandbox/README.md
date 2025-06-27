@@ -25,6 +25,7 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_backend_api"></a> [backend\_api](#module\_backend\_api) | ../../modules/backend-api | n/a |
+| <a name="module_cognito_triggers"></a> [cognito\_triggers](#module\_cognito\_triggers) | ../../modules/cognito-triggers | n/a |
 ## Outputs
 
 | Name | Description |

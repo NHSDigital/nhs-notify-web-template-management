@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
@@ -27,7 +27,7 @@ test.describe('Letter Proofing', () => {
 
   test('proofs are downloaded and linked to the DB entry', async () => {
     const templateId = 'test-template-id-proofing-e2e-success';
-    const user = await authHelper.getTestUser(TestUserId.User1);
+    const user = await authHelper.getTestUser(testUsers.User1.userId);
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
@@ -132,7 +132,7 @@ test.describe('Letter Proofing', () => {
 
   test('if the only proof fails the virus scan, the status is not updated to PROOF_AVAILABLE', async () => {
     const templateId = 'test-template-id-proofing-e2e-failure';
-    const user = await authHelper.getTestUser(TestUserId.User1);
+    const user = await authHelper.getTestUser(testUsers.User1.userId);
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([

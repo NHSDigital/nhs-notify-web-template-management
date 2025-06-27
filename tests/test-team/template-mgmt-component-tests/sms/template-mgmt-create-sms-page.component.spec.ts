@@ -10,8 +10,8 @@ import {
 } from '../template-mgmt-common.steps';
 import {
   createAuthHelper,
-  TestUser,
-  TestUserId,
+  type TestUser,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
 test.describe('Create SMS message template Page', () => {
@@ -19,7 +19,7 @@ test.describe('Create SMS message template Page', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(TestUserId.User1);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {

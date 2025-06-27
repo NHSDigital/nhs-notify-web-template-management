@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
@@ -41,7 +41,7 @@ test.describe('SFTP proof send', () => {
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(TestUserId.User1);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {
