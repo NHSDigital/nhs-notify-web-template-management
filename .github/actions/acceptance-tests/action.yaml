@@ -46,23 +46,30 @@ runs:
       run: |
         make test-${{ inputs.testType }}
 
-    - name: Archive ui test results
-      if: ${{ inputs.testType == 'ui' }}
+    - name: Archive ui-e2e test results
+      if: ${{ inputs.testType == 'ui-e2e' }}
       uses: actions/upload-artifact@v4
       with:
-        name: UI test report
-        path: "tests/test-team/playwright-report-component-tests"
+        name: UI E2E test report
+        path: "tests/test-team/playwright-report"
 
-    - name: Archive backend test results
-      if: ${{ inputs.testType == 'backend' }}
+    - name: Archive ui-component test results
+      if: ${{ inputs.testType == 'ui-component' }}
       uses: actions/upload-artifact@v4
       with:
-        name: Backend test report
-        path: "tests/test-team/playwright-report-backend-tests"
+        name: UI-component test report
+        path: "tests/test-team/playwright-report"
+
+    - name: Archive api test results
+      if: ${{ inputs.testType == 'api' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: API test report
+        path: "tests/test-team/playwright-report"
 
     - name: Archive accessibility results
       if: ${{ inputs.testType == 'accessibility' }}
       uses: actions/upload-artifact@v4
       with:
         name: accessibility
-        path: ".reports/accessibility"
+        path: "tests/accessibility/.reports/accessibility"
