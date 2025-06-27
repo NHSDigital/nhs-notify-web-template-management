@@ -12,83 +12,64 @@ jobs:
     name: Generate sandbox name
     runs-on: ubuntu-latest
     outputs:
-      SANDBOX_NAME: ${{ steps.calc-sbx-name.outputs.SANDBOX_NAME }}
-    timeout-minutes: 5
+      SANDBOX_NAME: ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
+    timeout-minutes: 3
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-      - id: calc-sbx-name
-        name: Calculate sandbox name
-        run: |
-          REF=${{ github.ref }}
-          echo "REF=$REF"
-          SANDBOX_NAME=$(./scripts/sandbox-utils.sh "$REF")
-          echo "SANDBOX_NAME=$SANDBOX_NAME"
-          echo "SANDBOX_NAME=$SANDBOX_NAME" >> $GITHUB_OUTPUT
+      - name: "Get normalized branch name"
+        id: normalize_branch_name
+        uses: ./.github/actions/normalize-branch-name
 
 
   sandbox-set-up:
+    name: Step 1
+    needs: generate-sandbox-name
+    uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
     secrets: inherit
-    steps:
-      - name: "Get normalized branch name"
-        id: normalize_branch_name
-        uses: ./.github/actions/normalize-branch-name
-      - name: Step 1
-        needs: generate-sandbox-name
-        uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        with:
-          jobName: Sandbox set up
-          infraRepoName: nhs-notify-web-template-management
-          releaseVersion: ${{ github.head_ref || github.ref_name }}
-          targetWorkflow: dispatch-deploy-dynamic-env.yaml
-          targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
-          targetAccountGroup: nhs-notify-template-management-dev
-          targetComponent: sandbox
-          terraformAction: apply
+    with:
+      jobName: Sandbox set up
+      infraRepoName: nhs-notify-web-template-management
+      releaseVersion: ${{ github.head_ref || github.ref_name }}
+      targetWorkflow: dispatch-deploy-dynamic-env.yaml
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
+      targetAccountGroup: nhs-notify-template-management-dev
+      targetComponent: sandbox
+      terraformAction: apply
 
   acceptance-tests:
-    secrets: inherit
-    steps:
-      - name: "Get normalized branch name"
-        id: normalize_branch_name
-        uses: ./.github/actions/normalize-branch-name
-      - name: Step 2
-        needs:
-          - sandbox-set-up
-          - generate-sandbox-name
+    name: Step 2
+    needs:
+      - sandbox-set-up
+      - generate-sandbox-name
 
-        # Calls out to the nhs-notify-internal repo.
-        # The nhs-notify-internal repo will run the tests
-        # setup in ./.github/actions/acceptance-tests/action.yaml
-        uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        with:
-          jobName: Acceptance tests
-          infraRepoName: nhs-notify-web-template-management
-          releaseVersion: ${{ github.head_ref || github.ref_name }}
-          targetWorkflow: dispatch-contextual-tests-dynamic-env.yaml
-          targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
-          targetAccountGroup: nhs-notify-template-management-dev
-          targetComponent: sandbox
+    # Calls out to the nhs-notify-internal repo.
+    # The nhs-notify-internal repo will run the tests
+    # setup in ./.github/actions/acceptance-tests/action.yaml
+    uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
+    secrets: inherit
+    with:
+      jobName: Acceptance tests
+      infraRepoName: nhs-notify-web-template-management
+      releaseVersion: ${{ github.head_ref || github.ref_name }}
+      targetWorkflow: dispatch-contextual-tests-dynamic-env.yaml
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
+      targetAccountGroup: nhs-notify-template-management-dev
+      targetComponent: sandbox
 
   sandbox-tear-down:
-    secrets: inherit
-    steps:
-      - name: "Get normalized branch name"
-        id: normalize_branch_name
-        uses: ./.github/actions/normalize-branch-name
-      - name: Step 3
-        needs:
-          - acceptance-tests
-          - generate-sandbox-name
-        if: always()
+    name: Step 3
+    needs:
+      - acceptance-tests
+      - generate-sandbox-name
+    if: always()
 
-        uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
-        with:
-          jobName: Sandbox tear down
-          infraRepoName: nhs-notify-web-template-management
-          releaseVersion: ${{ github.head_ref || github.ref_name }}
-          targetWorkflow: dispatch-deploy-dynamic-env.yaml
-          targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
-          targetAccountGroup: nhs-notify-template-management-dev
-          targetComponent: sandbox
-          terraformAction: destroy
+    uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
+    secrets: inherit
+    with:
+      jobName: Sandbox tear down
+      infraRepoName: nhs-notify-web-template-management
+      releaseVersion: ${{ github.head_ref || github.ref_name }}
+      targetWorkflow: dispatch-deploy-dynamic-env.yaml
+      targetEnvironment: ${{ needs.generate-sandbox-name.outputs.SANDBOX_NAME }}
+      targetAccountGroup: nhs-notify-template-management-dev
+      targetComponent: sandbox
+      terraformAction: destroy
