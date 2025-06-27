@@ -30,7 +30,7 @@ export default defineConfig({
     },
     {
       name: 'e2e',
-      testMatch: '*validation.e2e.spec.ts',
+      testMatch: '*.e2e.spec.ts',
       use: {
         screenshot: 'only-on-failure',
         baseURL: 'http://localhost:3000',
