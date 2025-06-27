@@ -5,12 +5,10 @@ inputs:
   testType:
     description: Type of test to run
     required: true
-    default: main
 
   targetEnvironment:
     description: Name of the environment under test
     required: true
-    default: main
 
   targetAccountGroup:
     description: Name of the account group under test
@@ -19,7 +17,7 @@ inputs:
 
   targetComponent:
     description: Name of the component under test
-    default: app
+    required: true
 
 runs:
   using: "composite"
