@@ -21,27 +21,9 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_failed_for_uploa
 resource "aws_cloudwatch_event_target" "quarantine_scan_failed_set_file_status_for_upload" {
   rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_upload.name
   arn      = module.lambda_set_file_virus_scan_status_for_upload.function_arn
-
-  dead_letter_config {
-    arn = module.sqs_scan_failed_status_dlq.sqs_queue_arn
-  }
-
-  retry_policy {
-    maximum_retry_attempts       = 0
-    maximum_event_age_in_seconds = 60
-  }
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_failed_delete_object_for_upload" {
   rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_upload.name
   arn      = module.lambda_delete_failed_scanned_object.function_arn
-
-  dead_letter_config {
-    arn = module.sqs_scan_failed_delete_dlq.sqs_queue_arn
-  }
-
-  retry_policy {
-    maximum_retry_attempts = 0
-    maximum_event_age_in_seconds = 60
-  }
 }

@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "guardduty_quarantine" {
     effect = "Allow"
     actions = [
       "events:DescribeRule",
-      "events:ListTargetsByRule"
+      "events:ListTargetsByRule",
     ]
     resources = [
       "arn:aws:events:${var.region}:${var.aws_account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
