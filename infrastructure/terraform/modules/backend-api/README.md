@@ -16,7 +16,6 @@ No requirements.
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
 | <a name="input_enable_event_stream"></a> [enable\_event\_stream](#input\_enable\_event\_stream) | Enable DynamoDB streaming to SQS? | `bool` | `false` | no |
-| <a name="input_enable_guardduty"></a> [enable\_guardduty](#input\_enable\_guardduty) | Enable GuardDuty | `bool` | `true` | no |
 | <a name="input_enable_proofing"></a> [enable\_proofing](#input\_enable\_proofing) | Enable proofing feature flag | `bool` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_function_s3_bucket"></a> [function\_s3\_bucket](#input\_function\_s3\_bucket) | Name of S3 bucket to upload lambda artefacts to | `string` | n/a | yes |
@@ -52,6 +51,11 @@ No requirements.
 | <a name="module_s3bucket_download"></a> [s3bucket\_download](#module\_s3bucket\_download) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.2 |
 | <a name="module_s3bucket_internal"></a> [s3bucket\_internal](#module\_s3bucket\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_quarantine"></a> [s3bucket\_quarantine](#module\_s3bucket\_quarantine) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
+| <a name="module_sqs_scan_failed_delete_dlq"></a> [sqs\_scan\_failed\_delete\_dlq](#module\_sqs\_scan\_failed\_delete\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
+| <a name="module_sqs_scan_failed_status_dlq"></a> [sqs\_scan\_failed\_status\_dlq](#module\_sqs\_scan\_failed\_status\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
+| <a name="module_sqs_scan_passed_copy_dlq"></a> [sqs\_scan\_passed\_copy\_dlq](#module\_sqs\_scan\_passed\_copy\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
+| <a name="module_sqs_scan_passed_status_dlq"></a> [sqs\_scan\_passed\_status\_dlq](#module\_sqs\_scan\_passed\_status\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
+| <a name="module_sqs_scan_passed_validate_dlq"></a> [sqs\_scan\_passed\_validate\_dlq](#module\_sqs\_scan\_passed\_validate\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
 | <a name="module_sqs_sftp_upload"></a> [sqs\_sftp\_upload](#module\_sqs\_sftp\_upload) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.1 |
 | <a name="module_sqs_template_mgmt_events"></a> [sqs\_template\_mgmt\_events](#module\_sqs\_template\_mgmt\_events) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
 | <a name="module_sqs_template_table_events_pipe_dlq"></a> [sqs\_template\_table\_events\_pipe\_dlq](#module\_sqs\_template\_table\_events\_pipe\_dlq) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs | v2.0.8 |
