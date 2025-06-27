@@ -427,6 +427,8 @@ if [ "${bootstrap}" == "true" ]; then
 fi;
 
 # Run pre-plan.sh / pre-apply.sh / pre-output.sh etc
+echo "Looking for pre-${action}.sh"
+ls
 if [ -f "pre-${action}.sh" ]; then
   echo "Running pre-${action}.sh"
   source pre-${action}.sh "${region}" "${environment}" "${action}" \
