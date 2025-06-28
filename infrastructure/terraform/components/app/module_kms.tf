@@ -106,4 +106,35 @@ data "aws_iam_policy_document" "kms" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowEventBridgeToEncryptSpecificQueue"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    actions = [
+      "kms:GenerateDataKey*",
+      "kms:Decrypt",
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["sqs.${var.region}.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "kms:EncryptionContext:aws:sqs:arn"
+      values = [
+        module.sqs_validate_letter_template_files.sqs_queue_arn
+      ]
+    }
+  }
 }
