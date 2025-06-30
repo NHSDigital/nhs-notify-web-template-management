@@ -124,16 +124,18 @@ data "aws_iam_policy_document" "kms" {
     resources = ["*"]
 
     condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["sqs.${var.region}.amazonaws.com"]
+      test     = "ArnEquals"
+      variable = "kms:EncryptionContext:aws:sqs:arn"
+      values = [
+        module.backend_api.letter_file_validation_queue_arn
+      ]
     }
 
     condition {
-      test     = "StringEquals"
-      variable = "kms:EncryptionContext:aws:sqs:arn"
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
       values = [
-        module.sqs_validate_letter_template_files.sqs_queue_arn
+        module.backend_api.upload_scan_passed_rule_arn
       ]
     }
   }

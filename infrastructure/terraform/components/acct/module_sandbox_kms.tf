@@ -103,9 +103,15 @@ data "aws_iam_policy_document" "kms" {
     resources = ["*"]
 
     condition {
-      test     = "StringEquals"
+      test     = "ArnLike"
       variable = "kms:EncryptionContext:aws:sqs:arn"
       values   = ["arn:aws:sqs:${var.region}:${var.aws_account_id}:*-validate-letter-template-files-queue"]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:events:${var.region}:${var.aws_account_id}:rule/*-quarantine-scan-passed-for-upload"]
     }
   }
 }
