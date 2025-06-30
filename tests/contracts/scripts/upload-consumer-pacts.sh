@@ -6,7 +6,7 @@ set -euo pipefail
 
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
-consumer_service_dirs=("auth" "core")
+consumer_service_dirs=("auth" "core" "templates")
 consumer_pact_dir="consumer/pacts"
 
 for consumer in "${consumer_service_dirs[@]}"; do
