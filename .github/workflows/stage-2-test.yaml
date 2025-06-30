@@ -189,6 +189,7 @@ jobs:
 
   provider-contracts:
     name: Provider Contract Tests
+    needs: consumer-contracts # ensures that the latest consumer contracts are available - probably not needed in reality
     runs-on: ubuntu-latest
     environment: dev
     steps:
