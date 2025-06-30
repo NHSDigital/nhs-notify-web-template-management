@@ -104,8 +104,8 @@ data "aws_iam_policy_document" "kms" {
 
     condition {
       test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["sqs.${var.region}.amazonaws.com"]
+      variable = "kms:EncryptionContext:aws:sqs:arn"
+      values   = ["arn:aws:sqs:${var.region}:${var.aws_account_id}:*"]
     }
   }
 }

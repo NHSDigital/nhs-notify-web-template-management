@@ -108,7 +108,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    sid    = "AllowEventBridgeToEncryptSpecificQueue"
+    sid    = "AllowEventBridgeAccessToLetterValidationQueue"
     effect = "Allow"
 
     principals {
