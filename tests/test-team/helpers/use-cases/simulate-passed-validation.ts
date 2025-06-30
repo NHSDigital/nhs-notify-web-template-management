@@ -43,8 +43,8 @@ export class SimulatePassedValidation implements IUseCase<Template> {
               fileName: 'proof.pdf',
               supplier: 'WTMMOCK',
               virusScanStatus: 'PASSED',
-            }
-          }
+            },
+          },
         },
         ReturnValues: 'ALL_NEW',
       })

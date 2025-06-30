@@ -19,7 +19,9 @@ export class EmailClient {
     supplier: string,
     proofFilenames: string[]
   ) {
-    const emailTemplateContent = readFileSync('./email-template.html').toString();
+    const emailTemplateContent = readFileSync(
+      './email-template.html'
+    ).toString();
     const htmlTemplate = Handlebars.compile(emailTemplateContent);
 
     return htmlTemplate({

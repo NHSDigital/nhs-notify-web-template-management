@@ -79,8 +79,9 @@ export const BackendConfigHelper = {
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
       sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
-      testEmailBucketName: outputsFileContent.test_email_bucket_name.value ?? '',
-      testEmailPrefix: outputsFileContent.test_email_prefix?.value ?? ''
+      testEmailBucketName:
+        outputsFileContent.test_email_bucket_name.value ?? '',
+      testEmailPrefix: outputsFileContent.test_email_prefix?.value ?? '',
     };
   },
 

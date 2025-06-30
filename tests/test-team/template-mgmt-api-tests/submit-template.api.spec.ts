@@ -198,7 +198,10 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const emailHelper = new EmailHelper();
 
       await expect(async () => {
-        const emailContents = await emailHelper.getEmailForTemplateId(templateId, start);
+        const emailContents = await emailHelper.getEmailForTemplateId(
+          templateId,
+          start
+        );
 
         expect(emailContents).toContain(templateId);
         expect(emailContents).toContain(templateName);
