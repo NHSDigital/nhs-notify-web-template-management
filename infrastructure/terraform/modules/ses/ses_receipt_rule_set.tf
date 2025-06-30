@@ -9,13 +9,13 @@ resource "aws_ses_receipt_rule" "store_email" {
 
   name          = "${local.csi}-store-email"
   rule_set_name = aws_ses_receipt_rule_set.main.0.rule_set_name
-  recipients    = ["template-submitted-recipient@${aws_ses_domain_identity.main.domain}"]
+  recipients    = [aws_ses_domain_identity.main.domain]
   enabled       = true
   scan_enabled  = true
   tls_policy    = "Optional"
 
   s3_action {
-    position          = 1
+    position          = 10
     bucket_name       = module.s3bucket_ses.0.id
     object_key_prefix = "emails/"
     iam_role_arn      = aws_iam_role.ses_receipts.0.arn

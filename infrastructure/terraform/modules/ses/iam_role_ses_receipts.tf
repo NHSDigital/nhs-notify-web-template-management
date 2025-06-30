@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "ses_assumerole" {
   }
 }
 
-resource "aws_iam_role_policy" "ses_to_s3_policy" {
+resource "aws_iam_role_policy" "ses_receipts" {
   count = var.use_sftp_letter_supplier_mock ? 1 : 0
   name  = "${local.csi}-ses-receipts"
   role  = aws_iam_role.ses_receipts.0.id

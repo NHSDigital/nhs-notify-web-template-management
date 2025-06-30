@@ -23,7 +23,7 @@ export class EmailHelper {
 
   constructor() {}
 
-  // This will stop working if one environment ever ends up with 1,000 email on it.
+  // This will stop working if one environment ever ends up with 1,000 emails on it.
   // This seems very unlikely but if it happens we can revisit this and add pagination.
   async getEmailForTemplateId(templateId: string, dateCutoff: Date) {
     const command = new ListObjectsV2Command({

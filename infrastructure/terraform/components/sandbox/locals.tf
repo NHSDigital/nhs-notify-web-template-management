@@ -5,6 +5,8 @@ locals {
 
   sandbox_letter_supplier_mock_recipient = "template-submitted-recipient-${var.environment}@sandbox.${local.acct.dns_zone["name"]}"
 
+  # var.letter_suppliers is defined at a point where we don't know what the environment is, so
+  # we need to add the environment-dependent test recipient separately here
   letter_suppliers = local.use_sftp_letter_supplier_mock ? merge(
         var.letter_suppliers,
         { WTMMOCK = {
