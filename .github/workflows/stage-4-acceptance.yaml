@@ -36,7 +36,7 @@ jobs:
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
       terraformAction: apply
-      skipPlan: true
+      skipPlan: false
 
   acceptance-tests:
     name: Step 2
