@@ -154,7 +154,7 @@ jobs:
           sonar_project_key: "${{ vars.SONAR_PROJECT_KEY }}"
           sonar_token: "${{ secrets.SONAR_TOKEN }}"
 
-consumer-contracts:
+  consumer-contracts:
     name: Consumer Contract Tests
     runs-on: ubuntu-latest
     environment: dev
