@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    sid    = "AllowEventBridgeSQS"
+    sid    = "AllowEventBridgeAccessToLetterValidationQueue"
     effect = "Allow"
 
     principals {
@@ -105,7 +105,7 @@ data "aws_iam_policy_document" "kms" {
     condition {
       test     = "StringEquals"
       variable = "kms:EncryptionContext:aws:sqs:arn"
-      values   = ["arn:aws:sqs:${var.region}:${var.aws_account_id}:*"]
+      values   = ["arn:aws:sqs:${var.region}:${var.aws_account_id}:*-validate-letter-template-files-queue"]
     }
   }
 }
