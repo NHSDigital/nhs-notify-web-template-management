@@ -33,9 +33,7 @@ runs:
         # Example: 0000004f106adc56fc0460853351c314b670d  -
         LONG_SANDBOX_NAME="$TICKET_NUMBER""$HASH"
 
-        MAX_SANDBOX_LENGTH=8
-
         # Example: 0000004f
-        SANDBOX_NAME=${LONG_SANDBOX_NAME:0:MAX_SANDBOX_LENGTH}
+        SANDBOX_NAME=${LONG_SANDBOX_NAME:0:8}
         echo "$SANDBOX_NAME"
         echo "normalized_branch_name=$SANDBOX_NAME" >> $GITHUB_OUTPUT
