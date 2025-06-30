@@ -11,7 +11,7 @@ import {
 import { assertGoBackButton } from './template-mgmt-submit-common.steps';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtSubmitEmailPage } from '../pages/email/template-mgmt-submit-email-page';
 import { TemplateMgmtSubmitNhsAppPage } from '../pages/nhs-app/template-mgmt-submit-nhs-app-page';
@@ -19,7 +19,7 @@ import { TemplateMgmtSubmitSmsPage } from '../pages/sms/template-mgmt-submit-sms
 import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-submit-letter-page';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(TestUserId.User1);
+  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
   const emailFields = {
     name: 'test-template-name',

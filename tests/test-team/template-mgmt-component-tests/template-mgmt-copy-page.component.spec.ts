@@ -16,8 +16,8 @@ import {
 } from '../helpers/types';
 import {
   createAuthHelper,
-  TestUser,
-  TestUserId,
+  type TestUser,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 
 function createTemplates(owner: string) {
@@ -52,7 +52,7 @@ test.describe('Copy Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(TestUserId.User1);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
     templates = createTemplates(user.userId);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });

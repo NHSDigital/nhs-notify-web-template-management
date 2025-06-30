@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import {
   createAuthHelper,
-  TestUser,
-  TestUserId,
+  type TestUser,
+  testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
 
@@ -16,9 +16,11 @@ test.describe('Logout warning', () => {
   test.beforeAll(async () => {
     const authHelper = createAuthHelper();
 
-    staySignedInUser = await authHelper.getTestUser(TestUserId.User3);
-    manualSignOutUser = await authHelper.getTestUser(TestUserId.User4);
-    automaticallySignedOutUser = await authHelper.getTestUser(TestUserId.User5);
+    staySignedInUser = await authHelper.getTestUser(testUsers.User3.userId);
+    manualSignOutUser = await authHelper.getTestUser(testUsers.User4.userId);
+    automaticallySignedOutUser = await authHelper.getTestUser(
+      testUsers.User5.userId
+    );
   });
 
   test('logout warning should pop up and close after clicking "Stay signed in"', async ({

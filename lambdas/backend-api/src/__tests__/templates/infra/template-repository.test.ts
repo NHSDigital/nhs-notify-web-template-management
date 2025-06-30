@@ -87,6 +87,9 @@ const databaseTemplateProperties = {
   version: 1,
   createdAt: '2024-12-27T00:00:00.000Z',
   updatedAt: '2024-12-27T00:00:00.000Z',
+  updatedBy: 'real-owner',
+  clientId: 'client',
+  createdBy: 'real-owner',
 };
 
 const emailTemplate: DatabaseTemplate = {
@@ -274,7 +277,8 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'pickles',
         },
-        'real-owner'
+        'real-owner',
+        'client'
       );
 
       expect(response).toEqual({
@@ -305,7 +309,8 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          'real-owner'
+          'real-owner',
+          'client'
         );
 
         expect(response).toEqual({

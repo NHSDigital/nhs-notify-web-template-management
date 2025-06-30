@@ -28,7 +28,8 @@ const setup = () => {
   return { handler, mocks: { templateClient, clientConfigurationFetch } };
 };
 
-const user = '8B892046';
+const userId = '8B892046';
+const clientId = 'A6C062FBAEBC';
 const now = '2025-03-05T17:42:47.978Z';
 
 describe('create-letter', () => {
@@ -87,7 +88,7 @@ describe('create-letter', () => {
         'Content-Type': contentType,
         Authorization: 'example',
       },
-      requestContext: { authorizer: { user } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -127,7 +128,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
+      { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       new File([csv], csvFilename, { type: csvType }),
       'campaignId'
@@ -161,7 +162,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const templateId = 'generated-template-id';
@@ -171,6 +172,9 @@ describe('create-letter', () => {
       id: templateId,
       createdAt: now,
       updatedAt: now,
+      updatedBy: userId,
+      createdBy: userId,
+      clientId,
       templateStatus: 'PENDING_VALIDATION',
       files: {
         pdfTemplate: {
@@ -196,7 +200,75 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
+      { userId, clientId },
+      new File([pdf], pdfFilename, { type: pdfType }),
+      undefined
+    );
+  });
+
+  test('successfully creates template when there is no clientId in auth context', async () => {
+    const { handler, mocks } = setup();
+
+    const pdfFilename = 'template.pdf';
+    const pdfType = 'application/pdf';
+
+    const { contentType, multipart } = pdfLetterMultipart(
+      [
+        { _type: 'json', partName: 'template' },
+        {
+          _type: 'file',
+          partName: 'letterPdf',
+          file: pdf,
+          fileName: pdfFilename,
+          fileType: pdfType,
+        },
+      ],
+      initialTemplate
+    );
+
+    const event = {
+      body: multipart.toString('base64'),
+      headers: {
+        'Content-Type': contentType,
+      },
+      requestContext: { authorizer: { user: userId } },
+    } as unknown as APIGatewayProxyEvent;
+
+    const templateId = 'generated-template-id';
+
+    const created: TemplateDto = {
+      ...initialTemplate,
+      id: templateId,
+      createdAt: now,
+      updatedAt: now,
+      updatedBy: userId,
+      createdBy: userId,
+      templateStatus: 'PENDING_VALIDATION',
+      files: {
+        pdfTemplate: {
+          fileName: pdfFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+      },
+    };
+
+    mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
+      data: created,
+    });
+
+    const result = await handler(event, mock<Context>(), jest.fn());
+
+    expect(result).toEqual({ body: expect.any(String), statusCode: 201 });
+
+    expect(JSON.parse((result as APIGatewayProxyResult).body)).toEqual({
+      statusCode: 201,
+      template: created,
+    });
+
+    expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
+      initialTemplate,
+      { userId, clientId: undefined },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined,
       undefined
@@ -207,7 +279,7 @@ describe('create-letter', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: undefined } },
+      requestContext: { authorizer: undefined },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -227,7 +299,7 @@ describe('create-letter', () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: { user: 'sub' } },
+      requestContext: { authorizer: { user: 'sub', clientId } },
       body: undefined,
       headers: { 'Content-Type': undefined, 'content-type': undefined },
     });
@@ -267,7 +339,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     const result = await handler(event, mock<Context>(), jest.fn());
@@ -316,7 +388,7 @@ describe('create-letter', () => {
         headers: {
           'Content-Type': contentType,
         },
-        requestContext: { authorizer: { user } },
+        requestContext: { authorizer: { user: userId, clientId } },
       });
 
       const result = await handler(event, mock<Context>(), jest.fn());
@@ -356,7 +428,7 @@ describe('create-letter', () => {
       headers: {
         'Content-Type': contentType,
       },
-      requestContext: { authorizer: { user } },
+      requestContext: { authorizer: { user: userId, clientId } },
     });
 
     mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
@@ -378,7 +450,7 @@ describe('create-letter', () => {
 
     expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
-      user,
+      { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
       undefined,
       undefined

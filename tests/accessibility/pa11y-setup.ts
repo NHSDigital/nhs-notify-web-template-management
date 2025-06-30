@@ -62,7 +62,8 @@ const setup = async () => {
 
   const { userId } = await testUserClient.createTestUser(
     testEmail,
-    testPassword
+    testPassword,
+    'accessibility-test-client'
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(

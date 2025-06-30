@@ -1,6 +1,5 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
 import { TemplateClient } from '../app/template-client';
 
 export function createHandler({
@@ -9,23 +8,18 @@ export function createHandler({
   templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    const authorizationToken = String(event.headers.Authorization);
-    const user = event.requestContext.authorizer?.user;
+    const { user: userId, clientId } = event.requestContext.authorizer ?? {};
+
     const templateId = event.pathParameters?.templateId;
 
-    if (!user || !templateId) {
+    if (!userId || !templateId) {
       return apiFailure(400, 'Invalid request');
     }
 
-    const client = await ClientConfiguration.fetch(authorizationToken);
-
-    const proofingEnabled = client?.featureEnabled('proofing') || false;
-
-    const { data, error } = await templateClient.requestProof(
-      templateId,
-      user,
-      proofingEnabled
-    );
+    const { data, error } = await templateClient.requestProof(templateId, {
+      userId,
+      clientId,
+    });
 
     if (error) {
       return apiFailure(error.code, error.message, error.details);

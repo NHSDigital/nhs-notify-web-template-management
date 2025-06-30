@@ -8,8 +8,14 @@
           },
           {
             "properties": {
+              "clientId": {
+                "type": "string"
+              },
               "createdAt": {
                 "format": "date-time",
+                "type": "string"
+              },
+              "createdBy": {
                 "type": "string"
               },
               "id": {
@@ -21,12 +27,15 @@
               "updatedAt": {
                 "format": "date-time",
                 "type": "string"
+              },
+              "updatedBy": {
+                "type": "string"
               }
             },
             "required": [
+              "createdAt",
               "id",
               "templateStatus",
-              "createdAt",
               "updatedAt"
             ],
             "type": "object"

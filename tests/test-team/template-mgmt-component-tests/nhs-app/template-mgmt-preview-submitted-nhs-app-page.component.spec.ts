@@ -15,7 +15,7 @@ import {
 } from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
 function createTemplates(owner: string) {
@@ -47,7 +47,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   test.beforeAll(async () => {
-    const user = await createAuthHelper().getTestUser(TestUserId.User1);
+    const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
     templates = createTemplates(user.userId);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
