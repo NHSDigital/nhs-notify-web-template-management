@@ -127,7 +127,7 @@ data "aws_iam_policy_document" "kms" {
       test     = "ArnEquals"
       variable = "kms:EncryptionContext:aws:sqs:arn"
       values = [
-        module.backend_api.letter_file_validation_queue_arn
+        "arn:aws:sqs:${var.region}:${var.aws_account_id}:${local.csi}-validate-letter-template-files-queue"
       ]
     }
 
@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "kms" {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
       values = [
-        module.backend_api.upload_scan_passed_rule_arn
+        "arn:aws:events:${var.region}:${var.aws_account_id}:rule/${local.csi}-api-quarantine-scan-passed-for-upload"
       ]
     }
   }

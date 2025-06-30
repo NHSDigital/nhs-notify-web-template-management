@@ -37,12 +37,3 @@ output "templates_table_name" {
 output "quarantine_bucket_name" {
   value = module.s3bucket_quarantine.id
 }
-
-output "upload_scan_passed_rule_arn" {
-  value = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.arn
-}
-
-output "letter_file_validation_queue_arn" {
-  value = module.sqs_validate_letter_template_files.sqs_queue_arn
-}
-
