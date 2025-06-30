@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "3.775.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.839.0",
     "@aws-sdk/client-s3": "3.775.0",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0",
