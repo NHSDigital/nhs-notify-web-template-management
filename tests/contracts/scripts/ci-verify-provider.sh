@@ -24,7 +24,7 @@ echo "Downloaded ${count} Pact files for provider: ${provider}"
 if [[ "$count" -gt 0 ]]; then
   echo "Pact contracts found — running provider contract tests..."
 
-  if npm --workspace tests/contracts run test:provider; then
+  if npm run test:provider; then
     echo "| ${provider} | 🟢 ${count} contracts found | 🟢 Passed |" >> "$SUMMARY_FILE"
   else
     echo "| ${provider} | 🟢 ${count} contracts found | 🔴 Failed |" >> "$SUMMARY_FILE"
