@@ -3,9 +3,13 @@ import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-
 import { mock } from 'jest-mock-extended';
 import { createHandler } from '../../../templates/api/copy-scanned-object-to-internal';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
-  const mocks = { letterFileRepository: mock<LetterFileRepository>() };
+  const mocks = {
+    letterFileRepository: mock<LetterFileRepository>(),
+    logger: createMockLogger().logger,
+  };
   const handler = createHandler(mocks);
   return { handler, mocks };
 }
