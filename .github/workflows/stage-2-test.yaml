@@ -206,7 +206,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Download consumer generated Pact files and run provider contract tests
-        env:
         run: |
           export PACT_BUCKET="nhs-notify-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.AWS_REGION }}-main-acct-artefacts"
           npm run test:contracts:provider:ci
