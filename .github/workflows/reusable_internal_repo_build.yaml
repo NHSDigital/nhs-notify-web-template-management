@@ -29,10 +29,6 @@ on:
         type: string
         description: The Terraform component to deploy
         default: plan
-      skipPlan:
-        type: boolean
-        description: Should the plan stage be skipped
-        default: false
 
 concurrency:
   group: ${{ inputs.targetEnvironment }}-${{ inputs.targetAccountGroup }}-${{ inputs.targetComponent }}-${{ inputs.terraformAction }}
@@ -59,15 +55,13 @@ jobs:
             --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
             --arg targetComponent ${{ inputs.targetComponent }} \
             --arg terraformAction ${{ inputs.terraformAction }} \
-            --arg skipPlan ${{ inputs.skipPlan }} \
-            '{ "ref": "feature/CCM-10294_standardise-cicd-tests",
+            '{ "ref": "main",
               "inputs": {
                 "releaseVersion", $releaseVersion,
                 "targetEnvironment", $targetEnvironment,
                 "targetAccountGroup", $targetAccountGroup,
                 "targetComponent", $targetComponent,
-                "terraformAction", $terraformAction,
-                "skipPlan", $skipPlan
+                "terraformAction", $terraformAction
               }
             }')
 

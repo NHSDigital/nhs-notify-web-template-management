@@ -76,3 +76,4 @@ jobs:
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
       terraformAction: destroy
+      skipPlan: true
