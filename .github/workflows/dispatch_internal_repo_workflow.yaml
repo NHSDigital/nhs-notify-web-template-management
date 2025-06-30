@@ -39,10 +39,6 @@ on:
         type: string
         description: Internal repo reference (branch or tag)
         default: "feature/CCM-10294_standardise-cicd-tests"
-      skipPlan:
-        type: boolean
-        description: Should the plan stage be skipped
-        default: false
 
 permissions:
   id-token: write
@@ -69,12 +65,11 @@ jobs:
             --arg targetAccountGroup ${{ inputs.targetAccountGroup }} \
             --arg targetComponent ${{ inputs.targetComponent }} \
             --arg terraformAction "${{ inputs.terraformAction }}" \
-            --arg skipPlan "${{ inputs.skipPlan }}" \
             '{
               "ref": "${{ inputs.internalRef }}",
               "inputs": (
                 (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
-                (if $terraformAction != "" then { "terraformAction": $terraformAction, "skipPlan": $skipPlan } else {} end) +
+                (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
                 {
                   "releaseVersion": $releaseVersion,
                   "targetEnvironment": $targetEnvironment,
