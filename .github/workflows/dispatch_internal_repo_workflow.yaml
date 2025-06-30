@@ -74,13 +74,12 @@ jobs:
               "ref": "${{ inputs.internalRef }}",
               "inputs": (
                 (if $infraRepoName != "" then { "infraRepoName": $infraRepoName } else {} end) +
-                (if $terraformAction != "" then { "terraformAction": $terraformAction } else {} end) +
+                (if $terraformAction != "" then { "terraformAction": $terraformAction, "skipPlan": $skipPlan } else {} end) +
                 {
                   "releaseVersion": $releaseVersion,
                   "targetEnvironment": $targetEnvironment,
                   "targetAccountGroup": $targetAccountGroup,
-                  "targetComponent": $targetComponent,
-                  "skipPlan": $skipPlan
+                  "targetComponent": $targetComponent
                 }
               )
             }')
