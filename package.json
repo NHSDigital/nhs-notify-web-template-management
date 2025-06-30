@@ -43,9 +43,10 @@
     "start": "npm run start --workspace frontend",
     "test:contracts:clean": "npm --workspace=tests/contracts run pact:clean",
     "test:contracts:consumers": "npm --workspace=tests/contracts run test:consumers",
-    "test:contracts:download": "npm --workspace=tests/contracts run pact:download",
+    "test:contracts:download:consumer": "npm --workspace=tests/contracts run pact:download:consumer",
     "test:contracts:provider": "npm --workspace=tests/contracts run test:provider",
-    "test:contracts:upload": "npm --workspace=tests/contracts run pact:upload",
+    "test:contracts:provider:ci": "npm --workspace=tests/contracts run test:provider:ci",
+    "test:contracts:upload:consumer": "npm --workspace=tests/contracts run pact:upload:consumer",
     "test:unit": "npm run test:unit --workspaces",
     "typecheck": "npm run typecheck --workspaces"
   },
