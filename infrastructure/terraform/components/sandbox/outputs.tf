@@ -42,3 +42,10 @@ output "quarantine_bucket_name" {
   value = module.backend_api.quarantine_bucket_name
 }
 
+output "test_email_bucket_name" {
+  value = "${local.acct_global_csi}-ses"
+}
+
+output "test_email_prefix" {
+  value = "emails-${var.environment}"
+}

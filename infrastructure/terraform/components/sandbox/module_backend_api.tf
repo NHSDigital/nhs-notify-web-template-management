@@ -18,11 +18,16 @@ module "backend_api" {
   }
 
   enable_proofing  = true
-  letter_suppliers = var.letter_suppliers
+  letter_suppliers = local.letter_suppliers
 
-  kms_key_arn          = data.aws_kms_key.sandbox.arn
+  kms_key_arn = data.aws_kms_key.sandbox.arn
 
   send_to_firehose = false
 
   enable_event_stream = true
+
+  email_domain             = "sandbox.${local.acct.dns_zone["name"]}"
+
+  mock_letter_supplier_name     = local.mock_letter_supplier_name
+  use_sftp_letter_supplier_mock = local.use_sftp_letter_supplier_mock
 }

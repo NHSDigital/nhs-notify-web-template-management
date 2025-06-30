@@ -40,6 +40,7 @@
 | <a name="module_s3bucket_artefacts_us_east_1"></a> [s3bucket\_artefacts\_us\_east\_1](#module\_s3bucket\_artefacts\_us\_east\_1) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.2 |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_data_migration_backups"></a> [s3bucket\_data\_migration\_backups](#module\_s3bucket\_data\_migration\_backups) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.4 |
+| <a name="module_sandbox_ses"></a> [sandbox\_ses](#module\_sandbox\_ses) | ../../modules/ses | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
 ## Outputs
 

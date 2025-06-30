@@ -27,4 +27,9 @@ module "backend_api" {
   log_subscription_role_arn = local.acct.log_subscription_role_arn
 
   send_to_firehose = true
+
+  email_domain = module.ses.domain
+
+  mock_letter_supplier_name     = local.mock_letter_supplier_name
+  use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
 }

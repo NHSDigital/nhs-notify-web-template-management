@@ -39,24 +39,23 @@ locals {
   }
 
   backend_lambda_environment_variables = {
-    DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier_name
-    ENVIRONMENT                      = var.environment
-    NODE_OPTIONS                     = "--enable-source-maps"
-    REQUEST_PROOF_QUEUE_URL          = module.sqs_sftp_upload.sqs_queue_url
-    TEMPLATES_INTERNAL_BUCKET_NAME   = module.s3bucket_internal.id
-    TEMPLATES_QUARANTINE_BUCKET_NAME = module.s3bucket_quarantine.id
-    TEMPLATES_DOWNLOAD_BUCKET_NAME   = module.s3bucket_download.id
-    TEMPLATES_TABLE_NAME             = aws_dynamodb_table.templates.name
-    ENABLE_PROOFING                  = var.enable_proofing
+    DEFAULT_LETTER_SUPPLIER                 = local.default_letter_supplier_name
+    ENVIRONMENT                             = var.environment
+    NODE_OPTIONS                            = "--enable-source-maps"
+    REQUEST_PROOF_QUEUE_URL                 = module.sqs_sftp_upload.sqs_queue_url
+    TEMPLATES_INTERNAL_BUCKET_NAME          = module.s3bucket_internal.id
+    TEMPLATES_QUARANTINE_BUCKET_NAME        = module.s3bucket_quarantine.id
+    TEMPLATES_DOWNLOAD_BUCKET_NAME          = module.s3bucket_download.id
+    TEMPLATES_TABLE_NAME                    = aws_dynamodb_table.templates.name
+    ENABLE_PROOFING                         = var.enable_proofing
+    TEMPLATE_SUBMITTED_SENDER_EMAIL_ADDRESS = local.template_submitted_sender_email_address
+    SUPPLIER_RECIPIENT_EMAIL_ADDRESSES      = jsonencode({ for k, v in var.letter_suppliers : k => v.email_addresses })
   }
-
-  mock_letter_supplier_name = "WTMMOCK"
-
-  use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
 
   default_letter_supplier_name = try([
     for k, v in var.letter_suppliers : k if v.default_supplier
   ][0], "")
 
   sftp_environment = "${var.group}-${var.environment}-${var.component}"
+  template_submitted_sender_email_address = "template-submitted-recipient@${var.email_domain}"
 }

@@ -56,6 +56,56 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
+    sid    = "AllowS3"
+    effect = "Allow"
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "s3.amazonaws.com",
+      ]
+    }
+
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*"
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
+    sid    = "AllowSES"
+    effect = "Allow"
+
+    principals {
+      type = "Service"
+
+      identifiers = [
+        "ses.amazonaws.com",
+      ]
+    }
+
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*"
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+
+  statement {
     sid    = "AllowLogDeliveryEncrypt"
     effect = "Allow"
 

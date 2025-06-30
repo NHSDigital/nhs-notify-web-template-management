@@ -195,6 +195,7 @@ variable "observability_account_id" {
 
 variable "letter_suppliers" {
   type = map(object({
+    email_addresses  = list(string)
     enable_polling   = bool
     default_supplier = optional(bool)
   }))

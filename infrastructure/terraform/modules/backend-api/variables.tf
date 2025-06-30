@@ -89,6 +89,7 @@ variable "kms_key_arn" {
 
 variable "letter_suppliers" {
   type = map(object({
+    email_addresses  = list(string)
     enable_polling   = bool
     default_supplier = optional(bool)
   }))
@@ -126,4 +127,19 @@ variable "log_subscription_role_arn" {
 variable "function_s3_bucket" {
   type        = string
   description = "Name of S3 bucket to upload lambda artefacts to"
+}
+
+variable "email_domain" {
+  type        = string
+  description = "Email domain"
+}
+
+variable "mock_letter_supplier_name" {
+  type        = string
+  description = "Mock letter supplier name"
+}
+
+variable "use_sftp_letter_supplier_mock" {
+  type        = bool
+  description = "Flag indicating whether mock letter supplier is enabled"
 }
