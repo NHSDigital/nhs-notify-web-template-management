@@ -426,13 +426,13 @@ if [ "${bootstrap}" == "true" ]; then
   tf_var_params+=" -var bucket_name=${bucket}";
 fi;
 
-# Run pre-plan.sh / pre-apply.sh / pre-output.sh etc
-echo "Looking for pre-${action}.sh"
+# Run pre.sh
+echo "Looking for pre.sh"
 ls
-if [ -f "pre-${action}.sh" ]; then
-  echo "Running pre-${action}.sh"
-  source pre-${action}.sh "${region}" "${environment}" "${action}" \
-    || error_and_die "Component pre-${action}.sh script execution failed with exit code ${?}";
+if [ -f "pre.sh" ]; then
+  echo "Running pre.sh"
+  source pre.sh "${region}" "${environment}" "${action}" \
+    || error_and_die "Component pre.sh script execution failed with exit code ${?}";
 fi;
 
 # Pull down secret TFVAR file from S3
