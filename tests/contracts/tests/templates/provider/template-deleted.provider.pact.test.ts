@@ -3,7 +3,7 @@ import path from 'node:path';
 import { MessageProviderPact } from '@pact-foundation/pact';
 
 // This would be the actual function that produces the event payload in the producer source code
-function produceTemplateDeletedEvent(): any {
+function createTemplateDeletedEvent() {
   return {
     'detail-type': 'TemplateDeleted',
     source: 'uk.nhs.notify.templates',
@@ -26,7 +26,7 @@ describe('Pact Message Provider - TemplateDeleted Event', () => {
       .filter((f) => f.endsWith('.json'))
       .map((f) => path.join(pactDir, f)),
     messageProviders: {
-      TemplateDeleted: () => produceTemplateDeletedEvent(),
+      TemplateDeleted: () => createTemplateDeletedEvent(),
     },
     logLevel: 'error',
   });

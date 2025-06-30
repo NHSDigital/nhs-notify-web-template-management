@@ -68,7 +68,8 @@
           "jest.config.ts",
           "jest.setup.ts",
           "**/__tests__/**",
-          "**/*.dev.[jt]s?(x)"
+          "**/*.dev.[jt]s?(x)",
+          "**/*.test.[jt]s?(x)"
         ]
       }
     ],

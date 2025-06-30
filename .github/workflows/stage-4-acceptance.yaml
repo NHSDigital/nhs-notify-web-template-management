@@ -254,3 +254,57 @@ jobs:
       - name: "Destroy Backend sandbox"
         run: |
           npm run destroy-backend-sandbox ${{ steps.normalize_branch_name.outputs.normalized_branch_name }}
+
+  consumer-contracts:
+    name: Consumer Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
+          role-session-name: templates-ci-contract-tests
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Run consumer contract tests
+        run: npm run test:contracts:consumers
+
+      - name: Upload consumer Pact files
+        run: |
+          export PACT_BUCKET="nhs-notify-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.AWS_REGION }}-main-acct-artefacts"
+          npm run test:contracts:upload:consumer
+
+      - name: Upload Pact contracts as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: consumer-pacts
+          path: tests/contracts/tests/*/consumer/pacts/*.json
+          if-no-files-found: warn
+
+  provider-contracts:
+    name: Provider Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ASSUME_ROLE_NAME }}
+          role-session-name: templates-ci-contract-tests
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download consumer generated Pact files and run provider contract tests
+        run: |
+          export PACT_BUCKET="nhs-notify-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.AWS_REGION }}-main-acct-artefacts"
+          npm run test:contracts:provider:ci
