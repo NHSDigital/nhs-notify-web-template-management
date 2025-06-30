@@ -11,9 +11,10 @@
   "private": true,
   "scripts": {
     "pact:clean": "./scripts/clean.sh",
-    "test:consumers": "jest consumer consumer-2",
-    "test:producer": "cp -r consumer/pacts producer && cp -r consumer-2/pacts producer && jest producer/",
-    "upload:consumer-pacts": "./scripts/upload-consumer-pacts.sh"
+    "pact:download:consumer": "./scripts/download-pacts.sh",
+    "pact:upload:consumer": "./scripts/upload-pacts.sh",
+    "test:consumers": "jest consumer.pact.test.ts",
+    "test:provider": "jest provider.pact.test.ts"
   },
   "version": "1.0.0"
 }

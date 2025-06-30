@@ -25,7 +25,7 @@ async function handleTemplateDeleted(event: unknown): Promise<void> {
 
 describe('Pact Message Consumer - TemplateDeleted Event', () => {
   const messagePact = new MessageConsumerPact({
-    consumer: 'consumer-2',
+    consumer: 'auth',
     provider: 'templates',
     dir: path.resolve(__dirname, 'pacts'),
     pactfileWriteMode: 'update',
