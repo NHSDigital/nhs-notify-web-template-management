@@ -77,14 +77,17 @@ test.describe('Letter Proofing', () => {
       expect(template.files?.proofs).toEqual({
         'proof-1.pdf': {
           fileName: 'proof-1.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
         'proof-2.pdf': {
           fileName: 'proof-2.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
         'proof-3.pdf': {
           fileName: 'proof-3.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
       });
