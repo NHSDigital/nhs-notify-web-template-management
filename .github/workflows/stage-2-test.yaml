@@ -173,7 +173,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Download golden contracts from providers
-        run: npm run test:contracts:download:provider
+        run: |
+          export PACT_BUCKET="nhs-notify-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.AWS_REGION }}-main-acct-artefacts"
+          npm run test:contracts:download:provider
 
       - name: Validate consumer examples against golden contracts
         run: npm run test:contracts:consumer:golden
