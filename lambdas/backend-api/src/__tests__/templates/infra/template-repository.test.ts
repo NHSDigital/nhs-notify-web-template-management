@@ -336,6 +336,7 @@ describe('templateRepository', () => {
       const response = await templateRepository.create(
         { ...emailProperties, ...createTemplateProperties },
         'real-owner',
+        'client',
         'NOT_YET_SUBMITTED',
         'campaignId'
       );

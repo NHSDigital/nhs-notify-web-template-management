@@ -20,6 +20,7 @@ import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import type { User } from '../types';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class TemplateClient {
   constructor(
@@ -27,6 +28,7 @@ export class TemplateClient {
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
     private readonly defaultLetterSupplier: string,
+    private readonly clientConfigRepository: ClientConfigRepository,
     private readonly logger: Logger
   ) {}
 
@@ -46,12 +48,14 @@ export class TemplateClient {
       return validationResult;
     }
 
+    const client = await this.clientConfigRepository.get(String(user.clientId));
+
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user.userId,
       user.clientId,
-      'campaignId',
-      'NOT_YET_SUBMITTED'
+      'NOT_YET_SUBMITTED',
+      client?.campaignId
     );
 
     if (createResult.error) {
@@ -74,8 +78,7 @@ export class TemplateClient {
     template: CreateUpdateTemplate,
     user: User,
     pdf: File,
-    csv?: File,
-    campaignId?: string
+    csv?: File
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       template,
@@ -132,11 +135,14 @@ export class TemplateClient {
       files,
     };
 
+    const client = await this.clientConfigRepository.get(String(user.clientId));
+
     const createResult = await this.templateRepository.create(
       withFiles,
       user.userId,
       user.clientId,
-      'PENDING_UPLOAD'
+      'PENDING_UPLOAD',
+      client?.campaignId
     );
 
     if (createResult.error) {
@@ -320,21 +326,19 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    user: User,
-    canRequestProof = true
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    if (!canRequestProof) {
+    const client = await this.clientConfigRepository.get(String(user.userId));
+
+    if (!client?.features.proofing) {
       log.error({
         code: ErrorCase.FEATURE_DISABLED,
-        description: 'User can not request a proof',
+        description: 'User cannot request a proof',
       });
 
-      return failure(
-        ErrorCase.FEATURE_DISABLED,
-        'User can not request a proof'
-      );
+      return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
     }
 
     const proofRequestUpdateResult =

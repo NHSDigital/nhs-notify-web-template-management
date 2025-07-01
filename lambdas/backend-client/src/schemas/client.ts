@@ -1,5 +1,5 @@
 import z from 'zod';
-import { IClientConfiguration, Features } from '../types/client-configuration';
+import { NotifyClient, Features } from '../types/client';
 import { schemaFor } from './schema-for';
 
 const $Features = schemaFor<Features>()(
@@ -8,7 +8,7 @@ const $Features = schemaFor<Features>()(
   })
 );
 
-export const $ClientConfiguration = schemaFor<IClientConfiguration>()(
+export const $NotifyClient = schemaFor<NotifyClient>()(
   z.object({
     campaignId: z.string().optional(),
     features: $Features,

@@ -12,6 +12,7 @@ import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
 
 jest.mock('node:crypto');
 
@@ -27,6 +28,8 @@ const setup = () => {
 
   const queueMock = mock<ProofingQueue>();
 
+  const clientConfigRepository = mock<ClientConfigRepository>();
+
   const { logger, logMessages } = createMockLogger();
 
   const templateClient = new TemplateClient(
@@ -34,12 +37,19 @@ const setup = () => {
     letterUploadRepository,
     queueMock,
     defaultLetterSupplier,
+    clientConfigRepository,
     logger
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository, queueMock, logger },
+    mocks: {
+      templateRepository,
+      letterUploadRepository,
+      queueMock,
+      logger,
+      clientConfigRepository,
+    },
     logMessages,
   };
 };
@@ -118,7 +128,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -163,7 +174,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -195,11 +207,19 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner: user.userId,
+        campaignId: 'campaignId',
         version: 1,
       };
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
       });
 
       const result = await templateClient.createTemplate(data, user);
@@ -208,7 +228,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        'campaignId'
       );
 
       expect(result).toEqual({
@@ -291,12 +312,18 @@ describe('templateClient', () => {
         data: finalTemplate,
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
+      });
+
       const result = await templateClient.createLetterTemplate(
         data,
         user,
         pdf,
-        csv,
-        'campaignId'
+        csv
       );
 
       expect(result).toEqual({
@@ -307,7 +334,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        'campaignId'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -524,7 +552,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
@@ -637,7 +666,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -721,7 +751,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -1293,11 +1324,7 @@ describe('templateClient', () => {
     test('should return a failure result, when proofing is disabled', async () => {
       const { templateClient, mocks } = setup();
 
-      const result = await templateClient.requestProof(
-        templateId,
-        owner,
-        false
-      );
+      const result = await templateClient.requestProof(templateId, user);
 
       expect(
         mocks.templateRepository.proofRequestUpdate
@@ -1306,7 +1333,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 403,
-          message: 'User can not request a proof',
+          message: 'User cannot request a proof',
         },
       });
     });
@@ -1321,6 +1348,13 @@ describe('templateClient', () => {
           code: 500,
           message: 'Internal server error',
           actualError,
+        },
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
         },
       });
 
@@ -1374,6 +1408,13 @@ describe('templateClient', () => {
         data: template,
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
+      });
+
       const result = await templateClient.requestProof(templateId, user);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
@@ -1412,6 +1453,13 @@ describe('templateClient', () => {
       // templateType being LETTER
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: template,
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
       });
 
       const result = await templateClient.requestProof(templateId, user);
@@ -1468,6 +1516,13 @@ describe('templateClient', () => {
         },
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
+      });
+
       const result = await templateClient.requestProof(templateId, user);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
@@ -1490,6 +1545,36 @@ describe('templateClient', () => {
           code: 500,
           actualError: clientErr,
           message: 'Failed to send to proofing queue',
+        },
+      });
+    });
+
+    test('should return a failure result, when proofing is not enabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: false,
+        },
+      });
+
+      const result = await templateClient.requestProof(templateId, user);
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
+        user.userId
+      );
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(mocks.queueMock.send).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 403,
+          message: 'User cannot request a proof',
         },
       });
     });
@@ -1518,6 +1603,13 @@ describe('templateClient', () => {
           },
         },
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        campaignId: 'campaignId',
+        features: {
+          proofing: true,
+        },
+      });
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: { ...template, owner: user.userId, version: 1 },

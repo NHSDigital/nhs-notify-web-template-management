@@ -100,7 +100,7 @@ export class TemplateRepository {
     userId: string,
     clientId: string | undefined,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
-    campaignId: string | undefined
+    campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {

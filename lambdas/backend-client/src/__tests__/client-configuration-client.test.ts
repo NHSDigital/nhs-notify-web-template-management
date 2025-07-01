@@ -1,4 +1,4 @@
-import { ClientConfiguration } from '../client-configuration-client';
+import { ClientConfiguration } from '../client-configuration';
 
 describe('ClientConfiguration', () => {
   it('should return client details', async () => {

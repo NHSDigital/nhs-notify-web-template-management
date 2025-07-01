@@ -8,8 +8,13 @@ import { ProofingQueue } from './infra/proofing-queue';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { loadConfig } from './infra/config';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { ClientConfigRepository } from './infra/client-config-repository';
+import { SSMClient } from '@aws-sdk/client-ssm';
+import NodeCache from 'node-cache';
 
-const sqsClient = new SQSClient({ region: 'eu-west-2' });
+const awsConfig = { region: 'eu-west-2' };
+const sqsClient = new SQSClient(awsConfig);
+const ssmClient = new SSMClient(awsConfig);
 
 const ddbDocClient = DynamoDBDocumentClient.from(
   new DynamoDBClient({ region: 'eu-west-2' }),
@@ -38,11 +43,19 @@ export function createContainer() {
     config.requestProofQueueUrl
   );
 
+  const clientConfigRepository = new ClientConfigRepository(
+    config.clientConfigSSMKeyPrefix,
+    ssmClient,
+    new NodeCache(),
+    logger
+  );
+
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
     proofingQueue,
     config.defaultLetterSupplier,
+    clientConfigRepository,
     logger
   );
 

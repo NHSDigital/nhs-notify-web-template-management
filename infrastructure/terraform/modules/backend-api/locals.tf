@@ -39,6 +39,7 @@ locals {
   }
 
   backend_lambda_environment_variables = {
+    CLIENT_CONFIG_SSM_KEY_PREFIX     = "${var.csi}/clients"
     DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier_name
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"

@@ -1,9 +1,6 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
-import {
-  ClientConfiguration,
-  type CreateUpdateTemplate,
-} from 'nhs-notify-backend-client';
+import { type CreateUpdateTemplate } from 'nhs-notify-backend-client';
 import { getLetterUploadParts } from '../app/get-letter-upload-parts';
 import { TemplateClient } from '../app/template-client';
 
@@ -14,7 +11,6 @@ export function createHandler({
 }): APIGatewayProxyHandler {
   return async function (event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
-    const authorizationToken = String(event.headers.Authorization);
 
     if (!userId) {
       return apiFailure(400, 'Invalid request');
@@ -32,8 +28,6 @@ export function createHandler({
       return apiFailure(400, getLetterPartsError.message);
     }
 
-    const client = await ClientConfiguration.fetch(authorizationToken);
-
     const { template, pdf, csv } = letterParts;
 
     const { data: created, error: createTemplateError } =
@@ -41,8 +35,7 @@ export function createHandler({
         template as CreateUpdateTemplate,
         { userId, clientId },
         pdf,
-        csv,
-        client?.campaignId
+        csv
       );
 
     if (createTemplateError) {

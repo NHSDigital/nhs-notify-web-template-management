@@ -2,7 +2,7 @@ export type Features = {
   proofing: boolean;
 };
 
-export interface IClientConfiguration {
+export type NotifyClient = {
   campaignId?: string;
   features: Features;
-}
+};
