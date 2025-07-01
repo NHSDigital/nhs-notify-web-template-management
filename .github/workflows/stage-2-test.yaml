@@ -173,7 +173,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Run consumer contract tests
-        run: npm run test:contracts:consumers
+        run: npm run test:contracts:consumer
 
       - name: Upload consumer Pact files
         run: |
