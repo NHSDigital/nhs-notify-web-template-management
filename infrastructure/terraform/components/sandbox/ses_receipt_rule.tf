@@ -1,6 +1,6 @@
 resource "aws_ses_receipt_rule" "main" {
   name          = "${local.csi}-store-email-sandbox"
-  rule_set_name = local.acct["ses_testing_config"].bucket_name
+  rule_set_name = local.acct["ses_testing_config"].rule_set_name
   recipients    = [local.sandbox_letter_supplier_mock_recipient]
   enabled       = true
   scan_enabled  = true

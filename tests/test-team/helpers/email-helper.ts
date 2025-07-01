@@ -24,27 +24,30 @@ export class EmailHelper {
   constructor() {}
 
   async getAllS3Items() {
-    const command = new ListObjectsV2Command({
-      Bucket: this.testEmailBucketName,
-      Prefix: this.testEmailPrefix,
-    });
-
-    const { Contents = [], ContinuationToken } = await this.s3Client.send(command);
+    const { Contents = [], ContinuationToken } = await this.s3Client.send(
+      new ListObjectsV2Command({
+        Bucket: this.testEmailBucketName,
+        Prefix: this.testEmailPrefix,
+      })
+    );
 
     let nextToken = ContinuationToken;
     let s3Items = Contents;
 
     while (nextToken) {
-      const command = new ListObjectsV2Command({
-        Bucket: this.testEmailBucketName,
-        Prefix: this.testEmailPrefix,
-        ContinuationToken: nextToken,
-      });
+      const {
+        Contents: newContents = [],
+        ContinuationToken: newContinuationToken,
+      } = await this.s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: this.testEmailBucketName,
+          Prefix: this.testEmailPrefix,
+          ContinuationToken: nextToken,
+        })
+      );
 
-      const { Contents = [], ContinuationToken } = await this.s3Client.send(command);
-
-      s3Items = [...s3Items, ...Contents];
-      nextToken = ContinuationToken;
+      s3Items = [...s3Items, ...newContents];
+      nextToken = newContinuationToken;
     }
 
     return s3Items;
@@ -53,12 +56,12 @@ export class EmailHelper {
   async getEmailForTemplateId(templateId: string, dateCutoff: Date) {
     const s3Items = await this.getAllS3Items();
 
-    const sortedKeys = s3Items.filter(
-      ({ LastModified }) => (LastModified ?? 0) > dateCutoff
-    ).sort(
-      (a, b) =>
-        (b.LastModified?.getTime() ?? 0) - (a.LastModified?.getTime() ?? 0)
-    );
+    const sortedKeys = s3Items
+      .filter(({ LastModified }) => (LastModified ?? 0) > dateCutoff)
+      .sort(
+        (a, b) =>
+          (b.LastModified?.getTime() ?? 0) - (a.LastModified?.getTime() ?? 0)
+      );
 
     // SES does not tell us what the S3 keys are going to be for received emails,
     // so we have to search all recent ones to ensure we get the right one and

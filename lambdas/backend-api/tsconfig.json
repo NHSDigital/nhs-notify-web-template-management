@@ -1,6 +1,7 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
+    "isolatedModules": true,
+    "moduleResolution": "node16",
     "paths": {
       "@backend-api/templates/*": [
         "./src/templates/*"
@@ -9,9 +10,9 @@
         "./src/utils/*"
       ]
     },
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "resolveJsonModule": true
   },
+  "extends": "@tsconfig/node20/tsconfig.json",
   "include": [
     "src/**/*",
     "scripts/generate-dependencies.ts"

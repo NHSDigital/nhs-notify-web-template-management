@@ -1,4 +1,4 @@
-import { createMimeMessage } from 'mimetext';
+import { createMimeMessage, MailboxAddrObject } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -42,9 +42,11 @@ export class EmailClient {
 
     const msg = createMimeMessage();
     msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
-    msg.setBcc(
-      recipientEmailsForSupplier.map((emailAddress) => ({ addr: emailAddress }))
+
+    const recipients: MailboxAddrObject[] = recipientEmailsForSupplier.map(
+      (emailAddress) => ({ addr: emailAddress, type: 'Bcc' })
     );
+    msg.setTo(recipients);
     msg.setSubject(`${supplier} - Letter proof approved by an NHS Notify user`);
     msg.addMessage({
       contentType: 'text/html',
