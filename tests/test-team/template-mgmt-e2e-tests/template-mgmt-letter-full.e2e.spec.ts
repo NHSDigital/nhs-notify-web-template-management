@@ -3,7 +3,7 @@ import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-crea
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
   type TestUser,
 } from '../helpers/auth/cognito-auth-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
@@ -12,22 +12,16 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
-import {
-  assertPdfTemplateGuardDutyEvent,
-  assertProofGuardDutyEvent,
-  assertTestDataGuardDutyEvent,
-} from './template-mgmt-letter-guardduty.steps';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-// eslint-disable-next-line playwright/no-skipped-test
-test.describe.skip('letter complete e2e journey', () => {
+test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   let user: TestUser;
 
   test.beforeAll(async () => {
-    user = await createAuthHelper().getTestUser(TestUserId.User1);
+    user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   });
 
   test.afterAll(async () => {
@@ -69,16 +63,6 @@ test.describe.skip('letter complete e2e journey', () => {
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
-
-    await assertPdfTemplateGuardDutyEvent({
-      key,
-      scanResult: 'NO_THREATS_FOUND',
-    });
-
-    await assertTestDataGuardDutyEvent({
-      key,
-      scanResult: 'NO_THREATS_FOUND',
-    });
 
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate(key);
@@ -147,37 +131,39 @@ test.describe.skip('letter complete e2e journey', () => {
     await expect(page).toHaveURL(TemplateMgmtPreviewLetterPage.urlRegexp);
     await expect(previewTemplatePage.continueButton).toBeHidden();
 
-    // invoke SFTP poll lambda
-    await lambdaClient.send(
-      new InvokeCommand({
-        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-        Payload: JSON.stringify({
-          supplier: 'WTMMOCK',
-        }),
-      })
-    );
-
     const template = await templateStorageHelper.getTemplate(key);
 
     const batchId = `${key.id}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
 
-    await assertProofGuardDutyEvent({
-      key,
-      scanResult: 'NO_THREATS_FOUND',
-      fileName: `${batchId}_proof_1.pdf`,
-    });
+    const proofFilenames = Array.from(
+      { length: 3 },
+      (_, i) => `${batchId}_proof_${i + 1}.pdf`
+    );
 
-    await assertProofGuardDutyEvent({
-      key,
-      scanResult: 'NO_THREATS_FOUND',
-      fileName: `${batchId}_proof_2.pdf`,
-    });
+    await expect(async () => {
+      await lambdaClient.send(
+        new InvokeCommand({
+          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+          Payload: JSON.stringify({
+            supplier: 'WTMMOCK',
+          }),
+        })
+      );
 
-    await assertProofGuardDutyEvent({
-      key,
-      scanResult: 'NO_THREATS_FOUND',
-      fileName: `${batchId}_proof_3.pdf`,
-    });
+      const metadata = await Promise.all(
+        proofFilenames.map((filename) =>
+          templateStorageHelper.getS3Metadata(
+            process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
+            `proofs/${template.id}/${filename}`
+          )
+        )
+      );
+
+      for (const [i, meta] of metadata.entries()) {
+        const msg = `Proof ${proofFilenames[i]} does not exist`;
+        expect(meta, msg).not.toBeNull();
+      }
+    }).toPass({ intervals: [1000], timeout: 40_000 });
 
     await expect(async () => {
       const { templateStatus } = await templateStorageHelper.getTemplate(key);

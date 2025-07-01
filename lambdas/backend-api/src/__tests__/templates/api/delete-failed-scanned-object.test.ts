@@ -3,9 +3,13 @@ import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-
 import type { LetterFileRepository } from '../../../templates/infra/letter-file-repository';
 import { createHandler } from '../../../templates/api/delete-failed-scanned-object';
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
-  const mocks = { letterFileRepository: mock<LetterFileRepository>() };
+  const mocks = {
+    letterFileRepository: mock<LetterFileRepository>(),
+    logger: createMockLogger().logger,
+  };
   const handler = createHandler(mocks);
   return { handler, mocks };
 }

@@ -3,10 +3,12 @@ import { makeGuardDutyMalwareScanResultNotificationEvent } from 'nhs-notify-web-
 import { $GuardDutyMalwareScanStatusFailed } from 'nhs-notify-web-template-management-utils';
 import type { TemplateRepository } from '../../../templates/infra';
 import { createHandler } from '../../../templates/api/set-letter-upload-virus-scan-status';
+import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
   const mocks = {
     templateRepository: mock<TemplateRepository>(),
+    logger: createMockLogger().logger,
   };
   const handler = createHandler(mocks);
   return { handler, mocks };

@@ -64,6 +64,7 @@ export const createLetterFileRepositoryContainer = () => {
 
   return {
     letterFileRepository,
+    logger,
   };
 };
 
@@ -78,6 +79,7 @@ export const createTemplateRepositoryContainer = () => {
 
   return {
     templateRepository,
+    logger,
   };
 };
 

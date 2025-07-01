@@ -92,3 +92,11 @@ data "aws_iam_policy_document" "copy_scanned_object_to_internal" {
     ]
   }
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_copy_upload" {
+  statement_id  = "AllowFromEventBridgeCopyUpload"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_copy_scanned_object_to_internal.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.arn
+}

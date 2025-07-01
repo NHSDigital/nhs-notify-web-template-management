@@ -12,6 +12,7 @@ const $AccessToken = z.object({
   client_id: z.string(),
   iss: z.string(),
   token_use: z.string(),
+  'nhs-notify:client-id': z.string().optional(),
 });
 
 export class LambdaCognitoAuthorizer {
@@ -25,7 +26,9 @@ export class LambdaCognitoAuthorizer {
     userPoolClientId: string,
     jwt: string,
     expectedSubject?: string
-  ): Promise<{ success: true; subject: string } | { success: false }> {
+  ): Promise<
+    { success: true; subject: string; clientId?: string } | { success: false }
+  > {
     const issuer = `https://cognito-idp.eu-west-2.amazonaws.com/${userPoolId}`;
 
     const jwksClient = getJwksClient({
@@ -48,12 +51,15 @@ export class LambdaCognitoAuthorizer {
         issuer,
       });
 
-      const { client_id: clientId, token_use: tokenUse } =
-        $AccessToken.parse(verifiedToken);
+      const {
+        client_id: tokenUserPoolClientId,
+        token_use: tokenUse,
+        'nhs-notify:client-id': notifyClientId,
+      } = $AccessToken.parse(verifiedToken);
 
-      if (clientId !== userPoolClientId) {
+      if (tokenUserPoolClientId !== userPoolClientId) {
         this.logger.warn(
-          `Token has invalid client ID, expected ${userPoolClientId} but received ${clientId}`
+          `Token has invalid client ID, expected ${userPoolClientId} but received ${tokenUserPoolClientId}`
         );
         return { success: false };
       }
@@ -89,7 +95,7 @@ export class LambdaCognitoAuthorizer {
         return { success: false };
       }
 
-      return { success: true, subject: sub };
+      return { success: true, subject: sub, clientId: notifyClientId };
     } catch (error) {
       this.logger.error('Failed to authorize:', error);
       return { success: false };

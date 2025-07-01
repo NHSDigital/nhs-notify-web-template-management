@@ -15,11 +15,11 @@ import {
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
-  TestUserId,
+  testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
 async function createTemplates() {
-  const user = await createAuthHelper().getTestUser(TestUserId.User1);
+  const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
     empty: {
       id: 'preview-page-invalid-sms-template',

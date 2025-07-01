@@ -68,3 +68,19 @@ data "aws_iam_policy_document" "set_file_virus_scan_status_for_upload" {
     ]
   }
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_update_status_passed_upload" {
+  statement_id  = "AllowFromEventBridgeUpdatePassed"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_set_file_virus_scan_status_for_upload.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.arn
+}
+
+resource "aws_lambda_permission" "allow_eventbridge_update_status_failed_upload" {
+  statement_id  = "AllowFromEventBridgeUpdateFailed"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_set_file_virus_scan_status_for_upload.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_upload.arn
+}
