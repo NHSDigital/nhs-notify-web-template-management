@@ -3,7 +3,9 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@apidevtools/json-schema-ref-parser": "^14.0.3",
     "@pact-foundation/pact": "^15.0.1",
+    "@sourcemeta/jsonschema": "^9.6.0",
     "@swc/core": "^1.11.13",
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.5",
@@ -18,10 +20,12 @@
     "lint:fix": "eslint . --fix",
     "pact:clean": "./scripts/clean.sh",
     "pact:download:consumer": "./scripts/download-consumer-pacts.sh",
+    "pact:download:provider": "./scripts/download-golden-contracts.sh",
     "pact:generate:provider": "tsx ./scripts/generate-golden-contracts.ts",
     "pact:upload:consumer": "./scripts/upload-consumer-pacts.sh",
     "pact:upload:provider": "./scripts/upload-golden-contracts.sh",
     "test:consumer": "jest consumer.pact.test.ts",
+    "test:consumer:golden": "./scripts/verify-golden-contracts.sh",
     "test:provider": "jest provider.pact.test.ts",
     "test:provider:ci": "./scripts/ci-verify-provider.sh",
     "test:unit": "echo 'No unit tests required'",

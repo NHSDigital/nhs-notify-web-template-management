@@ -1,0 +1,7 @@
+{
+  "providers": {
+    "auth": [
+      "UserCreated"
+    ]
+  }
+}

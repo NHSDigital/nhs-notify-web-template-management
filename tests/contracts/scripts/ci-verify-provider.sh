@@ -41,8 +41,8 @@ done
 echo "All provider contract tests passed"
 echo "Generating golden contracts"
 
-echo "" > "$SUMMARY_FILE"
-echo "" > "$SUMMARY_FILE"
+echo "" >> "$SUMMARY_FILE"
+echo "" >> "$SUMMARY_FILE"
 echo "### Golden Contracts" >> "$SUMMARY_FILE"
 
 if npm run pact:generate:provider; then
