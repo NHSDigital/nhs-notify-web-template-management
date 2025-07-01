@@ -391,7 +391,6 @@ rm -rf ${component_path}/.terraform;
 
 # Run global pre.sh
 if [ -f "pre.sh" ]; then
-  echo "Running gloal pre.sh"
   source pre.sh "${region}" "${environment}" "${action}" \
     || error_and_die "Global pre script execution failed with exit code ${?}";
 fi;
@@ -427,12 +426,9 @@ if [ "${bootstrap}" == "true" ]; then
 fi;
 
 # Run pre.sh
-echo "Looking for pre.sh"
-ls
 if [ -f "pre.sh" ]; then
-  echo "Running pre.sh"
   source pre.sh "${region}" "${environment}" "${action}" \
-    || error_and_die "Component pre.sh script execution failed with exit code ${?}";
+    || error_and_die "Component pre script execution failed with exit code ${?}";
 fi;
 
 # Pull down secret TFVAR file from S3
