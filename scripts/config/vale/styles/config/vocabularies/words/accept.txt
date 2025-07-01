@@ -4,6 +4,7 @@ bot
 Cognito
 Cyber
 Dependabot
+dev
 draw.io
 drawio
 endcapture
@@ -21,8 +22,10 @@ onboarding
 Podman
 Python
 rawContent
+repo
 sed
 Syft
 Terraform
 toolchain
 Trufflehog
+Zod
