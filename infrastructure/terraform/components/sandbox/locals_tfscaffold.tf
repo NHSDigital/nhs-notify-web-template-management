@@ -28,17 +28,7 @@ locals {
     },
   )
 
-    acct_csi = replace(
-        format(
-        "%s-%s-acct",
-        var.project,
-        var.parent_acct_environment,
-        ),
-        "_",
-        "",
-    )
-
-    acct_global_csi = replace(
+  acct_global_csi = replace(
     format(
       "%s-%s-%s-%s-acct",
       var.project,

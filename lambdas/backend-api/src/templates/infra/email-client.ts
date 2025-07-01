@@ -42,7 +42,7 @@ export class EmailClient {
 
     const msg = createMimeMessage();
     msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
-    msg.setTo(
+    msg.setBcc(
       recipientEmailsForSupplier.map((emailAddress) => ({ addr: emailAddress }))
     );
     msg.setSubject(`${supplier} - Letter proof approved by an NHS Notify user`);

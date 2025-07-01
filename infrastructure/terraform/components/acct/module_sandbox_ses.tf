@@ -9,11 +9,7 @@ module "sandbox_ses" {
   environment    = var.environment
   component      = var.component
 
-  kms_key_arn = module.kms_sandbox.0.key_arn
-
   root_domain_name = "sandbox.${aws_route53_zone.main.name}"
 
   zone_id = aws_route53_zone.main.id
-
-  use_sftp_letter_supplier_mock = local.use_sftp_letter_supplier_mock
 }

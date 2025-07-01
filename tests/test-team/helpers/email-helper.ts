@@ -23,17 +23,37 @@ export class EmailHelper {
 
   constructor() {}
 
-  // This will stop working if one environment ever ends up with 1,000 emails on it.
-  // This seems very unlikely but if it happens we can revisit this and add pagination.
-  async getEmailForTemplateId(templateId: string, dateCutoff: Date) {
+  async getAllS3Items() {
     const command = new ListObjectsV2Command({
       Bucket: this.testEmailBucketName,
       Prefix: this.testEmailPrefix,
     });
 
-    const { Contents = [] } = await this.s3Client.send(command);
+    const { Contents = [], ContinuationToken } = await this.s3Client.send(command);
 
-    const sortedKeys = Contents.filter(
+    let nextToken = ContinuationToken;
+    let s3Items = Contents;
+
+    while (nextToken) {
+      const command = new ListObjectsV2Command({
+        Bucket: this.testEmailBucketName,
+        Prefix: this.testEmailPrefix,
+        ContinuationToken: nextToken,
+      });
+
+      const { Contents = [], ContinuationToken } = await this.s3Client.send(command);
+
+      s3Items = [...s3Items, ...Contents];
+      nextToken = ContinuationToken;
+    }
+
+    return s3Items;
+  }
+
+  async getEmailForTemplateId(templateId: string, dateCutoff: Date) {
+    const s3Items = await this.getAllS3Items();
+
+    const sortedKeys = s3Items.filter(
       ({ LastModified }) => (LastModified ?? 0) > dateCutoff
     ).sort(
       (a, b) =>

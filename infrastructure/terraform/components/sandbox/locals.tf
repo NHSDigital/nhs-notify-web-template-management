@@ -8,11 +8,11 @@ locals {
   # var.letter_suppliers is defined at a point where we don't know what the environment is, so
   # we need to add the environment-dependent test recipient separately here
   letter_suppliers = local.use_sftp_letter_supplier_mock ? merge(
-        var.letter_suppliers,
-        { WTMMOCK = {
-            email_addresses  = concat(var.letter_suppliers.WTMMOCK.email_addresses, [local.sandbox_letter_supplier_mock_recipient])
-            enable_polling   = true
-            default_supplier = true
-        }}
-    ) : var.letter_suppliers
+    var.letter_suppliers,
+    { WTMMOCK = {
+      email_addresses  = concat(var.letter_suppliers.WTMMOCK.email_addresses, [local.sandbox_letter_supplier_mock_recipient])
+      enable_polling   = true
+      default_supplier = true
+    } }
+  ) : var.letter_suppliers
 }

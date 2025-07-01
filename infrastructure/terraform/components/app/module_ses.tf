@@ -7,12 +7,8 @@ module "ses" {
   environment    = var.environment
   component      = var.component
 
-  kms_key_arn = module.kms.key_arn
-
   root_domain_name = local.root_domain_name
 
   external_email_domain = var.external_email_domain
   zone_id               = local.acct.dns_zone["id"]
-
-  use_sftp_letter_supplier_mock = local.use_sftp_letter_supplier_mock
 }

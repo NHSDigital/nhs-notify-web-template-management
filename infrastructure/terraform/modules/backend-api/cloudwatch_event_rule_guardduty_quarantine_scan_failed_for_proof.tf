@@ -19,11 +19,11 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_failed_for_proof
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_failed_process_proof" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.name
-  arn      = module.lambda_process_proof.function_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.name
+  arn  = module.lambda_process_proof.function_arn
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_failed_delete_object_for_proof" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.name
-  arn      = module.lambda_delete_failed_scanned_object.function_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.name
+  arn  = module.lambda_delete_failed_scanned_object.function_arn
 }

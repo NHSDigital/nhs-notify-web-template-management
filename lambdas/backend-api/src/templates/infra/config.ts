@@ -17,7 +17,7 @@ export function loadConfig() {
   const env = $Env.parse(process.env);
 
   const supplierRecipientEmailAddresses = z
-    .record(z.array(z.string()))
+    .record(z.array(z.string().email()))
     .parse(JSON.parse(env.SUPPLIER_RECIPIENT_EMAIL_ADDRESSES));
 
   return {

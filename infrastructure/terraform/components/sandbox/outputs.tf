@@ -43,7 +43,7 @@ output "quarantine_bucket_name" {
 }
 
 output "test_email_bucket_name" {
-  value = "${local.acct_global_csi}-ses"
+  value = local.acct["ses_testing_config"].bucket_name
 }
 
 output "test_email_prefix" {

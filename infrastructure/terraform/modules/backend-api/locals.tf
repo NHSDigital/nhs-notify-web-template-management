@@ -56,6 +56,6 @@ locals {
     for k, v in var.letter_suppliers : k if v.default_supplier
   ][0], "")
 
-  sftp_environment = "${var.group}-${var.environment}-${var.component}"
+  sftp_environment                        = "${var.group}-${var.environment}-${var.component}"
   template_submitted_sender_email_address = "template-submitted@${var.email_domain}"
 }
