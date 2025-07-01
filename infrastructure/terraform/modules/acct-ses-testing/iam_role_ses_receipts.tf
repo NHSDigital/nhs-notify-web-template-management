@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "ses_receipts" {
     ]
 
     resources = [
-      "${module.s3bucket_ses.0.arn}/*",
+      "${module.s3bucket_ses.arn}/*",
     ]
   }
 }
