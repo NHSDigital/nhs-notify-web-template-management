@@ -3,20 +3,16 @@ repos:
     rev: v4.6.0 # Use the ref you want to point at
     hooks:
       - id: trailing-whitespace
-        exclude: .+\.snap
       - id: detect-aws-credentials
         args: [--allow-missing-credentials]
       - id: check-added-large-files
       - id: check-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
-        exclude: .+\.cs
       - id: forbid-new-submodules
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix']
-        exclude: package-lock.json
-
     # -   id: ...
   - repo: local
     hooks:
