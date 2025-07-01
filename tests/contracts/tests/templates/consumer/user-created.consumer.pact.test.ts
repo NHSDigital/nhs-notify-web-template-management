@@ -4,19 +4,9 @@ import {
   Matchers,
   asynchronousBodyHandler,
 } from '@pact-foundation/pact';
-import { z } from 'zod';
+import { $UserCreatedEvent } from '../../../src/templates/handlers/user-created.handler';
 
-// I guess this would be defined in the handler source code in the event consumer and imported here
-// Handlers should parse the incoming event before doing anything else
-const $UserCreatedEvent = z.object({
-  'detail-type': z.literal('UserCreated'),
-  detail: z.object({
-    userId: z.string().uuid(),
-    clientId: z.string().uuid(),
-  }),
-});
-
-// Simulate consumer handler that processes the incoming event
+// Stub of handler that processes the incoming event
 // Only check the validation - don't run actual handler logic
 async function handleUserCreated(event: unknown): Promise<void> {
   $UserCreatedEvent.parse(event);

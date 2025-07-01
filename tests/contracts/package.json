@@ -15,7 +15,7 @@
     "pact:clean": "./scripts/clean.sh",
     "pact:download:consumer": "./scripts/download-consumer-pacts.sh",
     "pact:upload:consumer": "./scripts/upload-consumer-pacts.sh",
-    "test:consumers": "jest consumer.pact.test.ts",
+    "test:consumer": "jest consumer.pact.test.ts",
     "test:provider": "jest provider.pact.test.ts",
     "test:provider:ci": "./scripts/ci-verify-provider.sh",
     "test:unit": "echo 'No unit tests required'",

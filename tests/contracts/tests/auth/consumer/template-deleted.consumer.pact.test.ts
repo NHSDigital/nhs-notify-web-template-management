@@ -4,20 +4,9 @@ import {
   Matchers,
   asynchronousBodyHandler,
 } from '@pact-foundation/pact';
-import { z } from 'zod';
+import { $TemplateDeletedEvent } from '../../../src/auth/handlers/template-deleted.handler';
 
-// I guess this would be defined in the handler source code in the event consumer and imported here
-// Handlers should parse the incoming event before doing anything else
-const $TemplateDeletedEvent = z.object({
-  'detail-type': z.literal('TemplateDeleted'),
-  version: z.literal('1.0'),
-  detail: z.object({
-    id: z.string().uuid(),
-    owner: z.string().uuid(),
-  }),
-});
-
-// Simulate consumer handler that processes the incoming event
+// Stub of handler that processes the incoming event
 // Only check the validation - don't run actual handler logic
 async function handleTemplateDeleted(event: unknown): Promise<void> {
   $TemplateDeletedEvent.parse(event);
@@ -34,7 +23,7 @@ describe('Pact Message Consumer - TemplateDeleted Event', () => {
 
   it('should validate the template deleted event structure and handler logic', async () => {
     await messagePact
-      .given('A template has been deleted')
+      .given('a template has been deleted')
       .expectsToReceive('TemplateDeleted')
       .withContent({
         'detail-type': 'TemplateDeleted',
