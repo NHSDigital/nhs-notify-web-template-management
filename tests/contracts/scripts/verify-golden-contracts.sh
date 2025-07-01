@@ -10,7 +10,7 @@ total_failures=0
 total_skipped=0
 total_passed=0
 
-echo "### Per-Event Results" >> "$summary_file"
+echo "### Golden Contract Validation - Per-Event Results" >> "$summary_file"
 echo "| Consumer | Provider | Event | Result |" >> "$summary_file"
 echo "|----------|----------|--------|--------|" >> "$summary_file"
 
@@ -68,9 +68,9 @@ echo "" >> "$summary_file"
 echo "### Golden Contract Validation Summary" >> "$summary_file"
 echo "| Status | Count |" >> "$summary_file"
 echo "|--------|-------|" >> "$summary_file"
-echo "| ✅ Passed | $passed |" >> "$summary_file"
-echo "| ❌ Failed | $failures |" >> "$summary_file"
-echo "| ⚠️ Skipped | $skipped |" >> "$summary_file"
+echo "| ✅ Passed | $total_passed |" >> "$summary_file"
+echo "| ❌ Failed | $total_failures |" >> "$summary_file"
+echo "| ⚠️ Skipped | $total_skipped |" >> "$summary_file"
 
 
 if [[ "$total_failures" -gt 0 ]]; then
