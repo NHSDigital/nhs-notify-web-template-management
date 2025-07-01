@@ -3,7 +3,7 @@ set -euo pipefail
 
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
-source "${script_path}/lib/download-consumer-pacts.sh"
+source "${script_path}/lib/consumer-pacts.sh"
 
 # Downloads all consumer-generated Pact contract files for a provider, for use in producer-side tests
 providers=("auth" "templates")

@@ -16,7 +16,7 @@ describe('Pact Message Consumer - TemplateDeleted Event', () => {
   const messagePact = new MessageConsumerPact({
     consumer: 'core',
     provider: 'templates',
-    dir: path.resolve(__dirname, 'pacts'),
+    dir: path.resolve(__dirname, '.pacts'),
     pactfileWriteMode: 'update',
     logLevel: 'error',
   });

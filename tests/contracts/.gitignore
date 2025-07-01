@@ -1,1 +1,2 @@
-**/pacts/
+**/.pacts/*.json
+**/.schemas/*.schema.json

@@ -4,7 +4,7 @@ import { MessageProviderPact } from '@pact-foundation/pact';
 import { createTemplateDeletedEvent } from '../../../src/templates/events/template-deleted.event';
 
 describe('Pact Message Provider - TemplateDeleted Event', () => {
-  const pactDir = path.resolve(__dirname, 'pacts');
+  const pactDir = path.resolve(__dirname, '.pacts');
 
   const messagePact = new MessageProviderPact({
     provider: 'templates',

@@ -7,7 +7,7 @@ set -euo pipefail
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
 consumer_service_dirs=("auth" "core" "templates")
-consumer_pact_dir="consumer/pacts"
+consumer_pact_dir="consumer/.pacts"
 
 for consumer in "${consumer_service_dirs[@]}"; do
   source="${script_path}/../tests/${consumer}/${consumer_pact_dir}"
@@ -22,9 +22,9 @@ for consumer in "${consumer_service_dirs[@]}"; do
         filename=$(basename "$file")
         provider=$(cat $file | jq -r ".provider.name")
 
-        targetPath="pacts/$provider/$filename"
+        target_s3_key="pacts/$provider/$filename"
 
-        aws s3 cp "$file" "s3://$PACT_BUCKET/$targetPath"
+        aws s3 cp "$file" "s3://$PACT_BUCKET/$target_s3_key"
       fi
     done
   fi

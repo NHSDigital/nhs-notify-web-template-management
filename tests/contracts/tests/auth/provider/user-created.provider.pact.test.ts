@@ -4,7 +4,7 @@ import { MessageProviderPact } from '@pact-foundation/pact';
 import { createUserCreatedEvent } from '../../../src/auth/events/user-created.event';
 
 describe('Pact Message Provider - UserCreated Event', () => {
-  const pactDir = path.resolve(__dirname, 'pacts');
+  const pactDir = path.resolve(__dirname, '.pacts');
 
   const messagePact = new MessageProviderPact({
     provider: 'auth',

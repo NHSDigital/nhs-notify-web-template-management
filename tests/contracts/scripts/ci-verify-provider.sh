@@ -3,12 +3,11 @@ set -euo pipefail
 
 script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
-source "${script_path}/lib/download-consumer-pacts.sh"
+source "${script_path}/lib/consumer-pacts.sh"
 
 contract_tests_root_dir=$(realpath "${script_path}/..")
 
-SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-"$HOME/Desktop/summary.md"}"
-# SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
+SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
 
 echo "### Pact Provider Contract Test Results" > "$SUMMARY_FILE"
 echo "" > "$SUMMARY_FILE"
@@ -38,3 +37,26 @@ for provider in "${providers[@]}"; do
     echo "| ${provider} | 🟡 0 contracts found | 🟡 Skipped |" >> "$SUMMARY_FILE"
   fi
 done
+
+echo "All provider contract tests passed"
+echo "Generating golden contracts"
+
+echo "" > "$SUMMARY_FILE"
+echo "" > "$SUMMARY_FILE"
+echo "### Golden Contracts" >> "$SUMMARY_FILE"
+
+if npm run pact:generate:provider; then
+  echo "Generated golden contracts"
+  echo "🟢 Generated golden contracts" >> "$SUMMARY_FILE"
+else
+  echo "Failed to generate golden contracts"
+  echo "🔴 Failed to generate golden contracts" >> "$SUMMARY_FILE"
+fi
+
+if npm run pact:upload:provider; then
+  echo "Uploaded golden contracts"
+  echo "🟢 Uploaded golden contracts" >> "$SUMMARY_FILE"
+else
+  echo "Failed to upload golden contracts"
+  echo "🔴 Failed to upload golden contracts" >> "$SUMMARY_FILE"
+fi

@@ -1,9 +1,9 @@
 function download_consumer_pacts {
   local provider=$1
 
-  script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-  contract_tests_root_dir=$(realpath "${script_path}/../..")
-  target_dir="${contract_tests_root_dir}/tests/${provider}/provider/pacts"
+  local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+  local contract_tests_root_dir=$(realpath "${script_path}/../..")
+  local target_dir="${contract_tests_root_dir}/tests/${provider}/provider/.pacts"
 
   rm -rf $target_dir
   mkdir -p "$target_dir"

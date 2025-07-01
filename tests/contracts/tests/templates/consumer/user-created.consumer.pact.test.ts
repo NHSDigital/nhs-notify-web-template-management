@@ -16,7 +16,7 @@ describe('Pact Message Consumer - UserCreated Event', () => {
   const messagePact = new MessageConsumerPact({
     consumer: 'templates',
     provider: 'auth',
-    dir: path.resolve(__dirname, 'pacts'),
+    dir: path.resolve(__dirname, '.pacts'),
     pactfileWriteMode: 'update',
     logLevel: 'error',
   });

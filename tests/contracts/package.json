@@ -5,7 +5,9 @@
     "@swc/jest": "^0.2.37",
     "@tsconfig/node20": "^20.1.5",
     "jest": "^29.7.0",
-    "zod": "^3.24.2"
+    "tsx": "^4.20.3",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.6"
   },
   "name": "contract-tests",
   "private": true,
@@ -14,7 +16,9 @@
     "lint:fix": "eslint . --fix",
     "pact:clean": "./scripts/clean.sh",
     "pact:download:consumer": "./scripts/download-consumer-pacts.sh",
+    "pact:generate:provider": "tsx ./scripts/generate-golden-contracts.ts",
     "pact:upload:consumer": "./scripts/upload-consumer-pacts.sh",
+    "pact:upload:provider": "./scripts/upload-golden-contracts.sh",
     "test:consumer": "jest consumer.pact.test.ts",
     "test:provider": "jest provider.pact.test.ts",
     "test:provider:ci": "./scripts/ci-verify-provider.sh",
