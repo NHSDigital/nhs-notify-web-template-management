@@ -9,6 +9,7 @@ import {
   LetterFiles,
   TemplateStatus,
   $CreateUpdateNonLetter,
+  Client,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -425,6 +426,26 @@ export class TemplateClient {
     }
 
     return success(templateDTO);
+  }
+
+  async getClient(user: User): Promise<Result<Client>> {
+    const log = this.logger.child({
+      user,
+    });
+
+    if (!user.clientId) {
+      throw new Error('Client ID is required');
+    }
+
+    const client = await this.clientConfigRepository.get(user.clientId);
+
+    if (!client) {
+      log.error('Failed to get client');
+
+      return failure(ErrorCase.INTERNAL, 'Could not retrieve client');
+    }
+
+    return success(client);
   }
 
   private mapDatabaseObjectToDTO(

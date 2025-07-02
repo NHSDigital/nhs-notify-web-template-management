@@ -1,7 +1,6 @@
 export * from './types/error-cases';
 export * from './types/generated';
 export * from './types/result';
-export * from './types/client';
 export * from './schemas/template-schema';
 export * from './schemas/client';
 export * from './schemas/union-lists';

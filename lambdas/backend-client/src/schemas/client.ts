@@ -1,16 +1,16 @@
 import z from 'zod';
-import { NotifyClient, Features } from '../types/client';
 import { schemaFor } from './schema-for';
+import { Client, ClientFeatures } from '../types/generated';
 
-const $Features = schemaFor<Features>()(
+const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
     proofing: z.boolean(),
   })
 );
 
-export const $NotifyClient = schemaFor<NotifyClient>()(
+export const $Client = schemaFor<Client>()(
   z.object({
     campaignId: z.string().optional(),
-    features: $Features,
+    features: $ClientFeatures,
   })
 );

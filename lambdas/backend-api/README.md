@@ -133,3 +133,11 @@ curl -X POST --location "${APIG_STAGE}/v1/template/${TEMPLATE_ID}/proof" \
 --header 'Accept: application/json' \
 --header "Authorization: $SANDBOX_TOKEN"
 ```
+
+### GET - /v1/client-configuration - Get client configuration for the caller
+
+```bash
+curl --location "${APIG_STAGE}/v1/client-configuration" \
+--header 'Accept: application/json' \
+--header "Authorization: $SANDBOX_TOKEN"
+```

@@ -3,7 +3,7 @@ import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { mockClient } from 'aws-sdk-client-mock';
 import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
-import { NotifyClient } from 'nhs-notify-backend-client';
+import { Client } from 'nhs-notify-backend-client';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
@@ -21,11 +21,11 @@ function setup() {
   return { mocks };
 }
 
-const mockCSI = 'test-csi';
+const mockKeyPrefix = 'test-csi/clients';
 const mockClientId = 'test-client-123';
-const mockKey = `${mockCSI}/${mockClientId}`;
+const mockKey = `${mockKeyPrefix}/${mockClientId}`;
 
-const validNotifyClient: NotifyClient = {
+const validClient: Client = {
   campaignId: 'campaign-123',
   features: {
     proofing: true,
@@ -43,7 +43,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -51,7 +51,7 @@ describe('ClientConfigRepository', () => {
 
         const mockSSMResponse = {
           Parameter: {
-            Value: JSON.stringify(validNotifyClient),
+            Value: JSON.stringify(validClient),
           },
         };
 
@@ -59,9 +59,9 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(cache.set).toHaveBeenCalledWith(mockKey, validNotifyClient);
+        expect(cache.set).toHaveBeenCalledWith(mockKey, validClient);
 
-        expect(result).toEqual(validNotifyClient);
+        expect(result).toEqual(validClient);
       });
 
       it('should handle client config without campaignId', async () => {
@@ -70,13 +70,13 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
         );
 
-        const clientWithoutCampaign: NotifyClient = {
+        const clientWithoutCampaign: Client = {
           features: {
             proofing: false,
           },
@@ -100,7 +100,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -128,7 +128,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -155,7 +155,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -189,7 +189,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -218,7 +218,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -241,7 +241,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -260,7 +260,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -283,7 +283,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -292,14 +292,14 @@ describe('ClientConfigRepository', () => {
         cache.get.mockReturnValue(undefined);
 
         const mockSSMResponse = {
-          Parameter: { Value: JSON.stringify(validNotifyClient) },
+          Parameter: { Value: JSON.stringify(validClient) },
         };
 
         ssmClient.on(GetParameterCommand).resolvesOnce(mockSSMResponse);
 
         await repository.get(mockClientId);
 
-        expect(cache.set).toHaveBeenCalledWith(mockKey, validNotifyClient);
+        expect(cache.set).toHaveBeenCalledWith(mockKey, validClient);
       });
 
       it('should not cache when parsing fails', async () => {
@@ -308,7 +308,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -335,7 +335,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -343,17 +343,17 @@ describe('ClientConfigRepository', () => {
 
         cache.get
           .mockReturnValueOnce(undefined)
-          .mockReturnValueOnce(validNotifyClient);
+          .mockReturnValueOnce(validClient);
 
         ssmClient.on(GetParameterCommand).resolvesOnce({
-          Parameter: { Value: JSON.stringify(validNotifyClient) },
+          Parameter: { Value: JSON.stringify(validClient) },
         });
 
         const result1 = await repository.get(mockClientId);
         const result2 = await repository.get(mockClientId);
 
-        expect(result1).toEqual(validNotifyClient);
-        expect(result2).toEqual(validNotifyClient);
+        expect(result1).toEqual(validClient);
+        expect(result2).toEqual(validClient);
         expect(ssmClient.calls()).toHaveLength(1);
         expect(cache.get).toHaveBeenCalledTimes(2);
       });
