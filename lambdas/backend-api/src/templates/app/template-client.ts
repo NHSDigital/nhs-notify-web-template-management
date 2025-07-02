@@ -49,7 +49,7 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const client = await this.clientConfigRepository.get(String(user.clientId));
+    const client = await this.clientConfigRepository.get(user.clientId!);
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
@@ -136,7 +136,7 @@ export class TemplateClient {
       files,
     };
 
-    const client = await this.clientConfigRepository.get(String(user.clientId));
+    const client = await this.clientConfigRepository.get(user.clientId!);
 
     const createResult = await this.templateRepository.create(
       withFiles,
