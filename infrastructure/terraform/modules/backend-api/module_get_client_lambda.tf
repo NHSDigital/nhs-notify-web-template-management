@@ -21,7 +21,7 @@ module "get_client_lambda" {
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {
-    body = data.aws_iam_policy_document.get_template_lambda_policy.json
+    body = data.aws_iam_policy_document.get_client_lambda_policy.json
   }
 
   lambda_env_vars         = local.backend_lambda_environment_variables
@@ -36,19 +36,6 @@ module "get_client_lambda" {
 
 data "aws_iam_policy_document" "get_client_lambda_policy" {
   statement {
-    sid    = "AllowSSMReadAccess"
-    effect = "Allow"
-
-    actions = [
-      "ssm:GetParameter",
-    ]
-
-    resources = [
-      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${local.csi}/clients/*"
-    ]
-  }
-
-  statement {
     sid    = "AllowKMSAccess"
     effect = "Allow"
 
@@ -62,6 +49,19 @@ data "aws_iam_policy_document" "get_client_lambda_policy" {
 
     resources = [
       var.kms_key_arn
+    ]
+  }
+
+  statement {
+    sid    = "AllowSSMReadAccess"
+    effect = "Allow"
+
+    actions = [
+      "ssm:GetParameter",
+    ]
+
+    resources = [
+      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${var.csi}/clients/*"
     ]
   }
 }

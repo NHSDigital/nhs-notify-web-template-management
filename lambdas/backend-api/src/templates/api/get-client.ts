@@ -8,7 +8,7 @@ export function createHandler({
   templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    console.dir(event, { depth: Infinity });
+    console.log(JSON.stringify(event, null, 2));
 
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
