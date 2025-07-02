@@ -30,13 +30,21 @@ export class SimulatePassedValidation implements IUseCase<Template> {
         UpdateExpression: [
           'SET files.pdfTemplate.virusScanStatus = :virusScanStatus',
           'templateStatus = :readyForSubmissionStatus',
+          'files.proofs = :proofs',
           ...(this.#config.hasTestData
             ? ['files.testDataCsv.virusScanStatus = :virusScanStatus']
             : []),
         ].join(', '),
         ExpressionAttributeValues: {
           ':virusScanStatus': 'PASSED',
-          ':readyForSubmissionStatus': 'NOT_YET_SUBMITTED',
+          ':readyForSubmissionStatus': 'PROOF_AVAILABLE',
+          ':proofs': {
+            proof: {
+              fileName: 'proof.pdf',
+              supplier: 'WTMMOCK',
+              virusScanStatus: 'PASSED',
+            },
+          },
         },
         ReturnValues: 'ALL_NEW',
       })

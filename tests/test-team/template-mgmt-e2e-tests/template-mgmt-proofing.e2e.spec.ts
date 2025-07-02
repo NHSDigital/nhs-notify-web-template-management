@@ -57,18 +57,18 @@ test.describe('Letter Proofing', () => {
       `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-3.pdf`
     );
 
-    // invoke SFTP poll lambda
-    await lambdaClient.send(
-      new InvokeCommand({
-        FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
-        Payload: JSON.stringify({
-          supplier: 'WTMMOCK',
-        }),
-      })
-    );
-
     // check for expected results
     await expect(async () => {
+      // invoke SFTP poll lambda
+      await lambdaClient.send(
+        new InvokeCommand({
+          FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
+          Payload: JSON.stringify({
+            supplier: 'WTMMOCK',
+          }),
+        })
+      );
+
       const template = await templateStorageHelper.getTemplate({
         owner: user.userId,
         id: templateId,
@@ -77,14 +77,17 @@ test.describe('Letter Proofing', () => {
       expect(template.files?.proofs).toEqual({
         'proof-1.pdf': {
           fileName: 'proof-1.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
         'proof-2.pdf': {
           fileName: 'proof-2.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
         'proof-3.pdf': {
           fileName: 'proof-3.pdf',
+          supplier: 'WTMMOCK',
           virusScanStatus: 'PASSED',
         },
       });
@@ -96,6 +99,7 @@ test.describe('Letter Proofing', () => {
           await templateStorageHelper.getLetterProofMetadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
             'proofs',
+            'WTMMOCK',
             templateId,
             fileName,
             'pdf'
@@ -174,6 +178,7 @@ test.describe('Letter Proofing', () => {
       expect(template.files?.proofs).toEqual({
         'proof.pdf': {
           fileName: `proof.pdf`,
+          supplier: 'WTMMOCK',
           virusScanStatus: 'FAILED',
         },
       });
@@ -183,6 +188,7 @@ test.describe('Letter Proofing', () => {
       const pdf = await templateStorageHelper.getLetterProofMetadata(
         process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
         'proofs',
+        'WTMMOCK',
         templateId,
         'proof',
         'pdf'

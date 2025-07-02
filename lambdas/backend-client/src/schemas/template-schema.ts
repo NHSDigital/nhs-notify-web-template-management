@@ -5,7 +5,7 @@ import {
   CreateUpdateTemplate,
   EmailProperties,
   VersionedFileDetails,
-  FileDetails,
+  ProofFileDetails,
   LetterFiles,
   LetterProperties,
   NhsAppProperties,
@@ -33,16 +33,19 @@ export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
 export type ValidatedTemplateDto = TemplateDto &
   (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
 
-const $FileDetails = schemaFor<FileDetails>()(
+const $ProofFileDetails = schemaFor<ProofFileDetails>()(
   z.object({
     fileName: z.string().trim().min(1),
+    supplier: z.string(),
     virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
   })
 );
 
 const $VersionedFileDetails = schemaFor<VersionedFileDetails>()(
-  $FileDetails.extend({
+  z.object({
     currentVersion: z.string(),
+    fileName: z.string().trim().min(1),
+    virusScanStatus: z.enum(VIRUS_SCAN_STATUS_LIST),
   })
 );
 
@@ -50,7 +53,7 @@ export const $LetterFiles = schemaFor<LetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
-    proofs: z.record($FileDetails).optional(),
+    proofs: z.record($ProofFileDetails).optional(),
   })
 );
 

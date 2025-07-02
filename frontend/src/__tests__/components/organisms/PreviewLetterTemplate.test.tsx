@@ -101,6 +101,7 @@ describe('PreviewLetterTemplate component', () => {
               'your-proof.pdf': {
                 fileName: 'your-proof.pdf',
                 virusScanStatus: 'PASSED',
+                supplier: 'MBA',
               },
             },
           },
@@ -133,6 +134,7 @@ describe('PreviewLetterTemplate component', () => {
               'your-proof.pdf': {
                 fileName: 'your-proof.pdf',
                 virusScanStatus: 'PASSED',
+                supplier: 'MBA',
               },
             },
           },

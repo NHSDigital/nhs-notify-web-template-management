@@ -11,7 +11,7 @@ import {
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
   CreateLetterProperties,
-  FileDetails,
+  ProofFileDetails,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import type {
@@ -393,7 +393,8 @@ export class TemplateRepository {
   private async appendFileToProofs(
     templateKey: TemplateKey,
     fileName: string,
-    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
+    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
+    supplier: string
   ) {
     const dynamoResponse = await this.client.send(
       new UpdateCommand({
@@ -411,7 +412,8 @@ export class TemplateRepository {
           ':virusScanResult': {
             fileName,
             virusScanStatus,
-          } satisfies FileDetails,
+            supplier,
+          } satisfies ProofFileDetails,
         },
         ConditionExpression:
           'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
@@ -445,7 +447,8 @@ export class TemplateRepository {
     userId: string,
     templateId: string,
     fileName: string,
-    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>
+    virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
+    supplier: string
   ) {
     const templateKey = { owner: userId, id: templateId };
 
@@ -453,7 +456,8 @@ export class TemplateRepository {
       const updatedItem = await this.appendFileToProofs(
         templateKey,
         fileName,
-        virusScanStatus
+        virusScanStatus,
+        supplier
       );
 
       // we do not want to try and update the status to PROOF_AVAILABLE if the scan has not passed or if the status has already been changed by another process

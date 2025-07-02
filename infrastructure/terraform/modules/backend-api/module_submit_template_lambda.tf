@@ -64,4 +64,17 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
       var.kms_key_arn
     ]
   }
+
+  statement {
+    sid    = "AllowSESAccess"
+    effect = "Allow"
+
+    actions = ["ses:SendRawEmail"]
+
+    resources = flatten([
+      "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${var.template_submitted_sender_email_address}",
+      "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${var.email_domain}",
+      [for k, v in var.letter_suppliers : [for email in v.email_addresses : "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${email}"]]
+    ])
+  }
 }

@@ -27,4 +27,16 @@ locals {
       Name        = local.csi
     },
   )
+
+  acct_global_csi = replace(
+    format(
+      "%s-%s-%s-%s-acct",
+      var.project,
+      var.aws_account_id,
+      var.region,
+      var.parent_acct_environment,
+    ),
+    "_",
+    "",
+  )
 }

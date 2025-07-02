@@ -154,7 +154,7 @@ test.describe('letter complete e2e journey', () => {
         proofFilenames.map((filename) =>
           templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            `proofs/${template.id}/${filename}`
+            `proofs/WTMMOCK/${template.id}/${filename}`
           )
         )
       );
