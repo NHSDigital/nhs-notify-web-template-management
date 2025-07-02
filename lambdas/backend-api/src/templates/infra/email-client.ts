@@ -57,7 +57,7 @@ export class EmailClient {
     const recipients: MailboxAddrObject[] = recipientEmailsForSupplier.map(
       (emailAddress) => ({ addr: emailAddress, type: 'Bcc' })
     );
-    msg.setTo(recipients);
+    msg.setTo(recipients, { type: 'Bcc' });
     msg.setSubject(`${supplier} - Letter proof approved by an NHS Notify user`);
     msg.addMessage({
       contentType: 'text/html',
