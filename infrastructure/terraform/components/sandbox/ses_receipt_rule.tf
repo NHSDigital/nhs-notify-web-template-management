@@ -1,7 +1,9 @@
 resource "aws_ses_receipt_rule" "main" {
   name          = "${local.csi}-store-email-sandbox"
   rule_set_name = local.acct["ses_testing_config"].rule_set_name
-  recipients    = [local.sandbox_letter_supplier_mock_recipient]
+
+  # Despite being called "recipients", AWS appears to apply this check to the sender email
+  recipients    = [local.sandbox_letter_supplier_mock_sender]
   enabled       = true
   scan_enabled  = true
   tls_policy    = "Optional"

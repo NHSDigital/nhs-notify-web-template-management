@@ -26,8 +26,6 @@ module "backend_api" {
 
   enable_event_stream = true
 
-  email_domain = "sandbox.${local.acct.dns_zone["name"]}"
-
-  mock_letter_supplier_name     = local.mock_letter_supplier_name
-  use_sftp_letter_supplier_mock = local.use_sftp_letter_supplier_mock
+  email_domain                            = local.email_domain
+  template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_sender
 }

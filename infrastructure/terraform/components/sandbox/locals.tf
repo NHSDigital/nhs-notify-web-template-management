@@ -3,7 +3,9 @@ locals {
 
   use_sftp_letter_supplier_mock = lookup(var.letter_suppliers, local.mock_letter_supplier_name, null) != null
 
-  sandbox_letter_supplier_mock_recipient = "template-submitted-recipient-${var.environment}@sandbox.${local.acct.dns_zone["name"]}"
+  email_domain                           = "sandbox.${local.acct.dns_zone["name"]}"
+  sandbox_letter_supplier_mock_sender    = "template-submitted-sender-${var.environment}@${local.email_domain}"
+  sandbox_letter_supplier_mock_recipient = "template-submitted-recipient-${var.environment}@${local.email_domain}"
 
   # var.letter_suppliers is defined at a point where we don't know what the environment is, so
   # we need to add the environment-dependent test recipient separately here

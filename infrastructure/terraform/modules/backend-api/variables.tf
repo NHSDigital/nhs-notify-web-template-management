@@ -134,12 +134,7 @@ variable "email_domain" {
   description = "Email domain"
 }
 
-variable "mock_letter_supplier_name" {
+variable "template_submitted_sender_email_address" {
   type        = string
-  description = "Mock letter supplier name"
-}
-
-variable "use_sftp_letter_supplier_mock" {
-  type        = bool
-  description = "Flag indicating whether mock letter supplier is enabled"
+  description = "Template submitted sender email address"
 }

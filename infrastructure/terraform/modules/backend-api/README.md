@@ -26,13 +26,12 @@ No requirements.
 | <a name="input_log_destination_arn"></a> [log\_destination\_arn](#input\_log\_destination\_arn) | Destination ARN to use for the log subscription filter | `string` | `""` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
 | <a name="input_log_subscription_role_arn"></a> [log\_subscription\_role\_arn](#input\_log\_subscription\_role\_arn) | The ARN of the IAM role to use for the log subscription filter | `string` | `""` | no |
-| <a name="input_mock_letter_supplier_name"></a> [mock\_letter\_supplier\_name](#input\_mock\_letter\_supplier\_name) | Mock letter supplier name | `string` | n/a | yes |
 | <a name="input_module"></a> [module](#input\_module) | The variable encapsulating the name of this module | `string` | `"api"` | no |
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
-| <a name="input_use_sftp_letter_supplier_mock"></a> [use\_sftp\_letter\_supplier\_mock](#input\_use\_sftp\_letter\_supplier\_mock) | Flag indicating whether mock letter supplier is enabled | `bool` | n/a | yes |
+| <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
 ## Modules
 
 | Name | Source | Version |
