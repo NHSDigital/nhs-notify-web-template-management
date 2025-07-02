@@ -65,11 +65,15 @@ export const $EmailProperties = schemaFor<EmailProperties>()(
 export const $NhsAppProperties = schemaFor<NhsAppProperties>()(
   z.object({
     templateType: z.literal('NHS_APP'),
-    message: z.string().trim().min(1).max(MAX_NHS_APP_CHARACTER_LENGTH),
-    // eslint-disable-next-line security/detect-non-literal-regexp
-    // .refine((s) => !new RegExp(NHS_APP_DISALLOWED_CHARACTERS, 'gi').test(s), {
-    //   message: `Message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
-    // }),
+    message: z
+      .string()
+      .trim()
+      .min(1)
+      .max(MAX_NHS_APP_CHARACTER_LENGTH)
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      .refine((s) => !new RegExp(NHS_APP_DISALLOWED_CHARACTERS, 'gi').test(s), {
+        message: `Message contains disallowed characters. Disallowed characters: ${NHS_APP_DISALLOWED_CHARACTERS}`,
+      }),
   })
 );
 

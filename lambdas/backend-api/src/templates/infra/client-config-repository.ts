@@ -19,6 +19,7 @@ export class ClientConfigRepository {
     const key = `${this.ssmKeyPrefix}/${clientId}`;
 
     const client = this.cache.get<Client>(key);
+    console.log('KEY', key);
 
     if (client) return client;
 
