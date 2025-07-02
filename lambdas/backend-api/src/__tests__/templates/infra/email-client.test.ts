@@ -82,6 +82,33 @@ describe('EmailClient', () => {
     });
   });
 
+  it('does not send email if no recipients are configured', async () => {
+    const client = new EmailClient(
+      sesClient,
+      'test@nhs.net',
+      {
+        supplier2: [],
+      },
+      logger
+    );
+
+    await client.sendTemplateSubmittedEmailToSuppliers(mockTemplate);
+
+    expect(sesClient.send).not.toHaveBeenCalled();
+    expect(logger.info).toHaveBeenCalledWith({
+      description:
+        'Not sending template submitted email to supplier because no recipients are configured',
+      templateId: mockTemplate.id,
+      supplier: 'supplier2',
+    });
+    expect(logger.info).toHaveBeenCalledWith({
+      description:
+        'Not sending template submitted email to supplier because no recipients are configured',
+      templateId: mockTemplate.id,
+      supplier: 'supplier1',
+    });
+  });
+
   it('sends no email if there are no proofs on the template', async () => {
     const client = new EmailClient(
       sesClient,

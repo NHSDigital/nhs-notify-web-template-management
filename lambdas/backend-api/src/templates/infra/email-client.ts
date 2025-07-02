@@ -40,6 +40,17 @@ export class EmailClient {
   ) {
     const recipientEmailsForSupplier = this.recipientEmails[supplier];
 
+    if ((recipientEmailsForSupplier?.length ?? 0) === 0) {
+      this.logger.info({
+        description:
+          'Not sending template submitted email to supplier because no recipients are configured',
+        templateId: template.id,
+        supplier,
+      });
+
+      return;
+    }
+
     const msg = createMimeMessage();
     msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
 
