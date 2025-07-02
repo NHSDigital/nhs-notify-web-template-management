@@ -1,14 +1,11 @@
 import { z } from 'zod';
 import NodeCache from 'node-cache';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { NotifyClient, $NotifyClient } from 'nhs-notify-backend-client';
+import { Client, $Client } from 'nhs-notify-backend-client';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { parseJsonPreprocessor } from '@backend-api/utils/zod-json-preprocessor';
 
-const $NotifyClientProcessed = z.preprocess(
-  parseJsonPreprocessor,
-  $NotifyClient
-);
+const $ClientProcessed = z.preprocess(parseJsonPreprocessor, $Client);
 
 export class ClientConfigRepository {
   constructor(
@@ -18,14 +15,12 @@ export class ClientConfigRepository {
     private readonly logger: Logger
   ) {}
 
-  async get(clientId: string): Promise<NotifyClient | undefined> {
+  async get(clientId: string): Promise<Client | undefined> {
     const key = `${this.ssmKeyPrefix}/${clientId}`;
 
-    const notifyClient = this.cache.get<NotifyClient>(key);
+    const client = this.cache.get<Client>(key);
 
-    if (notifyClient) {
-      return notifyClient;
-    }
+    if (client) return client;
 
     let config: string | undefined;
 
@@ -45,7 +40,7 @@ export class ClientConfigRepository {
       return;
     }
 
-    const { data, error, success } = $NotifyClientProcessed.safeParse(config);
+    const { data, error, success } = $ClientProcessed.safeParse(config);
 
     if (!success) {
       this.logger.error('Failed to parse client configuration', error, {
@@ -54,7 +49,7 @@ export class ClientConfigRepository {
       return;
     }
 
-    this.cache.set<NotifyClient>(key, data);
+    this.cache.set<Client>(key, data);
 
     return data;
   }

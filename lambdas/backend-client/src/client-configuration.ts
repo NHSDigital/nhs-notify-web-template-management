@@ -1,30 +1,26 @@
-import type { NotifyClient, Features } from './types/client';
-import { $NotifyClient } from './schemas/client';
+import { AxiosInstance } from 'axios';
+import { $Client } from './schemas/client';
+import { Client } from './types/generated';
+import { catchAxiosError, createAxiosClient } from './axios-client';
 
-export class ClientConfiguration implements NotifyClient {
-  constructor(
-    public readonly features: Readonly<Features>,
-    public readonly campaignId?: string
-  ) {}
+export class ClientConfigurationApiClient {
+  constructor(private readonly httpClient: AxiosInstance) {}
 
-  featureEnabled(feature: keyof Features) {
-    return this.features[feature];
-  }
+  async fetch(token: string): Promise<Client | undefined> {
+    const response = await catchAxiosError(
+      this.httpClient.get<Client>(`/v1/client-configuration`, {
+        headers: { Authorization: token },
+      })
+    );
 
-  static async fetch(token: string): Promise<ClientConfiguration | undefined> {
-    const client = await ClientConfiguration._fetch(token);
+    if (response.error) {
+      return undefined;
+    }
 
-    return new ClientConfiguration(client.features, client.campaignId);
-  }
-
-  private static async _fetch(_: string): Promise<NotifyClient> {
-    return $NotifyClient.parse({
-      clientId: 'example-clientId',
-      campaignId: 'example-campaignId',
-      name: 'example-name',
-      features: {
-        proofing: true,
-      },
-    });
+    return $Client.parse(response.data);
   }
 }
+
+export const clientConfigurationApiClient = new ClientConfigurationApiClient(
+  createAxiosClient()
+);

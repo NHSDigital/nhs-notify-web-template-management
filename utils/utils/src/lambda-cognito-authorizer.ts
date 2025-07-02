@@ -54,7 +54,7 @@ export class LambdaCognitoAuthorizer {
       const {
         client_id: tokenUserPoolClientId,
         token_use: tokenUse,
-        'nhs-notify:client-id': notifyClientId,
+        'nhs-notify:client-id': ClientId,
       } = $AccessToken.parse(verifiedToken);
 
       if (tokenUserPoolClientId !== userPoolClientId) {
@@ -95,7 +95,7 @@ export class LambdaCognitoAuthorizer {
         return { success: false };
       }
 
-      return { success: true, subject: sub, clientId: notifyClientId };
+      return { success: true, subject: sub, clientId: ClientId };
     } catch (error) {
       this.logger.error('Failed to authorize:', error);
       return { success: false };
