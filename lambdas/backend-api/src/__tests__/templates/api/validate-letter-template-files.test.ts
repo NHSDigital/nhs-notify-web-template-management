@@ -248,7 +248,7 @@ describe('guard duty handler', () => {
     });
 
     mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      features: { proofing: true },
+      features: { proofing: false },
     });
 
     mocks.templateRepository.get.mockResolvedValueOnce({
