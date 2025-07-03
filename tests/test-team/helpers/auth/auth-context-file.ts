@@ -3,11 +3,11 @@ import { Buffer } from 'node:buffer';
 import fs from 'node:fs';
 import path from 'node:path';
 import { Mutex } from 'async-mutex';
-import type { TestUserCredential } from './cognito-auth-helper';
+import type { TestUserContext } from './cognito-auth-helper';
 
-type CredentialNamespace = Record<string, TestUserCredential>;
+type AuthContextNamespace = Record<string, TestUserContext>;
 
-export class CredentialsFile {
+export class AuthContextFile {
   public readonly path: string;
 
   private mutex = new Mutex();
@@ -24,11 +24,7 @@ export class CredentialsFile {
     }
   }
 
-  async set(
-    namespace: string,
-    key: string,
-    value: Partial<TestUserCredential>
-  ) {
+  async set(namespace: string, key: string, value: Partial<TestUserContext>) {
     await this.mutex.runExclusive(() => {
       const data = this.read();
       const nsData = data[namespace] || {};
@@ -41,14 +37,11 @@ export class CredentialsFile {
     });
   }
 
-  async get(
-    namespace: string,
-    key: string
-  ): Promise<TestUserCredential | null> {
+  async get(namespace: string, key: string): Promise<TestUserContext | null> {
     return this.mutex.runExclusive(() => this.read()[namespace]?.[key] || null);
   }
 
-  async values(namespace: string): Promise<TestUserCredential[]> {
+  async values(namespace: string): Promise<TestUserContext[]> {
     return this.mutex.runExclusive(() =>
       Object.values(this.read()[namespace] || {})
     );
@@ -62,7 +55,7 @@ export class CredentialsFile {
     });
   }
 
-  private write(data: Record<string, CredentialNamespace>) {
+  private write(data: Record<string, AuthContextNamespace>) {
     fs.writeFileSync(this.path, JSON.stringify(data, null, 2));
   }
 
@@ -76,7 +69,7 @@ export class CredentialsFile {
 
       return JSON.parse(buff.toString('utf8') || '{}') as Record<
         string,
-        CredentialNamespace
+        AuthContextNamespace
       >;
     } finally {
       fs.closeSync(fd);

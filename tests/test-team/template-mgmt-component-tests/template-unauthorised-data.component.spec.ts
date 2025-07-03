@@ -78,6 +78,7 @@ test.describe('Unauthorised data access Tests', () => {
     );
     await expect(templateDeleteLink).toBeHidden();
   });
+
   test('should not display be able to edit email templates for "User 2"', async ({
     page,
     baseURL,

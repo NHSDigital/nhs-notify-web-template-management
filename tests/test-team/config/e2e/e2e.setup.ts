@@ -10,7 +10,6 @@ import {
   createAuthHelper,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
-import { createClientHelper } from '../../helpers/client/client-helper';
 
 setup('e2e test setup', async ({ page }) => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
@@ -19,11 +18,9 @@ setup('e2e test setup', async ({ page }) => {
 
   BackendConfigHelper.toEnv(backendConfig);
 
-  await createClientHelper().setup('e2e');
-
   const auth = createAuthHelper();
 
-  await auth.setup('e2e');
+  await auth.setup();
 
   const user = await auth.getTestUser(testUsers.User1.userId);
 

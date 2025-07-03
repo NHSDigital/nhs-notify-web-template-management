@@ -8,8 +8,6 @@ export function createHandler({
   templateClient: TemplateClient;
 }): APIGatewayProxyHandler {
   return async function (event) {
-    console.log(JSON.stringify(event, null, 2));
-
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
     if (!userId || !clientId) {
@@ -25,6 +23,9 @@ export function createHandler({
       return apiFailure(error.code, error.message, error.details);
     }
 
-    return { statusCode: 200, body: JSON.stringify(data) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ...data, statusCode: 200 }),
+    };
   };
 }

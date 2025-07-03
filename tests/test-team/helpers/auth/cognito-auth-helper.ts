@@ -9,161 +9,173 @@ import {
   RespondToAuthChallengeCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { faker } from '@faker-js/faker';
-import { CredentialsFile } from './credentials-file';
-import { testClients } from '../client/client-helper';
-import { TestSuite } from '../types';
+import { AuthContextFile } from './auth-context-file';
+import {
+  ClientConfigurationHelper,
+  type ClientKey,
+} from '../client/client-helper';
 
 type TestUserStaticDetails = {
   userId: string;
-  clientId: string | undefined;
+  clientKey: ClientKey | undefined;
 };
 
-type TestUserDetails = TestUserStaticDetails & {
+type TestUserDyanamicDetails = {
   email: string;
-};
-
-export type TestUserCredential = {
-  user: TestUserDetails;
+  clientId: string | undefined;
   password: string;
-  accessToken: string;
-  refreshToken: string;
 };
 
-export const testUsers = {
+export type TestUserContext = TestUserStaticDetails &
+  TestUserDyanamicDetails & {
+    accessToken: string;
+    refreshToken: string;
+  };
+
+export const testUsers: Record<string, TestUserStaticDetails> = {
   /**
    * User1 is generally the signed in user
    */
   User1: {
     userId: 'User1',
-    clientId: testClients.Client1.clientId,
+    clientKey: 'Client1',
   },
   /**
    * User2 provides an alternative user allowing to check for things like template ownership
    */
   User2: {
     userId: 'User2',
-    clientId: testClients.Client1.clientId,
+    clientKey: 'Client1',
   },
   /**
    * User3 idle user that stays stayed in
+   * Proofing is disabled for this user
    */
   User3: {
     userId: 'User3',
-    clientId: testClients.Client1.clientId,
+    clientKey: 'Client2',
   },
   /**
    * User4 idle user which signs out automatically
    */
   User4: {
     userId: 'User4',
-    clientId: testClients.Client1.clientId,
+    clientKey: 'Client1',
   },
   /**
    * User5 idle user which signs out manually
    */
   User5: {
     userId: 'User5',
-    clientId: testClients.Client1.clientId,
+    clientKey: 'Client1',
   },
   /**
    * User6 does not belong to a client
    */
   User6: {
     userId: 'User6',
-    clientId: undefined,
+    clientKey: undefined,
   },
-} as const satisfies Record<string, TestUserStaticDetails>;
-
-type TestUserId = keyof typeof testUsers;
-
-export type TestUser = TestUserDetails & {
-  password: string;
-  /**
-   * Gets an access token for a test user
-   * If the token is expired, tries to use refresh token
-   * If no valid token or refresh token, obtains one using password auth
-   * Password auth implicitly resets temp password if not logged in previously
-   */
-  getAccessToken(): Promise<string>;
-  /**
-   * Sets an updated password in local state.
-   * The password should already have been updated in Cognito
-   * e.g. by using the change password form in the UI
-   */
-  setUpdatedPassword(password: string): Promise<void>;
 };
 
+export type TestUser = TestUserStaticDetails &
+  TestUserDyanamicDetails & {
+    /**
+     * Gets an access token for a test user
+     * If the token is expired, tries to use refresh token
+     * If no valid token or refresh token, obtains one using password auth
+     * Password auth implicitly resets temp password if not logged in previously
+     */
+    getAccessToken(): Promise<string>;
+    /**
+     * Sets an updated password in local state.
+     * The password should already have been updated in Cognito
+     * e.g. by using the change password form in the UI
+     */
+    setUpdatedPassword(password: string): Promise<void>;
+  };
+
 export class CognitoAuthHelper {
-  private static credentialsFile = new CredentialsFile(
-    path.resolve(__dirname, '..', '..', '.auth', 'test-credentials.json')
+  private static authContextFile = new AuthContextFile(
+    path.resolve(__dirname, '..', '..', '.auth', 'test-auth-context.json')
   );
+
+  private notifyClientHelper: ClientConfigurationHelper;
 
   private client = new CognitoIdentityProviderClient();
 
   constructor(
     public runId: string,
     public readonly userPoolId: string,
-    public readonly userPoolClientId: string
-  ) {}
-
-  public async setup(suite: TestSuite) {
-    await Promise.all(
-      Object.values(testUsers).map((userDetails) =>
-        this.createUser(userDetails, suite)
-      )
+    public readonly userPoolClientId: string,
+    public readonly clientSsmKeyPrefix: string
+  ) {
+    this.notifyClientHelper = new ClientConfigurationHelper(
+      clientSsmKeyPrefix,
+      runId
     );
+  }
+
+  public async setup() {
+    const users = Object.values(testUsers);
+
+    const clientKeys = [
+      ...new Set(users.flatMap((user) => user.clientKey ?? [])),
+    ];
+
+    await Promise.all([
+      ...users.map((userDetails) => this.createUser(userDetails)),
+      ...clientKeys.map((clientKey) =>
+        this.notifyClientHelper.createClient(clientKey)
+      ),
+    ]);
   }
 
   public async teardown() {
-    const credentials = await CognitoAuthHelper.credentialsFile.values(
-      this.runId
-    );
+    const runCtx = await CognitoAuthHelper.authContextFile.values(this.runId);
 
-    await Promise.all(
-      credentials.map(({ user }) => this.deleteUser(user.email))
-    );
+    const clientIds = [
+      ...new Set(runCtx.flatMap(({ clientId }) => clientId ?? [])),
+    ];
 
-    await CognitoAuthHelper.credentialsFile.destroyNamespace(this.runId);
+    await Promise.all([
+      ...runCtx.map(({ email }) => this.deleteUser(email)),
+      this.notifyClientHelper.deleteClients(clientIds),
+    ]);
+
+    await CognitoAuthHelper.authContextFile.destroyNamespace(this.runId);
   }
 
-  public async getAccessToken(id: TestUserId) {
-    const credential = await CognitoAuthHelper.credentialsFile.get(
-      this.runId,
-      id
-    );
+  public async getAccessToken(id: string) {
+    const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
 
-    if (credential) {
-      if (!CognitoAuthHelper.isTokenExpired(credential.accessToken)) {
-        return credential.accessToken;
+    if (userCtx) {
+      if (!CognitoAuthHelper.isTokenExpired(userCtx.accessToken)) {
+        return userCtx.accessToken;
       }
 
-      if (credential.refreshToken) {
-        return this.refreshUserAccessToken(id, credential.refreshToken);
+      if (userCtx.refreshToken) {
+        return this.refreshUserAccessToken(id, userCtx.refreshToken);
       }
     }
 
     return this.passwordAuth(id);
   }
 
-  public async getTestUser(id: TestUserId): Promise<TestUser> {
-    const credential = await CognitoAuthHelper.credentialsFile.get(
-      this.runId,
-      id
-    );
+  public async getTestUser(id: string): Promise<TestUser> {
+    const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
 
-    if (!credential || !credential.user) {
+    if (!userCtx) {
       throw new Error('User not found');
     }
 
     const { runId } = this;
 
-    // if ths gets much more complex, maybe it should be a class
     const user: TestUser = {
-      ...credential.user,
-      password: credential.password,
+      ...userCtx,
       getAccessToken: () => this.getAccessToken(id),
       async setUpdatedPassword(password) {
-        await CognitoAuthHelper.credentialsFile.set(runId, id, {
+        await CognitoAuthHelper.authContextFile.set(runId, id, {
           password,
         });
         this.password = password;
@@ -173,14 +185,12 @@ export class CognitoAuthHelper {
     return user;
   }
 
-  private async createUser(
-    userDetails: TestUserStaticDetails,
-    suite: TestSuite
-  ): Promise<void> {
+  private async createUser(userDetails: TestUserStaticDetails): Promise<void> {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
-    const clientId = userDetails.clientId
-      ? `${userDetails.clientId}-${suite}`
+
+    const clientId = userDetails.clientKey
+      ? `${userDetails.clientKey}--${this.runId}`
       : undefined;
 
     const clientAttribute = clientId
@@ -206,17 +216,16 @@ export class CognitoAuthHelper {
       })
     );
 
-    await CognitoAuthHelper.credentialsFile.set(
+    await CognitoAuthHelper.authContextFile.set(
       this.runId,
       userDetails.userId,
       {
-        user: {
-          email,
-          clientId: clientId,
-          userId:
-            user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
-            '',
-        },
+        email,
+        userId:
+          user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
+          '',
+        clientId: clientId,
+        clientKey: userDetails.clientKey,
         password: tempPassword,
       }
     );
@@ -238,13 +247,10 @@ export class CognitoAuthHelper {
     );
   }
 
-  private async passwordAuth(id: TestUserId) {
-    const credential = await CognitoAuthHelper.credentialsFile.get(
-      this.runId,
-      id
-    );
+  private async passwordAuth(id: string) {
+    const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
 
-    if (!credential || !credential.user?.email || !credential.password) {
+    if (!userCtx?.email || !userCtx.password) {
       throw new Error('Unable to retrieve credentials');
     }
 
@@ -253,8 +259,8 @@ export class CognitoAuthHelper {
         AuthFlow: 'USER_PASSWORD_AUTH',
         ClientId: this.userPoolClientId,
         AuthParameters: {
-          USERNAME: credential.user.email,
-          PASSWORD: credential.password,
+          USERNAME: userCtx.email,
+          PASSWORD: userCtx.password,
         },
       })
     );
@@ -270,13 +276,13 @@ export class CognitoAuthHelper {
           ChallengeName: 'NEW_PASSWORD_REQUIRED',
           Session: initiateAuthResult.Session,
           ChallengeResponses: {
-            USERNAME: credential.user.email,
+            USERNAME: userCtx.email,
             NEW_PASSWORD: newPassword,
           },
         })
       );
 
-      await CognitoAuthHelper.credentialsFile.set(this.runId, id, {
+      await CognitoAuthHelper.authContextFile.set(this.runId, id, {
         password: newPassword,
       });
 
@@ -289,7 +295,7 @@ export class CognitoAuthHelper {
 
     const accessToken = authResult.AccessToken || '';
 
-    await CognitoAuthHelper.credentialsFile.set(this.runId, id, {
+    await CognitoAuthHelper.authContextFile.set(this.runId, id, {
       accessToken,
       refreshToken: authResult.RefreshToken || '',
     });
@@ -309,7 +315,7 @@ export class CognitoAuthHelper {
       })
     );
 
-    await CognitoAuthHelper.credentialsFile.set(this.runId, id, {
+    await CognitoAuthHelper.authContextFile.set(this.runId, id, {
       accessToken: response.AuthenticationResult?.AccessToken || '',
       refreshToken: response.AuthenticationResult?.RefreshToken || refreshToken,
     });
@@ -342,6 +348,7 @@ export function createAuthHelper() {
   return new CognitoAuthHelper(
     process.env.PLAYWRIGHT_RUN_ID,
     process.env.COGNITO_USER_POOL_ID,
-    process.env.COGNITO_USER_POOL_CLIENT_ID
+    process.env.COGNITO_USER_POOL_CLIENT_ID,
+    process.env.CLIENT_SSM_PATH_PREFIX
   );
 }
