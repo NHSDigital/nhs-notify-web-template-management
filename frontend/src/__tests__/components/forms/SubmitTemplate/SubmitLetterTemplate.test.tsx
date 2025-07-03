@@ -34,6 +34,7 @@ describe('SubmitLetterTemplate component', () => {
       <SubmitLetterTemplate
         templateId='template-id'
         templateName='template-name'
+        proofingEnabled={true}
       />
     );
 
@@ -47,6 +48,7 @@ describe('SubmitLetterTemplate component', () => {
       <SubmitLetterTemplate
         templateId='template-id'
         templateName='template-name'
+        proofingEnabled={false}
       />
     );
 

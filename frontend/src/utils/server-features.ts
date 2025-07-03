@@ -27,5 +27,5 @@ export async function serverIsFeatureEnabled(
 
   const client = await fetchClient(accessToken);
 
-  return client?.featureEnabled(feature) || false;
+  return client?.featureEnabled(feature) ?? true;
 }
