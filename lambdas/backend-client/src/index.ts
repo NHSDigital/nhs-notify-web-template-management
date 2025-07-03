@@ -4,4 +4,4 @@ export * from './types/result';
 export * from './schemas/template-schema';
 export * from './schemas/client';
 export * from './schemas/union-lists';
-export * from './client-configuration';
+export * from './client-configuration-api-client';

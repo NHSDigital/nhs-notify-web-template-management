@@ -1,10 +1,9 @@
-import { AxiosInstance } from 'axios';
 import { $Client } from './schemas/client';
 import { Client } from './types/generated';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 
 export class ClientConfigurationApiClient {
-  constructor(private readonly httpClient: AxiosInstance) {}
+  private readonly httpClient = createAxiosClient();
 
   async fetch(token: string): Promise<Client | undefined> {
     const response = await catchAxiosError(
@@ -21,6 +20,4 @@ export class ClientConfigurationApiClient {
   }
 }
 
-export const clientConfigurationApiClient = new ClientConfigurationApiClient(
-  createAxiosClient()
-);
+export const clientConfigurationApiClient = new ClientConfigurationApiClient();

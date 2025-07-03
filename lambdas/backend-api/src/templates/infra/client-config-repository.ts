@@ -20,6 +20,8 @@ export class ClientConfigRepository {
 
     const client = this.cache.get<Client>(key);
 
+    if (client) return client;
+
     let config: string | undefined;
 
     try {
