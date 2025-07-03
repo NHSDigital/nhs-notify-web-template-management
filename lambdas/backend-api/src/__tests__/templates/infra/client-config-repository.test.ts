@@ -21,9 +21,9 @@ function setup() {
   return { mocks };
 }
 
-const mockCSI = 'test-csi';
+const mockSSMKeyPrefix = '/test-csi/clients';
 const mockClientId = 'test-client-123';
-const mockKey = `${mockCSI}/${mockClientId}`;
+const mockKey = `${mockSSMKeyPrefix}/${mockClientId}`;
 
 const validNotifyClient: NotifyClient = {
   campaignId: 'campaign-123',
@@ -43,7 +43,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -70,7 +70,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -100,7 +100,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -128,7 +128,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -155,7 +155,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -189,7 +189,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -218,7 +218,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -241,7 +241,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -260,7 +260,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -283,7 +283,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -308,7 +308,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
@@ -335,7 +335,7 @@ describe('ClientConfigRepository', () => {
         } = setup();
 
         const repository = new ClientConfigRepository(
-          mockCSI,
+          mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
           cache,
           logger
