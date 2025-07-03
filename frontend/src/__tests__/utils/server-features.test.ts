@@ -1,13 +1,13 @@
 import { serverIsFeatureEnabled } from '@utils/server-features';
 import { getSessionServer } from '@utils/amplify-utils';
-import { ClientConfiguration } from 'nhs-notify-backend-client';
+import { ClientConfigurationApiClient } from 'nhs-notify-backend-client';
 import { mock } from 'jest-mock-extended';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client');
 
 const getSessionServerMock = jest.mocked(getSessionServer);
-const clientConfigurationMock = jest.mocked(ClientConfiguration.fetch);
+const clientConfigurationMock = mock<ClientConfigurationApiClient>();
 
 describe('serverIsFeatureEnabled', () => {
   beforeAll(() => {
@@ -41,11 +41,9 @@ describe('serverIsFeatureEnabled', () => {
   it('should return false when feature is not enabled', async () => {
     const featureEnabled = jest.fn(() => false);
 
-    clientConfigurationMock.mockResolvedValueOnce(
-      mock<ClientConfiguration>({
-        featureEnabled,
-      })
-    );
+    clientConfigurationMock.fetch.mockResolvedValueOnce({
+      features: { proofing: false },
+    });
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
@@ -64,11 +62,9 @@ describe('serverIsFeatureEnabled', () => {
   it('should return true when feature is enabled', async () => {
     const featureEnabled = jest.fn(() => true);
 
-    clientConfigurationMock.mockResolvedValueOnce(
-      mock<ClientConfiguration>({
-        featureEnabled,
-      })
-    );
+    clientConfigurationMock.fetch.mockResolvedValueOnce({
+      features: { proofing: true },
+    });
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
