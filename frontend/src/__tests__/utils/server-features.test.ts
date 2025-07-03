@@ -6,7 +6,7 @@ jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client');
 
 const getSessionServerMock = jest.mocked(getSessionServer);
-const clientConfigurationMock = jest.mocked(ClientConfiguration.fetch);
+const clientConfigurationMock = mock<ClientConfigurationApiClient>();
 
 describe('serverIsFeatureEnabled', () => {
   beforeAll(() => {
