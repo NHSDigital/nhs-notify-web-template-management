@@ -13,10 +13,12 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
+  let user6: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    user6 = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -222,6 +224,40 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     expect(result).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be proofed',
+    });
+  });
+
+  test('returns 403 - cannot request a proof when client proofing is not enabled', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+
+    const template = TemplateFactory.createEmailTemplate(
+      templateId,
+      user6.userId,
+      'user6template'
+    );
+
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const proofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
+      {
+        headers: {
+          Authorization: await user6.getAccessToken(),
+        },
+      }
+    );
+
+    const result = await proofResponse.json();
+
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(proofResponse.status(), debug).toBe(403);
+
+    expect(result).toEqual({
+      statusCode: 403,
+      technicalMessage: 'User cannot request a proof',
     });
   });
 });

@@ -1,23 +1,15 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import {
-  TemplateDto,
-  CreateUpdateTemplate,
-  ClientConfiguration,
-} from 'nhs-notify-backend-client';
+import { TemplateDto, CreateUpdateTemplate } from 'nhs-notify-backend-client';
 import { createHandler } from '@backend-api/templates/api/create';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
-
-jest.mock('nhs-notify-backend-client/src/client-configuration-client');
 
 const setup = () => {
   const templateClient = mock<TemplateClient>();
 
-  const clientConfigurationFetch = jest.mocked(ClientConfiguration.fetch);
-
   const handler = createHandler({ templateClient });
 
-  return { handler, mocks: { templateClient, clientConfigurationFetch } };
+  return { handler, mocks: { templateClient } };
 };
 
 describe('Template API - Create', () => {
@@ -80,8 +72,7 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       {},
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
-      undefined
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
@@ -114,19 +105,12 @@ describe('Template API - Create', () => {
 
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
       { id: 1 },
-      { userId: 'sub', clientId: 'nhs-notify-client-id' },
-      undefined
+      { userId: 'sub', clientId: 'nhs-notify-client-id' }
     );
   });
 
   test('should return template', async () => {
     const { handler, mocks } = setup();
-
-    mocks.clientConfigurationFetch.mockResolvedValueOnce(
-      mock<ClientConfiguration>({
-        campaignId: 'campaignId',
-      })
-    );
 
     const create: CreateUpdateTemplate = {
       name: 'updated-name',
@@ -159,14 +143,10 @@ describe('Template API - Create', () => {
       body: JSON.stringify({ statusCode: 201, template: response }),
     });
 
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(
-      create,
-      {
-        userId: 'sub',
-        clientId: 'notify-client-id',
-      },
-      'campaignId'
-    );
+    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
+      userId: 'sub',
+      clientId: 'notify-client-id',
+    });
   });
 
   test('should return template when no clientId in auth context', async () => {

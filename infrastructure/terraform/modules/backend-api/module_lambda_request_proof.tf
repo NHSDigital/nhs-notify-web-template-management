@@ -77,4 +77,15 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
       var.kms_key_arn
     ]
   }
+
+  statement {
+    sid    = "AllowSSMParameterRead"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter",
+    ]
+    resources = [
+       "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*",
+    ]
+  }
 }

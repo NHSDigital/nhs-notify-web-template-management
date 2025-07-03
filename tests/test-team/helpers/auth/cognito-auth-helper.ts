@@ -10,6 +10,8 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { faker } from '@faker-js/faker';
 import { CredentialsFile } from './credentials-file';
+import { testClients } from '../client/client-helper';
+import { TestSuite } from '../types';
 
 type TestUserStaticDetails = {
   userId: string;
@@ -33,35 +35,35 @@ export const testUsers = {
    */
   User1: {
     userId: 'User1',
-    clientId: 'Client1',
+    clientId: testClients.Client1.clientId,
   },
   /**
    * User2 provides an alternative user allowing to check for things like template ownership
    */
   User2: {
     userId: 'User2',
-    clientId: 'Client1',
+    clientId: testClients.Client1.clientId,
   },
   /**
    * User3 idle user that stays stayed in
    */
   User3: {
     userId: 'User3',
-    clientId: 'Client1',
+    clientId: testClients.Client1.clientId,
   },
   /**
    * User4 idle user which signs out automatically
    */
   User4: {
     userId: 'User4',
-    clientId: 'Client1',
+    clientId: testClients.Client1.clientId,
   },
   /**
    * User5 idle user which signs out manually
    */
   User5: {
     userId: 'User5',
-    clientId: 'Client1',
+    clientId: testClients.Client1.clientId,
   },
   /**
    * User6 does not belong to a client
@@ -104,10 +106,10 @@ export class CognitoAuthHelper {
     public readonly userPoolClientId: string
   ) {}
 
-  public async setup() {
+  public async setup(suite: TestSuite) {
     await Promise.all(
       Object.values(testUsers).map((userDetails) =>
-        this.createUser(userDetails)
+        this.createUser(userDetails, suite)
       )
     );
   }
@@ -171,15 +173,21 @@ export class CognitoAuthHelper {
     return user;
   }
 
-  private async createUser(userDetails: TestUserStaticDetails): Promise<void> {
+  private async createUser(
+    userDetails: TestUserStaticDetails,
+    suite: TestSuite
+  ): Promise<void> {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
+    const clientId = userDetails.clientId
+      ? `${userDetails.clientId}-${suite}`
+      : undefined;
 
-    const clientAttribute = userDetails.clientId
+    const clientAttribute = clientId
       ? [
           {
             Name: 'custom:sbx_client_id',
-            Value: userDetails.clientId,
+            Value: clientId,
           },
         ]
       : [];
@@ -204,7 +212,7 @@ export class CognitoAuthHelper {
       {
         user: {
           email,
-          clientId: userDetails.clientId,
+          clientId: clientId,
           userId:
             user.User?.Attributes?.find((attr) => attr.Name === 'sub')?.Value ??
             '',

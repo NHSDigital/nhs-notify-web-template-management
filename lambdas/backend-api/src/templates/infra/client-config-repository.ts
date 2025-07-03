@@ -27,18 +27,28 @@ export class ClientConfigRepository {
       return notifyClient;
     }
 
-    const config = await this.ssmClient.send(
-      new GetParameterCommand({
-        Name: key,
-      })
-    );
+    let config: string | undefined;
 
-    const { data, error, success } = $NotifyClientProcessed.safeParse(
-      config.Parameter?.Value
-    );
+    try {
+      const response = await this.ssmClient.send(
+        new GetParameterCommand({
+          Name: key,
+        })
+      );
+      config = response.Parameter?.Value;
+    } catch (error) {
+      this.logger.error('failed to obtain client configuration', {
+        error,
+        clientId,
+        key,
+      });
+      return;
+    }
+
+    const { data, error, success } = $NotifyClientProcessed.safeParse(config);
 
     if (!success) {
-      this.logger.error('failed to obtain client configuration', error, {
+      this.logger.error('Failed to parse client configuration', error, {
         clientId,
       });
       return;

@@ -53,3 +53,5 @@ export type Template = TypeSpecificProperties & {
   templateStatus: string;
   owner: string;
 };
+
+export type TestSuite = 'api' | 'component' | 'e2e';

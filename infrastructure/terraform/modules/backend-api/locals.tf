@@ -7,6 +7,8 @@ locals {
   pdfjs_layer_zip         = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/dist/layer/pdfjs-layer.zip")
   pdfjs_layer_lockfile    = abspath("${local.lambdas_source_code_dir}/layers/pdfjs/package-lock.json")
 
+  client_ssm_path_prefix = "/${var.csi}/clients"
+
   openapi_spec = templatefile("${path.module}/spec.tmpl.json", {
     APIG_EXECUTION_ROLE_ARN  = aws_iam_role.api_gateway_execution_role.arn
     AUTHORIZER_LAMBDA_ARN    = module.authorizer_lambda.function_arn
@@ -39,7 +41,7 @@ locals {
   }
 
   backend_lambda_environment_variables = {
-    CLIENT_CONFIG_SSM_KEY_PREFIX     = "${var.csi}/clients"
+    CLIENT_CONFIG_SSM_KEY_PREFIX     = local.client_ssm_path_prefix
     DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier_name
     ENVIRONMENT                      = var.environment
     NODE_OPTIONS                     = "--enable-source-maps"

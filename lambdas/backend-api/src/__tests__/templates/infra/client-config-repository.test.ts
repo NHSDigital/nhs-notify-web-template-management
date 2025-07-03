@@ -23,7 +23,7 @@ function setup() {
 
 const mockCSI = 'test-csi';
 const mockClientId = 'test-client-123';
-const mockKey = `${mockCSI}/clients/${mockClientId}`;
+const mockKey = `${mockCSI}/${mockClientId}`;
 
 const validNotifyClient: NotifyClient = {
   campaignId: 'campaign-123',
@@ -254,7 +254,7 @@ describe('ClientConfigRepository', () => {
         expect(result).toBeUndefined();
       });
 
-      it('should propagate SSM client errors', async () => {
+      it('should return undefined SSM client errors', async () => {
         const {
           mocks: { ssmClient, cache, logger },
         } = setup();
@@ -270,9 +270,9 @@ describe('ClientConfigRepository', () => {
 
         ssmClient.on(GetParameterCommand).rejectsOnce(ssmError);
 
-        await expect(repository.get(mockClientId)).rejects.toThrow(
-          'SSM service unavailable'
-        );
+        const client = await repository.get(mockClientId);
+
+        expect(client).toBeUndefined();
       });
     });
 
