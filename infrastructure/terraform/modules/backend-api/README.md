@@ -63,6 +63,7 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
+| <a name="output_client_ssm_path_prefix"></a> [client\_ssm\_path\_prefix](#output\_client\_ssm\_path\_prefix) | n/a |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |

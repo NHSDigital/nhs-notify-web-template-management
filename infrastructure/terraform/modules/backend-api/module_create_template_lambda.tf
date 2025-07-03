@@ -68,11 +68,13 @@ data "aws_iam_policy_document" "create_template_lambda_policy" {
   statement {
     sid    = "AllowSSMParameterRead"
     effect = "Allow"
+
     actions = [
       "ssm:GetParameter",
     ]
+
     resources = [
-       "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*",
+      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*",
     ]
   }
 }
