@@ -17,11 +17,13 @@ import {
   $GuardDutyMalwareScanStatusFailed,
   DatabaseTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
 
 jest.mock('@backend-api/templates/domain/template-pdf');
 jest.mock('@backend-api/templates/domain/test-data-csv');
 jest.mock('@backend-api/templates/domain/validate-letter-template-files');
 jest.mock('nhs-notify-web-template-management-utils/logger');
+jest.mock('@backend-api/templates/infra/client-config-repository');
 jest.mocked(logger).child.mockReturnThis();
 
 const versionId = 'template-version-id';
@@ -35,6 +37,7 @@ function setup() {
     TemplatePdf: jest.mocked(TemplatePdf),
     TestDataCsv: jest.mocked(TestDataCsv),
     validateLetterTemplateFiles: jest.mocked(validateLetterTemplateFiles),
+    clientConfigRepository: mock<ClientConfigRepository>(),
   };
 
   const handler = new ValidateLetterTemplateFilesLambda(mocks).guardDutyHandler;
@@ -135,13 +138,18 @@ describe('guard duty handler', () => {
       versionId,
       true,
       pdf.personalisationParameters,
-      csv.parameters
+      csv.parameters,
+      false
     );
   });
 
   test('skips personalisation field validation for RTL languages', async () => {
     // arrange
     const { handler, mocks } = setup();
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      features: { proofing: true },
+    });
 
     const event = makeGuardDutyMalwareScanResultNotificationEvent({
       detail: {
@@ -171,6 +179,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'fa',
+        clientId: 'clientId',
       }),
     });
 
@@ -209,6 +218,7 @@ describe('guard duty handler', () => {
     expect(pdf.parse).toHaveBeenCalled();
     expect(csv.parse).toHaveBeenCalled();
     expect(mocks.validateLetterTemplateFiles).not.toHaveBeenCalled();
+    expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith('clientId');
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
@@ -216,7 +226,8 @@ describe('guard duty handler', () => {
       versionId,
       true,
       ['firstName', 'parameter_1', 'unknown_parameter'],
-      ['parameter_1', 'missing_parameter']
+      ['parameter_1', 'missing_parameter'],
+      true
     );
   });
 
@@ -293,7 +304,8 @@ describe('guard duty handler', () => {
       versionId,
       false,
       ['firstName', 'parameter_1', 'unknown_parameter'],
-      ['parameter_1', 'missing_parameter']
+      ['parameter_1', 'missing_parameter'],
+      false
     );
   });
 
@@ -372,7 +384,8 @@ describe('guard duty handler', () => {
       versionId,
       true,
       pdf.personalisationParameters,
-      []
+      [],
+      false
     );
   });
 
@@ -1048,7 +1061,14 @@ describe('guard duty handler', () => {
 
     expect(
       mocks.templateRepository.setLetterValidationResult
-    ).toHaveBeenCalledWith({ id: templateId, owner }, versionId, false, [], []);
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      false,
+      [],
+      [],
+      false
+    );
   });
 
   test('sets the template to failed if unable to parse the csv file', async () => {
@@ -1103,7 +1123,14 @@ describe('guard duty handler', () => {
 
     expect(
       mocks.templateRepository.setLetterValidationResult
-    ).toHaveBeenCalledWith({ id: templateId, owner }, versionId, false, [], []);
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      false,
+      [],
+      [],
+      false
+    );
   });
 
   test('sets the template to failed if the validation fails', async () => {
@@ -1163,7 +1190,8 @@ describe('guard duty handler', () => {
       versionId,
       false,
       pdf.personalisationParameters,
-      csv.parameters
+      csv.parameters,
+      false
     );
   });
 });

@@ -1,6 +1,7 @@
 import z from 'zod';
 
 const $Env = z.object({
+  CLIENT_CONFIG_SSM_KEY_PREFIX: z.string(),
   DEFAULT_LETTER_SUPPLIER: z.string(),
   ENABLE_PROOFING: z.enum(['true', 'false']).default('false'),
   ENVIRONMENT: z.string(),
@@ -15,6 +16,7 @@ export function loadConfig() {
   const env = $Env.parse(process.env);
 
   return {
+    clientConfigSSMKeyPrefix: env.CLIENT_CONFIG_SSM_KEY_PREFIX,
     defaultLetterSupplier: env.DEFAULT_LETTER_SUPPLIER,
     enableProofing: env.ENABLE_PROOFING === 'true',
     environment: env.ENVIRONMENT,

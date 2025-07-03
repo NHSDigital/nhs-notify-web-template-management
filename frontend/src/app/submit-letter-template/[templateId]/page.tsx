@@ -8,6 +8,7 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { getTemplate } from '@utils/form-actions';
 import { SubmitLetterTemplate } from '@forms/SubmitTemplate/SubmitLetterTemplate';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,10 +27,15 @@ const SubmitLetterTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
+  const proofingEnabled =
+    (await serverIsFeatureEnabled('proofing')) &&
+    process.env.NEXT_PUBLIC_ENABLE_PROOFING === 'true';
+
   return (
     <SubmitLetterTemplate
       templateName={validatedTemplate.name}
       templateId={validatedTemplate.id}
+      proofingEnabled={proofingEnabled}
     />
   );
 };

@@ -10,6 +10,7 @@ import {
   createAuthHelper,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
+import { createClientHelper } from '../../helpers/client/client-helper';
 
 setup('component test setup', async ({ page }) => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
@@ -18,9 +19,11 @@ setup('component test setup', async ({ page }) => {
 
   BackendConfigHelper.toEnv(backendConfig);
 
+  await createClientHelper().setup('component');
+
   const auth = createAuthHelper();
 
-  await auth.setup();
+  await auth.setup('component');
 
   const user = await auth.getTestUser(testUsers.User1.userId);
 

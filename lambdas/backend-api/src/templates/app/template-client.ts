@@ -20,6 +20,7 @@ import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import type { User } from '../types';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class TemplateClient {
   constructor(
@@ -27,6 +28,7 @@ export class TemplateClient {
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
     private readonly defaultLetterSupplier: string,
+    private readonly clientConfigRepository: ClientConfigRepository,
     private readonly logger: Logger
   ) {}
 
@@ -46,11 +48,14 @@ export class TemplateClient {
       return validationResult;
     }
 
+    const client = await this.clientConfigRepository.get(String(user.clientId));
+
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user.userId,
       user.clientId,
-      'NOT_YET_SUBMITTED'
+      'NOT_YET_SUBMITTED',
+      client?.campaignId
     );
 
     if (createResult.error) {
@@ -130,11 +135,14 @@ export class TemplateClient {
       files,
     };
 
+    const client = await this.clientConfigRepository.get(String(user.clientId));
+
     const createResult = await this.templateRepository.create(
       withFiles,
       user.userId,
       user.clientId,
-      'PENDING_UPLOAD'
+      'PENDING_UPLOAD',
+      client?.campaignId
     );
 
     if (createResult.error) {
@@ -321,6 +329,17 @@ export class TemplateClient {
     user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
+
+    const client = await this.clientConfigRepository.get(String(user.clientId));
+
+    if (!client?.features.proofing) {
+      log.error({
+        code: ErrorCase.FEATURE_DISABLED,
+        description: 'User cannot request a proof',
+      });
+
+      return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
+    }
 
     const proofRequestUpdateResult =
       await this.templateRepository.proofRequestUpdate(templateId, user.userId);

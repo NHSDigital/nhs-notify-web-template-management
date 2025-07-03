@@ -99,7 +99,8 @@ export class TemplateRepository {
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     userId: string,
     clientId: string | undefined,
-    initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
+    initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
+    campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const date = new Date().toISOString();
     const entity: DatabaseTemplate = {
@@ -113,6 +114,7 @@ export class TemplateRepository {
       updatedAt: date,
       updatedBy: userId,
       createdBy: userId,
+      campaignId,
     };
 
     try {
@@ -320,7 +322,8 @@ export class TemplateRepository {
     versionId: string,
     valid: boolean,
     personalisationParameters: string[],
-    testDataCsvHeaders: string[]
+    testDataCsvHeaders: string[],
+    clientProofingEnabled: boolean
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
@@ -331,7 +334,9 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const resolvedPostValidationSuccessStatus = this.enableProofing
+    const canRequestProofing = clientProofingEnabled && this.enableProofing;
+
+    const resolvedPostValidationSuccessStatus = canRequestProofing
       ? 'PENDING_PROOF_REQUEST'
       : 'NOT_YET_SUBMITTED';
 

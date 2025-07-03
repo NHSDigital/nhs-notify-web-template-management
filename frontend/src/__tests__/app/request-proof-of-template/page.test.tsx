@@ -14,6 +14,7 @@ import {
   NHS_APP_TEMPLATE,
   SMS_TEMPLATE,
 } from '../../helpers';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 import content from '@content/content';
 
 const { pageTitle } = content.components.requestProof;
@@ -21,12 +22,17 @@ const { pageTitle } = content.components.requestProof;
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/RequestProof/RequestProof');
+jest.mock('@utils/server-features');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
+const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('RequestProofPage', () => {
-  beforeEach(jest.resetAllMocks);
+  beforeEach(() => {
+    jest.resetAllMocks();
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(true);
+  });
 
   test('should load page', async () => {
     const state = {
@@ -104,4 +110,17 @@ describe('RequestProofPage', () => {
       expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
     }
   );
+
+  test('should forbid user from requesting a proof when client does not have feature enabled', async () => {
+    serverIsFeatureEnabledMock.mockReset();
+    serverIsFeatureEnabledMock.mockResolvedValueOnce(false);
+
+    await RequestProofPage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
 });

@@ -8,21 +8,27 @@ import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
 import { validateLetterTemplateFiles } from '../domain/validate-letter-template-files';
 import { SQSBatchItemFailure, SQSBatchResponse, SQSEvent } from 'aws-lambda';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class ValidateLetterTemplateFilesLambda {
   private letterUploadRepository: LetterUploadRepository;
 
   private templateRepository: TemplateRepository;
 
+  private clientConfigRepository: ClientConfigRepository;
+
   constructor({
     letterUploadRepository,
     templateRepository,
+    clientConfigRepository,
   }: {
     letterUploadRepository: LetterUploadRepository;
     templateRepository: TemplateRepository;
+    clientConfigRepository: ClientConfigRepository;
   }) {
     this.letterUploadRepository = letterUploadRepository;
     this.templateRepository = templateRepository;
+    this.clientConfigRepository = clientConfigRepository;
   }
 
   sqsHandler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
@@ -148,6 +154,12 @@ export class ValidateLetterTemplateFilesLambda {
     const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
     let csv;
 
+    const client = await this.clientConfigRepository.get(
+      String(getTemplateResult.data.clientId)
+    );
+
+    const clientProofingEnabled = client?.features?.proofing || false;
+
     try {
       await pdf.parse();
 
@@ -164,7 +176,8 @@ export class ValidateLetterTemplateFilesLambda {
         versionId,
         false,
         [],
-        []
+        [],
+        clientProofingEnabled
       );
 
       return;
@@ -178,7 +191,8 @@ export class ValidateLetterTemplateFilesLambda {
       versionId,
       valid,
       pdf.personalisationParameters,
-      csv?.parameters || []
+      csv?.parameters || [],
+      clientProofingEnabled
     );
   };
 }

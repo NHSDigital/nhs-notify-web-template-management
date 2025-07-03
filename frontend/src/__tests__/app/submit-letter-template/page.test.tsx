@@ -15,37 +15,84 @@ import {
   SMS_TEMPLATE,
 } from '../../helpers';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { serverIsFeatureEnabled } from '@utils/server-features';
 
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 jest.mock('@forms/SubmitTemplate/SubmitLetterTemplate');
+jest.mock('@utils/server-features');
 
 const getTemplateMock = jest.mocked(getTemplate);
 const redirectMock = jest.mocked(redirect);
+const serverIsFeatureEnabledMock = jest.mocked(serverIsFeatureEnabled);
 
 describe('SubmitLetterTemplatePage', () => {
-  beforeEach(jest.resetAllMocks);
+  const OLD_ENV = { ...process.env };
 
-  test('should load page', async () => {
-    getTemplateMock.mockResolvedValue({
-      ...LETTER_TEMPLATE,
-      createdAt: 'today',
-      updatedAt: 'today',
-    });
-
-    const page = await SubmitLetterTemplatePage({
-      params: Promise.resolve({
-        templateId: 'template-id',
-      }),
-    });
-
-    expect(page).toEqual(
-      <SubmitLetterTemplate
-        templateName={LETTER_TEMPLATE.name}
-        templateId={LETTER_TEMPLATE.id}
-      />
-    );
+  beforeEach(() => {
+    jest.resetAllMocks();
+    process.env.NEXT_PUBLIC_ENABLE_PROOFING = 'true';
   });
+
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
+
+  test.each([
+    {
+      globalProofing: true,
+      clientProofing: true,
+      expectedProofingEnabled: true,
+    },
+    {
+      globalProofing: false,
+      clientProofing: true,
+      expectedProofingEnabled: false,
+    },
+    {
+      globalProofing: true,
+      clientProofing: false,
+      expectedProofingEnabled: false,
+    },
+    {
+      globalProofing: false,
+      clientProofing: false,
+      expectedProofingEnabled: false,
+    },
+  ])(
+    'should load page with proofingEnabled $expectedProofingEnabled when global proofing is $globalProofing and client proofing is $clientProofing',
+    async ({
+      globalProofing,
+      clientProofing,
+      expectedProofingEnabled: proofingEnabled,
+    }) => {
+      process.env.NEXT_PUBLIC_ENABLE_PROOFING = String(globalProofing);
+
+      getTemplateMock.mockResolvedValue({
+        ...LETTER_TEMPLATE,
+        createdAt: 'today',
+        updatedAt: 'today',
+      });
+
+      serverIsFeatureEnabledMock.mockResolvedValueOnce(clientProofing);
+
+      const page = await SubmitLetterTemplatePage({
+        params: Promise.resolve({
+          templateId: 'template-id',
+        }),
+      });
+
+      expect(page).toEqual(
+        <SubmitLetterTemplate
+          templateName={LETTER_TEMPLATE.name}
+          templateId={LETTER_TEMPLATE.id}
+          proofingEnabled={proofingEnabled}
+        />
+      );
+
+      expect(serverIsFeatureEnabledMock).toHaveBeenCalledWith('proofing');
+    }
+  );
 
   test('should handle invalid template', async () => {
     getTemplateMock.mockResolvedValue(undefined);

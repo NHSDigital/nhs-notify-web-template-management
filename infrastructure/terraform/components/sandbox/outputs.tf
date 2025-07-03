@@ -2,6 +2,10 @@ output "api_base_url" {
   value = module.backend_api.api_base_url
 }
 
+output "client_ssm_path_prefix" {
+  value = module.backend_api.client_ssm_path_prefix
+}
+
 output "cognito_user_pool_id" {
   value = aws_cognito_user_pool.sandbox.id
 }
