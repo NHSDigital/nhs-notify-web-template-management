@@ -106,4 +106,37 @@ data "aws_iam_policy_document" "kms" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowEventBridgeAccessToLetterValidationQueue"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    actions = [
+      "kms:GenerateDataKey*",
+      "kms:Decrypt",
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "ArnEquals"
+      variable = "kms:EncryptionContext:aws:sqs:arn"
+      values = [
+        "arn:aws:sqs:${var.region}:${var.aws_account_id}:${local.csi}-validate-letter-template-files-queue"
+      ]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values = [
+        "arn:aws:events:${var.region}:${var.aws_account_id}:rule/${local.csi}-api-quarantine-scan-passed-for-upload"
+      ]
+    }
+  }
 }

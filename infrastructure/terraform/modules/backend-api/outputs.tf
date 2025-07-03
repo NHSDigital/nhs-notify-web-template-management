@@ -41,4 +41,3 @@ output "templates_table_name" {
 output "quarantine_bucket_name" {
   value = module.s3bucket_quarantine.id
 }
-

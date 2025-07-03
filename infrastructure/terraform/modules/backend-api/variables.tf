@@ -71,12 +71,6 @@ variable "enable_backup" {
   default     = true
 }
 
-variable "enable_guardduty" {
-  type        = bool
-  description = "Enable GuardDuty"
-  default     = true
-}
-
 variable "enable_proofing" {
   type        = bool
   description = "Enable proofing feature flag"

@@ -123,3 +123,19 @@ data "aws_iam_policy_document" "process_proof" {
     resources = ["${module.s3bucket_download.arn}/*"]
   }
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_process_passed_proof" {
+  statement_id  = "AllowFromEventBridgeProcessPassedProof"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_process_proof.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_proof.arn
+}
+
+resource "aws_lambda_permission" "allow_eventbridge_process_failed_proof" {
+  statement_id  = "AllowFromEventBridgeProcessFailedProof"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_process_proof.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.arn
+}

@@ -64,3 +64,19 @@ data "aws_iam_policy_document" "delete_failed_scanned_object" {
     ]
   }
 }
+
+resource "aws_lambda_permission" "allow_eventbridge_delete_upload" {
+  statement_id  = "AllowFromEventBridgeDeleteUpload"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_delete_failed_scanned_object.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_upload.arn
+}
+
+resource "aws_lambda_permission" "allow_eventbridge_delete_proof" {
+  statement_id  = "AllowFromEventBridgeDeleteProof"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_delete_failed_scanned_object.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.guardduty_quarantine_scan_failed_for_proof.arn
+}
