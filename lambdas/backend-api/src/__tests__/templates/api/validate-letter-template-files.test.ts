@@ -147,10 +147,6 @@ describe('guard duty handler', () => {
     // arrange
     const { handler, mocks } = setup();
 
-    mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      features: { proofing: true },
-    });
-
     const event = makeGuardDutyMalwareScanResultNotificationEvent({
       detail: {
         s3ObjectDetails: {
@@ -189,6 +185,10 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      features: { proofing: true },
+    });
 
     const pdf = {
       personalisationParameters: [
@@ -247,6 +247,10 @@ describe('guard duty handler', () => {
       },
     });
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      features: { proofing: true },
+    });
+
     mocks.templateRepository.get.mockResolvedValueOnce({
       data: mock<DatabaseTemplate>({
         files: {
@@ -272,6 +276,8 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce(undefined);
 
     const pdf = {
       personalisationParameters: [
@@ -342,6 +348,10 @@ describe('guard duty handler', () => {
     const pdfData = Uint8Array.from('pdf');
 
     mocks.letterUploadRepository.download.mockResolvedValueOnce(pdfData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      features: { proofing: false },
+    });
 
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],

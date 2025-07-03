@@ -6,7 +6,7 @@ import {
 import { TestSuite } from '../types';
 
 type ClientConfiguration = {
-  clientId: string; // Just to map to the the user's ClientId
+  clientId: string;
   features: {
     proofing: boolean;
   };

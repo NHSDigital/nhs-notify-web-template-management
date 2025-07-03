@@ -27,9 +27,11 @@ const SubmitLetterTemplatePage = async (props: PageProps) => {
     return redirect('/invalid-template', RedirectType.replace);
   }
 
-  const proofingEnabled =
-    (await serverIsFeatureEnabled('proofing')) &&
+  const clientProofingEnabled = await serverIsFeatureEnabled('proofing');
+  const globalProofingEnabled =
     process.env.NEXT_PUBLIC_ENABLE_PROOFING === 'true';
+
+  const proofingEnabled = clientProofingEnabled && globalProofingEnabled;
 
   return (
     <SubmitLetterTemplate

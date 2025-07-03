@@ -25,7 +25,6 @@ const RequestProofPage = async (props: PageProps) => {
   const proofingEnabled = await serverIsFeatureEnabled('proofing');
 
   if (!proofingEnabled) {
-    // Note: replace as part of CCM-?????
     return redirect('/invalid-template', RedirectType.replace);
   }
 

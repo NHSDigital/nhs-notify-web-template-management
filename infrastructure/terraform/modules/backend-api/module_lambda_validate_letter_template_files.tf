@@ -127,8 +127,6 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
       "ssm:GetParameter",
     ]
 
-    resources = [
-      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter${local.client_ssm_path_prefix}/*",
-    ]
+    resources = [local.client_ssm_path_pattern]
   }
 }

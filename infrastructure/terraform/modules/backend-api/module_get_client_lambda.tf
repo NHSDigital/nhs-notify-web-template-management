@@ -60,8 +60,6 @@ data "aws_iam_policy_document" "get_client_lambda_policy" {
       "ssm:GetParameter",
     ]
 
-    resources = [
-      "arn:aws:ssm:${var.region}:${var.aws_account_id}:parameter/${var.csi}/clients/*"
-    ]
+    resources = [local.client_ssm_path_pattern]
   }
 }
