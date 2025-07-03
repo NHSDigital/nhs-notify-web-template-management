@@ -346,6 +346,14 @@ const error404 = {
   },
 };
 
+const invalidConfiguration = {
+  pageTitle: generatePageTitle('Configuration error'),
+  pageHeading: 'You cannot create letter templates yet',
+  text: 'To get access, contact your onboarding manager and give them this error message:',
+  insetText: 'Account needs a client ID and campaign ID',
+  backLinkText: goBackButtonText,
+}
+
 const submitTemplate = {
   pageTitle: {
     NHS_APP: generatePageTitle('Submit NHS App template'),
@@ -759,6 +767,7 @@ const content = {
   pages: {
     homePage,
     error404,
+    invalidConfiguration,
     messageTemplates,
   },
 };

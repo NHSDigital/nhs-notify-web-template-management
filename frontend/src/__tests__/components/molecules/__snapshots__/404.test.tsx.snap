@@ -8,7 +8,7 @@ exports[`ErrorPage404 1`] = `
     role="main"
   >
     <div
-      class="nhsuk-grid-row"
+      class="nhsuk-grid-row nhsuk-u-padding-left-3 nhsuk-u-padding-right-3"
       data-testid="page-content-wrapper"
     >
       <h1
