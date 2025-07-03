@@ -63,6 +63,7 @@ export function createContainer() {
     templateClient,
     templateRepository,
     letterUploadRepository,
+    clientConfigRepository,
   };
 }
 

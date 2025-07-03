@@ -1562,7 +1562,7 @@ describe('templateClient', () => {
       const result = await templateClient.requestProof(templateId, user);
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
-        user.userId
+        user.clientId
       );
 
       expect(

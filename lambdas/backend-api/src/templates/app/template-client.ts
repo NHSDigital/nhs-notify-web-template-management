@@ -330,7 +330,7 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const client = await this.clientConfigRepository.get(String(user.userId));
+    const client = await this.clientConfigRepository.get(String(user.clientId));
 
     if (!client?.features.proofing) {
       log.error({
