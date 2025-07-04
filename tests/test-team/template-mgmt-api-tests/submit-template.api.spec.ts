@@ -199,12 +199,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       await expect(async () => {
         const emailContents = await emailHelper.getEmailForTemplateId(
+          process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
           templateId,
           start
         );
 
         expect(emailContents).toContain(templateId);
         expect(emailContents).toContain(templateName);
+        expect(emailContents).toContain('Template Submitted');
         expect(emailContents).toContain('proof.pdf');
       }).toPass({ timeout: 20_000 });
     });

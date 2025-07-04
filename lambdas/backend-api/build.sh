@@ -25,4 +25,6 @@ npx esbuild \
     src/templates/update.ts \
     src/templates/validate-letter-template-files.ts
 
-cp src/templates/infra/email-template.html dist/email-template.html
+mkdir -p dist/email-templates
+cp ../../utils/utils/src/email-templates/template-submitted-email.html ./dist/
+cp ../../utils/utils/src/email-templates/proof-requested-email.html ./dist/

@@ -17,6 +17,7 @@ jest.mock('node:crypto');
 
 const user = { userId: '58890285E473', clientId: '00F2EF8D16FD' };
 const templateId = 'E1F5088E5B77';
+const templateName = 'template-name';
 const versionId = '28F-D4-72-A93-A6';
 const defaultLetterSupplier = 'SUPPLIER';
 
@@ -1414,7 +1415,7 @@ describe('templateClient', () => {
       const personalisationParameters = ['myParam'];
 
       const template: TemplateDto = {
-        name: 'name',
+        name: templateName,
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
@@ -1456,6 +1457,7 @@ describe('templateClient', () => {
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
+        templateName,
         user.userId,
         personalisationParameters,
         pdfVersionId,
@@ -1479,7 +1481,7 @@ describe('templateClient', () => {
       const personalisationParameters = ['myParam'];
 
       const template: TemplateDto = {
-        name: 'name',
+        name: templateName,
         templateStatus: 'SUBMITTED',
         templateType: 'LETTER',
         id: templateId,
@@ -1513,6 +1515,7 @@ describe('templateClient', () => {
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
+        templateName,
         user.userId,
         personalisationParameters,
         pdfVersionId,

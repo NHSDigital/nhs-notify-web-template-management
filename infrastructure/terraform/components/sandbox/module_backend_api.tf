@@ -28,4 +28,5 @@ module "backend_api" {
 
   email_domain                            = local.email_domain
   template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_sender
+  proof_requested_sender_email_address    = local.sandbox_letter_supplier_mock_sender
 }

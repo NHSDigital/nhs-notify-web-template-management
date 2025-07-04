@@ -12,8 +12,11 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { EmailHelper } from '../helpers/email-helper';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
+
+const emailHelper = new EmailHelper();
 
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -31,6 +34,8 @@ test.describe('letter complete e2e journey', () => {
   test('Full journey - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
+    const testStart = new Date();
+
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
 
     await createTemplatePage.loadPage();
@@ -111,6 +116,17 @@ test.describe('letter complete e2e journey', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
+
+      // check proof-requested email
+      const emailContents = await emailHelper.getEmailForTemplateId(
+        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
+        templateId,
+        testStart
+      );
+
+      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain(template.name);
+      expect(emailContents).toContain('Proof Requested');
     }).toPass({ timeout: 40_000 });
 
     await expect(async () => {
@@ -198,5 +214,16 @@ test.describe('letter complete e2e journey', () => {
 
     const finalTemplate = await templateStorageHelper.getTemplate(key);
     expect(finalTemplate.templateStatus).toBe('SUBMITTED');
+
+    // check template-submitted email
+    const emailContents = await emailHelper.getEmailForTemplateId(
+      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
+      templateId,
+      testStart
+    );
+
+    expect(emailContents).toContain(templateId);
+    expect(emailContents).toContain(template.name);
+    expect(emailContents).toContain('Template Submitted');
   });
 });

@@ -1,6 +1,6 @@
 import type { SQSBatchItemFailure, SQSHandler } from 'aws-lambda';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import type { App } from '../app/send';
+import type { App } from '../app/request-proof';
 
 type Dependencies = {
   app: App;

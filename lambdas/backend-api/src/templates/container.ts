@@ -8,7 +8,7 @@ import { LetterFileRepository } from './infra/letter-file-repository';
 import { ProofingQueue } from './infra/proofing-queue';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { loadConfig } from './infra/config';
-import { EmailClient } from './infra/email-client';
+import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 const sqsClient = new SQSClient({ region: 'eu-west-2' });
