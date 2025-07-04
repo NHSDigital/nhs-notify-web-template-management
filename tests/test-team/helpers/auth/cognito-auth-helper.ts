@@ -57,10 +57,11 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   },
   /**
    * User4 idle user which signs out automatically
+   * This user's client does not have a configuration parameter
    */
   User4: {
     userId: 'User4',
-    clientKey: 'Client1',
+    clientKey: 'Client3',
   },
   /**
    * User5 idle user which signs out manually

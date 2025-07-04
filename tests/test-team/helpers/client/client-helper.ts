@@ -11,9 +11,9 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2}`;
+export type ClientKey = `Client${1 | 2 | 3}`;
 
-export const testClients: Record<ClientKey, ClientConfiguration> = {
+export const testClients: Record<ClientKey, ClientConfiguration | null> = {
   /**
    * Client1 has proofing enabled
    */
@@ -32,6 +32,10 @@ export const testClients: Record<ClientKey, ClientConfiguration> = {
       proofing: false,
     },
   },
+  /**
+   * Client3 has no configuration
+   */
+  Client3: null,
 };
 
 export class ClientConfigurationHelper {
@@ -47,14 +51,16 @@ export class ClientConfigurationHelper {
 
     const id = `${clientKey}--${this.runId}`;
 
-    await this.ssmClient.send(
-      new PutParameterCommand({
-        Name: this.ssmKey(id),
-        Value: JSON.stringify(client),
-        Type: 'String',
-        Overwrite: true,
-      })
-    );
+    if (client) {
+      await this.ssmClient.send(
+        new PutParameterCommand({
+          Name: this.ssmKey(id),
+          Value: JSON.stringify(client),
+          Type: 'String',
+          Overwrite: true,
+        })
+      );
+    }
   }
 
   async deleteClients(ids: string[]) {

@@ -17,7 +17,7 @@ test.describe('GET /v1/client-configuration', () => {
   test.beforeAll(async () => {
     userWithClient = await authHelper.getTestUser(testUsers.User1.userId);
     userWithoutClientConfiguration = await authHelper.getTestUser(
-      testUsers.User2.userId
+      testUsers.User4.userId
     );
     userWithoutClient = await authHelper.getTestUser(testUsers.User6.userId);
   });
@@ -46,7 +46,7 @@ test.describe('GET /v1/client-configuration', () => {
     });
   });
 
-  test('returns 404 if no configuiration parameter exists for the user', async ({
+  test('returns 404 if no configuration parameter exists for the user', async ({
     request,
   }) => {
     const response = await request.get(url, {
@@ -56,7 +56,7 @@ test.describe('GET /v1/client-configuration', () => {
     });
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
-      statusCode: 400,
+      statusCode: 404,
       technicalMessage: 'Could not retrieve client configuration',
     });
   });
@@ -72,8 +72,8 @@ test.describe('GET /v1/client-configuration', () => {
     expect(await response.json()).toEqual({
       statusCode: 200,
       clientConfiguration: {
-        campaignId: testClients[userWithClient.clientKey!].campaignId,
-        features: testClients[userWithClient.clientKey!].features,
+        campaignId: testClients[userWithClient.clientKey!]?.campaignId,
+        features: testClients[userWithClient.clientKey!]?.features,
       },
     });
   });
