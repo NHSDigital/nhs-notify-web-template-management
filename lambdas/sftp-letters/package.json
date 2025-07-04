@@ -35,7 +35,7 @@
   "name": "nhs-notify-sftp-letters-lambdas",
   "private": true,
   "scripts": {
-    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/sftp-request-proof.ts src/sftp-poll.ts",
+    "lambda-build": "./build.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",
