@@ -5,6 +5,7 @@ import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
 import { ClientConfiguration } from 'nhs-notify-backend-client';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
+import { ZodError } from 'zod';
 
 function setup() {
   const ssmClient = mockClient(SSMClient);
@@ -39,14 +40,13 @@ describe('ClientConfigRepository', () => {
     describe('when client config is not cached', () => {
       it('should fetch from SSM, parse, cache and return valid client config', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const mockSSMResponse = {
@@ -61,19 +61,18 @@ describe('ClientConfigRepository', () => {
 
         expect(cache.set).toHaveBeenCalledWith(mockKey, validClient);
 
-        expect(result).toEqual(validClient);
+        expect(result).toEqual({ data: validClient });
       });
 
       it('should handle client config without campaignId', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const clientWithoutCampaign: ClientConfiguration = {
@@ -90,20 +89,19 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toEqual(clientWithoutCampaign);
+        expect(result).toEqual({ data: clientWithoutCampaign });
         expect(cache.set).toHaveBeenCalledWith(mockKey, clientWithoutCampaign);
       });
 
       it('should parse JSON string from SSM parameter value', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const jsonString = '{"campaignId":"test","features":{"proofing":true}}';
@@ -117,21 +115,22 @@ describe('ClientConfigRepository', () => {
         const result = await repository.get(mockClientId);
 
         expect(result).toEqual({
-          campaignId: 'test',
-          features: { proofing: true },
+          data: {
+            campaignId: 'test',
+            features: { proofing: true },
+          },
         });
       });
 
-      it('should return undefined when SSM parameter value is invalid JSON', async () => {
+      it('should return a failure result when SSM parameter value is invalid JSON', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const mockSSMResponse = {
@@ -144,21 +143,33 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Client configuration is invalid',
+            actualError: expect.objectContaining({
+              issues: expect.arrayContaining([
+                expect.objectContaining({
+                  message:
+                    'Unexpected token \'i\', "invalid-json-string" is not valid JSON',
+                }),
+              ]),
+            }),
+          },
+        });
 
         expect(cache.set).not.toHaveBeenCalled();
       });
 
-      it('should return undefined when SSM parameter value fails schema validation', async () => {
+      it('should return a failure result when SSM parameter value fails schema validation', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const invalidConfig = {
@@ -178,21 +189,32 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Client configuration is invalid',
+            actualError: expect.objectContaining({
+              issues: expect.arrayContaining([
+                expect.objectContaining({
+                  message: 'Expected boolean, received string',
+                }),
+              ]),
+            }),
+          },
+        });
 
         expect(cache.set).not.toHaveBeenCalled();
       });
 
-      it('should return undefined when SSM parameter value is missing required fields', async () => {
+      it('should return a failure result when SSM parameter value is missing required fields', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const incompleteConfig = {
@@ -209,19 +231,31 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Client configuration is invalid',
+            actualError: expect.objectContaining({
+              issues: expect.arrayContaining([
+                expect.objectContaining({
+                  path: ['features'],
+                  message: 'Required',
+                }),
+              ]),
+            }),
+          },
+        });
       });
 
-      it('should return undefined when SSM parameter has no value', async () => {
+      it('should return a failure result when SSM parameter has no value', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const mockSSMResponse = {
@@ -232,61 +266,88 @@ describe('ClientConfigRepository', () => {
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Client configuration is invalid',
+            actualError: expect.objectContaining({
+              issues: expect.arrayContaining([
+                expect.objectContaining({
+                  message: 'Required',
+                }),
+              ]),
+            }),
+          },
+        });
       });
 
-      it('should return undefined when SSM response has no parameter', async () => {
+      it('should return a failure result when SSM response has no parameter', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         ssmClient.on(GetParameterCommand).resolvesOnce({});
 
         const result = await repository.get(mockClientId);
 
-        expect(result).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Client configuration is invalid',
+            actualError: expect.objectContaining({
+              issues: expect.arrayContaining([
+                expect.objectContaining({
+                  message: 'Required',
+                }),
+              ]),
+            }),
+          },
+        });
       });
 
-      it('should return undefined SSM client errors', async () => {
+      it('should return a failure result on SSM client errors', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         const ssmError = new Error('SSM service unavailable');
 
         ssmClient.on(GetParameterCommand).rejectsOnce(ssmError);
 
-        const client = await repository.get(mockClientId);
+        const result = await repository.get(mockClientId);
 
-        expect(client).toBeUndefined();
+        expect(result).toMatchObject({
+          error: {
+            code: 500,
+            message: 'Failed to fetch client configuration',
+            actualError: ssmError,
+          },
+        });
       });
     });
 
     describe('caching behavior', () => {
       it('should cache successfully parsed client config', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         cache.get.mockReturnValue(undefined);
@@ -304,14 +365,13 @@ describe('ClientConfigRepository', () => {
 
       it('should not cache when parsing fails', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         cache.get.mockReturnValue(undefined);
@@ -331,14 +391,13 @@ describe('ClientConfigRepository', () => {
     describe('multiple calls with same client ID', () => {
       it('should use cache on subsequent calls', async () => {
         const {
-          mocks: { ssmClient, cache, logger },
+          mocks: { ssmClient, cache },
         } = setup();
 
         const repository = new ClientConfigRepository(
           mockSSMKeyPrefix,
           ssmClient as unknown as SSMClient,
-          cache,
-          logger
+          cache
         );
 
         cache.get
@@ -352,8 +411,8 @@ describe('ClientConfigRepository', () => {
         const result1 = await repository.get(mockClientId);
         const result2 = await repository.get(mockClientId);
 
-        expect(result1).toEqual(validClient);
-        expect(result2).toEqual(validClient);
+        expect(result1).toEqual({ data: validClient });
+        expect(result2).toEqual({ data: validClient });
         expect(ssmClient.calls()).toHaveLength(1);
         expect(cache.get).toHaveBeenCalledTimes(2);
       });

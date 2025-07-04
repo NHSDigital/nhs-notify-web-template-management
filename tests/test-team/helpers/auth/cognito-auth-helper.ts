@@ -120,15 +120,9 @@ export class CognitoAuthHelper {
   public async setup() {
     const users = Object.values(testUsers);
 
-    const clientKeys = [
-      ...new Set(users.flatMap((user) => user.clientKey ?? [])),
-    ];
-
     await Promise.all([
       ...users.map((userDetails) => this.createUser(userDetails)),
-      ...clientKeys.map((clientKey) =>
-        this.notifyClientHelper.createClient(clientKey)
-      ),
+      this.notifyClientHelper.setup(),
     ]);
   }
 
@@ -141,7 +135,7 @@ export class CognitoAuthHelper {
 
     await Promise.all([
       ...runCtx.map(({ email }) => this.deleteUser(email)),
-      this.notifyClientHelper.deleteClients(clientIds),
+      this.notifyClientHelper.teardown(clientIds),
     ]);
 
     await CognitoAuthHelper.authContextFile.destroyNamespace(this.runId);

@@ -1,12 +1,17 @@
 import { z } from 'zod';
 import NodeCache from 'node-cache';
-import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
+import {
+  GetParameterCommand,
+  ParameterNotFound,
+  SSMClient,
+} from '@aws-sdk/client-ssm';
 import {
   ClientConfiguration,
   $ClientConfiguration,
+  ErrorCase,
 } from 'nhs-notify-backend-client';
-import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { parseJsonPreprocessor } from '@backend-api/utils/zod-json-preprocessor';
+import { ApplicationResult, failure, success } from '@backend-api/utils/result';
 
 const $ClientProcessed = z.preprocess(
   parseJsonPreprocessor,
@@ -17,16 +22,18 @@ export class ClientConfigRepository {
   constructor(
     private readonly ssmKeyPrefix: string,
     private readonly ssmClient: SSMClient,
-    private readonly cache: NodeCache,
-    private readonly logger: Logger
+    private readonly cache: NodeCache
   ) {}
 
-  async get(clientId: string): Promise<ClientConfiguration | undefined> {
+  async get(
+    clientId: string
+  ): Promise<ApplicationResult<ClientConfiguration | null>> {
     const key = `${this.ssmKeyPrefix}/${clientId}`;
 
-    const cached = this.cache.get<ClientConfiguration>(key);
+    const cached = this.cache.get<ClientConfiguration | null>(key);
 
-    if (cached) return cached;
+    if (cached === null) return success(null);
+    if (cached) return success(cached);
 
     let client: string | undefined;
 
@@ -38,25 +45,30 @@ export class ClientConfigRepository {
       );
       client = response.Parameter?.Value;
     } catch (error) {
-      this.logger.error('failed to obtain client configuration', {
-        error,
-        clientId,
-        key,
-      });
-      return;
+      if (error instanceof ParameterNotFound) {
+        this.cache.set<ClientConfiguration | null>(key, null);
+        return success(null);
+      }
+
+      return failure(
+        ErrorCase.INTERNAL,
+        'Failed to fetch client configuration',
+        error
+      );
     }
 
-    const { data, error, success } = $ClientProcessed.safeParse(client);
+    const { data, error } = $ClientProcessed.safeParse(client);
 
-    if (!success) {
-      this.logger.error('Failed to parse client configuration', error, {
-        clientId,
-      });
-      return;
+    if (error) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Client configuration is invalid',
+        error
+      );
     }
 
     this.cache.set<ClientConfiguration>(key, data);
 
-    return data;
+    return success(data);
   }
 }

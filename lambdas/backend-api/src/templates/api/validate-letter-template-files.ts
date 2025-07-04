@@ -154,11 +154,21 @@ export class ValidateLetterTemplateFilesLambda {
     const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
     let csv;
 
-    const client = await this.clientConfigRepository.get(
+    const clientConfigurationResult = await this.clientConfigRepository.get(
       String(getTemplateResult.data.clientId)
     );
 
-    const clientProofingEnabled = client?.features?.proofing || false;
+    if (clientConfigurationResult.error) {
+      log.error(
+        'Unable to fetch client configuration',
+        clientConfigurationResult.error
+      );
+
+      throw new Error('Unable to fetch client configuration');
+    }
+
+    const clientProofingEnabled =
+      clientConfigurationResult.data?.features?.proofing || false;
 
     try {
       await pdf.parse();

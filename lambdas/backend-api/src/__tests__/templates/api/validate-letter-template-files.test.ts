@@ -91,6 +91,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],
     });
@@ -187,7 +191,9 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(csvData);
 
     mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      features: { proofing: true },
+      data: {
+        features: { proofing: true },
+      },
     });
 
     const pdf = {
@@ -248,7 +254,9 @@ describe('guard duty handler', () => {
     });
 
     mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      features: { proofing: false },
+      data: {
+        features: { proofing: false },
+      },
     });
 
     mocks.templateRepository.get.mockResolvedValueOnce({
@@ -277,7 +285,7 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
 
-    mocks.clientConfigRepository.get.mockResolvedValueOnce(undefined);
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
 
     const pdf = {
       personalisationParameters: [
@@ -350,7 +358,7 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download.mockResolvedValueOnce(pdfData);
 
     mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      features: { proofing: false },
+      data: { features: { proofing: false } },
     });
 
     const pdf = mock<TemplatePdf>({
@@ -1061,6 +1069,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     mocks.TemplatePdf.mockImplementation(() =>
       mock<TemplatePdf>({
         parse: jest.fn().mockRejectedValue(new Error('pdf parsing error')),
@@ -1118,6 +1130,10 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
 
     mocks.TemplatePdf.mockImplementation(() => mock<TemplatePdf>());
 
@@ -1180,6 +1196,10 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
 
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],

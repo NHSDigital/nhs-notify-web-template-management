@@ -49,14 +49,24 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const client = await this.clientConfigRepository.get(user.clientId!);
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      String(user.clientId)
+    );
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user.userId,
       user.clientId,
       'NOT_YET_SUBMITTED',
-      client?.campaignId
+      clientConfigurationResult.data?.campaignId
     );
 
     if (createResult.error) {
@@ -136,14 +146,24 @@ export class TemplateClient {
       files,
     };
 
-    const client = await this.clientConfigRepository.get(user.clientId!);
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      String(user.clientId)
+    );
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
 
     const createResult = await this.templateRepository.create(
       withFiles,
       user.userId,
       user.clientId,
       'PENDING_UPLOAD',
-      client?.campaignId
+      clientConfigurationResult.data?.campaignId
     );
 
     if (createResult.error) {
@@ -331,9 +351,19 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const client = await this.clientConfigRepository.get(String(user.clientId));
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      String(user.clientId)
+    );
 
-    if (!client?.features.proofing) {
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
+
+    if (!clientConfigurationResult.data?.features.proofing) {
       log.error({
         code: ErrorCase.FEATURE_DISABLED,
         description: 'User cannot request a proof',
@@ -435,18 +465,26 @@ export class TemplateClient {
       user,
     });
 
-    const client = await this.clientConfigRepository.get(String(user.clientId));
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      String(user.clientId)
+    );
 
-    if (!client) {
-      log.error('Failed to get client');
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
 
+      return clientConfigurationResult;
+    }
+
+    if (clientConfigurationResult.data === null) {
       return failure(
         ErrorCase.NOT_FOUND,
-        'Could not retrieve client configuration'
+        'Client configuration is not available'
       );
     }
 
-    return success(client);
+    return success(clientConfigurationResult.data);
   }
 
   private mapDatabaseObjectToDTO(

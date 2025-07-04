@@ -46,8 +46,7 @@ export function createContainer() {
   const clientConfigRepository = new ClientConfigRepository(
     config.clientConfigSsmKeyPrefix,
     ssmClient,
-    new NodeCache({ stdTTL: config.clientConfigTtlSeconds }),
-    logger
+    new NodeCache({ stdTTL: config.clientConfigTtlSeconds })
   );
 
   const templateClient = new TemplateClient(

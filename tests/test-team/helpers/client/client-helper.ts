@@ -46,24 +46,26 @@ export class ClientConfigurationHelper {
     private readonly runId: string
   ) {}
 
-  async createClient(clientKey: ClientKey) {
-    const client = testClients[clientKey];
+  async setup() {
+    return Promise.all(
+      Object.entries(testClients).map(async ([clientKey, value]) => {
+        const id = `${clientKey}--${this.runId}`;
 
-    const id = `${clientKey}--${this.runId}`;
-
-    if (client) {
-      await this.ssmClient.send(
-        new PutParameterCommand({
-          Name: this.ssmKey(id),
-          Value: JSON.stringify(client),
-          Type: 'String',
-          Overwrite: true,
-        })
-      );
-    }
+        if (value !== null) {
+          await this.ssmClient.send(
+            new PutParameterCommand({
+              Name: this.ssmKey(id),
+              Value: JSON.stringify(value),
+              Type: 'String',
+              Overwrite: true,
+            })
+          );
+        }
+      })
+    );
   }
 
-  async deleteClients(ids: string[]) {
+  async teardown(ids: string[]) {
     await this.ssmClient.send(
       new DeleteParametersCommand({
         Names: ids.map((id) => this.ssmKey(id)),

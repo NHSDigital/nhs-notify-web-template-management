@@ -116,6 +116,10 @@ describe('templateClient', () => {
         subject: 'subject',
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: null,
+      });
+
       mocks.templateRepository.create.mockResolvedValueOnce({
         error: {
           code: 500,
@@ -164,6 +168,10 @@ describe('templateClient', () => {
         owner: user.userId,
         version: 1,
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
@@ -217,9 +225,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -314,9 +324,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -541,6 +553,8 @@ describe('templateClient', () => {
         },
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
       mocks.templateRepository.create.mockResolvedValueOnce(
         templateRepoFailure
       );
@@ -573,6 +587,10 @@ describe('templateClient', () => {
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: false } },
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
@@ -637,6 +655,10 @@ describe('templateClient', () => {
         owner: user.userId,
         version: 1,
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: null,
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -727,6 +749,8 @@ describe('templateClient', () => {
         owner: user.userId,
         version: 1,
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -832,6 +856,10 @@ describe('templateClient', () => {
       };
 
       const { owner: _1, version: _2 } = finalTemplate;
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -1325,6 +1353,10 @@ describe('templateClient', () => {
     test('should return a failure result, when proofing is disabled', async () => {
       const { templateClient, mocks } = setup();
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: false } },
+      });
+
       const result = await templateClient.requestProof(templateId, user);
 
       expect(
@@ -1342,6 +1374,10 @@ describe('templateClient', () => {
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
+
       const actualError = new Error('from db');
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
@@ -1353,9 +1389,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1410,9 +1448,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1457,9 +1497,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1518,9 +1560,11 @@ describe('templateClient', () => {
       });
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1554,9 +1598,11 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: false,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: false,
+          },
         },
       });
 
@@ -1606,9 +1652,11 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        campaignId: 'campaignId',
-        features: {
-          proofing: true,
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1703,7 +1751,7 @@ describe('templateClient', () => {
     test('should return a 404 failure result, when client configuration is not available', async () => {
       const { templateClient, mocks } = setup();
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce(undefined);
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
 
       const result = await templateClient.getClientConfiguration({
         clientId,
@@ -1715,7 +1763,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 404,
-          message: 'Could not retrieve client configuration',
+          message: 'Client configuration is not available',
         },
       });
     });
@@ -1728,7 +1776,7 @@ describe('templateClient', () => {
         campaignId: 'campaign',
       };
 
-      mocks.clientConfigRepository.get.mockResolvedValueOnce(client);
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: client });
 
       const result = await templateClient.getClientConfiguration({
         clientId,
