@@ -25,7 +25,7 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
     submitChecklistHeading,
     submitChecklistIntroduction,
     submitChecklistItems,
-    submitChecklistParagraphs,
+    leadParagraph,
     goBackButtonText,
     buttonText,
   } = content.components.submitTemplate;
@@ -41,22 +41,24 @@ export const SubmitDigitalTemplate: FC<ActionPageProps> = ({
           <h1>
             {pageHeading} {`'${templateName}'`}
           </h1>
+
+          <p className='nhsuk-body-l'>{leadParagraph}</p>
+
+          <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
+          <p>{submitChecklistIntroduction}</p>
+          <ul className='nhsuk-list nhsuk-list--bullet'>
+            {submitChecklistItems.map((item) => (
+              <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
+            ))}
+          </ul>
+
           <WarningCallout>
             <WarningCallout.Label headingLevel='h2'>
               {warningCalloutLabel}
             </WarningCallout.Label>
             <p>{warningCalloutText}</p>
           </WarningCallout>
-          <h2 className='nhsuk-heading-m'>{submitChecklistHeading}</h2>
-          <p>{submitChecklistIntroduction}</p>
-          <ul>
-            {submitChecklistItems.map((item) => (
-              <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
-            ))}
-          </ul>
-          {submitChecklistParagraphs.map((item) => (
-            <p key={`submit-paragraph-${item.slice(0, 5)}`}>{item}</p>
-          ))}
+
           <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input
               type='hidden'
