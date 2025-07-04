@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended';
 import { createHandler } from '../../api/send-handler';
-import { App } from '../../app/send';
+import { App } from '../../app/request-proof';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { SftpSupplierClientRepository } from '../../infra/sftp-supplier-client-repository';
 import { Callback, Context } from 'aws-lambda';

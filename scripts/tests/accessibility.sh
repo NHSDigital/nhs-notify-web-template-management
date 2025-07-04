@@ -13,7 +13,8 @@ npm run build
 
 mkdir -p ./frontend/public/testing
 
-cp ./lambdas/backend-api/src/templates/infra/email-template.html ./frontend/public/testing/email-template.html
+cp ./utils/utils/src/email-templates/template-submitted-email.html ./frontend/public/testing/
+cp ./utils/utils/src/email-templates/proof-requested-email.html ./frontend/public/testing/
 
 npm run app:start --prefix frontend
 

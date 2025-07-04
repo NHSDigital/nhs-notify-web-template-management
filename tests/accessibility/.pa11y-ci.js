@@ -140,7 +140,8 @@ module.exports = {
       actions: [...signInPageActions, 'wait for h1 to be visible'],
       name: 'invalid-template',
     }),
-    performCheck({ url: `${baseUrl}/testing/email-template.html`, name: 'email-template'}),
+    performCheck({ url: `${baseUrl}/testing/template-submitted-email.html`, name: 'email-template'}),
+    performCheck({ url: `${baseUrl}/testing/proof-requested-email.html`, name: 'email-template'}),
   ],
   defaults: {
     reporters: [

@@ -2,9 +2,12 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "3.775.0",
     "@aws-sdk/client-s3": "3.775.0",
+    "@aws-sdk/client-ses": "3.775.0",
+    "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0",
     "jwt-decode": "^4.0.0",
+    "mimetext": "^3.0.27",
     "nhs-notify-backend-client": "^0.0.1",
     "winston": "^3.17.0",
     "zod": "^3.24.2"
@@ -25,8 +28,9 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./logger": "./src/logger.ts",
-    "./lambda-cognito-authorizer": "./src/lambda-cognito-authorizer.ts"
+    "./email-client": "./src/email-client.ts",
+    "./lambda-cognito-authorizer": "./src/lambda-cognito-authorizer.ts",
+    "./logger": "./src/logger.ts"
   },
   "main": "src/index.ts",
   "name": "nhs-notify-web-template-management-utils",

@@ -356,6 +356,7 @@ export class TemplateClient {
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
+      templateDTO.name,
       user.userId,
       personalisationParameters!,
       pdfVersionId,

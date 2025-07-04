@@ -9,6 +9,7 @@ import path from 'node:path';
 import { Readable } from 'node:stream';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
+import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 
 export class App {
   constructor(
@@ -17,6 +18,7 @@ export class App {
     private readonly sftpEnvironment: string,
     private readonly batch: SyntheticBatch,
     private readonly sftpSupplierClientRepository: SftpSupplierClientRepository,
+    private readonly emailClient: EmailClient,
     private readonly logger: Logger
   ) {}
   async send(
@@ -29,6 +31,7 @@ export class App {
       personalisationParameters,
       supplier,
       templateId,
+      templateName,
       testDataVersionId,
     } = this.parseProofingRequest(eventBody);
 
@@ -102,6 +105,13 @@ export class App {
 
       templateLogger.info('Sent proofing request');
 
+      // send email to supplier
+      await this.emailClient.sendProofRequestedEmailToSupplier(
+        templateId,
+        templateName,
+        supplier
+      );
+
       return 'sent';
     } catch (error) {
       templateLogger
@@ -128,6 +138,7 @@ export class App {
         personalisationParameters: z.array(z.string()),
         supplier: z.string(),
         templateId: z.string(),
+        templateName: z.string(),
         testDataVersionId: z.string().optional(),
       })
       .parse(JSON.parse(event));

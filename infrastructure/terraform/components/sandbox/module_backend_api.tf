@@ -27,5 +27,6 @@ module "backend_api" {
   enable_event_stream = true
 
   email_domain                            = local.email_domain
-  template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_sender
+  template_submitted_sender_email_address = local.sandbox_letter_supplier_mock_template_submitted_sender
+  proof_requested_sender_email_address    = local.sandbox_letter_supplier_mock_proof_requested_sender
 }

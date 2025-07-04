@@ -138,3 +138,8 @@ variable "template_submitted_sender_email_address" {
   type        = string
   description = "Template submitted sender email address"
 }
+
+variable "proof_requested_sender_email_address" {
+  type        = string
+  description = "Proof requested sender email address"
+}

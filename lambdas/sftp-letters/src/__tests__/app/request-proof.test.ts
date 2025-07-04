@@ -1,7 +1,7 @@
-import { mock } from 'jest-mock-extended';
+import { mock, mockDeep } from 'jest-mock-extended';
 import { TemplateLockRepository } from '../../infra/template-lock-repository';
 import { UserDataRepository } from '../../infra/user-data-repository';
-import { App } from '../../app/send';
+import { App } from '../../app/request-proof';
 import { SyntheticBatch, Manifest } from '../../domain/synthetic-batch';
 import { Readable } from 'node:stream';
 import { mockTestDataCsv, streamToString } from '../helpers';
@@ -9,12 +9,14 @@ import { createMockLogger } from 'nhs-notify-web-template-management-test-helper
 import { SftpSupplierClientRepository } from '../../infra/sftp-supplier-client-repository';
 import { SftpClient } from '../../infra/sftp-client';
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
+import type { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 
 const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
 const baseUploadDir = 'Incoming';
 const baseDownloadDir = 'Outgoing';
 const owner = 'owner-id';
 const templateId = 'template-id';
+const templateName = 'template-name';
 const pdfVersionId = 'pdf-version-id';
 const testDataVersionId = 'test-data-version-id';
 const messageId = 'message-id';
@@ -23,6 +25,9 @@ const supplier = 'LETTER_SUPPLIER';
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
   const templateRepository = mock<TemplateLockRepository>();
+  const emailClient = mockDeep<EmailClient>({
+    sendProofRequestedEmailToSupplier: jest.fn(),
+  });
   const syntheticBatch = mock<SyntheticBatch>();
   const { logger, logMessages } = createMockLogger();
 
@@ -34,6 +39,7 @@ function setup() {
     sftpEnvironment,
     syntheticBatch,
     sftpSupplierClientRepository,
+    emailClient,
     logger
   );
 
@@ -45,6 +51,7 @@ function setup() {
       syntheticBatch,
       logger,
       sftpSupplierClientRepository,
+      emailClient,
     },
     logMessages,
   };
@@ -57,6 +64,7 @@ function mockEvent(
   return {
     owner,
     templateId,
+    templateName,
     pdfVersionId,
     supplier,
     ...(hasTestData && { testDataVersionId }),
@@ -259,6 +267,10 @@ describe('App', () => {
     expect(manifestDestinationArg).toBe(
       `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
     );
+
+    expect(
+      mocks.emailClient.sendProofRequestedEmailToSupplier
+    ).toHaveBeenCalledWith(templateId, templateName, supplier);
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(

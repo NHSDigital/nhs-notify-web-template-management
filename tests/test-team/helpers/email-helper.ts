@@ -19,15 +19,13 @@ export class EmailHelper {
 
   private readonly testEmailBucketName = process.env.TEST_EMAIL_BUCKET_NAME;
 
-  private readonly testEmailPrefix = process.env.TEST_EMAIL_PREFIX;
-
   constructor() {}
 
-  async getAllS3Items() {
+  async getAllS3Items(prefix: string) {
     const { Contents = [], ContinuationToken } = await this.s3Client.send(
       new ListObjectsV2Command({
         Bucket: this.testEmailBucketName,
-        Prefix: this.testEmailPrefix,
+        Prefix: prefix,
       })
     );
 
@@ -41,7 +39,7 @@ export class EmailHelper {
       } = await this.s3Client.send(
         new ListObjectsV2Command({
           Bucket: this.testEmailBucketName,
-          Prefix: this.testEmailPrefix,
+          Prefix: prefix,
           ContinuationToken: nextToken,
         })
       );
@@ -53,8 +51,12 @@ export class EmailHelper {
     return s3Items;
   }
 
-  async getEmailForTemplateId(templateId: string, dateCutoff: Date) {
-    const s3Items = await this.getAllS3Items();
+  async getEmailForTemplateId(
+    prefix: string,
+    templateId: string,
+    dateCutoff: Date
+  ) {
+    const s3Items = await this.getAllS3Items(prefix);
 
     const sortedKeys = s3Items
       .filter(({ LastModified }) => (LastModified ?? 0) > dateCutoff)
