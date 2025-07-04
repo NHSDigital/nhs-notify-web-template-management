@@ -1,11 +1,14 @@
 import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
-import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+import {
+  SSMClient,
+  GetParameterCommand,
+  ParameterNotFound,
+} from '@aws-sdk/client-ssm';
 import { mockClient } from 'aws-sdk-client-mock';
 import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
 import { ClientConfiguration } from 'nhs-notify-backend-client';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
-import { ZodError } from 'zod';
 
 function setup() {
   const ssmClient = mockClient(SSMClient);
@@ -361,6 +364,37 @@ describe('ClientConfigRepository', () => {
         await repository.get(mockClientId);
 
         expect(cache.set).toHaveBeenCalledWith(mockKey, validClient);
+      });
+
+      it('caches non-existance of configuration parameter', async () => {
+        const {
+          mocks: { ssmClient, cache },
+        } = setup();
+
+        const repository = new ClientConfigRepository(
+          mockSSMKeyPrefix,
+          ssmClient as unknown as SSMClient,
+          cache
+        );
+
+        cache.get.mockReturnValueOnce(undefined);
+
+        const notFoundErr = new ParameterNotFound({
+          $metadata: {},
+          message: 'not found',
+        });
+
+        ssmClient.on(GetParameterCommand).rejectsOnce(notFoundErr);
+
+        await repository.get(mockClientId);
+
+        expect(cache.set).toHaveBeenCalledWith(mockKey, null);
+
+        cache.get.mockReturnValueOnce(null);
+
+        const refetched = await repository.get(mockClientId);
+
+        expect(refetched).toEqual({ data: null });
       });
 
       it('should not cache when parsing fails', async () => {

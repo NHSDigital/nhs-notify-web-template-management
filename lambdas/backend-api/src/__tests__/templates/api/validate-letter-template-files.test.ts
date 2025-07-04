@@ -543,6 +543,55 @@ describe('guard duty handler', () => {
     await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
   });
 
+  test('errors when fetching client configuration fails unexpectedly', async () => {
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: mock<DatabaseTemplate>({
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+          testDataCsv: undefined,
+        },
+        templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
+      }),
+    });
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(
+      Uint8Array.from('pdf')
+    );
+
+    const err = new Error('client config err');
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      error: { code: 500, actualError: err, message: 'client config error' },
+    });
+
+    await expect(handler(event)).rejects.toThrow(
+      'Unable to fetch client configuration'
+    );
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).not.toHaveBeenCalled();
+  });
+
   test("errors if the template data can't be loaded", async () => {
     const { handler, mocks } = setup();
 

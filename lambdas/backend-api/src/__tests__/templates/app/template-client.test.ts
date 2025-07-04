@@ -106,6 +106,32 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result client configuration unexpectedly cant be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'EMAIL',
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { code: 500, message: 'err' },
+      });
+
+      const result = await templateClient.createTemplate(data, user);
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'err',
+        },
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -513,6 +539,33 @@ describe('templateClient', () => {
         expect(mocks.templateRepository.create).not.toHaveBeenCalled();
       }
     );
+
+    test('should return a failure result client configuration unexpectedly cant be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'err', code: 500 },
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        user,
+        new File(['pdf'], 'template.pdf', {
+          type: 'application/pdf',
+        })
+      );
+
+      expect(result).toEqual({ error: { message: 'err', code: 500 } });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
 
     test('should return a failure result when intial template creation fails', async () => {
       const { templateClient, mocks } = setup();
@@ -1371,6 +1424,27 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result when fetching client configuration unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'err', code: 500 },
+      });
+
+      const result = await templateClient.requestProof(templateId, user);
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'err',
+        },
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
@@ -1764,6 +1838,26 @@ describe('templateClient', () => {
         error: {
           code: 404,
           message: 'Client configuration is not available',
+        },
+      });
+    });
+
+    test('should return a failure result, when client configuration unexpectedly cannot be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'fetch failure', code: 500 },
+      });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId,
+        userId: 'sub',
+      });
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'fetch failure',
         },
       });
     });

@@ -96,7 +96,6 @@ export class ValidateLetterTemplateFilesLambda {
       });
       return;
     }
-
     if (template.templateStatus !== 'PENDING_VALIDATION') {
       log.info('Template is not pending validation - skipping', {
         templateStatus: template.templateStatus,

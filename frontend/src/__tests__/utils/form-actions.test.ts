@@ -18,9 +18,9 @@ import {
 } from '@utils/form-actions';
 import { getSessionServer } from '@utils/amplify-utils';
 import { TemplateDto } from 'nhs-notify-backend-client';
-import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 
-const mockedTemplateClient = jest.mocked(templateClient);
+const mockedTemplateClient = jest.mocked(templateApiClient);
 const authIdTokenServerMock = jest.mocked(getSessionServer);
 
 jest.mock('@utils/amplify-utils');

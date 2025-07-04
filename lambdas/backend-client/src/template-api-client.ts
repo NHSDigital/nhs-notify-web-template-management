@@ -220,4 +220,4 @@ export class TemplateApiClient {
   }
 }
 
-export const templateClient = new TemplateApiClient();
+export const templateApiClient = new TemplateApiClient();

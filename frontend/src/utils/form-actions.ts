@@ -8,7 +8,7 @@ import {
   ValidatedTemplateDto,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
-import { templateClient } from 'nhs-notify-backend-client/src/template-api-client';
+import { templateApiClient } from 'nhs-notify-backend-client/src/template-api-client';
 
 export async function createTemplate(
   template: CreateUpdateTemplate
@@ -19,7 +19,7 @@ export async function createTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.createTemplate(
+  const { data, error } = await templateApiClient.createTemplate(
     template,
     accessToken
   );
@@ -43,7 +43,7 @@ export async function createLetterTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.createLetterTemplate(
+  const { data, error } = await templateApiClient.createLetterTemplate(
     template,
     accessToken,
     pdf,
@@ -67,7 +67,7 @@ export async function saveTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.updateTemplate(
+  const { data, error } = await templateApiClient.updateTemplate(
     template.id,
     template,
     accessToken
@@ -90,7 +90,7 @@ export async function setTemplateToSubmitted(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.submitTemplate(
+  const { data, error } = await templateApiClient.submitTemplate(
     templateId,
     accessToken
   );
@@ -110,7 +110,7 @@ export async function setTemplateToDeleted(templateId: string): Promise<void> {
     throw new Error('Failed to get access token');
   }
 
-  const { error } = await templateClient.deleteTemplate(
+  const { error } = await templateApiClient.deleteTemplate(
     templateId,
     accessToken
   );
@@ -130,7 +130,7 @@ export async function requestTemplateProof(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.requestProof(
+  const { data, error } = await templateApiClient.requestProof(
     templateId,
     accessToken
   );
@@ -152,7 +152,7 @@ export async function getTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.getTemplate(
+  const { data, error } = await templateApiClient.getTemplate(
     templateId,
     accessToken
   );
@@ -171,7 +171,7 @@ export async function getTemplates(): Promise<TemplateDto[]> {
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateClient.listTemplates(accessToken);
+  const { data, error } = await templateApiClient.listTemplates(accessToken);
 
   if (error) {
     logger.error('Failed to get templates', { error });
