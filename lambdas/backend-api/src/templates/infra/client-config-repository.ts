@@ -18,11 +18,11 @@ export class ClientConfigRepository {
   async get(clientId: string): Promise<Client | undefined> {
     const key = `${this.ssmKeyPrefix}/${clientId}`;
 
-    const client = this.cache.get<Client>(key);
+    const cached = this.cache.get<Client>(key);
 
-    if (client) return client;
+    if (cached) return cached;
 
-    let config: string | undefined;
+    let client: string | undefined;
 
     try {
       const response = await this.ssmClient.send(
@@ -30,7 +30,7 @@ export class ClientConfigRepository {
           Name: key,
         })
       );
-      config = response.Parameter?.Value;
+      client = response.Parameter?.Value;
     } catch (error) {
       this.logger.error('failed to obtain client configuration', {
         error,
@@ -40,7 +40,7 @@ export class ClientConfigRepository {
       return;
     }
 
-    const { data, error, success } = $ClientProcessed.safeParse(config);
+    const { data, error, success } = $ClientProcessed.safeParse(client);
 
     if (!success) {
       this.logger.error('Failed to parse client configuration', error, {

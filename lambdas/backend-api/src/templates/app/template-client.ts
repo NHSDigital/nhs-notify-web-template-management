@@ -433,16 +433,12 @@ export class TemplateClient {
       user,
     });
 
-    if (!user.clientId) {
-      throw new Error('Client ID is required');
-    }
-
-    const client = await this.clientConfigRepository.get(user.clientId);
+    const client = await this.clientConfigRepository.get(String(user.clientId));
 
     if (!client) {
       log.error('Failed to get client');
 
-      return failure(ErrorCase.INTERNAL, 'Could not retrieve client');
+      return failure(ErrorCase.NOT_FOUND, 'Could not retrieve client configuration');
     }
 
     return success(client);

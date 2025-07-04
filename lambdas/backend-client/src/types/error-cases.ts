@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 export enum ErrorCase {
-  TEMPLATE_NOT_FOUND = 404,
+  NOT_FOUND = 404,
   VALIDATION_FAILED = 400,
   UNAUTHORIZED = 401,
   INTERNAL = 500,

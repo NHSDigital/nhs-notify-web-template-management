@@ -4,6 +4,7 @@ import {
   LetterFiles,
   TemplateDto,
   CreateUpdateTemplate,
+  Client,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
@@ -1692,6 +1693,52 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: undefined,
+      });
+    });
+  });
+
+  describe('getClient', () => {
+    const clientId = 'client1';
+
+    test('should return a 404 failure result, when client configuration is not available', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce(undefined);
+
+      const result = await templateClient.getClient({
+        clientId,
+        userId: 'sub',
+      });
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
+
+      expect(result).toEqual({
+        error: {
+          code: 404,
+          message: 'Could not retrieve client configuration',
+        },
+      });
+    });
+
+    test('should return client configuration', async () => {
+      const { templateClient, mocks } = setup();
+
+      const client: Client = {
+        features: { proofing: true },
+        campaignId: 'campaign',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce(client);
+
+      const result = await templateClient.getClient({
+        clientId,
+        userId: 'user',
+      });
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
+
+      expect(result).toEqual({
+        data: client,
       });
     });
   });

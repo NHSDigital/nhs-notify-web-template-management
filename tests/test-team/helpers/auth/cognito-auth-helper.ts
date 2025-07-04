@@ -20,14 +20,14 @@ type TestUserStaticDetails = {
   clientKey: ClientKey | undefined;
 };
 
-type TestUserDyanamicDetails = {
+type TestUserDynamicDetails = {
   email: string;
   clientId: string | undefined;
   password: string;
 };
 
 export type TestUserContext = TestUserStaticDetails &
-  TestUserDyanamicDetails & {
+  TestUserDynamicDetails & {
     accessToken: string;
     refreshToken: string;
   };
@@ -79,7 +79,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
 };
 
 export type TestUser = TestUserStaticDetails &
-  TestUserDyanamicDetails & {
+  TestUserDynamicDetails & {
     /**
      * Gets an access token for a test user
      * If the token is expired, tries to use refresh token

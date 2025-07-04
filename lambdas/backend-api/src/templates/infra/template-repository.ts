@@ -80,13 +80,13 @@ export class TemplateRepository {
       );
 
       if (!response?.Item) {
-        return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+        return failure(ErrorCase.NOT_FOUND, 'Template not found');
       }
 
       const item = response.Item as DatabaseTemplate;
 
       if (item.templateStatus === 'DELETED') {
-        return failure(ErrorCase.TEMPLATE_NOT_FOUND, 'Template not found');
+        return failure(ErrorCase.NOT_FOUND, 'Template not found');
       }
 
       return success(item);
@@ -603,7 +603,7 @@ export class TemplateRepository {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
           return failure(
-            ErrorCase.TEMPLATE_NOT_FOUND,
+            ErrorCase.NOT_FOUND,
             `Template not found`,
             error
           );
@@ -669,7 +669,7 @@ export class TemplateRepository {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
           return failure(
-            ErrorCase.TEMPLATE_NOT_FOUND,
+            ErrorCase.NOT_FOUND,
             `Template not found`,
             error
           );

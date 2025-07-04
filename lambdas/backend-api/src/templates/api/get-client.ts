@@ -25,7 +25,7 @@ export function createHandler({
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ ...data, statusCode: 200 }),
+      body: JSON.stringify({ client: data, statusCode: 200 }),
     };
   };
 }

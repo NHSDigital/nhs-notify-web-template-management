@@ -12,9 +12,11 @@ describe('ClientConfiguration', () => {
   it('should return client details', async () => {
     axiosMock.onGet('/v1/client-configuration').reply(200, {
       statusCode: 200,
-      campaignId: 'example-campaignId',
-      features: {
-        proofing: true,
+      client: {
+        campaignId: 'example-campaignId',
+        features: {
+          proofing: true,
+        },
       },
     });
 
@@ -28,5 +30,18 @@ describe('ClientConfiguration', () => {
         proofing: true,
       },
     });
+  });
+
+  it('returns undefined on error', async () => {
+    axiosMock.onGet('/v1/client-configuration').reply(400, {
+      statusCode: 200,
+      technicalMessage: 'Invalid Request',
+    });
+
+    const apiClient = new ClientConfigurationApiClient();
+
+    const notifyClientConfig = await apiClient.fetch('token');
+
+    expect(notifyClientConfig).toEqual(undefined);
   });
 });

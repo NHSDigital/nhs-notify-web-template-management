@@ -552,7 +552,7 @@ describe('guard duty handler', () => {
 
     mocks.templateRepository.get.mockResolvedValueOnce({
       error: {
-        code: ErrorCase.TEMPLATE_NOT_FOUND,
+        code: ErrorCase.NOT_FOUND,
         actualError: new Error('database error'),
         message: 'Some error message',
       },

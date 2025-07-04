@@ -7,7 +7,7 @@ export class ClientConfigurationApiClient {
 
   async fetch(token: string): Promise<Client | undefined> {
     const response = await catchAxiosError(
-      this.httpClient.get<Client>(`/v1/client-configuration`, {
+      this.httpClient.get<{ client: Client }>(`/v1/client-configuration`, {
         headers: { Authorization: token },
       })
     );
@@ -16,7 +16,7 @@ export class ClientConfigurationApiClient {
       return undefined;
     }
 
-    return $Client.parse(response.data);
+    return $Client.parse(response.data.client);
   }
 }
 

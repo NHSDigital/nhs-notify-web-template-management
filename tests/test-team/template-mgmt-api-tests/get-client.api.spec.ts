@@ -9,12 +9,16 @@ import { testClients } from '../helpers/client/client-helper';
 test.describe('GET /v1/client-configuration', () => {
   const authHelper = createAuthHelper();
   let userWithClient: TestUser;
+  let userWithoutClientConfiguration: TestUser;
   let userWithoutClient: TestUser;
 
   const url = `${process.env.API_BASE_URL}/v1/client-configuration`;
 
   test.beforeAll(async () => {
     userWithClient = await authHelper.getTestUser(testUsers.User1.userId);
+    userWithoutClientConfiguration = await authHelper.getTestUser(
+      testUsers.User2.userId
+    );
     userWithoutClient = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
@@ -39,6 +43,21 @@ test.describe('GET /v1/client-configuration', () => {
     expect(await response.json()).toEqual({
       statusCode: 400,
       technicalMessage: 'Invalid request',
+    });
+  });
+
+  test('returns 404 if no configuiration parameter exists for the user', async ({
+    request,
+  }) => {
+    const response = await request.get(url, {
+      headers: {
+        Authorization: await userWithoutClientConfiguration.getAccessToken(),
+      },
+    });
+    expect(response.status()).toBe(404);
+    expect(await response.json()).toEqual({
+      statusCode: 400,
+      technicalMessage: 'Could not retrieve client configuration',
     });
   });
 
