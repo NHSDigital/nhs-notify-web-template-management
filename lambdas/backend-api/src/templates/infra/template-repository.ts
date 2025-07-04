@@ -602,11 +602,7 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(
-            ErrorCase.NOT_FOUND,
-            `Template not found`,
-            error
-          );
+          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
         }
 
         return failure(
@@ -668,11 +664,7 @@ export class TemplateRepository {
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
         if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(
-            ErrorCase.NOT_FOUND,
-            `Template not found`,
-            error
-          );
+          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
         }
 
         if (error.Item.templateStatus.S === 'SUBMITTED') {

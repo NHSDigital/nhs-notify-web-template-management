@@ -438,7 +438,10 @@ export class TemplateClient {
     if (!client) {
       log.error('Failed to get client');
 
-      return failure(ErrorCase.NOT_FOUND, 'Could not retrieve client configuration');
+      return failure(
+        ErrorCase.NOT_FOUND,
+        'Could not retrieve client configuration'
+      );
     }
 
     return success(client);
