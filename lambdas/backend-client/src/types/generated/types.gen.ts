@@ -106,14 +106,14 @@ export type ClientFeatures = {
   proofing?: boolean;
 };
 
-export type Client = {
+export type ClientConfiguration = {
   campaignId?: string;
   features: ClientFeatures;
 };
 
-export type ClientSuccess = {
+export type ClientConfigurationSuccess = {
   statusCode: number;
-  clientConfiguration: Client;
+  clientConfiguration: ClientConfiguration;
 };
 
 export type TemplateSuccessList = {
@@ -417,7 +417,7 @@ export type GetV1ClientConfigurationResponses = {
   /**
    * 200 response
    */
-  200: ClientSuccess;
+  200: ClientConfigurationSuccess;
 };
 
 export type GetV1ClientConfigurationResponse =

@@ -1,6 +1,6 @@
 import z from 'zod';
 import { schemaFor } from './schema-for';
-import { Client, ClientFeatures } from '../types/generated';
+import { ClientConfiguration, ClientFeatures } from '../types/generated';
 
 const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
@@ -8,7 +8,7 @@ const $ClientFeatures = schemaFor<ClientFeatures>()(
   })
 );
 
-export const $Client = schemaFor<Client>()(
+export const $ClientConfiguration = schemaFor<ClientConfiguration>()(
   z.object({
     campaignId: z.string().optional(),
     features: $ClientFeatures,

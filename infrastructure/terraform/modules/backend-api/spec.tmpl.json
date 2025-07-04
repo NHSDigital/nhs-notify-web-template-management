@@ -302,7 +302,7 @@
         "required": [],
         "type": "object"
       },
-      "Client": {
+      "ClientConfiguration": {
         "properties": {
           "campaignId": {
             "type": "string"
@@ -316,13 +316,13 @@
         ],
         "type": "object"
       },
-      "ClientSuccess": {
+      "ClientConfigurationSuccess": {
         "properties": {
           "statusCode": {
             "type": "integer"
           },
           "clientConfiguration": {
-            "$ref": "#/components/schemas/Client"
+            "$ref": "#/components/schemas/ClientConfiguration"
           }
         },
         "required": [
@@ -986,7 +986,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ClientSuccess"
+                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
                 }
               }
             },

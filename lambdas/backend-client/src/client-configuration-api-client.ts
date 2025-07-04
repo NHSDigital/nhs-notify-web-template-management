@@ -1,22 +1,25 @@
-import { $Client } from './schemas/client';
-import { Client } from './types/generated';
+import { $ClientConfiguration } from './schemas/client';
+import { ClientConfiguration } from './types/generated';
 import { catchAxiosError, createAxiosClient } from './axios-client';
 
 export class ClientConfigurationApiClient {
   private readonly httpClient = createAxiosClient();
 
-  async fetch(token: string): Promise<Client | undefined> {
+  async fetch(token: string): Promise<ClientConfiguration | undefined> {
     const response = await catchAxiosError(
-      this.httpClient.get<{ client: Client }>(`/v1/client-configuration`, {
-        headers: { Authorization: token },
-      })
+      this.httpClient.get<{ clientConfiguration: ClientConfiguration }>(
+        `/v1/client-configuration`,
+        {
+          headers: { Authorization: token },
+        }
+      )
     );
 
     if (response.error) {
       return undefined;
     }
 
-    return $Client.parse(response.data.client);
+    return $ClientConfiguration.parse(response.data.clientConfiguration);
   }
 }
 

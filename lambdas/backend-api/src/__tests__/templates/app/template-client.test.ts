@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
-import {
+import type {
   LetterFiles,
   TemplateDto,
   CreateUpdateTemplate,
-  Client,
+  ClientConfiguration,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
@@ -1697,7 +1697,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('getClient', () => {
+  describe('getClientConfiguration', () => {
     const clientId = 'client1';
 
     test('should return a 404 failure result, when client configuration is not available', async () => {
@@ -1705,7 +1705,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce(undefined);
 
-      const result = await templateClient.getClient({
+      const result = await templateClient.getClientConfiguration({
         clientId,
         userId: 'sub',
       });
@@ -1723,14 +1723,14 @@ describe('templateClient', () => {
     test('should return client configuration', async () => {
       const { templateClient, mocks } = setup();
 
-      const client: Client = {
+      const client: ClientConfiguration = {
         features: { proofing: true },
         campaignId: 'campaign',
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce(client);
 
-      const result = await templateClient.getClient({
+      const result = await templateClient.getClientConfiguration({
         clientId,
         userId: 'user',
       });

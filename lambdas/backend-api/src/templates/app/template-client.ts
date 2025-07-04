@@ -9,7 +9,7 @@ import {
   LetterFiles,
   TemplateStatus,
   $CreateUpdateNonLetter,
-  Client,
+  ClientConfiguration,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -428,7 +428,9 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async getClient(user: User): Promise<Result<Client>> {
+  async getClientConfiguration(
+    user: User
+  ): Promise<Result<ClientConfiguration>> {
     const log = this.logger.child({
       user,
     });

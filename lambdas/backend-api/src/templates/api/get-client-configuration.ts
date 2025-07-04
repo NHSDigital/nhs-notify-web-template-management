@@ -14,7 +14,7 @@ export function createHandler({
       return apiFailure(400, 'Invalid request');
     }
 
-    const { data, error } = await templateClient.getClient({
+    const { data, error } = await templateClient.getClientConfiguration({
       userId,
       clientId,
     });
@@ -25,7 +25,7 @@ export function createHandler({
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ client: data, statusCode: 200 }),
+      body: JSON.stringify({ clientConfiguration: data, statusCode: 200 }),
     };
   };
 }

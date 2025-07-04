@@ -12,7 +12,7 @@ describe('ClientConfiguration', () => {
   it('should return client details', async () => {
     axiosMock.onGet('/v1/client-configuration').reply(200, {
       statusCode: 200,
-      client: {
+      clientConfiguration: {
         campaignId: 'example-campaignId',
         features: {
           proofing: true,

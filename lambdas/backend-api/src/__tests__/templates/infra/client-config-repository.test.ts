@@ -3,7 +3,7 @@ import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import { mockClient } from 'aws-sdk-client-mock';
 import { mock } from 'jest-mock-extended';
 import NodeCache from 'node-cache';
-import { Client } from 'nhs-notify-backend-client';
+import { ClientConfiguration } from 'nhs-notify-backend-client';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 
 function setup() {
@@ -25,7 +25,7 @@ const mockSSMKeyPrefix = '/test-csi/clients';
 const mockClientId = 'test-client-123';
 const mockKey = `${mockSSMKeyPrefix}/${mockClientId}`;
 
-const validClient: Client = {
+const validClient: ClientConfiguration = {
   campaignId: 'campaign-123',
   features: {
     proofing: true,
@@ -76,7 +76,7 @@ describe('ClientConfigRepository', () => {
           logger
         );
 
-        const clientWithoutCampaign: Client = {
+        const clientWithoutCampaign: ClientConfiguration = {
           features: {
             proofing: false,
           },

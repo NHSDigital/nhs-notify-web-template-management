@@ -1,7 +1,7 @@
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { mock } from 'jest-mock-extended';
-import { Client } from 'nhs-notify-backend-client';
-import { createHandler } from '@backend-api/templates/api/get-client';
+import { ClientConfiguration } from 'nhs-notify-backend-client';
+import { createHandler } from '@backend-api/templates/api/get-client-configuration';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
 
 const setup = () => {
@@ -34,13 +34,13 @@ describe('Template API - get client configuration', () => {
       }),
     });
 
-    expect(mocks.templateClient.getClient).not.toHaveBeenCalled();
+    expect(mocks.templateClient.getClientConfiguration).not.toHaveBeenCalled();
   });
 
   test('should return error when getting client fails', async () => {
     const { handler, mocks } = setup();
 
-    mocks.templateClient.getClient.mockResolvedValueOnce({
+    mocks.templateClient.getClientConfiguration.mockResolvedValueOnce({
       error: {
         code: 404,
         message: 'Could not retrieve client configuration',
@@ -63,7 +63,7 @@ describe('Template API - get client configuration', () => {
       }),
     });
 
-    expect(mocks.templateClient.getClient).toHaveBeenCalledWith({
+    expect(mocks.templateClient.getClientConfiguration).toHaveBeenCalledWith({
       userId: 'sub',
       clientId: 'nhs-notify-client-id',
     });
@@ -72,13 +72,13 @@ describe('Template API - get client configuration', () => {
   test('should return client', async () => {
     const { handler, mocks } = setup();
 
-    const client: Client = {
+    const clientConfiguration: ClientConfiguration = {
       features: { proofing: false },
       campaignId: 'campaign',
     };
 
-    mocks.templateClient.getClient.mockResolvedValueOnce({
-      data: client,
+    mocks.templateClient.getClientConfiguration.mockResolvedValueOnce({
+      data: clientConfiguration,
     });
 
     const event = mock<APIGatewayProxyEvent>({
@@ -91,10 +91,10 @@ describe('Template API - get client configuration', () => {
 
     expect(result).toEqual({
       statusCode: 200,
-      body: JSON.stringify({ client, statusCode: 200 }),
+      body: JSON.stringify({ clientConfiguration, statusCode: 200 }),
     });
 
-    expect(mocks.templateClient.getClient).toHaveBeenCalledWith({
+    expect(mocks.templateClient.getClientConfiguration).toHaveBeenCalledWith({
       userId: 'sub',
       clientId: 'nhs-notify-client-id',
     });

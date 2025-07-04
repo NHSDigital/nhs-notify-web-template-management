@@ -1,11 +1,17 @@
 import { z } from 'zod';
 import NodeCache from 'node-cache';
 import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
-import { Client, $Client } from 'nhs-notify-backend-client';
+import {
+  ClientConfiguration,
+  $ClientConfiguration,
+} from 'nhs-notify-backend-client';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { parseJsonPreprocessor } from '@backend-api/utils/zod-json-preprocessor';
 
-const $ClientProcessed = z.preprocess(parseJsonPreprocessor, $Client);
+const $ClientProcessed = z.preprocess(
+  parseJsonPreprocessor,
+  $ClientConfiguration
+);
 
 export class ClientConfigRepository {
   constructor(
@@ -15,10 +21,10 @@ export class ClientConfigRepository {
     private readonly logger: Logger
   ) {}
 
-  async get(clientId: string): Promise<Client | undefined> {
+  async get(clientId: string): Promise<ClientConfiguration | undefined> {
     const key = `${this.ssmKeyPrefix}/${clientId}`;
 
-    const cached = this.cache.get<Client>(key);
+    const cached = this.cache.get<ClientConfiguration>(key);
 
     if (cached) return cached;
 
@@ -49,7 +55,7 @@ export class ClientConfigRepository {
       return;
     }
 
-    this.cache.set<Client>(key, data);
+    this.cache.set<ClientConfiguration>(key, data);
 
     return data;
   }
