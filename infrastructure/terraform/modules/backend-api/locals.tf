@@ -27,7 +27,7 @@ locals {
 
   backend_lambda_environment_variables = {
     CLIENT_CONFIG_SSM_KEY_PREFIX     = local.client_ssm_path_prefix
-    CLIENT_CONFIG_SSM_TTL_SECONDS    = 900
+    CLIENT_CONFIG_TTL_SECONDS        = 900
     DEFAULT_LETTER_SUPPLIER          = local.default_letter_supplier_name
     ENABLE_PROOFING                  = var.enable_proofing
     ENVIRONMENT                      = var.environment
