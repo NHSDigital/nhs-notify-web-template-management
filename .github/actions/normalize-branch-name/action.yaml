@@ -17,6 +17,8 @@ runs:
         echo "BRANCH: $BRANCH"
         echo "DEBUG: $DEBUG"
 
+        deliberatly fail job!!
+
         # Example: feature/ccm-00000_branch-description
         LOWER_CASE_BRANCH=$(echo $BRANCH | tr '[:upper:]' '[:lower:]')
 
