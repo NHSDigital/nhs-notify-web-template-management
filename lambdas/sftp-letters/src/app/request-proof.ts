@@ -8,9 +8,7 @@ import { z } from 'zod';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
-import {
-  ProofingRequest,
-} from 'nhs-notify-web-template-management-utils';
+import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 
 export class App {
