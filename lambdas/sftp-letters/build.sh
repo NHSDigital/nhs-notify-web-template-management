@@ -13,7 +13,6 @@ npx esbuild \
     --loader:.node=file \
     --entry-names=[name] \
     --outdir=dist \
-    --external:pdfjs-dist \
     src/sftp-request-proof.ts \
     src/sftp-poll.ts
 
