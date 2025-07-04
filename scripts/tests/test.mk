@@ -20,39 +20,17 @@ test-typecheck: # Typecheck your code from scripts/test/typecheck @Testing
 test-coverage: # Evaluate code coverage from scripts/test/coverage @Testing
 	make _test name="coverage"
 
-test-accessibility: # Run your accessibility tests from scripts/test/accessibility @Testing
+test-accessibility: # Run tests from scripts/tests/accessibility.sh @Testing
 	make _test name="accessibility"
 
-test-contract: # Run your contract tests from scripts/test/contract @Testing
-	make _test name="contract"
+test-ui-component: # Run tests from scripts/tests/ui-component.sh @Testing
+	make _test name="ui-component"
 
-test-integration: # Run your integration tests from scripts/test/integration @Testing
-	make _test name="integration"
+test-ui-e2e: # Run tests from scripts/tests/ui-e2e.sh @Testing
+	make _test name="ui-e2e"
 
-test-load: # Run all your load tests @Testing
-	make \
-		test-capacity \
-		test-soak \
-		test-response-time
-		# You may wish to add more here, depending on your app
-
-test-capacity: # Test what load level your app fails at from scripts/test/capacity @Testing
-	make _test name="capacity"
-
-test-soak: # Test that resources don't get exhausted over time from scripts/test/soak @Testing
-	make _test name="soak"
-
-test-response-time: # Test your API response times from scripts/test/response-time @Testing
-	make _test name="response-time"
-
-test-security: # Run your security tests from scripts/test/security @Testing
-	make _test name="security"
-
-test-ui: # Run your UI tests from scripts/test/ui @Testing
-	make _test name="ui"
-
-test-ui-performance: # Run UI render tests from scripts/test/ui-performance @Testing
-	make _test name="ui-performance"
+test-api: # Run tests from scripts/tests/api.sh @Testing
+	make _test name="api"
 
 test: # Run all the test tasks @Testing
 	make \
@@ -60,13 +38,10 @@ test: # Run all the test tasks @Testing
 		test-lint \
 		test-typecheck \
 		test-coverage \
-		test-contract \
-		test-security \
-		test-ui \
-		test-ui-performance \
-		test-integration \
+		test-ui-component \
+		test-ui-e2e \
+		test-api \
 		test-accessibility \
-		test-load
 
 _test:
 	set -e
@@ -81,16 +56,10 @@ ${VERBOSE}.SILENT: \
 	_test \
 	test \
 	test-accessibility \
-	test-capacity \
-	test-contract \
 	test-coverage \
-	test-soak \
-	test-integration \
 	test-lint \
 	test-typecheck \
-	test-load \
-	test-response-time \
-	test-security \
-	test-ui \
-	test-ui-performance \
+	test-ui-component \
+	test-api \
+	test-ui-e2e \
 	test-unit \

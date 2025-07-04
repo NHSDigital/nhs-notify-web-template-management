@@ -1,5 +1,22 @@
-if [ -z "$SKIP_SANDBOX_INSTALL" ]; then npm ci; fi
+REGION=$1
+ENVIRONMENT=$2
+ACTION=$3
 
-npm run generate-dependencies --workspaces --if-present
+echo Running pre.sh
+echo "REGION=$REGION"
+echo "ENVIRONMENT=$ENVIRONMENT"
+echo "ACTION=$ACTION"
 
-npm run lambda-build --workspaces --if-present
+if [ "${ACTION}" == "apply" ]; then
+    echo "Building lambdas for distribution"
+
+    if [ -z "$SKIP_SANDBOX_INSTALL" ]; then npm ci; fi
+
+    npm run generate-dependencies --workspaces --if-present
+
+    npm run lambda-build --workspaces --if-present
+
+    $(git rev-parse --show-toplevel)/lambdas/layers/pdfjs/build.sh
+else
+    echo "Skipping lambda build for action $ACTION"
+fi
