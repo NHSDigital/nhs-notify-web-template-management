@@ -50,8 +50,12 @@ describe('EmailClient', () => {
         expect.any(SendRawEmailCommand)
       );
 
-      const emailContent =
-        sesClient.send.mock.calls[0][0].input.RawMessage.Data.toString();
+      const sesInput = sesClient.send.mock.calls[0][0];
+      if (!(sesInput instanceof SendRawEmailCommand)) {
+        throw new TypeError('Unexpected command given to SES client');
+      }
+
+      const emailContent = sesInput.input.RawMessage?.Data?.toString();
       expect(emailContent).toContain('template-id');
       expect(emailContent).toContain('template-name');
       expect(emailContent).toContain('supplier1');
@@ -176,8 +180,13 @@ describe('EmailClient', () => {
       );
 
       // check email to supplier1
+      const sesCall1Input = sesClient.send.mock.calls[0][0];
+      if (!(sesCall1Input instanceof SendRawEmailCommand)) {
+        throw new TypeError('Unexpected command given to SES client');
+      }
+
       const supplier1EmailContent =
-        sesClient.send.mock.calls[0][0].input.RawMessage.Data.toString();
+        sesCall1Input.input.RawMessage?.Data?.toString();
       expect(supplier1EmailContent).toContain('template-id');
       expect(supplier1EmailContent).toContain('template-name');
       expect(supplier1EmailContent).toContain('supplier1');
@@ -186,8 +195,13 @@ describe('EmailClient', () => {
       expect(supplier1EmailContent).not.toContain('proof2.pdf');
 
       // check email to supplier2
+      const sesCall2Input = sesClient.send.mock.calls[1][0];
+      if (!(sesCall2Input instanceof SendRawEmailCommand)) {
+        throw new TypeError('Unexpected command given to SES client');
+      }
+
       const supplier2EmailContent =
-        sesClient.send.mock.calls[1][0].input.RawMessage.Data.toString();
+        sesCall2Input.input.RawMessage?.Data?.toString();
       expect(supplier2EmailContent).toContain('template-id');
       expect(supplier2EmailContent).toContain('template-name');
       expect(supplier2EmailContent).not.toContain('supplier1');
