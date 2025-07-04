@@ -116,17 +116,6 @@ test.describe('letter complete e2e journey', () => {
       expect(csv?.ChecksumSHA256).toEqual(
         pdfUploadFixtures.withPersonalisation.csv.checksumSha256()
       );
-
-      // check proof-requested email
-      const emailContents = await emailHelper.getEmailForTemplateId(
-        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
-        templateId,
-        testStart
-      );
-
-      expect(emailContents).toContain(templateId);
-      expect(emailContents).toContain(template.name);
-      expect(emailContents).toContain('Proof Requested');
     }).toPass({ timeout: 40_000 });
 
     await expect(async () => {
@@ -155,6 +144,19 @@ test.describe('letter complete e2e journey', () => {
       { length: 3 },
       (_, i) => `${batchId}_proof_${i + 1}.pdf`
     );
+
+    await expect(async () => {
+      // check proof-requested email
+      const emailContents = await emailHelper.getEmailForTemplateId(
+        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
+        templateId,
+        testStart
+      );
+
+      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain(template.name);
+      expect(emailContents).toContain('Proof Requested');
+    }).toPass({ timeout: 40_000 });
 
     await expect(async () => {
       await lambdaClient.send(
