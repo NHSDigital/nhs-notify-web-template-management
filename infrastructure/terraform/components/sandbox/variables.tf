@@ -65,12 +65,14 @@ variable "kms_deletion_window" {
 
 variable "letter_suppliers" {
   type = map(object({
+    email_addresses  = list(string)
     enable_polling   = bool
     default_supplier = optional(bool)
   }))
 
   default = {
     "WTMMOCK" = {
+      email_addresses  = []
       enable_polling   = true
       default_supplier = true
     }

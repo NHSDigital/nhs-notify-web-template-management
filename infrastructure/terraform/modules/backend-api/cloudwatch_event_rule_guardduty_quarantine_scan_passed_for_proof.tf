@@ -19,6 +19,6 @@ resource "aws_cloudwatch_event_rule" "guardduty_quarantine_scan_passed_for_proof
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_passed_process_proof" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_proof.name
-  arn      = module.lambda_process_proof.function_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_proof.name
+  arn  = module.lambda_process_proof.function_arn
 }

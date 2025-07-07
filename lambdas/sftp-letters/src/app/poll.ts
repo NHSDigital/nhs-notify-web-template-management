@@ -28,7 +28,7 @@ export class App {
       await this.pollBaseFolder(
         sftpClient,
         `${baseDownloadDir}/${this.sftpEnvironment}/proofs`,
-        'proofs'
+        `proofs/${supplier}`
       );
     } finally {
       await sftpClient.end();

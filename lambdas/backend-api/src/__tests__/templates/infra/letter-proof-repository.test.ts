@@ -3,37 +3,42 @@ import { LetterProofRepository } from '../../../templates/infra/letter-proof-rep
 describe('parseQuarantineKey', () => {
   test('parses key', () => {
     const parsedKey = LetterProofRepository.parseQuarantineKey(
-      'proofs/template-id/proof.pdf'
+      'proofs/supplier/template-id/proof.pdf'
     );
 
     expect(parsedKey).toEqual({
       templateId: 'template-id',
       fileName: 'proof.pdf',
+      supplier: 'supplier',
     });
   });
 
   test('errors on wrong file extension', () => {
     expect(() =>
-      LetterProofRepository.parseQuarantineKey('proofs/template-id/proof.txt')
-    ).toThrow('Unexpected object key "proofs/template-id/proof.txt"');
+      LetterProofRepository.parseQuarantineKey(
+        'proofs/supplier/template-id/proof.txt'
+      )
+    ).toThrow('Unexpected object key "proofs/supplier/template-id/proof.txt"');
   });
 
   test('errors on wrong number of path segments', () => {
     expect(() =>
       LetterProofRepository.parseQuarantineKey(
-        'proofs/template-id/extra-folder/proof.pdf'
+        'proofs/supplier/template-id/extra-folder/proof.pdf'
       )
     ).toThrow(
-      'Unexpected object key "proofs/template-id/extra-folder/proof.pdf"'
+      'Unexpected object key "proofs/supplier/template-id/extra-folder/proof.pdf"'
     );
   });
 
   test('errors on wrong path prefix', () => {
     expect(() =>
       LetterProofRepository.parseQuarantineKey(
-        'not-proofs/template-id/proof.pdf'
+        'not-proofs/supplier/template-id/proof.pdf'
       )
-    ).toThrow('Unexpected object key "not-proofs/template-id/proof.pdf"');
+    ).toThrow(
+      'Unexpected object key "not-proofs/supplier/template-id/proof.pdf"'
+    );
   });
 });
 

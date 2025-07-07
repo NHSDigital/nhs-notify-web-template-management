@@ -28,10 +28,12 @@ async function createTemplates() {
       proofs: {
         'a.pdf': {
           virusScanStatus: 'FAILED',
+          supplier: 'WTMMOCK',
           fileName: 'a.pdf',
         },
         'b.pdf': {
           virusScanStatus: 'PASSED',
+          supplier: 'WTMMOCK',
           fileName: 'b.pdf',
         },
       },
