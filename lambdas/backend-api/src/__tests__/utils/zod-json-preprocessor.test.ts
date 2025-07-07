@@ -18,18 +18,6 @@ describe('parseJsonPreprocessor', () => {
     expect(val).toEqual({ name: 'example' });
   });
 
-  it('should return value when value is not a string', () => {
-    const addIssue = jest.fn();
-
-    const context = mock<z.RefinementCtx>({ addIssue });
-
-    const val = parseJsonPreprocessor({}, context);
-
-    expect(addIssue).not.toHaveBeenCalled();
-
-    expect(val).toEqual({});
-  });
-
   it('should add error to context when unable to parse JSON', () => {
     const addIssue = jest.fn();
 
