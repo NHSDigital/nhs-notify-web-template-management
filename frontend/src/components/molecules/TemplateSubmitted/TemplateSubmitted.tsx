@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
 import { withEmbeddedLink } from '@utils/markdownit';
+import React from 'react';
 
 type TemplateSubmittedProps = { templateId: string; templateName: string };
 
@@ -54,22 +55,23 @@ export const TemplateSubmitted = ({
           <h2 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-6'>
             {doNextHeading}
           </h2>
-          {doNextParagraphs.map(({ heading, text }) => {
+          {doNextParagraphs.map(({ heading, text }, index) => {
             return (
-              <>
+              <React.Fragment key={`do-next-section-${index}`}>
                 <h3 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3'>
                   {heading}
                 </h3>
-                {text.map((content) => {
+                {text.map((content, i) => {
                   return (
                     <p
+                      key={`do-next-${index}-${i}`}
                       dangerouslySetInnerHTML={{
                         __html: withEmbeddedLink(content),
                       }}
                     />
                   );
                 })}
-              </>
+              </React.Fragment>
             );
           })}
           <hr className='nhsuk-section-break--visible' />
