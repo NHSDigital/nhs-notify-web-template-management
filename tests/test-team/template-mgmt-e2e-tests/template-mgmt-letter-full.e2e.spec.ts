@@ -181,8 +181,26 @@ test.describe('letter complete e2e journey', () => {
       );
 
       expect(pdfHrefs.length).toBeGreaterThan(0);
-
       for (const href of pdfHrefs) expect(href).toContain(templateId);
+
+      const downloadBucketMetadata = await Promise.all(
+        pdfHrefs.map((href) => {
+          const [downloadBucketPath] =
+            (href as string).match(
+              // eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
+              /((?:[^/]+\/){3}[^/]+)\/?$/
+            ) ?? [];
+
+          return templateStorageHelper.getS3Metadata(
+            process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
+            downloadBucketPath!
+          );
+        })
+      );
+
+      for (const [i, entry] of downloadBucketMetadata.entries()) {
+        expect(entry, JSON.stringify(pdfHrefs[i])).not.toBeNull();
+      }
 
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
