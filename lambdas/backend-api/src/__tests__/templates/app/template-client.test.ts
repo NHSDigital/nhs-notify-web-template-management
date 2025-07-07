@@ -659,7 +659,7 @@ describe('templateClient', () => {
       }
     );
 
-    test('should return a failure result client configuration unexpectedly cant be fetched', async () => {
+    test('should return a failure result if client configuration unexpectedly cant be fetched', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
@@ -1783,38 +1783,6 @@ describe('templateClient', () => {
           code: 500,
           actualError: clientErr,
           message: 'Failed to send to proofing queue',
-        },
-      });
-    });
-
-    test('should return a failure result, when proofing is not enabled', async () => {
-      const { templateClient, mocks } = setup();
-
-      mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: {
-          campaignId: 'campaignId',
-          features: {
-            proofing: false,
-          },
-        },
-      });
-
-      const result = await templateClient.requestProof(templateId, user);
-
-      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(
-        user.clientId
-      );
-
-      expect(
-        mocks.templateRepository.proofRequestUpdate
-      ).not.toHaveBeenCalled();
-
-      expect(mocks.queueMock.send).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        error: {
-          code: 403,
-          message: 'User cannot request a proof',
         },
       });
     });

@@ -366,7 +366,7 @@ describe('ClientConfigRepository', () => {
         expect(cache.set).toHaveBeenCalledWith(mockKey, validClient);
       });
 
-      it('caches non-existance of configuration parameter', async () => {
+      it('caches non-existence of configuration parameter', async () => {
         const {
           mocks: { ssmClient, cache },
         } = setup();
