@@ -181,19 +181,26 @@ test.describe('letter complete e2e journey', () => {
       );
 
       expect(pdfHrefs.length).toBeGreaterThan(0);
-      for (const href of pdfHrefs) expect(href).toContain(templateId);
 
       const downloadBucketMetadata = await Promise.all(
         pdfHrefs.map((href) => {
-          const [downloadBucketPath] =
+          const [, downloadBucketPath] =
             (href as string).match(
-              // eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
-              /((?:[^/]+\/){3}[^/]+)\/?$/
+              // eslint-disable-next-line security/detect-non-literal-regexp
+              new RegExp(
+                `/templates/files/(${user.userId}/proofs/${templateId}/[^/]+)/?$`
+              )
             ) ?? [];
+
+          if (!downloadBucketPath) {
+            throw new Error(
+              `Could not determine bucket path based on URL: ${href}`
+            );
+          }
 
           return templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
-            downloadBucketPath!
+            downloadBucketPath
           );
         })
       );
