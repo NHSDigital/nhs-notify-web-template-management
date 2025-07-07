@@ -231,13 +231,25 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     request,
   }) => {
     const templateId = randomUUID();
+    const currentVersion = randomUUID();
 
-    const template = TemplateFactory.createEmailTemplate(
-      templateId,
-      userWithoutClient.userId,
-      'userWithoutClienttemplate'
-    );
-
+    const template = {
+      ...TemplateFactory.createLetterTemplate(
+        templateId,
+        userProofingEnabled.userId,
+        'userProofingEnabledtemplate',
+        // template should not reach this status if proofing is not
+        // enabled for the client
+        'PENDING_PROOF_REQUEST'
+      ),
+      files: {
+        pdfTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: 'template.pdf',
+        },
+      },
+    };
     await templateStorageHelper.seedTemplateData([template]);
 
     const proofResponse = await request.post(

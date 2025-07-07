@@ -57,7 +57,7 @@ test.describe('GET /v1/client-configuration', () => {
     expect(response.status()).toBe(404);
     expect(await response.json()).toEqual({
       statusCode: 404,
-      technicalMessage: 'Could not retrieve client configuration',
+      technicalMessage: 'Client configuration is not available',
     });
   });
 

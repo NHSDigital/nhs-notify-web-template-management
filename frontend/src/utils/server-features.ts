@@ -6,6 +6,7 @@ import {
   ClientFeatures,
 } from 'nhs-notify-backend-client';
 import { getSessionServer } from './amplify-utils';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 
 /*
  * Caches at the request context level. Not a global cache.
@@ -28,7 +29,14 @@ export async function serverIsFeatureEnabled(
 
   if (!accessToken) return false;
 
-  const client = await fetchClient(accessToken);
+  const clientConfiguration = await fetchClient(accessToken);
 
-  return client?.features[feature] ?? true;
+  if (clientConfiguration.error) {
+    logger.error(
+      'Failed to fetch client configuration',
+      clientConfiguration.error
+    );
+  }
+
+  return clientConfiguration.data?.features[feature] ?? false;
 }

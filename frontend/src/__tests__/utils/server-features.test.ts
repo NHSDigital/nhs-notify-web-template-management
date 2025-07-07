@@ -4,6 +4,7 @@ import { clientConfigurationApiClient } from 'nhs-notify-backend-client';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('nhs-notify-backend-client');
+jest.mock('nhs-notify-web-template-management-utils/logger');
 
 const getSessionServerMock = jest.mocked(getSessionServer);
 const clientConfigurationApiClientMock = jest.mocked(
@@ -26,17 +27,38 @@ describe('serverIsFeatureEnabled', () => {
     expect(enabled).toEqual(false);
   });
 
-  it('should return true when no client', async () => {
+  it('should return false when no client', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       userSub: 'user',
     });
 
-    clientConfigurationApiClientMock.fetch.mockResolvedValueOnce(undefined);
+    clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
+      data: null,
+    });
 
     const enabled = await serverIsFeatureEnabled('proofing');
 
-    expect(enabled).toEqual(true);
+    expect(enabled).toEqual(false);
+
+    expect(clientConfigurationApiClientMock.fetch).toHaveBeenCalledWith(
+      'token'
+    );
+  });
+
+  it('returns false if fetching configuration fails unexpectedly', async () => {
+    getSessionServerMock.mockResolvedValueOnce({
+      accessToken: 'token',
+      userSub: 'user',
+    });
+
+    clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
+      error: { code: 500, message: 'server error' },
+    });
+
+    const enabled = await serverIsFeatureEnabled('proofing');
+
+    expect(enabled).toEqual(false);
 
     expect(clientConfigurationApiClientMock.fetch).toHaveBeenCalledWith(
       'token'
@@ -45,7 +67,9 @@ describe('serverIsFeatureEnabled', () => {
 
   it('should return false when feature is not enabled', async () => {
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
-      features: { proofing: false },
+      data: {
+        features: { proofing: false },
+      },
     });
 
     getSessionServerMock.mockResolvedValueOnce({
@@ -64,7 +88,9 @@ describe('serverIsFeatureEnabled', () => {
 
   it('should return true when feature is enabled', async () => {
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
-      features: { proofing: true },
+      data: {
+        features: { proofing: true },
+      },
     });
 
     getSessionServerMock.mockResolvedValueOnce({
