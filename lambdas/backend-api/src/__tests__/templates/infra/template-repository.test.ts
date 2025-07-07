@@ -887,7 +887,8 @@ describe('templateRepository', () => {
         'template-owner',
         'template-id',
         'pdf-template.pdf',
-        'PASSED'
+        'PASSED',
+        'MBA'
       );
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
@@ -907,6 +908,7 @@ describe('templateRepository', () => {
           ':virusScanResult': {
             fileName: 'pdf-template.pdf',
             virusScanStatus: 'PASSED',
+            supplier: 'MBA',
           },
         },
       });
@@ -937,7 +939,8 @@ describe('templateRepository', () => {
         'template-owner',
         'template-id',
         'pdf-template.pdf',
-        'FAILED'
+        'FAILED',
+        'MBA'
       );
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
@@ -957,6 +960,7 @@ describe('templateRepository', () => {
           ':virusScanResult': {
             fileName: 'pdf-template.pdf',
             virusScanStatus: 'FAILED',
+            supplier: 'MBA',
           },
         },
       });
@@ -978,7 +982,8 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'PASSED'
+          'PASSED',
+          'MBA'
         )
       ).resolves.not.toThrow();
     });
@@ -1005,7 +1010,8 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'PASSED'
+          'PASSED',
+          'MBA'
         )
       ).resolves.not.toThrow();
     });
@@ -1021,7 +1027,8 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'PASSED'
+          'PASSED',
+          'MBA'
         )
       ).rejects.toThrow('Something went wrong');
     });
@@ -1042,7 +1049,8 @@ describe('templateRepository', () => {
           'template-owner',
           'template-id',
           'pdf-template',
-          'PASSED'
+          'PASSED',
+          'MBA'
         )
       ).rejects.toThrow('Something went wrong');
     });

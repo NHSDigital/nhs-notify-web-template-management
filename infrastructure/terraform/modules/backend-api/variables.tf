@@ -89,6 +89,7 @@ variable "kms_key_arn" {
 
 variable "letter_suppliers" {
   type = map(object({
+    email_addresses  = list(string)
     enable_polling   = bool
     default_supplier = optional(bool)
   }))
@@ -126,4 +127,14 @@ variable "log_subscription_role_arn" {
 variable "function_s3_bucket" {
   type        = string
   description = "Name of S3 bucket to upload lambda artefacts to"
+}
+
+variable "email_domain" {
+  type        = string
+  description = "Email domain"
+}
+
+variable "template_submitted_sender_email_address" {
+  type        = string
+  description = "Template submitted sender email address"
 }

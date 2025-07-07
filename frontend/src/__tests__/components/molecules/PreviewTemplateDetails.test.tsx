@@ -149,9 +149,21 @@ describe('PreviewTemplateDetailsLetter', () => {
               virusScanStatus: 'PASSED',
             },
             proofs: {
-              'a.pdf': { fileName: 'a.pdf', virusScanStatus: 'PASSED' },
-              'b.pdf': { fileName: 'b.pdf', virusScanStatus: 'PASSED' },
-              'c.pdf': { fileName: 'c.pdf', virusScanStatus: 'FAILED' },
+              'a.pdf': {
+                fileName: 'a.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+              'b.pdf': {
+                fileName: 'b.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+              'c.pdf': {
+                fileName: 'c.pdf',
+                virusScanStatus: 'FAILED',
+                supplier: 'MBA',
+              },
             },
           },
           createdAt: '2025-01-13T10:19:25.579Z',

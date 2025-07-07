@@ -26,6 +26,7 @@ describe('ViewLetterTemplate component', () => {
                 'supplier-proof.pdf': {
                   fileName: 'supplier-proof.pdf',
                   virusScanStatus: 'PASSED',
+                  supplier: 'MBA',
                 },
               },
             },

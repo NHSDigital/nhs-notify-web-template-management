@@ -3,6 +3,7 @@
     "@aws-sdk/client-cognito-identity-provider": "3.775.0",
     "@aws-sdk/client-dynamodb": "3.775.0",
     "@aws-sdk/client-s3": "3.775.0",
+    "@aws-sdk/client-ses": "^3.835.0",
     "@aws-sdk/client-sqs": "3.775.0",
     "@aws-sdk/client-ssm": "3.775.0",
     "@aws-sdk/lib-dynamodb": "3.775.0",
@@ -41,7 +42,7 @@
   "name": "nhs-notify-backend-api",
   "private": true,
   "scripts": {
-    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist --external:pdfjs-dist src/templates/copy-scanned-object-to-internal.ts src/templates/create-letter.ts src/templates/create.ts src/templates/delete-failed-scanned-object.ts src/templates/delete.ts src/templates/get.ts src/templates/list.ts src/templates/proof.ts src/templates/set-letter-upload-virus-scan-status.ts src/templates/process-proof.ts src/templates/submit.ts src/templates/update.ts src/templates/validate-letter-template-files.ts src/templates/get-client.ts",
+    "lambda-build": "./build.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",

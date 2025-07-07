@@ -3,16 +3,17 @@ import { LetterFileRepository } from './letter-file-repository';
 export type LetterProofMetadata = {
   templateId: string;
   fileName: string;
+  supplier: string;
 };
 
 export class LetterProofRepository extends LetterFileRepository {
   static parseQuarantineKey(key: string): LetterProofMetadata {
     const keyParts = key.split('/');
-    const [fileType, templateId, fileName] = keyParts;
+    const [fileType, supplier, templateId, fileName] = keyParts;
     const extension = fileName.split('.').at(-1);
 
     if (
-      keyParts.length !== 3 ||
+      keyParts.length !== 4 ||
       fileType !== 'proofs' ||
       extension?.toLowerCase() !== 'pdf'
     ) {
@@ -22,6 +23,7 @@ export class LetterProofRepository extends LetterFileRepository {
     return {
       templateId,
       fileName,
+      supplier,
     };
   }
 

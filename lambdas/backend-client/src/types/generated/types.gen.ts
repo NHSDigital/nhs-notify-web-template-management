@@ -36,11 +36,6 @@ export type Failure = {
   technicalMessage: string;
 };
 
-export type FileDetails = {
-  fileName: string;
-  virusScanStatus: VirusScanStatus;
-};
-
 export type Language =
   | 'ar'
   | 'bg'
@@ -75,7 +70,7 @@ export type Language =
 export type LetterFiles = {
   pdfTemplate: VersionedFileDetails;
   proofs?: {
-    [key: string]: FileDetails;
+    [key: string]: ProofFileDetails;
   };
   testDataCsv?: VersionedFileDetails;
 };
@@ -90,6 +85,12 @@ export type LetterType = 'q4' | 'x0' | 'x1';
 export type NhsAppProperties = {
   message: string;
   templateType: 'NHS_APP';
+};
+
+export type ProofFileDetails = {
+  fileName: string;
+  supplier: string;
+  virusScanStatus: VirusScanStatus;
 };
 
 export type SmsProperties = {
