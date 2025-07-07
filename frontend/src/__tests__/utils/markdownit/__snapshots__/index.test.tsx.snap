@@ -73,3 +73,15 @@ End of horizontal line</p>
 <p>By doing a new line this starts a new paragraph</p>
 "
 `;
+
+exports[`withEmbeddedLink should only process links and line breaks rules 1`] = `
+"
+# Heading<br>## sub heading<br>**bold**<br>* bullet point 1
+* bullet point 2<br>1. ordered list item 1
+2. ordered list item 2<br><a href="https://www.nhs.uk/example" target="_blank" rel="noopener noreferrer">Read more</a><br>https://www.nhs.uk/example<br>Before page break
+***
+After page break<br>Start of line break<br>end of line break<br>Before horizontal line
+---
+End of horizontal line<br>This is a paragraph<br>By doing a new line this starts a new paragraph
+"
+`;

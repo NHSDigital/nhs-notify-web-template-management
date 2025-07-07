@@ -71,6 +71,8 @@ exports[`TemplateSubmitted component should render 1`] = `
         <p>
           <a
             href="https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             Raise a request with the Service Desk (opens in a new tab)
           </a>
