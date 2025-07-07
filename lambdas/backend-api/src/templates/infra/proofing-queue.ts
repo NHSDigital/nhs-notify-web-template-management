@@ -10,6 +10,7 @@ export class ProofingQueue {
 
   async send(
     templateId: string,
+    templateName: string,
     owner: string,
     personalisationParameters: string[],
     pdfVersionId: string,
@@ -26,6 +27,7 @@ export class ProofingQueue {
             personalisationParameters,
             supplier,
             templateId,
+            templateName,
             testDataVersionId,
           }),
         })

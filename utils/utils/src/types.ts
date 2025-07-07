@@ -139,5 +139,6 @@ export type ProofingRequest = {
   personalisationParameters: string[];
   supplier: string;
   templateId: string;
+  templateName: string;
   testDataVersionId?: string;
 };

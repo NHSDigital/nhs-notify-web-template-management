@@ -12,9 +12,12 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { EmailHelper } from '../helpers/email-helper';
 import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
+
+const emailHelper = new EmailHelper();
 
 // clear login state from e2e.setup.ts
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -163,6 +166,19 @@ function requestProof(
     );
 
     await expect(async () => {
+      // check proof-requested email
+      const emailContents = await emailHelper.getEmailForTemplateId(
+        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
+        templateId,
+        testStart
+      );
+
+      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain(template.name);
+      expect(emailContents).toContain('Proof Requested');
+    }).toPass({ timeout: 40_000 });
+
+    await expect(async () => {
       await lambdaClient.send(
         new InvokeCommand({
           FunctionName: process.env.SFTP_POLL_LAMBDA_NAME,
@@ -240,7 +256,8 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { id: string; owner: string },
+  testStart: Date,
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
@@ -254,6 +271,17 @@ function submit(
 
     const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
     expect(finalTemplate.templateStatus).toBe('SUBMITTED');
+
+    // check template-submitted email
+    const emailContents = await emailHelper.getEmailForTemplateId(
+      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
+      templateKey.id,
+      testStart
+    );
+
+    expect(emailContents).toContain(templateKey.id);
+    expect(emailContents).toContain(finalTemplate.name);
+    expect(emailContents).toContain('Template Submitted');
   });
 }
 
@@ -279,6 +307,8 @@ test.describe('letter complete e2e journey', () => {
   test('Full journey - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
+    const testStart = new Date();
+
     await login(page, userWithProofing);
 
     const templateKey = await create(
@@ -292,10 +322,12 @@ test.describe('letter complete e2e journey', () => {
 
     await requestProof(page, templateStorageHelper, templateKey);
 
-    await submit(page, templateStorageHelper, templateKey);
+    await submit(page, templateStorageHelper, templateKey, testStart);
   });
 
   test('Full journey - user has proofing disabled', async ({ page }) => {
+    const testStart = new Date();
+
     await login(page, userWithoutProofing);
 
     const templateKey = await create(
@@ -307,6 +339,6 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await submit(page, templateStorageHelper, templateKey);
+    await submit(page, templateStorageHelper, templateKey, testStart);
   });
 });
