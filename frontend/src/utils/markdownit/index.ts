@@ -51,7 +51,10 @@ export function renderEmailMarkdown(
   return markdown.render(value);
 }
 
-export function withEmbeddedLink(content: string, markdown = new MarkdownItWrapper()) {
-  markdown.enableLineBreak().enable('link')
-  return markdown.renderInline(content)
+export function withEmbeddedLink(
+  content: string,
+  markdown = new MarkdownItWrapper()
+) {
+  markdown.enableLineBreak().enable('link');
+  return markdown.renderInline(content);
 }

@@ -61,12 +61,12 @@ export const TemplateSubmitted = ({
                 <h3 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3'>
                   {heading}
                 </h3>
-                {text.map((content, i) => {
+                {text.map((textContent, i) => {
                   return (
                     <p
                       key={`do-next-${index}-${i}`}
                       dangerouslySetInnerHTML={{
-                        __html: withEmbeddedLink(content),
+                        __html: withEmbeddedLink(textContent),
                       }}
                     />
                   );
