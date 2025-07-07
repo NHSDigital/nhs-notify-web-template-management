@@ -12,6 +12,8 @@ export type BackendConfig = {
   templatesInternalBucketName: string;
   templatesQuarantineBucketName: string;
   templatesDownloadBucketName: string;
+  testEmailBucketName: string;
+  testEmailPrefix: string;
   userPoolId: string;
   userPoolClientId: string;
 };
@@ -33,6 +35,8 @@ export const BackendConfigHelper = {
       userPoolId: process.env.USER_POOL_ID ?? '',
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
+      testEmailBucketName: process.env.TEST_EMAIL_BUCKET_NAME ?? '',
+      testEmailPrefix: process.env.TEST_EMAIL_PREFIX ?? '',
     };
   },
 
@@ -51,6 +55,8 @@ export const BackendConfigHelper = {
     process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME =
       config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
+    process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
+    process.env.TEST_EMAIL_PREFIX = config.testEmailPrefix;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -73,6 +79,9 @@ export const BackendConfigHelper = {
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
       sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
+      testEmailBucketName:
+        outputsFileContent.test_email_bucket_name.value ?? '',
+      testEmailPrefix: outputsFileContent.test_email_prefix?.value ?? '',
     };
   },
 

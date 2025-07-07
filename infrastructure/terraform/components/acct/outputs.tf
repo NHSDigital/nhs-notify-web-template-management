@@ -49,3 +49,11 @@ output "vpc_nat_ips" {
 output "log_subscription_role_arn" {
   value = module.obs_datasource.log_subscription_role_arn
 }
+
+output "ses_testing_config" {
+  value = try({
+    bucket_name   = module.ses_testing.0.bucket_name
+    iam_role_arn  = module.ses_testing.0.iam_role_arn
+    rule_set_name = module.ses_testing.0.rule_set_name
+  }, null)
+}

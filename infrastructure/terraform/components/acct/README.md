@@ -40,6 +40,8 @@
 | <a name="module_s3bucket_artefacts_us_east_1"></a> [s3bucket\_artefacts\_us\_east\_1](#module\_s3bucket\_artefacts\_us\_east\_1) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.2 |
 | <a name="module_s3bucket_backup_reports"></a> [s3bucket\_backup\_reports](#module\_s3bucket\_backup\_reports) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v1.0.8 |
 | <a name="module_s3bucket_data_migration_backups"></a> [s3bucket\_data\_migration\_backups](#module\_s3bucket\_data\_migration\_backups) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/s3bucket | v2.0.4 |
+| <a name="module_sandbox_ses"></a> [sandbox\_ses](#module\_sandbox\_ses) | ../../modules/ses | n/a |
+| <a name="module_ses_testing"></a> [ses\_testing](#module\_ses\_testing) | ../../modules/acct-ses-testing | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
 ## Outputs
 
@@ -49,6 +51,7 @@
 | <a name="output_github_pat_ssm_param_name"></a> [github\_pat\_ssm\_param\_name](#output\_github\_pat\_ssm\_param\_name) | n/a |
 | <a name="output_log_subscription_role_arn"></a> [log\_subscription\_role\_arn](#output\_log\_subscription\_role\_arn) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | n/a |
+| <a name="output_ses_testing_config"></a> [ses\_testing\_config](#output\_ses\_testing\_config) | n/a |
 | <a name="output_vpc_nat_ips"></a> [vpc\_nat\_ips](#output\_vpc\_nat\_ips) | n/a |
 | <a name="output_vpc_subnets"></a> [vpc\_subnets](#output\_vpc\_subnets) | n/a |
 <!-- vale on -->

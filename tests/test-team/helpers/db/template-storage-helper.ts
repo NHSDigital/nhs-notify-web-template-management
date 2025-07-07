@@ -267,13 +267,14 @@ export class TemplateStorageHelper {
   async getLetterProofMetadata(
     bucket: string,
     prefix: string,
+    supplier: string,
     templateId: string,
     version: string,
     ext: string
   ) {
     return await this.getS3Metadata(
       bucket,
-      `${prefix}/${templateId}/${version}.${ext}`
+      `${prefix}/${supplier}/${templateId}/${version}.${ext}`
     );
   }
 

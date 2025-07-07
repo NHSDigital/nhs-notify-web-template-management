@@ -125,11 +125,11 @@ test('polls SFTP folder', async () => {
   expect(s3Repository.putRawData).toHaveBeenCalledTimes(2);
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/template-1-folder/template-1.pdf'
+    'proofs/supplier/template-1-folder/template-1.pdf'
   );
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/template-1-folder/template-2.pdf'
+    'proofs/supplier/template-1-folder/template-2.pdf'
   );
 
   expect(mockLogger.logMessages).toContainEqual({
@@ -138,7 +138,7 @@ test('polls SFTP folder', async () => {
       description: 'PDF file failed validation',
       sftpPath:
         'download-dir/sftp-environment/proofs/template-1-folder/invalid-file.pdf',
-      s3Path: 'proofs/template-1-folder/invalid-file.pdf',
+      s3Path: 'proofs/supplier/template-1-folder/invalid-file.pdf',
     },
     timestamp: new Date('2022-01-01 09:00').toISOString(),
   });
@@ -147,7 +147,7 @@ test('polls SFTP folder', async () => {
     description: 'Failed to process file',
     sftpPath:
       'download-dir/sftp-environment/proofs/template-1-folder/download-error.pdf',
-    s3Path: 'proofs/template-1-folder/download-error.pdf',
+    s3Path: 'proofs/supplier/template-1-folder/download-error.pdf',
     timestamp: new Date('2022-01-01 09:00').toISOString(),
     stack: expect.stringContaining('Error: Download error'),
     message: 'Download error',
