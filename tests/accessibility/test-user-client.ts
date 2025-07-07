@@ -32,6 +32,7 @@ export class TestUserClient {
           campaignId: 'accessibility-test-campaign',
         } satisfies ClientConfiguration),
         Overwrite: true,
+        Type: 'String',
       })
     );
 
