@@ -18,6 +18,12 @@ export type File = {
   virusScanStatus: string;
 };
 
+export type ProofFile = {
+  fileName: string;
+  supplier: string;
+  virusScanStatus: string;
+};
+
 type TypeSpecificProperties = {
   message?: string;
   subject?: string;
@@ -26,7 +32,7 @@ type TypeSpecificProperties = {
   files?: {
     pdfTemplate?: File;
     testDataCsv?: File;
-    proofs?: Record<string, Pick<File, 'fileName' | 'virusScanStatus'>>;
+    proofs?: Record<string, ProofFile>;
   };
   personalisationParameters?: string[];
   testDataCsvHeaders?: string[];

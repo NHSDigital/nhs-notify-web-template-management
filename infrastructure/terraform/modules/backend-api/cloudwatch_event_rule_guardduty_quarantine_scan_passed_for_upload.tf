@@ -29,6 +29,6 @@ resource "aws_cloudwatch_event_target" "quarantine_scan_passed_copy_object_for_u
 }
 
 resource "aws_cloudwatch_event_target" "quarantine_scan_passed_validate_files" {
-  rule     = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
-  arn      = module.sqs_validate_letter_template_files.sqs_queue_arn
+  rule = aws_cloudwatch_event_rule.guardduty_quarantine_scan_passed_for_upload.name
+  arn  = module.sqs_validate_letter_template_files.sqs_queue_arn
 }

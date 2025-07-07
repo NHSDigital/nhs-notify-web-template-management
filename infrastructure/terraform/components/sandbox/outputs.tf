@@ -53,3 +53,11 @@ output "deployment" {
     component      = var.component
   }
 }
+
+output "test_email_bucket_name" {
+  value = local.acct["ses_testing_config"].bucket_name
+}
+
+output "test_email_prefix" {
+  value = "emails-${var.environment}"
+}

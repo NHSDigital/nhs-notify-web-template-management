@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -euo pipefail
+
+rm -rf dist
+
+npx esbuild \
+    --bundle \
+    --minify \
+    --sourcemap \
+    --target=es2020 \
+    --platform=node \
+    --loader:.node=file \
+    --entry-names=[name] \
+    --outdir=dist \
+    --external:pdfjs-dist \
+    src/templates/copy-scanned-object-to-internal.ts \
+    src/templates/create-letter.ts src/templates/create.ts \
+    src/templates/delete-failed-scanned-object.ts \
+    src/templates/delete.ts src/templates/get.ts \
+    src/templates/list.ts \
+    src/templates/proof.ts \
+    src/templates/set-letter-upload-virus-scan-status.ts \
+    src/templates/process-proof.ts src/templates/submit.ts \
+    src/templates/update.ts \
+    src/templates/validate-letter-template-files.ts
+
+cp src/templates/infra/email-template.html dist/email-template.html

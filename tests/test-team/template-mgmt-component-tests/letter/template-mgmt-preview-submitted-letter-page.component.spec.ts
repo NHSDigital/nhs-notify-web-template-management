@@ -33,6 +33,7 @@ function createTemplates(owner: string) {
       proofs: {
         'first.pdf': {
           virusScanStatus: 'PASSED',
+          supplier: 'WTMMOCK',
           fileName: 'first.pdf',
         },
       },

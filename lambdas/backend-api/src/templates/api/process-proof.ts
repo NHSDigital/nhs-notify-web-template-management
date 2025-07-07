@@ -22,7 +22,7 @@ export const createHandler =
       },
     } = guardDutyEventValidator().parse(event);
 
-    const { templateId, fileName } =
+    const { templateId, fileName, supplier } =
       LetterProofRepository.parseQuarantineKey(objectKey);
 
     const owner = await templateRepository.getOwner(templateId);
@@ -65,6 +65,7 @@ export const createHandler =
       owner,
       templateId,
       fileName,
-      virusScanResult
+      virusScanResult,
+      supplier
     );
   };
