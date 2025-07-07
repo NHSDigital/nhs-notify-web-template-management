@@ -670,8 +670,20 @@ const templateSubmitted = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  doNextText:
-    "Tell an onboarding manager once you've submitted all your templates.",
+  sentMessages: {
+    heading: "If you've not sent messages using NHS Notify yet",
+    paragraph1: "Tell your onboarding manager once you've submitted all your templates.",
+    paragraph2: "If you replaced a template by submitting a new one, tell your onboarding manager which template you want to use."
+  },
+  notSentMessages: {
+    heading: "If you've sent messages using NHS Notify",
+    embeddedLink: {
+      text: "Raise a request with the Service Desk (opens in a new tab)",
+      href: "https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83"
+    },
+    paragraph1: " once you've submitted all your templates.",
+    paragraph2: "If you replaced a template by submitting a new one, tell us which template you want to use in your Service Desk request."
+  },
   backLinkText: backToAllTemplates,
 };
 
