@@ -49,9 +49,9 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      String(user.clientId)
-    );
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
 
     if (clientConfigurationResult.error) {
       log.error('Failed to fetch client configuration', {
@@ -146,9 +146,9 @@ export class TemplateClient {
       files,
     };
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      String(user.clientId)
-    );
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
 
     if (clientConfigurationResult.error) {
       log.error('Failed to fetch client configuration', {
@@ -351,9 +351,9 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      String(user.clientId)
-    );
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
 
     if (clientConfigurationResult.error) {
       log.error('Failed to fetch client configuration', {
@@ -465,9 +465,9 @@ export class TemplateClient {
       user,
     });
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      String(user.clientId)
-    );
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
 
     if (clientConfigurationResult.error) {
       log.error('Failed to fetch client configuration', {

@@ -106,7 +106,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result client configuration unexpectedly cant be fetched', async () => {
+    test('should return a failure result when client configuration unexpectedly cant be fetched', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
@@ -129,6 +129,47 @@ describe('templateClient', () => {
           code: 500,
           message: 'err',
         },
+      });
+    });
+
+    test('client configuration is not fetched if user has no clientId', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'EMAIL',
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+      };
+
+      const expectedTemplateDto: TemplateDto = {
+        ...data,
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'NOT_YET_SUBMITTED',
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner: user.userId,
+        campaignId: 'campaignId',
+        version: 1,
+      };
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.createTemplate(data, {
+        userId: user.userId,
+        clientId: undefined,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        data: expectedTemplateDto,
       });
     });
 
@@ -390,6 +431,84 @@ describe('templateClient', () => {
         user.userId,
         'PENDING_VALIDATION'
       );
+    });
+
+    test('if user has no clientId, client configuration is not fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const pdfFilename = 'template.pdf';
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      const pdf = new File(['pdf'], pdfFilename, {
+        type: 'application/pdf',
+      });
+
+      const filesWithVerions: LetterFiles = {
+        pdfTemplate: {
+          fileName: pdfFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+        proofs: {},
+      };
+
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        files: filesWithVerions,
+      };
+
+      const creationTime = '2025-03-12T08:41:08.805Z';
+
+      const initialCreatedTemplate: DatabaseTemplate = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+        templateStatus: 'PENDING_UPLOAD',
+        owner: user.userId,
+        version: 1,
+      };
+
+      const updateTime = '2025-03-12T08:41:33.666Z';
+
+      const finalTemplate: DatabaseTemplate = {
+        ...initialCreatedTemplate,
+        templateStatus: 'PENDING_VALIDATION',
+        updatedAt: updateTime,
+      };
+
+      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: initialCreatedTemplate,
+      });
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: finalTemplate,
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        { userId: user.userId, clientId: undefined },
+        pdf
+      );
+
+      expect(result).toEqual({
+        data: expectedDto,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
     });
 
     test('should return a failure result, when template data is invalid', async () => {
@@ -1700,6 +1819,30 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result, when user has no clientId (so proofing cannot be determined to be enabled)', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.requestProof(templateId, {
+        userId: user.userId,
+        clientId: undefined,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(mocks.queueMock.send).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 403,
+          message: 'User cannot request a proof',
+        },
+      });
+    });
+
     test('should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -1822,7 +1965,7 @@ describe('templateClient', () => {
   describe('getClientConfiguration', () => {
     const clientId = 'client1';
 
-    test('should return a 404 failure result, when client configuration is not available', async () => {
+    test('should return a 404 failure result, when client configuration is not available for client', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
@@ -1833,6 +1976,26 @@ describe('templateClient', () => {
       });
 
       expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
+
+      expect(result).toEqual({
+        error: {
+          code: 404,
+          message: 'Client configuration is not available',
+        },
+      });
+    });
+
+    test('should return a 404 failure result, when user has no clientId', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId: undefined,
+        userId: 'sub',
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
 
       expect(result).toEqual({
         error: {
