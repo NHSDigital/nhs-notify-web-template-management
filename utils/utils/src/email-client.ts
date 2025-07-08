@@ -75,7 +75,7 @@ export class EmailClient {
     if ((recipientEmailsForSupplier?.length ?? 0) === 0) {
       this.logger.info({
         description:
-          'Not sending template submitted email to supplier because no recipients are configured',
+          'Not sending email to supplier because no recipients are configured',
         templateId,
         supplier,
       });
@@ -115,7 +115,7 @@ export class EmailClient {
     if (!this.senderEmail) {
       this.logger.info({
         description:
-          'Not sending template submitted email to suppliers because no email address is provided',
+          'Not sending proof requested email to suppliers because no email address is provided',
         templateId,
         templateName,
         supplier,

@@ -26,7 +26,7 @@ describe('EmailClient', () => {
       expect(sesClient.send).not.toHaveBeenCalled();
       expect(logger.info).toHaveBeenCalledWith({
         description:
-          'Not sending template submitted email to suppliers because no email address is provided',
+          'Not sending proof requested email to suppliers because no email address is provided',
         templateId: 'template-id',
         templateName: 'template-name',
         supplier: 'supplier1',
@@ -130,13 +130,13 @@ describe('EmailClient', () => {
       expect(sesClient.send).not.toHaveBeenCalled();
       expect(logger.info).toHaveBeenCalledWith({
         description:
-          'Not sending template submitted email to supplier because no recipients are configured',
+          'Not sending email to supplier because no recipients are configured',
         templateId: mockTemplate.id,
         supplier: 'supplier2',
       });
       expect(logger.info).toHaveBeenCalledWith({
         description:
-          'Not sending template submitted email to supplier because no recipients are configured',
+          'Not sending email to supplier because no recipients are configured',
         templateId: mockTemplate.id,
         supplier: 'supplier1',
       });
