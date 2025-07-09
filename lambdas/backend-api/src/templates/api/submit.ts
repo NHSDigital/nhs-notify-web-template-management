@@ -1,7 +1,7 @@
 import type { APIGatewayProxyHandler } from 'aws-lambda';
 import { apiFailure, apiSuccess } from './responses';
 import { TemplateClient } from '../app/template-client';
-import { EmailClient } from '../infra/email-client';
+import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 
 export function createHandler({
   templateClient,
