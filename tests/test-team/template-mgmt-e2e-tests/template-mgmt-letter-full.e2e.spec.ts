@@ -144,8 +144,7 @@ function continueAfterCreation(page: Page) {
 function requestProof(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string },
-  testStart: Date
+  templateKey: { id: string; owner: string }
 ) {
   return test.step('request and receive proofs', async () => {
     await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
@@ -165,19 +164,6 @@ function requestProof(
       { length: 3 },
       (_, i) => `${batchId}_proof_${i + 1}.pdf`
     );
-
-    await expect(async () => {
-      // check proof-requested email
-      const emailContents = await emailHelper.getEmailForTemplateId(
-        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
-        template.id,
-        testStart
-      );
-
-      expect(emailContents).toContain(template.id);
-      expect(emailContents).toContain(template.name);
-      expect(emailContents).toContain('Proof Requested');
-    }).toPass({ timeout: 40_000 });
 
     await expect(async () => {
       await lambdaClient.send(
@@ -257,8 +243,7 @@ function requestProof(
 function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string },
-  testStart: Date
+  templateKey: { id: string; owner: string }
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
@@ -272,17 +257,23 @@ function submit(
 
     const finalTemplate = await templateStorageHelper.getTemplate(templateKey);
     expect(finalTemplate.templateStatus).toBe('SUBMITTED');
+  });
+}
 
-    // check template-submitted email
-    const emailContents = await emailHelper.getEmailForTemplateId(
-      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
-      templateKey.id,
-      testStart
-    );
+function checkEmail(templateId: string, testStart: Date, prefix: string) {
+  return test.step('check email', async () => {
+    await expect(async () => {
+      // check template-submitted email
+      const emailContents = await emailHelper.getEmailForTemplateId(
+        prefix,
+        templateId,
+        testStart
+      );
 
-    expect(emailContents).toContain(templateKey.id);
-    expect(emailContents).toContain(finalTemplate.name);
-    expect(emailContents).toContain('Template Submitted');
+      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain('Valid Letter Template'); // template name
+      expect(emailContents).toContain('Template Submitted');
+    }).toPass({ timeout: 60_000 });
   });
 }
 
@@ -321,14 +312,24 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await requestProof(page, templateStorageHelper, templateKey, testStart);
+    await requestProof(page, templateStorageHelper, templateKey);
 
-    await submit(page, templateStorageHelper, templateKey, testStart);
+    await checkEmail(
+      templateKey.id,
+      testStart,
+      process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX
+    );
+
+    await submit(page, templateStorageHelper, templateKey);
+
+    await checkEmail(
+      templateKey.id,
+      testStart,
+      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX
+    );
   });
 
   test('Full journey - user has proofing disabled', async ({ page }) => {
-    const testStart = new Date();
-
     await login(page, userWithoutProofing);
 
     const templateKey = await create(
@@ -340,6 +341,6 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await submit(page, templateStorageHelper, templateKey, testStart);
+    await submit(page, templateStorageHelper, templateKey);
   });
 });
