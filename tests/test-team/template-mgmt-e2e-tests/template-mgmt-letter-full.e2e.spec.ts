@@ -145,7 +145,7 @@ function requestProof(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
   templateKey: { id: string; owner: string },
-  testStart: Date,
+  testStart: Date
 ) {
   return test.step('request and receive proofs', async () => {
     await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
