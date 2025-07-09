@@ -1,6 +1,8 @@
 import z from 'zod';
 
 const $Env = z.object({
+  CLIENT_CONFIG_SSM_KEY_PREFIX: z.string(),
+  CLIENT_CONFIG_TTL_SECONDS: z.string().pipe(z.coerce.number()),
   DEFAULT_LETTER_SUPPLIER: z.string(),
   ENABLE_PROOFING: z.enum(['true', 'false']).default('false'),
   ENVIRONMENT: z.string(),
@@ -21,6 +23,8 @@ export function loadConfig() {
     .parse(JSON.parse(env.SUPPLIER_RECIPIENT_EMAIL_ADDRESSES));
 
   return {
+    clientConfigSsmKeyPrefix: env.CLIENT_CONFIG_SSM_KEY_PREFIX,
+    clientConfigTtlSeconds: env.CLIENT_CONFIG_TTL_SECONDS,
     defaultLetterSupplier: env.DEFAULT_LETTER_SUPPLIER,
     enableProofing: env.ENABLE_PROOFING === 'true',
     environment: env.ENVIRONMENT,

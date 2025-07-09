@@ -72,6 +72,7 @@ describe('create-letter', () => {
       body: multipart.toString('base64'),
       headers: {
         'Content-Type': contentType,
+        Authorization: 'example',
       },
       requestContext: { authorizer: { user: userId, clientId } },
     });

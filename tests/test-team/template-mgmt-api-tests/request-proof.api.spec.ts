@@ -11,12 +11,14 @@ import { randomUUID } from 'node:crypto';
 test.describe('POST /v1/template/:templateId/proof @debug', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
-  let user1: TestUser;
-  let user2: TestUser;
+  let userProofingEnabled: TestUser;
+  let anotherUser: TestUser;
+  let userWithoutClient: TestUser;
 
   test.beforeAll(async () => {
-    user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
+    anotherUser = await authHelper.getTestUser(testUsers.User2.userId);
+    userWithoutClient = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -42,7 +44,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       `${process.env.API_BASE_URL}/v1/template/noexist/proof`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userProofingEnabled.getAccessToken(),
         },
       }
     );
@@ -60,22 +62,22 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
   test('returns 404 if template exists but is owned by a different user', async ({
     request,
   }) => {
-    const user1templateId = randomUUID();
+    const userProofingEnabledtemplateId = randomUUID();
 
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.createLetterTemplate(
-        user1templateId,
-        user1.userId,
-        'user1template',
+        userProofingEnabledtemplateId,
+        userProofingEnabled.userId,
+        'userProofingEnabledtemplate',
         'PENDING_PROOF_REQUEST'
       ),
     ]);
 
     const updateResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${user1templateId}/proof`,
+      `${process.env.API_BASE_URL}/v1/template/${userProofingEnabledtemplateId}/proof`,
       {
         headers: {
-          Authorization: await user2.getAccessToken(),
+          Authorization: await anotherUser.getAccessToken(),
         },
       }
     );
@@ -97,8 +99,8 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        user1.userId,
-        'user1template',
+        userProofingEnabled.userId,
+        'userProofingEnabledtemplate',
         'PENDING_PROOF_REQUEST'
       ),
       files: {
@@ -123,7 +125,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userProofingEnabled.getAccessToken(),
         },
       }
     );
@@ -157,8 +159,8 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        user1.userId,
-        'user1template',
+        userProofingEnabled.userId,
+        'userProofingEnabledtemplate',
         'PENDING_VALIDATION'
       ),
       files: {
@@ -176,7 +178,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userProofingEnabled.getAccessToken(),
         },
       }
     );
@@ -199,8 +201,8 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
 
     const template = TemplateFactory.createEmailTemplate(
       templateId,
-      user1.userId,
-      'user1template'
+      userProofingEnabled.userId,
+      'userProofingEnabledtemplate'
     );
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -209,7 +211,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
       `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
       {
         headers: {
-          Authorization: await user1.getAccessToken(),
+          Authorization: await userProofingEnabled.getAccessToken(),
         },
       }
     );
@@ -222,6 +224,52 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     expect(result).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be proofed',
+    });
+  });
+
+  test('returns 403 - cannot request a proof when client proofing is not enabled', async ({
+    request,
+  }) => {
+    const templateId = randomUUID();
+    const currentVersion = randomUUID();
+
+    const template = {
+      ...TemplateFactory.createLetterTemplate(
+        templateId,
+        userProofingEnabled.userId,
+        'userProofingEnabledtemplate',
+        // template should not reach this status if proofing is not
+        // enabled for the client
+        'PENDING_PROOF_REQUEST'
+      ),
+      files: {
+        pdfTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion,
+          fileName: 'template.pdf',
+        },
+      },
+    };
+    await templateStorageHelper.seedTemplateData([template]);
+
+    const proofResponse = await request.post(
+      `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
+      {
+        headers: {
+          Authorization: await userWithoutClient.getAccessToken(),
+        },
+      }
+    );
+
+    const result = await proofResponse.json();
+
+    const debug = JSON.stringify(result, null, 2);
+
+    expect(proofResponse.status(), debug).toBe(403);
+
+    expect(result).toEqual({
+      statusCode: 403,
+      technicalMessage: 'User cannot request a proof',
     });
   });
 });

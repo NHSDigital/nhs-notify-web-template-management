@@ -5,7 +5,7 @@ import { DeleteCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
 import path from 'node:path';
 
-const { email, templateIds, userId } = JSON.parse(
+const { email, templateIds, userId, clientId } = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
@@ -32,7 +32,10 @@ const teardown = async () => {
     )
   );
 
-  await new TestUserClient(backendConfig.userPoolId).deleteTestUser(email);
+  await new TestUserClient(
+    backendConfig.userPoolId,
+    backendConfig.clientSsmPathPrefix
+  ).deleteTestUser(email, clientId);
 };
 
 teardown();
