@@ -12,8 +12,7 @@ npm run accessibility-test-setup -w tests/accessibility
 npm run build
 
 mkdir -p ./frontend/public/testing
-
-cp ./lambdas/backend-api/src/templates/infra/email-template.html ./frontend/public/testing/email-template.html
+cp ./utils/utils/src/email-templates/* ./frontend/public/testing/
 
 npm run app:start --prefix frontend
 

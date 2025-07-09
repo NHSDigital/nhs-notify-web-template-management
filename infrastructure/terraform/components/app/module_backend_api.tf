@@ -30,4 +30,5 @@ module "backend_api" {
 
   email_domain                            = module.ses.domain
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
+  proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
 }

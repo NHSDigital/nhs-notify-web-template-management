@@ -29,6 +29,7 @@ No requirements.
 | <a name="input_module"></a> [module](#input\_module) | The variable encapsulating the name of this module | `string` | `"api"` | no |
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used | `string` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
+| <a name="input_proof_requested_sender_email_address"></a> [proof\_requested\_sender\_email\_address](#input\_proof\_requested\_sender\_email\_address) | Proof requested sender email address | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
 | <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
@@ -45,9 +46,9 @@ No requirements.
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_process_proof"></a> [lambda\_process\_proof](#module\_lambda\_process\_proof) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
-| <a name="module_lambda_send_letter_proof"></a> [lambda\_send\_letter\_proof](#module\_lambda\_send\_letter\_proof) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_set_file_virus_scan_status_for_upload"></a> [lambda\_set\_file\_virus\_scan\_status\_for\_upload](#module\_lambda\_set\_file\_virus\_scan\_status\_for\_upload) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_sftp_poll"></a> [lambda\_sftp\_poll](#module\_lambda\_sftp\_poll) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
+| <a name="module_lambda_sftp_request_proof"></a> [lambda\_sftp\_request\_proof](#module\_lambda\_sftp\_request\_proof) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_validate_letter_template_files"></a> [lambda\_validate\_letter\_template\_files](#module\_lambda\_validate\_letter\_template\_files) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_list_template_lambda"></a> [list\_template\_lambda](#module\_list\_template\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_request_proof_lambda"></a> [request\_proof\_lambda](#module\_request\_proof\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
@@ -70,7 +71,7 @@ No requirements.
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |
 | <a name="output_quarantine_bucket_name"></a> [quarantine\_bucket\_name](#output\_quarantine\_bucket\_name) | n/a |
-| <a name="output_send_proof_queue_url"></a> [send\_proof\_queue\_url](#output\_send\_proof\_queue\_url) | n/a |
+| <a name="output_request_proof_queue_url"></a> [request\_proof\_queue\_url](#output\_request\_proof\_queue\_url) | n/a |
 | <a name="output_sftp_environment"></a> [sftp\_environment](#output\_sftp\_environment) | n/a |
 | <a name="output_sftp_mock_credential_path"></a> [sftp\_mock\_credential\_path](#output\_sftp\_mock\_credential\_path) | n/a |
 | <a name="output_sftp_poll_lambda_name"></a> [sftp\_poll\_lambda\_name](#output\_sftp\_poll\_lambda\_name) | n/a |

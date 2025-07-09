@@ -8,7 +8,7 @@ import { LetterFileRepository } from './infra/letter-file-repository';
 import { ProofingQueue } from './infra/proofing-queue';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { loadConfig } from './infra/config';
-import { EmailClient } from './infra/email-client';
+import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import { ClientConfigRepository } from './infra/client-config-repository';
 import { SSMClient } from '@aws-sdk/client-ssm';

@@ -22,8 +22,8 @@ output "internal_bucket_name" {
   value = module.backend_api.internal_bucket_name
 }
 
-output "send_proof_queue_url" {
-  value = module.backend_api.send_proof_queue_url
+output "request_proof_queue_url" {
+  value = module.backend_api.request_proof_queue_url
 }
 
 output "sftp_mock_credential_path" {
@@ -62,6 +62,11 @@ output "test_email_bucket_name" {
   value = local.acct["ses_testing_config"].bucket_name
 }
 
-output "test_email_prefix" {
-  value = "emails-${var.environment}"
+output "test_proof_requested_email_prefix" {
+  value = "proof-requested-emails-${var.environment}"
+}
+
+
+output "test_template_submitted_email_prefix" {
+  value = "template-submitted-emails-${var.environment}"
 }
