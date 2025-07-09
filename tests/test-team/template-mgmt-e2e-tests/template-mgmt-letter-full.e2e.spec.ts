@@ -260,7 +260,12 @@ function submit(
   });
 }
 
-function checkEmail(templateId: string, testStart: Date, prefix: string) {
+function checkEmail(
+  templateId: string,
+  testStart: Date,
+  prefix: string,
+  emailTitle: string
+) {
   return test.step('check email', async () => {
     await expect(async () => {
       // check template-submitted email
@@ -272,7 +277,7 @@ function checkEmail(templateId: string, testStart: Date, prefix: string) {
 
       expect(emailContents).toContain(templateId);
       expect(emailContents).toContain('Valid Letter Template'); // template name
-      expect(emailContents).toContain('Template Submitted');
+      expect(emailContents).toContain(emailTitle);
     }).toPass({ timeout: 60_000 });
   });
 }
@@ -317,7 +322,8 @@ test.describe('letter complete e2e journey', () => {
     await checkEmail(
       templateKey.id,
       testStart,
-      process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX
+      process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
+      'Proof Requested'
     );
 
     await submit(page, templateStorageHelper, templateKey);
@@ -325,7 +331,8 @@ test.describe('letter complete e2e journey', () => {
     await checkEmail(
       templateKey.id,
       testStart,
-      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX
+      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
+      'Template Submitted'
     );
   });
 
