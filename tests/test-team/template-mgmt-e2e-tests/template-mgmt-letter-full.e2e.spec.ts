@@ -205,7 +205,32 @@ function requestProof(
 
       expect(pdfHrefs.length).toBeGreaterThan(0);
 
-      for (const href of pdfHrefs) expect(href).toContain(templateKey.id);
+      const downloadBucketMetadata = await Promise.all(
+        pdfHrefs.map((href) => {
+          const [, downloadBucketPath] =
+            (href as string).match(
+              // eslint-disable-next-line security/detect-non-literal-regexp
+              new RegExp(
+                `/templates/files/(${templateKey.owner}/proofs/${templateKey.id}/[^/]+)/?$`
+              )
+            ) ?? [];
+
+          if (!downloadBucketPath) {
+            throw new Error(
+              `Could not determine bucket path based on URL: ${href}`
+            );
+          }
+
+          return templateStorageHelper.getS3Metadata(
+            process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME,
+            downloadBucketPath
+          );
+        })
+      );
+
+      for (const [i, entry] of downloadBucketMetadata.entries()) {
+        expect(entry, JSON.stringify(pdfHrefs[i])).not.toBeNull();
+      }
 
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
