@@ -2,6 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       API_BASE_URL: string;
+      CLIENT_SSM_PATH_PREFIX: string;
       COGNITO_USER_POOL_CLIENT_ID: string;
       COGNITO_USER_POOL_ID: string;
       NEXT_PUBLIC_ENABLE_PROOFING: string;

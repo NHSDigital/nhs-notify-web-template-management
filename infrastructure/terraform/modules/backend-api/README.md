@@ -14,6 +14,7 @@ No requirements.
 | <a name="input_cognito_config"></a> [cognito\_config](#input\_cognito\_config) | Cognito config | <pre>object({<br/>    USER_POOL_ID : string,<br/>    USER_POOL_CLIENT_ID : string<br/>  })</pre> | n/a | yes |
 | <a name="input_component"></a> [component](#input\_component) | The variable encapsulating the name of this component | `string` | n/a | yes |
 | <a name="input_csi"></a> [csi](#input\_csi) | CSI from the parent component | `string` | n/a | yes |
+| <a name="input_email_domain"></a> [email\_domain](#input\_email\_domain) | Email domain | `string` | n/a | yes |
 | <a name="input_enable_backup"></a> [enable\_backup](#input\_enable\_backup) | Enable Backups for the DynamoDB table? | `bool` | `true` | no |
 | <a name="input_enable_event_stream"></a> [enable\_event\_stream](#input\_enable\_event\_stream) | Enable DynamoDB streaming to SQS? | `bool` | `false` | no |
 | <a name="input_enable_proofing"></a> [enable\_proofing](#input\_enable\_proofing) | Enable proofing feature flag | `bool` | n/a | yes |
@@ -21,7 +22,7 @@ No requirements.
 | <a name="input_function_s3_bucket"></a> [function\_s3\_bucket](#input\_function\_s3\_bucket) | Name of S3 bucket to upload lambda artefacts to | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonmous with account short-name) | `string` | n/a | yes |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN | `string` | n/a | yes |
-| <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br/>    enable_polling   = bool<br/>    default_supplier = optional(bool)<br/>  }))</pre> | n/a | yes |
+| <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br/>    email_addresses  = list(string)<br/>    enable_polling   = bool<br/>    default_supplier = optional(bool)<br/>  }))</pre> | n/a | yes |
 | <a name="input_log_destination_arn"></a> [log\_destination\_arn](#input\_log\_destination\_arn) | Destination ARN to use for the log subscription filter | `string` | `""` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
 | <a name="input_log_subscription_role_arn"></a> [log\_subscription\_role\_arn](#input\_log\_subscription\_role\_arn) | The ARN of the IAM role to use for the log subscription filter | `string` | `""` | no |
@@ -30,6 +31,7 @@ No requirements.
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
 | <a name="input_send_to_firehose"></a> [send\_to\_firehose](#input\_send\_to\_firehose) | Flag indicating whether logs should be sent to firehose | `bool` | n/a | yes |
+| <a name="input_template_submitted_sender_email_address"></a> [template\_submitted\_sender\_email\_address](#input\_template\_submitted\_sender\_email\_address) | Template submitted sender email address | `string` | n/a | yes |
 ## Modules
 
 | Name | Source | Version |
@@ -38,6 +40,7 @@ No requirements.
 | <a name="module_create_letter_template_lambda"></a> [create\_letter\_template\_lambda](#module\_create\_letter\_template\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_create_template_lambda"></a> [create\_template\_lambda](#module\_create\_template\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_delete_template_lambda"></a> [delete\_template\_lambda](#module\_delete\_template\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
+| <a name="module_get_client_lambda"></a> [get\_client\_lambda](#module\_get\_client\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_get_template_lambda"></a> [get\_template\_lambda](#module\_get\_template\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_copy_scanned_object_to_internal"></a> [lambda\_copy\_scanned\_object\_to\_internal](#module\_lambda\_copy\_scanned\_object\_to\_internal) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
 | <a name="module_lambda_delete_failed_scanned_object"></a> [lambda\_delete\_failed\_scanned\_object](#module\_lambda\_delete\_failed\_scanned\_object) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.4 |
@@ -62,6 +65,7 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_api_base_url"></a> [api\_base\_url](#output\_api\_base\_url) | n/a |
+| <a name="output_client_ssm_path_prefix"></a> [client\_ssm\_path\_prefix](#output\_client\_ssm\_path\_prefix) | n/a |
 | <a name="output_download_bucket_name"></a> [download\_bucket\_name](#output\_download\_bucket\_name) | n/a |
 | <a name="output_download_bucket_regional_domain_name"></a> [download\_bucket\_regional\_domain\_name](#output\_download\_bucket\_regional\_domain\_name) | n/a |
 | <a name="output_internal_bucket_name"></a> [internal\_bucket\_name](#output\_internal\_bucket\_name) | n/a |

@@ -16,6 +16,7 @@ import {
   SimulateFailedVirusScan,
   SimulatePassedValidation,
 } from '../helpers/use-cases';
+import { EmailHelper } from '../helpers/email-helper';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
@@ -141,16 +142,18 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       const debug = JSON.stringify(createResult, null, 2);
 
+      const { id: templateId, name: templateName } = createResult.template;
+
       expect(createResponse.status(), debug).toBe(201);
 
       templateStorageHelper.addAdHocTemplateKey({
-        id: createResult.template.id,
+        id: templateId,
         owner: user1.userId,
       });
 
       await orchestrator.send(
         new SimulatePassedValidation({
-          templateId: createResult.template.id,
+          templateId,
           templateOwner: user1.userId,
           hasTestData: true,
         })
@@ -159,7 +162,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const start = new Date();
 
       const updateResponse = await request.patch(
-        `${process.env.API_BASE_URL}/v1/template/${createResult.template.id}/submit`,
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/submit`,
         {
           headers: {
             Authorization: await user1.getAccessToken(),
@@ -190,6 +193,20 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated.template.createdAt).toEqual(
         createResult.template.createdAt
       );
+
+      // check email
+      const emailHelper = new EmailHelper();
+
+      await expect(async () => {
+        const emailContents = await emailHelper.getEmailForTemplateId(
+          templateId,
+          start
+        );
+
+        expect(emailContents).toContain(templateId);
+        expect(emailContents).toContain(templateName);
+        expect(emailContents).toContain('proof.pdf');
+      }).toPass({ timeout: 20_000 });
     });
 
     test('returns 400 - cannot submit a submitted template', async ({

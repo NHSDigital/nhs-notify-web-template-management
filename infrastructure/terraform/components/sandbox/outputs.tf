@@ -2,6 +2,10 @@ output "api_base_url" {
   value = module.backend_api.api_base_url
 }
 
+output "client_ssm_path_prefix" {
+  value = module.backend_api.client_ssm_path_prefix
+}
+
 output "cognito_user_pool_id" {
   value = aws_cognito_user_pool.sandbox.id
 }
@@ -42,3 +46,22 @@ output "quarantine_bucket_name" {
   value = module.backend_api.quarantine_bucket_name
 }
 
+output "deployment" {
+  description = "Deployment details used for post-deployment scripts"
+  value = {
+    aws_region     = var.region
+    aws_account_id = var.aws_account_id
+    project        = var.project
+    environment    = var.environment
+    group          = var.group
+    component      = var.component
+  }
+}
+
+output "test_email_bucket_name" {
+  value = local.acct["ses_testing_config"].bucket_name
+}
+
+output "test_email_prefix" {
+  value = "emails-${var.environment}"
+}

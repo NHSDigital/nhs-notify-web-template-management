@@ -4,15 +4,38 @@ import {
   AdminSetUserPasswordCommand,
   CognitoIdentityProviderClient,
 } from '@aws-sdk/client-cognito-identity-provider';
+import {
+  DeleteParameterCommand,
+  PutParameterCommand,
+  SSMClient,
+} from '@aws-sdk/client-ssm';
+import { ClientConfiguration } from 'nhs-notify-backend-client';
 
 export class TestUserClient {
   private readonly cognitoClient = new CognitoIdentityProviderClient({
     region: 'eu-west-2',
   });
 
-  constructor(private readonly userPoolId: string) {}
+  private readonly ssmClient = new SSMClient({ region: 'eu-west-2' });
+
+  constructor(
+    private readonly userPoolId: string,
+    private readonly clientSsmPathPrefix: string
+  ) {}
 
   async createTestUser(email: string, password: string, clientId: string) {
+    await this.ssmClient.send(
+      new PutParameterCommand({
+        Name: `${this.clientSsmPathPrefix}/${clientId}`,
+        Value: JSON.stringify({
+          features: { proofing: true },
+          campaignId: 'accessibility-test-campaign',
+        } satisfies ClientConfiguration),
+        Overwrite: true,
+        Type: 'String',
+      })
+    );
+
     const res = await this.cognitoClient.send(
       new AdminCreateUserCommand({
         UserPoolId: this.userPoolId,
@@ -57,7 +80,13 @@ export class TestUserClient {
     return { username, userId };
   }
 
-  async deleteTestUser(email: string) {
+  async deleteTestUser(email: string, clientId: string) {
+    await this.ssmClient.send(
+      new DeleteParameterCommand({
+        Name: `${this.clientSsmPathPrefix}/${clientId}`,
+      })
+    );
+
     await this.cognitoClient.send(
       new AdminDeleteUserCommand({
         UserPoolId: this.userPoolId,

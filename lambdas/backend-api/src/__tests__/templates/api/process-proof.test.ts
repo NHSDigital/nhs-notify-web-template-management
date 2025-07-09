@@ -12,14 +12,14 @@ test.each([
       expect(
         letterFileRepository.copyFromQuarantineToInternal
       ).toHaveBeenCalledWith(
-        'proofs/template-id/proof.pdf',
+        'proofs/supplier/template-id/proof.pdf',
         'version-id',
         'proofs/template-owner/template-id/proof.pdf'
       );
       expect(
         letterFileRepository.copyFromQuarantineToDownload
       ).toHaveBeenCalledWith(
-        'proofs/template-id/proof.pdf',
+        'proofs/supplier/template-id/proof.pdf',
         'version-id',
         'template-owner/proofs/template-id/proof.pdf'
       );
@@ -54,7 +54,7 @@ test.each([
     await handler({
       detail: {
         s3ObjectDetails: {
-          objectKey: 'proofs/template-id/proof.pdf',
+          objectKey: 'proofs/supplier/template-id/proof.pdf',
           versionId: 'version-id',
         },
         scanResultDetails: { scanResultStatus },
@@ -71,7 +71,8 @@ test.each([
       'template-owner',
       'template-id',
       'proof.pdf',
-      virusScanStatus
+      virusScanStatus,
+      'supplier'
     );
   }
 );

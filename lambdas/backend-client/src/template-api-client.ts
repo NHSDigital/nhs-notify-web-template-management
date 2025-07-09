@@ -1,7 +1,7 @@
 import {
   CreateUpdateTemplate,
-  Success,
-  SuccessList,
+  TemplateSuccess,
+  TemplateSuccessList,
   TemplateDto,
 } from './types/generated';
 import { Result } from './types/result';
@@ -24,7 +24,7 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<Success>('/v1/template', template, {
+      this._client.post<TemplateSuccess>('/v1/template', template, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
@@ -56,7 +56,7 @@ export class TemplateApiClient {
     if (csv) formData.append(LETTER_MULTIPART.CSV.name, csv);
 
     const response = await catchAxiosError(
-      this._client.post<Success>('/v1/letter-template', formData, {
+      this._client.post<TemplateSuccess>('/v1/letter-template', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: token,
@@ -80,9 +80,13 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<Success>(`/v1/template/${templateId}`, template, {
-        headers: { Authorization: token },
-      })
+      this._client.post<TemplateSuccess>(
+        `/v1/template/${templateId}`,
+        template,
+        {
+          headers: { Authorization: token },
+        }
+      )
     );
 
     if (response.error) {
@@ -101,7 +105,7 @@ export class TemplateApiClient {
     token: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.get<Success>(`/v1/template/${templateId}`, {
+      this._client.get<TemplateSuccess>(`/v1/template/${templateId}`, {
         headers: { Authorization: token },
       })
     );
@@ -119,7 +123,7 @@ export class TemplateApiClient {
 
   async listTemplates(token: string): Promise<Result<TemplateDto[]>> {
     const response = await catchAxiosError(
-      this._client.get<SuccessList>('/v1/templates', {
+      this._client.get<TemplateSuccessList>('/v1/templates', {
         headers: { Authorization: token },
       })
     );
@@ -140,7 +144,7 @@ export class TemplateApiClient {
     owner: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.patch<Success>(
+      this._client.patch<TemplateSuccess>(
         `/v1/template/${templateId}/submit`,
         undefined,
         {
@@ -168,7 +172,7 @@ export class TemplateApiClient {
     owner: string
   ): Promise<Result<void>> {
     const response = await catchAxiosError(
-      this._client.delete<Success>(`/v1/template/${templateId}`, {
+      this._client.delete<TemplateSuccess>(`/v1/template/${templateId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: owner,
@@ -192,7 +196,7 @@ export class TemplateApiClient {
     owner: string
   ): Promise<Result<TemplateDto>> {
     const response = await catchAxiosError(
-      this._client.post<Success>(
+      this._client.post<TemplateSuccess>(
         `/v1/template/${templateId}/proof`,
         undefined,
         {
@@ -216,4 +220,4 @@ export class TemplateApiClient {
   }
 }
 
-export const templateClient = new TemplateApiClient();
+export const templateApiClient = new TemplateApiClient();

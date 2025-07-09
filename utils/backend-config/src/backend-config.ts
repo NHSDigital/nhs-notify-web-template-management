@@ -4,6 +4,7 @@ import fs from 'node:fs';
 
 export type BackendConfig = {
   apiBaseUrl: string;
+  clientSsmPathPrefix: string;
   sendProofQueueUrl: string;
   sftpEnvironment: string;
   sftpPollLambdaName: string;
@@ -12,6 +13,8 @@ export type BackendConfig = {
   templatesInternalBucketName: string;
   templatesQuarantineBucketName: string;
   templatesDownloadBucketName: string;
+  testEmailBucketName: string;
+  testEmailPrefix: string;
   userPoolId: string;
   userPoolClientId: string;
 };
@@ -20,6 +23,7 @@ export const BackendConfigHelper = {
   fromEnv(): BackendConfig {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
+      clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
       sendProofQueueUrl: process.env.SEND_PROOF_QUEUE_URL ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
@@ -33,11 +37,14 @@ export const BackendConfigHelper = {
       userPoolId: process.env.USER_POOL_ID ?? '',
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
+      testEmailBucketName: process.env.TEST_EMAIL_BUCKET_NAME ?? '',
+      testEmailPrefix: process.env.TEST_EMAIL_PREFIX ?? '',
     };
   },
 
   toEnv(config: BackendConfig): void {
     process.env.API_BASE_URL = config.apiBaseUrl;
+    process.env.CLIENT_SSM_PATH_PREFIX = config.clientSsmPathPrefix;
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
@@ -51,6 +58,8 @@ export const BackendConfigHelper = {
     process.env.TEMPLATES_DOWNLOAD_BUCKET_NAME =
       config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
+    process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
+    process.env.TEST_EMAIL_PREFIX = config.testEmailPrefix;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -58,6 +67,8 @@ export const BackendConfigHelper = {
 
     return {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
+      clientSsmPathPrefix:
+        outputsFileContent.client_ssm_path_prefix?.value ?? '',
       sendProofQueueUrl: outputsFileContent.send_proof_queue_url?.value ?? '',
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',
       sftpMockCredentialPath:
@@ -73,6 +84,9 @@ export const BackendConfigHelper = {
       userPoolClientId:
         outputsFileContent.cognito_user_pool_client_id?.value ?? '',
       sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
+      testEmailBucketName:
+        outputsFileContent.test_email_bucket_name.value ?? '',
+      testEmailPrefix: outputsFileContent.test_email_prefix?.value ?? '',
     };
   },
 
