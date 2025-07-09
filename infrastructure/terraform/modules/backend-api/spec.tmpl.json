@@ -282,7 +282,7 @@
         ],
         "type": "object"
       },
-      "Success": {
+      "TemplateSuccess": {
         "properties": {
           "statusCode": {
             "type": "integer"
@@ -297,7 +297,45 @@
         ],
         "type": "object"
       },
-      "SuccessList": {
+      "ClientFeatures": {
+        "properties": {
+          "proofing": {
+            "type": "boolean"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "ClientConfiguration": {
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "features": {
+            "$ref": "#/components/schemas/ClientFeatures"
+          }
+        },
+        "required": [
+          "features"
+        ],
+        "type": "object"
+      },
+      "ClientConfigurationSuccess": {
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "clientConfiguration": {
+            "$ref": "#/components/schemas/ClientConfiguration"
+          }
+        },
+        "required": [
+          "clientConfiguration",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "TemplateSuccessList": {
         "properties": {
           "statusCode": {
             "type": "integer"
@@ -447,7 +485,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -512,7 +550,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -577,7 +615,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -640,7 +678,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -714,7 +752,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -779,7 +817,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -844,7 +882,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Success"
+                  "$ref": "#/components/schemas/TemplateSuccess"
                 }
               }
             },
@@ -898,7 +936,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SuccessList"
+                  "$ref": "#/components/schemas/TemplateSuccessList"
                 }
               }
             },
@@ -941,6 +979,60 @@
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
           "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${LIST_LAMBDA_ARN}/invocations"
+        }
+      }
+    },
+    "/v1/client-configuration": {
+      "get": {
+        "description": "Get client configuration values for the caller",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientConfigurationSuccess"
+                }
+              }
+            },
+            "description": "200 response",
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Failure"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "security": [
+          {
+            "authorizer": []
+          }
+        ],
+        "summary": "Get caller client configuration",
+        "x-amazon-apigateway-integration": {
+          "contentHandling": "CONVERT_TO_TEXT",
+          "credentials": "${APIG_EXECUTION_ROLE_ARN}",
+          "httpMethod": "POST",
+          "passthroughBehavior": "WHEN_NO_TEMPLATES",
+          "responses": {
+            ".*": {
+              "statusCode": "200"
+            }
+          },
+          "timeoutInMillis": 29000,
+          "type": "AWS_PROXY",
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${GET_CLIENT_LAMBDA_ARN}/invocations"
         }
       }
     }

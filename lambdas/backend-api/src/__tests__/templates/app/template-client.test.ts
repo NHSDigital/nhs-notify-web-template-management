@@ -1,9 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { mock } from 'jest-mock-extended';
-import {
+import type {
   LetterFiles,
   TemplateDto,
   CreateUpdateTemplate,
+  ClientConfiguration,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { TemplateClient } from '@backend-api/templates/app/template-client';
@@ -12,6 +13,7 @@ import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
+import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
 
 jest.mock('node:crypto');
 
@@ -27,6 +29,8 @@ const setup = () => {
 
   const queueMock = mock<ProofingQueue>();
 
+  const clientConfigRepository = mock<ClientConfigRepository>();
+
   const { logger, logMessages } = createMockLogger();
 
   const templateClient = new TemplateClient(
@@ -34,12 +38,19 @@ const setup = () => {
     letterUploadRepository,
     queueMock,
     defaultLetterSupplier,
+    clientConfigRepository,
     logger
   );
 
   return {
     templateClient,
-    mocks: { templateRepository, letterUploadRepository, queueMock, logger },
+    mocks: {
+      templateRepository,
+      letterUploadRepository,
+      queueMock,
+      logger,
+      clientConfigRepository,
+    },
     logMessages,
   };
 };
@@ -95,6 +106,73 @@ describe('templateClient', () => {
       });
     });
 
+    test('should return a failure result when client configuration unexpectedly cant be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'EMAIL',
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { code: 500, message: 'err' },
+      });
+
+      const result = await templateClient.createTemplate(data, user);
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'err',
+        },
+      });
+    });
+
+    test('client configuration is not fetched if user has no clientId', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'EMAIL',
+        name: 'name',
+        message: 'message',
+        subject: 'subject',
+      };
+
+      const expectedTemplateDto: TemplateDto = {
+        ...data,
+        id: templateId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        templateStatus: 'NOT_YET_SUBMITTED',
+      };
+
+      const template: DatabaseTemplate = {
+        ...expectedTemplateDto,
+        owner: user.userId,
+        campaignId: 'campaignId',
+        version: 1,
+      };
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: template,
+      });
+
+      const result = await templateClient.createTemplate(data, {
+        userId: user.userId,
+        clientId: undefined,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        data: expectedTemplateDto,
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -104,6 +182,10 @@ describe('templateClient', () => {
         message: 'message',
         subject: 'subject',
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: null,
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         error: {
@@ -118,7 +200,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -153,6 +236,10 @@ describe('templateClient', () => {
         version: 1,
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
+
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
       });
@@ -163,7 +250,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        undefined
       );
 
       expect(result).toEqual({
@@ -195,11 +283,21 @@ describe('templateClient', () => {
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner: user.userId,
+        campaignId: 'campaignId',
         version: 1,
       };
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: template,
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
       });
 
       const result = await templateClient.createTemplate(data, user);
@@ -208,7 +306,8 @@ describe('templateClient', () => {
         data,
         user.userId,
         user.clientId,
-        'NOT_YET_SUBMITTED'
+        'NOT_YET_SUBMITTED',
+        'campaignId'
       );
 
       expect(result).toEqual({
@@ -291,6 +390,15 @@ describe('templateClient', () => {
         data: finalTemplate,
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
+      });
+
       const result = await templateClient.createLetterTemplate(
         data,
         user,
@@ -306,7 +414,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        'campaignId'
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -322,6 +431,84 @@ describe('templateClient', () => {
         user.userId,
         'PENDING_VALIDATION'
       );
+    });
+
+    test('if user has no clientId, client configuration is not fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const pdfFilename = 'template.pdf';
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      const pdf = new File(['pdf'], pdfFilename, {
+        type: 'application/pdf',
+      });
+
+      const filesWithVerions: LetterFiles = {
+        pdfTemplate: {
+          fileName: pdfFilename,
+          currentVersion: versionId,
+          virusScanStatus: 'PENDING',
+        },
+        proofs: {},
+      };
+
+      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+        files: filesWithVerions,
+      };
+
+      const creationTime = '2025-03-12T08:41:08.805Z';
+
+      const initialCreatedTemplate: DatabaseTemplate = {
+        ...dataWithFiles,
+        id: templateId,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+        templateStatus: 'PENDING_UPLOAD',
+        owner: user.userId,
+        version: 1,
+      };
+
+      const updateTime = '2025-03-12T08:41:33.666Z';
+
+      const finalTemplate: DatabaseTemplate = {
+        ...initialCreatedTemplate,
+        templateStatus: 'PENDING_VALIDATION',
+        updatedAt: updateTime,
+      };
+
+      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+
+      mocks.templateRepository.create.mockResolvedValueOnce({
+        data: initialCreatedTemplate,
+      });
+
+      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
+
+      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+        data: finalTemplate,
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        { userId: user.userId, clientId: undefined },
+        pdf
+      );
+
+      expect(result).toEqual({
+        data: expectedDto,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
     });
 
     test('should return a failure result, when template data is invalid', async () => {
@@ -472,6 +659,33 @@ describe('templateClient', () => {
       }
     );
 
+    test('should return a failure result if client configuration unexpectedly cant be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      const data: CreateUpdateTemplate = {
+        templateType: 'LETTER',
+        name: 'name',
+        language: 'en',
+        letterType: 'x0',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'err', code: 500 },
+      });
+
+      const result = await templateClient.createLetterTemplate(
+        data,
+        user,
+        new File(['pdf'], 'template.pdf', {
+          type: 'application/pdf',
+        })
+      );
+
+      expect(result).toEqual({ error: { message: 'err', code: 500 } });
+
+      expect(mocks.templateRepository.create).not.toHaveBeenCalled();
+    });
+
     test('should return a failure result when intial template creation fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -511,6 +725,8 @@ describe('templateClient', () => {
         },
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
       mocks.templateRepository.create.mockResolvedValueOnce(
         templateRepoFailure
       );
@@ -523,7 +739,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).not.toHaveBeenCalled();
@@ -542,6 +759,10 @@ describe('templateClient', () => {
 
       const pdf = new File(['pdf'], 'template.pdf', {
         type: 'application/pdf',
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: false } },
       });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
@@ -607,6 +828,10 @@ describe('templateClient', () => {
         version: 1,
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: null,
+      });
+
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
       });
@@ -636,7 +861,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -696,6 +922,8 @@ describe('templateClient', () => {
         version: 1,
       };
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
       });
@@ -720,7 +948,8 @@ describe('templateClient', () => {
         dataWithFiles,
         user.userId,
         user.clientId,
-        'PENDING_UPLOAD'
+        'PENDING_UPLOAD',
+        undefined
       );
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
@@ -799,6 +1028,10 @@ describe('templateClient', () => {
       };
 
       const { owner: _1, version: _2 } = finalTemplate;
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -1289,8 +1522,54 @@ describe('templateClient', () => {
   });
 
   describe('requestProof', () => {
+    test('should return a failure result, when proofing is disabled', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: false } },
+      });
+
+      const result = await templateClient.requestProof(templateId, user);
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 403,
+          message: 'User cannot request a proof',
+        },
+      });
+    });
+
+    test('should return a failure result when fetching client configuration unexpectedly fails', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'err', code: 500 },
+      });
+
+      const result = await templateClient.requestProof(templateId, user);
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'err',
+        },
+      });
+    });
+
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: { features: { proofing: true } },
+      });
 
       const actualError = new Error('from db');
 
@@ -1299,6 +1578,15 @@ describe('templateClient', () => {
           code: 500,
           message: 'Internal server error',
           actualError,
+        },
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
         },
       });
 
@@ -1352,6 +1640,15 @@ describe('templateClient', () => {
         data: template,
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
+      });
+
       const result = await templateClient.requestProof(templateId, user);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
@@ -1390,6 +1687,15 @@ describe('templateClient', () => {
       // templateType being LETTER
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: template,
+      });
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
       });
 
       const result = await templateClient.requestProof(templateId, user);
@@ -1446,6 +1752,15 @@ describe('templateClient', () => {
         },
       });
 
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
+      });
+
       const result = await templateClient.requestProof(templateId, user);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
@@ -1468,6 +1783,30 @@ describe('templateClient', () => {
           code: 500,
           actualError: clientErr,
           message: 'Failed to send to proofing queue',
+        },
+      });
+    });
+
+    test('should return a failure result, when user has no clientId (so proofing cannot be determined to be enabled)', async () => {
+      const { templateClient, mocks } = setup();
+
+      const result = await templateClient.requestProof(templateId, {
+        userId: user.userId,
+        clientId: undefined,
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(
+        mocks.templateRepository.proofRequestUpdate
+      ).not.toHaveBeenCalled();
+
+      expect(mocks.queueMock.send).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 403,
+          message: 'User cannot request a proof',
         },
       });
     });
@@ -1496,6 +1835,15 @@ describe('templateClient', () => {
           },
         },
       };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        data: {
+          campaignId: 'campaignId',
+          features: {
+            proofing: true,
+          },
+        },
+      });
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         data: { ...template, owner: user.userId, version: 1 },
@@ -1578,6 +1926,92 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         data: undefined,
+      });
+    });
+  });
+
+  describe('getClientConfiguration', () => {
+    const clientId = 'client1';
+
+    test('should return a 404 failure result, when client configuration is not available for client', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId,
+        userId: 'sub',
+      });
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
+
+      expect(result).toEqual({
+        error: {
+          code: 404,
+          message: 'Client configuration is not available',
+        },
+      });
+    });
+
+    test('should return a 404 failure result, when user has no clientId', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId: undefined,
+        userId: 'sub',
+      });
+
+      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        error: {
+          code: 404,
+          message: 'Client configuration is not available',
+        },
+      });
+    });
+
+    test('should return a failure result, when client configuration unexpectedly cannot be fetched', async () => {
+      const { templateClient, mocks } = setup();
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({
+        error: { message: 'fetch failure', code: 500 },
+      });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId,
+        userId: 'sub',
+      });
+
+      expect(result).toEqual({
+        error: {
+          code: 500,
+          message: 'fetch failure',
+        },
+      });
+    });
+
+    test('should return client configuration', async () => {
+      const { templateClient, mocks } = setup();
+
+      const client: ClientConfiguration = {
+        features: { proofing: true },
+        campaignId: 'campaign',
+      };
+
+      mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: client });
+
+      const result = await templateClient.getClientConfiguration({
+        clientId,
+        userId: 'user',
+      });
+
+      expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith(clientId);
+
+      expect(result).toEqual({
+        data: client,
       });
     });
   });

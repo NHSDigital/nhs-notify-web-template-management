@@ -98,12 +98,26 @@ export type SmsProperties = {
   templateType: 'SMS';
 };
 
-export type Success = {
+export type TemplateSuccess = {
   statusCode: number;
   template: TemplateDto;
 };
 
-export type SuccessList = {
+export type ClientFeatures = {
+  proofing?: boolean;
+};
+
+export type ClientConfiguration = {
+  campaignId?: string;
+  features: ClientFeatures;
+};
+
+export type ClientConfigurationSuccess = {
+  statusCode: number;
+  clientConfiguration: ClientConfiguration;
+};
+
+export type TemplateSuccessList = {
   statusCode: number;
   templates: Array<TemplateDto>;
 };
@@ -157,7 +171,7 @@ export type PostV1LetterTemplateResponses = {
   /**
    * 201 response
    */
-  201: Success;
+  201: TemplateSuccess;
 };
 
 export type PostV1LetterTemplateResponse =
@@ -187,7 +201,7 @@ export type PostV1TemplateResponses = {
   /**
    * 201 response
    */
-  201: Success;
+  201: TemplateSuccess;
 };
 
 export type PostV1TemplateResponse =
@@ -219,7 +233,7 @@ export type DeleteV1TemplateByTemplateIdResponses = {
   /**
    * 200 response
    */
-  200: Success;
+  200: TemplateSuccess;
 };
 
 export type DeleteV1TemplateByTemplateIdResponse =
@@ -251,7 +265,7 @@ export type GetV1TemplateByTemplateIdResponses = {
   /**
    * 200 response
    */
-  200: Success;
+  200: TemplateSuccess;
 };
 
 export type GetV1TemplateByTemplateIdResponse =
@@ -286,7 +300,7 @@ export type PostV1TemplateByTemplateIdResponses = {
   /**
    * 200 response
    */
-  200: Success;
+  200: TemplateSuccess;
 };
 
 export type PostV1TemplateByTemplateIdResponse =
@@ -318,7 +332,7 @@ export type PostV1TemplateByTemplateIdProofResponses = {
   /**
    * 200 response
    */
-  200: Success;
+  200: TemplateSuccess;
 };
 
 export type PostV1TemplateByTemplateIdProofResponse =
@@ -350,7 +364,7 @@ export type PatchV1TemplateByTemplateIdSubmitResponses = {
   /**
    * 200 response
    */
-  200: Success;
+  200: TemplateSuccess;
 };
 
 export type PatchV1TemplateByTemplateIdSubmitResponse =
@@ -377,11 +391,38 @@ export type GetV1TemplatesResponses = {
   /**
    * 200 response
    */
-  200: SuccessList;
+  200: TemplateSuccessList;
 };
 
 export type GetV1TemplatesResponse =
   GetV1TemplatesResponses[keyof GetV1TemplatesResponses];
+
+export type GetV1ClientConfigurationData = {
+  body?: never;
+  path?: never;
+  query?: never;
+  url: '/v1/client-configuration';
+};
+
+export type GetV1ClientConfigurationErrors = {
+  /**
+   * Error
+   */
+  default: Failure;
+};
+
+export type GetV1ClientConfigurationError =
+  GetV1ClientConfigurationErrors[keyof GetV1ClientConfigurationErrors];
+
+export type GetV1ClientConfigurationResponses = {
+  /**
+   * 200 response
+   */
+  200: ClientConfigurationSuccess;
+};
+
+export type GetV1ClientConfigurationResponse =
+  GetV1ClientConfigurationResponses[keyof GetV1ClientConfigurationResponses];
 
 export type ClientOptions = {
   baseUrl: `${string}://${string}` | (string & {});

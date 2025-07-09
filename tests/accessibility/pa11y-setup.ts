@@ -58,12 +58,17 @@ const setup = async () => {
     strict: true,
   });
 
-  const testUserClient = new TestUserClient(backendConfig.userPoolId);
+  const clientId = 'accessibility-test-client';
+
+  const testUserClient = new TestUserClient(
+    backendConfig.userPoolId,
+    backendConfig.clientSsmPathPrefix
+  );
 
   const { userId } = await testUserClient.createTestUser(
     testEmail,
     testPassword,
-    'accessibility-test-client'
+    clientId
   );
 
   const ddbDocClient = DynamoDBDocumentClient.from(
@@ -127,6 +132,7 @@ const setup = async () => {
     password: testPassword,
     templateIds,
     userId,
+    clientId,
   };
 
   writeFileSync('./pa11y-fixtures.json', JSON.stringify(fixtureData, null, 2));

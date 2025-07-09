@@ -88,7 +88,8 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
 export const SubmitLetterTemplate: FC<{
   templateName: string;
   templateId: string;
-}> = ({ templateName, templateId }) => {
+  proofingEnabled: boolean;
+}> = ({ templateName, templateId, proofingEnabled }) => {
   const {
     buttonText,
     goBackButtonText,
@@ -105,7 +106,7 @@ export const SubmitLetterTemplate: FC<{
 
   const [_, action] = useActionState(submitTemplate, 'LETTER');
 
-  if (process.env.NEXT_PUBLIC_ENABLE_PROOFING !== 'true') {
+  if (!proofingEnabled) {
     return (
       <SubmitLetterTemplateProofingDisabled
         templateName={templateName}

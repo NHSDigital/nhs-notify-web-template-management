@@ -10,8 +10,13 @@ import { SQSClient } from '@aws-sdk/client-sqs';
 import { loadConfig } from './infra/config';
 import { EmailClient } from './infra/email-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import { ClientConfigRepository } from './infra/client-config-repository';
+import { SSMClient } from '@aws-sdk/client-ssm';
+import NodeCache from 'node-cache';
 
-const sqsClient = new SQSClient({ region: 'eu-west-2' });
+const awsConfig = { region: 'eu-west-2' };
+const sqsClient = new SQSClient(awsConfig);
+const ssmClient = new SSMClient(awsConfig);
 const sesClient = new SESClient({ region: 'eu-west-2' });
 
 const ddbDocClient = DynamoDBDocumentClient.from(
@@ -41,11 +46,18 @@ export function createContainer() {
     config.requestProofQueueUrl
   );
 
+  const clientConfigRepository = new ClientConfigRepository(
+    config.clientConfigSsmKeyPrefix,
+    ssmClient,
+    new NodeCache({ stdTTL: config.clientConfigTtlSeconds })
+  );
+
   const templateClient = new TemplateClient(
     templateRepository,
     letterUploadRepository,
     proofingQueue,
     config.defaultLetterSupplier,
+    clientConfigRepository,
     logger
   );
 
@@ -60,6 +72,7 @@ export function createContainer() {
     templateClient,
     templateRepository,
     letterUploadRepository,
+    clientConfigRepository,
     emailClient,
   };
 }

@@ -1,7 +1,7 @@
 import {
   Failure,
-  Success,
-  SuccessList,
+  TemplateSuccess,
+  TemplateSuccessList,
   TemplateDto,
 } from 'nhs-notify-backend-client';
 
@@ -15,7 +15,7 @@ export const apiSuccess = (
       body: JSON.stringify({
         statusCode,
         templates: result,
-      } satisfies SuccessList),
+      } satisfies TemplateSuccessList),
     };
   }
 
@@ -24,7 +24,7 @@ export const apiSuccess = (
     body: JSON.stringify({
       statusCode,
       template: result,
-    } satisfies Success),
+    } satisfies TemplateSuccess),
   };
 };
 
