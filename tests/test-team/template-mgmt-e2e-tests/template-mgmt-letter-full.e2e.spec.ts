@@ -144,7 +144,8 @@ function continueAfterCreation(page: Page) {
 function requestProof(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
-  templateKey: { id: string; owner: string }
+  templateKey: { id: string; owner: string },
+  testStart: Date,
 ) {
   return test.step('request and receive proofs', async () => {
     await expect(page).toHaveURL(TemplateMgmtRequestProofPage.urlRegexp);
@@ -169,11 +170,11 @@ function requestProof(
       // check proof-requested email
       const emailContents = await emailHelper.getEmailForTemplateId(
         process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
-        templateId,
+        template.id,
         testStart
       );
 
-      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain(template.id);
       expect(emailContents).toContain(template.name);
       expect(emailContents).toContain('Proof Requested');
     }).toPass({ timeout: 40_000 });
@@ -257,7 +258,7 @@ function submit(
   page: Page,
   templateStorageHelper: TemplateStorageHelper,
   templateKey: { id: string; owner: string },
-  testStart: Date,
+  testStart: Date
 ) {
   return test.step('finalise the template', async () => {
     await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
@@ -320,7 +321,7 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await requestProof(page, templateStorageHelper, templateKey);
+    await requestProof(page, templateStorageHelper, templateKey, testStart);
 
     await submit(page, templateStorageHelper, templateKey, testStart);
   });
