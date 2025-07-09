@@ -16,6 +16,32 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
         <h1>
           Submit 'template-name'
         </h1>
+        <p
+          class="nhsuk-body-l"
+        >
+          When you submit a template, it will be used by NHS Notify to set up the messages you want to send.
+        </p>
+        <h2
+          class="nhsuk-heading-m"
+        >
+          Before you submit
+        </h2>
+        <p>
+          You should check that your template:
+        </p>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
+          <li>
+            is approved by the relevant stakeholders in your team
+          </li>
+          <li>
+            does not have any spelling errors
+          </li>
+          <li>
+            is formatted correctly
+          </li>
+        </ul>
         <div
           class="nhsuk-warning-callout"
         >
@@ -34,34 +60,9 @@ exports[`SubmitDigitalTemplate component should render 1`] = `
             </span>
           </h2>
           <p>
-            When you submit this template it cannot be changed. It can only be replaced by a new template.
+            You cannot edit a template after you've submitted it. You can only replace it with a new template.
           </p>
         </div>
-        <h2
-          class="nhsuk-heading-m"
-        >
-          Before you submit
-        </h2>
-        <p>
-          You should check that your template:
-        </p>
-        <ul>
-          <li>
-            is approved by the relevant stakeholders in your team
-          </li>
-          <li>
-            does not have any spelling errors
-          </li>
-          <li>
-            is formatted correctly
-          </li>
-        </ul>
-        <p>
-          When you submit a template, it will be used by NHS Notify to set up the messages you want to send.
-        </p>
-        <p>
-          If you want to change a submitted template, you must create and submit a new template to replace it.
-        </p>
         <form
           action="/action"
         >

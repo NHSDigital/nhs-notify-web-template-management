@@ -25,8 +25,7 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
       submitChecklistHeading,
       submitChecklistIntroduction,
       submitChecklistItems,
-      warningCalloutChecklistIntroduction,
-      warningCalloutChecklistItems,
+      warningCalloutText,
       warningCalloutLabel,
     },
   } = content.components.submitLetterTemplate;
@@ -38,28 +37,27 @@ export const SubmitLetterTemplateProofingDisabled: FC<{
           <h1>
             {pageHeading} {`'${templateName}'`}
           </h1>
+
           <h2 className='nhsuk-heading-s'>{submitChecklistHeading}</h2>
           <p>{submitChecklistIntroduction}</p>
-          <ul>
+          <ul className='nhsuk-list nhsuk-list--bullet'>
             {submitChecklistItems.map((item) => (
               <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
             ))}
           </ul>
+
           <h2 className='nhsuk-heading-s'>{afterSubmissionHeading}</h2>
           {afterSubmissionText.map((item) => (
             <p key={`after-submission-paragraph-${item.slice(0, 5)}`}>{item}</p>
           ))}
+
           <WarningCallout>
             <WarningCallout.Label headingLevel='h2'>
               {warningCalloutLabel}
             </WarningCallout.Label>
-            <p>{warningCalloutChecklistIntroduction}</p>
-            <ul>
-              {warningCalloutChecklistItems.map((item) => (
-                <li key={`warning-callout-list-${item.slice(0, 5)}`}>{item}</li>
-              ))}
-            </ul>
+            <p>{warningCalloutText}</p>
           </WarningCallout>
+
           <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input
               type='hidden'
@@ -94,13 +92,12 @@ export const SubmitLetterTemplate: FC<{
     buttonText,
     goBackButtonText,
     goBackPath,
-    intro,
+    leadParagraph,
     pageHeading,
     submitChecklistHeading,
     submitChecklistIntroduction,
     submitChecklistItems,
-    warningCalloutChecklistIntroduction,
-    warningCalloutChecklistItems,
+    warningCalloutText,
     warningCalloutLabel,
   } = content.components.submitLetterTemplate;
 
@@ -123,10 +120,10 @@ export const SubmitLetterTemplate: FC<{
           <h1>
             {pageHeading} {`'${templateName}'`}
           </h1>
-          <p className='nhsuk-body-l'>{intro}</p>
+          <p className='nhsuk-body-l'>{leadParagraph}</p>
           <h2 className='nhsuk-heading-s'>{submitChecklistHeading}</h2>
           <p>{submitChecklistIntroduction}</p>
-          <ul>
+          <ul className='nhsuk-list nhsuk-list--bullet'>
             {submitChecklistItems.map((item) => (
               <li key={`submit-list-${item.slice(0, 5)}`}>{item}</li>
             ))}
@@ -135,12 +132,7 @@ export const SubmitLetterTemplate: FC<{
             <WarningCallout.Label headingLevel='h2'>
               {warningCalloutLabel}
             </WarningCallout.Label>
-            <p>{warningCalloutChecklistIntroduction}</p>
-            <ul>
-              {warningCalloutChecklistItems.map((item) => (
-                <li key={`warning-callout-list-${item.slice(0, 5)}`}>{item}</li>
-              ))}
-            </ul>
+            <p>{warningCalloutText}</p>
           </WarningCallout>
           <NHSNotifyFormWrapper formId='submit-template-form' action={action}>
             <input

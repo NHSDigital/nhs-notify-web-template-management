@@ -23,33 +23,63 @@ exports[`TemplateSubmitted component should render 1`] = `
             Template submitted
           </h1>
         </div>
+        <dl>
+          <dt
+            class="nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1"
+          >
+            Template name
+          </dt>
+          <dd
+            class="nhsuk-body-s nhsuk-u-margin-left-0"
+            id="template-name"
+          >
+            template-name
+          </dd>
+          <dt
+            class="nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1"
+          >
+            Template ID
+          </dt>
+          <dd
+            class="nhsuk-body-s nhsuk-u-margin-left-0"
+            id="template-id"
+          >
+            template-id
+          </dd>
+        </dl>
         <h2
-          class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
-        >
-          Template name
-        </h2>
-        <p
-          id="template-name"
-        >
-          template-name
-        </p>
-        <h2
-          class="nhsuk-heading-xs nhsuk-u-margin-bottom-1"
-        >
-          Template ID
-        </h2>
-        <p
-          id="template-id"
-        >
-          template-id
-        </p>
-        <h3
-          class="nhsuk-u-margin-top-5"
+          class="nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-6"
         >
           What you need to do next
+        </h2>
+        <h3
+          class="nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3"
+        >
+          If you've not sent messages using NHS Notify yet
         </h3>
         <p>
-          Tell an onboarding manager once you've submitted all your templates.
+          Tell your onboarding manager once you've submitted all your templates.
+        </p>
+        <p>
+          If you replaced a template by submitting a new one, tell your onboarding manager which template you want to use.
+        </p>
+        <h3
+          class="nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3"
+        >
+          If you've sent messages using NHS Notify
+        </h3>
+        <p>
+          <a
+            href="https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Raise a request with the Service Desk (opens in a new tab)
+          </a>
+           once you've submitted all your templates.
+        </p>
+        <p>
+          If you replaced a template by submitting a new one, tell us which template you want to use in your Service Desk request.
         </p>
         <hr
           class="nhsuk-section-break--visible"

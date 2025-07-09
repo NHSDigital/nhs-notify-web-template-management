@@ -3,6 +3,7 @@ import {
   renderEmailMarkdown,
   renderNHSAppMarkdown,
   renderSMSMarkdown,
+  withEmbeddedLink,
 } from '@utils/markdownit';
 import { mockDeep } from 'jest-mock-extended';
 import { markdown } from '../../components/forms/fixtures';
@@ -77,5 +78,26 @@ describe('renderSMSMarkdown', () => {
 
   it('should only process text message markdown rules', () => {
     expect(renderSMSMarkdown(markdown)).toMatchSnapshot();
+  });
+});
+
+describe('withEmbeddedLink', () => {
+  beforeEach(jest.resetAllMocks);
+
+  it('should enable links', () => {
+    const markdownItWrapperMock = mockDeep<MarkdownItWrapper>();
+
+    markdownItWrapperMock.enableLineBreak.mockReturnValue(
+      markdownItWrapperMock
+    );
+
+    withEmbeddedLink('message with a [link](link.com)', markdownItWrapperMock);
+
+    expect(markdownItWrapperMock.enableLineBreak).toHaveBeenCalled();
+    expect(markdownItWrapperMock.enable).toHaveBeenCalledWith('link');
+  });
+
+  it('should only process links and line breaks rules', () => {
+    expect(withEmbeddedLink(markdown)).toMatchSnapshot();
   });
 });
