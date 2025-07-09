@@ -268,7 +268,6 @@ function checkEmail(
 ) {
   return test.step('check email', async () => {
     await expect(async () => {
-      // check template-submitted email
       const emailContents = await emailHelper.getEmailForTemplateId(
         prefix,
         templateId,
