@@ -1,6 +1,5 @@
 resource "aws_sns_topic" "costs" {
-  name              = "${local.csi}-costs"
-  kms_master_key_id = module.kms.key_id
+  name = "${local.csi}-costs"
 }
 
 resource "aws_sns_topic_policy" "costs" {
