@@ -134,7 +134,11 @@ export type TemplateKey = { owner: string; id: string };
 export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
 export type ProofingRequest = {
-  owner: string;
+  campaignId: string;
+  clientId: string;
+  language: Language;
+  letterType: LetterType;
+  user: UserWithClient;
   pdfVersionId: string;
   personalisationParameters: string[];
   supplier: string;
@@ -142,3 +146,10 @@ export type ProofingRequest = {
   templateName: string;
   testDataVersionId?: string;
 };
+
+export type User = {
+  userId: string;
+  clientId: string | undefined;
+};
+
+export type UserWithClient = Omit<User, 'clientId'> & { clientId: string };

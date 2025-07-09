@@ -10,6 +10,8 @@ import { Readable } from 'node:stream';
 import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repository';
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
+import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
+import { ExpandedIdComponenets } from '../types';
 
 export class App {
   constructor(
@@ -26,7 +28,10 @@ export class App {
     messageId: string
   ): Promise<'sent' | 'already-sent' | 'failed'> {
     const {
-      owner,
+      campaignId,
+      language,
+      letterType,
+      user,
       pdfVersionId,
       personalisationParameters,
       supplier,
@@ -40,14 +45,23 @@ export class App {
 
     const batchId = this.batch.getId(templateId, pdfVersionId);
 
+    const expandedTemplateId = this.getExpandedTemplateId({
+      clientId: user.clientId,
+      campaignId,
+      letterType,
+      language,
+      templateId,
+    });
+
     const templateLogger = this.logger.child({
       batchId,
+      expandedTemplateId,
       messageId,
-      owner,
       pdfVersionId,
       supplier,
       templateId,
       testDataVersionId,
+      user,
     });
 
     const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
@@ -58,7 +72,7 @@ export class App {
 
       templateLogger.info('Fetching user Data');
       const files = await this.getFileData(
-        owner,
+        user.userId,
         templateId,
         pdfVersionId,
         testDataVersionId,
@@ -68,7 +82,7 @@ export class App {
 
       templateLogger.info('Acquiring sender lock');
       const locked = await this.templateRepository.acquireLock(
-        owner,
+        user.userId,
         templateId
       );
 
@@ -83,7 +97,7 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.finaliseLock(owner, templateId);
+        await this.templateRepository.finaliseLock(user.userId, templateId);
         return 'already-sent';
       }
 
@@ -101,7 +115,7 @@ export class App {
       await sftp.put(files.manifest, dest.manifest);
 
       templateLogger.info('Finalising lock');
-      await this.templateRepository.finaliseLock(owner, templateId);
+      await this.templateRepository.finaliseLock(user.userId, templateId);
 
       templateLogger.info('Sent proofing request');
 
@@ -133,7 +147,11 @@ export class App {
   private parseProofingRequest(event: string): ProofingRequest {
     return z
       .object({
-        owner: z.string(),
+        campaignId: z.string(),
+        clientId: z.string(),
+        language: z.enum(LANGUAGE_LIST),
+        letterType: z.enum(LETTER_TYPE_LIST),
+        user: z.object({ userId: z.string(), clientId: z.string() }),
         pdfVersionId: z.string(),
         personalisationParameters: z.array(z.string()),
         supplier: z.string(),
@@ -184,6 +202,16 @@ export class App {
       manifest: manifestStream,
       pdf: userData.pdf,
     };
+  }
+
+  private getExpandedTemplateId({
+    clientId,
+    campaignId,
+    letterType,
+    language,
+    templateId,
+  }: ExpandedIdComponenets) {
+    return [clientId, campaignId, templateId, language, letterType].join('_');
   }
 
   private getFileDestinations(

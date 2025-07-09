@@ -16,11 +16,12 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $CreateLetterTemplate,
   DatabaseTemplate,
+  User,
+  UserWithClient,
 } from 'nhs-notify-web-template-management-utils';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
-import type { User } from '../types';
 import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class TemplateClient {
@@ -347,7 +348,7 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    user: User
+    user: UserWithClient
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -363,10 +364,15 @@ export class TemplateClient {
       return clientConfigurationResult;
     }
 
-    if (!clientConfigurationResult.data?.features.proofing) {
+    const clientConfig = clientConfigurationResult.data;
+    const clientProofingEnabled = clientConfig?.features.proofing;
+    const campaignId = clientConfig?.campaignId;
+
+    if (!clientProofingEnabled || !campaignId) {
       log.error({
         code: ErrorCase.FEATURE_DISABLED,
         description: 'User cannot request a proof',
+        clientConfig,
       });
 
       return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
@@ -402,13 +408,19 @@ export class TemplateClient {
 
     const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
     const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
-    const personalisationParameters = templateDTO.personalisationParameters;
+    const personalisationParameters =
+      templateDTO.personalisationParameters ?? [];
+    const letterType = templateDTO.letterType;
+    const language = templateDTO.language;
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
       templateDTO.name,
-      user.userId,
-      personalisationParameters!,
+      user,
+      campaignId,
+      personalisationParameters,
+      letterType,
+      language,
       pdfVersionId,
       testDataVersionId,
       this.defaultLetterSupplier
