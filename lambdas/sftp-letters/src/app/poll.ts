@@ -117,7 +117,9 @@ export class App {
     s3Path: string,
     logger: Logger
   ) {
-    logger.info('Copying file');
+    const pathLogger = logger.child({ s3Path, sftpPath });
+
+    pathLogger.info('Copying file');
     try {
       const data = (await sftpClient.get(sftpPath)) as Buffer;
 
@@ -126,12 +128,12 @@ export class App {
       if (fileValidation) {
         await this.s3Repository.putRawData(data, s3Path);
       } else {
-        logger.error('PDF file failed validation');
+        pathLogger.error('PDF file failed validation');
       }
 
       await sftpClient.delete(sftpPath);
     } catch (error) {
-      logger.error('Failed to process file', error);
+      pathLogger.error('Failed to process file', error);
     }
   }
 

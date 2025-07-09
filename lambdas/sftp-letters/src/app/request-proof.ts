@@ -64,7 +64,11 @@ export class App {
       user,
     });
 
-    const dest = this.getFileDestinations(baseUploadDir, templateId, batchId);
+    const dest = this.getFileDestinations(
+      baseUploadDir,
+      expandedTemplateId,
+      batchId
+    );
 
     try {
       templateLogger.info('Opening SFTP connection');
@@ -74,6 +78,7 @@ export class App {
       const files = await this.getFileData(
         user.userId,
         templateId,
+        expandedTemplateId,
         pdfVersionId,
         testDataVersionId,
         personalisationParameters,
@@ -148,7 +153,6 @@ export class App {
     return z
       .object({
         campaignId: z.string(),
-        clientId: z.string(),
         language: z.enum(LANGUAGE_LIST),
         letterType: z.enum(LETTER_TYPE_LIST),
         user: z.object({ userId: z.string(), clientId: z.string() }),
@@ -165,6 +169,7 @@ export class App {
   private async getFileData(
     owner: string,
     templateId: string,
+    expandedTemplateId: string,
     pdfVersion: string,
     testDataVersion: string | undefined,
     fields: string[],
@@ -181,13 +186,21 @@ export class App {
       ? parseTestPersonalisation(userData.testData)
       : undefined;
 
-    const batchRows = this.batch.buildBatch(templateId, fields, parsedTestData);
+    const batchRows = this.batch.buildBatch(
+      expandedTemplateId,
+      fields,
+      parsedTestData
+    );
 
     const batchHeader = this.batch.getHeader(fields);
 
     const batchCsv = await serialiseCsv(batchRows, batchHeader);
 
-    const manifest = this.batch.buildManifest(templateId, batchId, batchCsv);
+    const manifest = this.batch.buildManifest(
+      expandedTemplateId,
+      batchId,
+      batchCsv
+    );
 
     const manifestCsv = await serialiseCsv(
       [manifest],

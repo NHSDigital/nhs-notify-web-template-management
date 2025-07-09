@@ -397,7 +397,11 @@ export class TemplateClient {
       proofRequestUpdateResult.data
     );
 
-    if (!templateDTO || templateDTO.templateType !== 'LETTER') {
+    if (
+      !templateDTO ||
+      templateDTO.templateType !== 'LETTER' ||
+      !templateDTO.personalisationParameters?.length
+    ) {
       log.error({
         code: ErrorCase.INTERNAL,
         description: 'Malformed template',
@@ -408,8 +412,7 @@ export class TemplateClient {
 
     const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
     const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
-    const personalisationParameters =
-      templateDTO.personalisationParameters ?? [];
+    const personalisationParameters = templateDTO.personalisationParameters;
     const letterType = templateDTO.letterType;
     const language = templateDTO.language;
 

@@ -1569,7 +1569,7 @@ describe('templateClient', () => {
       const { templateClient, mocks, logMessages } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { proofing: true } },
+        data: { features: { proofing: true }, campaignId: 'campaignId' },
       });
 
       const actualError = new Error('from db');
@@ -1773,8 +1773,11 @@ describe('templateClient', () => {
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
-        user.userId,
+        user,
+        'campaignId',
         personalisationParameters,
+        'x1',
+        'en',
         pdfVersionId,
         undefined,
         defaultLetterSupplier
@@ -1794,7 +1797,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.requestProof(templateId, {
         userId: user.userId,
-        clientId: undefined,
+        clientId: undefined as unknown as string,
       });
 
       expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
@@ -1864,8 +1867,11 @@ describe('templateClient', () => {
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
-        user.userId,
+        user,
+        'campaignId',
         personalisationParameters,
+        'x1',
+        'en',
         pdfVersionId,
         undefined,
         defaultLetterSupplier

@@ -23,7 +23,8 @@ test('polls SFTP folder', async () => {
     exists: async (path: string) => {
       const existsMappings: Record<string, FileInfo['type']> = {
         'download-dir/sftp-environment/proofs': directoryType,
-        'download-dir/sftp-environment/proofs/template-1-folder': directoryType,
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0':
+          directoryType,
       };
 
       return existsMappings[path] ?? false;
@@ -31,18 +32,19 @@ test('polls SFTP folder', async () => {
     get: async (path: string) => {
       if (
         path ===
-        'download-dir/sftp-environment/proofs/template-1-folder/download-error.pdf'
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/download-error.pdf'
       ) {
         throw downloadError;
       }
 
       const buffer = {
-        'download-dir/sftp-environment/proofs/template-3.pdf': mockPdfBuffer,
-        'download-dir/sftp-environment/proofs/template-1-folder/template-1.pdf':
+        'download-dir/sftp-environment/proofs/client2_campaign2_template-3_zh_x1':
           mockPdfBuffer,
-        'download-dir/sftp-environment/proofs/template-1-folder/template-2.pdf':
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/proof-1.pdf':
           mockPdfBuffer,
-        'download-dir/sftp-environment/proofs/template-1-folder/invalid-file.pdf':
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/proof-2.pdf':
+          mockPdfBuffer,
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/invalid-file.pdf':
           mockMalformedPdfBuffer,
       }[path];
 
@@ -56,7 +58,7 @@ test('polls SFTP folder', async () => {
       ({
         'download-dir/sftp-environment/proofs': [
           {
-            name: 'template-1-folder',
+            name: 'client_campaign_template-1_en_x0',
             type: directoryType,
             modifyTime: Date.now(),
           },
@@ -66,38 +68,39 @@ test('polls SFTP folder', async () => {
             modifyTime: Date.now(),
           },
           {
-            name: 'folder-does-not-exist',
+            name: 'client3_campaign3_template-5_de_q1',
             type: directoryType,
             modifyTime: Date.now(),
           },
         ],
-        'download-dir/sftp-environment/proofs/template-1-folder': [
-          {
-            name: 'template-1.pdf',
-            type: fileType,
-            modifyTime: Date.now(),
-          },
-          {
-            name: 'template-2.pdf',
-            type: fileType,
-            modifyTime: Date.now(),
-          },
-          {
-            name: 'invalid-file.pdf',
-            type: fileType,
-            modifyTime: Date.now(),
-          },
-          {
-            name: 'download-error.pdf',
-            type: fileType,
-            modifyTime: Date.now(),
-          },
-          {
-            name: 'extra-folder-to-ignore',
-            type: directoryType,
-            modifyTime: Date.now(),
-          },
-        ],
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0':
+          [
+            {
+              name: 'proof-1.pdf',
+              type: fileType,
+              modifyTime: Date.now(),
+            },
+            {
+              name: 'proof-2.pdf',
+              type: fileType,
+              modifyTime: Date.now(),
+            },
+            {
+              name: 'invalid-file.pdf',
+              type: fileType,
+              modifyTime: Date.now(),
+            },
+            {
+              name: 'download-error.pdf',
+              type: fileType,
+              modifyTime: Date.now(),
+            },
+            {
+              name: 'extra-folder-to-ignore',
+              type: directoryType,
+              modifyTime: Date.now(),
+            },
+          ],
       })[path] ?? [],
   });
 
@@ -125,33 +128,34 @@ test('polls SFTP folder', async () => {
   expect(s3Repository.putRawData).toHaveBeenCalledTimes(2);
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1-folder/template-1.pdf'
+    'proofs/supplier/template-1/proof-1.pdf'
   );
   expect(s3Repository.putRawData).toHaveBeenCalledWith(
     mockPdfBuffer,
-    'proofs/supplier/template-1-folder/template-2.pdf'
+    'proofs/supplier/template-1/proof-2.pdf'
   );
 
-  expect(mockLogger.logMessages).toContainEqual({
-    level: 'error',
-    message: {
-      description: 'PDF file failed validation',
+  expect(mockLogger.logMessages).toContainEqual(
+    expect.objectContaining({
+      level: 'error',
+      message: 'PDF file failed validation',
       sftpPath:
-        'download-dir/sftp-environment/proofs/template-1-folder/invalid-file.pdf',
-      s3Path: 'proofs/supplier/template-1-folder/invalid-file.pdf',
-    },
-    timestamp: new Date('2022-01-01 09:00').toISOString(),
-  });
-  expect(mockLogger.logMessages).toContainEqual({
-    level: 'error',
-    description: 'Failed to process file',
-    sftpPath:
-      'download-dir/sftp-environment/proofs/template-1-folder/download-error.pdf',
-    s3Path: 'proofs/supplier/template-1-folder/download-error.pdf',
-    timestamp: new Date('2022-01-01 09:00').toISOString(),
-    stack: expect.stringContaining('Error: Download error'),
-    message: 'Download error',
-  });
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/invalid-file.pdf',
+      s3Path: 'proofs/supplier/template-1/invalid-file.pdf',
+      timestamp: new Date('2022-01-01 09:00').toISOString(),
+    })
+  );
+  expect(mockLogger.logMessages).toContainEqual(
+    expect.objectContaining({
+      level: 'error',
+      sftpPath:
+        'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/download-error.pdf',
+      s3Path: 'proofs/supplier/template-1/download-error.pdf',
+      timestamp: new Date('2022-01-01 09:00').toISOString(),
+      stack: expect.stringContaining('Error: Download error'),
+      message: 'Failed to process file Download error',
+    })
+  );
 
   expect(sftpClient.connect).toHaveBeenCalledTimes(1);
   expect(sftpClient.end).toHaveBeenCalledTimes(1);
@@ -187,11 +191,14 @@ test('attempts to poll folder that does not exist', async () => {
 
   expect(sftpClient.list).not.toHaveBeenCalled();
 
-  expect(mockLogger.logMessages).toContainEqual({
-    level: 'info',
-    message: "Path 'download-dir/sftp-environment/proofs' does not exist",
-    timestamp: new Date('2022-01-01 09:00').toISOString(),
-  });
+  expect(mockLogger.logMessages).toContainEqual(
+    expect.objectContaining({
+      level: 'info',
+      baseSftpPath: 'download-dir/sftp-environment/proofs',
+      message: 'Base SFTP path does not exist',
+      timestamp: new Date('2022-01-01 09:00').toISOString(),
+    })
+  );
 
   expect(sftpClient.connect).toHaveBeenCalledTimes(1);
   expect(sftpClient.end).toHaveBeenCalledTimes(1);
