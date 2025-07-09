@@ -18,6 +18,8 @@ const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
   NHS_APP: [
     LineBreaksAndParagraphs(),
     Headings(),
+    BulletList(),
+    NumberedList(),
     BoldText(),
     LinksAndUrlsMarkdown(),
   ],

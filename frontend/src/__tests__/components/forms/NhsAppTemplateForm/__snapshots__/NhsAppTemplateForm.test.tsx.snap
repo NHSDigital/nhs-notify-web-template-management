@@ -391,6 +391,102 @@ exports[`Client-side validation triggers 1`] = `
         </details>
         <details
           class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
           data-testid="bold-text-details"
         >
           <summary
@@ -913,6 +1009,102 @@ exports[`renders page 1`] = `
               aria-describedby="subheading-description"
             >
               ## This is a subheading
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
             </code>
           </div>
         </details>
@@ -1482,6 +1674,102 @@ exports[`renders page one error 1`] = `
               aria-describedby="subheading-description"
             >
               ## This is a subheading
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
             </code>
           </div>
         </details>
@@ -2070,6 +2358,102 @@ exports[`renders page with multiple errors 1`] = `
         </details>
         <details
           class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
           data-testid="bold-text-details"
         >
           <summary
@@ -2597,6 +2981,102 @@ exports[`renders page with preloaded field values 1`] = `
         </details>
         <details
           class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
           data-testid="bold-text-details"
         >
           <summary
@@ -3097,6 +3577,102 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               aria-describedby="subheading-description"
             >
               ## This is a subheading
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="bullet-lists-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="bullet-lists-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Bullet points
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="bullet-lists-text"
+          >
+            <p>
+              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="bullet-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="bullet-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                * bullet 1
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 2
+              </span>
+              <span
+                class="inlineText"
+              >
+                * bullet 3
+              </span>
+            </code>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="numbered-list-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="numbered-list-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Numbered lists
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="numbered-list-text"
+          >
+            <p>
+              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="numbered-list-description"
+            >
+              An example of markdown:
+            </span>
+            <code
+              aria-describedby="numbered-list-description"
+            >
+              <span
+                class="inlineText"
+              >
+                1. first item
+              </span>
+              <span
+                class="inlineText"
+              >
+                2. second item
+              </span>
+              <span
+                class="inlineText"
+              >
+                3. third item
+              </span>
             </code>
           </div>
         </details>
