@@ -17,11 +17,13 @@ import {
   $GuardDutyMalwareScanStatusFailed,
   DatabaseTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
 
 jest.mock('@backend-api/templates/domain/template-pdf');
 jest.mock('@backend-api/templates/domain/test-data-csv');
 jest.mock('@backend-api/templates/domain/validate-letter-template-files');
 jest.mock('nhs-notify-web-template-management-utils/logger');
+jest.mock('@backend-api/templates/infra/client-config-repository');
 jest.mocked(logger).child.mockReturnThis();
 
 const versionId = 'template-version-id';
@@ -35,6 +37,7 @@ function setup() {
     TemplatePdf: jest.mocked(TemplatePdf),
     TestDataCsv: jest.mocked(TestDataCsv),
     validateLetterTemplateFiles: jest.mocked(validateLetterTemplateFiles),
+    clientConfigRepository: mock<ClientConfigRepository>(),
   };
 
   const handler = new ValidateLetterTemplateFilesLambda(mocks).guardDutyHandler;
@@ -88,6 +91,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],
     });
@@ -135,7 +142,8 @@ describe('guard duty handler', () => {
       versionId,
       true,
       pdf.personalisationParameters,
-      csv.parameters
+      csv.parameters,
+      false
     );
   });
 
@@ -171,6 +179,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'fa',
+        clientId: 'clientId',
       }),
     });
 
@@ -180,6 +189,12 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: {
+        features: { proofing: true },
+      },
+    });
 
     const pdf = {
       personalisationParameters: [
@@ -209,6 +224,7 @@ describe('guard duty handler', () => {
     expect(pdf.parse).toHaveBeenCalled();
     expect(csv.parse).toHaveBeenCalled();
     expect(mocks.validateLetterTemplateFiles).not.toHaveBeenCalled();
+    expect(mocks.clientConfigRepository.get).toHaveBeenCalledWith('clientId');
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).toHaveBeenCalledWith(
@@ -216,7 +232,8 @@ describe('guard duty handler', () => {
       versionId,
       true,
       ['firstName', 'parameter_1', 'unknown_parameter'],
-      ['parameter_1', 'missing_parameter']
+      ['parameter_1', 'missing_parameter'],
+      true
     );
   });
 
@@ -233,6 +250,12 @@ describe('guard duty handler', () => {
         scanResultDetails: {
           scanResultStatus: 'NO_THREATS_FOUND',
         },
+      },
+    });
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: {
+        features: { proofing: false },
       },
     });
 
@@ -261,6 +284,8 @@ describe('guard duty handler', () => {
     mocks.letterUploadRepository.download
       .mockResolvedValueOnce(pdfData)
       .mockResolvedValueOnce(csvData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({ data: null });
 
     const pdf = {
       personalisationParameters: [
@@ -293,7 +318,8 @@ describe('guard duty handler', () => {
       versionId,
       false,
       ['firstName', 'parameter_1', 'unknown_parameter'],
-      ['parameter_1', 'missing_parameter']
+      ['parameter_1', 'missing_parameter'],
+      false
     );
   });
 
@@ -330,6 +356,10 @@ describe('guard duty handler', () => {
     const pdfData = Uint8Array.from('pdf');
 
     mocks.letterUploadRepository.download.mockResolvedValueOnce(pdfData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: { features: { proofing: false } },
+    });
 
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],
@@ -372,7 +402,8 @@ describe('guard duty handler', () => {
       versionId,
       true,
       pdf.personalisationParameters,
-      []
+      [],
+      false
     );
   });
 
@@ -512,6 +543,55 @@ describe('guard duty handler', () => {
     await expect(handler(event)).rejects.toThrowErrorMatchingSnapshot();
   });
 
+  test('errors when fetching client configuration fails unexpectedly', async () => {
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: mock<DatabaseTemplate>({
+        files: {
+          pdfTemplate: {
+            fileName: 'template.pdf',
+            virusScanStatus: 'PASSED',
+            currentVersion: versionId,
+          },
+          testDataCsv: undefined,
+        },
+        templateStatus: 'PENDING_VALIDATION',
+        language: 'en',
+      }),
+    });
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(
+      Uint8Array.from('pdf')
+    );
+
+    const err = new Error('client config err');
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      error: { code: 500, actualError: err, message: 'client config error' },
+    });
+
+    await expect(handler(event)).rejects.toThrow(
+      'Unable to fetch client configuration'
+    );
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).not.toHaveBeenCalled();
+  });
+
   test("errors if the template data can't be loaded", async () => {
     const { handler, mocks } = setup();
 
@@ -529,7 +609,7 @@ describe('guard duty handler', () => {
 
     mocks.templateRepository.get.mockResolvedValueOnce({
       error: {
-        code: ErrorCase.TEMPLATE_NOT_FOUND,
+        code: ErrorCase.NOT_FOUND,
         actualError: new Error('database error'),
         message: 'Some error message',
       },
@@ -1038,6 +1118,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     mocks.TemplatePdf.mockImplementation(() =>
       mock<TemplatePdf>({
         parse: jest.fn().mockRejectedValue(new Error('pdf parsing error')),
@@ -1048,7 +1132,14 @@ describe('guard duty handler', () => {
 
     expect(
       mocks.templateRepository.setLetterValidationResult
-    ).toHaveBeenCalledWith({ id: templateId, owner }, versionId, false, [], []);
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      false,
+      [],
+      [],
+      false
+    );
   });
 
   test('sets the template to failed if unable to parse the csv file', async () => {
@@ -1089,6 +1180,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     mocks.TemplatePdf.mockImplementation(() => mock<TemplatePdf>());
 
     mocks.TestDataCsv.mockImplementation(() =>
@@ -1103,7 +1198,14 @@ describe('guard duty handler', () => {
 
     expect(
       mocks.templateRepository.setLetterValidationResult
-    ).toHaveBeenCalledWith({ id: templateId, owner }, versionId, false, [], []);
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      false,
+      [],
+      [],
+      false
+    );
   });
 
   test('sets the template to failed if the validation fails', async () => {
@@ -1144,6 +1246,10 @@ describe('guard duty handler', () => {
       .mockResolvedValueOnce(Uint8Array.from('pdf'))
       .mockResolvedValueOnce(Uint8Array.from('csv'));
 
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
     const pdf = mock<TemplatePdf>({
       personalisationParameters: ['firstName', 'parameter_1'],
     });
@@ -1163,7 +1269,8 @@ describe('guard duty handler', () => {
       versionId,
       false,
       pdf.personalisationParameters,
-      csv.parameters
+      csv.parameters,
+      false
     );
   });
 });

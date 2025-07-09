@@ -9,6 +9,7 @@ import {
   LetterFiles,
   TemplateStatus,
   $CreateUpdateNonLetter,
+  ClientConfiguration,
 } from 'nhs-notify-backend-client';
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
@@ -20,6 +21,7 @@ import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import type { User } from '../types';
+import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class TemplateClient {
   constructor(
@@ -27,6 +29,7 @@ export class TemplateClient {
     private readonly letterUploadRepository: LetterUploadRepository,
     private readonly proofingQueue: ProofingQueue,
     private readonly defaultLetterSupplier: string,
+    private readonly clientConfigRepository: ClientConfigRepository,
     private readonly logger: Logger
   ) {}
 
@@ -46,11 +49,24 @@ export class TemplateClient {
       return validationResult;
     }
 
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
+
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user.userId,
       user.clientId,
-      'NOT_YET_SUBMITTED'
+      'NOT_YET_SUBMITTED',
+      clientConfigurationResult.data?.campaignId
     );
 
     if (createResult.error) {
@@ -130,11 +146,24 @@ export class TemplateClient {
       files,
     };
 
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
+
     const createResult = await this.templateRepository.create(
       withFiles,
       user.userId,
       user.clientId,
-      'PENDING_UPLOAD'
+      'PENDING_UPLOAD',
+      clientConfigurationResult.data?.campaignId
     );
 
     if (createResult.error) {
@@ -322,6 +351,27 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
+
+    if (!clientConfigurationResult.data?.features.proofing) {
+      log.error({
+        code: ErrorCase.FEATURE_DISABLED,
+        description: 'User cannot request a proof',
+      });
+
+      return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
+    }
+
     const proofRequestUpdateResult =
       await this.templateRepository.proofRequestUpdate(templateId, user.userId);
 
@@ -406,6 +456,35 @@ export class TemplateClient {
     }
 
     return success(templateDTO);
+  }
+
+  async getClientConfiguration(
+    user: User
+  ): Promise<Result<ClientConfiguration>> {
+    const log = this.logger.child({
+      user,
+    });
+
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
+
+    if (clientConfigurationResult.error) {
+      log.error('Failed to fetch client configuration', {
+        clientConfigurationResult,
+      });
+
+      return clientConfigurationResult;
+    }
+
+    if (clientConfigurationResult.data === null) {
+      return failure(
+        ErrorCase.NOT_FOUND,
+        'Client configuration is not available'
+      );
+    }
+
+    return success(clientConfigurationResult.data);
   }
 
   private mapDatabaseObjectToDTO(
