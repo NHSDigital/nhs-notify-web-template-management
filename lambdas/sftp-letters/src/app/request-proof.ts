@@ -43,8 +43,6 @@ export class App {
     const { sftpClient: sftp, baseUploadDir } =
       await this.sftpSupplierClientRepository.getClient(supplier);
 
-    const batchId = this.batch.getId(templateId, pdfVersionId);
-
     const expandedTemplateId = this.getExpandedTemplateId({
       clientId: user.clientId,
       campaignId,
@@ -52,6 +50,8 @@ export class App {
       language,
       templateId,
     });
+
+    const batchId = this.batch.getId(expandedTemplateId, pdfVersionId);
 
     const templateLogger = this.logger.child({
       batchId,

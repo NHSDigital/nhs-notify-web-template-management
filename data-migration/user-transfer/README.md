@@ -1,4 +1,4 @@
-# UserWithOptionalClient Transfer Data Migration
+# User Transfer Data Migration
 
 The purpose of this tool is to transfer templates stored in DynamoDB from one owner to another. It does not transfer ownership of any files in S3, this would need to be done separately.
 

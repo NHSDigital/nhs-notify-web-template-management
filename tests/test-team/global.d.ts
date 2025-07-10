@@ -8,6 +8,7 @@ declare global {
       NEXT_PUBLIC_ENABLE_PROOFING: string;
       PLAYWRIGHT_RUN_ID: string;
       REQUEST_PROOF_QUEUE_URL: string;
+      SEND_PROOF_QUEUE_URL: string;
       SFTP_ENVIRONMENT: string;
       SFTP_MOCK_CREDENTIAL_PATH: string;
       TEMPLATES_TABLE_NAME: string;

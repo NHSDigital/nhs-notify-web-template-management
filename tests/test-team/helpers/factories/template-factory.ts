@@ -1,4 +1,5 @@
 import { TestUser } from '../auth/cognito-auth-helper';
+import { testClients } from '../client/client-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
@@ -9,35 +10,38 @@ export const TemplateFactory = {
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
       id,
-      owner: user.userId,
-      name,
-      templateType: 'EMAIL',
       message: 'test-message',
+      name,
+      owner: user.userId,
       subject: 'test-subject',
+      templateType: 'EMAIL',
     });
   },
 
   createSmsTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
       id,
-      owner: user.userId,
-      name: 'test',
-      templateType: 'SMS',
       message: 'test-message',
+      name: 'test',
+      owner: user.userId,
+      templateType: 'SMS',
     });
   },
 
   createNhsAppTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
       id,
-      owner: user.userId,
-      name: 'test-name',
-      templateType: 'NHS_APP',
       message: 'test-message',
+      name: 'test-name',
+      owner: user.userId,
+      templateType: 'NHS_APP',
     });
   },
 
@@ -49,14 +53,8 @@ export const TemplateFactory = {
     virusScanStatus = 'PASSED'
   ): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
       clientId: user.clientId,
-      id,
-      owner: user.userId,
-      name,
-      templateStatus,
-      templateType: 'LETTER',
-      letterType: 'x0',
-      language: 'en',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',
@@ -70,6 +68,13 @@ export const TemplateFactory = {
         },
         proofs: {},
       },
+      id,
+      language: 'en',
+      letterType: 'x0',
+      name,
+      owner: user.userId,
+      templateStatus,
+      templateType: 'LETTER',
     });
   },
 

@@ -15,7 +15,7 @@ const authHelper = createAuthHelper();
 const sftpHelper = new SftpHelper();
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 
-test.describe('Letter Proofing', () => {
+test.describe('Letter Proof Polling', () => {
   test.beforeAll(async () => {
     await sftpHelper.connect();
   });
