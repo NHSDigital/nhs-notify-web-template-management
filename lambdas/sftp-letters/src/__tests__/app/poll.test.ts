@@ -25,6 +25,8 @@ test('polls SFTP folder', async () => {
         'download-dir/sftp-environment/proofs': directoryType,
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0':
           directoryType,
+        'download-dir/sftp-environment/proofs/unexpected-id-format':
+          directoryType,
       };
 
       return existsMappings[path] ?? false;
@@ -43,6 +45,8 @@ test('polls SFTP folder', async () => {
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/proof-1.pdf':
           mockPdfBuffer,
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/proof-2.pdf':
+          mockPdfBuffer,
+        'download-dir/sftp-environment/proofs/unexpected-id-format/proof-1.pdf':
           mockPdfBuffer,
         'download-dir/sftp-environment/proofs/client_campaign_template-1_en_x0/invalid-file.pdf':
           mockMalformedPdfBuffer,
@@ -101,6 +105,13 @@ test('polls SFTP folder', async () => {
               modifyTime: Date.now(),
             },
           ],
+        'download-dir/sftp-environment/proofs/unexpected-id-format': [
+          {
+            name: 'proof-1.pdf',
+            type: fileType,
+            modifyTime: Date.now(),
+          },
+        ],
       })[path] ?? [],
   });
 

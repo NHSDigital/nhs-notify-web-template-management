@@ -98,7 +98,7 @@ export class App {
     const idLogger = logger.child({ expandedTemplateId, templateId });
 
     for (const proofFile of proofFiles) {
-      if (proofFile.type === '-') {
+      if (proofFile.type === '-' && templateId) {
         await this.copyFileToS3(
           sftpClient,
           `${baseSftpPath}/${expandedTemplateId}/${proofFile.name}`,
@@ -106,7 +106,7 @@ export class App {
           logger
         );
       } else {
-        idLogger.info('Unexpected non-file item found');
+        idLogger.info('Unexpected item found', { proofFile });
       }
     }
   }
