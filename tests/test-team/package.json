@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@aws-sdk/client-appsync": "3.775.0",
-    "@aws-sdk/client-cognito-identity-provider": "3.775.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.844.0",
     "@aws-sdk/client-dynamodb": "3.775.0",
     "@aws-sdk/client-eventbridge": "^3.775.0",
     "@aws-sdk/client-lambda": "3.775.0",
