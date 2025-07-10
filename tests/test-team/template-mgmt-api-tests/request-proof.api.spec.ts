@@ -228,7 +228,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     });
   });
 
-  test('returns 403 - user without a client cannot request a proof', async ({
+  test('returns 400 - user without a client cannot request a proof', async ({
     request,
   }) => {
     const templateId = randomUUID();
@@ -237,8 +237,8 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        userProofingEnabled,
-        'userProofingEnabledtemplate',
+        userWithoutClient,
+        'userWithoutClientTemplate',
         // template should not reach this status if proofing is not
         // enabled for the client
         'PENDING_PROOF_REQUEST'

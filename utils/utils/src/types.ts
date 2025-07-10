@@ -137,13 +137,13 @@ export type ProofingRequest = {
   campaignId: string;
   language: Language;
   letterType: LetterType;
-  user: User;
   pdfVersionId: string;
   personalisationParameters: string[];
   supplier: string;
   templateId: string;
   templateName: string;
   testDataVersionId?: string;
+  user: User;
 };
 
 export type User = { userId: string; clientId: string };

@@ -374,14 +374,11 @@ export class TemplateClient {
     if (!clientConfig?.features.proofing) {
       log.error({
         code: ErrorCase.FEATURE_DISABLED,
-        description: 'UserWithOptionalClient cannot request a proof',
+        description: 'User cannot request a proof',
         clientConfig,
       });
 
-      return failure(
-        ErrorCase.FEATURE_DISABLED,
-        'UserWithOptionalClient cannot request a proof'
-      );
+      return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
     }
 
     const proofRequestUpdateResult =

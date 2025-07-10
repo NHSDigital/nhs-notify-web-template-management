@@ -1539,7 +1539,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 403,
-          message: 'UserWithOptionalClient cannot request a proof',
+          message: 'User cannot request a proof',
         },
       });
     });
@@ -1813,7 +1813,7 @@ describe('templateClient', () => {
       expect(result).toEqual({
         error: {
           code: 403,
-          message: 'UserWithOptionalClient cannot request a proof',
+          message: 'User cannot request a proof',
         },
       });
     });
