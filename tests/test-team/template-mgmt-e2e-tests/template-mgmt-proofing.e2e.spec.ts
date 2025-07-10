@@ -9,6 +9,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { testClients } from '../helpers/client/client-helper';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const authHelper = createAuthHelper();
@@ -44,17 +45,25 @@ test.describe('Letter Proofing', () => {
       './fixtures/pdf-upload/no-custom-personalisation/template.pdf'
     );
 
+    const expandedTemplateId = [
+      user.clientId,
+      'campaign',
+      templateId,
+      'en',
+      'x0',
+    ].join('_');
+
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-1.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-1.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-2.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-2.pdf`
     );
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof-3.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof-3.pdf`
     );
 
     // check for expected results
@@ -153,9 +162,17 @@ test.describe('Letter Proofing', () => {
       './fixtures/pdf-upload/no-custom-personalisation/password.pdf'
     );
 
+    const expandedTemplateId = [
+      user.clientId,
+      'campaign2',
+      templateId,
+      'fr',
+      'q1',
+    ].join('_');
+
     await sftpHelper.put(
       pdfContent,
-      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${templateId}/proof.pdf`
+      `WTMMOCK/Outgoing/${process.env.SFTP_ENVIRONMENT}/proofs/${expandedTemplateId}/proof.pdf`
     );
 
     // invoke SFTP poll lambda

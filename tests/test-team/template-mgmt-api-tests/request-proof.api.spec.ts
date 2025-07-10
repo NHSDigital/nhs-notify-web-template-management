@@ -8,7 +8,7 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { TemplateFactory } from '../helpers/factories/template-factory';
 import { randomUUID } from 'node:crypto';
 
-test.describe('POST /v1/template/:templateId/proof @debug', () => {
+test.describe('POST /v1/template/:templateId/proof', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let userProofingEnabled: TestUser;
@@ -115,6 +115,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
           fileName: 'data.csv',
         },
       },
+      personalisationParameters: ['nhsNumber'],
     };
 
     await templateStorageHelper.seedTemplateData([template]);
@@ -227,7 +228,7 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
     });
   });
 
-  test('returns 403 - cannot request a proof when client proofing is not enabled', async ({
+  test('returns 403 - user without a client cannot request a proof', async ({
     request,
   }) => {
     const templateId = randomUUID();
@@ -265,11 +266,11 @@ test.describe('POST /v1/template/:templateId/proof @debug', () => {
 
     const debug = JSON.stringify(result, null, 2);
 
-    expect(proofResponse.status(), debug).toBe(403);
+    expect(proofResponse.status(), debug).toBe(400);
 
     expect(result).toEqual({
-      statusCode: 403,
-      technicalMessage: 'User cannot request a proof',
+      statusCode: 400,
+      technicalMessage: 'Invalid request',
     });
   });
 });

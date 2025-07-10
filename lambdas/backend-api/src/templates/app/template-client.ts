@@ -16,8 +16,8 @@ import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constant
 import {
   $CreateLetterTemplate,
   DatabaseTemplate,
+  UserWithOptionalClient,
   User,
-  UserWithClient,
 } from 'nhs-notify-web-template-management-utils';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
@@ -36,7 +36,7 @@ export class TemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ template, user });
 
@@ -88,7 +88,7 @@ export class TemplateClient {
 
   async createLetterTemplate(
     template: CreateUpdateTemplate,
-    user: User,
+    user: UserWithOptionalClient,
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
@@ -211,7 +211,7 @@ export class TemplateClient {
   async updateTemplate(
     templateId: string,
     template: CreateUpdateTemplate,
-    user: User,
+    user: UserWithOptionalClient,
     expectedStatus: TemplateStatus = 'NOT_YET_SUBMITTED'
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
@@ -252,7 +252,7 @@ export class TemplateClient {
 
   async submitTemplate(
     templateId: string,
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -278,7 +278,10 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async deleteTemplate(templateId: string, user: User): Promise<Result<void>> {
+  async deleteTemplate(
+    templateId: string,
+    user: UserWithOptionalClient
+  ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
     const deleteResult = await this.templateRepository.delete(
@@ -301,7 +304,7 @@ export class TemplateClient {
 
   async getTemplate(
     templateId: string,
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({
       templateId,
@@ -327,7 +330,9 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async listTemplates(user: User): Promise<Result<TemplateDto[]>> {
+  async listTemplates(
+    user: UserWithOptionalClient
+  ): Promise<Result<TemplateDto[]>> {
     const listResult = await this.templateRepository.list(user.userId);
 
     if (listResult.error) {
@@ -348,7 +353,7 @@ export class TemplateClient {
 
   async requestProof(
     templateId: string,
-    user: UserWithClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
@@ -365,21 +370,22 @@ export class TemplateClient {
     }
 
     const clientConfig = clientConfigurationResult.data;
-    const clientProofingEnabled = clientConfig?.features.proofing;
-    const campaignId = clientConfig?.campaignId;
 
-    if (!clientProofingEnabled || !campaignId) {
+    if (!clientConfig?.features.proofing) {
       log.error({
         code: ErrorCase.FEATURE_DISABLED,
-        description: 'User cannot request a proof',
+        description: 'UserWithOptionalClient cannot request a proof',
         clientConfig,
       });
 
-      return failure(ErrorCase.FEATURE_DISABLED, 'User cannot request a proof');
+      return failure(
+        ErrorCase.FEATURE_DISABLED,
+        'UserWithOptionalClient cannot request a proof'
+      );
     }
 
     const proofRequestUpdateResult =
-      await this.templateRepository.proofRequestUpdate(templateId, user.userId);
+      await this.templateRepository.proofRequestUpdate(templateId, user);
 
     if (proofRequestUpdateResult.error) {
       log
@@ -400,11 +406,13 @@ export class TemplateClient {
     if (
       !templateDTO ||
       templateDTO.templateType !== 'LETTER' ||
-      !templateDTO.personalisationParameters?.length
+      !templateDTO.personalisationParameters ||
+      !templateDTO.campaignId
     ) {
       log.error({
         code: ErrorCase.INTERNAL,
         description: 'Malformed template',
+        template: templateDTO,
       });
 
       return failure(ErrorCase.INTERNAL, 'Malformed template');
@@ -415,12 +423,14 @@ export class TemplateClient {
     const personalisationParameters = templateDTO.personalisationParameters;
     const letterType = templateDTO.letterType;
     const language = templateDTO.language;
+    const name = templateDTO.name;
+    const templateCampaignId = templateDTO.campaignId;
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
-      templateDTO.name,
+      name,
       user,
-      campaignId,
+      templateCampaignId,
       personalisationParameters,
       letterType,
       language,
@@ -447,7 +457,7 @@ export class TemplateClient {
   private async updateTemplateStatus(
     templateId: string,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>,
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
@@ -475,7 +485,7 @@ export class TemplateClient {
   }
 
   async getClientConfiguration(
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<ClientConfiguration>> {
     const log = this.logger.child({
       user,

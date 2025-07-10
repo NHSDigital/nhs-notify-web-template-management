@@ -96,6 +96,7 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
 >;
 
 export type DatabaseTemplate = {
+  campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
@@ -110,7 +111,6 @@ export type DatabaseTemplate = {
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
-  campaignId?: string;
   updatedBy?: string;
 } & DbOnlyTemplateProperties;
 
@@ -137,7 +137,7 @@ export type ProofingRequest = {
   campaignId: string;
   language: Language;
   letterType: LetterType;
-  user: UserWithClient;
+  user: User;
   pdfVersionId: string;
   personalisationParameters: string[];
   supplier: string;
@@ -146,9 +146,8 @@ export type ProofingRequest = {
   testDataVersionId?: string;
 };
 
-export type User = {
-  userId: string;
+export type User = { userId: string; clientId: string };
+
+export type UserWithOptionalClient = Omit<User, 'clientId'> & {
   clientId: string | undefined;
 };
-
-export type UserWithClient = Omit<User, 'clientId'> & { clientId: string };

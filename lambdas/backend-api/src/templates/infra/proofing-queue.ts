@@ -5,7 +5,7 @@ import {
   type Language,
   type LetterType,
 } from 'nhs-notify-backend-client';
-import type { UserWithClient } from 'nhs-notify-web-template-management-utils';
+import type { User } from 'nhs-notify-web-template-management-utils';
 
 export class ProofingQueue {
   constructor(
@@ -16,7 +16,7 @@ export class ProofingQueue {
   async send(
     templateId: string,
     templateName: string,
-    user: UserWithClient,
+    user: User,
     campaignId: string,
     personalisationParameters: string[],
     letterType: LetterType,

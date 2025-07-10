@@ -512,6 +512,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: created.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -673,6 +674,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: created.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -834,6 +836,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: created.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
