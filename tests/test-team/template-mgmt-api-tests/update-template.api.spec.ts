@@ -292,7 +292,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey!]?.campaignId,
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: updateData.message,
@@ -867,7 +867,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey!]?.campaignId,
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: updateData.message,
@@ -1395,7 +1395,7 @@ test.describe('POST /v1/template/:templateId', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
-          campaignId: testClients[user1.clientKey!]?.campaignId,
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: updateData.message,

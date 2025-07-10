@@ -17,7 +17,7 @@ import {
 
 type TestUserStaticDetails = {
   userId: string;
-  clientKey: ClientKey | undefined;
+  clientKey: ClientKey | 'NONE';
 };
 
 type TestUserDynamicDetails = {
@@ -75,7 +75,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User6: {
     userId: 'User6',
-    clientKey: undefined,
+    clientKey: 'NONE',
   },
 };
 
@@ -184,9 +184,10 @@ export class CognitoAuthHelper {
     const email = faker.internet.exampleEmail();
     const tempPassword = CognitoAuthHelper.generatePassword();
 
-    const clientId = userDetails.clientKey
-      ? `${userDetails.clientKey}--${this.runId}`
-      : undefined;
+    const clientId =
+      userDetails.clientKey === 'NONE'
+        ? undefined
+        : `${userDetails.clientKey}--${this.runId}`;
 
     const clientAttribute = clientId
       ? [
