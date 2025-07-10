@@ -76,7 +76,6 @@ export const BackendConfigHelper = {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
-      sendProofQueueUrl: outputsFileContent.send_proof_queue_url?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',
