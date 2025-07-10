@@ -1,15 +1,17 @@
+import { TestUser } from '../auth/cognito-auth-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
 export const TemplateFactory = {
   createEmailTemplate: (
     id: string,
-    owner: string,
+    user: TestUser,
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
+      clientId: user.clientId,
       id,
-      owner,
+      owner: user.userId,
       name,
       templateType: 'EMAIL',
       message: 'test-message',
@@ -17,20 +19,22 @@ export const TemplateFactory = {
     });
   },
 
-  createSmsTemplate: (id: string, owner: string): Template => {
+  createSmsTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      clientId: user.clientId,
       id,
-      owner,
+      owner: user.userId,
       name: 'test',
       templateType: 'SMS',
       message: 'test-message',
     });
   },
 
-  createNhsAppTemplate: (id: string, owner: string): Template => {
+  createNhsAppTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      clientId: user.clientId,
       id,
-      owner,
+      owner: user.userId,
       name: 'test-name',
       templateType: 'NHS_APP',
       message: 'test-message',
@@ -39,14 +43,15 @@ export const TemplateFactory = {
 
   createLetterTemplate: (
     id: string,
-    owner: string,
+    user: TestUser,
     name: string,
     templateStatus = 'NOT_YET_SUBMITTED',
     virusScanStatus = 'PASSED'
   ): Template => {
     return TemplateFactory.create({
+      clientId: user.clientId,
       id,
-      owner,
+      owner: user.userId,
       name,
       templateStatus,
       templateType: 'LETTER',

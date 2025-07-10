@@ -9,7 +9,6 @@ import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
 import { SftpHelper } from '../helpers/sftp/sftp-helper';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
-import { testClients } from '../helpers/client/client-helper';
 
 const templateStorageHelper = new TemplateStorageHelper();
 const authHelper = createAuthHelper();
@@ -34,7 +33,7 @@ test.describe('Letter Proofing', () => {
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.createLetterTemplate(
         templateId,
-        user.userId,
+        user,
         templateId,
         'WAITING_FOR_PROOF'
       ),
@@ -151,7 +150,7 @@ test.describe('Letter Proofing', () => {
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.createLetterTemplate(
         templateId,
-        user.userId,
+        user,
         templateId,
         'WAITING_FOR_PROOF'
       ),

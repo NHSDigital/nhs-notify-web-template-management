@@ -67,7 +67,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     await templateStorageHelper.seedTemplateData([
       TemplateFactory.createLetterTemplate(
         userProofingEnabledtemplateId,
-        userProofingEnabled.userId,
+        userProofingEnabled,
         'userProofingEnabledtemplate',
         'PENDING_PROOF_REQUEST'
       ),
@@ -99,7 +99,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        userProofingEnabled.userId,
+        userProofingEnabled,
         'userProofingEnabledtemplate',
         'PENDING_PROOF_REQUEST'
       ),
@@ -160,7 +160,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        userProofingEnabled.userId,
+        userProofingEnabled,
         'userProofingEnabledtemplate',
         'PENDING_VALIDATION'
       ),
@@ -202,7 +202,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
 
     const template = TemplateFactory.createEmailTemplate(
       templateId,
-      userProofingEnabled.userId,
+      userProofingEnabled,
       'userProofingEnabledtemplate'
     );
 
@@ -237,7 +237,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const template = {
       ...TemplateFactory.createLetterTemplate(
         templateId,
-        userProofingEnabled.userId,
+        userProofingEnabled,
         'userProofingEnabledtemplate',
         // template should not reach this status if proofing is not
         // enabled for the client
