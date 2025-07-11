@@ -143,3 +143,9 @@ variable "proof_requested_sender_email_address" {
   type        = string
   description = "Proof requested sender email address"
 }
+
+variable "sns_topic_arn" {
+  type        = string
+  description = "SNS topic ARN"
+  default     = null
+}
