@@ -424,15 +424,15 @@ export class TemplateClient {
 
     const {
       campaignId: templateCampaignId,
-      files: {
-        pdfTemplate: { currentVersion: pdfVersionId },
-        testDataCsv: { currentVersion: testDataVersionId } = {},
-      },
+      files,
       language,
       letterType,
       name,
       personalisationParameters,
     } = proofLetterValidationResult.data;
+
+    const pdfVersionId = files.pdfTemplate.currentVersion;
+    const testDataVersionId = files.testDataCsv?.currentVersion;
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
