@@ -18,13 +18,24 @@ import {
   DatabaseTemplate,
   UserWithOptionalClient,
   User,
+  $LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
+import z from 'zod';
 
 export class TemplateClient {
+  private $LetterForProofing = z.intersection(
+    $LetterTemplate,
+    z.object({
+      templateType: z.literal('LETTER'),
+      personalisationParameters: z.array(z.string()),
+      campaignId: z.string(),
+    })
+  );
+
   constructor(
     private readonly templateRepository: TemplateRepository,
     private readonly letterUploadRepository: LetterUploadRepository,
@@ -396,32 +407,32 @@ export class TemplateClient {
       return proofRequestUpdateResult;
     }
 
-    const templateDTO = this.mapDatabaseObjectToDTO(
+    const proofLetterValidationResult = this.$LetterForProofing.safeParse(
       proofRequestUpdateResult.data
     );
 
-    if (
-      !templateDTO ||
-      templateDTO.templateType !== 'LETTER' ||
-      !templateDTO.personalisationParameters ||
-      !templateDTO.campaignId
-    ) {
-      log.error({
-        code: ErrorCase.INTERNAL,
-        description: 'Malformed template',
-        template: templateDTO,
-      });
+    if (proofLetterValidationResult.error) {
+      log
+        .child({
+          code: ErrorCase.INTERNAL,
+          template: proofRequestUpdateResult.data,
+        })
+        .error('Malformed template', proofLetterValidationResult.error);
 
       return failure(ErrorCase.INTERNAL, 'Malformed template');
     }
 
-    const pdfVersionId = templateDTO.files.pdfTemplate.currentVersion;
-    const testDataVersionId = templateDTO.files.testDataCsv?.currentVersion;
-    const personalisationParameters = templateDTO.personalisationParameters;
-    const letterType = templateDTO.letterType;
-    const language = templateDTO.language;
-    const name = templateDTO.name;
-    const templateCampaignId = templateDTO.campaignId;
+    const {
+      campaignId: templateCampaignId,
+      files: {
+        pdfTemplate: { currentVersion: pdfVersionId },
+        testDataCsv: { currentVersion: testDataVersionId } = {},
+      },
+      language,
+      letterType,
+      name,
+      personalisationParameters,
+    } = proofLetterValidationResult.data;
 
     const sendQueueResult = await this.proofingQueue.send(
       templateId,
@@ -448,7 +459,7 @@ export class TemplateClient {
       return sendQueueResult;
     }
 
-    return success(templateDTO);
+    return success(proofLetterValidationResult.data);
   }
 
   private async updateTemplateStatus(

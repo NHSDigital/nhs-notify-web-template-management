@@ -1618,7 +1618,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when updated database template is invalid', async () => {
+    test('should return a failure result, when updated database template is not suitable for proofing', async () => {
       const { templateClient, mocks } = setup();
 
       const expectedTemplateDto: TemplateDto = {
