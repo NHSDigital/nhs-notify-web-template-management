@@ -161,7 +161,7 @@ export class CognitoAuthHelper {
     const userCtx = await CognitoAuthHelper.authContextFile.get(this.runId, id);
 
     if (!userCtx) {
-      throw new Error('UserWithOptionalClient not found');
+      throw new Error('User not found');
     }
 
     const { runId } = this;

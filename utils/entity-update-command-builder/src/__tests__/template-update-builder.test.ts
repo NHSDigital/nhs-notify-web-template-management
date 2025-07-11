@@ -333,7 +333,7 @@ describe('TemplateUpdateBuilder', () => {
   });
 
   describe('expectedClientId', () => {
-    test('adds templateType condition', () => {
+    test('adds clientId condition', () => {
       const builder = new TemplateUpdateBuilder(
         mockTableName,
         mockOwner,

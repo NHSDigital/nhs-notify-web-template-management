@@ -103,7 +103,7 @@ export class App {
           sftpClient,
           `${baseSftpPath}/${expandedTemplateId}/${proofFile.name}`,
           `${baseS3Path}/${templateId}/${proofFile.name}`,
-          logger
+          idLogger
         );
       } else {
         idLogger.info('Unexpected item found', { proofFile });

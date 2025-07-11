@@ -1764,7 +1764,6 @@ describe('templateClient', () => {
       });
 
       const result = await templateClient.requestProof(templateId, user);
-      console.log(result);
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
