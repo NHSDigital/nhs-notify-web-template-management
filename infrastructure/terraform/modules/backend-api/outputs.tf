@@ -18,7 +18,7 @@ output "internal_bucket_name" {
   value = module.s3bucket_internal.id
 }
 
-output "send_proof_queue_url" {
+output "request_proof_queue_url" {
   value = module.sqs_sftp_upload.sqs_queue_url
 }
 

@@ -29,4 +29,4 @@ npx esbuild \
     src/templates/update.ts \
     src/templates/validate-letter-template-files.ts
 
-cp src/templates/infra/email-template.html dist/email-template.html
+cp -r ../../utils/utils/src/email-templates ./dist

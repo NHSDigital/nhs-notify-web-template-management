@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import { createMimeMessage, MailboxAddrObject } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { TemplateDto } from 'nhs-notify-backend-client';
@@ -5,6 +6,7 @@ import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import Handlebars from 'handlebars';
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 export class EmailClient {
   constructor(
@@ -14,37 +16,67 @@ export class EmailClient {
     private readonly logger: Logger
   ) {}
 
+  private getProofRequestedEmailContent(
+    templateId: string,
+    templateName: string,
+    supplier: string
+  ) {
+    const emailTemplateContent = readFileSync(
+      path.resolve(__dirname, './email-templates/proof-requested-email.html')
+    ).toString();
+    const htmlTemplate = Handlebars.compile(emailTemplateContent);
+
+    const subject = `${supplier} - Letter template sent by an NHS Notify user`;
+    const emailContent = htmlTemplate({
+      supplier,
+      templateId,
+      templateName,
+    });
+
+    return {
+      subject,
+      emailContent,
+    };
+  }
+
   private getTemplateSubmittedEmailContent(
     { updatedAt, id, name }: LetterTemplate,
     supplier: string,
     proofFilenames: string[]
   ) {
     const emailTemplateContent = readFileSync(
-      './email-template.html'
+      path.resolve(__dirname, './email-templates/template-submitted-email.html')
     ).toString();
     const htmlTemplate = Handlebars.compile(emailTemplateContent);
 
-    return htmlTemplate({
+    const subject = `${supplier} - Letter proof approved by an NHS Notify user`;
+    const emailContent = htmlTemplate({
       proofFilenames,
       supplier,
       timestamp: updatedAt,
       templateId: id,
       templateName: name,
     });
+
+    return {
+      subject,
+      emailContent,
+    };
   }
 
-  private async sendTemplateSubmittedEmailToSupplier(
-    template: LetterTemplate,
+  private async sendEmailToSupplier(
+    templateId: string,
     supplier: string,
-    proofFilenames: string[]
+    subject: string,
+    emailContent: string
   ) {
     const recipientEmailsForSupplier = this.recipientEmails[supplier];
 
     if ((recipientEmailsForSupplier?.length ?? 0) === 0) {
       this.logger.info({
         description:
-          'Not sending template submitted email to supplier because no recipients are configured',
-        templateId: template.id,
+          'Not sending email to supplier because no recipients are configured',
+        templateId,
         supplier,
       });
 
@@ -58,14 +90,10 @@ export class EmailClient {
       (emailAddress) => ({ addr: emailAddress, type: 'Bcc' })
     );
     msg.setTo(recipients, { type: 'Bcc' });
-    msg.setSubject(`${supplier} - Letter proof approved by an NHS Notify user`);
+    msg.setSubject(subject);
     msg.addMessage({
       contentType: 'text/html',
-      data: this.getTemplateSubmittedEmailContent(
-        template,
-        supplier,
-        proofFilenames
-      ),
+      data: emailContent,
     });
 
     const command = new SendRawEmailCommand({
@@ -76,6 +104,52 @@ export class EmailClient {
 
     const res = await this.sesClient.send(command);
     this.logger.info(res);
+  }
+
+  async sendProofRequestedEmailToSupplier(
+    templateId: string,
+    templateName: string,
+    supplier: string
+  ) {
+    // cannot send if no email address provided
+    if (!this.senderEmail) {
+      this.logger.info({
+        description:
+          'Not sending proof requested email to suppliers because no email address is provided',
+        templateId,
+        templateName,
+        supplier,
+      });
+
+      return;
+    }
+
+    const { subject, emailContent } = this.getProofRequestedEmailContent(
+      templateId,
+      templateName,
+      supplier
+    );
+
+    await this.sendEmailToSupplier(templateId, supplier, subject, emailContent);
+  }
+
+  private async sendTemplateSubmittedEmailToSupplier(
+    template: LetterTemplate,
+    supplier: string,
+    proofFilenames: string[]
+  ) {
+    const { subject, emailContent } = this.getTemplateSubmittedEmailContent(
+      template,
+      supplier,
+      proofFilenames
+    );
+
+    await this.sendEmailToSupplier(
+      template.id,
+      supplier,
+      subject,
+      emailContent
+    );
   }
 
   async sendTemplateSubmittedEmailToSuppliers(template: TemplateDto) {
