@@ -1,5 +1,6 @@
 /*
  * All supported markdown features
+ * Be careful not to auto-format this file
  */
 export const markdown = `
 # Linebreaks
@@ -12,9 +13,9 @@ Line 3
 
 With 2 trailing spaces:
 
-Line 4
-Line 5
-Line 6
+Line 4  
+Line 5  
+Line 6  
 
 # Paragraphs
 
@@ -23,7 +24,7 @@ Paragraph 1
 Paragraph 2
 
 Paragraph 3
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus. 
 
 Paragraph above two blank lines
 
@@ -40,7 +41,17 @@ Paragraph below two blank lines
 
 #### Heading 4
 
+##### Heading 5
+
+###### Heading 6
+
+####### Heading 7
+  
+    ## Indented Heading
+
 #Heading no space
+
+# Hashes at the end of the line get trimmed     ###  
 
 ## Heading directly above a paragraph
 Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.
@@ -120,4 +131,8 @@ Horizontal line using 3 asterisks
 Horizontal line using 3 underscores
 
 ___
+
+Horizontal line with less than 3 doesn't render
+
+__
 `;

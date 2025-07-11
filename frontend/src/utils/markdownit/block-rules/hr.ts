@@ -52,6 +52,7 @@ export function hrUnderscoreOnly(
     return false;
   }
 
+  /* istanbul ignore next */
   if (silent) {
     return true;
   }

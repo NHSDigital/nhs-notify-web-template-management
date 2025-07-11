@@ -3,7 +3,7 @@ import {
   renderNHSAppMarkdown,
   renderSMSMarkdown,
 } from '@utils/markdownit';
-import { markdown } from '../../components/forms/fixtures';
+import { markdown } from './fixtures';
 
 describe('renderEmailMarkdown', () => {
   it('should render markdown matching GOVUK Notify email rules', () => {

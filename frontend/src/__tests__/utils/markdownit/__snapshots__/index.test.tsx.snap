@@ -20,9 +20,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <h1>Headings</h1>
 <h1>Heading 1</h1>
 <h2>Heading 2</h2>
-<p>Heading 3</h3>
-<p>Heading 4</h4>
+<p>Heading 3</p>
+<p>Heading 4</p>
+<p>Heading 5</p>
+<p>Heading 6</p>
+<p>####### Heading 7</p>
+<p>## Indented Heading</p>
 <h1>Heading no space</h1>
+<h1>Hashes at the end of the line get trimmed</h1>
 <h2>Heading directly above a paragraph</h2>
 <p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
 <h1>Bold and italics</h1>
@@ -86,6 +91,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <hr>
 <p>Horizontal line using 3 underscores</p>
 <hr>
+<p>Horizontal line with less than 3 doesn't render</p>
+<p>__</p>
 "
 `;
 
@@ -96,8 +103,8 @@ exports[`renderNHSAppMarkdown should render markdown matching NHSApp email rules
 Line 2
 Line 3</p>
 <p>With 2 trailing spaces:</p>
-<p>Line 4
-Line 5
+<p>Line 4<br>
+Line 5<br>
 Line 6</p>
 <h1>Paragraphs</h1>
 <p>Paragraph 1</p>
@@ -111,7 +118,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <h2>Heading 2</h2>
 <h3>Heading 3</h3>
 <h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+<p>####### Heading 7</p>
+<p>## Indented Heading</p>
 <p>#Heading no space</p>
+<h1>Hashes at the end of the line get trimmed</h1>
 <h2>Heading directly above a paragraph</h2>
 <p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
 <h1>Bold and italics</h1>
@@ -161,7 +173,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <h1>Image</h1>
 <p><img src="https://assets.nhs.uk/images/nhs-logo.png" alt="NHS Logo"></p>
 <h1>Links</h1>
-<p><a href="https://en.wikipedia.org/wiki/Markdown">Link text</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener noreferrer">Link text</a></p>
 <p>www.nhs.uk</p>
 <p>nhs.uk</p>
 <p>https://www.nhs.uk</p>
@@ -185,23 +197,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 </ul>
 <p>Horizontal line using 3 underscores</p>
 <hr>
+<p>Horizontal line with less than 3 doesn't render</p>
+<p>__</p>
 "
 `;
 
 exports[`renderSMSMarkdown should render markdown matching GOVUK Notify SMS rules 1`] = `
 "<p># Linebreaks</p>
 <p>Without 2 trailing spaces:</p>
-<p>Line 1
-Line 2
+<p>Line 1<br>
+Line 2<br>
 Line 3</p>
 <p>With 2 trailing spaces:</p>
-<p>Line 4
-Line 5
+<p>Line 4<br>
+Line 5<br>
 Line 6</p>
 <p># Paragraphs</p>
 <p>Paragraph 1</p>
 <p>Paragraph 2</p>
-<p>Paragraph 3
+<p>Paragraph 3<br>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus.</p>
 <p>Paragraph above two blank lines</p>
 <p>Paragraph below two blank lines</p>
@@ -210,8 +224,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <p>## Heading 2</p>
 <p>### Heading 3</p>
 <p>#### Heading 4</p>
+<p>##### Heading 5</p>
+<p>###### Heading 6</p>
+<p>####### Heading 7</p>
+<p>## Indented Heading</p>
 <p>#Heading no space</p>
-<p>## Heading directly above a paragraph
+<p># Hashes at the end of the line get trimmed     ###</p>
+<p>## Heading directly above a paragraph<br>
 Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
 <p># Bold and italics</p>
 <p>**Some bold text using asterisks**</p>
@@ -220,41 +239,43 @@ Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc laci
 <p>_Some italic text using underscores_</p>
 <p># Lists</p>
 <p>Bullets with asterisks:</p>
-<p>* Duis finibus tellus augue, ut dapibus orci vehicula id.
-* Proin in condimentum tellus, ac elementum ligula.
+<p>* Duis finibus tellus augue, ut dapibus orci vehicula id.<br>
+* Proin in condimentum tellus, ac elementum ligula.<br>
 * Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</p>
 <p>Bullets with dashes:</p>
-<p>- Duis finibus tellus augue, ut dapibus orci vehicula id.
-- Proin in condimentum tellus, ac elementum ligula.
+<p>- Duis finibus tellus augue, ut dapibus orci vehicula id.<br>
+- Proin in condimentum tellus, ac elementum ligula.<br>
 - Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</p>
 <p>Bullets without required spaces:</p>
-<p>*bullet 1 no space
-*bullet 2 no space
+<p>*bullet 1 no space<br>
+*bullet 2 no space<br>
 *bullet 3 no space</p>
 <p>Ordered list:</p>
-<p>1. Praesent rutrum ex vel velit aliquam.
-2. Et viverra turpis vestibulum.
+<p>1. Praesent rutrum ex vel velit aliquam.<br>
+2. Et viverra turpis vestibulum.<br>
 3. Pellentesque quis nisi accumsan.</p>
 <p>Ordered list without required spaces:</p>
-<p>1.Step 1 no space
-2.Step 2 no space
+<p>1.Step 1 no space<br>
+2.Step 2 no space<br>
 3.Step 3 no space</p>
 <p># Image</p>
-<p>![NHS Logo](<a href="https://assets.nhs.uk/images/nhs-logo.png">https://assets.nhs.uk/images/nhs-logo.png</a>)</p>
+<p>![NHS Logo](<a href="https://assets.nhs.uk/images/nhs-logo.png" target="_blank" rel="noopener noreferrer">https://assets.nhs.uk/images/nhs-logo.png</a>)</p>
 <p># Links</p>
-<p>[Link text](<a href="https://en.wikipedia.org/wiki/Markdown">https://en.wikipedia.org/wiki/Markdown</a>)</p>
-<p><a href="http://www.nhs.uk">www.nhs.uk</a></p>
-<p><a href="http://nhs.uk">nhs.uk</a></p>
-<p><a href="https://www.nhs.uk">https://www.nhs.uk</a></p>
-<p><a href="http://nhs.uk">http://nhs.uk</a></p>
+<p>[Link text](<a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener noreferrer">https://en.wikipedia.org/wiki/Markdown</a>)</p>
+<p><a href="http://www.nhs.uk" target="_blank" rel="noopener noreferrer">www.nhs.uk</a></p>
+<p><a href="http://nhs.uk" target="_blank" rel="noopener noreferrer">nhs.uk</a></p>
+<p><a href="https://www.nhs.uk" target="_blank" rel="noopener noreferrer">https://www.nhs.uk</a></p>
+<p><a href="http://nhs.uk" target="_blank" rel="noopener noreferrer">http://nhs.uk</a></p>
 <p>user@domain.com</p>
 <p>Links with &lt; &gt; symbols:</p>
-<p>&lt;<a href="http://www.google.com">www.google.com</a>&gt;</p>
+<p>&lt;<a href="http://www.google.com" target="_blank" rel="noopener noreferrer">www.google.com</a>&gt;</p>
 <p>&lt;user@domain.com&gt;</p>
 <p># Lines</p>
 <p>Horizontal line using 3 asterisks</p>
 <p>***</p>
 <p>Horizontal line using 3 underscores</p>
 <p>___</p>
+<p>Horizontal line with less than 3 doesn't render</p>
+<p>__</p>
 "
 `;

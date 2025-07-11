@@ -42,6 +42,7 @@ export function headingNoSpaces(
     return false;
   }
 
+  /* istanbul ignore next */
   if (silent) {
     return true;
   }

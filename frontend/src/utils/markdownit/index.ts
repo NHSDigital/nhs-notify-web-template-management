@@ -37,6 +37,7 @@ export function renderEmailMarkdown(value: string) {
   markdown.block.ruler.at('heading', headingNoSpaces); // Support headings with no spaces after the hash (#Heading)
 
   markdown.renderer.rules.heading_open = headingMaxDepth; // Only support headings up to <h2> - otherwise render <p>
+  markdown.renderer.rules.heading_close = headingMaxDepth; // Only support headings up to <h2> - otherwise render <p>
 
   return markdown.render(value);
 }
@@ -45,6 +46,8 @@ export function renderNHSAppMarkdown(value: string) {
   const markdown = new MarkdownIt('zero'); // Start with no presets. Most rules are disabled - https://github.com/markdown-it/markdown-it/blob/13.0.2/lib/presets/zero.js
 
   markdown.enable(['heading', 'emphasis', 'list', 'image', 'link', 'hr']); // Enable out of the box rules
+
+  markdown.renderer.rules.link_open = linkOpenNewTab; // Open links in a new tab
 
   markdown.inline.ruler.enable(['newline']); // Enable newline support with double-space line endings
 
@@ -59,6 +62,10 @@ export function renderSMSMarkdown(value: string) {
   markdown.set({ linkify: true }); // Add linkify instance
   markdown.core.ruler.enable(['linkify']); // Enable linkify rules
   markdown.linkify.set({ fuzzyIP: false, fuzzyEmail: false, fuzzyLink: true }); // Support fuzzy matching for links
+  markdown.renderer.rules.link_open = linkOpenNewTab; // Open links in a new tab
+
+  markdown.set({ breaks: true }); // add \n to <br>
+  markdown.inline.ruler.enable(['newline']); // Enable newline support with double-space line endings
 
   return markdown.render(value);
 }
