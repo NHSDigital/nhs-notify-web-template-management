@@ -59,7 +59,7 @@ test.describe('Unauthorised data access Tests', () => {
   test.afterAll(async () => {
     await templateStorageHelper.deleteSeededTemplates();
   });
-  test('should not display templates for "UserWithOptionalClient 2" on the manage template page', async ({
+  test('should not display templates for "User 2" on the manage template page', async ({
     page,
     baseURL,
   }) => {
@@ -81,7 +81,7 @@ test.describe('Unauthorised data access Tests', () => {
     await expect(templateDeleteLink).toBeHidden();
   });
 
-  test('should not display be able to edit email templates for "UserWithOptionalClient 2"', async ({
+  test('should not display be able to edit email templates for "User 2"', async ({
     page,
     baseURL,
   }) => {
@@ -91,7 +91,7 @@ test.describe('Unauthorised data access Tests', () => {
 
     await expect(page).toHaveURL(`${baseURL}/templates/invalid-template`);
   });
-  test('should not display be able to view/preview submitted email templates for "UserWithOptionalClient 2"', async ({
+  test('should not display be able to view/preview submitted email templates for "User 2"', async ({
     page,
     baseURL,
   }) => {
