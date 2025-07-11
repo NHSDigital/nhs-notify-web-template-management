@@ -1,57 +1,60 @@
+import { TestUser } from '../auth/cognito-auth-helper';
+import { testClients } from '../client/client-helper';
 import { Template } from '../types';
 import { randomUUID } from 'node:crypto';
 
 export const TemplateFactory = {
   createEmailTemplate: (
     id: string,
-    owner: string,
+    user: TestUser,
     name: string = 'test'
   ): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
+      clientId: user.clientId,
       id,
-      owner,
+      message: 'test-message',
       name,
-      templateType: 'EMAIL',
-      message: 'test-message',
+      owner: user.userId,
       subject: 'test-subject',
+      templateType: 'EMAIL',
     });
   },
 
-  createSmsTemplate: (id: string, owner: string): Template => {
+  createSmsTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
+      clientId: user.clientId,
       id,
-      owner,
+      message: 'test-message',
       name: 'test',
+      owner: user.userId,
       templateType: 'SMS',
-      message: 'test-message',
     });
   },
 
-  createNhsAppTemplate: (id: string, owner: string): Template => {
+  createNhsAppTemplate: (id: string, user: TestUser): Template => {
     return TemplateFactory.create({
+      campaignId: testClients[user.clientKey]?.campaignId,
+      clientId: user.clientId,
       id,
-      owner,
-      name: 'test-name',
-      templateType: 'NHS_APP',
       message: 'test-message',
+      name: 'test-name',
+      owner: user.userId,
+      templateType: 'NHS_APP',
     });
   },
 
   createLetterTemplate: (
     id: string,
-    owner: string,
+    user: TestUser,
     name: string,
     templateStatus = 'NOT_YET_SUBMITTED',
     virusScanStatus = 'PASSED'
   ): Template => {
     return TemplateFactory.create({
-      id,
-      owner,
-      name,
-      templateStatus,
-      templateType: 'LETTER',
-      letterType: 'x0',
-      language: 'en',
+      campaignId: testClients[user.clientKey]?.campaignId,
+      clientId: user.clientId,
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',
@@ -65,6 +68,13 @@ export const TemplateFactory = {
         },
         proofs: {},
       },
+      id,
+      language: 'en',
+      letterType: 'x0',
+      name,
+      owner: user.userId,
+      templateStatus,
+      templateType: 'LETTER',
     });
   },
 

@@ -15,7 +15,7 @@ async function createTemplates() {
 
   const withProofsBase = TemplateFactory.createLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
-    user.userId,
+    user,
     'proofs-template-letter',
     'PROOF_AVAILABLE',
     'PASSED'
@@ -52,39 +52,39 @@ async function createTemplates() {
     } as Template,
     notYetSubmitted: TemplateFactory.createLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',
-      user.userId,
+      user,
       'notYetSubmitted',
       'NOT_YET_SUBMITTED'
     ),
     pendingProofRequest: TemplateFactory.createLetterTemplate(
       '10AE654B-72B5-4A67-913C-2E103C7FF47B',
-      user.userId,
+      user,
       'pendingProofRequest',
       'PENDING_PROOF_REQUEST'
     ),
     pendingUpload: TemplateFactory.createLetterTemplate(
       '5C442DA9-B555-4CEA-AFE9-143851FD210B',
-      user.userId,
+      user,
       'pendingUpload',
       'PENDING_UPLOAD'
     ),
     pending: TemplateFactory.createLetterTemplate(
       'pending-letter-preview-template',
-      user.userId,
+      user,
       'test-pending-template-letter',
       'PENDING_UPLOAD',
       'PENDING'
     ),
     virus: TemplateFactory.createLetterTemplate(
       'virus-letter-preview-template',
-      user.userId,
+      user,
       'test-virus-template-letter',
       'VIRUS_SCAN_FAILED',
       'FAILED'
     ),
     invalid: TemplateFactory.createLetterTemplate(
       'invalid-letter-preview-template',
-      user.userId,
+      user,
       'test-invalid-template-letter',
       'VALIDATION_FAILED',
       'PASSED'

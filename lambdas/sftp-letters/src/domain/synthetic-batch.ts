@@ -19,7 +19,7 @@ export class SyntheticBatch {
   ) {}
 
   buildBatch(
-    templateId: string,
+    expandedTemplateId: string,
     fields: string[],
     userTestData?: Record<string, string>[]
   ): Record<string, string>[] {
@@ -28,7 +28,7 @@ export class SyntheticBatch {
     return Array.from({ length: staticPdsExampleData.length }, (_, i) => {
       const fieldEntries = [
         ['clientRef', this.clientRef(date)],
-        ['template', templateId],
+        ['template', expandedTemplateId],
         ...fields.map((field) => {
           const value = this.fieldValue(
             field,
@@ -67,11 +67,11 @@ export class SyntheticBatch {
     ].join('_');
   }
 
-  getId(templateId: string, pdfVersion: string) {
+  getId(expandedTemplateId: string, pdfVersion: string) {
     const pseudoRandomSegment = pdfVersion.replaceAll('-', '').slice(0, 27);
 
     // 0000000000000 stands in for a timestamp in a real batch ID
-    return `${templateId}-0000000000000_${pseudoRandomSegment}`;
+    return `${expandedTemplateId}-0000000000000_${pseudoRandomSegment}`;
   }
 
   getHeader(fields: string[]) {
@@ -79,12 +79,12 @@ export class SyntheticBatch {
   }
 
   buildManifest(
-    templateId: string,
+    expandedTemplateId: string,
     batchId: string,
     batchCsv: string
   ): Manifest {
     return {
-      template: templateId,
+      template: expandedTemplateId,
       batch: `${batchId}.csv`,
       records: staticPdsExampleData.length.toString(),
       // eslint-disable-next-line sonarjs/hashing

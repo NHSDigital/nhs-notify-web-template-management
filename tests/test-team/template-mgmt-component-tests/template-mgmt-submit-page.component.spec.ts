@@ -51,21 +51,21 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createEmailTemplate(
           'submit-email-submit-template',
-          user.userId
+          user
         ),
         ...emailFields,
       },
       submitAndReturn: {
         ...TemplateFactory.createEmailTemplate(
           'submit-and-return-email-template',
-          user.userId
+          user
         ),
         ...emailFields,
       },
       valid: {
         ...TemplateFactory.createEmailTemplate(
           'valid-email-submit-template',
-          user.userId
+          user
         ),
         ...emailFields,
       },
@@ -83,22 +83,19 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createSmsTemplate(
           'submit-sms-submit-template',
-          user.userId
+          user
         ),
         ...smsFields,
       },
       submitAndReturn: {
         ...TemplateFactory.createSmsTemplate(
           'submit-and-return-sms-template',
-          user.userId
+          user
         ),
         ...smsFields,
       },
       valid: {
-        ...TemplateFactory.createSmsTemplate(
-          'valid-sms-submit-template',
-          user.userId
-        ),
+        ...TemplateFactory.createSmsTemplate('valid-sms-submit-template', user),
         ...smsFields,
       },
     },
@@ -115,21 +112,21 @@ async function createTemplates() {
       submit: {
         ...TemplateFactory.createNhsAppTemplate(
           'submit-nhs-app-submit-template',
-          user.userId
+          user
         ),
         ...nhsAppFields,
       },
       submitAndReturn: {
         ...TemplateFactory.createNhsAppTemplate(
           'submit-and-return-nhs-app-template',
-          user.userId
+          user
         ),
         ...nhsAppFields,
       },
       valid: {
         ...TemplateFactory.createNhsAppTemplate(
           'valid-nhs-app-submit-template',
-          user.userId
+          user
         ),
         ...nhsAppFields,
       },
@@ -146,17 +143,17 @@ async function createTemplates() {
       } as Template,
       submit: TemplateFactory.createLetterTemplate(
         'submit-letter-submit-template',
-        user.userId,
+        user,
         'test-template-name'
       ),
       submitAndReturn: TemplateFactory.createLetterTemplate(
         'submit-and-return-letter-template',
-        user.userId,
+        user,
         'test-template-name'
       ),
       valid: TemplateFactory.createLetterTemplate(
         'valid-letter-submit-template',
-        user.userId,
+        user,
         'test-template-name'
       ),
     },

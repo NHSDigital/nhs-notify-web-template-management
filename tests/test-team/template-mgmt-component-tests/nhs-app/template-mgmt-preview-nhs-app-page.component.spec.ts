@@ -33,7 +33,7 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
         'valid-nhs-app-preview-template',
-        user.userId
+        user
       ),
       name: 'test-template-nhs-app',
       message: 'test-template-message',

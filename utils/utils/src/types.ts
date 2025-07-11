@@ -96,6 +96,7 @@ export type GuardDutyMalwareScanStatusPassed = Extract<
 >;
 
 export type DatabaseTemplate = {
+  campaignId?: string;
   clientId?: string;
   createdAt: string;
   createdBy?: string;
@@ -110,7 +111,6 @@ export type DatabaseTemplate = {
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;
-  campaignId?: string;
   updatedBy?: string;
 } & DbOnlyTemplateProperties;
 
@@ -134,11 +134,20 @@ export type TemplateKey = { owner: string; id: string };
 export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
 export type ProofingRequest = {
-  owner: string;
+  campaignId: string;
+  language: Language;
+  letterType: LetterType;
   pdfVersionId: string;
   personalisationParameters: string[];
   supplier: string;
   templateId: string;
   templateName: string;
   testDataVersionId?: string;
+  user: User;
+};
+
+export type User = { userId: string; clientId: string };
+
+export type UserWithOptionalClient = Omit<User, 'clientId'> & {
+  clientId: string | undefined;
 };

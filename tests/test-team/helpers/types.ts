@@ -50,12 +50,14 @@ export type UpdateTemplatePayload = TypeSpecificProperties & {
 };
 
 export type Template = TypeSpecificProperties & {
+  campaignId?: string;
+  clientId?: string;
   createdAt: string;
-  updatedAt: string;
   id: string;
-  version: number;
   name: string;
-  templateType: string;
-  templateStatus: string;
   owner: string;
+  templateStatus: string;
+  templateType: string;
+  updatedAt: string;
+  version: number;
 };

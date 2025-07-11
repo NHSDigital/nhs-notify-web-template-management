@@ -59,6 +59,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  expectedClientId(id: string) {
+    this.updateBuilder.andCondition('clientId', '=', id);
+    return this;
+  }
+
   expectTemplateExists() {
     this.updateBuilder.fnCondition('attribute_exists', 'id');
     return this;

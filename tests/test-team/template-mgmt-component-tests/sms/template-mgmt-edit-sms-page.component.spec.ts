@@ -12,29 +12,31 @@ import {
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createSmsTemplate('valid-sms-template', owner),
-    submit: TemplateFactory.createSmsTemplate('submit-sms-template', owner),
+    valid: TemplateFactory.createSmsTemplate('valid-sms-template', user),
+    submit: TemplateFactory.createSmsTemplate('submit-sms-template', user),
     submitAndReturn: TemplateFactory.createSmsTemplate(
       'submit-and-return-create-sms-template',
-      owner
+      user
     ),
     goBackAndReturn: TemplateFactory.createSmsTemplate(
       'go-back-sms-template',
-      owner
+      user
     ),
     noSmsTemplateType: TemplateFactory.create({
       id: 'no-sms-template-type-template',
       templateType: 'EMAIL',
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
       name: 'no-sms-template-type-template',
     }),
     previousData: {
-      ...TemplateFactory.createSmsTemplate('previous-data-sms-template', owner),
+      ...TemplateFactory.createSmsTemplate('previous-data-sms-template', user),
       name: 'previous-data-sms-template',
       message: 'previous-data-sms-template-message',
     },
@@ -47,7 +49,7 @@ test.describe('Edit SMS message template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

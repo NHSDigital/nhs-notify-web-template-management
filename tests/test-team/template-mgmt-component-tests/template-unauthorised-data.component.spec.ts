@@ -3,39 +3,41 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { MessageTemplatesPage } from '../pages/template-mgmt-message-templates-page';
 import { TemplateMgmtPreviewEmailPage } from '../pages/email/template-mgmt-preview-email-page';
 import { TemplateMgmtPreviewSubmittedEmailPage } from '../pages/email/template-mgmt-preview-submitted-email-page';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     empty: TemplateFactory.createEmailTemplate(
       'empty-email-template',
-      owner,
+      user,
       'empty-email-template-name'
     ),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', owner),
+    submit: TemplateFactory.createEmailTemplate('submit-email-template', user),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       'submit-and-return-create-email-template',
-      owner,
+      user,
       'submit-and-return-create-email-template-name'
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
       'go-back-email-template',
-      owner
+      user
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
       templateType: 'NHS_APP',
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
       name: 'no-email-template-type-template-name',
     }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
         'previous-data-email-template',
-        owner
+        user
       ),
       name: 'previous-data-email-template',
       subject: 'previous-data-email-template-subject-line',
@@ -50,7 +52,7 @@ test.describe('Unauthorised data access Tests', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User2.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

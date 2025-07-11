@@ -72,8 +72,8 @@ test.describe('GET /v1/client-configuration', () => {
     expect(await response.json()).toEqual({
       statusCode: 200,
       clientConfiguration: {
-        campaignId: testClients[userWithClient.clientKey!]?.campaignId,
-        features: testClients[userWithClient.clientKey!]?.features,
+        campaignId: testClients[userWithClient.clientKey]?.campaignId,
+        features: testClients[userWithClient.clientKey]?.features,
       },
     });
   });

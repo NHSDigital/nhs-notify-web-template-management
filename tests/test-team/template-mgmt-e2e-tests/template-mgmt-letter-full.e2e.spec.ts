@@ -158,7 +158,15 @@ function requestProof(
 
     const template = await templateStorageHelper.getTemplate(templateKey);
 
-    const batchId = `${templateKey.id}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+    const expandedTemplateId = [
+      template.clientId,
+      template.campaignId,
+      template.id,
+      template.language,
+      template.letterType,
+    ].join('_');
+
+    const batchId = `${expandedTemplateId}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
 
     const proofFilenames = Array.from(
       { length: 3 },
@@ -179,7 +187,7 @@ function requestProof(
         proofFilenames.map((filename) =>
           templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            `proofs/WTMMOCK/${template.id}/${filename}`
+            `proofs/WTMMOCK/${templateKey.id}/${filename}`
           )
         )
       );

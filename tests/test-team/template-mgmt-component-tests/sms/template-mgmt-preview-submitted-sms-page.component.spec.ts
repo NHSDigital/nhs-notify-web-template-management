@@ -15,15 +15,16 @@ import {
 } from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createSmsTemplate(
         'valid-sms-template-preview-submitted',
-        owner
+        user
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
@@ -32,7 +33,7 @@ function createTemplates(owner: string) {
     invalid: {
       ...TemplateFactory.createSmsTemplate(
         'invalid-sms-template-preview-submitted',
-        owner
+        user
       ),
       name: 'test-template-sms',
       message: 'test-template-message',
@@ -47,7 +48,7 @@ test.describe('Preview submitted sms message template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

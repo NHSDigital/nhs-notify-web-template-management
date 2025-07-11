@@ -33,8 +33,9 @@ export class SftpHelper {
     return sftpMockCredentials;
   }
 
+  public end = this.client.end.bind(this.client);
   public get = this.client.get.bind(this.client);
   public mkdir = this.client.mkdir.bind(this.client);
-  public end = this.client.end.bind(this.client);
   public put = this.client.put.bind(this.client);
+  public stat = this.client.stat.bind(this.client);
 }
