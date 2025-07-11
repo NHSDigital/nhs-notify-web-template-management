@@ -1,75 +1,260 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renderEmailMarkdown should only process email markdown rules 1`] = `
-"<h1>Heading</h1>
-<h2>sub heading</h2>
-<p><strong>bold</strong></p>
+exports[`renderEmailMarkdown should render markdown matching GOVUK Notify email rules 1`] = `
+"<h1>Linebreaks</h1>
+<p>Without 2 trailing spaces:</p>
+<p>Line 1<br>
+Line 2<br>
+Line 3</p>
+<p>With 2 trailing spaces:</p>
+<p>Line 4<br>
+Line 5<br>
+Line 6</p>
+<h1>Paragraphs</h1>
+<p>Paragraph 1</p>
+<p>Paragraph 2</p>
+<p>Paragraph 3<br>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus.</p>
+<p>Paragraph above two blank lines</p>
+<p>Paragraph below two blank lines</p>
+<h1>Headings</h1>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<p>Heading 3</h3>
+<p>Heading 4</h4>
+<h1>Heading no space</h1>
+<h2>Heading directly above a paragraph</h2>
+<p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
+<h1>Bold and italics</h1>
 <ul>
-<li>bullet point 1</li>
-<li>bullet point 2</li>
+<li>
+<ul>
+<li>Some bold text using asterisks**</li>
 </ul>
+</li>
+</ul>
+<p>__Some bold text using underscores__</p>
+<ul>
+<li>Some italic text using asterisks*</li>
+</ul>
+<p>_Some italic text using underscores_</p>
+<h1>Lists</h1>
+<p>Bullets with asterisks:</p>
+<ul>
+<li>Duis finibus tellus augue, ut dapibus orci vehicula id.</li>
+<li>Proin in condimentum tellus, ac elementum ligula.</li>
+<li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
+</ul>
+<p>Bullets with dashes:</p>
+<ul>
+<li>Duis finibus tellus augue, ut dapibus orci vehicula id.</li>
+<li>Proin in condimentum tellus, ac elementum ligula.</li>
+<li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
+</ul>
+<p>Bullets without required spaces:</p>
+<ul>
+<li>bullet 1 no space</li>
+<li>bullet 2 no space</li>
+<li>bullet 3 no space</li>
+</ul>
+<p>Ordered list:</p>
 <ol>
-<li>ordered list item 1</li>
-<li>ordered list item 2</li>
+<li>Praesent rutrum ex vel velit aliquam.</li>
+<li>Et viverra turpis vestibulum.</li>
+<li>Pellentesque quis nisi accumsan.</li>
 </ol>
-<p><a href="https://www.nhs.uk/example" target="_blank" rel="noopener noreferrer">Read more</a></p>
-<p>https://www.nhs.uk/example</p>
-<p>Before page break</p>
+<p>Ordered list without required spaces:</p>
+<ol>
+<li>Step 1 no space</li>
+<li>Step 2 no space</li>
+<li>Step 3 no space</li>
+</ol>
+<h1>Image</h1>
+<p></p>
+<h1>Links</h1>
+<p><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener noreferrer">Link text</a></p>
+<p>www.nhs.uk</p>
+<p>nhs.uk</p>
+<p><a href="https://www.nhs.uk" target="_blank" rel="noopener noreferrer">https://www.nhs.uk</a></p>
+<p><a href="http://nhs.uk" target="_blank" rel="noopener noreferrer">http://nhs.uk</a></p>
+<p>user@domain.com</p>
+<p>Links with &lt; &gt; symbols:</p>
+<p>&lt;www.google.com&gt;</p>
+<p>&lt;user@domain.com&gt;</p>
+<h1>Lines</h1>
+<p>Horizontal line using 3 asterisks</p>
 <hr>
-<p>After page break</p>
-<p>Start of line break<br>end of line break</p>
-<p>Before horizontal line</p>
+<p>Horizontal line using 3 underscores</p>
 <hr>
-<p>End of horizontal line</p>
-<p>This is a paragraph</p>
-<p>By doing a new line this starts a new paragraph</p>
 "
 `;
 
-exports[`renderNHSAppMarkdown should only process nhs app markdown rules 1`] = `
-"<h1>Heading</h1>
-<h2>sub heading</h2>
-<p><strong>bold</strong></p>
+exports[`renderNHSAppMarkdown should render markdown matching NHSApp email rules 1`] = `
+"<h1>Linebreaks</h1>
+<p>Without 2 trailing spaces:</p>
+<p>Line 1
+Line 2
+Line 3</p>
+<p>With 2 trailing spaces:</p>
+<p>Line 4
+Line 5
+Line 6</p>
+<h1>Paragraphs</h1>
+<p>Paragraph 1</p>
+<p>Paragraph 2</p>
+<p>Paragraph 3
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus.</p>
+<p>Paragraph above two blank lines</p>
+<p>Paragraph below two blank lines</p>
+<h1>Headings</h1>
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<p>#Heading no space</p>
+<h2>Heading directly above a paragraph</h2>
+<p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
+<h1>Bold and italics</h1>
 <ul>
-<li>bullet point 1</li>
-<li>bullet point 2</li>
+<li>
+<ul>
+<li>Some bold text using asterisks**</li>
 </ul>
+</li>
+</ul>
+<p><strong>Some bold text using underscores</strong></p>
+<ul>
+<li>Some italic text using asterisks*</li>
+</ul>
+<p><em>Some italic text using underscores</em></p>
+<h1>Lists</h1>
+<p>Bullets with asterisks:</p>
+<ul>
+<li>Duis finibus tellus augue, ut dapibus orci vehicula id.</li>
+<li>Proin in condimentum tellus, ac elementum ligula.</li>
+<li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
+</ul>
+<p>Bullets with dashes:</p>
+<ul>
+<li>Duis finibus tellus augue, ut dapibus orci vehicula id.</li>
+<li>Proin in condimentum tellus, ac elementum ligula.</li>
+<li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
+</ul>
+<p>Bullets without required spaces:</p>
+<ul>
+<li>bullet 1 no space</li>
+<li>bullet 2 no space</li>
+<li>bullet 3 no space</li>
+</ul>
+<p>Ordered list:</p>
 <ol>
-<li>ordered list item 1</li>
-<li>ordered list item 2</li>
+<li>Praesent rutrum ex vel velit aliquam.</li>
+<li>Et viverra turpis vestibulum.</li>
+<li>Pellentesque quis nisi accumsan.</li>
 </ol>
-<p><a href="https://www.nhs.uk/example" target="_blank" rel="noopener noreferrer">Read more</a></p>
-<p>https://www.nhs.uk/example</p>
-<p>Before page break
-***
-After page break</p>
-<p>Start of line break<br>end of line break</p>
-<p>Before horizontal line
----
-End of horizontal line</p>
-<p>This is a paragraph</p>
-<p>By doing a new line this starts a new paragraph</p>
+<p>Ordered list without required spaces:</p>
+<ol>
+<li>Step 1 no space</li>
+<li>Step 2 no space</li>
+<li>Step 3 no space</li>
+</ol>
+<h1>Image</h1>
+<p><img src="https://assets.nhs.uk/images/nhs-logo.png" alt="NHS Logo"></p>
+<h1>Links</h1>
+<p><a href="https://en.wikipedia.org/wiki/Markdown">Link text</a></p>
+<p>www.nhs.uk</p>
+<p>nhs.uk</p>
+<p>https://www.nhs.uk</p>
+<p>http://nhs.uk</p>
+<p>user@domain.com</p>
+<p>Links with &lt; &gt; symbols:</p>
+<p>&lt;www.google.com&gt;</p>
+<p>&lt;user@domain.com&gt;</p>
+<h1>Lines</h1>
+<p>Horizontal line using 3 asterisks</p>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Horizontal line using 3 underscores</p>
+<hr>
 "
 `;
 
-exports[`renderSMSMarkdown should only process text message markdown rules 1`] = `
-"<p># Heading</p>
-<p>## sub heading</p>
-<p>**bold**</p>
-<p>* bullet point 1
-* bullet point 2</p>
-<p>1. ordered list item 1
-2. ordered list item 2</p>
-<p>[Read more](https://www.nhs.uk/example)</p>
-<p>https://www.nhs.uk/example</p>
-<p>Before page break
-***
-After page break</p>
-<p>Start of line break  end of line break</p>
-<p>Before horizontal line
----
-End of horizontal line</p>
-<p>This is a paragraph</p>
-<p>By doing a new line this starts a new paragraph</p>
+exports[`renderSMSMarkdown should render markdown matching GOVUK Notify SMS rules 1`] = `
+"<p># Linebreaks</p>
+<p>Without 2 trailing spaces:</p>
+<p>Line 1
+Line 2
+Line 3</p>
+<p>With 2 trailing spaces:</p>
+<p>Line 4
+Line 5
+Line 6</p>
+<p># Paragraphs</p>
+<p>Paragraph 1</p>
+<p>Paragraph 2</p>
+<p>Paragraph 3
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam vitae finibus.</p>
+<p>Paragraph above two blank lines</p>
+<p>Paragraph below two blank lines</p>
+<p># Headings</p>
+<p># Heading 1</p>
+<p>## Heading 2</p>
+<p>### Heading 3</p>
+<p>#### Heading 4</p>
+<p>#Heading no space</p>
+<p>## Heading directly above a paragraph
+Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
+<p># Bold and italics</p>
+<p>**Some bold text using asterisks**</p>
+<p>__Some bold text using underscores__</p>
+<p>*Some italic text using asterisks*</p>
+<p>_Some italic text using underscores_</p>
+<p># Lists</p>
+<p>Bullets with asterisks:</p>
+<p>* Duis finibus tellus augue, ut dapibus orci vehicula id.
+* Proin in condimentum tellus, ac elementum ligula.
+* Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</p>
+<p>Bullets with dashes:</p>
+<p>- Duis finibus tellus augue, ut dapibus orci vehicula id.
+- Proin in condimentum tellus, ac elementum ligula.
+- Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</p>
+<p>Bullets without required spaces:</p>
+<p>*bullet 1 no space
+*bullet 2 no space
+*bullet 3 no space</p>
+<p>Ordered list:</p>
+<p>1. Praesent rutrum ex vel velit aliquam.
+2. Et viverra turpis vestibulum.
+3. Pellentesque quis nisi accumsan.</p>
+<p>Ordered list without required spaces:</p>
+<p>1.Step 1 no space
+2.Step 2 no space
+3.Step 3 no space</p>
+<p># Image</p>
+<p>![NHS Logo](<a href="https://assets.nhs.uk/images/nhs-logo.png">https://assets.nhs.uk/images/nhs-logo.png</a>)</p>
+<p># Links</p>
+<p>[Link text](<a href="https://en.wikipedia.org/wiki/Markdown">https://en.wikipedia.org/wiki/Markdown</a>)</p>
+<p><a href="http://www.nhs.uk">www.nhs.uk</a></p>
+<p><a href="http://nhs.uk">nhs.uk</a></p>
+<p><a href="https://www.nhs.uk">https://www.nhs.uk</a></p>
+<p><a href="http://nhs.uk">http://nhs.uk</a></p>
+<p>user@domain.com</p>
+<p>Links with &lt; &gt; symbols:</p>
+<p>&lt;<a href="http://www.google.com">www.google.com</a>&gt;</p>
+<p>&lt;user@domain.com&gt;</p>
+<p># Lines</p>
+<p>Horizontal line using 3 asterisks</p>
+<p>***</p>
+<p>Horizontal line using 3 underscores</p>
+<p>___</p>
 "
 `;
