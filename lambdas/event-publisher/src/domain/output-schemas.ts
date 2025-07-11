@@ -29,11 +29,11 @@ const $BaseDataFields = z.object({
   id: z.string(),
   clientId: z.string().optional(),
   createdAt: z.string(),
-  createdBy: z.string(),
+  createdBy: z.string().optional(),
   name: z.string(),
   templateStatus: z.enum(TEMPLATE_STATUS_LIST),
   updatedAt: z.string(),
-  updatedBy: z.string(),
+  updatedBy: z.string().optional(),
 });
 
 const $EmailDataFields = $BaseDataFields.merge(
