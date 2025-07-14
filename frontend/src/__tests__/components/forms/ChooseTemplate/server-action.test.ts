@@ -6,6 +6,10 @@ jest.mock('next/navigation');
 
 jest.mock('@utils/amplify-utils');
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 test('submit form - validation error', async () => {
   const response = await chooseTemplateAction(
     {},

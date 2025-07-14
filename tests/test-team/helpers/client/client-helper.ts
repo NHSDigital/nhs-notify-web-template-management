@@ -11,7 +11,7 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3}` | 'NONE';
+export type ClientKey = `Client${1 | 2 | 3 | 4}` | 'NONE';
 
 type TestClients = Record<
   Exclude<ClientKey, 'NONE'>,
@@ -41,6 +41,15 @@ export const testClients = {
    * Client3 has no configuration
    */
   Client3: undefined,
+  /**
+   * Client 4 has configuration but no campaignId set
+   */
+  Client4: {
+    campaignId: undefined,
+    features: {
+      proofing: false,
+    },
+  },
 } satisfies TestClients as TestClients & { NONE: undefined };
 
 export class ClientConfigurationHelper {

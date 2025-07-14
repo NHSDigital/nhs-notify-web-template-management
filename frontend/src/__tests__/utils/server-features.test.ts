@@ -19,6 +19,7 @@ describe('serverIsFeatureEnabled', () => {
   it('should return false when no accessToken', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -30,6 +31,7 @@ describe('serverIsFeatureEnabled', () => {
   it('should return false when no client', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'user',
     });
 
@@ -49,6 +51,7 @@ describe('serverIsFeatureEnabled', () => {
   it('returns false if fetching configuration fails unexpectedly', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'user',
     });
 
@@ -74,6 +77,7 @@ describe('serverIsFeatureEnabled', () => {
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'user',
     });
 
@@ -95,6 +99,7 @@ describe('serverIsFeatureEnabled', () => {
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'user',
     });
 

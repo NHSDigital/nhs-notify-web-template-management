@@ -27,7 +27,7 @@ export async function chooseTemplateAction(
     };
   }
 
-  redirect(
+  return redirect(
     `/create-${templateTypeToUrlTextMappings(parsedForm.data.templateType)}-template`,
     RedirectType.push
   );

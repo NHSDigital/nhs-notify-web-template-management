@@ -264,6 +264,8 @@ const previewLetterTemplate = {
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your test personalisation file',
+  missingClientOrCampaignIdError: 'You cannot proof this letter template.',
+  missingClientOrCampaignIdErrorAction: 'To get access, contact your onboarding manager and give them this error message: letter template missing client ID and campaign ID.',
   preSubmissionText: previewLetterPreSubmissionText,
 };
 
