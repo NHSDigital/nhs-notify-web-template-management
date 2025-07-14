@@ -5,7 +5,6 @@ import fs from 'node:fs';
 export type BackendConfig = {
   apiBaseUrl: string;
   clientSsmPathPrefix: string;
-  sendProofQueueUrl: string;
   requestProofQueueUrl: string;
   sftpEnvironment: string;
   sftpPollLambdaName: string;
@@ -26,7 +25,6 @@ export const BackendConfigHelper = {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
-      sendProofQueueUrl: process.env.SEND_PROOF_QUEUE_URL ?? '',
       requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
@@ -78,7 +76,6 @@ export const BackendConfigHelper = {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
-      sendProofQueueUrl: outputsFileContent.send_proof_queue_url?.value ?? '',
       requestProofQueueUrl:
         outputsFileContent.request_proof_queue_url?.value ?? '',
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',

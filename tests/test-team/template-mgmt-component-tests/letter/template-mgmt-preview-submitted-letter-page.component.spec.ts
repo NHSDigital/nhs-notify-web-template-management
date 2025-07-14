@@ -15,13 +15,14 @@ import {
 } from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   const validBase = TemplateFactory.createLetterTemplate(
     'valid-letter-template-preview-submitted',
-    owner,
+    user,
     'valid-email-template-preview-submitted',
     'SUBMITTED'
   );
@@ -45,7 +46,7 @@ function createTemplates(owner: string) {
     invalid: {
       ...TemplateFactory.createLetterTemplate(
         'invalid-letter-template-preview-submitted',
-        owner,
+        user,
         'invalid-letter-template-preview-submitted',
         'NOT_A_STATUS'
       ),
@@ -59,7 +60,7 @@ test.describe('Preview submitted Letter message template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

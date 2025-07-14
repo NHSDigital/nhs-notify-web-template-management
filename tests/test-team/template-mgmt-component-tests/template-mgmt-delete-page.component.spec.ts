@@ -12,29 +12,27 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     goBack: {
-      ...TemplateFactory.createEmailTemplate('delete-page-go-back', owner),
+      ...TemplateFactory.createEmailTemplate('delete-page-go-back', user),
       name: 'delete-page-go-back-name',
       message: 'delete-page-go-back-message',
       subject: 'template-subject',
     },
     confirmDigitial: {
-      ...TemplateFactory.createEmailTemplate(
-        'delete-page-confirm-email',
-        owner
-      ),
+      ...TemplateFactory.createEmailTemplate('delete-page-confirm-email', user),
       name: 'delete-page-confirm-email-name',
       message: 'delete-page-confirm-email-message',
       subject: 'template-subject',
     },
     confirmLetter: TemplateFactory.createLetterTemplate(
       'delete-page-confirm-letter',
-      owner,
+      user,
       'delete-page-confirm-letter-name'
     ),
   };
@@ -46,7 +44,7 @@ test.describe('Delete Template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

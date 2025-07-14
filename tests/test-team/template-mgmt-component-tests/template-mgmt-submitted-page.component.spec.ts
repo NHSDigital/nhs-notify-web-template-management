@@ -11,6 +11,7 @@ import { TemplateFactory } from '../helpers/factories/template-factory';
 import { Template } from '../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-mgmt-template-submitted-email-page';
@@ -18,10 +19,11 @@ import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     email: TemplateFactory.create({
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
       id: 'valid-email-template',
@@ -30,7 +32,8 @@ function createTemplates(owner: string) {
       message: 'test example content',
     }),
     'text-message': TemplateFactory.create({
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
       id: 'valid-text-message-template',
@@ -38,7 +41,8 @@ function createTemplates(owner: string) {
       message: 'test example content',
     }),
     'nhs-app': TemplateFactory.create({
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',
       id: 'valid-nhs-app-template',
@@ -47,7 +51,7 @@ function createTemplates(owner: string) {
     }),
     letter: TemplateFactory.createLetterTemplate(
       'valid-submitted-letter-template',
-      owner,
+      user,
       'test-template-letter',
       'SUBMITTED',
       'PASSED'
@@ -62,7 +66,7 @@ test.describe('Template Submitted Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

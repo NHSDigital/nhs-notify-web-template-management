@@ -11,31 +11,33 @@ import {
 } from '../template-mgmt-common.steps';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createEmailTemplate('valid-email-template', owner),
-    submit: TemplateFactory.createEmailTemplate('submit-email-template', owner),
+    valid: TemplateFactory.createEmailTemplate('valid-email-template', user),
+    submit: TemplateFactory.createEmailTemplate('submit-email-template', user),
     submitAndReturn: TemplateFactory.createEmailTemplate(
       'submit-and-return-create-email-template',
-      owner
+      user
     ),
     goBackAndReturn: TemplateFactory.createEmailTemplate(
       'go-back-email-template',
-      owner
+      user
     ),
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
       templateType: 'NHS_APP',
       name: 'no-email-template-type-template',
-      owner,
+      owner: user.userId,
+      clientId: user.clientId,
     }),
     previousData: {
       ...TemplateFactory.createEmailTemplate(
         'previous-data-email-template',
-        owner
+        user
       ),
       name: 'previous-data-email-template',
       subject: 'previous-data-email-template-subject-line',
@@ -50,7 +52,7 @@ test.describe('Edit Email message template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 
