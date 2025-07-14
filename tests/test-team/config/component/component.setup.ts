@@ -24,7 +24,7 @@ setup('component test setup', async ({ page }) => {
 
   const user = await auth.getTestUser(testUsers.User1.userId);
 
-  await loginAsUser(user, page)
+  await loginAsUser(user, page);
 
   await page.waitForURL('/templates/create-and-submit-templates');
 

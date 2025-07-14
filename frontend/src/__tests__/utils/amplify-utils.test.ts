@@ -37,31 +37,31 @@ describe('amplify-utils', () => {
           'mockToken'
         ),
       payload: {},
-    }
+    };
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
-        accessToken: mockAccessToken
+        accessToken: mockAccessToken,
       },
       userSub: 'sub',
     });
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: mockAccessToken.toString(), clientId: 'client1', userSub: 'sub' });
+    expect(result).toEqual({
+      accessToken: mockAccessToken.toString(),
+      clientId: 'client1',
+      userSub: 'sub',
+    });
   });
 
   test('getSessionServer - client ID should be undefined if not present on token', async () => {
     const mockAccessToken = {
-      toString: () =>
-        sign(
-          {},
-          'mockToken'
-        ),
+      toString: () => sign({}, 'mockToken'),
       payload: {},
-    }
+    };
     fetchAuthSessionMock.mockResolvedValueOnce({
       tokens: {
-        accessToken: mockAccessToken
+        accessToken: mockAccessToken,
       },
       userSub: 'sub',
     });
@@ -133,10 +133,7 @@ describe('amplify-utils', () => {
 
   describe('getClientId', () => {
     test('returns undefined when client ID not found', async () => {
-      const mockAccessToken = sign(
-        {},
-        'key'
-      );
+      const mockAccessToken = sign({}, 'key');
 
       const clientId = await getClientId(mockAccessToken);
 

@@ -25,8 +25,12 @@ test.describe('Create Letter Template Page', () => {
 
   test.beforeAll(async () => {
     user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    userWithoutClientId = await createAuthHelper().getTestUser(testUsers.User6.userId);
-    userWithoutCampaignId = await createAuthHelper().getTestUser(testUsers.User7.userId);
+    userWithoutClientId = await createAuthHelper().getTestUser(
+      testUsers.User6.userId
+    );
+    userWithoutCampaignId = await createAuthHelper().getTestUser(
+      testUsers.User7.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -49,30 +53,46 @@ test.describe('Create Letter Template Page', () => {
     });
   });
 
-  test('redirects to error page when campaign ID is missing', async ({ page, baseURL }) => {
+  test('redirects to error page when campaign ID is missing', async ({
+    page,
+    baseURL,
+  }) => {
     await loginAsUser(userWithoutCampaignId, page);
 
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
-    const missingClientOrCampaignIdErrorPage = new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+    const missingClientOrCampaignIdErrorPage =
+      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
 
     createTemplatePage.loadPage();
 
-    await expect(page).toHaveURL(`${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`);
+    await expect(page).toHaveURL(
+      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+    );
 
-    await assertMissingClientOrCampaignIdErrorPage(missingClientOrCampaignIdErrorPage);
+    await assertMissingClientOrCampaignIdErrorPage(
+      missingClientOrCampaignIdErrorPage
+    );
   });
 
-  test('redirects to error page when client ID is missing', async ({ page, baseURL }) => {
+  test('redirects to error page when client ID is missing', async ({
+    page,
+    baseURL,
+  }) => {
     await loginAsUser(userWithoutClientId, page);
 
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
-    const missingClientOrCampaignIdErrorPage = new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+    const missingClientOrCampaignIdErrorPage =
+      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
 
     createTemplatePage.loadPage();
 
-    await expect(page).toHaveURL(`${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`);
+    await expect(page).toHaveURL(
+      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+    );
 
-    await assertMissingClientOrCampaignIdErrorPage(missingClientOrCampaignIdErrorPage);
+    await assertMissingClientOrCampaignIdErrorPage(
+      missingClientOrCampaignIdErrorPage
+    );
   });
 
   test('Validate error messages on the create Letter template page with no template name or pdf', async ({
@@ -191,11 +211,20 @@ test.describe('Create Letter Template Page', () => {
     });
   }
 
-  const assertMissingClientOrCampaignIdErrorPage = async (page: TemplateMgmtCreateLetterMissingCampaignClientIdPage) => {
-    await expect(page.heading).toHaveText('You cannot create letter templates yet');
-    await expect(page.errorDetailsInsetText).toHaveText('Account needs a client ID and campaign ID');
+  const assertMissingClientOrCampaignIdErrorPage = async (
+    page: TemplateMgmtCreateLetterMissingCampaignClientIdPage
+  ) => {
+    await expect(page.heading).toHaveText(
+      'You cannot create letter templates yet'
+    );
+    await expect(page.errorDetailsInsetText).toHaveText(
+      'Account needs a client ID and campaign ID'
+    );
 
     await expect(page.goBackLink).toHaveText('Go back');
-    await expect(page.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
-  }
+    await expect(page.goBackLink).toHaveAttribute(
+      'href',
+      '/templates/choose-a-template-type'
+    );
+  };
 });

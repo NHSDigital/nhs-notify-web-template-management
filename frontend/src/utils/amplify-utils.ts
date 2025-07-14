@@ -16,7 +16,11 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 
 export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
-): Promise<{ accessToken: string | undefined; clientId: string | undefined; userSub: string | undefined }> {
+): Promise<{
+  accessToken: string | undefined;
+  clientId: string | undefined;
+  userSub: string | undefined;
+}> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     operation: (ctx) => fetchAuthSession(ctx, options),
@@ -24,8 +28,8 @@ export async function getSessionServer(
     // no-op
   });
 
-  const accessToken = session?.tokens?.accessToken?.toString()
-  const clientId = accessToken && await getClientId(accessToken)
+  const accessToken = session?.tokens?.accessToken?.toString();
+  const clientId = accessToken && (await getClientId(accessToken));
 
   return {
     accessToken,
@@ -43,15 +47,13 @@ export const getClientId = async (accessToken: string) => {
 };
 
 const getAccessTokenParam = async (key: string) => {
-
   const authSession = await getSessionServer();
   const accessToken = authSession.accessToken;
 
   if (!accessToken) return;
 
-
   return getJwtPayload(key, accessToken);
-}
+};
 
 const getJwtPayload = (key: string, accessToken: string) => {
   const jwt = jwtDecode<JWT['payload']>(accessToken);
@@ -63,6 +65,4 @@ const getJwtPayload = (key: string, accessToken: string) => {
   }
 
   return value.toString();
-}
-
-
+};
