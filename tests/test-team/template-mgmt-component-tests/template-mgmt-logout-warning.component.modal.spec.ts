@@ -4,7 +4,7 @@ import {
   type TestUser,
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
-import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
+import { loginAsUser } from '../helpers/auth/login-as-user';
 
 test.use({ storageState: { cookies: [], origins: [] } });
 
@@ -26,11 +26,7 @@ test.describe('Logout warning', () => {
   test('logout warning should pop up and close after clicking "Stay signed in"', async ({
     page,
   }) => {
-    const loginPage = new TemplateMgmtSignInPage(page);
-
-    await loginPage.loadPage();
-
-    await loginPage.cognitoSignIn(staySignedInUser);
+    await loginAsUser(staySignedInUser, page);
 
     const dialog = page.locator('dialog');
 
@@ -44,11 +40,7 @@ test.describe('Logout warning', () => {
   test('logout warning should pop up and close after user clicks "Sign out"', async ({
     page,
   }) => {
-    const loginPage = new TemplateMgmtSignInPage(page);
-
-    await loginPage.loadPage();
-
-    await loginPage.cognitoSignIn(manualSignOutUser);
+    await loginAsUser(manualSignOutUser, page);
 
     const dialog = page.locator('dialog');
 
@@ -60,11 +52,7 @@ test.describe('Logout warning', () => {
   });
 
   test('logout warning should force logout after timeout', async ({ page }) => {
-    const loginPage = new TemplateMgmtSignInPage(page);
-
-    await loginPage.loadPage();
-
-    await loginPage.cognitoSignIn(automaticallySignedOutUser);
+    await loginAsUser(automaticallySignedOutUser, page);
 
     const dialog = page.locator('dialog');
 

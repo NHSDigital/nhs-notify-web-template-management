@@ -14,6 +14,7 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtCreateLetterPage } from '../../pages/letter/template-mgmt-create-letter-page';
 import { TemplateMgmtCreateLetterMissingCampaignClientIdPage } from '../../pages/letter/template-mgmt-create-letter-missing-campaign-client-id-page';
+import { loginAsUser } from '../../helpers/auth/login-as-user';
 
 test.describe('Create Letter Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
@@ -49,7 +50,8 @@ test.describe('Create Letter Template Page', () => {
   });
 
   test('redirects to error page when campaign ID is missing', async ({ page, baseURL }) => {
-    // set user to userWithoutCampaignId
+    await loginAsUser(userWithoutCampaignId, page);
+
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
     const missingClientOrCampaignIdErrorPage = new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
 
@@ -57,15 +59,12 @@ test.describe('Create Letter Template Page', () => {
 
     await expect(page).toHaveURL(`${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`);
 
-    await expect(missingClientOrCampaignIdErrorPage.heading).toHaveText('You cannot create letter templates yet');
-    await expect(missingClientOrCampaignIdErrorPage.errorDetailsInsetText).toHaveText('Account needs a client ID and campaign ID');
-
-    await expect(missingClientOrCampaignIdErrorPage.goBackLink).toHaveText('Go back');
-    await expect(missingClientOrCampaignIdErrorPage.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
+    await assertMissingClientOrCampaignIdErrorPage(missingClientOrCampaignIdErrorPage);
   });
 
   test('redirects to error page when client ID is missing', async ({ page, baseURL }) => {
-    // set user to userWithoutClientId
+    await loginAsUser(userWithoutClientId, page);
+
     const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
     const missingClientOrCampaignIdErrorPage = new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
 
@@ -73,11 +72,7 @@ test.describe('Create Letter Template Page', () => {
 
     await expect(page).toHaveURL(`${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`);
 
-    await expect(missingClientOrCampaignIdErrorPage.heading).toHaveText('You cannot create letter templates yet');
-    await expect(missingClientOrCampaignIdErrorPage.errorDetailsInsetText).toHaveText('Account needs a client ID and campaign ID');
-
-    await expect(missingClientOrCampaignIdErrorPage.goBackLink).toHaveText('Go back');
-    await expect(missingClientOrCampaignIdErrorPage.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
+    await assertMissingClientOrCampaignIdErrorPage(missingClientOrCampaignIdErrorPage);
   });
 
   test('Validate error messages on the create Letter template page with no template name or pdf', async ({
@@ -194,5 +189,13 @@ test.describe('Create Letter Template Page', () => {
 
       await expect(newTab).toHaveURL(`${baseURL}/${url}`);
     });
+  }
+
+  const assertMissingClientOrCampaignIdErrorPage = async (page: TemplateMgmtCreateLetterMissingCampaignClientIdPage) => {
+    await expect(page.heading).toHaveText('You cannot create letter templates yet');
+    await expect(page.errorDetailsInsetText).toHaveText('Account needs a client ID and campaign ID');
+
+    await expect(page.goBackLink).toHaveText('Go back');
+    await expect(page.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
   }
 });
