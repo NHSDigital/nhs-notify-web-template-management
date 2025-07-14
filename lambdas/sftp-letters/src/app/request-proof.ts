@@ -11,7 +11,7 @@ import { SftpSupplierClientRepository } from '../infra/sftp-supplier-client-repo
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 import { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 import { LANGUAGE_LIST, LETTER_TYPE_LIST } from 'nhs-notify-backend-client';
-import { ExpandedIdComponenets } from '../types';
+import { ExpandedIdComponents } from '../types';
 
 export class App {
   constructor(
@@ -223,7 +223,7 @@ export class App {
     letterType,
     language,
     templateId,
-  }: ExpandedIdComponenets) {
+  }: ExpandedIdComponents) {
     return [clientId, campaignId, templateId, language, letterType].join('_');
   }
 
