@@ -120,7 +120,6 @@ test.describe('Create Letter Template Page', () => {
   });
 
   test.use({ storageState: { cookies: [], origins: [] } });
-  test.use({ headless: false });
 
   test('redirects to error page when campaign ID is missing', async ({
     page,
