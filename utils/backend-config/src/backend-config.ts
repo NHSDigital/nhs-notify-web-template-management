@@ -5,7 +5,7 @@ import fs from 'node:fs';
 export type BackendConfig = {
   apiBaseUrl: string;
   clientSsmPathPrefix: string;
-  sendProofQueueUrl: string;
+  requestProofQueueUrl: string;
   sftpEnvironment: string;
   sftpPollLambdaName: string;
   sftpMockCredentialPath: string;
@@ -14,7 +14,8 @@ export type BackendConfig = {
   templatesQuarantineBucketName: string;
   templatesDownloadBucketName: string;
   testEmailBucketName: string;
-  testEmailPrefix: string;
+  testProofRequestedEmailPrefix: string;
+  testTemplateSubmittedEmailPrefix: string;
   userPoolId: string;
   userPoolClientId: string;
 };
@@ -24,7 +25,7 @@ export const BackendConfigHelper = {
     return {
       apiBaseUrl: process.env.API_BASE_URL ?? '',
       clientSsmPathPrefix: process.env.CLIENT_SSM_PATH_PREFIX ?? '',
-      sendProofQueueUrl: process.env.SEND_PROOF_QUEUE_URL ?? '',
+      requestProofQueueUrl: process.env.REQUEST_PROOF_QUEUE_URL ?? '',
       sftpEnvironment: process.env.SFTP_ENVIRONMENT ?? '',
       sftpMockCredentialPath: process.env.SFTP_MOCK_CREDENTIAL_PATH ?? '',
       templatesTableName: process.env.TEMPLATES_TABLE_NAME ?? '',
@@ -38,7 +39,10 @@ export const BackendConfigHelper = {
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
       testEmailBucketName: process.env.TEST_EMAIL_BUCKET_NAME ?? '',
-      testEmailPrefix: process.env.TEST_EMAIL_PREFIX ?? '',
+      testProofRequestedEmailPrefix:
+        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX ?? '',
+      testTemplateSubmittedEmailPrefix:
+        process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX ?? '',
     };
   },
 
@@ -48,7 +52,7 @@ export const BackendConfigHelper = {
     process.env.COGNITO_USER_POOL_ID = config.userPoolId;
     process.env.COGNITO_USER_POOL_CLIENT_ID = config.userPoolClientId;
     process.env.TEMPLATES_TABLE_NAME = config.templatesTableName;
-    process.env.SEND_PROOF_QUEUE_URL = config.sendProofQueueUrl;
+    process.env.REQUEST_PROOF_QUEUE_URL = config.requestProofQueueUrl;
     process.env.SFTP_ENVIRONMENT = config.sftpEnvironment;
     process.env.SFTP_MOCK_CREDENTIAL_PATH = config.sftpMockCredentialPath;
     process.env.TEMPLATES_INTERNAL_BUCKET_NAME =
@@ -59,7 +63,10 @@ export const BackendConfigHelper = {
       config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
     process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
-    process.env.TEST_EMAIL_PREFIX = config.testEmailPrefix;
+    process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX =
+      config.testProofRequestedEmailPrefix;
+    process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX =
+      config.testTemplateSubmittedEmailPrefix;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -69,7 +76,8 @@ export const BackendConfigHelper = {
       apiBaseUrl: outputsFileContent.api_base_url?.value ?? '',
       clientSsmPathPrefix:
         outputsFileContent.client_ssm_path_prefix?.value ?? '',
-      sendProofQueueUrl: outputsFileContent.send_proof_queue_url?.value ?? '',
+      requestProofQueueUrl:
+        outputsFileContent.request_proof_queue_url?.value ?? '',
       sftpEnvironment: outputsFileContent.sftp_environment?.value ?? '',
       sftpMockCredentialPath:
         outputsFileContent.sftp_mock_credential_path?.value ?? '',
@@ -86,7 +94,10 @@ export const BackendConfigHelper = {
       sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
       testEmailBucketName:
         outputsFileContent.test_email_bucket_name.value ?? '',
-      testEmailPrefix: outputsFileContent.test_email_prefix?.value ?? '',
+      testProofRequestedEmailPrefix:
+        outputsFileContent.test_proof_requested_email_prefix?.value ?? '',
+      testTemplateSubmittedEmailPrefix:
+        outputsFileContent.test_template_submitted_email_prefix?.value ?? '',
     };
   },
 

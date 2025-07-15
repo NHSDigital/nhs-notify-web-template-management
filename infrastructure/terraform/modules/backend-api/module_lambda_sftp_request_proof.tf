@@ -1,4 +1,4 @@
-module "lambda_send_letter_proof" {
+module "lambda_sftp_request_proof" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
   project        = var.project
@@ -9,11 +9,11 @@ module "lambda_send_letter_proof" {
 
   kms_key_arn = var.kms_key_arn
 
-  function_name = "send-letter-proof"
+  function_name = "sftp-request-proof"
 
-  function_module_name  = "send-proof"
+  function_module_name  = "sftp-request-proof"
   handler_function_name = "handler"
-  description           = "Send proof and test data to letter supplier via SFTP"
+  description           = "Send template and test data to letter supplier via SFTP to request a proof"
 
   memory  = 512
   timeout = 20
@@ -21,18 +21,20 @@ module "lambda_send_letter_proof" {
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {
-    body = data.aws_iam_policy_document.send_letter_proof.json
+    body = data.aws_iam_policy_document.sftp_request_proof.json
   }
 
   lambda_env_vars = {
-    CREDENTIALS_TTL_SECONDS = 900
-    CSI                     = local.csi
-    INTERNAL_BUCKET_NAME    = module.s3bucket_internal.id
-    NODE_OPTIONS            = "--enable-source-maps",
-    REGION                  = var.region
-    SEND_LOCK_TTL_MS        = 50 * 1000 # this must be less than the visibility timeout
-    SFTP_ENVIRONMENT        = local.sftp_environment
-    TEMPLATES_TABLE_NAME    = aws_dynamodb_table.templates.name
+    CREDENTIALS_TTL_SECONDS              = 900
+    CSI                                  = local.csi
+    INTERNAL_BUCKET_NAME                 = module.s3bucket_internal.id
+    NODE_OPTIONS                         = "--enable-source-maps",
+    REGION                               = var.region
+    SEND_LOCK_TTL_MS                     = 50 * 1000 # this must be less than the visibility timeout
+    SFTP_ENVIRONMENT                     = local.sftp_environment
+    TEMPLATES_TABLE_NAME                 = aws_dynamodb_table.templates.name
+    PROOF_REQUESTED_SENDER_EMAIL_ADDRESS = var.proof_requested_sender_email_address
+    SUPPLIER_RECIPIENT_EMAIL_ADDRESSES   = jsonencode({ for k, v in var.letter_suppliers : k => v.email_addresses })
   }
 
   function_s3_bucket      = var.function_s3_bucket
@@ -49,9 +51,9 @@ module "lambda_send_letter_proof" {
   log_subscription_role_arn = var.log_subscription_role_arn
 }
 
-resource "aws_lambda_event_source_mapping" "send_letter_proof" {
+resource "aws_lambda_event_source_mapping" "sftp_request_proof" {
   event_source_arn                   = module.sqs_sftp_upload.sqs_queue_arn
-  function_name                      = module.lambda_send_letter_proof.function_name
+  function_name                      = module.lambda_sftp_request_proof.function_name
   batch_size                         = 5
   maximum_batching_window_in_seconds = 0
   function_response_types = [
@@ -63,7 +65,7 @@ resource "aws_lambda_event_source_mapping" "send_letter_proof" {
   }
 }
 
-data "aws_iam_policy_document" "send_letter_proof" {
+data "aws_iam_policy_document" "sftp_request_proof" {
   statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"
@@ -186,5 +188,18 @@ data "aws_iam_policy_document" "send_letter_proof" {
     resources = [
       "*"
     ]
+  }
+
+  statement {
+    sid    = "AllowSESAccess"
+    effect = "Allow"
+
+    actions = ["ses:SendRawEmail"]
+
+    resources = flatten([
+      "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${var.proof_requested_sender_email_address}",
+      "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${var.email_domain}",
+      [for k, v in var.letter_suppliers : [for email in v.email_addresses : "arn:aws:ses:${var.region}:${var.aws_account_id}:identity/${email}"]]
+    ])
   }
 }

@@ -17,58 +17,60 @@ export class App {
     const { sftpClient, baseDownloadDir } =
       await this.sftpSupplierClientRepository.getClient(supplier);
 
-    this.logger.info('Polling SFTP');
+    const baseSftpPath = `${baseDownloadDir}/${this.sftpEnvironment}/proofs`;
+    const baseS3Path = `proofs/${supplier}`;
+
+    const basePathLogger = this.logger.child({ baseSftpPath, baseS3Path });
+
+    basePathLogger.info('Polling SFTP');
     await sftpClient.connect();
 
-    this.logger.info(
+    basePathLogger.info(
       `Copying files from folder ${baseDownloadDir}/${this.sftpEnvironment}/proofs to proofs`
     );
 
     try {
       await this.pollBaseFolder(
         sftpClient,
-        `${baseDownloadDir}/${this.sftpEnvironment}/proofs`,
-        `proofs/${supplier}`
+        baseSftpPath,
+        baseS3Path,
+        basePathLogger
       );
     } finally {
       await sftpClient.end();
     }
 
-    this.logger.info('Finished polling SFTP');
+    basePathLogger.info('Finished polling SFTP');
   }
 
   private async pollBaseFolder(
     sftpClient: SftpClient,
     baseSftpPath: string,
-    baseS3Path: string
+    baseS3Path: string,
+    logger: Logger
   ) {
-    this.logger.info({
-      description: 'Copying folder',
-      baseSftpPath,
-      baseS3Path,
-    });
+    logger.info('Copying folder');
     const isDir = await this.isDirectory(sftpClient, baseSftpPath);
 
     if (!isDir) {
-      this.logger.info(`Path '${baseSftpPath}' does not exist`);
+      logger.info(`Base SFTP path does not exist`);
       return;
     }
 
-    const templateIdFolders = await sftpClient.list(baseSftpPath);
+    const idFolders = await sftpClient.list(baseSftpPath);
 
-    for (const templateIdFolder of templateIdFolders) {
-      if (templateIdFolder.type === 'd') {
-        await this.pollTemplateIdFolder(
+    for (const idFolder of idFolders) {
+      if (idFolder.type === 'd') {
+        await this.pollIdFolder(
           sftpClient,
           baseSftpPath,
           baseS3Path,
-          templateIdFolder.name
+          idFolder.name,
+          logger
         );
       } else {
-        this.logger.info({
-          description: 'Unexpected non-directory item found',
-          baseSftpPath,
-          templateIdFolder,
+        logger.info('Unexpected non-directory item found', {
+          expandedTemplateId: idFolder,
         });
       }
     }
@@ -78,28 +80,33 @@ export class App {
     return (await sftpClient.exists(path)) === 'd';
   }
 
-  private async pollTemplateIdFolder(
+  private getInternalTemplateId(expandedTemplateId: string) {
+    return expandedTemplateId.split('_')[2];
+  }
+
+  private async pollIdFolder(
     sftpClient: SftpClient,
     baseSftpPath: string,
     baseS3Path: string,
-    templateId: string
+    expandedTemplateId: string,
+    logger: Logger
   ) {
-    const proofFiles = await sftpClient.list(`${baseSftpPath}/${templateId}`);
+    const proofFiles = await sftpClient.list(
+      `${baseSftpPath}/${expandedTemplateId}`
+    );
+    const templateId = this.getInternalTemplateId(expandedTemplateId);
+    const idLogger = logger.child({ expandedTemplateId, templateId });
 
     for (const proofFile of proofFiles) {
-      if (proofFile.type === '-') {
+      if (proofFile.type === '-' && templateId) {
         await this.copyFileToS3(
           sftpClient,
-          `${baseSftpPath}/${templateId}/${proofFile.name}`,
-          `${baseS3Path}/${templateId}/${proofFile.name}`
+          `${baseSftpPath}/${expandedTemplateId}/${proofFile.name}`,
+          `${baseS3Path}/${templateId}/${proofFile.name}`,
+          idLogger
         );
       } else {
-        this.logger.info({
-          description: 'Unexpected non-file item found',
-          baseSftpPath,
-          templateId,
-          proofFile,
-        });
+        idLogger.info('Unexpected item found', { proofFile });
       }
     }
   }
@@ -107,9 +114,12 @@ export class App {
   private async copyFileToS3(
     sftpClient: SftpClient,
     sftpPath: string,
-    s3Path: string
+    s3Path: string,
+    logger: Logger
   ) {
-    this.logger.info({ description: 'Copying file', sftpPath, s3Path });
+    const pathLogger = logger.child({ s3Path, sftpPath });
+
+    pathLogger.info('Copying file');
     try {
       const data = (await sftpClient.get(sftpPath)) as Buffer;
 
@@ -118,18 +128,12 @@ export class App {
       if (fileValidation) {
         await this.s3Repository.putRawData(data, s3Path);
       } else {
-        this.logger.error({
-          description: 'PDF file failed validation',
-          sftpPath,
-          s3Path,
-        });
+        pathLogger.error('PDF file failed validation');
       }
 
       await sftpClient.delete(sftpPath);
     } catch (error) {
-      this.logger
-        .child({ description: 'Failed to process file', sftpPath, s3Path })
-        .error(error);
+      pathLogger.error('Failed to process file', error);
     }
   }
 

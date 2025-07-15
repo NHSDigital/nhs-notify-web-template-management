@@ -8,6 +8,9 @@
           },
           {
             "properties": {
+              "campaignId": {
+                "type": "string"
+              },
               "clientId": {
                 "type": "string"
               },

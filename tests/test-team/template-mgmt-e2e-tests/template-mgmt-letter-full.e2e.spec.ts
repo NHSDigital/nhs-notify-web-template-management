@@ -12,9 +12,12 @@ import { TemplateMgmtSubmitLetterPage } from '../pages/letter/template-mgmt-subm
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
+import { EmailHelper } from '../helpers/email-helper';
 import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
+
+const emailHelper = new EmailHelper();
 
 // clear login state from e2e.setup.ts
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -155,7 +158,15 @@ function requestProof(
 
     const template = await templateStorageHelper.getTemplate(templateKey);
 
-    const batchId = `${templateKey.id}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
+    const expandedTemplateId = [
+      template.clientId,
+      template.campaignId,
+      template.id,
+      template.language,
+      template.letterType,
+    ].join('_');
+
+    const batchId = `${expandedTemplateId}-0000000000000_${template.files?.pdfTemplate?.currentVersion.replaceAll('-', '').slice(0, 27)}`;
 
     const proofFilenames = Array.from(
       { length: 3 },
@@ -176,7 +187,7 @@ function requestProof(
         proofFilenames.map((filename) =>
           templateStorageHelper.getS3Metadata(
             process.env.TEMPLATES_QUARANTINE_BUCKET_NAME,
-            `proofs/WTMMOCK/${template.id}/${filename}`
+            `proofs/WTMMOCK/${templateKey.id}/${filename}`
           )
         )
       );
@@ -257,6 +268,27 @@ function submit(
   });
 }
 
+function checkEmail(
+  templateId: string,
+  testStart: Date,
+  prefix: string,
+  emailTitle: string
+) {
+  return test.step('check email', async () => {
+    await expect(async () => {
+      const emailContents = await emailHelper.getEmailForTemplateId(
+        prefix,
+        templateId,
+        testStart
+      );
+
+      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain('Valid Letter Template'); // template name
+      expect(emailContents).toContain(emailTitle);
+    }).toPass({ timeout: 60_000 });
+  });
+}
+
 test.describe('letter complete e2e journey', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
@@ -279,6 +311,8 @@ test.describe('letter complete e2e journey', () => {
   test('Full journey - template created, files scanned and validated, proof requested, template successfully submitted', async ({
     page,
   }) => {
+    const testStart = new Date();
+
     await login(page, userWithProofing);
 
     const templateKey = await create(
@@ -292,7 +326,21 @@ test.describe('letter complete e2e journey', () => {
 
     await requestProof(page, templateStorageHelper, templateKey);
 
+    await checkEmail(
+      templateKey.id,
+      testStart,
+      process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
+      'Proof Requested'
+    );
+
     await submit(page, templateStorageHelper, templateKey);
+
+    await checkEmail(
+      templateKey.id,
+      testStart,
+      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
+      'Template Submitted'
+    );
   });
 
   test('Full journey - user has proofing disabled', async ({ page }) => {

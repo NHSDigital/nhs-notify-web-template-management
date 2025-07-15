@@ -1,6 +1,11 @@
 import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { failure, success } from '@backend-api/utils/result';
-import { ErrorCase } from 'nhs-notify-backend-client';
+import {
+  ErrorCase,
+  type Language,
+  type LetterType,
+} from 'nhs-notify-backend-client';
+import type { User } from 'nhs-notify-web-template-management-utils';
 
 export class ProofingQueue {
   constructor(
@@ -10,8 +15,12 @@ export class ProofingQueue {
 
   async send(
     templateId: string,
-    owner: string,
+    templateName: string,
+    user: User,
+    campaignId: string,
     personalisationParameters: string[],
+    letterType: LetterType,
+    language: Language,
     pdfVersionId: string,
     testDataVersionId: string | undefined,
     supplier: string
@@ -21,12 +30,16 @@ export class ProofingQueue {
         new SendMessageCommand({
           QueueUrl: this.queueUrl,
           MessageBody: JSON.stringify({
-            owner,
+            campaignId,
+            language,
+            letterType,
             pdfVersionId,
             personalisationParameters,
             supplier,
             templateId,
+            templateName,
             testDataVersionId,
+            user,
           }),
         })
       );

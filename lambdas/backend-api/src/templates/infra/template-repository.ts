@@ -17,6 +17,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import type {
   FileType,
   TemplateKey,
+  User,
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -584,10 +585,10 @@ export class TemplateRepository {
     }
   }
 
-  async proofRequestUpdate(templateId: string, userId: string) {
+  async proofRequestUpdate(templateId: string, user: User) {
     const update = new TemplateUpdateBuilder(
       this.templatesTableName,
-      userId,
+      user.userId,
       templateId,
       {
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
@@ -597,6 +598,7 @@ export class TemplateRepository {
       .setStatus('WAITING_FOR_PROOF')
       .expectedStatus('PENDING_PROOF_REQUEST')
       .expectedTemplateType('LETTER')
+      .expectedClientId(user.clientId)
       .expectTemplateExists()
       .build();
 

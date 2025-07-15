@@ -2,6 +2,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.775.0",
     "@aws-sdk/client-s3": "3.775.0",
+    "@aws-sdk/client-ses": "3.775.0",
     "@aws-sdk/client-ssm": "3.775.0",
     "@aws-sdk/lib-dynamodb": "3.775.0",
     "csv-parse": "^5.6.0",
@@ -10,6 +11,7 @@
     "ksuid": "^3.0.0",
     "nhs-notify-entity-update-command-builder": "*",
     "nhs-notify-web-template-management-utils": "*",
+    "nhs-notify-backend-client": "*",
     "node-cache": "^5.1.2",
     "ssh2-sftp-client": "^9.1.0",
     "zod": "^3.24.2"
@@ -34,7 +36,7 @@
   "name": "nhs-notify-sftp-letters-lambdas",
   "private": true,
   "scripts": {
-    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/send-proof.ts src/sftp-poll.ts",
+    "lambda-build": "./build.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:unit": "jest",

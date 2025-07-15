@@ -17,6 +17,7 @@ import {
   SimulatePassedValidation,
 } from '../helpers/use-cases';
 import { EmailHelper } from '../helpers/email-helper';
+import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/template/:templateId/submit', () => {
   const authHelper = createAuthHelper();
@@ -199,12 +200,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       await expect(async () => {
         const emailContents = await emailHelper.getEmailForTemplateId(
+          process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
           templateId,
           start
         );
 
         expect(emailContents).toContain(templateId);
         expect(emailContents).toContain(templateName);
+        expect(emailContents).toContain('Template Submitted');
         expect(emailContents).toContain('proof.pdf');
       }).toPass({ timeout: 20_000 });
     });
@@ -510,6 +513,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -671,6 +675,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,
@@ -832,6 +837,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updated).toEqual({
         statusCode: 200,
         template: {
+          campaignId: testClients[user1.clientKey]?.campaignId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: created.template.message,

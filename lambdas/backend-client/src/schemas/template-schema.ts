@@ -134,10 +134,11 @@ export const $CreateUpdateTemplate = schemaFor<
 
 const $TemplateDtoFields = z
   .object({
-    id: z.string().trim().min(1),
+    campaignId: z.string().optional(),
     createdAt: z.string(),
-    updatedAt: z.string(),
+    id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+    updatedAt: z.string(),
   })
   .merge($BaseTemplateSchema);
 
