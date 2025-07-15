@@ -19,5 +19,11 @@ npm run app:start --prefix frontend
 npm run app:wait --prefix frontend
 
 npm run test:accessibility -w tests/accessibility
+TEST_EXIT_CODE=$?
+echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
+
+cp ./tests/accessibility/.reports/accessibility ./tests/acceptance-test-report
 
 npm run accessibility-test-teardown  -w tests/accessibility
+
+exit $TEST_EXIT_CODE

@@ -44,30 +44,8 @@ runs:
       run: |
         make test-${{ inputs.testType }}
 
-    - name: Archive ui-e2e test results
-      if: ${{ inputs.testType == 'ui-e2e' }}
+    - name: Archive test results
       uses: actions/upload-artifact@v4
       with:
-        name: UI E2E test report
-        path: "tests/test-team/playwright-report"
-
-    - name: Archive ui-component test results
-      if: ${{ inputs.testType == 'ui-component' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: UI-component test report
-        path: "tests/test-team/playwright-report"
-
-    - name: Archive api test results
-      if: ${{ inputs.testType == 'api' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: API test report
-        path: "tests/test-team/playwright-report"
-
-    - name: Archive accessibility results
-      if: ${{ inputs.testType == 'accessibility' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: accessibility
-        path: "tests/accessibility/.reports/accessibility"
+        name: ${{ inputs.testType }} - test report
+        path: "tests/acceptance-test-report"
