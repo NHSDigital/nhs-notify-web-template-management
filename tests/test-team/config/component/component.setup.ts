@@ -5,11 +5,11 @@
 import path from 'node:path';
 import { test as setup } from '@playwright/test';
 import { BackendConfigHelper } from 'nhs-notify-web-template-management-util-backend-config';
+import { TemplateMgmtSignInPage } from '../../pages/templates-mgmt-login-page';
 import {
   createAuthHelper,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
-import { loginAsUser } from '../../helpers/auth/login-as-user';
 
 setup('component test setup', async ({ page }) => {
   const backendConfig = BackendConfigHelper.fromTerraformOutputsFile(
@@ -24,7 +24,11 @@ setup('component test setup', async ({ page }) => {
 
   const user = await auth.getTestUser(testUsers.User1.userId);
 
-  await loginAsUser(user, page);
+  const loginPage = new TemplateMgmtSignInPage(page);
+
+  await loginPage.loadPage();
+
+  await loginPage.cognitoSignIn(user);
 
   await page.waitForURL('/templates/create-and-submit-templates');
 
