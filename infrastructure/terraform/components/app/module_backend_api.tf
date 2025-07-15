@@ -23,7 +23,7 @@ module "backend_api" {
 
   enable_proofing           = var.enable_proofing
   letter_suppliers          = var.letter_suppliers
-  log_destination_arn       = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_destination_arn       = local.log_destination_arn
   log_subscription_role_arn = local.acct.log_subscription_role_arn
 
   send_to_firehose = true
