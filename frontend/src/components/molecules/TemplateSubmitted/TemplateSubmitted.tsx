@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
-import { withEmbeddedLink } from '@utils/markdownit';
+// import { withEmbeddedLink } from '@utils/markdownit';
 import React from 'react';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 type TemplateSubmittedProps = { templateId: string; templateName: string };
 
@@ -61,16 +62,7 @@ export const TemplateSubmitted = ({
                 <h3 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3'>
                   {heading}
                 </h3>
-                {text.map((textContent, i) => {
-                  return (
-                    <p
-                      key={`do-next-${index}-${i}`}
-                      dangerouslySetInnerHTML={{
-                        __html: withEmbeddedLink(textContent),
-                      }}
-                    />
-                  );
-                })}
+                <MarkdownContent segments={text} />
               </React.Fragment>
             );
           })}
