@@ -31,10 +31,7 @@ async function createTemplates() {
       owner: user.userId,
     } as Template,
     valid: {
-      ...TemplateFactory.createSmsTemplate(
-        'valid-sms-preview-template',
-        user.userId
-      ),
+      ...TemplateFactory.createSmsTemplate('valid-sms-preview-template', user),
       name: 'test-template-sms',
       message: 'test-template-message',
     },
