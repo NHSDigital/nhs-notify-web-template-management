@@ -198,11 +198,11 @@ export class CognitoAuthHelper {
 
     const clientAttribute = clientId
       ? [
-          {
-            Name: 'custom:sbx_client_id',
-            Value: clientId,
-          },
-        ]
+        {
+          Name: 'custom:sbx_client_id',
+          Value: clientId,
+        },
+      ]
       : [];
 
     const user = await this.client.send(
