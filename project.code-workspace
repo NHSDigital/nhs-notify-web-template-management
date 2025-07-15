@@ -4,12 +4,5 @@
       "name": "NHS Notify Repo Template",
       "path": "."
     }
-  ],
-  "settings": {
-    "workbench.colorCustomizations": {
-      "activityBar.background": "#0A3141",
-      "titleBar.activeBackground": "#0E455A",
-      "titleBar.activeForeground": "#F8FCFE"
-    }
-  }
+  ]
 }
