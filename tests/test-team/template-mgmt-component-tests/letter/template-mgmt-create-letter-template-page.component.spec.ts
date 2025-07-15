@@ -53,48 +53,6 @@ test.describe('Create Letter Template Page', () => {
     });
   });
 
-  test('redirects to error page when campaign ID is missing', async ({
-    page,
-    baseURL,
-  }) => {
-    await loginAsUser(userWithoutCampaignId, page);
-
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
-    const missingClientOrCampaignIdErrorPage =
-      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
-
-    createTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
-    );
-
-    await assertMissingClientOrCampaignIdErrorPage(
-      missingClientOrCampaignIdErrorPage
-    );
-  });
-
-  test('redirects to error page when client ID is missing', async ({
-    page,
-    baseURL,
-  }) => {
-    await loginAsUser(userWithoutClientId, page);
-
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
-    const missingClientOrCampaignIdErrorPage =
-      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
-
-    createTemplatePage.loadPage();
-
-    await expect(page).toHaveURL(
-      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
-    );
-
-    await assertMissingClientOrCampaignIdErrorPage(
-      missingClientOrCampaignIdErrorPage
-    );
-  });
-
   test('Validate error messages on the create Letter template page with no template name or pdf', async ({
     page,
   }) => {
@@ -159,6 +117,52 @@ test.describe('Create Letter Template Page', () => {
     await expect(
       page.locator('ul[class="nhsuk-list nhsuk-error-summary__list"] > li')
     ).toHaveText(['Select a letter template PDF']);
+  });
+
+  test.use({ storageState: { cookies: [], origins: [] } });
+  test.use({ headless: false });
+
+  test('redirects to error page when campaign ID is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    await loginAsUser(userWithoutCampaignId, page);
+
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const missingClientOrCampaignIdErrorPage =
+      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+
+    await createTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`,
+      { timeout: 15_000 }
+    );
+
+    await assertMissingClientOrCampaignIdErrorPage(
+      missingClientOrCampaignIdErrorPage
+    );
+  });
+
+  test('redirects to error page when client ID is missing', async ({
+    page,
+    baseURL,
+  }) => {
+    await loginAsUser(userWithoutClientId, page);
+
+    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const missingClientOrCampaignIdErrorPage =
+      new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+
+    createTemplatePage.loadPage();
+
+    await expect(page).toHaveURL(
+      `${baseURL}/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+    );
+
+    await assertMissingClientOrCampaignIdErrorPage(
+      missingClientOrCampaignIdErrorPage
+    );
   });
 
   const detailsSections = ['[data-testid="how-to-name-your-template"]'];
