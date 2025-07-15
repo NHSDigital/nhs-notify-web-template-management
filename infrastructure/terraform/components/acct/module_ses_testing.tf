@@ -1,5 +1,5 @@
 module "ses_testing" {
-  count = local.use_sftp_letter_supplier_mock ? 1 : 0
+  count = local.use_sftp_letter_supplier_mock && var.support_sandbox_environments ? 1 : 0
 
   source = "../../modules/acct-ses-testing"
 
