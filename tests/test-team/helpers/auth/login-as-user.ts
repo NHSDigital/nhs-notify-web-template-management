@@ -8,4 +8,6 @@ export const loginAsUser = async (user: TestUser, page: Page) => {
   await loginPage.loadPage();
 
   await loginPage.cognitoSignIn(user);
+
+  await page.waitForURL('/templates/create-and-submit-templates');
 };

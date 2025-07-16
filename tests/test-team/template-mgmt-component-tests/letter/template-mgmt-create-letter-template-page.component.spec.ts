@@ -13,13 +13,24 @@ import {
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 import { TemplateMgmtCreateLetterPage } from '../../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtCreateLetterMissingCampaignClientIdPage } from '../../pages/letter/template-mgmt-create-letter-missing-campaign-client-id-page';
+import { loginAsUser } from '../../helpers/auth/login-as-user';
 
 test.describe('Create Letter Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
+
   let user: TestUser;
+  let userWithoutClientId: TestUser;
+  let userWithoutCampaignId: TestUser;
 
   test.beforeAll(async () => {
     user = await createAuthHelper().getTestUser(testUsers.User1.userId);
+    userWithoutClientId = await createAuthHelper().getTestUser(
+      testUsers.User6.userId
+    );
+    userWithoutCampaignId = await createAuthHelper().getTestUser(
+      testUsers.User7.userId
+    );
   });
 
   test.afterAll(async () => {
@@ -157,4 +168,64 @@ test.describe('Create Letter Template Page', () => {
       await expect(newTab).toHaveURL(`${baseURL}/${url}`);
     });
   }
+
+  test.describe('missing client or campaign ID error page', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+
+    test('redirects to error page when campaign ID is missing', async ({
+      page,
+      baseURL,
+    }) => {
+      await loginAsUser(userWithoutCampaignId, page);
+
+      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const missingClientOrCampaignIdErrorPage =
+        new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+
+      await createTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+      );
+
+      await assertMissingClientOrCampaignIdErrorPage(
+        missingClientOrCampaignIdErrorPage
+      );
+    });
+
+    test('redirects to error page when client ID is missing', async ({
+      page,
+      baseURL,
+    }) => {
+      await loginAsUser(userWithoutClientId, page);
+
+      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const missingClientOrCampaignIdErrorPage =
+        new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+
+      createTemplatePage.loadPage();
+
+      await expect(page).toHaveURL(
+        `${baseURL}/templates/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+      );
+
+      await assertMissingClientOrCampaignIdErrorPage(
+        missingClientOrCampaignIdErrorPage
+      );
+    });
+  });
+
+  const assertMissingClientOrCampaignIdErrorPage = async (
+    page: TemplateMgmtCreateLetterMissingCampaignClientIdPage
+  ) => {
+    await expect(page.heading).toHaveText(
+      'You cannot create letter templates yet'
+    );
+    await expect(page.errorDetailsInsetText).toHaveText(
+      'Account needs a client ID and campaign ID'
+    );
+
+    await expect(page.goBackLink).toHaveText('Go back');
+    await expect(page.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
+  };
 });

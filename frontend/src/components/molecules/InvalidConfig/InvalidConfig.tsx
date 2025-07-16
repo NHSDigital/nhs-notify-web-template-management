@@ -23,7 +23,7 @@ export default function InvalidConfig() {
           </InsetText>
           <p>
             <Link
-              href={`${getBasePath()}/choose-a-template-type`}
+              href='/choose-a-template-type'
               data-testid='back-to-choose-template-type-link'
             >
               {backLinkText}

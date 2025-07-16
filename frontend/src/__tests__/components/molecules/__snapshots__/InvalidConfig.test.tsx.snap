@@ -33,7 +33,7 @@ exports[`InvalidConfig 1`] = `
         <p>
           <a
             data-testid="back-to-choose-template-type-link"
-            href="/templates/choose-a-template-type"
+            href="/choose-a-template-type"
           >
             Go back
           </a>
