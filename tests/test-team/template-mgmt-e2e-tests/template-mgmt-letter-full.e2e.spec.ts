@@ -260,20 +260,22 @@ function submit(
 function checkEmail(
   expandedTemplateId: string,
   testStart: Date,
-  prefix: string,
-  emailTitle: string
+  emailTitle: string,
+  extraTextToSearch: string,
 ) {
   return test.step('check email', async () => {
     await expect(async () => {
       const emailContents = await emailHelper.getEmailForTemplateId(
-        prefix,
+        process.env.TEST_EMAIL_BUCKET_PREFIX,
         expandedTemplateId,
-        testStart
+        testStart,
+        extraTextToSearch,
       );
 
       expect(emailContents).toContain(expandedTemplateId);
       expect(emailContents).toContain('Valid Letter Template'); // template name
       expect(emailContents).toContain(emailTitle);
+      expect(emailContents).toContain(extraTextToSearch);
     }).toPass({ timeout: 60_000 });
   });
 }
@@ -322,8 +324,8 @@ test.describe('letter complete e2e journey', () => {
     await checkEmail(
       expandedTemplateId,
       testStart,
-      process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
-      'Proof Requested'
+      'Proof Requested',
+      'proof-requested-sender',
     );
 
     await submit(page, templateStorageHelper, templateKey);
@@ -331,8 +333,8 @@ test.describe('letter complete e2e journey', () => {
     await checkEmail(
       expandedTemplateId,
       testStart,
-      process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
-      'Template Submitted'
+      'Template Submitted',
+      'template-submitted-sender',
     );
   });
 

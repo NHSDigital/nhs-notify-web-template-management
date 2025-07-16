@@ -14,8 +14,7 @@ export type BackendConfig = {
   templatesQuarantineBucketName: string;
   templatesDownloadBucketName: string;
   testEmailBucketName: string;
-  testProofRequestedEmailPrefix: string;
-  testTemplateSubmittedEmailPrefix: string;
+  testEmailBucketPrefix: string;
   userPoolId: string;
   userPoolClientId: string;
 };
@@ -39,10 +38,8 @@ export const BackendConfigHelper = {
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
       testEmailBucketName: process.env.TEST_EMAIL_BUCKET_NAME ?? '',
-      testProofRequestedEmailPrefix:
-        process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX ?? '',
-      testTemplateSubmittedEmailPrefix:
-        process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX ?? '',
+      testEmailBucketPrefix:
+        process.env.TEST_EMAIL_BUCKET_PREFIX ?? '',
     };
   },
 
@@ -63,10 +60,8 @@ export const BackendConfigHelper = {
       config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
     process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
-    process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX =
-      config.testProofRequestedEmailPrefix;
-    process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX =
-      config.testTemplateSubmittedEmailPrefix;
+    process.env.TEST_EMAIL_BUCKET_PREFIX =
+      config.testEmailBucketPrefix;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {
@@ -94,10 +89,8 @@ export const BackendConfigHelper = {
       sftpPollLambdaName: outputsFileContent.sftp_poll_lambda_name?.value ?? '',
       testEmailBucketName:
         outputsFileContent.test_email_bucket_name.value ?? '',
-      testProofRequestedEmailPrefix:
-        outputsFileContent.test_proof_requested_email_prefix?.value ?? '',
-      testTemplateSubmittedEmailPrefix:
-        outputsFileContent.test_template_submitted_email_prefix?.value ?? '',
+      testEmailBucketPrefix:
+        outputsFileContent.test_email_bucket_prefix?.value ?? '',
     };
   },
 
