@@ -27,17 +27,19 @@ exports[`SubmitLetterTemplate component should render 1`] = `
           Before you submit this template
         </h2>
         <p>
-          You should check that your template proof:
+          Check that your template proof:
         </p>
-        <ul>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
           <li>
-            appears exactly as you'd like a recipient to receive it
+            looks exactly as you expect your recipient to get it
           </li>
           <li>
-            uses personalisation in the way you expect
+            uses personalisation as you expect
           </li>
           <li>
-            displays QR codes correctly (if included)
+            shows QR codes correctly (if used)
           </li>
         </ul>
         <div
@@ -58,16 +60,8 @@ exports[`SubmitLetterTemplate component should render 1`] = `
             </span>
           </h2>
           <p>
-            If you need to change this template after you've submitted it:
+            You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.
           </p>
-          <ul>
-            <li>
-              go back and upload a new letter template
-            </li>
-            <li>
-              tell your onboarding manager which template you want to use
-            </li>
-          </ul>
         </div>
         <form
           action="/action"
@@ -134,12 +128,14 @@ exports[`SubmitLetterTemplate component should render with proofing flag disable
         <h2
           class="nhsuk-heading-s"
         >
-          Before you submit this template
+          Before you submit
         </h2>
         <p>
-          Check that the template you uploaded:
+          You should check that your template:
         </p>
-        <ul>
+        <ul
+          class="nhsuk-list nhsuk-list--bullet"
+        >
           <li>
             is approved by the relevant stakeholders in your team
           </li>
@@ -179,16 +175,8 @@ exports[`SubmitLetterTemplate component should render with proofing flag disable
             </span>
           </h2>
           <p>
-            If you need to change this template after you've submitted it:
+            You cannot edit a template after you've submitted it. You can only replace it with a new template.
           </p>
-          <ul>
-            <li>
-              go back and upload a new letter template
-            </li>
-            <li>
-              tell your onboarding manager which template you want to use
-            </li>
-          </ul>
         </div>
         <form
           action="/action"
