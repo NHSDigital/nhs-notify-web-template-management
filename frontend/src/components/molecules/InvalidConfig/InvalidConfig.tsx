@@ -3,7 +3,6 @@
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { InsetText } from 'nhsuk-react-components';
 import content from '@content/content';
-import { getBasePath } from '@utils/get-base-path';
 import Link from 'next/link';
 
 const { pageHeading, text, insetText, backLinkText } =
