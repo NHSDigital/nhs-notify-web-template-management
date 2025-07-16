@@ -20,7 +20,7 @@ module "backend_api" {
   enable_proofing  = true
   letter_suppliers = {
     WTMMOCK = {
-      email_addresses  = concat(var.letter_suppliers.WTMMOCK.email_addresses, [local.sandbox_letter_supplier_mock_recipient])
+      email_addresses  = [local.sandbox_letter_supplier_mock_recipient]
       enable_polling   = true
       default_supplier = true
     }

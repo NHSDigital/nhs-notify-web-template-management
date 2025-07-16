@@ -55,7 +55,7 @@ export class EmailHelper {
     prefix: string,
     templateId: string,
     dateCutoff: Date,
-    extraTextToSearch: string,
+    extraTextToSearch: string
   ) {
     const s3Items = await this.getAllS3Items(prefix);
 
