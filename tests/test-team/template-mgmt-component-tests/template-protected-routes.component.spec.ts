@@ -85,11 +85,12 @@ test.describe('Protected Routes Tests', () => {
     const routes = pageTsxPaths.map((p) => {
       const dynamicStripped = p.replaceAll(/\/\[[^[]+]/g, '');
 
-      // eslint-disable-next-line sonarjs/slow-regex
-      const [, route] = dynamicStripped.match(/([^/]+)\/page.tsx$/) ?? [];
+      const route = dynamicStripped
+        .replace(/^.*\/src\/app\//, '') // strip everything before app/
+        .replace(/\/page.tsx$/, ''); // strip trailing /page.tsx
 
       if (!route) {
-        throw new Error('failed to parse route');
+        throw new Error(`failed to parse route for path: ${p}`);
       }
 
       return route;
