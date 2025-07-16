@@ -38,8 +38,7 @@ export const BackendConfigHelper = {
       userPoolClientId: process.env.USER_POOL_CLIENT_ID ?? '',
       sftpPollLambdaName: process.env.SFTP_POLL_LAMBDA_NAME ?? '',
       testEmailBucketName: process.env.TEST_EMAIL_BUCKET_NAME ?? '',
-      testEmailBucketPrefix:
-        process.env.TEST_EMAIL_BUCKET_PREFIX ?? '',
+      testEmailBucketPrefix: process.env.TEST_EMAIL_BUCKET_PREFIX ?? '',
     };
   },
 
@@ -60,8 +59,7 @@ export const BackendConfigHelper = {
       config.templatesDownloadBucketName;
     process.env.SFTP_POLL_LAMBDA_NAME = config.sftpPollLambdaName;
     process.env.TEST_EMAIL_BUCKET_NAME = config.testEmailBucketName;
-    process.env.TEST_EMAIL_BUCKET_PREFIX =
-      config.testEmailBucketPrefix;
+    process.env.TEST_EMAIL_BUCKET_PREFIX = config.testEmailBucketPrefix;
   },
 
   fromTerraformOutputsFile(filepath: string): BackendConfig {

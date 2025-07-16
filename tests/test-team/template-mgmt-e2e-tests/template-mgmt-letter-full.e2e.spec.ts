@@ -272,7 +272,7 @@ function checkEmail(
   templateId: string,
   testStart: Date,
   emailTitle: string,
-  extraTextToSearch: string,
+  extraTextToSearch: string
 ) {
   return test.step('check email', async () => {
     await expect(async () => {
@@ -280,7 +280,7 @@ function checkEmail(
         process.env.TEST_EMAIL_BUCKET_PREFIX,
         templateId,
         testStart,
-        extraTextToSearch,
+        extraTextToSearch
       );
 
       expect(emailContents).toContain(templateId);
@@ -332,7 +332,7 @@ test.describe('letter complete e2e journey', () => {
       templateKey.id,
       testStart,
       'Proof Requested',
-      'proof-requested-sender',
+      'proof-requested-sender'
     );
 
     await submit(page, templateStorageHelper, templateKey);
@@ -341,7 +341,7 @@ test.describe('letter complete e2e journey', () => {
       templateKey.id,
       testStart,
       'Template Submitted',
-      'template-submitted-sender',
+      'template-submitted-sender'
     );
   });
 
