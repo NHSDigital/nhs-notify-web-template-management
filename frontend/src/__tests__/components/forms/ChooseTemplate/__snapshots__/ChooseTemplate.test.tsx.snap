@@ -8,7 +8,7 @@ exports[`Choose template page Client-side validation triggers 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
     >
       <svg
         aria-hidden="true"
@@ -222,7 +222,7 @@ exports[`Choose template page renders error component 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
     >
       <svg
         aria-hidden="true"
@@ -425,7 +425,7 @@ exports[`Choose template page selects one radio button at a time 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
     >
       <svg
         aria-hidden="true"
