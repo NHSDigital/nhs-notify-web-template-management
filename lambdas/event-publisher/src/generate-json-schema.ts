@@ -5,7 +5,7 @@ import { $TemplateDraftedEvent } from './domain/individual-event-schemas/templat
 
 import { toJSONSchema } from 'zod';
 
-mkdirSync('./json-schemas');
+mkdirSync('./json-schemas', { recursive: true });
 
 const templateCompletedJsonSchema = toJSONSchema($TemplateCompletedEvent);
 writeFileSync(
