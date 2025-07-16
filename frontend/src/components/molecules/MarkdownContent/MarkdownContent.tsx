@@ -1,4 +1,3 @@
-// import ReactMarkdown from 'react-markdown';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
@@ -9,19 +8,6 @@ export function MarkdownContent({ segments }: MarkdownContentProps) {
     <>
       {segments.map((content, index) => {
         return (
-          // <ReactMarkdown
-          //   key={index}
-          //   children={content}
-          //   allowedElements={['a', 'p']}
-          //   components={{
-          //     a(props) {
-          //       const { node, ...rest } = props;
-          //       return (
-          //         <a {...rest} target='_blank' rel='noopener noreferrer' />
-          //       );
-          //     },
-          //   }}
-          // />
           <Markdown
             key={index}
             options={{

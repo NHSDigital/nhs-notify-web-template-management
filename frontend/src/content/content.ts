@@ -686,7 +686,6 @@ const templateSubmitted = {
       ],
     },
   ],
-  // doNext: "### If you've sent messages using NHS Notify\n\n[Raise a request with the Service Desk (opens in a new tab)](https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83) once you've submitted all your templates.\n\nIf you replaced a template by submitting a new one, tell us which template you want to use in your Service Desk request.",
   backLinkText: backToAllTemplates,
 };
 
