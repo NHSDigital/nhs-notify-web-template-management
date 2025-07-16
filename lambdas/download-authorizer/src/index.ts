@@ -21,10 +21,19 @@ export function parseRequest(request: CloudFrontRequest) {
   const userPoolId = customHeaders?.['x-user-pool-id']?.[0]?.value;
   const userPoolClientId = customHeaders?.['x-user-pool-client-id']?.[0]?.value;
 
-  const accessTokenKey = `CognitoIdentityServiceProvider.${userPoolClientId}.${ownerPathComponent}.accessToken`;
-
   const cookies = parseCookie(request.headers.cookie?.[0]?.value ?? '');
-  const authorizationToken = cookies[accessTokenKey];
+
+  const authorizationTokenEntry = Object.entries(cookies).find(([k]) => {
+    const [serviceKey, userPoolClientIdKey, , credentialType] = k.split('.');
+
+    return (
+      serviceKey === 'CognitoIdentityServiceProvider' &&
+      userPoolClientIdKey === userPoolClientId &&
+      credentialType === 'accessToken'
+    );
+  });
+
+  const authorizationToken = authorizationTokenEntry?.[1];
 
   return {
     userPoolId,
