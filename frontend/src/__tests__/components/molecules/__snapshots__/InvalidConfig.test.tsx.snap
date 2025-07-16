@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InvalidConfig 1`] = `
+<DocumentFragment>
+  <main
+    class="nhsuk-main-wrapper"
+    id="maincontent"
+    role="main"
+  >
+    <div
+      class="nhsuk-grid-row"
+      data-testid="page-content-wrapper"
+    >
+      <div
+        class="nhsuk-grid-column-two-thirds"
+      >
+        <h1
+          class="nhsuk-heading-xl"
+          data-testid="page-heading"
+        >
+          You cannot create letter templates yet
+        </h1>
+        <p>
+          To get access, contact your onboarding manager and give them this error message:
+        </p>
+        <div
+          class="nhsuk-inset-text"
+        >
+          <p>
+            Account needs a client ID and campaign ID
+          </p>
+        </div>
+        <p>
+          <a
+            data-testid="back-to-choose-template-type-link"
+            href="/templates/choose-a-template-type"
+          >
+            Go back
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;
