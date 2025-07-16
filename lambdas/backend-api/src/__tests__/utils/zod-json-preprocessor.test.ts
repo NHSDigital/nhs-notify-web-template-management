@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { parseJsonPreprocessor } from '@backend-api/utils/zod-json-preprocessor';
 import { mock } from 'jest-mock-extended';
 

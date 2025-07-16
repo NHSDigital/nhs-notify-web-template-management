@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod/v4';
 
 const $Env = z.object({
   CLIENT_CONFIG_SSM_KEY_PREFIX: z.string(),
@@ -19,7 +19,7 @@ export function loadConfig() {
   const env = $Env.parse(process.env);
 
   const supplierRecipientEmailAddresses = z
-    .record(z.array(z.string().email()))
+    .record(z.string(), z.array(z.string().email()))
     .parse(JSON.parse(env.SUPPLIER_RECIPIENT_EMAIL_ADDRESSES));
 
   return {

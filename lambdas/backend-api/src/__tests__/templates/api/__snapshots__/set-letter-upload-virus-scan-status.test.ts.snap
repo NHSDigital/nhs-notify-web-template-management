@@ -3,9 +3,8 @@
 exports[`errors if event has invalid scan result status 1`] = `
 "[
   {
-    "received": "UNKNOWN_STATUS",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND",
       "THREATS_FOUND",
       "UNSUPPORTED",
@@ -17,7 +16,7 @@ exports[`errors if event has invalid scan result status 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'UNKNOWN_STATUS'"
+    "message": "Invalid option: expected one of \\"NO_THREATS_FOUND\\"|\\"THREATS_FOUND\\"|\\"UNSUPPORTED\\"|\\"ACCESS_DENIED\\"|\\"FAILED\\""
   }
 ]"
 `;
@@ -25,15 +24,14 @@ exports[`errors if event has invalid scan result status 1`] = `
 exports[`errors if event has no object key name 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "objectKey"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -41,15 +39,20 @@ exports[`errors if event has no object key name 1`] = `
 exports[`errors if event has no scan result status 1`] = `
 "[
   {
-    "expected": "'NO_THREATS_FOUND' | 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
-    "received": "undefined",
-    "code": "invalid_type",
+    "code": "invalid_value",
+    "values": [
+      "NO_THREATS_FOUND",
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
+      "FAILED"
+    ],
     "path": [
       "detail",
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Required"
+    "message": "Invalid option: expected one of \\"NO_THREATS_FOUND\\"|\\"THREATS_FOUND\\"|\\"UNSUPPORTED\\"|\\"ACCESS_DENIED\\"|\\"FAILED\\""
   }
 ]"
 `;

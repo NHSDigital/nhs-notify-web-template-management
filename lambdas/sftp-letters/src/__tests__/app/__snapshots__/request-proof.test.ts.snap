@@ -3,13 +3,12 @@
 exports[`App throws if proof request event is missing a property 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "array",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "personalisationParameters"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected array, received undefined"
   }
 ]"
 `;

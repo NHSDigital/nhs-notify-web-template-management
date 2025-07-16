@@ -3,15 +3,14 @@
 exports[`errors if the event has no object key 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "objectKey"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -19,15 +18,14 @@ exports[`errors if the event has no object key 1`] = `
 exports[`errors if the event has no version id 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "versionId"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -35,15 +33,16 @@ exports[`errors if the event has no version id 1`] = `
 exports[`errors if the event has no virus scan status 1`] = `
 "[
   {
-    "expected": "'NO_THREATS_FOUND'",
-    "received": "undefined",
-    "code": "invalid_type",
+    "code": "invalid_value",
+    "values": [
+      "NO_THREATS_FOUND"
+    ],
     "path": [
       "detail",
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -51,9 +50,8 @@ exports[`errors if the event has no virus scan status 1`] = `
 exports[`errors if the event has virus scan status ACCESS_DENIED 1`] = `
 "[
   {
-    "received": "ACCESS_DENIED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -61,7 +59,7 @@ exports[`errors if the event has virus scan status ACCESS_DENIED 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'ACCESS_DENIED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -69,9 +67,8 @@ exports[`errors if the event has virus scan status ACCESS_DENIED 1`] = `
 exports[`errors if the event has virus scan status FAILED 1`] = `
 "[
   {
-    "received": "FAILED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -79,7 +76,7 @@ exports[`errors if the event has virus scan status FAILED 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'FAILED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -87,9 +84,8 @@ exports[`errors if the event has virus scan status FAILED 1`] = `
 exports[`errors if the event has virus scan status THREATS_FOUND 1`] = `
 "[
   {
-    "received": "THREATS_FOUND",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -97,7 +93,7 @@ exports[`errors if the event has virus scan status THREATS_FOUND 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'THREATS_FOUND'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -105,9 +101,8 @@ exports[`errors if the event has virus scan status THREATS_FOUND 1`] = `
 exports[`errors if the event has virus scan status UNSUPPORTED 1`] = `
 "[
   {
-    "received": "UNSUPPORTED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -115,7 +110,7 @@ exports[`errors if the event has virus scan status UNSUPPORTED 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'UNSUPPORTED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
