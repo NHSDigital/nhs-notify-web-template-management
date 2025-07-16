@@ -226,6 +226,9 @@ test.describe('Create Letter Template Page', () => {
     );
 
     await expect(page.goBackLink).toHaveText('Go back');
-    await expect(page.goBackLink).toHaveAttribute('href', '/templates/choose-a-template-type');
+    await expect(page.goBackLink).toHaveAttribute(
+      'href',
+      '/templates/choose-a-template-type'
+    );
   };
 });
