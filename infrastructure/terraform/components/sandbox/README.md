@@ -47,8 +47,7 @@
 | <a name="output_sftp_poll_lambda_name"></a> [sftp\_poll\_lambda\_name](#output\_sftp\_poll\_lambda\_name) | n/a |
 | <a name="output_templates_table_name"></a> [templates\_table\_name](#output\_templates\_table\_name) | n/a |
 | <a name="output_test_email_bucket_name"></a> [test\_email\_bucket\_name](#output\_test\_email\_bucket\_name) | n/a |
-| <a name="output_test_proof_requested_email_prefix"></a> [test\_proof\_requested\_email\_prefix](#output\_test\_proof\_requested\_email\_prefix) | n/a |
-| <a name="output_test_template_submitted_email_prefix"></a> [test\_template\_submitted\_email\_prefix](#output\_test\_template\_submitted\_email\_prefix) | n/a |
+| <a name="output_test_email_bucket_prefix"></a> [test\_email\_bucket\_prefix](#output\_test\_email\_bucket\_prefix) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->

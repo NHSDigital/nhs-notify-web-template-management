@@ -18,7 +18,13 @@ module "backend_api" {
   }
 
   enable_proofing  = true
-  letter_suppliers = local.letter_suppliers
+  letter_suppliers = {
+    WTMMOCK = {
+      email_addresses  = concat(var.letter_suppliers.WTMMOCK.email_addresses, [local.sandbox_letter_supplier_mock_recipient])
+      enable_polling   = true
+      default_supplier = true
+    }
+  }
 
   kms_key_arn = data.aws_kms_key.sandbox.arn
 

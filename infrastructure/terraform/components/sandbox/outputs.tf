@@ -62,11 +62,6 @@ output "test_email_bucket_name" {
   value = local.acct["ses_testing_config"].bucket_name
 }
 
-output "test_proof_requested_email_prefix" {
-  value = "proof-requested-emails-${var.environment}"
-}
-
-
-output "test_template_submitted_email_prefix" {
-  value = "template-submitted-emails-${var.environment}"
+output "test_email_bucket_prefix" {
+  value = "emails-${var.environment}"
 }
