@@ -2,7 +2,6 @@ resource "aws_ses_receipt_rule" "proof_requested" {
   name          = "${local.csi}-store-email-proof-requested"
   rule_set_name = local.acct["ses_testing_config"].rule_set_name
 
-  # Despite being called "recipients", AWS appears to apply this check to the sender email
   recipients    = [local.sandbox_letter_supplier_mock_recipient]
   enabled       = true
   scan_enabled  = true
