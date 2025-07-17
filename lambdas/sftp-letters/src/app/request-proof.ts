@@ -22,7 +22,7 @@ export class App {
     private readonly sftpSupplierClientRepository: SftpSupplierClientRepository,
     private readonly emailClient: EmailClient,
     private readonly logger: Logger
-  ) { }
+  ) {}
   async send(
     eventBody: string,
     messageId: string
