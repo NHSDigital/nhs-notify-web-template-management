@@ -43,7 +43,7 @@ describe('Template schemas', () => {
         expect.objectContaining({
           fieldErrors: {
             message: [
-              `String must contain at most ${data.message.length - 1} character(s)`,
+              `Too big: expected string to have <=${data.message.length - 1} characters`,
             ],
           },
         })
@@ -90,7 +90,7 @@ describe('Template schemas', () => {
     '%p.templateType - should fail validation, when name, message or subject is whitespace',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
-      const errorMessage = 'String must contain at least 1 character(s)';
+      const errorMessage = 'Too small: expected string to have >=1 characters';
 
       const emptyFields = Object.entries(data).flatMap(([k, v]) =>
         v === ' ' ? [k] : []
@@ -145,7 +145,7 @@ describe('Template schemas', () => {
     '%p - should fail validation, when name, message or subject is empty',
     async ({ schema, data }) => {
       const result = schema.safeParse(data);
-      const errorMessage = 'String must contain at least 1 character(s)';
+      const errorMessage = 'Too small: expected string to have >=1 characters';
 
       const emptyFields = Object.entries(data).flatMap(([k, v]) =>
         v === '' ? [k] : []
@@ -174,9 +174,7 @@ describe('Template schemas', () => {
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
         fieldErrors: {
-          templateType: [
-            "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
-          ],
+          templateType: ['Invalid input'],
         },
       })
     );
@@ -192,7 +190,7 @@ describe('Template schemas', () => {
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
         fieldErrors: {
-          subject: ['Required'],
+          subject: ['Invalid input: expected string, received undefined'],
         },
       })
     );
@@ -208,7 +206,7 @@ describe('Template schemas', () => {
     expect(result.error?.flatten()).toEqual(
       expect.objectContaining({
         fieldErrors: {
-          letterType: ['Required'],
+          letterType: ['Invalid option: expected one of "q4"|"x0"|"x1"'],
         },
       })
     );

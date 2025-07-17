@@ -9,9 +9,8 @@ exports[`LetterUploadRepository static parseKey errors if filename has too many 
 exports[`LetterUploadRepository static parseKey errors if invalid file type segment 1`] = `
 "[
   {
-    "received": "unexpected",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "pdf-template",
       "test-data",
       "proofs"
@@ -19,7 +18,7 @@ exports[`LetterUploadRepository static parseKey errors if invalid file type segm
     "path": [
       "file-type"
     ],
-    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data' | 'proofs', received 'unexpected'"
+    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
   }
 ]"
 `;

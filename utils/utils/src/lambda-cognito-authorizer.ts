@@ -6,7 +6,7 @@ import { verify } from 'jsonwebtoken';
 import getJwksClient from 'jwks-rsa';
 import { jwtDecode } from 'jwt-decode';
 import type { Logger } from './logger';
-import z from 'zod';
+import z from 'zod/v4';
 
 const $AccessToken = z.object({
   client_id: z.string(),
