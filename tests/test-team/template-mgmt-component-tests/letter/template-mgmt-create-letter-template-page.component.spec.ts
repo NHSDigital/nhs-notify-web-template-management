@@ -134,7 +134,7 @@ test.describe('Create Letter Template Page', () => {
       url: 'using-nhs-notify/letter-templates',
     },
     {
-      name: 'Learn how to provide test personalisation data (opens in a new tab)',
+      name: 'Learn how to provide example personalisation data (opens in a new tab)',
       url: 'using-nhs-notify/personalisation#providing-example-data',
     },
   ];

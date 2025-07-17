@@ -432,12 +432,12 @@ exports[`Client-side validation triggers 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -446,7 +446,7 @@ exports[`Client-side validation triggers 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div
@@ -859,12 +859,12 @@ exports[`hides right-to-left language warning when language changes 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -873,7 +873,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div
@@ -1343,12 +1343,12 @@ exports[`renders page one error 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -1357,7 +1357,7 @@ exports[`renders page one error 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div
@@ -1853,12 +1853,12 @@ exports[`renders page with multiple errors 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -1867,7 +1867,7 @@ exports[`renders page with multiple errors 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div
@@ -2316,12 +2316,12 @@ exports[`renders page with preloaded field values 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -2330,7 +2330,7 @@ exports[`renders page with preloaded field values 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div
@@ -2769,12 +2769,12 @@ exports[`shows right-to-left language warning when language changes 1`] = `
               class="nhsuk-label nhsuk-label--s"
               for="letterTemplateCsv"
             >
-              Text personalisation CSV (optional)
+              Example personalisation CSV (optional)
             </label>
             <div
               class="nhsuk-hint"
             >
-              If your letter template uses personalisation, upload your test personalisation data.
+              If your letter template uses custom personalisation fields, upload your example personalisation data.
             </div>
             <p>
               <a
@@ -2783,7 +2783,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn how to provide test personalisation data (opens in a new tab)
+                Learn how to provide example personalisation data (opens in a new tab)
               </a>
             </p>
             <div

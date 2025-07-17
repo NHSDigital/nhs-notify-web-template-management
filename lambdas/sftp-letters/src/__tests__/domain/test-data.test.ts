@@ -1,4 +1,4 @@
-import { parseTestPersonalisation } from '../../domain/test-data';
+import { parseExamplePersonalisation } from '../../domain/test-data';
 
 const testDataCsv = `Personalisation field,Short length data example,Medium length data example,Long length data example
 appointment_date,Monday 1 May 2025,Saturday 10 April 2025,Wednesday 10 September 2025
@@ -12,9 +12,9 @@ appointment_date,Wednesday 10 September 2025
 appointment_time,12:56pm,11:56am,1:56pm
 `;
 
-describe('parseTestPersonalisation', () => {
+describe('parseExamplePersonalisation', () => {
   test('parses valid test data', () => {
-    expect(parseTestPersonalisation(testDataCsv)).toEqual([
+    expect(parseExamplePersonalisation(testDataCsv)).toEqual([
       {
         appointment_date: 'Monday 1 May 2025',
         appointment_location:
@@ -40,7 +40,7 @@ describe('parseTestPersonalisation', () => {
   });
 
   test('rejects invalid test data', () => {
-    expect(() => parseTestPersonalisation(testDataCsvInvalid)).toThrow(
+    expect(() => parseExamplePersonalisation(testDataCsvInvalid)).toThrow(
       'Invalid Record Length: expect 4, got 2 on line 2'
     );
   });

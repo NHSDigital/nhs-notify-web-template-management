@@ -263,7 +263,7 @@ const previewLetterTemplate = {
   validationError:
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
-    'Check that the personalisation fields in your template file match the fields in your test personalisation file',
+    'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   preSubmissionText: previewLetterPreSubmissionText,
 };
 
@@ -327,7 +327,7 @@ const previewTemplateDetails = {
     templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
     templateType: 'Type',
-    testPersonalisationFile: 'Test personalisation file',
+    examplePersonalisationFile: 'Example personalisation file',
   },
 };
 
@@ -549,13 +549,13 @@ const templateFormLetter = {
   templatePdfGuidanceLink: '/using-nhs-notify/letter-templates',
   templatePdfGuidanceLinkText:
     'Learn how to create letter templates to our specification (opens in a new tab)',
-  templateCsvLabelText: 'Text personalisation CSV (optional)',
+  templateCsvLabelText: 'Example personalisation CSV (optional)',
   templateCsvHintText:
-    'If your letter template uses personalisation, upload your test personalisation data.',
+    'If your letter template uses custom personalisation fields, upload your example personalisation data.',
   templateCsvGuidanceLink:
     '/using-nhs-notify/personalisation#providing-example-data',
   templateCsvGuidanceLinkText:
-    'Learn how to provide test personalisation data (opens in a new tab)',
+    'Learn how to provide example personalisation data (opens in a new tab)',
   buttonText: 'Save and upload',
   form: {
     letterTemplateName: {
