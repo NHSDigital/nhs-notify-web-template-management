@@ -25,7 +25,7 @@ const CreateLetterTemplatePage = async () => {
 
   const campaignId = clientConfiguration?.data?.campaignId;
 
-  if (!clientConfiguration || clientConfiguration.error || !campaignId)
+  if (!campaignId)
     return redirect(
       '/create-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
