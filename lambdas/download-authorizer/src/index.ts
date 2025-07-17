@@ -25,11 +25,9 @@ export function parseRequest(request: CloudFrontRequest) {
 
   const poolScope = `CognitoIdentityServiceProvider.${userPoolClientId}`;
 
-  const LastAuthUser = cookies[`${poolScope}.LastAuthUser`];
+  const lastAuthUser = cookies[`${poolScope}.LastAuthUser`];
 
-  const accessTokenKey = `${poolScope}.${LastAuthUser}.accessToken`;
-
-  const accessToken = cookies[accessTokenKey];
+  const accessToken = cookies[`${poolScope}.${lastAuthUser}.accessToken`];
 
   return {
     userPoolId,
