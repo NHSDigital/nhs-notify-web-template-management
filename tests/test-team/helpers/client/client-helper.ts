@@ -80,11 +80,13 @@ export class ClientConfigurationHelper {
   }
 
   async teardown(ids: string[]) {
-    await this.ssmClient.send(
-      new DeleteParametersCommand({
-        Names: ids.map((id) => this.ssmKey(id)),
-      })
-    );
+    if (ids.length) {
+      await this.ssmClient.send(
+        new DeleteParametersCommand({
+          Names: ids.map((id) => this.ssmKey(id)),
+        })
+      );
+    }
   }
 
   private ssmKey(clientId: string) {

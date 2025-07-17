@@ -18,7 +18,7 @@ const CreateLetterTemplatePage = async () => {
   if (!accessToken || !clientId)
     return redirect(
       '/create-letter-template/client-id-and-campaign-id-required',
-      RedirectType.push
+      RedirectType.replace
     );
 
   const clientConfiguration = await fetchClient(accessToken);
@@ -28,7 +28,7 @@ const CreateLetterTemplatePage = async () => {
   if (!clientConfiguration || clientConfiguration.error || !campaignId)
     return redirect(
       '/create-letter-template/client-id-and-campaign-id-required',
-      RedirectType.push
+      RedirectType.replace
     );
 
   return <LetterTemplateForm initialState={initialState} />;

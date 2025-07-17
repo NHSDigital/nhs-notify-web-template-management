@@ -74,7 +74,7 @@ describe('CreateLetterTemplatePage', () => {
 
     expect(mockRedirect).toHaveBeenCalledWith(
       '/create-letter-template/client-id-and-campaign-id-required',
-      RedirectType.push
+      RedirectType.replace
     );
   });
 
@@ -97,7 +97,7 @@ describe('CreateLetterTemplatePage', () => {
 
     expect(mockRedirect).toHaveBeenCalledWith(
       '/create-letter-template/client-id-and-campaign-id-required',
-      RedirectType.push
+      RedirectType.replace
     );
   });
 });
