@@ -61,6 +61,7 @@ function makeEvent(
 describe('download authorizer handler', () => {
   test('returns request, when request is valid', async () => {
     const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
+    const userName = 'CIS2_555555555555';
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: true,
@@ -68,7 +69,10 @@ describe('download authorizer handler', () => {
     });
 
     const uri = `/${subject}/template-id/proof1.pdf`;
-    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.CIS2_555328794105.accessToken=jwt`;
+    const cookie = [
+      `CognitoIdentityServiceProvider.${userPoolClientId}.${userName}.accessToken=jwt`,
+      `CognitoIdentityServiceProvider.${userPoolClientId}.LastAuthUser=${userName}`,
+    ].join('; ');
 
     const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
 
@@ -86,10 +90,35 @@ describe('download authorizer handler', () => {
     );
   });
 
+  test('returns denial if no access token is available for the LastAuthUser', async () => {
+    const subject = 'F3FE88F4-4E9E-41EB-BF1E-DC299911968B';
+    const userName = 'CIS2_555555555555';
+
+    lambdaCognitoAuthorizer.authorize.mockResolvedValue({
+      success: true,
+      subject,
+    });
+
+    const uri = `/${subject}/template-id/proof1.pdf`;
+    const cookie = [
+      `CognitoIdentityServiceProvider.${userPoolClientId}.anotheruser.accessToken=jwt`,
+      `CognitoIdentityServiceProvider.${userPoolClientId}.LastAuthUser=${userName}`,
+    ].join('; ');
+
+    const event = mock<CloudFrontRequestEvent>(makeEvent(uri, cookie));
+
+    const res = await handler(event);
+
+    expect(res).toEqual(denial);
+    expect(mockLogger.warn).toHaveBeenCalledWith('Cookie is missing');
+
+    expect(lambdaCognitoAuthorizer.authorize).not.toHaveBeenCalled();
+  });
+
   test('returns denial if cognito configuration is not present in custom headers', async () => {
     const uri = '/subject/template-id/proof1.pdf';
     const cookie =
-      'CognitoIdentityServiceProvider.user-pool-client-id.CIS2-int_555328794105.accessToken=jwt';
+      'CognitoIdentityServiceProvider.pool.username.accessToken=jwt; CognitoIdentityServiceProvider.pool.LastAuthUser=username;';
 
     const event = mock<CloudFrontRequestEvent>(
       makeEvent(uri, cookie, {
@@ -122,7 +151,12 @@ describe('download authorizer handler', () => {
 
   test('returns denial if authorization fails', async () => {
     const uri = '/subject/template-id/proof1.pdf';
-    const cookie = `CognitoIdentityServiceProvider.${userPoolClientId}.CIS2-int_555328794105.accessToken=jwt`;
+    const userName = 'CIS2-int_555555555555';
+
+    const cookie = [
+      `CognitoIdentityServiceProvider.${userPoolClientId}.${userName}.accessToken=jwt`,
+      `CognitoIdentityServiceProvider.${userPoolClientId}.LastAuthUser=${userName}`,
+    ].join('; ');
 
     lambdaCognitoAuthorizer.authorize.mockResolvedValue({
       success: false,
@@ -151,6 +185,6 @@ describe('parseRequest', () => {
       makeEvent('/subject/file.txt', undefined).Records[0].cf.request
     );
 
-    expect(parseRequest(request).authorizationToken).toBe(undefined);
+    expect(parseRequest(request).accessToken).toBe(undefined);
   });
 });

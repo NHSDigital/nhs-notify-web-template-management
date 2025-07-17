@@ -23,22 +23,18 @@ export function parseRequest(request: CloudFrontRequest) {
 
   const cookies = parseCookie(request.headers.cookie?.[0]?.value ?? '');
 
-  const authorizationTokenEntry = Object.entries(cookies).find(([k]) => {
-    const [serviceKey, userPoolClientIdKey, , credentialType] = k.split('.');
+  const poolScope = `CognitoIdentityServiceProvider.${userPoolClientId}`;
 
-    return (
-      serviceKey === 'CognitoIdentityServiceProvider' &&
-      userPoolClientIdKey === userPoolClientId &&
-      credentialType === 'accessToken'
-    );
-  });
+  const LastAuthUser = cookies[`${poolScope}.LastAuthUser`];
 
-  const authorizationToken = authorizationTokenEntry?.[1];
+  const accessTokenKey = `${poolScope}.${LastAuthUser}.accessToken`;
+
+  const accessToken = cookies[accessTokenKey];
 
   return {
     userPoolId,
     userPoolClientId,
-    authorizationToken,
+    accessToken,
     ownerPathComponent,
   };
 }
@@ -46,19 +42,15 @@ export function parseRequest(request: CloudFrontRequest) {
 export const handler = async (event: CloudFrontRequestEvent) => {
   const { request } = event.Records[0].cf;
 
-  const {
-    userPoolId,
-    userPoolClientId,
-    authorizationToken,
-    ownerPathComponent,
-  } = parseRequest(request);
+  const { userPoolId, userPoolClientId, accessToken, ownerPathComponent } =
+    parseRequest(request);
 
   if (!userPoolId || !userPoolClientId) {
     logger.error('Lambda misconfiguration');
     return denial;
   }
 
-  if (!authorizationToken) {
+  if (!accessToken) {
     logger.warn('Cookie is missing');
     return denial;
   }
@@ -68,7 +60,7 @@ export const handler = async (event: CloudFrontRequestEvent) => {
   const authResult = await authorizer.authorize(
     userPoolId,
     userPoolClientId,
-    authorizationToken,
+    accessToken,
     ownerPathComponent
   );
 
