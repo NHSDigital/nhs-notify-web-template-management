@@ -8,7 +8,6 @@ import {
   Textarea,
   BackLink,
 } from 'nhsuk-react-components';
-import { getBasePath } from '@utils/get-base-path';
 import {
   $CreateNhsAppTemplateSchema,
   processFormActions,
@@ -31,6 +30,7 @@ import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
+import Link from 'next/link';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
@@ -74,9 +74,9 @@ export const NhsAppTemplateForm: FC<
   return (
     <>
       {editMode ? null : (
-        <BackLink href={`${getBasePath()}/choose-a-template-type`}>
-          {backLinkText}
-        </BackLink>
+        <Link href='/choose-a-template-type' passHref legacyBehavior>
+          <BackLink>{backLinkText}</BackLink>
+        </Link>
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

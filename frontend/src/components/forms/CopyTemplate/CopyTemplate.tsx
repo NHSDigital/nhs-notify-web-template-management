@@ -9,11 +9,11 @@ import {
   FormErrorState,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $CopyTemplate, copyTemplateAction } from './server-action';
 import { TemplateType, ValidatedTemplateDto } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
+import Link from 'next/link';
 
 export type ValidCopyType = Exclude<TemplateType, 'LETTER'>;
 
@@ -50,13 +50,11 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
 
   return (
     <>
-      <BackLink
-        id='back-link'
-        href={`${getBasePath()}/message-templates`}
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink id='back-link' data-testid='back-to-templates-link'>
+          {backLinkText}
+        </BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>

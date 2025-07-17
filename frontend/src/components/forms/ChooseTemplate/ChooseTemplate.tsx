@@ -4,7 +4,6 @@ import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
-import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import {
   FormErrorState,
@@ -14,6 +13,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { $ChooseTemplate, chooseTemplateAction } from './server-action';
 import { TemplateType } from 'nhs-notify-backend-client';
 import { validate } from '@utils/client-validate-form';
+import Link from 'next/link';
 
 export const ChooseTemplate = ({
   templateTypes,
@@ -44,12 +44,9 @@ export const ChooseTemplate = ({
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/message-templates`}
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+      </Link>
       <NHSNotifyMain>
         <ZodErrorSummary
           errorHeading={errorHeading}
