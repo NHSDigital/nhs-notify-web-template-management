@@ -1,5 +1,5 @@
 import { parse } from 'csv-parse/sync';
-import z from 'zod';
+import { z } from 'zod/v4';
 
 const $ExpectedHeaders = z.enum([
   'Personalisation field',

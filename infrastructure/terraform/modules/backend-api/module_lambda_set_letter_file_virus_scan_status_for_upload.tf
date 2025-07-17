@@ -27,7 +27,7 @@ module "lambda_set_file_virus_scan_status_for_upload" {
   lambda_env_vars         = local.backend_lambda_environment_variables
   function_s3_bucket      = var.function_s3_bucket
   function_code_base_path = local.lambdas_dir
-  function_code_dir       = "backend-api/dist"
+  function_code_dir       = "backend-api/dist/set-letter-upload-virus-scan-status"
 
   send_to_firehose             = var.send_to_firehose
   log_destination_arn          = var.log_destination_arn
