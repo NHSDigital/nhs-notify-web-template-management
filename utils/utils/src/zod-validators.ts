@@ -11,7 +11,6 @@ import {
   TEMPLATE_STATUS_LIST,
   TemplateDto,
 } from 'nhs-notify-backend-client';
-import { GuardDutyMalwareScanStatus } from './types';
 
 export const zodValidate = <T extends z.Schema>(
   schema: T,
@@ -120,16 +119,7 @@ export const validateSubmittedLetterTemplate = (template?: TemplateDto) =>
 export const validateNonSubmittedTemplate = (template?: TemplateDto) =>
   zodValidate($NonSubmittedTemplate, template);
 
-export const $GuardDutyMalwareScanStatus = z.enum<
-  GuardDutyMalwareScanStatus,
-  [
-    'NO_THREATS_FOUND',
-    'THREATS_FOUND',
-    'UNSUPPORTED',
-    'ACCESS_DENIED',
-    'FAILED',
-  ]
->([
+export const $GuardDutyMalwareScanStatus = z.enum([
   'NO_THREATS_FOUND',
   'THREATS_FOUND',
   'UNSUPPORTED',
