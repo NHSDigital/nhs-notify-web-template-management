@@ -27,7 +27,7 @@ module "create_template_lambda" {
   lambda_env_vars         = local.backend_lambda_environment_variables
   function_s3_bucket      = var.function_s3_bucket
   function_code_base_path = local.lambdas_dir
-  function_code_dir       = "backend-api/dist"
+  function_code_dir       = "backend-api/dist/create"
 
   send_to_firehose          = var.send_to_firehose
   log_destination_arn       = var.log_destination_arn

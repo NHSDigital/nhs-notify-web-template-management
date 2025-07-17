@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { ErrorCase } from 'nhs-notify-backend-client';
 import type {
   FileType,

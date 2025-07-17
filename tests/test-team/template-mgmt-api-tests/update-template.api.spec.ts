@@ -132,8 +132,7 @@ test.describe('POST /v1/template/:templateId', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        templateType:
-          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+        templateType: 'Invalid input',
       },
     });
   });
@@ -175,8 +174,7 @@ test.describe('POST /v1/template/:templateId', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        templateType:
-          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+        templateType: 'Invalid input',
       },
     });
   });
@@ -242,8 +240,7 @@ test.describe('POST /v1/template/:templateId', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        templateType:
-          "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+        templateType: 'Invalid input',
       },
     });
   });
@@ -590,7 +587,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'Required',
+          name: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -633,7 +630,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'String must contain at least 1 character(s)',
+          name: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -679,7 +676,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'Required',
+          message: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -722,7 +719,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at least 1 character(s)',
+          message: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -768,7 +765,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at most 5000 character(s)',
+          message: 'Too big: expected string to have <=5000 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1165,7 +1162,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'Required',
+          name: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1208,7 +1205,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'String must contain at least 1 character(s)',
+          name: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1254,7 +1251,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'Required',
+          message: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1297,7 +1294,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at least 1 character(s)',
+          message: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1343,7 +1340,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at most 918 character(s)',
+          message: 'Too big: expected string to have <=918 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1695,7 +1692,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'Required',
+          name: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1738,7 +1735,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          name: 'String must contain at least 1 character(s)',
+          name: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1784,7 +1781,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          subject: 'Required',
+          subject: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1827,7 +1824,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          subject: 'String must contain at least 1 character(s)',
+          subject: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1872,7 +1869,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'Required',
+          message: 'Invalid input: expected string, received undefined',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1915,7 +1912,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at least 1 character(s)',
+          message: 'Too small: expected string to have >=1 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',
@@ -1961,7 +1958,7 @@ test.describe('POST /v1/template/:templateId', () => {
 
       expect(await updateResponse.json()).toEqual({
         details: {
-          message: 'String must contain at most 100000 character(s)',
+          message: 'Too big: expected string to have <=100000 characters',
         },
         statusCode: 400,
         technicalMessage: 'Request failed validation',

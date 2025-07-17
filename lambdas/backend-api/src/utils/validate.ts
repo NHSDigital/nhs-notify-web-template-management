@@ -1,13 +1,17 @@
 import { ErrorCase } from 'nhs-notify-backend-client';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { ApplicationResult, failure, success } from './result';
 
-const formatZodErrors = (error: z.ZodError) => {
+export const formatZodErrors = (error: z.ZodError) => {
   const formattedErrors: Record<string, string[]> = {};
 
   for (const issue of error.issues) {
     const [fieldName] = issue.path;
     const errorMessage = issue.message;
+
+    if (typeof fieldName === 'symbol') {
+      continue;
+    }
 
     if (!formattedErrors[fieldName]) {
       formattedErrors[fieldName] = [];

@@ -199,7 +199,7 @@ describe('ClientConfigRepository', () => {
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
-                  message: 'Expected boolean, received string',
+                  message: 'Invalid input: expected boolean, received string',
                 }),
               ]),
             }),
@@ -242,7 +242,7 @@ describe('ClientConfigRepository', () => {
               issues: expect.arrayContaining([
                 expect.objectContaining({
                   path: ['features'],
-                  message: 'Required',
+                  message: 'Invalid input: expected object, received undefined',
                 }),
               ]),
             }),
@@ -276,7 +276,7 @@ describe('ClientConfigRepository', () => {
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
-                  message: 'Required',
+                  message: 'Invalid input: expected object, received undefined',
                 }),
               ]),
             }),
@@ -306,7 +306,7 @@ describe('ClientConfigRepository', () => {
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
-                  message: 'Required',
+                  message: 'Invalid input: expected object, received undefined',
                 }),
               ]),
             }),

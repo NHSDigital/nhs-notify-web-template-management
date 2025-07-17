@@ -24,7 +24,7 @@ import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
-import z from 'zod';
+import { z } from 'zod/v4';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(

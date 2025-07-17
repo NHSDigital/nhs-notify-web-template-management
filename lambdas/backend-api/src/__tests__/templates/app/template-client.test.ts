@@ -100,8 +100,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+            templateType: 'Invalid input',
           },
         }),
       });
@@ -532,7 +531,10 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: { letterType: 'Required, Required' },
+          details: {
+            letterType:
+              'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
+          },
         }),
       });
 
@@ -559,7 +561,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: expect.objectContaining({
-            templateType: `Invalid literal value, expected "LETTER"`,
+            templateType: 'Invalid input: expected "LETTER"',
           }),
         }),
       });
@@ -1108,8 +1110,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+            templateType: 'Invalid input',
           },
         }),
       });

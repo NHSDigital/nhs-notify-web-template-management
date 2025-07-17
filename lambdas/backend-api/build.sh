@@ -11,7 +11,7 @@ npx esbuild \
     --target=es2020 \
     --platform=node \
     --loader:.node=file \
-    --entry-names=[name] \
+    --entry-names=[name]/[name] \
     --outdir=dist \
     --external:pdfjs-dist \
     src/templates/copy-scanned-object-to-internal.ts \
@@ -29,4 +29,4 @@ npx esbuild \
     src/templates/update.ts \
     src/templates/validate-letter-template-files.ts
 
-cp -r ../../utils/utils/src/email-templates ./dist
+cp -r ../../utils/utils/src/email-templates ./dist/submit
