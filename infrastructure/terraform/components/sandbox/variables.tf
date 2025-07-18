@@ -63,32 +63,6 @@ variable "kms_deletion_window" {
   default     = "30"
 }
 
-variable "letter_suppliers" {
-  type = map(object({
-    email_addresses  = list(string)
-    enable_polling   = bool
-    default_supplier = optional(bool)
-  }))
-
-  default = {
-    "WTMMOCK" = {
-      email_addresses  = []
-      enable_polling   = true
-      default_supplier = true
-    }
-  }
-
-  validation {
-    condition = (
-      length(var.letter_suppliers) == 0 ||
-      length([for s in values(var.letter_suppliers) : s if s.default_supplier]) == 1
-    )
-    error_message = "If letter suppliers are configured, exactly one must be default_supplier"
-  }
-
-  description = "Letter suppliers enabled in the environment"
-}
-
 variable "parent_acct_environment" {
   type        = string
   description = "Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments"
