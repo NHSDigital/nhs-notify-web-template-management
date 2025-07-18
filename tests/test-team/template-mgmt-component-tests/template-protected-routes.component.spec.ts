@@ -32,6 +32,7 @@ import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
+import { TemplateMgmtCreateLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-create-letter-missing-campaign-client-id-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -42,6 +43,7 @@ const protectedPages = [
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
   TemplateMgmtCreateLetterPage,
+  TemplateMgmtCreateLetterMissingCampaignClientIdPage,
   TemplateMgmtCreateNhsAppPage,
   TemplateMgmtCreateSmsPage,
   TemplateMgmtDeletePage,
@@ -83,11 +85,12 @@ test.describe('Protected Routes Tests', () => {
     const routes = pageTsxPaths.map((p) => {
       const dynamicStripped = p.replaceAll(/\/\[[^[]+]/g, '');
 
-      // eslint-disable-next-line sonarjs/slow-regex
-      const [, route] = dynamicStripped.match(/([^/]+)\/page.tsx$/) ?? [];
+      const route = dynamicStripped
+        .replace(/^.*\/src\/app\//, '') // strip everything before app/
+        .replace(/\/page.tsx$/, ''); // strip trailing /page.tsx
 
       if (!route) {
-        throw new Error('failed to parse route');
+        throw new Error(`failed to parse route for path: ${p}`);
       }
 
       return route;

@@ -5,7 +5,6 @@ import {
   LetterTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import { BackLink } from 'nhsuk-react-components';
 import content from '@content/content';
 import Link from 'next/link';
@@ -20,12 +19,9 @@ export function ViewLetterTemplate({
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/message-templates`}
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
