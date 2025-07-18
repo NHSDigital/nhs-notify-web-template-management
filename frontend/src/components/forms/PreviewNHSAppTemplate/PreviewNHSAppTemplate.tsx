@@ -8,7 +8,6 @@ import {
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import content from '@content/content';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
@@ -43,13 +42,11 @@ export function PreviewNHSAppTemplate({
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/message-templates`}
-        id='back-link'
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink id='back-link' data-testid='back-to-templates-link'>
+          {backLinkText}
+        </BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>

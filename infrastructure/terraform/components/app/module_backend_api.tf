@@ -23,7 +23,7 @@ module "backend_api" {
 
   enable_proofing           = var.enable_proofing
   letter_suppliers          = var.letter_suppliers
-  log_destination_arn       = "arn:aws:logs:${var.region}:${var.observability_account_id}:destination:nhs-notify-main-acct-firehose-logs"
+  log_destination_arn       = local.log_destination_arn
   log_subscription_role_arn = local.acct.log_subscription_role_arn
 
   send_to_firehose = true
@@ -31,4 +31,6 @@ module "backend_api" {
   email_domain                            = module.ses.domain
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
   proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
+
+  sns_topic_arn  = module.eventpub.sns_topic.arn
 }

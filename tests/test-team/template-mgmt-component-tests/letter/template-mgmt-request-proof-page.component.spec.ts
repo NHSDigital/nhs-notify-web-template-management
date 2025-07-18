@@ -12,7 +12,7 @@ async function createTemplates() {
   return {
     valid: TemplateFactory.createLetterTemplate(
       'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',
-      user.userId,
+      user,
       'request-proof'
     ),
   };

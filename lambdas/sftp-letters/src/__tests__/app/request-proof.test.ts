@@ -11,16 +11,22 @@ import { SftpClient } from '../../infra/sftp-client';
 import { ProofingRequest } from 'nhs-notify-web-template-management-utils';
 import type { EmailClient } from 'nhs-notify-web-template-management-utils/email-client';
 
-const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
-const baseUploadDir = 'Incoming';
 const baseDownloadDir = 'Outgoing';
-const owner = 'owner-id';
+const baseUploadDir = 'Incoming';
+const campaignId = 'mycampaign';
+const clientId = 'thisclient';
+const language = 'fr';
+const letterType = 'x0';
+const messageId = 'message-id';
+const userId = 'owner-id';
+const pdfVersionId = 'pdf-version-id';
+const sftpEnvironment = 'nhs-notify-web-template-management-main-app-api';
+const supplier = 'LETTER_SUPPLIER';
 const templateId = 'template-id';
 const templateName = 'template-name';
-const pdfVersionId = 'pdf-version-id';
 const testDataVersionId = 'test-data-version-id';
-const messageId = 'message-id';
-const supplier = 'LETTER_SUPPLIER';
+
+const expandedTemplateId = `${clientId}_${campaignId}_${templateId}_${language}_${letterType}`;
 
 function setup() {
   const userDataRepository = mock<UserDataRepository>();
@@ -62,11 +68,14 @@ function mockEvent(
   personalisationParameters: string[]
 ): ProofingRequest {
   return {
-    owner,
+    user: { userId, clientId },
     templateId,
     templateName,
     pdfVersionId,
     supplier,
+    language,
+    letterType,
+    campaignId,
     ...(hasTestData && { testDataVersionId }),
     personalisationParameters,
   };
@@ -88,7 +97,7 @@ describe('App', () => {
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
 
-    const batchId = 'template-id-0000000000000_pdfversionid';
+    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
     const testData = [
       { custom1: 'short1', custom2: 'short2' },
@@ -99,21 +108,21 @@ describe('App', () => {
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal1',
         custom1: 'short1',
         custom2: 'short2',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal2',
         custom1: 'medium1',
         custom2: 'medium2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal3',
         custom1: 'long1',
         custom2: 'long2',
@@ -138,7 +147,7 @@ describe('App', () => {
     const batchHash = 'hash-of-batch-csv';
 
     const manifestData: Manifest = {
-      template: templateId,
+      template: expandedTemplateId,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: batchHash,
@@ -146,7 +155,7 @@ describe('App', () => {
 
     const manifestCsv = [
       'template,batch,records,md5sum',
-      `"${templateId}","${batchId}.csv","3","${batchHash}"`,
+      `"${expandedTemplateId}","${batchId}.csv","3","${batchHash}"`,
     ].join('\n');
 
     const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
@@ -194,7 +203,7 @@ describe('App', () => {
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId,
       pdfVersionId,
       testDataVersionId
@@ -202,7 +211,7 @@ describe('App', () => {
 
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
-      templateId,
+      expandedTemplateId,
       personalisationParameters,
       testData
     );
@@ -214,7 +223,7 @@ describe('App', () => {
 
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
     expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
-      templateId,
+      expandedTemplateId,
       batchId,
       batchCsv
     );
@@ -223,22 +232,22 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId
     );
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
     expect(sftpClient.exists).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
     );
 
     expect(sftpClient.mkdir).toHaveBeenCalledTimes(2);
     expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${templateId}`,
+      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}`,
       true
     );
     expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}`,
+      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}`,
       true
     );
 
@@ -251,21 +260,21 @@ describe('App', () => {
 
     expect(await streamToString(pdfArg)).toEqual(pdfContent);
     expect(pdfDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${templateId}/${templateId}.pdf`
+      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}/${expandedTemplateId}.pdf`
     );
 
     const [batchArg, batchDestinationArg] = batchPutCall;
 
     expect(await streamToString(batchArg)).toEqual(batchCsv);
     expect(batchDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}.csv`
     );
 
     const [manifestArg, manifestDestinationArg] = manifestPutCall;
 
     expect(await streamToString(manifestArg)).toEqual(manifestCsv);
     expect(manifestDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
     );
 
     expect(
@@ -274,7 +283,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId
     );
 
@@ -316,28 +325,28 @@ describe('App', () => {
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
 
-    const batchId = 'template-id-0000000000000_pdfversionid';
+    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal1',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal3',
       },
     ];
 
     const manifestData: Manifest = {
-      template: templateId,
+      template: expandedTemplateId,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
@@ -383,7 +392,7 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId
     );
 
@@ -415,23 +424,23 @@ describe('App', () => {
     const batchData = [
       {
         clientRef: 'random1_random2_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal1',
       },
       {
         clientRef: 'random3_random4_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal2',
       },
       {
         clientRef: 'random5_random6_1744184100',
-        template: templateId,
+        template: expandedTemplateId,
         pdsField: 'pdsVal3',
       },
     ];
 
     const manifestData: Manifest = {
-      template: templateId,
+      template: expandedTemplateId,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
@@ -483,12 +492,12 @@ describe('App', () => {
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
     expect(sftpClient.exists).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${templateId}/${batchId}_MANIFEST.csv`
+      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
     );
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId
     );
 
@@ -504,7 +513,7 @@ describe('App', () => {
 
     const event = mockEvent(true, personalisationParameters);
 
-    const batchId = 'template-id-0000000000000_pdfversionid';
+    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
     const sftpClient = mock<SftpClient>();
 
@@ -528,7 +537,7 @@ describe('App', () => {
 
     expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
     expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      owner,
+      userId,
       templateId,
       pdfVersionId,
       testDataVersionId
@@ -536,13 +545,14 @@ describe('App', () => {
 
     expect(logMessages).toContainEqual(
       expect.objectContaining({
-        description: 'Failed to handle proofing request',
-        level: 'error',
         batchId,
+        description: 'Failed to handle proofing request',
+        expandedTemplateId,
+        level: 'error',
         message: error.message,
         messageId,
-        owner,
         pdfVersionId,
+        user: { userId, clientId },
       })
     );
   });
@@ -554,7 +564,7 @@ describe('App', () => {
 
     const event = mockEvent(true, personalisationParameters);
 
-    const batchId = 'template-id-0000000000000_pdfversionid';
+    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
     const sftpClient = mock<SftpClient>();
 
@@ -573,7 +583,7 @@ describe('App', () => {
     mocks.syntheticBatch.buildBatch.mockReturnValueOnce([]);
     mocks.syntheticBatch.getHeader.mockReturnValueOnce('header');
     mocks.syntheticBatch.buildManifest.mockReturnValueOnce({
-      template: templateId,
+      template: expandedTemplateId,
       batch: `${batchId}.csv`,
       records: '3',
       md5sum: 'hash-of-batch-csv',
@@ -591,13 +601,14 @@ describe('App', () => {
 
     expect(logMessages).toContainEqual(
       expect.objectContaining({
-        description: 'Failed to close SFTP connection',
-        level: 'error',
         batchId,
+        description: 'Failed to close SFTP connection',
+        expandedTemplateId,
+        level: 'error',
         message: err.message,
         messageId,
-        owner,
         pdfVersionId,
+        user: { userId, clientId },
       })
     );
   });

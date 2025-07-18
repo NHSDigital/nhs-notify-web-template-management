@@ -331,4 +331,40 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectedClientId', () => {
+    test('adds clientId condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectedClientId('9703B712-53ED-4E4E-8767-0E7AAC9ECC09')
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwner,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':updatedAt': mockDate.toISOString(),
+          ':condition_1_clientId': '9703B712-53ED-4E4E-8767-0E7AAC9ECC09',
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#clientId': 'clientId',
+        },
+        ConditionExpression: '#clientId = :condition_1_clientId',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+  });
 });

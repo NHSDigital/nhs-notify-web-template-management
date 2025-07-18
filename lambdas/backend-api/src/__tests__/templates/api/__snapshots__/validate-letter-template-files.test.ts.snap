@@ -5,9 +5,8 @@ exports[`guard duty handler errors if cannot parse version id in the event 1`] =
 exports[`guard duty handler errors if the event has unknown file-type 1`] = `
 "[
   {
-    "received": "unknown",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "pdf-template",
       "test-data",
       "proofs"
@@ -15,7 +14,7 @@ exports[`guard duty handler errors if the event has unknown file-type 1`] = `
     "path": [
       "file-type"
     ],
-    "message": "Invalid enum value. Expected 'pdf-template' | 'test-data' | 'proofs', received 'unknown'"
+    "message": "Invalid option: expected one of \\"pdf-template\\"|\\"test-data\\"|\\"proofs\\""
   }
 ]"
 `;
@@ -25,15 +24,14 @@ exports[`guard duty handler errors if the event is missing file-type 1`] = `"Une
 exports[`guard duty handler errors if the event is missing object key 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "objectKey"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -41,15 +39,16 @@ exports[`guard duty handler errors if the event is missing object key 1`] = `
 exports[`guard duty handler errors if the event is missing scan result 1`] = `
 "[
   {
-    "expected": "'NO_THREATS_FOUND'",
-    "received": "undefined",
-    "code": "invalid_type",
+    "code": "invalid_value",
+    "values": [
+      "NO_THREATS_FOUND"
+    ],
     "path": [
       "detail",
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -61,9 +60,8 @@ exports[`guard duty handler errors if the event is missing template owner 1`] = 
 exports[`guard duty handler errors if the event scan result is ACCESS_DENIED 1`] = `
 "[
   {
-    "received": "ACCESS_DENIED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -71,7 +69,7 @@ exports[`guard duty handler errors if the event scan result is ACCESS_DENIED 1`]
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'ACCESS_DENIED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -79,9 +77,8 @@ exports[`guard duty handler errors if the event scan result is ACCESS_DENIED 1`]
 exports[`guard duty handler errors if the event scan result is FAILED 1`] = `
 "[
   {
-    "received": "FAILED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -89,7 +86,7 @@ exports[`guard duty handler errors if the event scan result is FAILED 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'FAILED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -97,9 +94,8 @@ exports[`guard duty handler errors if the event scan result is FAILED 1`] = `
 exports[`guard duty handler errors if the event scan result is THREATS_FOUND 1`] = `
 "[
   {
-    "received": "THREATS_FOUND",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -107,7 +103,7 @@ exports[`guard duty handler errors if the event scan result is THREATS_FOUND 1`]
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'THREATS_FOUND'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;
@@ -115,9 +111,8 @@ exports[`guard duty handler errors if the event scan result is THREATS_FOUND 1`]
 exports[`guard duty handler errors if the event scan result is UNSUPPORTED 1`] = `
 "[
   {
-    "received": "UNSUPPORTED",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "NO_THREATS_FOUND"
     ],
     "path": [
@@ -125,7 +120,7 @@ exports[`guard duty handler errors if the event scan result is UNSUPPORTED 1`] =
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'NO_THREATS_FOUND', received 'UNSUPPORTED'"
+    "message": "Invalid input: expected \\"NO_THREATS_FOUND\\""
   }
 ]"
 `;

@@ -33,7 +33,7 @@ async function createTemplates() {
     valid: {
       ...TemplateFactory.createEmailTemplate(
         'valid-email-preview-template',
-        user.userId
+        user
       ),
       name: 'test-template-email',
       subject: 'test-template-subject-line',

@@ -15,15 +15,16 @@ import {
 } from '../template-mgmt-preview-submitted-common.steps';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     valid: {
       ...TemplateFactory.createNhsAppTemplate(
         'valid-nhs-app-template-preview-submitted',
-        owner
+        user
       ),
       name: 'test-template-nhs-app',
       message: 'test-template-message',
@@ -32,7 +33,7 @@ function createTemplates(owner: string) {
     invalid: {
       ...TemplateFactory.createNhsAppTemplate(
         'invalid-nhs-app-template-preview-submitted',
-        owner
+        user
       ),
       name: 'test-template-nhs-app',
       message: 'test-template-message',
@@ -48,7 +49,7 @@ test.describe('Preview submitted NHS App message template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

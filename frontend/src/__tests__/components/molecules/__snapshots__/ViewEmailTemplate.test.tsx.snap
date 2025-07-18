@@ -7,7 +7,7 @@ exports[`ViewEmailTemplate component matches submitted snapshot 1`] = `
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/message-templates"
+      href="/message-templates"
     >
       <svg
         aria-hidden="true"

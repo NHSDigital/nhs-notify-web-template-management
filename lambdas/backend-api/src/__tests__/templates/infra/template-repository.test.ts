@@ -1490,17 +1490,18 @@ describe('templateRepository', () => {
       });
 
       const result = await templateRepository.proofRequestUpdate(
-        'template-owner',
-        'template-id'
+        'template-id',
+        { userId: 'template-owner', clientId: 'client' }
       );
 
       expect(result).toEqual({ data: { id: 'template-id' } });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         ConditionExpression:
-          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND attribute_exists (#id)',
+          '#templateStatus = :condition_1_templateStatus AND #templateType = :condition_2_templateType AND #clientId = :condition_3_clientId AND attribute_exists (#id)',
         ExpressionAttributeNames: {
           '#id': 'id',
+          '#clientId': 'clientId',
           '#templateStatus': 'templateStatus',
           '#templateType': 'templateType',
           '#updatedAt': 'updatedAt',
@@ -1508,10 +1509,11 @@ describe('templateRepository', () => {
         ExpressionAttributeValues: {
           ':condition_1_templateStatus': 'PENDING_PROOF_REQUEST',
           ':condition_2_templateType': 'LETTER',
+          ':condition_3_clientId': 'client',
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
         },
-        Key: { id: 'template-owner', owner: 'template-id' },
+        Key: { id: 'template-id', owner: 'template-owner' },
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
@@ -1531,8 +1533,8 @@ describe('templateRepository', () => {
       mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
-        'template-owner',
-        'template-id'
+        'template-id',
+        { userId: 'template-owner', clientId: 'client' }
       );
 
       expect(result).toEqual({
@@ -1558,8 +1560,8 @@ describe('templateRepository', () => {
       mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
-        'template-owner',
-        'template-id'
+        'template-id',
+        { userId: 'template-owner', clientId: 'client' }
       );
 
       expect(result).toEqual({
@@ -1579,8 +1581,8 @@ describe('templateRepository', () => {
       mocks.ddbDocClient.on(UpdateCommand).rejectsOnce(err);
 
       const result = await templateRepository.proofRequestUpdate(
-        'template-owner',
-        'template-id'
+        'template-id',
+        { userId: 'template-owner', clientId: 'client' }
       );
 
       expect(result).toEqual({

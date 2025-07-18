@@ -11,7 +11,7 @@ import { logger } from 'nhs-notify-web-template-management-utils/logger';
 /*
  * Caches at the request context level. Not a global cache.
  */
-const fetchClient = cache(async (accessToken: string) =>
+export const fetchClient = cache(async (accessToken: string) =>
   clientConfigurationApiClient.fetch(accessToken)
 );
 

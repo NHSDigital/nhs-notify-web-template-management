@@ -12,22 +12,20 @@ import {
 import { Template } from '../../helpers/types';
 import {
   createAuthHelper,
+  TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
-    valid: TemplateFactory.createNhsAppTemplate(
-      'valid-nhs-app-template',
-      owner
-    ),
+    valid: TemplateFactory.createNhsAppTemplate('valid-nhs-app-template', user),
     submit: TemplateFactory.createNhsAppTemplate(
       'submit-nhs-app-template',
-      owner
+      user
     ),
     submitAndReturn: TemplateFactory.createNhsAppTemplate(
       'submit-and-return-nhs-app-template',
-      owner
+      user
     ),
   };
 }
@@ -38,7 +36,7 @@ test.describe('Edit NHS App Template Page', () => {
 
   test.beforeAll(async () => {
     const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

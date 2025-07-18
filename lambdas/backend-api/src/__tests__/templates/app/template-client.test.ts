@@ -100,8 +100,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+            templateType: 'Invalid input',
           },
         }),
       });
@@ -145,16 +144,16 @@ describe('templateClient', () => {
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id: templateId,
+        campaignId: 'campaignId',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        id: templateId,
         templateStatus: 'NOT_YET_SUBMITTED',
+        updatedAt: new Date().toISOString(),
       };
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner: user.userId,
-        campaignId: 'campaignId',
         version: 1,
       };
 
@@ -267,24 +266,24 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
-        templateType: 'EMAIL',
-        name: 'name',
         message: 'message',
+        name: 'name',
         subject: 'subject',
+        templateType: 'EMAIL',
       };
 
       const expectedTemplateDto: TemplateDto = {
         ...data,
-        id: templateId,
+        campaignId: 'campaignId',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        id: templateId,
         templateStatus: 'NOT_YET_SUBMITTED',
+        updatedAt: new Date().toISOString(),
       };
 
       const template: DatabaseTemplate = {
         ...expectedTemplateDto,
         owner: user.userId,
-        campaignId: 'campaignId',
         version: 1,
       };
 
@@ -532,7 +531,10 @@ describe('templateClient', () => {
         error: expect.objectContaining({
           code: 400,
           message: 'Request failed validation',
-          details: { letterType: 'Required, Required' },
+          details: {
+            letterType:
+              'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
+          },
         }),
       });
 
@@ -559,7 +561,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: expect.objectContaining({
-            templateType: `Invalid literal value, expected "LETTER"`,
+            templateType: 'Invalid input: expected "LETTER"',
           }),
         }),
       });
@@ -1108,8 +1110,7 @@ describe('templateClient', () => {
           code: 400,
           message: 'Request failed validation',
           details: {
-            templateType:
-              "Invalid discriminator value. Expected 'NHS_APP' | 'EMAIL' | 'SMS'",
+            templateType: 'Invalid input',
           },
         }),
       });
@@ -1569,7 +1570,7 @@ describe('templateClient', () => {
       const { templateClient, mocks, logMessages } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        data: { features: { proofing: true } },
+        data: { features: { proofing: true }, campaignId: 'campaignId' },
       });
 
       const actualError = new Error('from db');
@@ -1595,7 +1596,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1618,7 +1619,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when updated database template is invalid', async () => {
+    test('should return a failure result, when updated database template is not suitable for proofing', async () => {
       const { templateClient, mocks } = setup();
 
       const expectedTemplateDto: TemplateDto = {
@@ -1654,7 +1655,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1703,7 +1704,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1721,15 +1722,8 @@ describe('templateClient', () => {
       const personalisationParameters = ['myParam'];
 
       const template: TemplateDto = {
-        name: templateName,
-        templateStatus: 'SUBMITTED',
-        templateType: 'LETTER',
-        id: templateId,
+        campaignId: 'campaign-id-from-template',
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        personalisationParameters,
-        letterType: 'x1',
-        language: 'en',
         files: {
           pdfTemplate: {
             virusScanStatus: 'PASSED',
@@ -1737,6 +1731,14 @@ describe('templateClient', () => {
             fileName: 'template.pdf',
           },
         },
+        id: templateId,
+        language: 'en',
+        letterType: 'x1',
+        name: templateName,
+        personalisationParameters,
+        templateStatus: 'SUBMITTED',
+        templateType: 'LETTER',
+        updatedAt: new Date().toISOString(),
       };
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
@@ -1755,7 +1757,7 @@ describe('templateClient', () => {
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignId: 'campaign-id-from-ssm',
           features: {
             proofing: true,
           },
@@ -1766,15 +1768,18 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
-        user.userId,
+        user,
+        'campaign-id-from-template',
         personalisationParameters,
+        'x1',
+        'en',
         pdfVersionId,
         undefined,
         defaultLetterSupplier
@@ -1794,7 +1799,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.requestProof(templateId, {
         userId: user.userId,
-        clientId: undefined,
+        clientId: undefined as unknown as string,
       });
 
       expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
@@ -1818,17 +1823,11 @@ describe('templateClient', () => {
 
       const pdfVersionId = 'a';
       const personalisationParameters = ['myParam'];
+      const campaignFromTemplate = 'campaign-from-template';
 
       const template: TemplateDto = {
-        name: templateName,
-        templateStatus: 'SUBMITTED',
-        templateType: 'LETTER',
-        id: templateId,
+        campaignId: campaignFromTemplate,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        personalisationParameters,
-        letterType: 'x1',
-        language: 'en',
         files: {
           pdfTemplate: {
             virusScanStatus: 'PASSED',
@@ -1836,11 +1835,19 @@ describe('templateClient', () => {
             fileName: 'template.pdf',
           },
         },
+        id: templateId,
+        language: 'en',
+        letterType: 'x1',
+        name: templateName,
+        personalisationParameters,
+        templateStatus: 'SUBMITTED',
+        templateType: 'LETTER',
+        updatedAt: new Date().toISOString(),
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
         data: {
-          campaignId: 'campaignId',
+          campaignId: 'campaign-from-ssm',
           features: {
             proofing: true,
           },
@@ -1857,15 +1864,18 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.proofRequestUpdate).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(mocks.queueMock.send).toHaveBeenCalledTimes(1);
       expect(mocks.queueMock.send).toHaveBeenCalledWith(
         templateId,
         templateName,
-        user.userId,
+        user,
+        campaignFromTemplate,
         personalisationParameters,
+        'x1',
+        'en',
         pdfVersionId,
         undefined,
         defaultLetterSupplier

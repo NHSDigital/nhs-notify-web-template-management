@@ -83,7 +83,7 @@ describe('ClientConfiguration', () => {
         code: 500,
         details: expect.arrayContaining([
           expect.objectContaining({
-            message: 'Expected string, received number',
+            message: 'Invalid input: expected string, received number',
             path: ['campaignId'],
           }),
         ]),

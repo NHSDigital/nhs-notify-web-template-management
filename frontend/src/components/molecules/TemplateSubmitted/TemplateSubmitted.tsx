@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
+import React from 'react';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 type TemplateSubmittedProps = { templateId: string; templateName: string };
 
@@ -16,7 +18,7 @@ export const TemplateSubmitted = ({
     templateNameHeading,
     templateIdHeading,
     doNextHeading,
-    doNextText,
+    doNextParagraphs,
   } = content.components.templateSubmitted;
 
   return (
@@ -31,16 +33,38 @@ export const TemplateSubmitted = ({
               {pageHeading}
             </h1>
           </div>
-          <h2 className='nhsuk-heading-xs nhsuk-u-margin-bottom-1'>
-            {templateNameHeading}
+
+          <dl>
+            <dt className='nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1'>
+              {templateNameHeading}
+            </dt>
+            <dd
+              id='template-name'
+              className='nhsuk-body-s nhsuk-u-margin-left-0'
+            >
+              {templateName}
+            </dd>
+            <dt className='nhsuk-heading-xs nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-1'>
+              {templateIdHeading}
+            </dt>
+            <dd id='template-id' className='nhsuk-body-s nhsuk-u-margin-left-0'>
+              {templateId}
+            </dd>
+          </dl>
+
+          <h2 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-6'>
+            {doNextHeading}
           </h2>
-          <p id='template-name'>{templateName}</p>
-          <h2 className='nhsuk-heading-xs nhsuk-u-margin-bottom-1'>
-            {templateIdHeading}
-          </h2>
-          <p id='template-id'>{templateId}</p>
-          <h3 className='nhsuk-u-margin-top-5'>{doNextHeading}</h3>
-          <p>{doNextText}</p>
+          {doNextParagraphs.map(({ heading, text }, index) => {
+            return (
+              <React.Fragment key={`do-next-section-${index}`}>
+                <h3 className='nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-3'>
+                  {heading}
+                </h3>
+                <MarkdownContent segments={text} />
+              </React.Fragment>
+            );
+          })}
           <hr className='nhsuk-section-break--visible' />
           <p>
             <Link id='go-back-link' href='/message-templates'>

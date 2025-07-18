@@ -11,6 +11,7 @@ import {
   uuidRegExp,
 } from 'nhs-notify-web-template-management-test-helper-utils';
 import { pdfUploadFixtures } from '../fixtures/pdf-upload/multipart-pdf-letter-fixtures';
+import { testClients } from '../helpers/client/client-helper';
 
 test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
@@ -81,6 +82,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       template: {
+        campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         id: expect.stringMatching(uuidRegExp),
         name: templateData.name,
@@ -165,6 +167,7 @@ test.describe('POST /v1/letter-template', () => {
     expect(result).toEqual({
       statusCode: 201,
       template: {
+        campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
         id: expect.stringMatching(uuidRegExp),
         name: templateData.name,
@@ -417,7 +420,7 @@ test.describe('POST /v1/letter-template', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        name: 'Required',
+        name: 'Invalid input: expected string, received undefined',
       },
     });
   });

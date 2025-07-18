@@ -20,27 +20,27 @@ import {
   testUsers,
 } from '../helpers/auth/cognito-auth-helper';
 
-function createTemplates(owner: string) {
+function createTemplates(user: TestUser) {
   return {
     email: {
-      ...TemplateFactory.createEmailTemplate('email-template-copy-page', owner),
+      ...TemplateFactory.createEmailTemplate('email-template-copy-page', user),
       name: 'email-template-copy-page-name',
       message: 'email-template-copy-page-message',
       subject: 'template-subject',
     },
     sms: {
-      ...TemplateFactory.createSmsTemplate('sms-template-copy-page', owner),
+      ...TemplateFactory.createSmsTemplate('sms-template-copy-page', user),
       name: 'sms-template-copy-page-name',
       message: 'sms-template-copy-page-message',
     },
     nhsApp: {
-      ...TemplateFactory.createNhsAppTemplate('app-template-copy-page', owner),
+      ...TemplateFactory.createNhsAppTemplate('app-template-copy-page', user),
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
     letter: TemplateFactory.createLetterTemplate(
       'letter-template-copy-page',
-      owner,
+      user,
       'letter-template-copy-page-name'
     ),
   };
@@ -53,7 +53,7 @@ test.describe('Copy Template Page', () => {
 
   test.beforeAll(async () => {
     user = await createAuthHelper().getTestUser(testUsers.User1.userId);
-    templates = createTemplates(user.userId);
+    templates = createTemplates(user);
     await templateStorageHelper.seedTemplateData(Object.values(templates));
   });
 

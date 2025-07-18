@@ -44,7 +44,7 @@ describe('Template API - Create', () => {
         code: 400,
         message: 'Validation failed',
         details: {
-          templateType: 'Required',
+          templateType: 'Invalid input: expected string, received undefined',
         },
       },
       data: undefined,
@@ -65,7 +65,7 @@ describe('Template API - Create', () => {
         statusCode: 400,
         technicalMessage: 'Validation failed',
         details: {
-          templateType: 'Required',
+          templateType: 'Invalid input: expected string, received undefined',
         },
       }),
     });

@@ -11,9 +11,14 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4}` | 'NONE';
 
-export const testClients: Record<ClientKey, ClientConfiguration | null> = {
+type TestClients = Record<
+  Exclude<ClientKey, 'NONE'>,
+  ClientConfiguration | undefined
+>;
+
+export const testClients = {
   /**
    * Client1 has proofing enabled
    */
@@ -35,8 +40,17 @@ export const testClients: Record<ClientKey, ClientConfiguration | null> = {
   /**
    * Client3 has no configuration
    */
-  Client3: null,
-};
+  Client3: undefined,
+  /**
+   * Client 4 has configuration but no campaignId set
+   */
+  Client4: {
+    campaignId: undefined,
+    features: {
+      proofing: false,
+    },
+  },
+} satisfies TestClients as TestClients & { NONE: undefined };
 
 export class ClientConfigurationHelper {
   private readonly ssmClient = new SSMClient({ region: 'eu-west-2' });
@@ -51,7 +65,7 @@ export class ClientConfigurationHelper {
       Object.entries(testClients).map(async ([clientKey, value]) => {
         const id = `${clientKey}--${this.runId}`;
 
-        if (value !== null) {
+        if (value !== undefined) {
           await this.ssmClient.send(
             new PutParameterCommand({
               Name: this.ssmKey(id),
@@ -66,11 +80,13 @@ export class ClientConfigurationHelper {
   }
 
   async teardown(ids: string[]) {
-    await this.ssmClient.send(
-      new DeleteParametersCommand({
-        Names: ids.map((id) => this.ssmKey(id)),
-      })
-    );
+    if (ids.length > 0) {
+      await this.ssmClient.send(
+        new DeleteParametersCommand({
+          Names: ids.map((id) => this.ssmKey(id)),
+        })
+      );
+    }
   }
 
   private ssmKey(clientId: string) {

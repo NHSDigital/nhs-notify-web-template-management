@@ -3,15 +3,14 @@
 exports[`errors if the event has no s3 object key 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "objectKey"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -19,15 +18,14 @@ exports[`errors if the event has no s3 object key 1`] = `
 exports[`errors if the event has no s3 version id 1`] = `
 "[
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "undefined",
+    "code": "invalid_type",
     "path": [
       "detail",
       "s3ObjectDetails",
       "versionId"
     ],
-    "message": "Required"
+    "message": "Invalid input: expected string, received undefined"
   }
 ]"
 `;
@@ -35,25 +33,8 @@ exports[`errors if the event has no s3 version id 1`] = `
 exports[`errors if the event has no virus scan status 1`] = `
 "[
   {
-    "expected": "'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED'",
-    "received": "undefined",
-    "code": "invalid_type",
-    "path": [
-      "detail",
-      "scanResultDetails",
-      "scanResultStatus"
-    ],
-    "message": "Required"
-  }
-]"
-`;
-
-exports[`errors if the event has virus scan status NO_THREATS_FOUND 1`] = `
-"[
-  {
-    "received": "NO_THREATS_FOUND",
-    "code": "invalid_enum_value",
-    "options": [
+    "code": "invalid_value",
+    "values": [
       "THREATS_FOUND",
       "UNSUPPORTED",
       "ACCESS_DENIED",
@@ -64,7 +45,27 @@ exports[`errors if the event has virus scan status NO_THREATS_FOUND 1`] = `
       "scanResultDetails",
       "scanResultStatus"
     ],
-    "message": "Invalid enum value. Expected 'THREATS_FOUND' | 'UNSUPPORTED' | 'ACCESS_DENIED' | 'FAILED', received 'NO_THREATS_FOUND'"
+    "message": "Invalid option: expected one of \\"THREATS_FOUND\\"|\\"UNSUPPORTED\\"|\\"ACCESS_DENIED\\"|\\"FAILED\\""
+  }
+]"
+`;
+
+exports[`errors if the event has virus scan status NO_THREATS_FOUND 1`] = `
+"[
+  {
+    "code": "invalid_value",
+    "values": [
+      "THREATS_FOUND",
+      "UNSUPPORTED",
+      "ACCESS_DENIED",
+      "FAILED"
+    ],
+    "path": [
+      "detail",
+      "scanResultDetails",
+      "scanResultStatus"
+    ],
+    "message": "Invalid option: expected one of \\"THREATS_FOUND\\"|\\"UNSUPPORTED\\"|\\"ACCESS_DENIED\\"|\\"FAILED\\""
   }
 ]"
 `;

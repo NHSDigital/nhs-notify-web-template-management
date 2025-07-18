@@ -31,6 +31,7 @@ describe('form-actions', () => {
     jest.resetAllMocks();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'sub',
     });
   });
@@ -94,6 +95,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -257,6 +259,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -348,6 +351,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -414,6 +418,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -462,6 +467,7 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -553,6 +559,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
+        clientId: undefined,
         userSub: undefined,
       });
 
@@ -600,6 +607,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
+        clientId: undefined,
         userSub: undefined,
       });
 
@@ -665,6 +673,7 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockReset();
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
+        clientId: undefined,
         userSub: undefined,
       });
 

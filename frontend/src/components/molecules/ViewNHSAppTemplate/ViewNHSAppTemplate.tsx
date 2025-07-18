@@ -5,7 +5,6 @@ import {
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
-import { getBasePath } from '@utils/get-base-path';
 import { renderNHSAppMarkdown } from '@utils/markdownit';
 import { BackLink } from 'nhsuk-react-components';
 import content from '@content/content';
@@ -24,9 +23,9 @@ export function ViewNHSAppTemplate({
 
   return (
     <>
-      <BackLink href={`${getBasePath()}/message-templates`}>
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink>{backLinkText}</BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>

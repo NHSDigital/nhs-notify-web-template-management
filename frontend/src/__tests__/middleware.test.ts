@@ -35,6 +35,7 @@ describe('middleware function', () => {
 
     getTokenMock.mockResolvedValueOnce({
       accessToken: undefined,
+      clientId: undefined,
       userSub: undefined,
     });
 
@@ -53,6 +54,7 @@ describe('middleware function', () => {
   it('if request path is protected, and access token is obtained, respond with CSP', async () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'token',
+      clientId: 'client1',
       userSub: 'sub',
     });
 

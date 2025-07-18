@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import {
   BaseTemplate,
   CreateLetterProperties,
@@ -53,7 +53,7 @@ export const $LetterFiles = schemaFor<LetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
-    proofs: z.record($ProofFileDetails).optional(),
+    proofs: z.record(z.string(), $ProofFileDetails).optional(),
   })
 );
 
@@ -134,10 +134,11 @@ export const $CreateUpdateTemplate = schemaFor<
 
 const $TemplateDtoFields = z
   .object({
-    id: z.string().trim().min(1),
+    campaignId: z.string().optional(),
     createdAt: z.string(),
-    updatedAt: z.string(),
+    id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+    updatedAt: z.string(),
   })
   .merge($BaseTemplateSchema);
 
