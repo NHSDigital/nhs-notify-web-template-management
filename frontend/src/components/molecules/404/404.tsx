@@ -2,6 +2,7 @@
 
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import content from '@content/content';
+import classNames from 'classnames';
 import Link from 'next/link';
 
 const { error404 } = content.pages;
@@ -9,7 +10,14 @@ const { error404 } = content.pages;
 export const ErrorPage404 = () => {
   return (
     <NHSNotifyMain>
-      <div className='nhsuk-grid-row' data-testid='page-content-wrapper'>
+      <div
+        className={classNames(
+          'nhsuk-grid-row',
+          'nhsuk-u-padding-left-3',
+          'nhsuk-u-padding-right-3'
+        )}
+        data-testid='page-content-wrapper'
+      >
         <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
           {error404.pageHeading}
         </h1>

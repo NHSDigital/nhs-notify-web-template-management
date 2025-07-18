@@ -77,6 +77,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User6',
     clientKey: 'NONE',
   },
+  /**
+   * User7 has configuration but no campaignId
+   */
+  User7: {
+    userId: 'User7',
+    clientKey: 'Client4',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &
