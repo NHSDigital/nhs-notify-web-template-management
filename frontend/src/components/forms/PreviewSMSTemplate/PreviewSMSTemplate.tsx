@@ -11,7 +11,6 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
-import { getBasePath } from '@utils/get-base-path';
 import { renderSMSMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -43,13 +42,11 @@ export function PreviewSMSTemplate({
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/message-templates`}
-        id='back-link'
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink id='back-link' data-testid='back-to-templates-link'>
+          {backLinkText}
+        </BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>

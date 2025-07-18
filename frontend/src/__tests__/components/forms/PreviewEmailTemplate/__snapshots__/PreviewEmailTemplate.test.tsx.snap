@@ -8,7 +8,7 @@ exports[`Preview email form renders Client-side validation triggers 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -297,7 +297,7 @@ exports[`Preview email form renders matches error snapshot 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -584,7 +584,7 @@ exports[`Preview email form renders matches snapshot when navigating from edit s
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -834,7 +834,7 @@ exports[`Preview email form renders matches snapshot when navigating from manage
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg

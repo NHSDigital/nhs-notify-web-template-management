@@ -791,7 +791,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
   >
     <a
       class="nhsuk-back-link__link"
-      href="/templates/choose-a-template-type"
+      href="/choose-a-template-type"
     >
       <svg
         aria-hidden="true"

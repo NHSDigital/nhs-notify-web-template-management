@@ -12,7 +12,6 @@ import {
   TextInput,
   BackLink,
 } from 'nhsuk-react-components';
-import { getBasePath } from '@utils/get-base-path';
 import {
   CreateUpdateSMSTemplate,
   FormErrorState,
@@ -30,6 +29,7 @@ import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { $CreateSmsTemplateSchema, processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 import { validate } from '@utils/client-validate-form';
+import Link from 'next/link';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
@@ -73,9 +73,9 @@ export const SmsTemplateForm: FC<
   return (
     <>
       {editMode ? null : (
-        <BackLink href={`${getBasePath()}/choose-a-template-type`}>
-          {backLinkText}
-        </BackLink>
+        <Link href='/choose-a-template-type' passHref legacyBehavior>
+          <BackLink>{backLinkText}</BackLink>
+        </Link>
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
