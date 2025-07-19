@@ -5,3 +5,9 @@ cd "$(git rev-parse --show-toplevel)"
 npx playwright install --with-deps > /dev/null
 cd tests/test-team
 npm run test:api
+TEST_EXIT_CODE=$?
+echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
+
+cp tests/test-team/playwright-report ./tests/acceptance-test-report
+
+exit $TEST_EXIT_CODE
