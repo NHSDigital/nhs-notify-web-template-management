@@ -17,6 +17,8 @@ export default function PreviewTemplateDetailsLetter({
 }: {
   template: LetterTemplate;
 }) {
+  console.log(template);
+
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
     .map(({ fileName }) => fileName);
@@ -28,7 +30,7 @@ export default function PreviewTemplateDetailsLetter({
     template.owner;
 
   const owner = template.owner ?? '';
-  const proofOwner = owner.startsWith('CLIENT#') ? owner.slice(6) : owner;
+  const proofOwner = owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
 
   return (
     <>

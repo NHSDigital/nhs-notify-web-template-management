@@ -378,7 +378,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+      const { version: _, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -486,7 +486,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+      const { version: _, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,

@@ -521,7 +521,7 @@ export class TemplateClient {
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
   ): TemplateDto | undefined {
-    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
+    const { version: _, ...templateDTO } = databaseTemplate;
 
     return isTemplateDtoValid(templateDTO);
   }

@@ -219,6 +219,13 @@ describe('PreviewTemplateDetailsLetter', () => {
               currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
               virusScanStatus: 'PASSED',
             },
+            proofs: {
+              'a.pdf': {
+                fileName: 'a.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+            },
           },
           createdAt: '2025-01-13T10:19:25.579Z',
           updatedAt: '2025-01-13T10:19:25.579Z',
