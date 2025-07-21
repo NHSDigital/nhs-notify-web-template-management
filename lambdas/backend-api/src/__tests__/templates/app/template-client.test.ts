@@ -14,6 +14,7 @@ import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
+import { describe } from 'node:test';
 
 jest.mock('node:crypto');
 
@@ -117,7 +118,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { code: 500, message: 'err' },
+        error: { errorMeta: { code: 500, description: 'err' } },
       });
 
       const result = await templateClient.createTemplate(data, user);
@@ -189,8 +190,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -673,7 +676,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'err', code: 500 },
+        error: { errorMeta: { description: 'err', code: 500 } },
       });
 
       const result = await templateClient.createLetterTemplate(
@@ -723,8 +726,10 @@ describe('templateClient', () => {
       const templateRepoFailure = {
         error: {
           actualError: new Error('ddb err'),
-          code: 500,
-          message: 'Failed to create template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create template',
+          },
         },
       };
 
@@ -848,9 +853,11 @@ describe('templateClient', () => {
               expect.objectContaining({ message: 'could not upload' }),
             ],
           }),
-          code: 500,
-          details: undefined,
-          message: 'Failed to upload letter files',
+          errorMeta: {
+            code: 500,
+            details: undefined,
+            description: 'Failed to upload letter files',
+          },
         },
       };
 
@@ -936,8 +943,10 @@ describe('templateClient', () => {
       const updateErr = {
         error: {
           actualError: new Error('ddb err'),
-          code: 500,
-          message: 'Failed to update template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       };
 
@@ -1066,7 +1075,7 @@ describe('templateClient', () => {
   });
 
   describe('updateTemplate', () => {
-    test('should return a failure result, when template data is invalid', async () => {
+    test('updateTemplate should return a failure result, when template data is invalid', async () => {
       const { templateClient } = setup();
 
       const data = {
@@ -1116,7 +1125,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('updateTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
@@ -1127,8 +1136,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.update.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1248,8 +1259,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1339,13 +1352,15 @@ describe('templateClient', () => {
   });
 
   describe('listTemplates', () => {
-    test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
+    test('listTemplates should return a failure result, when fetching from the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.list.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1430,13 +1445,15 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('submitTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1455,7 +1472,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when updated database template is invalid', async () => {
+    test('submitTemplate should return a failure result, when updated database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
       const expectedTemplateDto: TemplateDto = {
@@ -1493,7 +1510,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return updated template', async () => {
+    test('submitTemplate should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -1549,7 +1566,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'err', code: 500 },
+        error: { errorMeta: { description: 'err', code: 500 } },
       });
 
       const result = await templateClient.requestProof(templateId, user);
@@ -1566,7 +1583,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('requestProof should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -1577,9 +1594,11 @@ describe('templateClient', () => {
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
           actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1749,9 +1768,11 @@ describe('templateClient', () => {
 
       mocks.queueMock.send.mockResolvedValueOnce({
         error: {
-          message: 'Failed to send to proofing queue',
-          code: 500,
           actualError: clientErr,
+          errorMeta: {
+            description: 'Failed to send to proofing queue',
+            code: 500,
+          },
         },
       });
 
@@ -1818,7 +1839,7 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return updated template', async () => {
+    test('requestProof should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
       const pdfVersionId = 'a';
@@ -1889,13 +1910,15 @@ describe('templateClient', () => {
   });
 
   describe('deleteTemplate', () => {
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('deleteTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.delete.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1991,7 +2014,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'fetch failure', code: 500 },
+        error: { errorMeta: { description: 'fetch failure', code: 500 } },
       });
 
       const result = await templateClient.getClientConfiguration({
