@@ -32,5 +32,5 @@ module "backend_api" {
   template_submitted_sender_email_address = "template-submitted@${module.ses.domain}"
   proof_requested_sender_email_address    = "proof-requested@${module.ses.domain}"
 
-  sns_topic_arn  = module.eventpub.sns_topic.arn
+  sns_topic_arn = module.eventpub.sns_topic.arn
 }
