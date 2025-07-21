@@ -38,9 +38,11 @@ export class ValidateLetterTemplateFilesLambda {
       try {
         await this.guardDutyHandler(JSON.parse(record.body));
       } catch (error) {
-        logger.error('Failed processing record', error, {
-          messageId: record.messageId,
-        });
+        logger
+          .child({
+            messageId: record.messageId,
+          })
+          .error('Failed processing record', error);
 
         batchItemFailures.push({ itemIdentifier: record.messageId });
       }
@@ -49,6 +51,9 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
+  /* eslint-disable sonarjs/todo-tag */
+  // TODO: CCM-10432 - remove userOrClientId and linter disables
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
@@ -64,10 +69,13 @@ export class ValidateLetterTemplateFilesLambda {
       'version-id': versionId,
     } = metadata;
 
-    const getTemplateResult = await this.templateRepository.getByIdAndOwner(
-      templateId,
-      owner
-    );
+    const clientOwned = owner.startsWith('CLIENT#');
+    const userOrClientId = clientOwned ? owner.slice(6) : owner;
+
+    const getTemplateResult = await this.templateRepository.get(templateId, {
+      userId: userOrClientId,
+      clientId: clientOwned ? userOrClientId : undefined,
+    });
 
     if (getTemplateResult.error) {
       log.error('Unable to load template data', getTemplateResult.error);
