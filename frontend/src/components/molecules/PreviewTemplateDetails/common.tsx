@@ -7,7 +7,7 @@ import {
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
-import { TemplateDto } from 'nhs-notify-backend-client';
+import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
 
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
@@ -16,6 +16,8 @@ type ContentPreviewField = {
 };
 
 const { rowHeadings } = content.components.previewTemplateDetails;
+
+const templateStatusToKebabCase = (status: TemplateStatus) => status.toLowerCase().replace(/_/g, '-');
 
 export function DetailSection({ children }: { children: React.ReactNode }) {
   return (
@@ -73,7 +75,7 @@ export function StandardDetailRows({
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
         <SummaryList.Value>
-          <Tag color={templateStatusToColourMappings(template.templateStatus)}>
+          <Tag data-test-id={`status-tag-${templateStatusToKebabCase(template.templateStatus)}`} color={templateStatusToColourMappings(template.templateStatus)}>
             {templateStatusToDisplayMappings(template.templateStatus)}
           </Tag>
         </SummaryList.Value>

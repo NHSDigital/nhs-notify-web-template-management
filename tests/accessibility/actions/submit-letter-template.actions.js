@@ -1,9 +1,9 @@
 const {
-  pageActions: goToPreviewLetterTemplateActions,
-} = require('./preview-letter-template.actions');
+  pageActions: goToPreviewLetterTemplateWithProofsAvailableActions,
+} = require('./view-proofs-available-letter-template.actions');
 
 const pageActions = [
-  ...goToPreviewLetterTemplateActions,
+  ...goToPreviewLetterTemplateWithProofsAvailableActions,
   'click element #preview-letter-template-cta',
   'wait for element #submit-template-button to be visible',
 ];

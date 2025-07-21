@@ -27,17 +27,19 @@ const {
   previewSubmittedTextMessageTemplatePage,
   previewTextMessageTemplateErrorPage,
   previewTextMessageTemplatePage,
+  requestProofOfTemplatePage,
   signInPageActions,
   submitEmailTemplatePage,
   submitLetterTemplatePage,
   submitNHSAppTemplatePage,
   submitTextMessageTemplatePage,
   textMessageTemplateSubmittedPage,
+  viewAvailableProofsForLetterTemplatePage,
   viewNotYetSubmittedEmailTemplatePage,
   viewNotYetSubmittedLetterTemplatePage,
   viewNotYetSubmittedNHSAppTemplatePage,
   viewNotYetSubmittedTextMessageTemplatePage,
-  requestProofOfTemplatePage,
+  waitingForProofsLetterTemplatePage,
 } = require('./actions');
 
 const baseUrl = 'http://localhost:3000/templates';
@@ -49,101 +51,117 @@ const { templateIds } = JSON.parse(
   readFileSync('./pa11y-fixtures.json', 'utf8')
 );
 
+function previewLetterTemplateUrl(status) {
+  return `${baseUrl}/preview-letter-template/${templateIds[status]}`;
+}
+
+const allTemplates = [
+  messageTemplatesPage(messageTemplatesUrl),
+  copyTemplatePage(chooseTemplateUrl),
+];
+
+const chooseTemplate = [
+  chooseATemplatePage(chooseTemplateUrl),
+  chooseATemplatePageError(chooseTemplateUrl),
+];
+
+const nhsApp = [
+  createNHSAppTemplatePage(chooseTemplateUrl),
+  createNHSAppTemplateErrorPage(chooseTemplateUrl),
+  previewNHSAppTemplatePage(chooseTemplateUrl),
+  previewNHSAppTemplateErrorPage(chooseTemplateUrl),
+  viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl),
+  submitNHSAppTemplatePage(chooseTemplateUrl),
+  nhsAppTemplateSubmittedPage(chooseTemplateUrl),
+  previewSubmittedNHSAppTemplatePage(messageTemplatesUrl),
+];
+
+const sms = [
+  createTextMessageTemplatePage(chooseTemplateUrl),
+  createTextMessageTemplateErrorPage(chooseTemplateUrl),
+  previewTextMessageTemplatePage(chooseTemplateUrl),
+  previewTextMessageTemplateErrorPage(chooseTemplateUrl),
+  viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl),
+  submitTextMessageTemplatePage(chooseTemplateUrl),
+  textMessageTemplateSubmittedPage(chooseTemplateUrl),
+  previewSubmittedTextMessageTemplatePage(messageTemplatesUrl),
+];
+
+const email = [
+  createEmailTemplatePage(chooseTemplateUrl),
+  createEmailTemplateErrorPage(chooseTemplateUrl),
+  previewEmailTemplatePage(chooseTemplateUrl),
+  previewEmailTemplateErrorPage(chooseTemplateUrl),
+  viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl),
+  submitEmailTemplatePage(chooseTemplateUrl),
+  emailTemplateSubmittedPage(chooseTemplateUrl),
+  previewSubmittedEmailTemplatePage(messageTemplatesUrl),
+];
+
+const letters = [
+  createLetterTemplatePage(chooseTemplateUrl),
+  previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_UPLOAD')),
+  previewLetterTemplatePageWithError(previewLetterTemplateUrl('VIRUS_SCAN_FAILED')),
+  previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_VALIDATION')),
+  previewLetterTemplatePageWithError(previewLetterTemplateUrl('VALIDATION_FAILED')),
+  viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds.PENDING_PROOF_REQUEST),
+  requestProofOfTemplatePage(previewLetterTemplateUrl('PENDING_PROOF_REQUEST')),
+  waitingForProofsLetterTemplatePage(previewLetterTemplateUrl('WAITING_FOR_PROOF')),
+  viewAvailableProofsForLetterTemplatePage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
+  submitLetterTemplatePage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
+  letterTemplateSubmittedPage(previewLetterTemplateUrl('PROOF_AVAILABLE')),
+  previewSubmittedLetterTemplatePage(messageTemplatesUrl),
+];
+
+const landingPage = [{ url: startUrl, name: 'landing-page' }];
+
+const errors = [
+  { url: 'http://localhost:3000/some-404', name: '404-test' },
+  {
+    url: `${baseUrl}/invalid-template`,
+    actions: [...signInPageActions, 'wait for h1 to be visible'],
+    name: 'invalid-template',
+  },
+  {
+    url: `${baseUrl}/create-letter-template/client-id-and-campaign-id-required`,
+    actions: [...signInPageActions, 'wait for h1 to be visible'],
+    name: 'client-campaign-id-required',
+  },
+];
+
+const userEmails = [
+  {
+    url: `${baseUrl}/testing/template-submitted-email.html`,
+    name: 'email-template',
+  },
+  {
+    url: `${baseUrl}/testing/proof-requested-email.html`,
+    name: 'email-template',
+  },
+];
+
+const allJourneys = {
+  landingPage,
+  allTemplates,
+  chooseTemplate,
+  nhsApp,
+  sms,
+  email,
+  letters,
+  userEmails,
+  errors,
+};
+
+const selectedJourney = process.env.JOURNEY && allJourneys[process.env.JOURNEY]
+  ? [process.env.JOURNEY]
+  : Object.keys(allJourneys);
+
 module.exports = {
-  urls: [
-    performCheck({ url: 'http://localhost:3000/some-404', name: '404-test' }),
-    performCheck({ url: startUrl, name: 'landing-page' }),
-
-    //My Messages Templates
-    performCheck(messageTemplatesPage(messageTemplatesUrl)),
-    performCheck(copyTemplatePage(chooseTemplateUrl)),
-
-    // Choose a template journey
-    performCheck(chooseATemplatePage(chooseTemplateUrl)),
-    performCheck(chooseATemplatePageError(chooseTemplateUrl)),
-
-    // NHS App journey
-    performCheck(createNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(createNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(previewNHSAppTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
-    performCheck(submitNHSAppTemplatePage(chooseTemplateUrl)),
-    performCheck(nhsAppTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(previewSubmittedNHSAppTemplatePage(messageTemplatesUrl)),
-
-    // Text message journey
-    performCheck(createTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(createTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(previewTextMessageTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(
-      viewNotYetSubmittedTextMessageTemplatePage(messageTemplatesUrl)
-    ),
-    performCheck(submitTextMessageTemplatePage(chooseTemplateUrl)),
-    performCheck(textMessageTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(previewSubmittedTextMessageTemplatePage(messageTemplatesUrl)),
-
-    // Email journey
-    performCheck(createEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(createEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(previewEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(previewEmailTemplateErrorPage(chooseTemplateUrl)),
-    performCheck(viewNotYetSubmittedEmailTemplatePage(messageTemplatesUrl)),
-    performCheck(submitEmailTemplatePage(chooseTemplateUrl)),
-    performCheck(emailTemplateSubmittedPage(chooseTemplateUrl)),
-    performCheck(previewSubmittedEmailTemplatePage(messageTemplatesUrl)),
-
-    // Letter Journey
-    performCheck(createLetterTemplatePage(chooseTemplateUrl)),
-    performCheck(
-      previewLetterTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-virus-check']}`
-      )
-    ),
-    performCheck(
-      previewLetterTemplatePageWithError(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-virus-check']}`
-      )
-    ),
-    performCheck(
-      previewLetterTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-pending-validation']}`
-      )
-    ),
-    performCheck(
-      previewLetterTemplatePageWithError(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-failed-validation']}`
-      )
-    ),
-    performCheck(viewNotYetSubmittedLetterTemplatePage(messageTemplatesUrl, templateIds['pa11y-letter-passed-validation'])),
-    performCheck(
-      requestProofOfTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-passed-validation']}`
-      )
-    ),
-    performCheck(
-      submitLetterTemplatePage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-proof-requested']}`
-      )
-    ),
-    performCheck(
-      letterTemplateSubmittedPage(
-        `${baseUrl}/preview-letter-template/${templateIds['pa11y-letter-proof-requested']}`
-      )
-    ),
-    performCheck(previewSubmittedLetterTemplatePage(messageTemplatesUrl)),
-
-    // Non-existent template
-    performCheck({
-      url: `${baseUrl}/invalid-template`,
-      actions: [...signInPageActions, 'wait for h1 to be visible'],
-      name: 'invalid-template',
-    }),
-    performCheck({ url: `${baseUrl}/testing/template-submitted-email.html`, name: 'email-template'}),
-    performCheck({ url: `${baseUrl}/testing/proof-requested-email.html`, name: 'email-template'}),
-  ],
+  urls: selectedJourney
+    .flatMap(journey => allJourneys[journey] || [])
+    .map(performCheck),
   defaults: {
+    // concurrency: 1,
     reporters: [
       'cli',
       [
@@ -156,6 +174,7 @@ module.exports = {
     ],
     rules: ['Principle1.Guideline1_3.1_3_1_AAA'],
     chromeLaunchConfig: {
+      // headless: false,
       args: ['--no-sandbox'],
     },
     standard: 'WCAG2AA',
