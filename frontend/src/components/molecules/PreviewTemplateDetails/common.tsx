@@ -17,7 +17,8 @@ type ContentPreviewField = {
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
-const templateStatusToKebabCase = (status: TemplateStatus) => status.toLowerCase().replace(/_/g, '-');
+const templateStatusToKebabCase = (status: TemplateStatus) =>
+  status.toLowerCase().replaceAll('_', '-');
 
 export function DetailSection({ children }: { children: React.ReactNode }) {
   return (
@@ -75,7 +76,10 @@ export function StandardDetailRows({
       <SummaryList.Row>
         <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
         <SummaryList.Value>
-          <Tag data-test-id={`status-tag-${templateStatusToKebabCase(template.templateStatus)}`} color={templateStatusToColourMappings(template.templateStatus)}>
+          <Tag
+            data-test-id={`status-tag-${templateStatusToKebabCase(template.templateStatus)}`}
+            color={templateStatusToColourMappings(template.templateStatus)}
+          >
             {templateStatusToDisplayMappings(template.templateStatus)}
           </Tag>
         </SummaryList.Value>

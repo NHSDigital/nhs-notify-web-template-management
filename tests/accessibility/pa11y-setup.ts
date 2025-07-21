@@ -43,20 +43,20 @@ const generateLetterTemplateData = (
           proof1: {
             fileName: 'proof1.pdf',
             supplier: 'WTMMOCK',
-            virusScanStatus: 'PASSED'
+            virusScanStatus: 'PASSED',
           },
           proof2: {
             fileName: 'proof2.pdf',
             supplier: 'WTMMOCK',
-            virusScanStatus: 'PASSED'
+            virusScanStatus: 'PASSED',
           },
           proof3: {
             fileName: 'proof3.pdf',
             supplier: 'WTMMOCK',
-            virusScanStatus: 'PASSED'
-          }
+            virusScanStatus: 'PASSED',
+          },
         },
-      })
+      }),
     },
     templateStatus,
   };
@@ -150,7 +150,9 @@ const setup = async () => {
     )
   );
 
-  const templateIds = Object.fromEntries(templates.map((t) => [t.templateStatus, t.id]));
+  const templateIds = Object.fromEntries(
+    templates.map((t) => [t.templateStatus, t.id])
+  );
 
   const fixtureData = {
     email: testEmail,
