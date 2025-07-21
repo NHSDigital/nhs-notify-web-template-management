@@ -31,17 +31,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <h2>Heading directly above a paragraph</h2>
 <p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
 <h1>Bold and italics</h1>
-<ul>
-<li>
-<ul>
-<li>Some bold text using asterisks**</li>
-</ul>
-</li>
-</ul>
+<p>**Some bold text using asterisks**</p>
 <p>__Some bold text using underscores__</p>
-<ul>
-<li>Some italic text using asterisks*</li>
-</ul>
+<p>*Some italic text using asterisks*</p>
 <p>_Some italic text using underscores_</p>
 <h1>Lists</h1>
 <p>Bullets with asterisks:</p>
@@ -57,11 +49,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
 </ul>
 <p>Bullets without required spaces:</p>
-<ul>
-<li>bullet 1 no space</li>
-<li>bullet 2 no space</li>
-<li>bullet 3 no space</li>
-</ul>
+<p>*bullet 1 no space<br>
+*bullet 2 no space<br>
+*bullet 3 no space</p>
 <p>Ordered list:</p>
 <ol>
 <li>Praesent rutrum ex vel velit aliquam.</li>
@@ -69,11 +59,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <li>Pellentesque quis nisi accumsan.</li>
 </ol>
 <p>Ordered list without required spaces:</p>
-<ol>
-<li>Step 1 no space</li>
-<li>Step 2 no space</li>
-<li>Step 3 no space</li>
-</ol>
+<p>1.Step 1 no space<br>
+2.Step 2 no space<br>
+3.Step 3 no space</p>
 <h1>Image</h1>
 <p></p>
 <h1>Links</h1>
@@ -127,17 +115,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <h2>Heading directly above a paragraph</h2>
 <p>Aenean congue venenatis rutrum. Suspendisse vehicula finibus volutpat. Nunc lacinia rhoncus nibh.</p>
 <h1>Bold and italics</h1>
-<ul>
-<li>
-<ul>
-<li>Some bold text using asterisks**</li>
-</ul>
-</li>
-</ul>
+<p><strong>Some bold text using asterisks</strong></p>
 <p><strong>Some bold text using underscores</strong></p>
-<ul>
-<li>Some italic text using asterisks*</li>
-</ul>
+<p><em>Some italic text using asterisks</em></p>
 <p><em>Some italic text using underscores</em></p>
 <h1>Lists</h1>
 <p>Bullets with asterisks:</p>
@@ -153,11 +133,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <li>Nulla libero nisl, hendrerit vel est quis, efficitur dignissim est.</li>
 </ul>
 <p>Bullets without required spaces:</p>
-<ul>
-<li>bullet 1 no space</li>
-<li>bullet 2 no space</li>
-<li>bullet 3 no space</li>
-</ul>
+<p>*bullet 1 no space
+*bullet 2 no space
+*bullet 3 no space</p>
 <p>Ordered list:</p>
 <ol>
 <li>Praesent rutrum ex vel velit aliquam.</li>
@@ -165,11 +143,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <li>Pellentesque quis nisi accumsan.</li>
 </ol>
 <p>Ordered list without required spaces:</p>
-<ol>
-<li>Step 1 no space</li>
-<li>Step 2 no space</li>
-<li>Step 3 no space</li>
-</ol>
+<p>1.Step 1 no space
+2.Step 2 no space
+3.Step 3 no space</p>
 <h1>Image</h1>
 <p><img src="https://assets.nhs.uk/images/nhs-logo.png" alt="NHS Logo"></p>
 <h1>Links</h1>
@@ -184,17 +160,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tempor vel quam
 <p>&lt;user@domain.com&gt;</p>
 <h1>Lines</h1>
 <p>Horizontal line using 3 asterisks</p>
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<p>***</p>
 <p>Horizontal line using 3 underscores</p>
 <hr>
 <p>Horizontal line with less than 3 doesn't render</p>
