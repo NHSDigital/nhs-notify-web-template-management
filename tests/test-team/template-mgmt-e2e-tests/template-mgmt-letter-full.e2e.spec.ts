@@ -13,26 +13,13 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-proof-page';
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { EmailHelper } from '../helpers/email-helper';
-import { TemplateMgmtSignInPage } from '../pages/templates-mgmt-login-page';
+import { loginAsUser } from '../helpers/auth/login-as-user';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
-
 const emailHelper = new EmailHelper();
 
 // clear login state from e2e.setup.ts
 test.use({ storageState: { cookies: [], origins: [] } });
-
-function login(page: Page, user: TestUser) {
-  return test.step('login', async () => {
-    const loginPage = new TemplateMgmtSignInPage(page);
-
-    await loginPage.loadPage();
-
-    await loginPage.cognitoSignIn(user);
-
-    await page.waitForURL('/templates/create-and-submit-templates');
-  });
-}
 
 function create(
   page: Page,
@@ -313,7 +300,7 @@ test.describe('letter complete e2e journey', () => {
   }) => {
     const testStart = new Date();
 
-    await login(page, userWithProofing);
+    await loginAsUser(userWithProofing, page);
 
     const templateKey = await create(
       page,
@@ -344,7 +331,7 @@ test.describe('letter complete e2e journey', () => {
   });
 
   test('Full journey - user has proofing disabled', async ({ page }) => {
-    await login(page, userWithoutProofing);
+    await loginAsUser(userWithoutProofing, page);
 
     const templateKey = await create(
       page,

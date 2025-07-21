@@ -144,8 +144,18 @@ export class EmailClient {
       proofFilenames
     );
 
+    const { language, letterType, id, campaignId, clientId } = template;
+
+    const expandedTemplateId = [
+      clientId,
+      campaignId,
+      id,
+      language,
+      letterType,
+    ].join('_');
+
     await this.sendEmailToSupplier(
-      template.id,
+      expandedTemplateId,
       supplier,
       subject,
       emailContent

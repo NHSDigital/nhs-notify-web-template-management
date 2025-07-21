@@ -14,10 +14,8 @@ const { rowHeadings } = content.components.previewTemplateDetails;
 
 export default function PreviewTemplateDetailsLetter({
   template,
-  user,
 }: {
   template: LetterTemplate;
-  user?: string;
 }) {
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
@@ -26,7 +24,11 @@ export default function PreviewTemplateDetailsLetter({
   const showProofs =
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
-      template.templateStatus === 'SUBMITTED');
+      template.templateStatus === 'SUBMITTED') &&
+    template.owner;
+
+  const owner = template.owner ?? '';
+  const proofOwner = owner.startsWith('CLIENT#') ? owner.slice(6) : owner;
 
   return (
     <>
@@ -71,7 +73,7 @@ export default function PreviewTemplateDetailsLetter({
                   {proofFilenames.map((file) => (
                     <li key={file}>
                       <a
-                        href={`${getBasePath()}/files/${user}/proofs/${template.id}/${file}`}
+                        href={`${getBasePath()}/files/${proofOwner}/proofs/${template.id}/${file}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         data-testid={`proof-link_${file}`}

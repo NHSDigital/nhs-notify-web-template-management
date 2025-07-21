@@ -35,22 +35,28 @@ export function validateLetterTemplateFiles(
       );
   }
 
-  logger.info('Template file validation complete', {
-    templateId: pdf.templateId,
-    owner: pdf.owner,
-    correctAddressLength,
-    correctAddressLines,
-    customParametersSensiblyFormatted,
-    requiredTestFileExists,
-    testFileHasExpectedNumberOfParameters,
-    allCustomPersonalisationIsInTestFile,
-  });
-
-  return (
+  const valid =
     correctAddressLength &&
     correctAddressLines &&
     customParametersSensiblyFormatted &&
     testFileHasExpectedNumberOfParameters &&
-    allCustomPersonalisationIsInTestFile
-  );
+    allCustomPersonalisationIsInTestFile;
+
+  logger.info('Template file validation complete', {
+    templateId: pdf.templateId,
+    owner: pdf.owner,
+    valid,
+    ...(!valid && {
+      checks: {
+        correctAddressLength,
+        correctAddressLines,
+        customParametersSensiblyFormatted,
+        requiredTestFileExists,
+        testFileHasExpectedNumberOfParameters,
+        allCustomPersonalisationIsInTestFile,
+      },
+    }),
+  });
+
+  return valid;
 }

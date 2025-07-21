@@ -98,6 +98,9 @@ export const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
 export const $LetterProperties = schemaFor<LetterProperties>()(
   $CreateLetterProperties.extend({
     files: $LetterFiles,
+    /* eslint-disable sonarjs/todo-tag */
+    // TODO: CCM-10432 - not needed after client migration
+    owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
   })
 );

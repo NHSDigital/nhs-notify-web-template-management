@@ -78,6 +78,7 @@ export type LetterFiles = {
 
 export type LetterProperties = CreateLetterProperties & {
   files: LetterFiles;
+  owner?: string;
   personalisationParameters?: Array<string>;
 };
 

@@ -18,6 +18,7 @@ import type {
   FileType,
   TemplateKey,
   User,
+  UserWithOptionalClient,
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
@@ -54,11 +55,12 @@ const smsAttributes: Record<keyof SmsProperties, null> = {
 };
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
-  templateType: null,
-  letterType: null,
-  language: null,
   files: null,
+  language: null,
+  letterType: null,
+  owner: null,
   personalisationParameters: null,
+  templateType: null,
 };
 
 export class TemplateRepository {
@@ -70,13 +72,57 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    userId: string
+    user: UserWithOptionalClient
+  ): Promise<ApplicationResult<DatabaseTemplate>> {
+    try {
+      const responses = await Promise.all([
+        this.client.send(
+          new GetCommand({
+            TableName: this.templatesTableName,
+            Key: { id: templateId, owner: `CLIENT#${user.clientId}` },
+          })
+        ),
+        this.client.send(
+          new GetCommand({
+            TableName: this.templatesTableName,
+            Key: { id: templateId, owner: user.userId },
+          })
+        ),
+      ]);
+
+      const items = responses.flatMap(({ Item }) => (Item ? [Item] : []));
+
+      if (items.length === 0) {
+        return failure(ErrorCase.NOT_FOUND, 'Template not found');
+      }
+
+      if (items.length > 1) {
+        throw new Error(
+          'Unexpectedly found both a client owned and a user owned template'
+        );
+      }
+
+      const item = items[0] as DatabaseTemplate;
+
+      if (item.templateStatus === 'DELETED') {
+        return failure(ErrorCase.NOT_FOUND, 'Template not found');
+      }
+
+      return success(item);
+    } catch (error) {
+      return failure(ErrorCase.INTERNAL, 'Failed to get template', error);
+    }
+  }
+
+  async getByIdAndOwner(
+    templateId: string,
+    owner: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
       const response = await this.client.send(
         new GetCommand({
           TableName: this.templatesTableName,
-          Key: { id: templateId, owner: userId },
+          Key: { id: templateId, owner },
         })
       );
 
@@ -218,6 +264,8 @@ export class TemplateRepository {
   }
 
   async submit(templateId: string, userId: string) {
+    console.log('submit()');
+
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -283,36 +331,47 @@ export class TemplateRepository {
     }
   }
 
-  async list(userId: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  private async listQuery(ownerKey: string) {
+    const input: QueryCommandInput = {
+      TableName: this.templatesTableName,
+      KeyConditionExpression: '#owner = :owner',
+      ExpressionAttributeNames: {
+        '#owner': 'owner',
+        '#status': 'templateStatus',
+      },
+      ExpressionAttributeValues: {
+        ':owner': ownerKey,
+        ':deletedStatus': 'DELETED',
+      },
+      FilterExpression: '#status <> :deletedStatus',
+    };
+
+    const items: DatabaseTemplate[] = [];
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      const { Items = [], LastEvaluatedKey } = await this.client.send(
+        new QueryCommand(input)
+      );
+
+      input.ExclusiveStartKey = LastEvaluatedKey;
+
+      items.push(...(Items as DatabaseTemplate[]));
+    } while (input.ExclusiveStartKey);
+
+    return items;
+  }
+
+  async list(
+    user: UserWithOptionalClient
+  ): Promise<ApplicationResult<DatabaseTemplate[]>> {
     try {
-      const input: QueryCommandInput = {
-        TableName: this.templatesTableName,
-        KeyConditionExpression: '#owner = :owner',
-        ExpressionAttributeNames: {
-          '#owner': 'owner',
-          '#status': 'templateStatus',
-        },
-        ExpressionAttributeValues: {
-          ':owner': userId,
-          ':deletedStatus': 'DELETED',
-        },
-        FilterExpression: '#status <> :deletedStatus',
-      };
+      const queryResults = await Promise.all([
+        ...(user.clientId ? [this.listQuery(`CLIENT#${user.clientId}`)] : []),
+        this.listQuery(user.userId),
+      ]);
 
-      const items: DatabaseTemplate[] = [];
-
-      do {
-        // eslint-disable-next-line no-await-in-loop
-        const { Items = [], LastEvaluatedKey } = await this.client.send(
-          new QueryCommand(input)
-        );
-
-        input.ExclusiveStartKey = LastEvaluatedKey;
-
-        items.push(...(Items as DatabaseTemplate[]));
-      } while (input.ExclusiveStartKey);
-
-      return success(items);
+      return success(queryResults.flat());
     } catch (error) {
       return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
     }

@@ -126,11 +126,14 @@ describe('templateRepository', () => {
 
   describe('get', () => {
     test.each([
-      { id: 'abc-def-ghi-jkl-123', owner: 'fake-owner' },
-      { id: 'fake-id', owner: 'real-owner' },
+      {
+        id: 'abc-def-ghi-jkl-123',
+        user: { userId: 'fake-owner', clientId: undefined },
+      },
+      { id: 'fake-id', user: { userId: 'real-owner', clientId: undefined } },
     ])(
       'should return not found error when, templateId and owner does not match database record',
-      async ({ id, owner }) => {
+      async ({ id, user }) => {
         const { templateRepository, mocks } = setup();
 
         mocks.ddbDocClient
@@ -142,7 +145,7 @@ describe('templateRepository', () => {
             Item: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
           });
 
-        const response = await templateRepository.get(id, owner);
+        const response = await templateRepository.get(id, user);
 
         expect(response).toEqual({
           error: { code: 404, message: 'Template not found' },
@@ -161,10 +164,10 @@ describe('templateRepository', () => {
         },
       });
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: { code: 404, message: 'Template not found' },
@@ -178,10 +181,10 @@ describe('templateRepository', () => {
         .on(GetCommand)
         .rejects(new Error('InternalServerError'));
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
@@ -202,10 +205,10 @@ describe('templateRepository', () => {
         })
         .resolves({ Item: emailTemplate });
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({ data: emailTemplate });
     });
@@ -217,7 +220,10 @@ describe('templateRepository', () => {
 
       mocks.ddbDocClient.on(QueryCommand).resolves({ Items: undefined });
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({ data: [] });
     });
@@ -229,7 +235,10 @@ describe('templateRepository', () => {
         .on(QueryCommand)
         .rejects(new Error('InternalServerError'));
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
@@ -254,7 +263,10 @@ describe('templateRepository', () => {
           Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
         });
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],

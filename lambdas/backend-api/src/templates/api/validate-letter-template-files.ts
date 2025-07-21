@@ -64,7 +64,7 @@ export class ValidateLetterTemplateFilesLambda {
       'version-id': versionId,
     } = metadata;
 
-    const getTemplateResult = await this.templateRepository.get(
+    const getTemplateResult = await this.templateRepository.getByIdAndOwner(
       templateId,
       owner
     );
