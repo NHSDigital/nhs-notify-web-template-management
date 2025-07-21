@@ -42,7 +42,6 @@ describe('amplify-utils', () => {
       tokens: {
         accessToken: mockAccessToken,
       },
-      userSub: 'sub',
     });
 
     const result = await getSessionServer();
@@ -50,7 +49,6 @@ describe('amplify-utils', () => {
     expect(result).toEqual({
       accessToken: mockAccessToken.toString(),
       clientId: 'client1',
-      userSub: 'sub',
     });
   });
 
@@ -63,7 +61,6 @@ describe('amplify-utils', () => {
       tokens: {
         accessToken: mockAccessToken,
       },
-      userSub: 'sub',
     });
 
     const result = await getSessionServer();

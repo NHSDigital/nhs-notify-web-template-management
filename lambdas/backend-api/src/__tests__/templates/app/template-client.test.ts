@@ -1257,7 +1257,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1296,7 +1296,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1329,7 +1329,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1351,7 +1351,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         error: {
@@ -1394,7 +1394,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         data: [template],
@@ -1421,7 +1421,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         data: [template],
@@ -1836,6 +1836,7 @@ describe('templateClient', () => {
           },
         },
         id: templateId,
+        owner: user.userId,
         language: 'en',
         letterType: 'x1',
         name: templateName,

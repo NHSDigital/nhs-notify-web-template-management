@@ -81,6 +81,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -107,10 +108,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
-      templateId,
-      owner
-    );
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: owner,
+      clientId: owner,
+    });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
       { id: templateId, owner },
@@ -180,6 +181,7 @@ describe('guard duty handler', () => {
         templateStatus: 'PENDING_VALIDATION',
         language: 'fa',
         clientId: 'clientId',
+        owner,
       }),
     });
 
@@ -275,6 +277,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: undefined,
+        owner,
       }),
     });
 
@@ -350,6 +353,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -370,10 +374,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
-      templateId,
-      owner
-    );
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: owner,
+      clientId: owner,
+    });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledTimes(1);
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
@@ -1111,6 +1115,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -1173,6 +1178,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -1239,6 +1245,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 

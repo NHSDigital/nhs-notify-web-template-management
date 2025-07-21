@@ -51,9 +51,6 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
-  /* eslint-disable sonarjs/todo-tag */
-  // TODO: CCM-10432 - remove userOrClientId and linter disables
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
@@ -69,12 +66,9 @@ export class ValidateLetterTemplateFilesLambda {
       'version-id': versionId,
     } = metadata;
 
-    const clientOwned = owner.startsWith('CLIENT#');
-    const userOrClientId = clientOwned ? owner.slice(6) : owner;
-
     const getTemplateResult = await this.templateRepository.get(templateId, {
-      userId: userOrClientId,
-      clientId: clientOwned ? userOrClientId : undefined,
+      userId: owner,
+      clientId: owner,
     });
 
     if (getTemplateResult.error) {

@@ -40,7 +40,7 @@ export class EmailClient {
   }
 
   private getTemplateSubmittedEmailContent(
-    { updatedAt, id, name }: LetterTemplate,
+    template: LetterTemplate,
     supplier: string,
     proofFilenames: string[]
   ) {
@@ -49,13 +49,15 @@ export class EmailClient {
     ).toString();
     const htmlTemplate = Handlebars.compile(emailTemplateContent);
 
+    const expandedTemplateId = this.getExpandedTemplateId(template);
+
     const subject = `${supplier} - Letter proof approved by an NHS Notify user`;
     const emailContent = htmlTemplate({
       proofFilenames,
       supplier,
-      timestamp: updatedAt,
-      templateId: id,
-      templateName: name,
+      timestamp: template.updatedAt,
+      templateId: expandedTemplateId,
+      templateName: template.name,
     });
 
     return {
@@ -144,18 +146,8 @@ export class EmailClient {
       proofFilenames
     );
 
-    const { language, letterType, id, campaignId, clientId } = template;
-
-    const expandedTemplateId = [
-      clientId,
-      campaignId,
-      id,
-      language,
-      letterType,
-    ].join('_');
-
     await this.sendEmailToSupplier(
-      expandedTemplateId,
+      template.id,
       supplier,
       subject,
       emailContent
@@ -201,5 +193,15 @@ export class EmailClient {
         proofFilenames
       );
     }
+  }
+
+  private getExpandedTemplateId({
+    clientId,
+    campaignId,
+    id,
+    language,
+    letterType,
+  }: LetterTemplate) {
+    return [clientId, campaignId, id, language, letterType].join('_');
   }
 }

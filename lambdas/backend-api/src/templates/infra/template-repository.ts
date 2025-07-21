@@ -81,7 +81,7 @@ export class TemplateRepository {
             Keys: [
               { id: templateId, owner: user.userId },
               ...(user.clientId
-                ? [{ id: templateId, owner: user.clientId }]
+                ? [{ id: templateId, owner: `CLIENT#${user.clientId}` }]
                 : []),
             ],
           },

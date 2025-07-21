@@ -1,8 +1,8 @@
 import 'aws-sdk-client-mock-jest';
 import { randomUUID } from 'node:crypto';
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
-  GetCommand,
   PutCommand,
   QueryCommand,
   UpdateCommand,
@@ -125,43 +125,66 @@ describe('templateRepository', () => {
   });
 
   describe('get', () => {
-    test.each([
-      {
-        id: 'abc-def-ghi-jkl-123',
-        user: { userId: 'fake-owner', clientId: undefined },
-      },
-      { id: 'fake-id', user: { userId: 'real-owner', clientId: undefined } },
-    ])(
-      'should return not found error when, templateId and owner does not match database record',
-      async ({ id, user }) => {
-        const { templateRepository, mocks } = setup();
+    test('should return not found error when no items are found', async () => {
+      const { templateRepository, mocks } = setup();
 
-        mocks.ddbDocClient
-          .on(GetCommand, {
-            TableName: templatesTableName,
-            Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-          })
-          .resolves({
-            Item: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-          });
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: { [templatesTableName]: [] },
+        UnprocessedKeys: {},
+      });
 
-        const response = await templateRepository.get(id, user);
+      const response = await templateRepository.get('id', {
+        userId: 'user',
+        clientId: 'client',
+      });
 
-        expect(response).toEqual({
-          error: { code: 404, message: 'Template not found' },
-        });
-      }
-    );
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              { id: 'id', owner: 'user' },
+              { id: 'id', owner: 'CLIENT#client' },
+            ],
+          },
+        },
+      });
+
+      expect(response).toEqual({
+        error: { code: 404, message: 'Template not found' },
+      });
+    });
+
+    test('should return not found error when Responses is undefined', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('id', {
+        userId: 'user',
+        clientId: 'client',
+      });
+
+      expect(response).toEqual({
+        error: { code: 404, message: 'Template not found' },
+      });
+    });
 
     test('should return not found error when template status is DELETED', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient.on(GetCommand).resolves({
-        Item: {
-          id: 'abc-def-ghi-jkl-123',
-          owner: 'real-owner',
-          templateStatus: 'DELETED',
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'real-owner',
+              templateStatus: 'DELETED',
+            },
+          ],
         },
+        UnprocessedKeys: {},
       });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
@@ -174,11 +197,11 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should error when unexpected error occurs', async () => {
+    test('should return error when unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient
-        .on(GetCommand)
+        .on(BatchGetCommand)
         .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
@@ -195,19 +218,103 @@ describe('templateRepository', () => {
       });
     });
 
-    test('should return template', async () => {
+    test('should return error when UnprocessedKeys are returned', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient
-        .on(GetCommand, {
-          TableName: templatesTableName,
-          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-        })
-        .resolves({ Item: emailTemplate });
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [],
+        },
+        UnprocessedKeys: {
+          [templatesTableName]: {
+            Keys: [
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: 'real-owner',
+              },
+            ],
+          },
+        },
+      });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'real-owner',
         clientId: undefined,
+      });
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to get template',
+          actualError: new Error('Partial failure of batch get templates'),
+        },
+      });
+    });
+
+    test('should return error when more than one template is returned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'userid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'CLIENT#clientid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+          ],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: 'clientid',
+      });
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to get template',
+          actualError: new Error(
+            'Unexpectedly found both a client owned and a user owned template'
+          ),
+        },
+      });
+    });
+
+    test('should return template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [emailTemplate],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: emailTemplate.owner,
+        clientId: emailTemplate.clientId,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              { id: 'abc-def-ghi-jkl-123', owner: emailTemplate.owner },
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: `CLIENT#${emailTemplate.clientId}`,
+              },
+            ],
+          },
+        },
       });
 
       expect(response).toEqual({ data: emailTemplate });
@@ -252,24 +359,63 @@ describe('templateRepository', () => {
     test('should return templates', async () => {
       const { templateRepository, mocks } = setup();
 
+      const clientOwnedTemplate = {
+        id: 'id',
+        owner: 'CLIENT#client',
+      };
+
       mocks.ddbDocClient
-        .on(QueryCommand, {
-          TableName: templatesTableName,
-          KeyConditionExpression: '#owner = :owner',
-          ExpressionAttributeNames: { '#owner': 'owner' },
-          ExpressionAttributeValues: { ':owner': 'real-owner' },
-        })
-        .resolves({
+        .on(QueryCommand)
+        .resolvesOnce({
           Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
+        })
+        .resolvesOnce({
+          Items: [clientOwnedTemplate],
         });
 
       const response = await templateRepository.list({
         userId: 'real-owner',
-        clientId: undefined,
+        clientId: 'client',
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandTimes(QueryCommand, 2);
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExclusiveStartKey: undefined,
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#status': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':deletedStatus': 'DELETED',
+          ':owner': 'CLIENT#client',
+        },
+        FilterExpression: '#status <> :deletedStatus',
+        KeyConditionExpression: '#owner = :owner',
+        TableName: 'templates',
+      });
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExclusiveStartKey: undefined,
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#status': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':deletedStatus': 'DELETED',
+          ':owner': 'real-owner',
+        },
+        FilterExpression: '#status <> :deletedStatus',
+        KeyConditionExpression: '#owner = :owner',
+        TableName: 'templates',
       });
 
       expect(response).toEqual({
-        data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
+        data: [
+          emailTemplate,
+          smsTemplate,
+          nhsAppTemplate,
+          letterTemplate,
+          clientOwnedTemplate,
+        ],
       });
     });
   });

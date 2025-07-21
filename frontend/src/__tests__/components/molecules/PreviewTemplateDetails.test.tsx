@@ -132,6 +132,7 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
+          owner: 'owner',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
@@ -180,6 +181,33 @@ describe('PreviewTemplateDetailsLetter', () => {
       <PreviewTemplateDetailsLetter
         template={{
           id: 'template-id',
+          name: 'Example letter',
+          templateStatus: 'PROOF_AVAILABLE',
+          templateType: 'LETTER',
+          letterType: 'x0',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: '4C728B7D-A028-4BA2-B180-A63CDD2AE1E9',
+              virusScanStatus: 'PASSED',
+            },
+          },
+          createdAt: '2025-01-13T10:19:25.579Z',
+          updatedAt: '2025-01-13T10:19:25.579Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('If the template is client-owned, the clientId is used to construct download link', () => {
+    const container = render(
+      <PreviewTemplateDetailsLetter
+        template={{
+          id: 'template-id',
+          owner: 'CLIENT#client',
           name: 'Example letter',
           templateStatus: 'PROOF_AVAILABLE',
           templateType: 'LETTER',
