@@ -14,7 +14,6 @@ import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
-import { describe } from 'node:test';
 
 jest.mock('node:crypto');
 
