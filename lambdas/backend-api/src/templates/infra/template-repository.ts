@@ -22,8 +22,8 @@ import type {
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
-  GetCommand,
   PutCommand,
   QueryCommand,
   QueryCommandInput,
@@ -75,22 +75,29 @@ export class TemplateRepository {
     user: UserWithOptionalClient
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
-      const responses = await Promise.all([
-        this.client.send(
-          new GetCommand({
-            TableName: this.templatesTableName,
-            Key: { id: templateId, owner: `CLIENT#${user.clientId}` },
-          })
-        ),
-        this.client.send(
-          new GetCommand({
-            TableName: this.templatesTableName,
-            Key: { id: templateId, owner: user.userId },
-          })
-        ),
-      ]);
+      const cmd = new BatchGetCommand({
+        RequestItems: {
+          [this.templatesTableName]: {
+            Keys: [
+              { id: templateId, owner: user.userId },
+              ...(user.clientId
+                ? [{ id: templateId, owner: user.clientId }]
+                : []),
+            ],
+          },
+        },
+      });
 
-      const items = responses.flatMap(({ Item }) => (Item ? [Item] : []));
+      const response = await this.client.send(cmd);
+
+      const failures =
+        response.UnprocessedKeys?.[this.templatesTableName]?.Keys;
+
+      if (failures?.length) {
+        throw new Error('Partial failure of batch get templates');
+      }
+
+      const items = response.Responses?.[this.templatesTableName] ?? [];
 
       if (items.length === 0) {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
@@ -103,34 +110,6 @@ export class TemplateRepository {
       }
 
       const item = items[0] as DatabaseTemplate;
-
-      if (item.templateStatus === 'DELETED') {
-        return failure(ErrorCase.NOT_FOUND, 'Template not found');
-      }
-
-      return success(item);
-    } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Failed to get template', error);
-    }
-  }
-
-  async getByIdAndOwner(
-    templateId: string,
-    owner: string
-  ): Promise<ApplicationResult<DatabaseTemplate>> {
-    try {
-      const response = await this.client.send(
-        new GetCommand({
-          TableName: this.templatesTableName,
-          Key: { id: templateId, owner },
-        })
-      );
-
-      if (!response?.Item) {
-        return failure(ErrorCase.NOT_FOUND, 'Template not found');
-      }
-
-      const item = response.Item as DatabaseTemplate;
 
       if (item.templateStatus === 'DELETED') {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
@@ -264,8 +243,6 @@ export class TemplateRepository {
   }
 
   async submit(templateId: string, userId: string) {
-    console.log('submit()');
-
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -444,11 +421,12 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when setting letter validation status:',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when setting letter validation status:',
+            error
+          );
       } else {
         throw error;
       }
@@ -534,11 +512,12 @@ export class TemplateRepository {
       }
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when adding proof details to template',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when adding proof details to template',
+            error
+          );
 
         // the second update has a stronger condition than the first, so if this one fails no need to try the second
         return;
@@ -551,9 +530,11 @@ export class TemplateRepository {
       await this.updateStatusToProofAvailable(templateKey);
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error('Conditional check setting template status', error, {
-          templateKey,
-        });
+        logger
+          .child({
+            templateKey,
+          })
+          .error('Conditional check setting template status', error);
       } else {
         throw error;
       }
@@ -633,11 +614,12 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when setting file virus scan status:',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when setting file virus scan status:',
+            error
+          );
       } else {
         throw error;
       }
