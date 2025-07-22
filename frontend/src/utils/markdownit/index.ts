@@ -36,8 +36,8 @@ export function renderEmailMarkdown(value: string) {
 
   markdown.block.ruler.at('heading', headingNoSpaces); // Support headings with no spaces after the hash (#Heading)
 
-  markdown.renderer.rules.heading_open = headingMaxDepth; // Only support headings up to <h2> - otherwise render <p>
-  markdown.renderer.rules.heading_close = headingMaxDepth; // Only support headings up to <h2> - otherwise render <p>
+  markdown.renderer.rules.heading_open = headingMaxDepth(2); // Only support headings up to <h2> - otherwise render <p>
+  markdown.renderer.rules.heading_close = headingMaxDepth(2); // Only support headings up to <h2> - otherwise render <p>
 
   return markdown.render(value);
 }

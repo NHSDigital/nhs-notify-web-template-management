@@ -1,5 +1,6 @@
 // Patched version of https://github.com/markdown-it/markdown-it/blob/13.0.2/lib/rules_block/hr.js
 // Modified to remove support for *** and ---
+// This to emulate the NHS App behaviour
 
 // Disable lint rule in patched file as I want to stick to the original source code as much as possible
 /* eslint-disable unicorn/prefer-code-point, unicorn/number-literal-case, unicorn/new-for-builtins */
