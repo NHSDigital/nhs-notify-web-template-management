@@ -323,7 +323,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
         <dt
           class="nhsuk-summary-list__key"
         >
-          Test personalisation file
+          Example personalisation file
         </dt>
         <dd
           class="nhsuk-summary-list__value"
@@ -643,7 +643,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
         <dt
           class="nhsuk-summary-list__key"
         >
-          Test personalisation file
+          Example personalisation file
         </dt>
         <dd
           class="nhsuk-summary-list__value"

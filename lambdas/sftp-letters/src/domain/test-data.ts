@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parse } from 'csv-parse/sync';
 import { staticPdsExampleData } from './synthetic-batch-data';
 
-export function parseTestPersonalisation(csv: string) {
+export function parseExamplePersonalisation(csv: string) {
   const [, ...rows] = parse(csv);
 
   const input = z

@@ -933,7 +933,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             >
               Error: 
             </span>
-            Check that the personalisation fields in your template file match the fields in your test personalisation file
+            Check that the personalisation fields in your template file match the fields in your example personalisation file
           </span>
         </div>
         <h1
@@ -1036,7 +1036,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
               <dt
                 class="nhsuk-summary-list__key"
               >
-                Test personalisation file
+                Example personalisation file
               </dt>
               <dd
                 class="nhsuk-summary-list__value"
