@@ -161,7 +161,6 @@ module.exports = {
     .flatMap(journey => allJourneys[journey] || [])
     .map(performCheck),
   defaults: {
-    // concurrency: 1,
     reporters: [
       'cli',
       [
@@ -174,7 +173,6 @@ module.exports = {
     ],
     rules: ['Principle1.Guideline1_3.1_3_1_AAA'],
     chromeLaunchConfig: {
-      // headless: false,
       args: ['--no-sandbox'],
     },
     standard: 'WCAG2AA',
