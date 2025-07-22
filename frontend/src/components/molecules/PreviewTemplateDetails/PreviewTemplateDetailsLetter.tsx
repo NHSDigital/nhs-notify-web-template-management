@@ -51,7 +51,7 @@ export default function PreviewTemplateDetailsLetter({
           {template.files.testDataCsv?.fileName && (
             <SummaryList.Row>
               <SummaryList.Key>
-                {rowHeadings.testPersonalisationFile}
+                {rowHeadings.examplePersonalisationFile}
               </SummaryList.Key>
               <SummaryList.Value>
                 <Filename filename={template.files.testDataCsv.fileName} />
