@@ -88,6 +88,7 @@ exports[`ViewNHSAppTemplate component matches submitted snapshot 1`] = `
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
+                  data-test-id="status-tag-submitted"
                 >
                   Submitted
                 </strong>

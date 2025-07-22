@@ -55,6 +55,7 @@ exports[`PreviewTemplateDetailsEmail matches snapshot 1`] = `
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
+            data-test-id="status-tag-submitted"
           >
             Submitted
           </strong>
@@ -174,6 +175,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange"
+            data-test-id="status-tag-proof-available"
           >
             Proof available
           </strong>
@@ -274,6 +276,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
         >
           <strong
             class="nhsuk-tag nhsuk-tag--orange"
+            data-test-id="status-tag-proof-available"
           >
             Proof available
           </strong>
@@ -492,6 +495,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
         >
           <strong
             class="nhsuk-tag nhsuk-tag--blue"
+            data-test-id="status-tag-pending-validation"
           >
             Checking files
           </strong>
@@ -592,6 +596,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
         >
           <strong
             class="nhsuk-tag nhsuk-tag--blue"
+            data-test-id="status-tag-pending-validation"
           >
             Checking files
           </strong>
@@ -727,6 +732,7 @@ exports[`PreviewTemplateDetailsNhsApp matches snapshot 1`] = `
         >
           <strong
             class="nhsuk-tag"
+            data-test-id="status-tag-not-yet-submitted"
           >
             Not yet submitted
           </strong>
@@ -821,6 +827,7 @@ exports[`PreviewTemplateDetailsSms matches snapshot 1`] = `
         >
           <strong
             class="nhsuk-tag nhsuk-tag--grey"
+            data-test-id="status-tag-submitted"
           >
             Submitted
           </strong>

@@ -40,6 +40,7 @@ describe('Preview email form renders', () => {
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message: 'message',
           id: 'template-id',
@@ -61,6 +62,7 @@ describe('Preview email form renders', () => {
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message: 'message',
           id: 'template-id',
@@ -82,6 +84,7 @@ describe('Preview email form renders', () => {
             },
           },
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message: 'message',
           id: 'template-id',
@@ -98,6 +101,7 @@ describe('Preview email form renders', () => {
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message: 'message',
           id: 'template-id',
@@ -128,6 +132,7 @@ describe('Preview email form renders', () => {
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message,
           id: 'template-id',
@@ -151,6 +156,7 @@ describe('Preview email form renders', () => {
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
           validationError: undefined,
           name: 'test-template-email',
+          templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
           message: 'message',
           id: 'template-id',

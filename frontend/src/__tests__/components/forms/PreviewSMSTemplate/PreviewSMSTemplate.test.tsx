@@ -40,6 +40,7 @@ describe('Review sms form renders', () => {
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
           id: 'template-id',
         })}
@@ -60,6 +61,7 @@ describe('Review sms form renders', () => {
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
           id: 'template-id',
         })}
@@ -80,6 +82,7 @@ describe('Review sms form renders', () => {
             },
           },
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
           id: 'template-id',
         })}
@@ -95,6 +98,7 @@ describe('Review sms form renders', () => {
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
           id: 'template-id',
         })}
@@ -124,6 +128,7 @@ describe('Review sms form renders', () => {
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           validationError: undefined,
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message,
           id: 'template-id',
         })}
@@ -142,6 +147,7 @@ describe('Review sms form renders', () => {
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
           name: 'test-template-sms',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'example',
           id: 'template-id',
         })}
