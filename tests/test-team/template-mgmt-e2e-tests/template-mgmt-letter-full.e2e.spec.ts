@@ -14,7 +14,6 @@ import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-pro
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { EmailHelper } from '../helpers/email-helper';
 import { loginAsUser } from '../helpers/auth/login-as-user';
-import { Template } from '../helpers/types';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 const emailHelper = new EmailHelper();
