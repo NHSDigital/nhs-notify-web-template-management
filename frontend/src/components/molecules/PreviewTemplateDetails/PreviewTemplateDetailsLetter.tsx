@@ -12,6 +12,8 @@ import concatClassNames from '@utils/concat-class-names';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
+const clientOwnerPrefix = 'CLIENT#';
+
 export default function PreviewTemplateDetailsLetter({
   template,
 }: {
@@ -27,8 +29,10 @@ export default function PreviewTemplateDetailsLetter({
       template.templateStatus === 'SUBMITTED') &&
     template.owner;
 
-  const owner = template.owner ?? '';
-  const proofOwner = owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
+  const proofOwner =
+    template.owner && template.owner.startsWith(clientOwnerPrefix)
+      ? template.owner.slice(clientOwnerPrefix.length + 1)
+      : template.owner;
 
   return (
     <>
