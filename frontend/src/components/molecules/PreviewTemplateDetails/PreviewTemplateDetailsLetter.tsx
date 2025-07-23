@@ -17,8 +17,6 @@ export default function PreviewTemplateDetailsLetter({
 }: {
   template: LetterTemplate;
 }) {
-  console.log(template);
-
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
     .map(({ fileName }) => fileName);

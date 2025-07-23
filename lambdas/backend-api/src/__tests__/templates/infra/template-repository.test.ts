@@ -179,7 +179,7 @@ describe('templateRepository', () => {
           [templatesTableName]: [
             {
               id: 'abc-def-ghi-jkl-123',
-              owner: 'real-owner',
+              owner: 'userid',
               templateStatus: 'DELETED',
             },
           ],
@@ -188,7 +188,7 @@ describe('templateRepository', () => {
       });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: undefined,
       });
 
@@ -205,7 +205,7 @@ describe('templateRepository', () => {
         .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: undefined,
       });
 
@@ -230,7 +230,7 @@ describe('templateRepository', () => {
             Keys: [
               {
                 id: 'abc-def-ghi-jkl-123',
-                owner: 'real-owner',
+                owner: 'userid',
               },
             ],
           },
@@ -238,7 +238,7 @@ describe('templateRepository', () => {
       });
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: undefined,
       });
 
@@ -328,7 +328,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient.on(QueryCommand).resolves({ Items: undefined });
 
       const response = await templateRepository.list({
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: undefined,
       });
 
@@ -343,7 +343,7 @@ describe('templateRepository', () => {
         .rejects(new Error('InternalServerError'));
 
       const response = await templateRepository.list({
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: undefined,
       });
 
@@ -360,7 +360,8 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       const clientOwnedTemplate = {
-        id: 'id',
+        ...letterTemplate,
+        id: 'client-owned',
         owner: 'CLIENT#client',
       };
 
@@ -374,7 +375,7 @@ describe('templateRepository', () => {
         });
 
       const response = await templateRepository.list({
-        userId: 'real-owner',
+        userId: 'userid',
         clientId: 'client',
       });
 
@@ -401,7 +402,7 @@ describe('templateRepository', () => {
         },
         ExpressionAttributeValues: {
           ':deletedStatus': 'DELETED',
-          ':owner': 'real-owner',
+          ':owner': 'userid',
         },
         FilterExpression: '#status <> :deletedStatus',
         KeyConditionExpression: '#owner = :owner',

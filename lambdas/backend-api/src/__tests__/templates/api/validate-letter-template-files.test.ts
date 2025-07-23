@@ -148,6 +148,93 @@ describe('guard duty handler', () => {
     );
   });
 
+  test('validates a client-owned template', async () => {
+    const { handler, mocks } = setup();
+
+    const clientId = 'clientid';
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    const template = mock<DatabaseTemplate>({
+      files: {
+        pdfTemplate: {
+          fileName: '',
+          virusScanStatus: 'PASSED',
+          currentVersion: versionId,
+        },
+        testDataCsv: undefined,
+      },
+      templateStatus: 'PENDING_VALIDATION',
+      language: 'en',
+      owner: `CLIENT#${clientId}`,
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: template,
+    });
+
+    const pdfData = Uint8Array.from('pdf');
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(pdfData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
+    const pdf = mock<TemplatePdf>({
+      personalisationParameters: ['firstName', 'parameter_1'],
+    });
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    mocks.validateLetterTemplateFiles.mockReturnValueOnce(true);
+
+    await handler(event);
+
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: clientId,
+      clientId: clientId,
+    });
+
+    expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
+      { id: templateId, owner: clientId },
+      'pdf-template',
+      versionId
+    );
+
+    expect(mocks.TemplatePdf).toHaveBeenCalledWith(
+      { id: templateId, owner: clientId },
+      pdfData
+    );
+
+    expect(pdf.parse).toHaveBeenCalled();
+
+    expect(mocks.validateLetterTemplateFiles).toHaveBeenCalledWith(
+      pdf,
+      undefined
+    );
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner: `CLIENT#${clientId}` },
+      versionId,
+      true,
+      pdf.personalisationParameters,
+      [],
+      false
+    );
+  });
+
   test('skips personalisation field validation for RTL languages', async () => {
     // arrange
     const { handler, mocks } = setup();

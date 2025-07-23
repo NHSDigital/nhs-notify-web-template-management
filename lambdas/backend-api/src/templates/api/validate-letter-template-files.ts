@@ -98,6 +98,7 @@ export class ValidateLetterTemplateFilesLambda {
       });
       return;
     }
+
     if (template.templateStatus !== 'PENDING_VALIDATION') {
       log.info('Template is not pending validation - skipping', {
         templateStatus: template.templateStatus,
@@ -183,7 +184,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { id: templateId, owner },
+        { id: templateId, owner: getTemplateResult.data.owner },
         versionId,
         false,
         [],
@@ -198,7 +199,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { id: templateId, owner },
+      { id: templateId, owner: getTemplateResult.data.owner },
       versionId,
       valid,
       pdf.personalisationParameters,
