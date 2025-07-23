@@ -1,24 +1,33 @@
 # Files and folders to ignore when syncing nhs-notify-repository-template back in to this repository
-.github/workflows/
 nhs-notify-repository-template/
-.github/CODEOWNERS
 
 # Files and Folders in this repository to ignore
+.editorconfig
+.github/CODEOWNERS
+.github/ISSUE_TEMPLATE
+.github/workflows/cicd-*.yaml
+.github/workflows/stage-*.yaml
+.gitleaksignore
 .vscode/
+Makefile
 CHANGELOG.md
 project.code-workspace
 README.md
-VERSION
-.editorconfig
-.gitleaksignore
-scripts/tests/
-Makefile
 scripts/config/sonar-scanner.properties
+scripts/tests/
+VERSION
 
 # Files and Folders in the template repository to disregard
 .devcontainer/
-.github/workflows/cicd-*.yaml
+.github/actions/build-docs
+.github/workflows/*.disabled
 */examples/
 docs/
+eslint.config.mjs
 infrastructure/terraform/components/
-docker/examples/
+lambdas/example-lambda/
+package-lock.json
+package.json
+scripts/**/examples/
+scripts/terraform/terraform.mk
+src/.vscode/
