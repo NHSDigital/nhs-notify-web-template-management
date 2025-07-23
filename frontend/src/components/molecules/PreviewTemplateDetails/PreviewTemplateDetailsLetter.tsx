@@ -31,7 +31,7 @@ export default function PreviewTemplateDetailsLetter({
 
   const proofOwner =
     template.owner && template.owner.startsWith(clientOwnerPrefix)
-      ? template.owner.slice(clientOwnerPrefix.length + 1)
+      ? template.owner.slice(clientOwnerPrefix.length)
       : template.owner;
 
   return (
