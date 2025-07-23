@@ -53,7 +53,7 @@ describe('serverIsFeatureEnabled', () => {
     });
 
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
-      error: { code: 500, message: 'server error' },
+      error: { errorMeta: { code: 500, description: 'server error' } },
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
