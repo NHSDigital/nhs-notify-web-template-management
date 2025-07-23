@@ -27,7 +27,7 @@ describe('amplify-utils', () => {
     jest.resetAllMocks();
   });
 
-  test('getSessionServer - should return the auth token, clientID and userSub', async () => {
+  test('getSessionServer - should return the auth token and clientID', async () => {
     const mockAccessToken = {
       toString: () =>
         sign(
@@ -73,7 +73,7 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
+    expect(result).toEqual({ accessToken: undefined });
   });
 
   test('getSessionServer - should return undefined properties if an error occurs', async () => {
@@ -83,7 +83,7 @@ describe('amplify-utils', () => {
 
     const result = await getSessionServer();
 
-    expect(result).toEqual({ accessToken: undefined, userSub: undefined });
+    expect(result).toEqual({ accessToken: undefined });
   });
 
   describe('getSessionId', () => {
