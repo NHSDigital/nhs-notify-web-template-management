@@ -18,10 +18,12 @@ describe('EmailClient', () => {
     it('does not send email when no sender email address provided', async () => {
       const client = new EmailClient(sesClient, '', recipientEmails, logger);
 
-      const templateId = 'client_campaign_template-id_en_x0';
+      const templateId = 'template-id';
+      const expandedTemplateId = 'client_campaign_template-id_en_x0';
 
       await client.sendProofRequestedEmailToSupplier(
         templateId,
+        expandedTemplateId,
         'template-name',
         'supplier1'
       );
@@ -30,6 +32,7 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending proof requested email to suppliers because no email address is provided',
+        expandedTemplateId,
         templateId,
         templateName: 'template-name',
         supplier: 'supplier1',
@@ -44,10 +47,12 @@ describe('EmailClient', () => {
         logger
       );
 
-      const templateId = 'client_campaign_template-id_en_x0';
+      const templateId = 'template-id';
+      const expandedTemplateId = 'client_campaign_template-id_en_x0';
 
       await client.sendProofRequestedEmailToSupplier(
         templateId,
+        expandedTemplateId,
         'template-name',
         'supplier1'
       );
@@ -61,7 +66,7 @@ describe('EmailClient', () => {
       }
 
       const emailContent = sesInput.input.RawMessage?.Data?.toString();
-      expect(emailContent).toContain(templateId);
+      expect(emailContent).toContain(expandedTemplateId);
       expect(emailContent).toContain('template-name');
       expect(emailContent).toContain('supplier1');
     });
@@ -148,12 +153,14 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
+        expandedTemplateId,
         templateId: mockTemplate.id,
         supplier: 'supplier2',
       });
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
+        expandedTemplateId,
         templateId: mockTemplate.id,
         supplier: 'supplier1',
       });
