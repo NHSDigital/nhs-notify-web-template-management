@@ -14,6 +14,7 @@ import { TemplateMgmtRequestProofPage } from '../pages/template-mgmt-request-pro
 import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda';
 import { EmailHelper } from '../helpers/email-helper';
 import { loginAsUser } from '../helpers/auth/login-as-user';
+import { Template } from '../helpers/types';
 
 const lambdaClient = new LambdaClient({ region: 'eu-west-2' });
 const emailHelper = new EmailHelper();
@@ -232,6 +233,8 @@ function requestProof(
 
       await previewTemplatePage.clickContinueButton();
     }).toPass({ timeout: 60_000 });
+
+    return expandedTemplateId;
   });
 }
 
@@ -256,7 +259,7 @@ function submit(
 }
 
 function checkEmail(
-  templateId: string,
+  expandedTemplateId: string,
   testStart: Date,
   prefix: string,
   emailTitle: string
@@ -265,11 +268,11 @@ function checkEmail(
     await expect(async () => {
       const emailContents = await emailHelper.getEmailForTemplateId(
         prefix,
-        templateId,
+        expandedTemplateId,
         testStart
       );
 
-      expect(emailContents).toContain(templateId);
+      expect(emailContents).toContain(expandedTemplateId);
       expect(emailContents).toContain('Valid Letter Template'); // template name
       expect(emailContents).toContain(emailTitle);
     }).toPass({ timeout: 60_000 });
@@ -311,10 +314,14 @@ test.describe('letter complete e2e journey', () => {
 
     await continueAfterCreation(page);
 
-    await requestProof(page, templateStorageHelper, templateKey);
+    const expandedTemplateId = await requestProof(
+      page,
+      templateStorageHelper,
+      templateKey
+    );
 
     await checkEmail(
-      templateKey.id,
+      expandedTemplateId,
       testStart,
       process.env.TEST_PROOF_REQUESTED_EMAIL_PREFIX,
       'Proof Requested'
@@ -323,7 +330,7 @@ test.describe('letter complete e2e journey', () => {
     await submit(page, templateStorageHelper, templateKey);
 
     await checkEmail(
-      templateKey.id,
+      expandedTemplateId,
       testStart,
       process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
       'Template Submitted'
