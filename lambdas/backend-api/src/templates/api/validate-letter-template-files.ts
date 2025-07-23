@@ -54,9 +54,6 @@ export class ValidateLetterTemplateFilesLambda {
     return { batchItemFailures };
   };
 
-  /* eslint-disable sonarjs/todo-tag */
-  // TODO: CCM-10432 - remove userOrClientId and linter disables
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   guardDutyHandler = async (event: unknown) => {
     const { detail } = guardDutyEventValidator('PASSED').parse(event);
 
