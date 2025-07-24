@@ -35,27 +35,22 @@ export function validateLetterTemplateFiles(
       );
   }
 
-  const valid =
-    correctAddressLength &&
-    correctAddressLines &&
-    customParametersSensiblyFormatted &&
-    testFileHasExpectedNumberOfParameters &&
-    allCustomPersonalisationIsInTestFile;
+  const failedTests = Object.entries({
+    correctAddressLength,
+    correctAddressLines,
+    customParametersSensiblyFormatted,
+    requiredTestFileExists,
+    testFileHasExpectedNumberOfParameters,
+    allCustomPersonalisationIsInTestFile,
+  }).flatMap(([test, passed]) => (passed ? [] : [test]));
+
+  const valid = failedTests.length === 0;
 
   logger.info('Template file validation complete', {
     templateId: pdf.templateId,
     owner: pdf.owner,
     valid,
-    ...(!valid && {
-      checks: {
-        correctAddressLength,
-        correctAddressLines,
-        customParametersSensiblyFormatted,
-        requiredTestFileExists,
-        testFileHasExpectedNumberOfParameters,
-        allCustomPersonalisationIsInTestFile,
-      },
-    }),
+    failedTests,
   });
 
   return valid;

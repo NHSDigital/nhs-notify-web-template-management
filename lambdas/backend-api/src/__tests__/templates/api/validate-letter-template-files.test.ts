@@ -683,6 +683,68 @@ describe('guard duty handler', () => {
     ).not.toHaveBeenCalled();
   });
 
+  test('does not attempt to fetch client configuration if no clientId', async () => {
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    const template = mock<DatabaseTemplate>({
+      files: {
+        pdfTemplate: {
+          fileName: '',
+          virusScanStatus: 'PASSED',
+          currentVersion: versionId,
+        },
+        testDataCsv: undefined,
+      },
+      templateStatus: 'PENDING_VALIDATION',
+      language: 'en',
+      owner,
+      clientId: undefined,
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: template,
+    });
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(
+      Uint8Array.from('pdf')
+    );
+
+    const pdf = mock<TemplatePdf>({
+      personalisationParameters: ['a'],
+    });
+
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    mocks.validateLetterTemplateFiles.mockReturnValueOnce(true);
+
+    await handler(event);
+
+    expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      true,
+      pdf.personalisationParameters,
+      [],
+      false
+    );
+  });
+
   test("errors if the template data can't be loaded", async () => {
     const { handler, mocks } = setup();
 
