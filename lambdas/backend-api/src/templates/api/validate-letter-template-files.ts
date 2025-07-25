@@ -71,6 +71,12 @@ export class ValidateLetterTemplateFilesLambda {
 
     const { error: getTemplateError, data: template } =
       await this.templateRepository.get(templateId, {
+        /*
+          Until migration to client-ownership is complete, we don't know whether the
+          'owner' segment in the S3 path is a clientId or a userId. Once the migration
+          is complete, we will know unambiguously that it's a clientId and this
+          doubly attempted fetch won't be required
+        */
         userId: owner,
         clientId: owner,
       });
