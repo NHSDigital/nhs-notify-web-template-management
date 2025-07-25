@@ -118,9 +118,11 @@ describe('LetterUploadRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 500,
-          details: undefined,
-          message: 'Failed to upload letter files',
+          errorMeta: {
+            code: 500,
+            details: undefined,
+            description: 'Failed to upload letter files',
+          },
         },
       });
 

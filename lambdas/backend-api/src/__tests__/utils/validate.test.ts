@@ -13,16 +13,18 @@ describe('validate', () => {
 
     expect(result).toEqual({
       error: {
-        code: 400,
-        message: 'Request failed validation',
         actualError: {
           fieldErrors: {
             id: ['Invalid input: expected string, received undefined'],
           },
           formErrors: [],
         },
-        details: {
-          id: 'Invalid input: expected string, received undefined',
+        errorMeta: {
+          code: 400,
+          description: 'Request failed validation',
+          details: {
+            id: 'Invalid input: expected string, received undefined',
+          },
         },
       },
     });

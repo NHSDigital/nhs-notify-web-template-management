@@ -42,10 +42,12 @@ describe('Template API - Update', () => {
 
     mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       error: {
-        code: 400,
-        message: 'Validation failed',
-        details: {
-          templateType: 'Invalid input: expected string, received undefined',
+        errorMeta: {
+          code: 400,
+          description: 'Validation failed',
+          details: {
+            templateType: 'Invalid input: expected string, received undefined',
+          },
         },
       },
       data: undefined,
@@ -108,8 +110,10 @@ describe('Template API - Update', () => {
 
     mocks.templateClient.updateTemplate.mockResolvedValueOnce({
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 

@@ -25,7 +25,7 @@ export function createHandler({
       getLetterUploadParts(base64body, contentType);
 
     if (getLetterPartsError) {
-      return apiFailure(400, getLetterPartsError.message);
+      return apiFailure(400, getLetterPartsError.errorMeta.description);
     }
 
     const { template, pdf, csv } = letterParts;
@@ -40,9 +40,9 @@ export function createHandler({
 
     if (createTemplateError) {
       return apiFailure(
-        createTemplateError.code,
-        createTemplateError.message,
-        createTemplateError.details
+        createTemplateError.errorMeta.code,
+        createTemplateError.errorMeta.description,
+        createTemplateError.errorMeta.details
       );
     }
 

@@ -150,7 +150,7 @@ describe('templateRepository', () => {
       });
 
       expect(response).toEqual({
-        error: { code: 404, message: 'Template not found' },
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
       });
     });
 
@@ -167,7 +167,7 @@ describe('templateRepository', () => {
       });
 
       expect(response).toEqual({
-        error: { code: 404, message: 'Template not found' },
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
       });
     });
 
@@ -193,7 +193,7 @@ describe('templateRepository', () => {
       });
 
       expect(response).toEqual({
-        error: { code: 404, message: 'Template not found' },
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
       });
     });
 
@@ -211,9 +211,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to get template',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
         },
       });
     });
@@ -244,9 +246,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to get template',
           actualError: new Error('Partial failure of batch get templates'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
         },
       });
     });
@@ -279,11 +283,13 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to get template',
           actualError: new Error(
             'Unexpectedly found both a client owned and a user owned template'
           ),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
         },
       });
     });
@@ -349,9 +355,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to list templates',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to list templates',
+          },
         },
       });
     });
@@ -442,9 +450,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to create template',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create template',
+          },
         },
       });
     });
@@ -570,7 +580,14 @@ describe('templateRepository', () => {
         );
 
         expect(response).toEqual({
-          error: { code, message, actualError: error, details },
+          error: {
+            actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+              details,
+            },
+          },
         });
       }
     );
@@ -596,9 +613,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -737,9 +756,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code,
-          message,
           actualError: error,
+          errorMeta: {
+            code,
+            description: message,
+          },
         },
       });
     });
@@ -758,9 +779,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -847,9 +870,11 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            code,
-            message,
             actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+            },
           },
         });
       }
@@ -869,9 +894,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -963,9 +990,11 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            code,
-            message,
             actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+            },
           },
         });
       }
@@ -986,9 +1015,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -1699,8 +1730,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 404,
-          message: 'Template not found',
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
         },
       });
     });
@@ -1726,8 +1759,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 400,
-          message: 'Template cannot be proofed',
+          errorMeta: {
+            code: 400,
+            description: 'Template cannot be proofed',
+          },
         },
       });
     });
@@ -1747,8 +1782,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 500,
-          message: 'Failed to update template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });

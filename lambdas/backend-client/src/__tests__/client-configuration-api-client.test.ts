@@ -60,7 +60,13 @@ describe('ClientConfiguration', () => {
     const notifyClientConfig = await apiClient.fetch('token');
 
     expect(notifyClientConfig).toEqual({
-      error: { code: 400, details: undefined, message: 'Invalid Request' },
+      error: {
+        errorMeta: {
+          code: 400,
+          details: undefined,
+          description: 'Invalid Request',
+        },
+      },
     });
   });
 
@@ -79,15 +85,17 @@ describe('ClientConfiguration', () => {
     const notifyClientConfig = await apiClient.fetch('token');
 
     expect(notifyClientConfig).toEqual({
-      error: expect.objectContaining({
-        code: 500,
-        details: expect.arrayContaining([
-          expect.objectContaining({
-            message: 'Invalid input: expected string, received number',
-            path: ['campaignId'],
-          }),
-        ]),
-      }),
+      error: {
+        errorMeta: expect.objectContaining({
+          code: 500,
+          details: expect.arrayContaining([
+            expect.objectContaining({
+              message: 'Invalid input: expected string, received number',
+              path: ['campaignId'],
+            }),
+          ]),
+        }),
+      },
     });
   });
 });

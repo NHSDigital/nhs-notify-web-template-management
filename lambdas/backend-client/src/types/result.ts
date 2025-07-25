@@ -1,13 +1,17 @@
 import { ErrorCase } from './error-cases';
 
-type ErrorResponse = {
+type ErrorMetadata = {
   code: ErrorCase;
-  message: string;
+  description: string;
   details?: unknown;
 };
 
 export type SuccessResult<T> = { error?: never } & { data: T };
 
-export type FailureResult = { error: ErrorResponse } & { data?: never };
+export type FailureResult = {
+  error: { errorMeta: ErrorMetadata; actualError?: unknown };
+} & {
+  data?: never;
+};
 
 export type Result<T> = SuccessResult<T> | FailureResult;

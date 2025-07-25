@@ -64,8 +64,10 @@ describe('Template API - Delete', () => {
 
     mocks.templateClient.deleteTemplate.mockResolvedValueOnce({
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 

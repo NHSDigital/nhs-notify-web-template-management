@@ -18,7 +18,7 @@ export class ClientConfigurationApiClient {
     );
 
     if (response.error) {
-      if (response.error.code === 404) {
+      if (response.error.errorMeta.code === 404) {
         return { data: null };
       }
 
@@ -32,9 +32,11 @@ export class ClientConfigurationApiClient {
     if (parseResult.error) {
       return {
         error: {
-          message: parseResult.error.message,
-          code: ErrorCase.INTERNAL,
-          details: parseResult.error.issues,
+          errorMeta: {
+            description: parseResult.error.message,
+            code: ErrorCase.INTERNAL,
+            details: parseResult.error.issues,
+          },
         },
       };
     }

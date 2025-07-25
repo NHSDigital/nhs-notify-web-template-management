@@ -415,8 +415,10 @@ describe('create-letter', () => {
 
     mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 

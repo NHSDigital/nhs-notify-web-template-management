@@ -22,7 +22,11 @@ export function createHandler({
     });
 
     if (error) {
-      return apiFailure(error.code, error.message, error.details);
+      return apiFailure(
+        error.errorMeta.code,
+        error.errorMeta.description,
+        error.errorMeta.details
+      );
     }
 
     return apiSuccess(200, data);

@@ -54,9 +54,9 @@ export class TemplateClient {
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
     if (validationResult.error) {
-      log.error('Request failed validation', {
-        validationResult,
-      });
+      log
+        .child(validationResult.error.errorMeta)
+        .error('Request failed validation', validationResult.error.actualError);
 
       return validationResult;
     }
@@ -66,9 +66,12 @@ export class TemplateClient {
       : { data: null };
 
     if (clientConfigurationResult.error) {
-      log.error('Failed to fetch client configuration', {
-        clientConfigurationResult,
-      });
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
 
       return clientConfigurationResult;
     }
@@ -82,9 +85,12 @@ export class TemplateClient {
     );
 
     if (createResult.error) {
-      log.error('Failed to save template to the database', {
-        createResult,
-      });
+      log
+        .child(createResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          createResult.error.actualError
+        );
 
       return createResult;
     }
@@ -114,9 +120,12 @@ export class TemplateClient {
     );
 
     if (templateValidationResult.error) {
-      log.error('Request failed validation', {
-        validationResult: templateValidationResult,
-      });
+      log
+        .child(templateValidationResult.error.errorMeta)
+        .error(
+          'Request failed validation',
+          templateValidationResult.error.actualError
+        );
 
       return templateValidationResult;
     }
@@ -163,9 +172,12 @@ export class TemplateClient {
       : { data: null };
 
     if (clientConfigurationResult.error) {
-      log.error('Failed to fetch client configuration', {
-        clientConfigurationResult,
-      });
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
 
       return clientConfigurationResult;
     }
@@ -179,9 +191,12 @@ export class TemplateClient {
     );
 
     if (createResult.error) {
-      log.error('Failed to save template to the database', {
-        createResult,
-      });
+      log
+        .child(createResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          createResult.error.actualError
+        );
 
       return createResult;
     }
@@ -201,9 +216,9 @@ export class TemplateClient {
     );
 
     if (uploadResult.error) {
-      log.error('Failed to upload letter files', {
-        uploadResult,
-      });
+      log
+        .child(uploadResult.error.errorMeta)
+        .error('Failed to upload letter files', uploadResult.error.actualError);
 
       return uploadResult;
     }
@@ -234,7 +249,9 @@ export class TemplateClient {
     const validationResult = await validate($CreateUpdateNonLetter, template);
 
     if (validationResult.error) {
-      log.error('Invalid template', { validationResult });
+      log
+        .child(validationResult.error.errorMeta)
+        .error('Invalid template', validationResult.error.actualError);
 
       return validationResult;
     }
@@ -247,7 +264,9 @@ export class TemplateClient {
     );
 
     if (updateResult.error) {
-      log.error('Failed to update template', { updateResult });
+      log
+        .child(updateResult.error.errorMeta)
+        .error('Failed to update template', updateResult.error.actualError);
 
       return updateResult;
     }
@@ -273,9 +292,12 @@ export class TemplateClient {
     );
 
     if (submitResult.error) {
-      log.error('Failed to save template to the database', {
-        submitResult,
-      });
+      log
+        .child(submitResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          submitResult.error.actualError
+        );
 
       return submitResult;
     }
@@ -301,9 +323,12 @@ export class TemplateClient {
     );
 
     if (deleteResult.error) {
-      log.error('Failed to save template to the database', {
-        createResult: deleteResult,
-      });
+      log
+        .child(deleteResult.error.errorMeta)
+        .error(
+          'Failed to save template to the database',
+          deleteResult.error.actualError
+        );
 
       return deleteResult;
     }
@@ -325,7 +350,9 @@ export class TemplateClient {
     const getResult = await this.templateRepository.get(templateId, user);
 
     if (getResult.error) {
-      log.error('Failed to get template', { getResult });
+      log
+        .child(getResult.error.errorMeta)
+        .error('Failed to get template', getResult.error.actualError);
 
       return getResult;
     }
@@ -344,10 +371,9 @@ export class TemplateClient {
     const listResult = await this.templateRepository.list(user);
 
     if (listResult.error) {
-      this.logger.error('Failed to list templates', {
-        listResult,
-        user,
-      });
+      this.logger
+        .child({ ...listResult.error.errorMeta, user })
+        .error('Failed to list templates', listResult.error.actualError);
 
       return listResult;
     }
@@ -370,9 +396,12 @@ export class TemplateClient {
       : { data: null };
 
     if (clientConfigurationResult.error) {
-      log.error('Failed to fetch client configuration', {
-        clientConfigurationResult,
-      });
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
 
       return clientConfigurationResult;
     }
@@ -394,11 +423,7 @@ export class TemplateClient {
 
     if (proofRequestUpdateResult.error) {
       log
-        .child({
-          code: proofRequestUpdateResult.error.code,
-          description: proofRequestUpdateResult.error.message,
-          details: proofRequestUpdateResult.error.details,
-        })
+        .child(proofRequestUpdateResult.error.errorMeta)
         .error(proofRequestUpdateResult.error.actualError);
 
       return proofRequestUpdateResult;
@@ -446,11 +471,7 @@ export class TemplateClient {
 
     if (sendQueueResult.error) {
       log
-        .child({
-          code: sendQueueResult.error.code,
-          description: sendQueueResult.error.message,
-          details: sendQueueResult.error.details,
-        })
+        .child(sendQueueResult.error.errorMeta)
         .error(sendQueueResult.error.actualError);
 
       return sendQueueResult;
@@ -471,11 +492,16 @@ export class TemplateClient {
     );
 
     if (updateStatusResult.error) {
-      this.logger.error('Failed to save template to the database', {
-        createResult: updateStatusResult,
-        templateId,
-        user,
-      });
+      this.logger
+        .child({
+          templateId,
+          user,
+          ...updateStatusResult.error.errorMeta,
+        })
+        .error(
+          'Failed to save template to the database',
+          updateStatusResult.error.actualError
+        );
 
       return updateStatusResult;
     }
@@ -501,9 +527,12 @@ export class TemplateClient {
       : { data: null };
 
     if (clientConfigurationResult.error) {
-      log.error('Failed to fetch client configuration', {
-        clientConfigurationResult,
-      });
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
 
       return clientConfigurationResult;
     }
