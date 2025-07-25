@@ -127,6 +127,7 @@ export class App {
       // send email to supplier
       await this.emailClient.sendProofRequestedEmailToSupplier(
         templateId,
+        expandedTemplateId,
         templateName,
         supplier
       );

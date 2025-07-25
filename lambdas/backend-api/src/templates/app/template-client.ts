@@ -322,10 +322,7 @@ export class TemplateClient {
       user,
     });
 
-    const getResult = await this.templateRepository.get(
-      templateId,
-      user.userId
-    );
+    const getResult = await this.templateRepository.get(templateId, user);
 
     if (getResult.error) {
       log.error('Failed to get template', { getResult });
@@ -344,7 +341,7 @@ export class TemplateClient {
   async listTemplates(
     user: UserWithOptionalClient
   ): Promise<Result<TemplateDto[]>> {
-    const listResult = await this.templateRepository.list(user.userId);
+    const listResult = await this.templateRepository.list(user);
 
     if (listResult.error) {
       this.logger.error('Failed to list templates', {
@@ -524,8 +521,6 @@ export class TemplateClient {
   private mapDatabaseObjectToDTO(
     databaseTemplate: DatabaseTemplate
   ): TemplateDto | undefined {
-    const { owner: _1, version: _2, ...templateDTO } = databaseTemplate;
-
-    return isTemplateDtoValid(templateDTO);
+    return isTemplateDtoValid(databaseTemplate);
   }
 }

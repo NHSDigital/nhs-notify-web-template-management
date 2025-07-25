@@ -22,7 +22,6 @@ describe('CreateLetterTemplatePage', () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
       clientId: 'client1',
-      userSub: 'sub',
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
@@ -40,7 +39,6 @@ describe('CreateLetterTemplatePage', () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
       clientId: 'client1',
-      userSub: 'sub',
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
@@ -61,7 +59,6 @@ describe('CreateLetterTemplatePage', () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
       clientId: undefined,
-      userSub: 'sub',
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
@@ -84,7 +81,6 @@ describe('CreateLetterTemplatePage', () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
       clientId: 'client2',
-      userSub: 'sub',
     });
     mockFetchClient.mockResolvedValueOnce({
       data: {
