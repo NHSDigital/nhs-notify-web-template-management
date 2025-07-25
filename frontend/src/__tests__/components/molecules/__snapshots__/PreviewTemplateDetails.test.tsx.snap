@@ -373,7 +373,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             <li>
               <a
                 data-testid="proof-link_a.pdf"
-                href="/templates/files/undefined/proofs/template-id/a.pdf"
+                href="/templates/files/owner/proofs/template-id/a.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -404,7 +404,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             <li>
               <a
                 data-testid="proof-link_b.pdf"
-                href="/templates/files/undefined/proofs/template-id/b.pdf"
+                href="/templates/files/owner/proofs/template-id/b.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
               >

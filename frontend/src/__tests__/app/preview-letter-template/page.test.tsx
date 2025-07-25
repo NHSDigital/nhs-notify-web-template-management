@@ -21,14 +21,7 @@ const redirectMock = jest.mocked(redirect);
 const getTemplateMock = jest.mocked(getTemplate);
 
 const templateDTO = {
-  id: 'template-id',
-  templateType: 'LETTER',
-  templateStatus: 'NOT_YET_SUBMITTED',
-  name: 'template-name',
   createdAt: '2025-01-13T10:19:25.579Z',
-  updatedAt: '2025-01-13T10:19:25.579Z',
-  letterType: 'x0',
-  language: 'en',
   files: {
     pdfTemplate: {
       fileName: 'template.pdf',
@@ -41,6 +34,13 @@ const templateDTO = {
       virusScanStatus: 'FAILED',
     },
   },
+  id: 'template-id',
+  language: 'en',
+  letterType: 'x0',
+  name: 'template-name',
+  templateStatus: 'NOT_YET_SUBMITTED',
+  templateType: 'LETTER',
+  updatedAt: '2025-01-13T10:19:25.579Z',
 } satisfies TemplateDto;
 
 const letterTemplate: LetterTemplate = {

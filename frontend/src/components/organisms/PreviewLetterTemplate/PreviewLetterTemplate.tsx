@@ -20,8 +20,7 @@ type ButtonDetails = { text: string; href: string };
 
 export function PreviewLetterTemplate({
   template,
-  user,
-}: Readonly<{ template: LetterTemplate; user?: string }>) {
+}: Readonly<{ template: LetterTemplate }>) {
   const {
     backLinkText,
     errorHeading,
@@ -85,7 +84,7 @@ export function PreviewLetterTemplate({
                 ))}
               </ErrorSummary>
             )}
-            <PreviewTemplateDetailsLetter template={template} user={user} />
+            <PreviewTemplateDetailsLetter template={template} />
 
             {template.templateStatus === 'PROOF_AVAILABLE' ? (
               <section className='nhsuk-u-reading-width'>

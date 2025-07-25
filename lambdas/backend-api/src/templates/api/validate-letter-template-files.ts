@@ -1,4 +1,7 @@
-import { logger } from 'nhs-notify-web-template-management-utils/logger';
+import {
+  logger,
+  type Logger,
+} from 'nhs-notify-web-template-management-utils/logger';
 import {
   guardDutyEventValidator,
   isRightToLeft,
@@ -38,9 +41,11 @@ export class ValidateLetterTemplateFilesLambda {
       try {
         await this.guardDutyHandler(JSON.parse(record.body));
       } catch (error) {
-        logger.error('Failed processing record', error, {
-          messageId: record.messageId,
-        });
+        logger
+          .child({
+            messageId: record.messageId,
+          })
+          .error('Failed processing record', error);
 
         batchItemFailures.push({ itemIdentifier: record.messageId });
       }
@@ -64,18 +69,23 @@ export class ValidateLetterTemplateFilesLambda {
       'version-id': versionId,
     } = metadata;
 
-    const getTemplateResult = await this.templateRepository.get(
-      templateId,
-      owner
-    );
+    const { error: getTemplateError, data: template } =
+      await this.templateRepository.get(templateId, {
+        /*
+          Until migration to client-ownership is complete, we don't know whether the
+          'owner' segment in the S3 path is a clientId or a userId. Once the migration
+          is complete, we will know unambiguously that it's a clientId and this
+          doubly attempted fetch won't be required
+        */
+        userId: owner,
+        clientId: owner,
+      });
 
-    if (getTemplateResult.error) {
-      log.error('Unable to load template data', getTemplateResult.error);
+    if (getTemplateError) {
+      log.error('Unable to load template data', getTemplateError);
 
       throw new Error('Unable to load template data');
     }
-
-    const template = getTemplateResult.data;
 
     if (!template.files) {
       log.error("Can't process non-letter template");
@@ -96,6 +106,7 @@ export class ValidateLetterTemplateFilesLambda {
       });
       return;
     }
+
     if (template.templateStatus !== 'PENDING_VALIDATION') {
       log.info('Template is not pending validation - skipping', {
         templateStatus: template.templateStatus,
@@ -151,23 +162,13 @@ export class ValidateLetterTemplateFilesLambda {
     }
 
     const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
-    let csv;
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      String(getTemplateResult.data.clientId)
+    const clientProofingEnabled = await this.isProofingEnabled(
+      template.clientId,
+      log
     );
 
-    if (clientConfigurationResult.error) {
-      log.error(
-        'Unable to fetch client configuration',
-        clientConfigurationResult.error
-      );
-
-      throw new Error('Unable to fetch client configuration');
-    }
-
-    const clientProofingEnabled =
-      clientConfigurationResult.data?.features?.proofing || false;
+    let csv;
 
     try {
       await pdf.parse();
@@ -181,7 +182,7 @@ export class ValidateLetterTemplateFilesLambda {
       log.error('File parsing error:', error);
 
       await this.templateRepository.setLetterValidationResult(
-        { id: templateId, owner },
+        { id: templateId, owner: template.owner },
         versionId,
         false,
         [],
@@ -196,7 +197,7 @@ export class ValidateLetterTemplateFilesLambda {
     const valid = rtl || validateLetterTemplateFiles(pdf, csv);
 
     await this.templateRepository.setLetterValidationResult(
-      { id: templateId, owner },
+      { id: templateId, owner: template.owner },
       versionId,
       valid,
       pdf.personalisationParameters,
@@ -204,4 +205,18 @@ export class ValidateLetterTemplateFilesLambda {
       clientProofingEnabled
     );
   };
+
+  private async isProofingEnabled(clientId: string | undefined, log: Logger) {
+    const { data: clientConfiguration, error: clientConfigError } = clientId
+      ? await this.clientConfigRepository.get(clientId)
+      : { data: null };
+
+    if (clientConfigError) {
+      log.error('Unable to fetch client configuration', clientConfigError);
+
+      throw new Error('Unable to fetch client configuration');
+    }
+
+    return clientConfiguration?.features?.proofing || false;
+  }
 }

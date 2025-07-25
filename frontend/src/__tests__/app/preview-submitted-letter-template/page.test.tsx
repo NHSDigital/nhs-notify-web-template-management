@@ -30,10 +30,7 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
 
   it('should load page', async () => {
     const templateDTO = {
-      templateType: 'LETTER',
-      id: 'template-id',
-      templateStatus: 'SUBMITTED',
-      name: 'template-name',
+      createdAt: '2025-01-13T10:19:25.579Z',
       files: {
         pdfTemplate: {
           fileName: 'file.pdf',
@@ -41,10 +38,13 @@ describe('PreviewSubmittedLetterTemplatePage', () => {
           virusScanStatus: 'PASSED',
         },
       },
-      createdAt: '2025-01-13T10:19:25.579Z',
-      updatedAt: '2025-01-13T10:19:25.579Z',
-      letterType: 'x0',
+      id: 'template-id',
       language: 'en',
+      letterType: 'x0',
+      name: 'template-name',
+      templateStatus: 'SUBMITTED',
+      templateType: 'LETTER',
+      updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDto;
 
     const submittedLetterTemplate: LetterTemplate = {

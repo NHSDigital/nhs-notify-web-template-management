@@ -81,6 +81,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -107,10 +108,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
-      templateId,
-      owner
-    );
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: owner,
+      clientId: owner,
+    });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
       { id: templateId, owner },
@@ -143,6 +144,93 @@ describe('guard duty handler', () => {
       true,
       pdf.personalisationParameters,
       csv.parameters,
+      false
+    );
+  });
+
+  test('validates a client-owned template', async () => {
+    const { handler, mocks } = setup();
+
+    const clientId = 'clientid';
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    const template = mock<DatabaseTemplate>({
+      files: {
+        pdfTemplate: {
+          fileName: '',
+          virusScanStatus: 'PASSED',
+          currentVersion: versionId,
+        },
+        testDataCsv: undefined,
+      },
+      templateStatus: 'PENDING_VALIDATION',
+      language: 'en',
+      owner: `CLIENT#${clientId}`,
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: template,
+    });
+
+    const pdfData = Uint8Array.from('pdf');
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(pdfData);
+
+    mocks.clientConfigRepository.get.mockResolvedValueOnce({
+      data: null,
+    });
+
+    const pdf = mock<TemplatePdf>({
+      personalisationParameters: ['firstName', 'parameter_1'],
+    });
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    mocks.validateLetterTemplateFiles.mockReturnValueOnce(true);
+
+    await handler(event);
+
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: clientId,
+      clientId: clientId,
+    });
+
+    expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
+      { id: templateId, owner: clientId },
+      'pdf-template',
+      versionId
+    );
+
+    expect(mocks.TemplatePdf).toHaveBeenCalledWith(
+      { id: templateId, owner: clientId },
+      pdfData
+    );
+
+    expect(pdf.parse).toHaveBeenCalled();
+
+    expect(mocks.validateLetterTemplateFiles).toHaveBeenCalledWith(
+      pdf,
+      undefined
+    );
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner: `CLIENT#${clientId}` },
+      versionId,
+      true,
+      pdf.personalisationParameters,
+      [],
       false
     );
   });
@@ -180,6 +268,7 @@ describe('guard duty handler', () => {
         templateStatus: 'PENDING_VALIDATION',
         language: 'fa',
         clientId: 'clientId',
+        owner,
       }),
     });
 
@@ -275,6 +364,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: undefined,
+        owner,
       }),
     });
 
@@ -350,6 +440,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -370,10 +461,10 @@ describe('guard duty handler', () => {
 
     await handler(event);
 
-    expect(mocks.templateRepository.get).toHaveBeenCalledWith(
-      templateId,
-      owner
-    );
+    expect(mocks.templateRepository.get).toHaveBeenCalledWith(templateId, {
+      userId: owner,
+      clientId: owner,
+    });
 
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledTimes(1);
     expect(mocks.letterUploadRepository.download).toHaveBeenCalledWith(
@@ -590,6 +681,68 @@ describe('guard duty handler', () => {
     expect(
       mocks.templateRepository.setLetterValidationResult
     ).not.toHaveBeenCalled();
+  });
+
+  test('does not attempt to fetch client configuration if no clientId', async () => {
+    const { handler, mocks } = setup();
+
+    const event = makeGuardDutyMalwareScanResultNotificationEvent({
+      detail: {
+        s3ObjectDetails: {
+          bucketName: 'quarantine-bucket',
+          objectKey: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        },
+        scanResultDetails: {
+          scanResultStatus: 'NO_THREATS_FOUND',
+        },
+      },
+    });
+
+    const template = mock<DatabaseTemplate>({
+      files: {
+        pdfTemplate: {
+          fileName: '',
+          virusScanStatus: 'PASSED',
+          currentVersion: versionId,
+        },
+        testDataCsv: undefined,
+      },
+      templateStatus: 'PENDING_VALIDATION',
+      language: 'en',
+      owner,
+      clientId: undefined,
+    });
+
+    mocks.templateRepository.get.mockResolvedValueOnce({
+      data: template,
+    });
+
+    mocks.letterUploadRepository.download.mockResolvedValueOnce(
+      Uint8Array.from('pdf')
+    );
+
+    const pdf = mock<TemplatePdf>({
+      personalisationParameters: ['a'],
+    });
+
+    mocks.TemplatePdf.mockImplementation(() => pdf);
+
+    mocks.validateLetterTemplateFiles.mockReturnValueOnce(true);
+
+    await handler(event);
+
+    expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
+
+    expect(
+      mocks.templateRepository.setLetterValidationResult
+    ).toHaveBeenCalledWith(
+      { id: templateId, owner },
+      versionId,
+      true,
+      pdf.personalisationParameters,
+      [],
+      false
+    );
   });
 
   test("errors if the template data can't be loaded", async () => {
@@ -1111,6 +1264,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -1173,6 +1327,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 
@@ -1239,6 +1394,7 @@ describe('guard duty handler', () => {
         },
         templateStatus: 'PENDING_VALIDATION',
         language: 'en',
+        owner,
       }),
     });
 

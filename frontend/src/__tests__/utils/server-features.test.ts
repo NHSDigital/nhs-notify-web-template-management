@@ -20,7 +20,6 @@ describe('serverIsFeatureEnabled', () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
@@ -32,7 +31,6 @@ describe('serverIsFeatureEnabled', () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'user',
     });
 
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
@@ -52,7 +50,6 @@ describe('serverIsFeatureEnabled', () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'user',
     });
 
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
@@ -78,7 +75,6 @@ describe('serverIsFeatureEnabled', () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'user',
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
@@ -100,7 +96,6 @@ describe('serverIsFeatureEnabled', () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'user',
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
