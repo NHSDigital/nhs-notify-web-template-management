@@ -294,6 +294,76 @@ describe('templateRepository', () => {
       });
     });
 
+    test('should return error when UnprocessedKeys are returned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [],
+        },
+        UnprocessedKeys: {
+          [templatesTableName]: {
+            Keys: [
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: 'userid',
+              },
+            ],
+          },
+        },
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: undefined,
+      });
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to get template',
+          actualError: new Error('Partial failure of batch get templates'),
+        },
+      });
+    });
+
+    test('should return error when more than one template is returned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'userid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'CLIENT#clientid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+          ],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: 'clientid',
+      });
+
+      expect(response).toEqual({
+        error: {
+          code: 500,
+          message: 'Failed to get template',
+          actualError: new Error(
+            'Unexpectedly found both a client owned and a user owned template'
+          ),
+        },
+      });
+    });
+
     test('should return template', async () => {
       const { templateRepository, mocks } = setup();
 
