@@ -1,8 +1,8 @@
 import 'aws-sdk-client-mock-jest';
 import { randomUUID } from 'node:crypto';
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
-  GetCommand,
   PutCommand,
   QueryCommand,
   UpdateCommand,
@@ -125,69 +125,171 @@ describe('templateRepository', () => {
   });
 
   describe('get', () => {
-    test.each([
-      { id: 'abc-def-ghi-jkl-123', owner: 'fake-owner' },
-      { id: 'fake-id', owner: 'real-owner' },
-    ])(
-      'should return not found error when, templateId and owner does not match database record',
-      async ({ id, owner }) => {
-        const { templateRepository, mocks } = setup();
+    test('should return not found error when no items are found', async () => {
+      const { templateRepository, mocks } = setup();
 
-        mocks.ddbDocClient
-          .on(GetCommand, {
-            TableName: templatesTableName,
-            Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-          })
-          .resolves({
-            Item: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-          });
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: { [templatesTableName]: [] },
+        UnprocessedKeys: {},
+      });
 
-        const response = await templateRepository.get(id, owner);
+      const response = await templateRepository.get('id', {
+        userId: 'user',
+        clientId: 'client',
+      });
 
-        expect(response).toEqual({
-          error: { code: 404, message: 'Template not found' },
-        });
-      }
-    );
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              { id: 'id', owner: 'user' },
+              { id: 'id', owner: 'CLIENT#client' },
+            ],
+          },
+        },
+      });
+
+      expect(response).toEqual({
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
+      });
+    });
+
+    test('should return not found error when Responses is undefined', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('id', {
+        userId: 'user',
+        clientId: 'client',
+      });
+
+      expect(response).toEqual({
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
+      });
+    });
 
     test('should return not found error when template status is DELETED', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient.on(GetCommand).resolves({
-        Item: {
-          id: 'abc-def-ghi-jkl-123',
-          owner: 'real-owner',
-          templateStatus: 'DELETED',
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'userid',
+              templateStatus: 'DELETED',
+            },
+          ],
         },
+        UnprocessedKeys: {},
       });
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
-        error: { code: 404, message: 'Template not found' },
+        error: { errorMeta: { code: 404, description: 'Template not found' } },
       });
     });
 
-    test('should error when unexpected error occurs', async () => {
+    test('should return error when unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient
-        .on(GetCommand)
+        .on(BatchGetCommand)
         .rejects(new Error('InternalServerError'));
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to get template',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
+        },
+      });
+    });
+
+    test('should return error when UnprocessedKeys are returned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [],
+        },
+        UnprocessedKeys: {
+          [templatesTableName]: {
+            Keys: [
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: 'userid',
+              },
+            ],
+          },
+        },
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: undefined,
+      });
+
+      expect(response).toEqual({
+        error: {
+          actualError: new Error('Partial failure of batch get templates'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
+        },
+      });
+    });
+
+    test('should return error when more than one template is returned', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'userid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+            {
+              id: 'abc-def-ghi-jkl-123',
+              owner: 'CLIENT#clientid',
+              templateStatus: 'NOT_YET_SUBMITTED',
+            },
+          ],
+        },
+        UnprocessedKeys: {},
+      });
+
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: 'userid',
+        clientId: 'clientid',
+      });
+
+      expect(response).toEqual({
+        error: {
+          actualError: new Error(
+            'Unexpectedly found both a client owned and a user owned template'
+          ),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to get template',
+          },
         },
       });
     });
@@ -195,17 +297,31 @@ describe('templateRepository', () => {
     test('should return template', async () => {
       const { templateRepository, mocks } = setup();
 
-      mocks.ddbDocClient
-        .on(GetCommand, {
-          TableName: templatesTableName,
-          Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
-        })
-        .resolves({ Item: emailTemplate });
+      mocks.ddbDocClient.on(BatchGetCommand).resolves({
+        Responses: {
+          [templatesTableName]: [emailTemplate],
+        },
+        UnprocessedKeys: {},
+      });
 
-      const response = await templateRepository.get(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.get('abc-def-ghi-jkl-123', {
+        userId: emailTemplate.owner,
+        clientId: emailTemplate.clientId,
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
+        RequestItems: {
+          templates: {
+            Keys: [
+              { id: 'abc-def-ghi-jkl-123', owner: emailTemplate.owner },
+              {
+                id: 'abc-def-ghi-jkl-123',
+                owner: `CLIENT#${emailTemplate.clientId}`,
+              },
+            ],
+          },
+        },
+      });
 
       expect(response).toEqual({ data: emailTemplate });
     });
@@ -217,7 +333,10 @@ describe('templateRepository', () => {
 
       mocks.ddbDocClient.on(QueryCommand).resolves({ Items: undefined });
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'userid',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({ data: [] });
     });
@@ -229,13 +348,18 @@ describe('templateRepository', () => {
         .on(QueryCommand)
         .rejects(new Error('InternalServerError'));
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'userid',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to list templates',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to list templates',
+          },
         },
       });
     });
@@ -243,21 +367,64 @@ describe('templateRepository', () => {
     test('should return templates', async () => {
       const { templateRepository, mocks } = setup();
 
+      const clientOwnedTemplate = {
+        ...letterTemplate,
+        id: 'client-owned',
+        owner: 'CLIENT#client',
+      };
+
       mocks.ddbDocClient
-        .on(QueryCommand, {
-          TableName: templatesTableName,
-          KeyConditionExpression: '#owner = :owner',
-          ExpressionAttributeNames: { '#owner': 'owner' },
-          ExpressionAttributeValues: { ':owner': 'real-owner' },
-        })
-        .resolves({
+        .on(QueryCommand)
+        .resolvesOnce({
           Items: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
+        })
+        .resolvesOnce({
+          Items: [clientOwnedTemplate],
         });
 
-      const response = await templateRepository.list('real-owner');
+      const response = await templateRepository.list({
+        userId: 'userid',
+        clientId: 'client',
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandTimes(QueryCommand, 2);
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExclusiveStartKey: undefined,
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#status': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':deletedStatus': 'DELETED',
+          ':owner': 'CLIENT#client',
+        },
+        FilterExpression: '#status <> :deletedStatus',
+        KeyConditionExpression: '#owner = :owner',
+        TableName: 'templates',
+      });
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(QueryCommand, {
+        ExclusiveStartKey: undefined,
+        ExpressionAttributeNames: {
+          '#owner': 'owner',
+          '#status': 'templateStatus',
+        },
+        ExpressionAttributeValues: {
+          ':deletedStatus': 'DELETED',
+          ':owner': 'userid',
+        },
+        FilterExpression: '#status <> :deletedStatus',
+        KeyConditionExpression: '#owner = :owner',
+        TableName: 'templates',
+      });
 
       expect(response).toEqual({
-        data: [emailTemplate, smsTemplate, nhsAppTemplate, letterTemplate],
+        data: [
+          emailTemplate,
+          smsTemplate,
+          nhsAppTemplate,
+          letterTemplate,
+          clientOwnedTemplate,
+        ],
       });
     });
   });
@@ -283,9 +450,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to create template',
           actualError: new Error('InternalServerError'),
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create template',
+          },
         },
       });
     });
@@ -411,7 +580,14 @@ describe('templateRepository', () => {
         );
 
         expect(response).toEqual({
-          error: { code, message, actualError: error, details },
+          error: {
+            actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+              details,
+            },
+          },
         });
       }
     );
@@ -437,9 +613,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -578,9 +756,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code,
-          message,
           actualError: error,
+          errorMeta: {
+            code,
+            description: message,
+          },
         },
       });
     });
@@ -599,9 +779,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -688,9 +870,11 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            code,
-            message,
             actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+            },
           },
         });
       }
@@ -710,9 +894,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -804,9 +990,11 @@ describe('templateRepository', () => {
 
         expect(response).toEqual({
           error: {
-            code,
-            message,
             actualError: error,
+            errorMeta: {
+              code,
+              description: message,
+            },
           },
         });
       }
@@ -827,9 +1015,11 @@ describe('templateRepository', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Failed to update template',
           actualError: error,
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });
@@ -1540,8 +1730,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 404,
-          message: 'Template not found',
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
         },
       });
     });
@@ -1567,8 +1759,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 400,
-          message: 'Template cannot be proofed',
+          errorMeta: {
+            code: 400,
+            description: 'Template cannot be proofed',
+          },
         },
       });
     });
@@ -1588,8 +1782,10 @@ describe('templateRepository', () => {
       expect(result).toEqual({
         error: {
           actualError: err,
-          code: 500,
-          message: 'Failed to update template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       });
     });

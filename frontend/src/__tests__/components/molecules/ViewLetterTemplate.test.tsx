@@ -10,6 +10,7 @@ describe('ViewLetterTemplate component', () => {
           {
             templateType: 'LETTER',
             id: 'template-id',
+            owner: 'owner',
             name: 'Example template',
             templateStatus: 'SUBMITTED',
             createdAt: '2025-03-28T12:30:54.684Z',

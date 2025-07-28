@@ -36,7 +36,6 @@ describe('middleware function', () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     const response = await middleware(request);
@@ -55,7 +54,6 @@ describe('middleware function', () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'sub',
     });
 
     const url = new URL('https://url.com/message-templates');

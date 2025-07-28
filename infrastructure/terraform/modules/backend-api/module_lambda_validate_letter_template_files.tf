@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
       "dynamodb:UpdateItem",
     ]
 

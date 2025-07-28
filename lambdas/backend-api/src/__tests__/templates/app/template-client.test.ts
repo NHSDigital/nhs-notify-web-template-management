@@ -76,10 +76,17 @@ describe('templateClient', () => {
       const result = await templateClient.createTemplate(data, user);
 
       expect(result).toEqual({
-        error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-        }),
+        error: {
+          actualError: expect.objectContaining({
+            fieldErrors: {
+              message: ['Invalid input: expected string, received undefined'],
+            },
+          }),
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
+        },
       });
     });
 
@@ -96,13 +103,20 @@ describe('templateClient', () => {
       const result = await templateClient.createTemplate(data, user);
 
       expect(result).toEqual({
-        error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-          details: {
-            templateType: 'Invalid input',
-          },
-        }),
+        error: {
+          actualError: expect.objectContaining({
+            fieldErrors: {
+              templateType: ['Invalid input'],
+            },
+          }),
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              templateType: 'Invalid input',
+            },
+          }),
+        },
       });
     });
 
@@ -117,7 +131,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { code: 500, message: 'err' },
+        error: { errorMeta: { code: 500, description: 'err' } },
       });
 
       const result = await templateClient.createTemplate(data, user);
@@ -126,8 +140,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'err',
+          errorMeta: {
+            code: 500,
+            description: 'err',
+          },
         },
       });
     });
@@ -189,8 +205,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -206,8 +224,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
@@ -256,8 +276,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
     });
@@ -378,7 +400,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+      const { version: _, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -486,7 +508,7 @@ describe('templateClient', () => {
         updatedAt: updateTime,
       };
 
-      const { owner: _1, version: _2, ...expectedDto } = finalTemplate;
+      const { version: _, ...expectedDto } = finalTemplate;
 
       mocks.templateRepository.create.mockResolvedValueOnce({
         data: initialCreatedTemplate,
@@ -529,12 +551,14 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-          details: {
-            letterType:
-              'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
-          },
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              letterType:
+                'Invalid option: expected one of "q4"|"x0"|"x1", Invalid option: expected one of "q4"|"x0"|"x1"',
+            },
+          }),
         }),
       });
 
@@ -558,10 +582,12 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-          details: expect.objectContaining({
-            templateType: 'Invalid input: expected "LETTER"',
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+            details: expect.objectContaining({
+              templateType: 'Invalid input: expected "LETTER"',
+            }),
           }),
         }),
       });
@@ -603,10 +629,12 @@ describe('templateClient', () => {
         );
 
         expect(result).toEqual({
-          error: expect.objectContaining({
-            code: 400,
-            message: 'Failed to identify or validate PDF data',
-          }),
+          error: {
+            errorMeta: expect.objectContaining({
+              code: 400,
+              description: 'Failed to identify or validate PDF data',
+            }),
+          },
         });
 
         expect(mocks.templateRepository.create).not.toHaveBeenCalled();
@@ -652,10 +680,12 @@ describe('templateClient', () => {
         );
 
         expect(result).toEqual({
-          error: expect.objectContaining({
-            code: 400,
-            message: 'Failed to validate CSV data',
-          }),
+          error: {
+            errorMeta: expect.objectContaining({
+              code: 400,
+              description: 'Failed to validate CSV data',
+            }),
+          },
         });
 
         expect(mocks.templateRepository.create).not.toHaveBeenCalled();
@@ -673,7 +703,7 @@ describe('templateClient', () => {
       };
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'err', code: 500 },
+        error: { errorMeta: { description: 'err', code: 500 } },
       });
 
       const result = await templateClient.createLetterTemplate(
@@ -684,7 +714,9 @@ describe('templateClient', () => {
         })
       );
 
-      expect(result).toEqual({ error: { message: 'err', code: 500 } });
+      expect(result).toEqual({
+        error: { errorMeta: { description: 'err', code: 500 } },
+      });
 
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
@@ -723,8 +755,10 @@ describe('templateClient', () => {
       const templateRepoFailure = {
         error: {
           actualError: new Error('ddb err'),
-          code: 500,
-          message: 'Failed to create template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to create template',
+          },
         },
       };
 
@@ -776,8 +810,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
 
@@ -848,9 +884,11 @@ describe('templateClient', () => {
               expect.objectContaining({ message: 'could not upload' }),
             ],
           }),
-          code: 500,
-          details: undefined,
-          message: 'Failed to upload letter files',
+          errorMeta: {
+            code: 500,
+            details: undefined,
+            description: 'Failed to upload letter files',
+          },
         },
       };
 
@@ -936,8 +974,10 @@ describe('templateClient', () => {
       const updateErr = {
         error: {
           actualError: new Error('ddb err'),
-          code: 500,
-          message: 'Failed to update template',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to update template',
+          },
         },
       };
 
@@ -1058,15 +1098,17 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
     });
   });
 
   describe('updateTemplate', () => {
-    test('should return a failure result, when template data is invalid', async () => {
+    test('updateTemplate should return a failure result, when template data is invalid', async () => {
       const { templateClient } = setup();
 
       const data = {
@@ -1083,8 +1125,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
+          errorMeta: expect.objectContaining({
+            code: 400,
+            description: 'Request failed validation',
+          }),
         }),
       });
     });
@@ -1107,16 +1151,18 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: expect.objectContaining({
-          code: 400,
-          message: 'Request failed validation',
-          details: {
-            templateType: 'Invalid input',
+          errorMeta: {
+            code: 400,
+            description: 'Request failed validation',
+            details: {
+              templateType: 'Invalid input',
+            },
           },
         }),
       });
     });
 
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('updateTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
@@ -1127,8 +1173,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.update.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1147,8 +1195,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
@@ -1195,8 +1245,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
     });
@@ -1248,8 +1300,10 @@ describe('templateClient', () => {
 
       mocks.templateRepository.get.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1257,13 +1311,15 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
@@ -1296,13 +1352,15 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
     });
@@ -1329,7 +1387,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.get).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1339,24 +1397,28 @@ describe('templateClient', () => {
   });
 
   describe('listTemplates', () => {
-    test('should return a failure result, when fetching from the database unexpectedly fails', async () => {
+    test('listTemplates should return a failure result, when fetching from the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.list.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
@@ -1394,7 +1456,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         data: [template],
@@ -1421,7 +1483,7 @@ describe('templateClient', () => {
 
       const result = await templateClient.listTemplates(user);
 
-      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user.userId);
+      expect(mocks.templateRepository.list).toHaveBeenCalledWith(user);
 
       expect(result).toEqual({
         data: [template],
@@ -1430,13 +1492,15 @@ describe('templateClient', () => {
   });
 
   describe('submitTemplate', () => {
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('submitTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.submit.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1449,13 +1513,15 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
 
-    test('should return a failure result, when updated database template is invalid', async () => {
+    test('submitTemplate should return a failure result, when updated database template is invalid', async () => {
       const { templateClient, mocks } = setup();
 
       const expectedTemplateDto: TemplateDto = {
@@ -1487,13 +1553,15 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Error retrieving template',
+          errorMeta: {
+            code: 500,
+            description: 'Error retrieving template',
+          },
         },
       });
     });
 
-    test('should return updated template', async () => {
+    test('submitTemplate should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
       const template: TemplateDto = {
@@ -1539,8 +1607,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 403,
-          message: 'User cannot request a proof',
+          errorMeta: {
+            code: 403,
+            description: 'User cannot request a proof',
+          },
         },
       });
     });
@@ -1549,7 +1619,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'err', code: 500 },
+        error: { errorMeta: { description: 'err', code: 500 } },
       });
 
       const result = await templateClient.requestProof(templateId, user);
@@ -1560,13 +1630,15 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'err',
+          errorMeta: {
+            code: 500,
+            description: 'err',
+          },
         },
       });
     });
 
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('requestProof should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks, logMessages } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
@@ -1577,9 +1649,11 @@ describe('templateClient', () => {
 
       mocks.templateRepository.proofRequestUpdate.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
           actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1601,9 +1675,11 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
           actualError,
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1660,8 +1736,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Malformed template',
+          errorMeta: {
+            code: 500,
+            description: 'Malformed template',
+          },
         },
       });
     });
@@ -1709,8 +1787,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Malformed template',
+          errorMeta: {
+            code: 500,
+            description: 'Malformed template',
+          },
         },
       });
     });
@@ -1749,9 +1829,11 @@ describe('templateClient', () => {
 
       mocks.queueMock.send.mockResolvedValueOnce({
         error: {
-          message: 'Failed to send to proofing queue',
-          code: 500,
           actualError: clientErr,
+          errorMeta: {
+            description: 'Failed to send to proofing queue',
+            code: 500,
+          },
         },
       });
 
@@ -1787,9 +1869,11 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
           actualError: clientErr,
-          message: 'Failed to send to proofing queue',
+          errorMeta: {
+            code: 500,
+            description: 'Failed to send to proofing queue',
+          },
         },
       });
     });
@@ -1812,13 +1896,15 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 403,
-          message: 'User cannot request a proof',
+          errorMeta: {
+            code: 403,
+            description: 'User cannot request a proof',
+          },
         },
       });
     });
 
-    test('should return updated template', async () => {
+    test('requestProof should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
       const pdfVersionId = 'a';
@@ -1836,6 +1922,7 @@ describe('templateClient', () => {
           },
         },
         id: templateId,
+        owner: user.userId,
         language: 'en',
         letterType: 'x1',
         name: templateName,
@@ -1888,13 +1975,15 @@ describe('templateClient', () => {
   });
 
   describe('deleteTemplate', () => {
-    test('should return a failure result, when saving to the database unexpectedly fails', async () => {
+    test('deleteTemplate should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
       mocks.templateRepository.delete.mockResolvedValueOnce({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
 
@@ -1907,8 +1996,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'Internal server error',
+          errorMeta: {
+            code: 500,
+            description: 'Internal server error',
+          },
         },
       });
     });
@@ -1960,8 +2051,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 404,
-          message: 'Client configuration is not available',
+          errorMeta: {
+            code: 404,
+            description: 'Client configuration is not available',
+          },
         },
       });
     });
@@ -1980,8 +2073,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 404,
-          message: 'Client configuration is not available',
+          errorMeta: {
+            code: 404,
+            description: 'Client configuration is not available',
+          },
         },
       });
     });
@@ -1990,7 +2085,7 @@ describe('templateClient', () => {
       const { templateClient, mocks } = setup();
 
       mocks.clientConfigRepository.get.mockResolvedValueOnce({
-        error: { message: 'fetch failure', code: 500 },
+        error: { errorMeta: { description: 'fetch failure', code: 500 } },
       });
 
       const result = await templateClient.getClientConfiguration({
@@ -2000,8 +2095,10 @@ describe('templateClient', () => {
 
       expect(result).toEqual({
         error: {
-          code: 500,
-          message: 'fetch failure',
+          errorMeta: {
+            code: 500,
+            description: 'fetch failure',
+          },
         },
       });
     });

@@ -17,9 +17,11 @@ describe('axios-client', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Something went wrong',
-          details: new Error('Network Error'),
+          errorMeta: {
+            code: 500,
+            description: 'Something went wrong',
+            details: new Error('Network Error'),
+          },
         },
       });
 
@@ -39,10 +41,12 @@ describe('axios-client', () => {
 
       expect(response).toEqual({
         error: {
-          code: 400,
-          message: 'Bad request',
-          details: {
-            message: 'Contains invalid characters',
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+            details: {
+              message: 'Contains invalid characters',
+            },
           },
         },
       });
@@ -59,9 +63,11 @@ describe('axios-client', () => {
 
       expect(response).toEqual({
         error: {
-          code: 500,
-          message: 'Something went wrong',
-          details: new Error('Not an axios error'),
+          errorMeta: {
+            code: 500,
+            description: 'Something went wrong',
+            details: new Error('Not an axios error'),
+          },
         },
       });
 

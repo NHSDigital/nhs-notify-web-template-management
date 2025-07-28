@@ -41,6 +41,7 @@ describe('Preview nhs app form renders', () => {
           validationError: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
         })}
       />
@@ -61,6 +62,7 @@ describe('Preview nhs app form renders', () => {
           validationError: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
         })}
       />
@@ -81,6 +83,7 @@ describe('Preview nhs app form renders', () => {
           },
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
         })}
       />
@@ -96,6 +99,7 @@ describe('Preview nhs app form renders', () => {
           validationError: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
         })}
       />
@@ -125,6 +129,7 @@ describe('Preview nhs app form renders', () => {
           validationError: undefined,
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message,
         })}
       />
@@ -143,6 +148,7 @@ describe('Preview nhs app form renders', () => {
         initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
           id: 'template-id',
           name: 'test-template-nhs app',
+          templateStatus: 'NOT_YET_SUBMITTED',
           message: 'example',
         })}
       />

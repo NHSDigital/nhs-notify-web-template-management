@@ -15,21 +15,23 @@ const CreateLetterTemplatePage = async () => {
   const sessionServer = await getSessionServer();
   const { accessToken, clientId } = sessionServer;
 
-  if (!accessToken || !clientId)
+  if (!accessToken || !clientId) {
     return redirect(
       '/create-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
+  }
 
   const clientConfiguration = await fetchClient(accessToken);
 
   const campaignId = clientConfiguration?.data?.campaignId;
 
-  if (!campaignId)
+  if (!campaignId) {
     return redirect(
       '/create-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
+  }
 
   return <LetterTemplateForm initialState={initialState} />;
 };

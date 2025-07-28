@@ -38,6 +38,25 @@ const generateLetterTemplateData = (
         currentVersion: randomUUID(),
         virusScanStatus,
       },
+      ...(templateStatus === 'PROOF_AVAILABLE' && {
+        proofs: {
+          proof1: {
+            fileName: 'proof1.pdf',
+            supplier: 'WTMMOCK',
+            virusScanStatus: 'PASSED',
+          },
+          proof2: {
+            fileName: 'proof2.pdf',
+            supplier: 'WTMMOCK',
+            virusScanStatus: 'PASSED',
+          },
+          proof3: {
+            fileName: 'proof3.pdf',
+            supplier: 'WTMMOCK',
+            virusScanStatus: 'PASSED',
+          },
+        },
+      }),
     },
     templateStatus,
   };
@@ -110,7 +129,13 @@ const setup = async () => {
       'pa11y-letter-proof-requested',
       userId,
       'PASSED',
-      'NOT_YET_SUBMITTED'
+      'WAITING_FOR_PROOF'
+    ),
+    generateLetterTemplateData(
+      'pa11y-letter-proof-available',
+      userId,
+      'PASSED',
+      'PROOF_AVAILABLE'
     ),
   ];
 
@@ -125,7 +150,9 @@ const setup = async () => {
     )
   );
 
-  const templateIds = Object.fromEntries(templates.map((t) => [t.name, t.id]));
+  const templateIds = Object.fromEntries(
+    templates.map((t) => [t.templateStatus, t.id])
+  );
 
   const fixtureData = {
     email: testEmail,

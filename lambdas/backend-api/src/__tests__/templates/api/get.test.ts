@@ -66,8 +66,10 @@ describe('Template API - Get', () => {
 
     mocks.templateClient.getTemplate.mockResolvedValueOnce({
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 

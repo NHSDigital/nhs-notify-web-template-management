@@ -32,19 +32,21 @@ export const catchAxiosError = async <T>(
   } catch (error) {
     const formattedError = {
       error: {
-        code: 500,
-        message: 'Something went wrong',
-        details: error,
+        errorMeta: {
+          code: 500,
+          description: 'Something went wrong',
+          details: error,
+        },
       },
     };
-
     if (axios.isAxiosError(error) && error.response) {
       const { response } = error;
-      formattedError.error.code = response.status;
+      formattedError.error.errorMeta.code = response.status;
 
       if (isApplicationFailure(response.data)) {
-        formattedError.error.message = response.data.technicalMessage;
-        formattedError.error.details = response.data.details;
+        formattedError.error.errorMeta.description =
+          response.data.technicalMessage;
+        formattedError.error.errorMeta.details = response.data.details;
       }
     }
 

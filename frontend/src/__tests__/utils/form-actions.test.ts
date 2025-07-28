@@ -32,7 +32,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: 'token',
       clientId: 'client1',
-      userSub: 'sub',
     });
   });
 
@@ -70,8 +69,10 @@ describe('form-actions', () => {
   test('createTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.createTemplate.mockResolvedValueOnce({
       error: {
-        code: 400,
-        message: 'Bad request',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+        },
       },
     });
 
@@ -96,7 +97,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     const createTemplateInput: CreateUpdateNHSAppTemplate = {
@@ -224,8 +224,10 @@ describe('form-actions', () => {
   test('createLetterTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
       error: {
-        code: 400,
-        message: 'Bad request',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+        },
       },
     });
 
@@ -260,7 +262,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     const createLetterTemplateInput: CreateLetterTemplate = {
@@ -321,8 +322,10 @@ describe('form-actions', () => {
   test('saveTemplate - should throw error when saving unexpectedly fails', async () => {
     mockedTemplateClient.updateTemplate.mockResolvedValueOnce({
       error: {
-        code: 400,
-        message: 'Bad request',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+        },
       },
     });
 
@@ -352,7 +355,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     const updateTemplateInput: NHSAppTemplate = {
@@ -399,8 +401,10 @@ describe('form-actions', () => {
     mockedTemplateClient.getTemplate.mockResolvedValueOnce({
       data: undefined,
       error: {
-        code: 404,
-        message: 'Not found',
+        errorMeta: {
+          code: 404,
+          description: 'Not found',
+        },
       },
     });
 
@@ -419,7 +423,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     await expect(getTemplate('id')).rejects.toThrow(
@@ -453,8 +456,10 @@ describe('form-actions', () => {
     mockedTemplateClient.listTemplates.mockResolvedValueOnce({
       data: undefined,
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 
@@ -468,7 +473,6 @@ describe('form-actions', () => {
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
-      userSub: undefined,
     });
 
     await expect(getTemplates()).rejects.toThrow('Failed to get access token');
@@ -540,8 +544,10 @@ describe('form-actions', () => {
     test('submitTemplate - should throw error when saving unexpectedly fails', async () => {
       mockedTemplateClient.submitTemplate.mockResolvedValueOnce({
         error: {
-          code: 400,
-          message: 'Bad request',
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
         },
       });
 
@@ -560,7 +566,6 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
-        userSub: undefined,
       });
 
       await expect(setTemplateToSubmitted('id')).rejects.toThrow(
@@ -588,8 +593,10 @@ describe('form-actions', () => {
     test('deleteTemplate - should throw error when saving unexpectedly fails', async () => {
       mockedTemplateClient.deleteTemplate.mockResolvedValueOnce({
         error: {
-          code: 400,
-          message: 'Bad request',
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
         },
       });
 
@@ -608,7 +615,6 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
-        userSub: undefined,
       });
 
       await expect(setTemplateToDeleted('id')).rejects.toThrow(
@@ -654,8 +660,10 @@ describe('form-actions', () => {
     test('requestTemplateProof - should throw error when request unexpectedly fails', async () => {
       mockedTemplateClient.requestProof.mockResolvedValueOnce({
         error: {
-          code: 400,
-          message: 'Bad request',
+          errorMeta: {
+            code: 400,
+            description: 'Bad request',
+          },
         },
       });
 
@@ -674,7 +682,6 @@ describe('form-actions', () => {
       authIdTokenServerMock.mockResolvedValueOnce({
         accessToken: undefined,
         clientId: undefined,
-        userSub: undefined,
       });
 
       await expect(requestTemplateProof('id')).rejects.toThrow(
