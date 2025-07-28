@@ -24,13 +24,16 @@ echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
 pwd
 ls
-ls .
-ls ./tests
-ls ./tests/accessibility
 ls ./tests/accessibility/.reports
+ls ./tests/accessibility/.reports/accessibility
+
+cp -r ./tests/accessibility/.reports/accessibility ./tests/acceptance-test-report
+
+echo Completed copy
+
+ls ./tests/acceptance-test-report
 
 
-cp ./tests/accessibility/.reports/accessibility ./tests/acceptance-test-report
 
 npm run accessibility-test-teardown  -w tests/accessibility
 
