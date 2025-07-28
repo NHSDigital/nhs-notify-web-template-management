@@ -8,6 +8,6 @@ npm run test:local-ui
 TEST_EXIT_CODE=$?
 echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
-cp -r ./playwright-report ./tests/acceptance-test-report
+cp -r ./playwright-report ../acceptance-test-report
 
 exit $TEST_EXIT_CODE
