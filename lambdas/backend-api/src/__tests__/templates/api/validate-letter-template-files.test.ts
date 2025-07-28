@@ -671,7 +671,13 @@ describe('guard duty handler', () => {
     const err = new Error('client config err');
 
     mocks.clientConfigRepository.get.mockResolvedValueOnce({
-      error: { code: 500, actualError: err, message: 'client config error' },
+      error: {
+        actualError: err,
+        errorMeta: {
+          code: 500,
+          description: 'client config error',
+        },
+      },
     });
 
     await expect(handler(event)).rejects.toThrow(
@@ -762,9 +768,11 @@ describe('guard duty handler', () => {
 
     mocks.templateRepository.get.mockResolvedValueOnce({
       error: {
-        code: ErrorCase.NOT_FOUND,
         actualError: new Error('database error'),
-        message: 'Some error message',
+        errorMeta: {
+          code: ErrorCase.NOT_FOUND,
+          description: 'Some error message',
+        },
       },
     });
 
