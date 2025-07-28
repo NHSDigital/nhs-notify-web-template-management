@@ -129,8 +129,10 @@ describe('getLetterUploadParts', () => {
 
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
-        code: 400,
-        message: 'Template is unavailable or cannot be parsed',
+        errorMeta: {
+          code: 400,
+          description: 'Template is unavailable or cannot be parsed',
+        },
       },
     });
   });
@@ -155,8 +157,10 @@ describe('getLetterUploadParts', () => {
 
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
-        code: 400,
-        message: 'Template is unavailable or cannot be parsed',
+        errorMeta: {
+          code: 400,
+          description: 'Template is unavailable or cannot be parsed',
+        },
       },
     });
   });
@@ -174,8 +178,10 @@ describe('getLetterUploadParts', () => {
 
     expect(getLetterUploadParts(multipart, contentType)).toEqual({
       error: {
-        code: 400,
-        message: 'Unexpected number of form parts in form data: 1',
+        errorMeta: {
+          code: 400,
+          description: 'Unexpected number of form parts in form data: 1',
+        },
       },
     });
   });

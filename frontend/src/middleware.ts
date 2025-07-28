@@ -9,6 +9,7 @@ const protectedPaths = [
   /^\/create-nhs-app-template$/,
   /^\/create-text-message-template$/,
   /^\/create-letter-template$/,
+  /^\/create-letter-template\/client-id-and-campaign-id-required$/,
   /^\/delete-template\/[^/]+$/,
   /^\/edit-email-template\/[^/]+$/,
   /^\/edit-letter-template\/[^/]+$/,

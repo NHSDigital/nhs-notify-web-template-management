@@ -9,12 +9,12 @@
     "csv-stringify": "^6.4.4",
     "date-fns": "^4.1.0",
     "ksuid": "^3.0.0",
+    "nhs-notify-backend-client": "*",
     "nhs-notify-entity-update-command-builder": "*",
     "nhs-notify-web-template-management-utils": "*",
-    "nhs-notify-backend-client": "*",
     "node-cache": "^5.1.2",
     "ssh2-sftp-client": "^9.1.0",
-    "zod": "^3.24.2"
+    "zod": "^4.0.5"
   },
   "devDependencies": {
     "@swc/core": "^1.11.3",

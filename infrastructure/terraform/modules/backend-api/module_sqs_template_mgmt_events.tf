@@ -1,5 +1,5 @@
 module "sqs_template_mgmt_events" {
-  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v2.0.8"
+  source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/sqs?ref=v2.0.15"
 
   aws_account_id  = var.aws_account_id
   component       = var.component
@@ -9,4 +9,5 @@ module "sqs_template_mgmt_events" {
   name            = "template-mgmt-events"
   fifo_queue      = true
   sqs_kms_key_arn = var.kms_key_arn
+  create_dlq      = true
 }

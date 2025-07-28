@@ -16,7 +16,10 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 
 export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
-): Promise<{ accessToken: string | undefined; userSub: string | undefined }> {
+): Promise<{
+  accessToken: string | undefined;
+  clientId: string | undefined;
+}> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     operation: (ctx) => fetchAuthSession(ctx, options),
@@ -24,26 +27,40 @@ export async function getSessionServer(
     // no-op
   });
 
+  const accessToken = session?.tokens?.accessToken?.toString();
+  const clientId = accessToken && (await getClientId(accessToken));
+
   return {
-    accessToken: session?.tokens?.accessToken?.toString(),
-    userSub: session?.userSub,
+    accessToken,
+    clientId,
   };
 }
 
 export const getSessionId = async () => {
-  const { accessToken } = await getSessionServer();
+  return getAccessTokenParam('origin_jti');
+};
 
-  if (!accessToken) {
-    return;
-  }
+export const getClientId = async (accessToken: string) => {
+  return getJwtPayload('nhs-notify:client-id', accessToken);
+};
 
+const getAccessTokenParam = async (key: string) => {
+  const authSession = await getSessionServer();
+  const accessToken = authSession.accessToken;
+
+  if (!accessToken) return;
+
+  return getJwtPayload(key, accessToken);
+};
+
+const getJwtPayload = (key: string, accessToken: string) => {
   const jwt = jwtDecode<JWT['payload']>(accessToken);
 
-  const sessionId = jwt.origin_jti;
+  const value = jwt[key];
 
-  if (!sessionId) {
+  if (!value) {
     return;
   }
 
-  return sessionId.toString();
+  return value.toString();
 };

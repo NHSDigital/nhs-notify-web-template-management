@@ -208,6 +208,9 @@
               "files": {
                 "$ref": "#/components/schemas/LetterFiles"
               },
+              "owner": {
+                "type": "string"
+              },
               "personalisationParameters": {
                 "items": {
                   "type": "string"

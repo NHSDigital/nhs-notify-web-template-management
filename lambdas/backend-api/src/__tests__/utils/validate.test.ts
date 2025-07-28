@@ -1,5 +1,6 @@
-import { z } from 'zod';
-import { validate } from '../../utils';
+import { validate, formatZodErrors } from '../../utils';
+import { mockDeep } from 'jest-mock-extended';
+import { z, ZodError } from 'zod/v4';
 
 describe('validate', () => {
   test('should return error when schema is invalid', async () => {
@@ -12,16 +13,18 @@ describe('validate', () => {
 
     expect(result).toEqual({
       error: {
-        code: 400,
-        message: 'Request failed validation',
         actualError: {
           fieldErrors: {
-            id: ['Required'],
+            id: ['Invalid input: expected string, received undefined'],
           },
           formErrors: [],
         },
-        details: {
-          id: 'Required',
+        errorMeta: {
+          code: 400,
+          description: 'Request failed validation',
+          details: {
+            id: 'Invalid input: expected string, received undefined',
+          },
         },
       },
     });
@@ -41,4 +44,23 @@ describe('validate', () => {
       },
     });
   });
+});
+
+test('formatZodError', () => {
+  const zodError = mockDeep<ZodError>({
+    issues: [
+      {
+        path: [Symbol()],
+        message: 'message',
+      },
+      {
+        path: ['path'],
+        message: 'message',
+      },
+    ],
+  });
+
+  const output = formatZodErrors(zodError);
+
+  expect(output).toEqual({ path: 'message' });
 });

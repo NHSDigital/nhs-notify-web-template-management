@@ -218,10 +218,3 @@ variable "external_email_domain" {
   default     = null
   description = "Externally managed domain used to create an SES identity for sending emails from. Validation DNS records will need to be manually configured in the DNS provider."
 }
-
-variable "override_log_destination_arn" {
-  type        = string
-  description = "Override the log destination ARN for this component."
-  default     = ""
-}
-

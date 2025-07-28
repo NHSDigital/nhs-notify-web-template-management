@@ -2,7 +2,7 @@ import type { UserDataRepository } from '../infra/user-data-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import type { SyntheticBatch } from '../domain/synthetic-batch';
 import type { TemplateLockRepository } from '../infra/template-lock-repository';
-import { parseTestPersonalisation } from '../domain/test-data';
+import { parseExamplePersonalisation } from '../domain/test-data';
 import { serialiseCsv } from '../infra/serialise-csv';
 import { z } from 'zod';
 import path from 'node:path';
@@ -127,6 +127,7 @@ export class App {
       // send email to supplier
       await this.emailClient.sendProofRequestedEmailToSupplier(
         templateId,
+        expandedTemplateId,
         templateName,
         supplier
       );
@@ -183,7 +184,7 @@ export class App {
     );
 
     const parsedTestData = userData.testData
-      ? parseTestPersonalisation(userData.testData)
+      ? parseExamplePersonalisation(userData.testData)
       : undefined;
 
     const batchRows = this.batch.buildBatch(

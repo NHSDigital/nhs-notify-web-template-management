@@ -1,5 +1,8 @@
 import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
+import { getSessionServer } from '@utils/amplify-utils';
+import { redirect, RedirectType } from 'next/navigation';
+import { fetchClient } from '@utils/server-features';
 
 const CreateLetterTemplatePage = async () => {
   const initialState: CreateLetterTemplate = {
@@ -8,6 +11,27 @@ const CreateLetterTemplatePage = async () => {
     letterType: 'x0',
     language: 'en',
   };
+
+  const sessionServer = await getSessionServer();
+  const { accessToken, clientId } = sessionServer;
+
+  if (!accessToken || !clientId) {
+    return redirect(
+      '/create-letter-template/client-id-and-campaign-id-required',
+      RedirectType.replace
+    );
+  }
+
+  const clientConfiguration = await fetchClient(accessToken);
+
+  const campaignId = clientConfiguration?.data?.campaignId;
+
+  if (!campaignId) {
+    return redirect(
+      '/create-letter-template/client-id-and-campaign-id-required',
+      RedirectType.replace
+    );
+  }
 
   return <LetterTemplateForm initialState={initialState} />;
 };

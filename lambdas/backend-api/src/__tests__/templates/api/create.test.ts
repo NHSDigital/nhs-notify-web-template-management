@@ -41,10 +41,12 @@ describe('Template API - Create', () => {
 
     mocks.templateClient.createTemplate.mockResolvedValueOnce({
       error: {
-        code: 400,
-        message: 'Validation failed',
-        details: {
-          templateType: 'Required',
+        errorMeta: {
+          code: 400,
+          description: 'Validation failed',
+          details: {
+            templateType: 'Invalid input: expected string, received undefined',
+          },
         },
       },
       data: undefined,
@@ -65,7 +67,7 @@ describe('Template API - Create', () => {
         statusCode: 400,
         technicalMessage: 'Validation failed',
         details: {
-          templateType: 'Required',
+          templateType: 'Invalid input: expected string, received undefined',
         },
       }),
     });
@@ -81,8 +83,10 @@ describe('Template API - Create', () => {
 
     mocks.templateClient.createTemplate.mockResolvedValueOnce({
       error: {
-        code: 500,
-        message: 'Internal server error',
+        errorMeta: {
+          code: 500,
+          description: 'Internal server error',
+        },
       },
     });
 

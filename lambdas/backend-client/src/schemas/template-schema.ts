@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import {
   BaseTemplate,
   CreateLetterProperties,
@@ -53,7 +53,7 @@ export const $LetterFiles = schemaFor<LetterFiles>()(
   z.object({
     pdfTemplate: $VersionedFileDetails,
     testDataCsv: $VersionedFileDetails.optional(),
-    proofs: z.record($ProofFileDetails).optional(),
+    proofs: z.record(z.string(), $ProofFileDetails).optional(),
   })
 );
 
@@ -98,6 +98,9 @@ export const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
 export const $LetterProperties = schemaFor<LetterProperties>()(
   $CreateLetterProperties.extend({
     files: $LetterFiles,
+    /* eslint-disable sonarjs/todo-tag */
+    // TODO: CCM-10432 - remove, not needed after client migration
+    owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
   })
 );

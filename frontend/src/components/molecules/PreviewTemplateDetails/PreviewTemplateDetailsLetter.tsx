@@ -12,12 +12,12 @@ import concatClassNames from '@utils/concat-class-names';
 
 const { rowHeadings } = content.components.previewTemplateDetails;
 
+const clientOwnerPrefix = 'CLIENT#';
+
 export default function PreviewTemplateDetailsLetter({
   template,
-  user,
 }: {
   template: LetterTemplate;
-  user?: string;
 }) {
   const proofFilenames = Object.values(template.files.proofs ?? {})
     .filter(({ virusScanStatus }) => virusScanStatus === 'PASSED')
@@ -26,7 +26,13 @@ export default function PreviewTemplateDetailsLetter({
   const showProofs =
     proofFilenames.length > 0 &&
     (template.templateStatus === 'PROOF_AVAILABLE' ||
-      template.templateStatus === 'SUBMITTED');
+      template.templateStatus === 'SUBMITTED') &&
+    template.owner;
+
+  const proofOwner =
+    template.owner && template.owner.startsWith(clientOwnerPrefix)
+      ? template.owner.slice(clientOwnerPrefix.length)
+      : template.owner;
 
   return (
     <>
@@ -51,7 +57,7 @@ export default function PreviewTemplateDetailsLetter({
           {template.files.testDataCsv?.fileName && (
             <SummaryList.Row>
               <SummaryList.Key>
-                {rowHeadings.testPersonalisationFile}
+                {rowHeadings.examplePersonalisationFile}
               </SummaryList.Key>
               <SummaryList.Value>
                 <Filename filename={template.files.testDataCsv.fileName} />
@@ -71,7 +77,7 @@ export default function PreviewTemplateDetailsLetter({
                   {proofFilenames.map((file) => (
                     <li key={file}>
                       <a
-                        href={`${getBasePath()}/files/${user}/proofs/${template.id}/${file}`}
+                        href={`${getBasePath()}/files/${proofOwner}/proofs/${template.id}/${file}`}
                         target='_blank'
                         rel='noopener noreferrer'
                         data-testid={`proof-link_${file}`}

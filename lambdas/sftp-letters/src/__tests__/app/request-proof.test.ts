@@ -279,7 +279,12 @@ describe('App', () => {
 
     expect(
       mocks.emailClient.sendProofRequestedEmailToSupplier
-    ).toHaveBeenCalledWith(templateId, templateName, supplier);
+    ).toHaveBeenCalledWith(
+      templateId,
+      expandedTemplateId,
+      templateName,
+      supplier
+    );
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(

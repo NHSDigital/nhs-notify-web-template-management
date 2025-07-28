@@ -35,7 +35,7 @@ describe('middleware function', () => {
 
     getTokenMock.mockResolvedValueOnce({
       accessToken: undefined,
-      userSub: undefined,
+      clientId: undefined,
     });
 
     const response = await middleware(request);
@@ -53,7 +53,7 @@ describe('middleware function', () => {
   it('if request path is protected, and access token is obtained, respond with CSP', async () => {
     getTokenMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'sub',
+      clientId: 'client1',
     });
 
     const url = new URL('https://url.com/message-templates');

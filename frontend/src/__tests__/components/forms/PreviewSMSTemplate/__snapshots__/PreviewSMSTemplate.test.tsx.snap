@@ -8,7 +8,7 @@ exports[`Review sms form renders Client-side validation triggers 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -118,7 +118,10 @@ exports[`Review sms form renders Client-side validation triggers 1`] = `
               >
                 <strong
                   class="nhsuk-tag"
-                />
+                  data-test-id="status-tag-not-yet-submitted"
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
           </dl>
@@ -272,7 +275,7 @@ exports[`Review sms form renders matches error snapshot 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -382,7 +385,10 @@ exports[`Review sms form renders matches error snapshot 1`] = `
               >
                 <strong
                   class="nhsuk-tag"
-                />
+                  data-test-id="status-tag-not-yet-submitted"
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
           </dl>
@@ -534,7 +540,7 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -619,7 +625,10 @@ exports[`Review sms form renders matches snapshot when navigating from edit scre
               >
                 <strong
                   class="nhsuk-tag"
-                />
+                  data-test-id="status-tag-not-yet-submitted"
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
           </dl>
@@ -759,7 +768,7 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
       id="back-link"
     >
       <svg
@@ -839,7 +848,10 @@ exports[`Review sms form renders matches snapshot when navigating from manage te
               >
                 <strong
                   class="nhsuk-tag"
-                />
+                  data-test-id="status-tag-not-yet-submitted"
+                >
+                  Not yet submitted
+                </strong>
               </dd>
             </div>
           </dl>

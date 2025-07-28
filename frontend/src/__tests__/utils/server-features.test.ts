@@ -19,7 +19,7 @@ describe('serverIsFeatureEnabled', () => {
   it('should return false when no accessToken', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: undefined,
-      userSub: undefined,
+      clientId: undefined,
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
@@ -30,7 +30,7 @@ describe('serverIsFeatureEnabled', () => {
   it('should return false when no client', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'user',
+      clientId: 'client1',
     });
 
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
@@ -49,11 +49,11 @@ describe('serverIsFeatureEnabled', () => {
   it('returns false if fetching configuration fails unexpectedly', async () => {
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'user',
+      clientId: 'client1',
     });
 
     clientConfigurationApiClientMock.fetch.mockResolvedValueOnce({
-      error: { code: 500, message: 'server error' },
+      error: { errorMeta: { code: 500, description: 'server error' } },
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
@@ -74,7 +74,7 @@ describe('serverIsFeatureEnabled', () => {
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'user',
+      clientId: 'client1',
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');
@@ -95,7 +95,7 @@ describe('serverIsFeatureEnabled', () => {
 
     getSessionServerMock.mockResolvedValueOnce({
       accessToken: 'token',
-      userSub: 'user',
+      clientId: 'client1',
     });
 
     const enabled = await serverIsFeatureEnabled('proofing');

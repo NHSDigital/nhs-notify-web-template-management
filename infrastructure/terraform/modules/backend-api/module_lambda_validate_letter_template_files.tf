@@ -28,7 +28,7 @@ module "lambda_validate_letter_template_files" {
   lambda_env_vars         = local.backend_lambda_environment_variables
   function_s3_bucket      = var.function_s3_bucket
   function_code_base_path = local.lambdas_dir
-  function_code_dir       = "backend-api/dist"
+  function_code_dir       = "backend-api/dist/validate-letter-template-files"
 
   send_to_firehose          = var.send_to_firehose
   log_destination_arn       = var.log_destination_arn
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "validate_letter_template_files" {
     effect = "Allow"
 
     actions = [
-      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
       "dynamodb:UpdateItem",
     ]
 

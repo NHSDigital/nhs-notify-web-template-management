@@ -84,13 +84,6 @@ test.describe('POST /v1/letter-template', () => {
       template: {
         campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
-        id: expect.stringMatching(uuidRegExp),
-        name: templateData.name,
-        language: 'en',
-        letterType: 'x0',
-        templateStatus: 'PENDING_VALIDATION',
-        templateType: templateData.templateType,
-        updatedAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
             currentVersion: expect.stringMatching(uuidRegExp),
@@ -104,6 +97,14 @@ test.describe('POST /v1/letter-template', () => {
           },
           proofs: {},
         },
+        id: expect.stringMatching(uuidRegExp),
+        language: 'en',
+        letterType: 'x0',
+        name: templateData.name,
+        owner: user1.userId,
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: templateData.templateType,
+        updatedAt: expect.stringMatching(isoDateRegExp),
       },
     });
 
@@ -169,13 +170,6 @@ test.describe('POST /v1/letter-template', () => {
       template: {
         campaignId: testClients[user1.clientKey]?.campaignId,
         createdAt: expect.stringMatching(isoDateRegExp),
-        id: expect.stringMatching(uuidRegExp),
-        name: templateData.name,
-        language: 'en',
-        letterType: 'x0',
-        templateStatus: 'PENDING_VALIDATION',
-        templateType: templateData.templateType,
-        updatedAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
             currentVersion: expect.stringMatching(uuidRegExp),
@@ -184,6 +178,14 @@ test.describe('POST /v1/letter-template', () => {
           },
           proofs: {},
         },
+        id: expect.stringMatching(uuidRegExp),
+        language: 'en',
+        letterType: 'x0',
+        name: templateData.name,
+        owner: user1.userId,
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: templateData.templateType,
+        updatedAt: expect.stringMatching(isoDateRegExp),
       },
     });
 
@@ -237,20 +239,13 @@ test.describe('POST /v1/letter-template', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: result.template.id,
-      owner: user1.userId,
+      owner: user6.userId,
     });
 
     expect(result).toEqual({
       statusCode: 201,
       template: {
         createdAt: expect.stringMatching(isoDateRegExp),
-        id: expect.stringMatching(uuidRegExp),
-        name: templateData.name,
-        language: 'en',
-        letterType: 'x0',
-        templateStatus: 'PENDING_VALIDATION',
-        templateType: templateData.templateType,
-        updatedAt: expect.stringMatching(isoDateRegExp),
         files: {
           pdfTemplate: {
             currentVersion: expect.stringMatching(uuidRegExp),
@@ -259,6 +254,14 @@ test.describe('POST /v1/letter-template', () => {
           },
           proofs: {},
         },
+        id: expect.stringMatching(uuidRegExp),
+        language: 'en',
+        letterType: 'x0',
+        name: templateData.name,
+        owner: user6.userId,
+        templateStatus: 'PENDING_VALIDATION',
+        templateType: templateData.templateType,
+        updatedAt: expect.stringMatching(isoDateRegExp),
       },
     });
 
@@ -420,7 +423,7 @@ test.describe('POST /v1/letter-template', () => {
       statusCode: 400,
       technicalMessage: 'Request failed validation',
       details: {
-        name: 'Required',
+        name: 'Invalid input: expected string, received undefined',
       },
     });
   });

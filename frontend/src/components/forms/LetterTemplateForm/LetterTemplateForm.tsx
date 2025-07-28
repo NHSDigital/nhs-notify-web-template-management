@@ -27,10 +27,10 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
-import { getBasePath } from '@utils/get-base-path';
 import { $CreateLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
 import { Language } from 'nhs-notify-backend-client';
+import Link from 'next/link';
 
 export const LetterTemplateForm: FC<
   PageComponentProps<CreateLetterTemplate>
@@ -98,12 +98,9 @@ export const LetterTemplateForm: FC<
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/choose-a-template-type`}
-        data-testid='back-to-templates-link'
-      >
-        {backLinkText}
-      </BackLink>
+      <Link href='/choose-a-template-type' passHref legacyBehavior>
+        <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>

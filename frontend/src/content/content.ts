@@ -263,7 +263,7 @@ const previewLetterTemplate = {
   validationError:
     'The personalisation fields in your files are missing or do not match.',
   validationErrorAction:
-    'Check that the personalisation fields in your template file match the fields in your test personalisation file',
+    'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   preSubmissionText: previewLetterPreSubmissionText,
 };
 
@@ -327,7 +327,7 @@ const previewTemplateDetails = {
     templateProofFiles: 'Template proof files',
     templateStatus: 'Status',
     templateType: 'Type',
-    testPersonalisationFile: 'Test personalisation file',
+    examplePersonalisationFile: 'Example personalisation file',
   },
 };
 
@@ -346,6 +346,14 @@ const error404 = {
   },
 };
 
+const invalidConfiguration = {
+  pageTitle: generatePageTitle('Configuration error'),
+  pageHeading: 'You cannot create letter templates yet',
+  text: 'To get access, contact your onboarding manager and give them this error message:',
+  insetText: 'Account needs a client ID and campaign ID',
+  backLinkText: goBackButtonText,
+};
+
 const submitTemplate = {
   pageTitle: {
     NHS_APP: generatePageTitle('Submit NHS App template'),
@@ -354,9 +362,8 @@ const submitTemplate = {
     LETTER: generatePageTitle('Submit letter template'),
   },
   pageHeading: 'Submit',
-  warningCalloutLabel: 'Important',
-  warningCalloutText:
-    'When you submit this template it cannot be changed. It can only be replaced by a new template.',
+  leadParagraph:
+    'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
   submitChecklistHeading: 'Before you submit',
   submitChecklistIntroduction: 'You should check that your template:',
   submitChecklistItems: [
@@ -364,10 +371,8 @@ const submitTemplate = {
     'does not have any spelling errors',
     'is formatted correctly',
   ],
-  submitChecklistParagraphs: [
-    'When you submit a template, it will be used by NHS Notify to set up the messages you want to send.',
-    'If you want to change a submitted template, you must create and submit a new template to replace it.',
-  ],
+  warningCalloutLabel: 'Important',
+  warningCalloutText: `You cannot edit a template after you've submitted it. You can only replace it with a new template.`,
   goBackButtonText,
   buttonText: 'Submit template',
 };
@@ -376,11 +381,10 @@ const submitLetterTemplate = {
   proofingFlagDisabled: {
     goBackButtonText: submitTemplate.goBackButtonText,
     buttonText: submitTemplate.buttonText,
-    submitChecklistItems: submitTemplate.submitChecklistItems,
     pageHeading: 'Submit',
-    submitChecklistHeading: 'Before you submit this template',
-    submitChecklistIntroduction: 'Check that the template you uploaded:',
-    submitChecklistParagraphs: [],
+    submitChecklistHeading: 'Before you submit',
+    submitChecklistIntroduction: 'You should check that your template:',
+    submitChecklistItems: submitTemplate.submitChecklistItems,
     afterSubmissionHeading: 'After you submit this template',
     afterSubmissionText: [
       'Our service team will send you a proof of this letter template by email.',
@@ -388,29 +392,20 @@ const submitLetterTemplate = {
     ],
     goBackPath: 'preview-letter-template',
     warningCalloutLabel: 'Important',
-    warningCalloutChecklistIntroduction:
-      "If you need to change this template after you've submitted it:",
-    warningCalloutChecklistItems: [
-      'go back and upload a new letter template',
-      'tell your onboarding manager which template you want to use',
-    ],
+    warningCalloutText: `You cannot edit a template after you've submitted it. You can only replace it with a new template.`,
   },
   pageHeading: 'Approve and submit',
-  intro:
+  leadParagraph:
     'When you submit a letter template, it will be used by NHS Notify to set up the messages you want to send.',
   submitChecklistHeading: 'Before you submit this template',
-  submitChecklistIntroduction: 'You should check that your template proof:',
+  submitChecklistIntroduction: 'Check that your template proof:',
   submitChecklistItems: [
-    `appears exactly as you'd like a recipient to receive it`,
-    'uses personalisation in the way you expect',
-    'displays QR codes correctly (if included)',
+    'looks exactly as you expect your recipient to get it',
+    'uses personalisation as you expect',
+    'shows QR codes correctly (if used)',
   ],
   warningCalloutLabel: 'Important',
-  warningCalloutChecklistIntroduction: `If you need to change this template after you've submitted it:`,
-  warningCalloutChecklistItems: [
-    'go back and upload a new letter template',
-    'tell your onboarding manager which template you want to use',
-  ],
+  warningCalloutText: `You cannot edit a template after you've approved and submitted it. You can only replace it with a new template.`,
   goBackPath: 'preview-letter-template',
   goBackButtonText: submitTemplate.goBackButtonText,
   buttonText: 'Approve and submit',
@@ -562,13 +557,13 @@ const templateFormLetter = {
   templatePdfGuidanceLink: '/using-nhs-notify/letter-templates',
   templatePdfGuidanceLinkText:
     'Learn how to create letter templates to our specification (opens in a new tab)',
-  templateCsvLabelText: 'Text personalisation CSV (optional)',
+  templateCsvLabelText: 'Example personalisation CSV (optional)',
   templateCsvHintText:
-    'If your letter template uses personalisation, upload your test personalisation data.',
+    'If your letter template uses custom personalisation fields, upload your example personalisation data.',
   templateCsvGuidanceLink:
     '/using-nhs-notify/personalisation#providing-example-data',
   templateCsvGuidanceLinkText:
-    'Learn how to provide test personalisation data (opens in a new tab)',
+    'Learn how to provide example personalisation data (opens in a new tab)',
   buttonText: 'Save and upload',
   form: {
     letterTemplateName: {
@@ -683,8 +678,22 @@ const templateSubmitted = {
   templateNameHeading: 'Template name',
   templateIdHeading: 'Template ID',
   doNextHeading: 'What you need to do next',
-  doNextText:
-    "Tell an onboarding manager once you've submitted all your templates.",
+  doNextParagraphs: [
+    {
+      heading: "If you've not sent messages using NHS Notify yet",
+      text: [
+        "Tell your onboarding manager once you've submitted all your templates.",
+        'If you replaced a template by submitting a new one, tell your onboarding manager which template you want to use.',
+      ],
+    },
+    {
+      heading: "If you've sent messages using NHS Notify",
+      text: [
+        "[Raise a request with the Service Desk (opens in a new tab)](https://nhsdigitallive.service-now.com/csm?id=sc_cat_item&sys_id=ce81c3ae1b1c5190892d4046b04bcb83) once you've submitted all your templates.",
+        'If you replaced a template by submitting a new one, tell us which template you want to use in your Service Desk request.',
+      ],
+    },
+  ],
   backLinkText: backToAllTemplates,
 };
 
@@ -759,6 +768,7 @@ const content = {
   pages: {
     homePage,
     error404,
+    invalidConfiguration,
     messageTemplates,
   },
 };

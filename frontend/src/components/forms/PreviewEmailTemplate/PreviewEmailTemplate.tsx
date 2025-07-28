@@ -10,7 +10,6 @@ import {
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
-import { getBasePath } from '@utils/get-base-path';
 import { renderEmailMarkdown } from '@utils/markdownit';
 import { useSearchParams } from 'next/navigation';
 import { BackLink } from 'nhsuk-react-components';
@@ -44,13 +43,11 @@ export function PreviewEmailTemplate({
 
   return (
     <>
-      <BackLink
-        href={`${getBasePath()}/message-templates`}
-        id='back-link'
-        data-testid='back-to-templates-link'
-      >
-        Back to all templates
-      </BackLink>
+      <Link href='/message-templates' passHref legacyBehavior>
+        <BackLink id='back-link' data-testid='back-to-templates-link'>
+          Back to all templates
+        </BackLink>
+      </Link>
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>

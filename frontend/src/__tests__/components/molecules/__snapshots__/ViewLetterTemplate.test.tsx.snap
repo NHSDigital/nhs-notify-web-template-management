@@ -8,7 +8,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
     <a
       class="nhsuk-back-link__link"
       data-testid="back-to-templates-link"
-      href="/templates/message-templates"
+      href="/message-templates"
     >
       <svg
         aria-hidden="true"
@@ -89,6 +89,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
               >
                 <strong
                   class="nhsuk-tag nhsuk-tag--grey"
+                  data-test-id="status-tag-submitted"
                 >
                   Submitted
                 </strong>
@@ -150,7 +151,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                   <li>
                     <a
                       data-testid="proof-link_supplier-proof.pdf"
-                      href="/templates/files/undefined/proofs/template-id/supplier-proof.pdf"
+                      href="/templates/files/owner/proofs/template-id/supplier-proof.pdf"
                       rel="noopener noreferrer"
                       target="_blank"
                     >

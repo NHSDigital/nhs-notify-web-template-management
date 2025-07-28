@@ -8,7 +8,6 @@ import {
   Textarea,
   BackLink,
 } from 'nhsuk-react-components';
-import { getBasePath } from '@utils/get-base-path';
 import {
   $EmailTemplateFormSchema,
   processFormActions,
@@ -30,6 +29,7 @@ import { ChannelGuidance } from '@molecules/ChannelGuidance/ChannelGuidance';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
+import Link from 'next/link';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
@@ -76,12 +76,11 @@ export const EmailTemplateForm: FC<
   return (
     <>
       {editMode ? null : (
-        <BackLink
-          href={`${getBasePath()}/choose-a-template-type`}
-          data-testid='back-to-templates-link'
-        >
-          {backLinkText}
-        </BackLink>
+        <Link href='/choose-a-template-type' passHref legacyBehavior>
+          <BackLink data-testid='back-to-templates-link'>
+            {backLinkText}
+          </BackLink>
+        </Link>
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>

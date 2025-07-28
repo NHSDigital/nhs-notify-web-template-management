@@ -40,7 +40,6 @@
 | <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br>    email_addresses  = list(string)<br>    enable_polling   = bool<br>    default_supplier = optional(bool)<br>  }))</pre> | `{}` | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
 | <a name="input_observability_account_id"></a> [observability\_account\_id](#input\_observability\_account\_id) | The Observability Account ID that needs access | `string` | n/a | yes |
-| <a name="input_override_log_destination_arn"></a> [override\_log\_destination\_arn](#input\_override\_log\_destination\_arn) | Override the log destination ARN for this component. | `string` | `""` | no |
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments | `string` | `"main"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS Region | `string` | n/a | yes |
@@ -53,7 +52,7 @@
 | <a name="module_amplify_branch"></a> [amplify\_branch](#module\_amplify\_branch) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/amp_branch | v1.0.0 |
 | <a name="module_backend_api"></a> [backend\_api](#module\_backend\_api) | ../../modules/backend-api | n/a |
 | <a name="module_download_authorizer_lambda"></a> [download\_authorizer\_lambda](#module\_download\_authorizer\_lambda) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda | v2.0.13 |
-| <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v1.0.13 |
+| <a name="module_eventpub"></a> [eventpub](#module\_eventpub) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/eventpub | v2.0.16 |
 | <a name="module_kms"></a> [kms](#module\_kms) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms | v1.0.8 |
 | <a name="module_kms_us_east_1"></a> [kms\_us\_east\_1](#module\_kms\_us\_east\_1) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/kms | v1.0.8 |
 | <a name="module_nhse_backup_vault"></a> [nhse\_backup\_vault](#module\_nhse\_backup\_vault) | git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/aws-backup-source | v2.0.12 |
