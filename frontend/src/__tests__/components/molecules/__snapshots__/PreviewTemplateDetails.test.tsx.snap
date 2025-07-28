@@ -196,6 +196,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -297,6 +298,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -332,6 +334,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -381,6 +384,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -412,6 +416,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -516,6 +521,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -617,6 +623,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -652,6 +659,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"

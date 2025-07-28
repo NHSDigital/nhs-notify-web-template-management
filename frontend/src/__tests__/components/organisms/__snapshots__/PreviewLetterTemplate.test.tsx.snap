@@ -110,6 +110,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -266,6 +267,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -422,6 +424,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -567,6 +570,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -712,6 +716,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -761,6 +766,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                         class="container"
                       >
                         <svg
+                          aria-hidden="true"
                           class="icon"
                           fill="none"
                           height="26"
@@ -1010,6 +1016,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1045,6 +1052,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1224,6 +1232,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1369,6 +1378,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"

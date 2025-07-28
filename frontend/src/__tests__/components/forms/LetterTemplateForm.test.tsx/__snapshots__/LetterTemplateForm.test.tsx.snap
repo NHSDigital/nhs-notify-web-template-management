@@ -417,7 +417,6 @@ exports[`Client-side validation triggers 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -454,7 +453,6 @@ exports[`Client-side validation triggers 1`] = `
             >
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
@@ -844,7 +842,6 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -881,7 +878,6 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
@@ -1328,7 +1324,6 @@ exports[`renders page one error 1`] = `
             >
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -1365,7 +1360,6 @@ exports[`renders page one error 1`] = `
             >
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
@@ -1838,7 +1832,6 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -1885,7 +1878,6 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
@@ -2301,7 +2293,6 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -2338,7 +2329,6 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
@@ -2754,7 +2744,6 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="application/pdf"
-                aria-describedby="letterTemplatePdf"
                 class="file-upload"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
@@ -2791,7 +2780,6 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="text/csv"
-                aria-describedby="letterTemplateCsv"
                 class="file-upload"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"

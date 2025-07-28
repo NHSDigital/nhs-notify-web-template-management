@@ -110,6 +110,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -159,6 +160,7 @@ exports[`ViewLetterTemplate component matches submitted snapshot 1`] = `
                         class="container"
                       >
                         <svg
+                          aria-hidden="true"
                           class="icon"
                           fill="none"
                           height="26"
