@@ -22,6 +22,14 @@ npm run test:accessibility -w tests/accessibility
 TEST_EXIT_CODE=$?
 echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
+pwd
+ls
+ls .
+ls ./tests
+ls ./tests/accessibility
+ls ./tests/accessibility/.reports
+
+
 cp ./tests/accessibility/.reports/accessibility ./tests/acceptance-test-report
 
 npm run accessibility-test-teardown  -w tests/accessibility

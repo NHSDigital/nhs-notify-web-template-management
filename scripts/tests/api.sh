@@ -8,6 +8,12 @@ npm run test:api
 TEST_EXIT_CODE=$?
 echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
+pwd
+ls
+ls tests
+ls tests/test-team
+ls tests/test-team/playwright-report
+
 cp tests/test-team/playwright-report ./tests/acceptance-test-report
 
 exit $TEST_EXIT_CODE
