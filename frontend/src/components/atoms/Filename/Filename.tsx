@@ -6,6 +6,7 @@ export function Filename({ filename }: { filename: string }): JSX.Element {
     <div className={styles.container}>
       <svg
         className={styles.icon}
+        aria-hidden="true"
         width='20'
         height='26'
         viewBox='0 0 20 26'
