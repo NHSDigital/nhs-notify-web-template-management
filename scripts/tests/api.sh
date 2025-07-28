@@ -10,8 +10,8 @@ echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
 pwd
 ls
-ls test-results
+ls playwright-report
 
-cp -r test-results/playwright-report ./tests/acceptance-test-report
+cp -r ./playwright-report ./tests/acceptance-test-report
 
 exit $TEST_EXIT_CODE
