@@ -26,7 +26,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {hint && <HintText>{hint}</HintText>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <input
-        aria-describedby={id}
         id={id}
         name={id}
         className='file-upload'
