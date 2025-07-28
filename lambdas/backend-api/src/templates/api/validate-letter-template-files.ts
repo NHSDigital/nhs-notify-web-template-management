@@ -1,7 +1,4 @@
-import {
-  logger,
-  type Logger,
-} from 'nhs-notify-web-template-management-utils/logger';
+import { logger } from 'nhs-notify-web-template-management-utils/logger';
 import {
   guardDutyEventValidator,
   isRightToLeft,
@@ -11,27 +8,21 @@ import { TemplatePdf } from '../domain/template-pdf';
 import { TestDataCsv } from '../domain/test-data-csv';
 import { validateLetterTemplateFiles } from '../domain/validate-letter-template-files';
 import { SQSBatchItemFailure, SQSBatchResponse, SQSEvent } from 'aws-lambda';
-import { ClientConfigRepository } from '../infra/client-config-repository';
 
 export class ValidateLetterTemplateFilesLambda {
   private letterUploadRepository: LetterUploadRepository;
 
   private templateRepository: TemplateRepository;
 
-  private clientConfigRepository: ClientConfigRepository;
-
   constructor({
     letterUploadRepository,
     templateRepository,
-    clientConfigRepository,
   }: {
     letterUploadRepository: LetterUploadRepository;
     templateRepository: TemplateRepository;
-    clientConfigRepository: ClientConfigRepository;
   }) {
     this.letterUploadRepository = letterUploadRepository;
     this.templateRepository = templateRepository;
-    this.clientConfigRepository = clientConfigRepository;
   }
 
   sqsHandler = async (event: SQSEvent): Promise<SQSBatchResponse> => {
@@ -163,10 +154,7 @@ export class ValidateLetterTemplateFilesLambda {
 
     const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
 
-    const clientProofingEnabled = await this.isProofingEnabled(
-      template.clientId,
-      log
-    );
+    const clientProofingEnabled = template.proofingEnabled || false;
 
     let csv;
 
@@ -205,18 +193,4 @@ export class ValidateLetterTemplateFilesLambda {
       clientProofingEnabled
     );
   };
-
-  private async isProofingEnabled(clientId: string | undefined, log: Logger) {
-    const { data: clientConfiguration, error: clientConfigError } = clientId
-      ? await this.clientConfigRepository.get(clientId)
-      : { data: null };
-
-    if (clientConfigError) {
-      log.error('Unable to fetch client configuration', clientConfigError);
-
-      throw new Error('Unable to fetch client configuration');
-    }
-
-    return clientConfiguration?.features?.proofing || false;
-  }
 }

@@ -641,6 +641,7 @@ export class TemplateRepository {
       .expectedTemplateType('LETTER')
       .expectedClientId(user.clientId)
       .expectTemplateExists()
+      .expectProofingEnabled()
       .build();
 
     try {

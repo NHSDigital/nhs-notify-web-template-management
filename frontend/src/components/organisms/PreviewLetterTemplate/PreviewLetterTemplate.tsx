@@ -4,12 +4,14 @@ import Link from 'next/link';
 import PreviewTemplateDetailsLetter from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsLetter';
 import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
 import {
   BackLink,
   Details,
   ErrorMessage,
   ErrorSummary,
+  WarningCallout,
 } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
@@ -27,6 +29,7 @@ export function PreviewLetterTemplate({
     footer,
     preSubmissionText,
     requestProofText,
+    rtlWarning,
     submitText,
     validationError,
     validationErrorAction,
@@ -60,7 +63,11 @@ export function PreviewLetterTemplate({
     errors.push(validationError, validationErrorAction);
   }
 
-  const continueButton = buttonMap[template.templateStatus];
+  let continueButton = buttonMap[template.templateStatus];
+
+  if (!template.proofingEnabled) {
+    continueButton = buttonMap['NOT_YET_SUBMITTED'];
+  }
 
   const footerText = footer[template.templateStatus] ?? [];
 
@@ -124,6 +131,25 @@ export function PreviewLetterTemplate({
                 ))}
               </div>
             ) : null}
+
+            {isRightToLeft(template.language) && (
+              <div className='nhsuk-grid-row'>
+                <div className='nhsuk-grid-column-two-thirds'>
+                  <WarningCallout
+                    data-testid='rtl-language-warning'
+                    aria-live='polite'
+                    className='nhsuk-u-margin-top-3'
+                  >
+                    <WarningCallout.Label headingLevel='h2'>
+                      {rtlWarning.heading}
+                    </WarningCallout.Label>
+                    <p>{rtlWarning.text1}</p>
+                    <p>{rtlWarning.text2}</p>
+                    <p>{rtlWarning.text3}</p>
+                  </WarningCallout>
+                </div>
+              </div>
+            )}
 
             {continueButton && (
               <NHSNotifyButton

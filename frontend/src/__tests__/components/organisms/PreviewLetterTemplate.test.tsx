@@ -1,7 +1,17 @@
 import { PreviewLetterTemplate } from '@organisms/PreviewLetterTemplate/PreviewLetterTemplate';
 import { render } from '@testing-library/react';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
+
+jest.mock('nhs-notify-web-template-management-utils/enum');
+
+const isRightToLeftMock = jest.mocked(isRightToLeft);
 
 describe('PreviewLetterTemplate component', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    isRightToLeftMock.mockReturnValueOnce(false);
+  });
+
   it('matches snapshot when template status is VIRUS_SCAN_FAILED', () => {
     const container = render(
       <PreviewLetterTemplate
@@ -20,6 +30,7 @@ describe('PreviewLetterTemplate component', () => {
             },
             testDataCsv: undefined,
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -46,6 +57,7 @@ describe('PreviewLetterTemplate component', () => {
               virusScanStatus: 'PASSED',
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -72,6 +84,7 @@ describe('PreviewLetterTemplate component', () => {
               virusScanStatus: 'PASSED',
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -106,6 +119,7 @@ describe('PreviewLetterTemplate component', () => {
               },
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -140,6 +154,7 @@ describe('PreviewLetterTemplate component', () => {
               },
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -171,6 +186,7 @@ describe('PreviewLetterTemplate component', () => {
               virusScanStatus: 'PASSED',
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -197,6 +213,7 @@ describe('PreviewLetterTemplate component', () => {
               virusScanStatus: 'PENDING',
             },
           },
+          proofingEnabled: true,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
@@ -223,6 +240,81 @@ describe('PreviewLetterTemplate component', () => {
               virusScanStatus: 'PASSED',
             },
           },
+          proofingEnabled: true,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template proofingEnabled false', () => {
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
+          owner: 'owner',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x0',
+          language: 'en',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+            },
+          },
+          proofingEnabled: false,
+          createdAt: '2025-04-02T09:33:25.729Z',
+          updatedAt: '2025-04-02T09:33:25.729Z',
+        }}
+      />
+    );
+
+    expect(container.asFragment()).toMatchSnapshot();
+  });
+
+  it('matches snapshot when template language is Right to Left', () => {
+    isRightToLeftMock.mockReset();
+
+    isRightToLeftMock.mockReturnValueOnce(true);
+
+    const container = render(
+      <PreviewLetterTemplate
+        template={{
+          id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
+          owner: 'owner',
+          name: 'letter',
+          templateType: 'LETTER',
+          templateStatus: 'NOT_YET_SUBMITTED',
+          letterType: 'x0',
+          language: 'ar',
+          files: {
+            pdfTemplate: {
+              fileName: 'file.pdf',
+              currentVersion: 'b',
+              virusScanStatus: 'PASSED',
+            },
+            proofs: {
+              'your-proof.pdf': {
+                fileName: 'your-proof.pdf',
+                virusScanStatus: 'PASSED',
+                supplier: 'MBA',
+              },
+            },
+          },
+          proofingEnabled: false,
           createdAt: '2025-04-02T09:33:25.729Z',
           updatedAt: '2025-04-02T09:33:25.729Z',
         }}
