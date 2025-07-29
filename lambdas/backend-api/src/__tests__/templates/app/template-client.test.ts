@@ -440,7 +440,7 @@ describe('templateClient', () => {
       });
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: true },
+        { ...dataWithFiles, proofingEnabled: true, supplier: 'SUPPLIER' },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -588,7 +588,7 @@ describe('templateClient', () => {
         });
 
         expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-          { ...dataWithFiles, proofingEnabled: expected },
+          { ...dataWithFiles, proofingEnabled: expected, supplier: 'SUPPLIER' },
           user.userId,
           user.clientId,
           'PENDING_UPLOAD',
@@ -613,7 +613,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -627,7 +627,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const creationTime = '2025-03-12T08:41:08.805Z';
@@ -915,7 +915,7 @@ describe('templateClient', () => {
       expect(result).toEqual(templateRepoFailure);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false },
+        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -1041,7 +1041,7 @@ describe('templateClient', () => {
       expect(result).toEqual(uploadErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false },
+        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -1130,7 +1130,7 @@ describe('templateClient', () => {
       expect(result).toEqual(updateErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false },
+        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',

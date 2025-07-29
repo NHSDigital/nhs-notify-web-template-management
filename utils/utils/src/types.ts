@@ -109,6 +109,7 @@ export type DatabaseTemplate = {
   proofingEnabled?: boolean;
   sftpSendLockTime?: number;
   subject?: string;
+  supplier?: string;
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;

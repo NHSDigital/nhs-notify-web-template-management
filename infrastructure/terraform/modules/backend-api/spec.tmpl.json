@@ -219,6 +219,9 @@
               },
               "proofingEnabled": {
                 "type": "boolean"
+              },
+              "supplier": {
+                "type": "string"
               }
             },
             "required": [

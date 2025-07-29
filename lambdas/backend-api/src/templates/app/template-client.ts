@@ -186,6 +186,7 @@ export class TemplateClient {
     const letterTemplateFields = {
       ...templateValidationResult.data,
       proofingEnabled,
+      supplier: this.defaultLetterSupplier,
       files,
     };
 
