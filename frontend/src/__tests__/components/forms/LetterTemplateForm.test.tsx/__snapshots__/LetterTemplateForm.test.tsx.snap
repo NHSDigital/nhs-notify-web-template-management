@@ -417,7 +417,7 @@ exports[`Client-side validation triggers 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -453,7 +453,7 @@ exports[`Client-side validation triggers 1`] = `
             >
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -842,7 +842,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -878,7 +878,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -1324,7 +1324,7 @@ exports[`renders page one error 1`] = `
             >
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -1360,7 +1360,7 @@ exports[`renders page one error 1`] = `
             >
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -1832,7 +1832,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -1878,7 +1878,7 @@ exports[`renders page with multiple errors 1`] = `
               </span>
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -2293,7 +2293,7 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -2329,7 +2329,7 @@ exports[`renders page with preloaded field values 1`] = `
             >
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
@@ -2744,7 +2744,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="application/pdf"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplatePdf"
                 name="letterTemplatePdf"
                 type="file"
@@ -2780,7 +2780,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             >
               <input
                 accept="text/csv"
-                class="file-upload"
+                class="file-upload nhsuk-input"
                 id="letterTemplateCsv"
                 name="letterTemplateCsv"
                 type="file"
