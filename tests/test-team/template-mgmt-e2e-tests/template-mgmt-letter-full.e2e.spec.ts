@@ -82,7 +82,6 @@ function create(
         'appointment_time',
         'appointment_location',
         'contact_telephone_number',
-        'BROKEN'
       ]);
 
       expect(template.testDataCsvHeaders).toEqual([

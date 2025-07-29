@@ -83,7 +83,7 @@ test.describe('GET /v1/templates', () => {
 
     // exercise - request user 1 templates
     const user1ListResponse = await request.get(
-      `${process.env.API_BASE_URL}/v1/templatesBROKEN`,
+      `${process.env.API_BASE_URL}/v1/templates`,
       {
         headers: {
           Authorization: await user1.getAccessToken(),

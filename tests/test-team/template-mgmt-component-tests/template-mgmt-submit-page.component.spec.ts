@@ -216,7 +216,7 @@ test.describe('Submit template Page', () => {
       await submitTemplatePage.loadPage(templates[channelIdentifier].valid.id);
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/submit-${channelIdentifier}-templateBROKEN/${templates[channelIdentifier].valid.id}`
+        `${baseURL}/templates/submit-${channelIdentifier}-template/${templates[channelIdentifier].valid.id}`
       );
 
       await expect(submitTemplatePage.pageHeader).toHaveText(expectedHeading);
