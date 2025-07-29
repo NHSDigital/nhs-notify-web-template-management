@@ -1,10 +1,12 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
+
 import fs from 'node:fs';
 import path from 'node:path';
-import { $TemplateDeletedEvent } from '../../src/events/TemplateDeleted';
+import { $TemplateCompletedEvent } from '../../src/events/template-completed';
 
 const examplesDir = path.resolve(
   __dirname,
-  '../../sample-events/TemplateDeleted'
+  '../../sample-events/TemplateCompleted'
 );
 
 describe('TemplateCompletedEvent schema', () => {
@@ -15,7 +17,7 @@ describe('TemplateCompletedEvent schema', () => {
         fs.readFileSync(path.join(examplesDir, filename), 'utf8')
       );
 
-      const result = $TemplateDeletedEvent.safeParse(event);
+      const result = $TemplateCompletedEvent.safeParse(event);
 
       if (!result.success) {
         console.log(result.error);

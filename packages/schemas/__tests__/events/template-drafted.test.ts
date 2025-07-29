@@ -1,13 +1,15 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
+
 import fs from 'node:fs';
 import path from 'node:path';
-import { $TemplateCompletedEvent } from '../../src/events/TemplateCompleted';
+import { $TemplateDraftedEvent } from '../../src/events/template-drafted';
 
 const examplesDir = path.resolve(
   __dirname,
-  '../../sample-events/TemplateCompleted'
+  '../../sample-events/TemplateDrafted'
 );
 
-describe('TemplateCompletedEvent schema', () => {
+describe('TemplateDraftedEvent schema', () => {
   it.each(fs.readdirSync(examplesDir))(
     'parses sample event %s without errors',
     (filename) => {
@@ -15,7 +17,7 @@ describe('TemplateCompletedEvent schema', () => {
         fs.readFileSync(path.join(examplesDir, filename), 'utf8')
       );
 
-      const result = $TemplateCompletedEvent.safeParse(event);
+      const result = $TemplateDraftedEvent.safeParse(event);
 
       if (!result.success) {
         console.log(result.error);
