@@ -270,7 +270,7 @@ const previewLetterTemplate = {
     text1: `The proof of this letter template will not be available online because of the language you've chosen.`,
     text2:
       'After you submit your template, our service team will send you a proof by email instead.',
-    text3: 'This email will tell you what todo next.',
+    text3: 'This email will tell you what to do next.',
   },
 };
 
