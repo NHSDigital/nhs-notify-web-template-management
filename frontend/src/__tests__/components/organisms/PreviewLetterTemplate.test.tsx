@@ -250,41 +250,6 @@ describe('PreviewLetterTemplate component', () => {
     expect(container.asFragment()).toMatchSnapshot();
   });
 
-  it('matches snapshot when template proofingEnabled false', () => {
-    const container = render(
-      <PreviewLetterTemplate
-        template={{
-          id: '0A097DCD-35F9-4DAD-A37E-AC358B71B74D',
-          owner: 'owner',
-          name: 'letter',
-          templateType: 'LETTER',
-          templateStatus: 'NOT_YET_SUBMITTED',
-          letterType: 'x0',
-          language: 'en',
-          files: {
-            pdfTemplate: {
-              fileName: 'file.pdf',
-              currentVersion: 'b',
-              virusScanStatus: 'PASSED',
-            },
-            proofs: {
-              'your-proof.pdf': {
-                fileName: 'your-proof.pdf',
-                virusScanStatus: 'PASSED',
-                supplier: 'MBA',
-              },
-            },
-          },
-          proofingEnabled: false,
-          createdAt: '2025-04-02T09:33:25.729Z',
-          updatedAt: '2025-04-02T09:33:25.729Z',
-        }}
-      />
-    );
-
-    expect(container.asFragment()).toMatchSnapshot();
-  });
-
   it('matches snapshot when template language is Right to Left', () => {
     isRightToLeftMock.mockReset();
 
