@@ -8,6 +8,7 @@ import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
 import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
+import classNames from 'classnames';
 
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
@@ -15,7 +16,8 @@ type ContentPreviewField = {
   value: string;
 };
 
-const { rowHeadings } = content.components.previewTemplateDetails;
+const { rowHeadings, previewTemplateStatusFootnote } =
+  content.components.previewTemplateDetails;
 
 const templateStatusToKebabCase = (status: TemplateStatus) =>
   status.toLowerCase().replaceAll('_', '-');
@@ -82,6 +84,18 @@ export function StandardDetailRows({
           >
             {templateStatusToDisplayMappings(template.templateStatus)}
           </Tag>
+          {previewTemplateStatusFootnote[template.templateStatus] && (
+            <small
+              className={classNames(
+                styles.preview__statusnote,
+                'nhsuk-body-s',
+                'nhsuk-u-margin-top-2',
+                'nhsuk-u-secondary-text-color'
+              )}
+            >
+              {previewTemplateStatusFootnote[template.templateStatus]}
+            </small>
+          )}
         </SummaryList.Value>
       </SummaryList.Row>
     </>
