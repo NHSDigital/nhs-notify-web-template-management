@@ -62,7 +62,7 @@ jobs:
     needs:
       - acceptance-tests
       - generate-sandbox-name
-    # if: always()
+    if: always()
 
     uses: ./.github/workflows/dispatch_internal_repo_workflow.yaml
     secrets: inherit
