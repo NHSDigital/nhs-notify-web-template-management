@@ -75,3 +75,26 @@ jobs:
       targetAccountGroup: nhs-notify-template-management-dev
       targetComponent: sandbox
       terraformAction: destroy
+
+  publish-test-package:
+    name: Publish test package
+    needs: sandbox-tear-down
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish to GitHub Packages
+        run: npm publish --workspace packages/schemas
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

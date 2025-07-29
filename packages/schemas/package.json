@@ -1,0 +1,53 @@
+{
+  "author": "NHS Notify contributors",
+  "description": "Zod validators, TypeScript type definitions and JSON Schemas for Template Management",
+  "devDependencies": {
+    "@swc/core": "^1.11.13",
+    "@swc/jest": "^0.2.37",
+    "@tsconfig/node20": "^20.1.5",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "zod": "^4.0.5"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./event-schemas/*.json": {
+      "default": "./dist/event-schemas/*.json"
+    },
+    "./sample-events/*.json": {
+      "default": "./sample-events/*.json"
+    }
+  },
+  "files": [
+    "dist",
+    "sample-events"
+  ],
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "name": "@nhsdigital/nhs-notify-templates-test-package",
+  "peerDependencies": {
+    "zod": "^4.0.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NHSDigital/nhs-notify-web-template-management.git"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc && tsx scripts/generate-json-schemas.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build",
+    "test:unit": "jest"
+  },
+  "type": "commonjs",
+  "types": "./dist/index.d.ts",
+  "version": "1.0.0"
+}

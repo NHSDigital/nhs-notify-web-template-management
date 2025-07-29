@@ -1,0 +1,27 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { $TemplateDraftedEvent } from '../../src/events/TemplateDrafted';
+
+const examplesDir = path.resolve(
+  __dirname,
+  '../../sample-events/TemplateDrafted'
+);
+
+describe('TemplateDraftedEvent schema', () => {
+  it.each(fs.readdirSync(examplesDir))(
+    'parses sample event %s without errors',
+    (filename) => {
+      const event = JSON.parse(
+        fs.readFileSync(path.join(examplesDir, filename), 'utf8')
+      );
+
+      const result = $TemplateDraftedEvent.safeParse(event);
+
+      if (!result.success) {
+        console.log(result.error);
+      }
+
+      expect(result.success).toBe(true);
+    }
+  );
+});
