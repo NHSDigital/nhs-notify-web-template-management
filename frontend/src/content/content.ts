@@ -324,7 +324,7 @@ const previewTemplateStatusFootnote: Partial<Record<TemplateStatus, string>> = {
   PENDING_UPLOAD: 'Refresh the page to update the status',
   PENDING_VALIDATION: 'Refresh the page to update the status',
   WAITING_FOR_PROOF: 'Refresh the page to update the status',
-}
+};
 
 const previewTemplateDetails = {
   rowHeadings: {
