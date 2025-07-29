@@ -18,8 +18,10 @@ npm run app:start --prefix frontend
 
 npm run app:wait --prefix frontend
 
+set +e
 npm run test:accessibility -w tests/accessibility
 TEST_EXIT_CODE=$?
+set -e
 echo "TEST_EXIT_CODE=$TEST_EXIT_CODE"
 
 cp -r ./tests/accessibility/.reports/accessibility ./tests/acceptance-test-report
