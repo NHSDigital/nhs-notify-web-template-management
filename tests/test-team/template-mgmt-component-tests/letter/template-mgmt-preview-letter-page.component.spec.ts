@@ -89,6 +89,15 @@ async function createTemplates() {
       'VALIDATION_FAILED',
       'PASSED'
     ),
+    proofingDisabled: {
+      ...TemplateFactory.createLetterTemplate(
+        '9AACCD57-C6A3-4273-854C-3839A081B4D8',
+        user,
+        'ProofingDisabled',
+        'NOT_YET_SUBMITTED'
+      ),
+      proofingEnabled: false,
+    },
     withProofs,
   };
 }
@@ -121,6 +130,27 @@ test.describe('Preview Letter template Page', () => {
 
     await expect(previewLetterTemplatePage.pageHeader).toContainText(
       templates.notYetSubmitted.name
+    );
+
+    await previewLetterTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+  });
+
+  test('when proofingEnabled is false, user can click to go submit page', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+    await previewLetterTemplatePage.loadPage(templates.proofingDisabled.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.proofingDisabled.id}`
+    );
+
+    await expect(previewLetterTemplatePage.pageHeader).toContainText(
+      templates.proofingDisabled.name
     );
 
     await previewLetterTemplatePage.clickContinueButton();

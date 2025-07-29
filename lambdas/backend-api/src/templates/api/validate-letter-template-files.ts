@@ -154,7 +154,7 @@ export class ValidateLetterTemplateFilesLambda {
 
     const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
 
-    const clientProofingEnabled = template.proofingEnabled || false;
+    const proofingEnabled = template.proofingEnabled || false;
 
     let csv;
 
@@ -175,7 +175,7 @@ export class ValidateLetterTemplateFilesLambda {
         false,
         [],
         [],
-        clientProofingEnabled
+        proofingEnabled
       );
 
       return;
@@ -190,7 +190,7 @@ export class ValidateLetterTemplateFilesLambda {
       valid,
       pdf.personalisationParameters,
       csv?.parameters || [],
-      clientProofingEnabled
+      proofingEnabled
     );
   };
 }

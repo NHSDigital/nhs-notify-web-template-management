@@ -360,7 +360,7 @@ export class TemplateRepository {
     valid: boolean,
     personalisationParameters: string[],
     testDataCsvHeaders: string[],
-    clientProofingEnabled: boolean
+    proofingEnabled: boolean
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
@@ -371,7 +371,7 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const canRequestProofing = clientProofingEnabled && this.enableProofing;
+    const canRequestProofing = proofingEnabled && this.enableProofing;
 
     const resolvedPostValidationSuccessStatus = canRequestProofing
       ? 'PENDING_PROOF_REQUEST'

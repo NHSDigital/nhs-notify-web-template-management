@@ -157,7 +157,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                 The proof of this letter template will not be available online because of the language you've chosen.
               </p>
               <p>
-                Our service team will send you a proof by email instead.
+                After you submit your template, our service team will send you a proof by email instead.
               </p>
               <p>
                 This email will tell you what todo next.

@@ -65,6 +65,10 @@ export function PreviewLetterTemplate({
 
   let continueButton = buttonMap[template.templateStatus];
 
+  // TODO: this will prevent ALL current letter templates from
+  // submitting a proof request - are we fine with this?
+  // Or should we just let the requests fall over?
+  // after a period of time we _could_ probably remove this check.
   if (!template.proofingEnabled) {
     continueButton = buttonMap['NOT_YET_SUBMITTED'];
   }
