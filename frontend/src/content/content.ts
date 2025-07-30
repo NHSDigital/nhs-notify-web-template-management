@@ -560,7 +560,7 @@ const templateFormLetter = {
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:
     'Your letter must follow our letter specification and be no bigger than 5MB',
-  templatePdfGuidanceLink: '/using-nhs-notify/letter-templates',
+  templatePdfGuidanceLink: '/using-nhs-notify/upload-a-letter',
   templatePdfGuidanceLinkText:
     'Learn how to create letter templates to our specification (opens in a new tab)',
   templateCsvLabelText: 'Example personalisation CSV (optional)',
