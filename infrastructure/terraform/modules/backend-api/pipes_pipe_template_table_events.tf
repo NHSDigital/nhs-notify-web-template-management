@@ -36,11 +36,14 @@ resource "aws_pipes_pipe" "template_table_events" {
               eventName = ["INSERT", "MODIFY"]
             },
             {
-              # Allow LETTER templates only when proofingEnabled is true
+              # Allow LETTER templates only when proofingEnabled and valid status
               dynamodb = {
                 NewImage = {
                   templateType = {
                     S = ["LETTER"]
+                  }
+                  templateStatus = {
+                    S = ["PROOF_AVAILABLE", "SUBMITTED", "DELETED"]
                   }
                   proofingEnabled = {
                     BOOL = [true]
