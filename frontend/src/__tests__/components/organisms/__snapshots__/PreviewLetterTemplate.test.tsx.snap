@@ -110,6 +110,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -266,6 +267,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -405,6 +407,11 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 >
                   Checking files
                 </strong>
+                <small
+                  class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
+                >
+                  Refresh the page to update the status
+                </small>
               </dd>
             </div>
             <div
@@ -422,6 +429,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -550,6 +558,11 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 >
                   Checking files
                 </strong>
+                <small
+                  class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
+                >
+                  Refresh the page to update the status
+                </small>
               </dd>
             </div>
             <div
@@ -567,6 +580,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -712,6 +726,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -761,6 +776,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                         class="container"
                       >
                         <svg
+                          aria-hidden="true"
                           class="icon"
                           fill="none"
                           height="26"
@@ -1010,6 +1026,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1045,6 +1062,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1224,6 +1242,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -1369,6 +1388,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"

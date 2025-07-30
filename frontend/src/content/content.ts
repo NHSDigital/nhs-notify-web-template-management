@@ -320,6 +320,11 @@ const previewSMSTemplate = {
   backLinkText: backToAllTemplates,
 };
 
+const previewTemplateStatusFootnote: Partial<Record<TemplateStatus, string>> = {
+  PENDING_UPLOAD: 'Refresh the page to update the status',
+  PENDING_VALIDATION: 'Refresh the page to update the status',
+};
+
 const previewTemplateDetails = {
   rowHeadings: {
     templateFile: 'Template file',
@@ -329,6 +334,7 @@ const previewTemplateDetails = {
     templateType: 'Type',
     examplePersonalisationFile: 'Example personalisation file',
   },
+  previewTemplateStatusFootnote,
 };
 
 const error404 = {
