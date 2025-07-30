@@ -142,7 +142,7 @@ test.describe('Create Letter Template Page', () => {
   const moreInfoLinks = [
     {
       name: 'Learn how to create letter templates to our specification (opens in a new tab)',
-      url: 'using-nhs-notify/letter-templates',
+      url: 'using-nhs-notify/upload-a-letter',
     },
     {
       name: 'Learn how to provide example personalisation data (opens in a new tab)',

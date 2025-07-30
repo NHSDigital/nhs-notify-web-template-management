@@ -395,7 +395,7 @@ exports[`Client-side validation triggers 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -832,7 +832,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1316,7 +1316,7 @@ exports[`renders page one error 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1816,7 +1816,7 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2289,7 +2289,7 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2742,7 +2742,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             <p>
               <a
                 data-testid="pdf-guidance-link"
-                href="/using-nhs-notify/letter-templates"
+                href="/using-nhs-notify/upload-a-letter"
                 rel="noopener noreferrer"
                 target="_blank"
               >
