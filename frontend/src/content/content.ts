@@ -327,6 +327,11 @@ const previewSMSTemplate = {
   backLinkText: backToAllTemplates,
 };
 
+const previewTemplateStatusFootnote: Partial<Record<TemplateStatus, string>> = {
+  PENDING_UPLOAD: 'Refresh the page to update the status',
+  PENDING_VALIDATION: 'Refresh the page to update the status',
+};
+
 const previewTemplateDetails = {
   rowHeadings: {
     templateFile: 'Template file',
@@ -336,6 +341,7 @@ const previewTemplateDetails = {
     templateType: 'Type',
     examplePersonalisationFile: 'Example personalisation file',
   },
+  previewTemplateStatusFootnote,
 };
 
 const error404 = {
@@ -561,7 +567,7 @@ const templateFormLetter = {
   templatePdfLabelText: 'Letter template PDF',
   templatePdfHintText:
     'Your letter must follow our letter specification and be no bigger than 5MB',
-  templatePdfGuidanceLink: '/using-nhs-notify/letter-templates',
+  templatePdfGuidanceLink: '/using-nhs-notify/upload-a-letter',
   templatePdfGuidanceLinkText:
     'Learn how to create letter templates to our specification (opens in a new tab)',
   templateCsvLabelText: 'Example personalisation CSV (optional)',
