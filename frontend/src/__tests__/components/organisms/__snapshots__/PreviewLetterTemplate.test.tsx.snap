@@ -148,7 +148,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template language
                   <span
                     class="nhsuk-u-visually-hidden"
                   >
-                    Important:
+                    Important: 
                   </span>
                   Important
                 </span>
@@ -1090,7 +1090,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Error:
+              Error: 
             </span>
             The personalisation fields in your files are missing or do not match.
           </span>
@@ -1100,7 +1100,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Error:
+              Error: 
             </span>
             Check that the personalisation fields in your template file match the fields in your example personalisation file
           </span>
@@ -1300,7 +1300,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Error:
+              Error: 
             </span>
             The file(s) you uploaded may contain a virus.
           </span>
@@ -1310,7 +1310,7 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
             <span
               class="nhsuk-u-visually-hidden"
             >
-              Error:
+              Error: 
             </span>
             Create a new letter template to upload your file(s) again or upload different file(s).
           </span>
