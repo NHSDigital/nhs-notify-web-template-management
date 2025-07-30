@@ -1371,11 +1371,6 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
                 >
                   Waiting for proof
                 </strong>
-                <small
-                  class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
-                >
-                  Refresh the page to update the status
-                </small>
               </dd>
             </div>
             <div
