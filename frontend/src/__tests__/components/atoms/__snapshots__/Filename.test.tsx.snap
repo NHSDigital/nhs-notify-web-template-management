@@ -6,6 +6,7 @@ exports[`Filename component renders component correctly 1`] = `
     class="container"
   >
     <svg
+      aria-hidden="true"
       class="icon"
       fill="none"
       height="26"
