@@ -54,7 +54,8 @@ export class EmailHelper {
   async getEmailForTemplateId(
     prefix: string,
     templateId: string,
-    dateCutoff: Date
+    dateCutoff: Date,
+    extraTextToSearch: string
   ) {
     const s3Items = await this.getAllS3Items(prefix);
 
@@ -82,7 +83,7 @@ export class EmailHelper {
 
       const content = await streamToString(Body);
 
-      if (content.includes(templateId)) {
+      if (content.includes(templateId) && content.includes(extraTextToSearch)) {
         return content;
       }
     }

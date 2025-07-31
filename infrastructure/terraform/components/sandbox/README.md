@@ -18,7 +18,6 @@
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the tfscaffold environment | `string` | n/a | yes |
 | <a name="input_group"></a> [group](#input\_group) | The group variables are being inherited from (often synonymous with account short-name) | `string` | n/a | yes |
 | <a name="input_kms_deletion_window"></a> [kms\_deletion\_window](#input\_kms\_deletion\_window) | When a kms key is deleted, how long should it wait in the pending deletion state? | `string` | `"30"` | no |
-| <a name="input_letter_suppliers"></a> [letter\_suppliers](#input\_letter\_suppliers) | Letter suppliers enabled in the environment | <pre>map(object({<br>    email_addresses  = list(string)<br>    enable_polling   = bool<br>    default_supplier = optional(bool)<br>  }))</pre> | <pre>{<br>  "WTMMOCK": {<br>    "default_supplier": true,<br>    "email_addresses": [],<br>    "enable_polling": true<br>  }<br>}</pre> | no |
 | <a name="input_log_retention_in_days"></a> [log\_retention\_in\_days](#input\_log\_retention\_in\_days) | The retention period in days for the Cloudwatch Logs events to be retained, default of 0 is indefinite | `number` | `0` | no |
 | <a name="input_parent_acct_environment"></a> [parent\_acct\_environment](#input\_parent\_acct\_environment) | Name of the environment responsible for the acct resources used, affects things like DNS zone. Useful for named dev environments | `string` | `"main"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the tfscaffold project | `string` | n/a | yes |
@@ -47,9 +46,7 @@
 | <a name="output_sftp_poll_lambda_name"></a> [sftp\_poll\_lambda\_name](#output\_sftp\_poll\_lambda\_name) | n/a |
 | <a name="output_templates_table_name"></a> [templates\_table\_name](#output\_templates\_table\_name) | n/a |
 | <a name="output_test_email_bucket_name"></a> [test\_email\_bucket\_name](#output\_test\_email\_bucket\_name) | n/a |
-| <a name="output_test_proof_requested_email_prefix"></a> [test\_proof\_requested\_email\_prefix](#output\_test\_proof\_requested\_email\_prefix) | n/a |
-| <a name="output_test_template_submitted_email_prefix"></a> [test\_template\_submitted\_email\_prefix](#output\_test\_template\_submitted\_email\_prefix) | n/a |
-
+| <a name="output_test_email_bucket_prefix"></a> [test\_email\_bucket\_prefix](#output\_test\_email\_bucket\_prefix) | n/a |
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
