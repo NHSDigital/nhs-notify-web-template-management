@@ -3,7 +3,7 @@
  */
 import CreateLetterTemplatePage, {
   generateMetadata,
-} from '@app/create-letter-template/page';
+} from '@app/upload-letter-template/page';
 import content from '@content/content';
 import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
@@ -76,7 +76,7 @@ describe('CreateLetterTemplatePage', () => {
     await CreateLetterTemplatePage();
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   });
@@ -98,7 +98,7 @@ describe('CreateLetterTemplatePage', () => {
     await CreateLetterTemplatePage();
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   });

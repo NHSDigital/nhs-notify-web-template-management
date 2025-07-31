@@ -3,7 +3,7 @@ import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-d
 
 export class TemplateMgmtCreateLetterMissingCampaignClientIdPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment =
-    'create-letter-template/client-id-and-campaign-id-required';
+    'upload-letter-template/client-id-and-campaign-id-required';
 
   public readonly errorDetailsInsetText: Locator;
   public readonly goBackLink: Locator;

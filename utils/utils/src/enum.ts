@@ -128,6 +128,16 @@ export const templateTypeToUrlTextMappings = (type: TemplateType) =>
     LETTER: 'letter',
   })[type];
 
+const creationAction = (type: TemplateType) =>
+  ({
+    NHS_APP: 'create',
+    SMS: 'create',
+    EMAIL: 'create',
+    LETTER: 'upload',
+  })[type];
+
+export const templateCreationPages = (type: TemplateType) =>
+  `/${creationAction(type)}-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewTemplatePages = (type: TemplateType) =>
   `preview-${templateTypeToUrlTextMappings(type)}-template`;
 export const previewSubmittedTemplatePages = (type: TemplateType) =>

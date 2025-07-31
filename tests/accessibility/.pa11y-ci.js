@@ -123,7 +123,7 @@ const errors = [
     name: 'invalid-template',
   },
   {
-    url: `${baseUrl}/create-letter-template/client-id-and-campaign-id-required`,
+    url: `${baseUrl}/upload-letter-template/client-id-and-campaign-id-required`,
     actions: [...signInPageActions, 'wait for h1 to be visible'],
     name: 'client-campaign-id-required',
   },

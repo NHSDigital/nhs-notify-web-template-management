@@ -27,7 +27,7 @@ const CreateLetterTemplatePage = async () => {
 
   if (!accessToken || !clientId) {
     return redirect(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   }
@@ -38,7 +38,7 @@ const CreateLetterTemplatePage = async () => {
 
   if (!campaignId) {
     return redirect(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   }

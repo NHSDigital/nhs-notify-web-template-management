@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
 export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic {
-  static readonly pageUrlSegment = 'create-letter-template';
+  static readonly pageUrlSegment = 'upload-letter-template';
 
   public readonly nameInput: Locator;
 
@@ -31,7 +31,7 @@ export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic
       .and(page.getByText('Back to choose a template type'));
 
     this.saveAndPreviewButton = page.locator(
-      '[id="create-letter-template-submit-button"]'
+      '[id="upload-letter-template-submit-button"]'
     );
 
     this.pdfSelector = page.locator('input[name="letterTemplatePdf"]');

@@ -110,7 +110,7 @@ export const LetterTemplateForm: FC<
             />
             <NHSNotifyFormWrapper
               action={action}
-              formId='create-letter-template'
+              formId='upload-letter-template'
               formAttributes={{ onSubmit: validateForm }}
             >
               <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
@@ -244,7 +244,7 @@ export const LetterTemplateForm: FC<
               </div>
               <NHSNotifyButton
                 data-testid='submit-button'
-                id='create-letter-template-submit-button'
+                id='upload-letter-template-submit-button'
               >
                 {buttonText}
               </NHSNotifyButton>

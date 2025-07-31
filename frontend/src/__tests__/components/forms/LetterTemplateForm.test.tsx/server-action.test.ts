@@ -21,10 +21,10 @@ const initialState: CreateLetterTemplate = {
 describe('CreateLetterTemplate server actions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('create-letter-template - should return response when no template name, letter type, language or pdf file', async () => {
+  it('upload-letter-template - should return response when no template name, letter type, language or pdf file', async () => {
     const response = await processFormActions(
       initialState,
-      getMockFormData({ 'form-id': 'create-letter-template' })
+      getMockFormData({ 'form-id': 'upload-letter-template' })
     );
 
     expect(response).toEqual({

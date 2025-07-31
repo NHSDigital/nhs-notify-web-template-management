@@ -25,18 +25,23 @@ test('submit form - validation error', async () => {
   });
 });
 
-test('submit form - no validation error', async () => {
-  const mockRedirect = jest.mocked(redirect);
+test.each([
+  ['NHS_APP', '/create-nhs-app-template'],
+  ['SMS', '/create-text-message-template'],
+  ['EMAIL', '/create-email-template'],
+  ['LETTER', '/upload-letter-template'],
+])(
+  'submit form - $templateType redirects to $url',
+  async (templateType, url) => {
+    const mockRedirect = jest.mocked(redirect);
 
-  await chooseTemplateAction(
-    {},
-    getMockFormData({
-      templateType: 'NHS_APP',
-    })
-  );
+    await chooseTemplateAction(
+      {},
+      getMockFormData({
+        templateType,
+      })
+    );
 
-  expect(mockRedirect).toHaveBeenCalledWith(
-    '/create-nhs-app-template',
-    RedirectType.push
-  );
-});
+    expect(mockRedirect).toHaveBeenCalledWith(url, RedirectType.push);
+  }
+);
