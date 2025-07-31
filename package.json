@@ -55,7 +55,7 @@
     "lambdas/backend-client",
     "lambdas/download-authorizer",
     "lambdas/sftp-letters",
-    "packages/schemas",
+    "packages/event-schemas",
     "tests/accessibility",
     "tests/test-team",
     "utils/backend-config",

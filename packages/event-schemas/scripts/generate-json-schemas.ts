@@ -11,10 +11,10 @@ import { toJSONSchema, type ZodType } from 'zod';
 
 // Converts Zod Schema to JSON Schema and writes to JSON file
 function writeSchema(name: string, schema: ZodType) {
-  const outDir = path.resolve('dist', 'event-schemas');
+  const outDir = path.resolve(__dirname, '..', 'schemas');
   fs.mkdirSync(outDir, { recursive: true });
 
-  const jsonSchema = toJSONSchema(schema);
+  const jsonSchema = toJSONSchema(schema, { io: 'input' });
   const outPath = path.resolve(outDir, `${name}.json`);
   fs.writeFileSync(outPath, JSON.stringify(jsonSchema, null, 2));
 }

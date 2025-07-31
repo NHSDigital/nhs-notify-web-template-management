@@ -2,12 +2,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { $TemplateDeletedEvent } from '../../src/events/template-deleted';
+import { $TemplateCompletedEvent } from '../../src/events/template-completed';
 
-const examplesDir = path.resolve(
-  __dirname,
-  '../../sample-events/TemplateDeleted'
-);
+const examplesDir = path.resolve(__dirname, '../../examples/TemplateCompleted');
 
 describe('TemplateCompletedEvent schema', () => {
   it.each(fs.readdirSync(examplesDir))(
@@ -17,7 +14,7 @@ describe('TemplateCompletedEvent schema', () => {
         fs.readFileSync(path.join(examplesDir, filename), 'utf8')
       );
 
-      const result = $TemplateDeletedEvent.safeParse(event);
+      const result = $TemplateCompletedEvent.safeParse(event);
 
       if (!result.success) {
         console.log(result.error);

@@ -4,10 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { $TemplateDraftedEvent } from '../../src/events/template-drafted';
 
-const examplesDir = path.resolve(
-  __dirname,
-  '../../sample-events/TemplateDrafted'
-);
+const examplesDir = path.resolve(__dirname, '../../examples/TemplateDrafted');
 
 describe('TemplateDraftedEvent schema', () => {
   it.each(fs.readdirSync(examplesDir))(

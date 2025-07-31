@@ -1,6 +1,6 @@
 {
   "author": "NHS Notify contributors",
-  "description": "Zod validators, TypeScript type definitions and JSON Schemas for Template Management",
+  "description": "Zod validators, TypeScript type definitions and JSON Schemas for events emitted by Template Management service",
   "devDependencies": {
     "@swc/core": "^1.11.13",
     "@swc/jest": "^0.2.37",
@@ -17,20 +17,21 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./event-schemas/*.json": {
-      "default": "./dist/event-schemas/*.json"
+    "./examples/*.json": {
+      "default": "./examples/*.json"
     },
-    "./sample-events/*.json": {
-      "default": "./sample-events/*.json"
+    "./schemas/*.json": {
+      "default": "./schemas/*.json"
     }
   },
   "files": [
     "dist",
-    "sample-events"
+    "examples",
+    "schemas"
   ],
   "license": "MIT",
   "main": "./dist/index.js",
-  "name": "@nhsdigital/nhs-notify-templates-test-package",
+  "name": "@nhsdigital/nhs-notify-event-schemas-template-management",
   "peerDependencies": {
     "zod": "^4.0.5"
   },
