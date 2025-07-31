@@ -86,6 +86,13 @@ const publishableEventRecord = (status: string): PublishableEventRecord => ({
           },
         },
       },
+      personalisationParameters: {
+        L: [
+          {
+            S: 'test',
+          },
+        ],
+      },
     },
   },
   eventID: 'event-id',
@@ -100,7 +107,7 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
   type,
   specversion: '1.0',
   dataschema,
-  dataschemaversion: '1.0.0',
+  dataschemaversion: '1.0.1',
   plane: 'control',
   subject: 'id',
   data: {
@@ -111,6 +118,7 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
     createdBy: 'created-by',
     updatedAt: 'updated-at',
     updatedBy: 'updated-by',
+    personalisationParameters: ['test'],
     templateType: 'LETTER',
     templateStatus: status,
     name: 'name',

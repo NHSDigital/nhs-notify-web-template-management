@@ -83,6 +83,7 @@ const $LetterDataFields = $BaseTemplateDataFields.extend({
   templateType: z.literal('LETTER'),
   language: z.enum(languages),
   letterType: z.enum(letterTypes),
+  personalisationParameters: z.array(z.string()).optional(),
 });
 const $SmsDataFields = $BaseTemplateDataFields.extend({
   message: z.string(),
