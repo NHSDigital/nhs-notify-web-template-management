@@ -6,7 +6,7 @@ const {
   copyTemplatePage,
   createEmailTemplateErrorPage,
   createEmailTemplatePage,
-  createLetterTemplatePage,
+  uploadLetterTemplatePage,
   createNHSAppTemplateErrorPage,
   createNHSAppTemplatePage,
   createTextMessageTemplateErrorPage,
@@ -99,7 +99,7 @@ const email = [
 ];
 
 const letters = [
-  createLetterTemplatePage(chooseTemplateUrl),
+  uploadLetterTemplatePage(chooseTemplateUrl),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_UPLOAD')),
   previewLetterTemplatePageWithError(previewLetterTemplateUrl('VIRUS_SCAN_FAILED')),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_VALIDATION')),

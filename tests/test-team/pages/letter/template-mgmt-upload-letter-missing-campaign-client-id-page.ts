@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtCreateLetterMissingCampaignClientIdPage extends TemplateMgmtBasePageNonDynamic {
+export class TemplateMgmtUploadLetterMissingCampaignClientIdPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment =
     'upload-letter-template/client-id-and-campaign-id-required';
 

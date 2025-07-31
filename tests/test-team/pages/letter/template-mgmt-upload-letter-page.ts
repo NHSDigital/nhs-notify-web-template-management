@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { TemplateMgmtBasePageNonDynamic } from '../template-mgmt-base-page-non-dynamic';
 
-export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic {
+export class TemplateMgmtUploadLetterPage extends TemplateMgmtBasePageNonDynamic {
   static readonly pageUrlSegment = 'upload-letter-template';
 
   public readonly nameInput: Locator;
@@ -43,11 +43,11 @@ export class TemplateMgmtCreateLetterPage extends TemplateMgmtBasePageNonDynamic
   }
 
   async setPdfFile(path: string) {
-    await TemplateMgmtCreateLetterPage.setFileField(this.pdfSelector, path);
+    await TemplateMgmtUploadLetterPage.setFileField(this.pdfSelector, path);
   }
 
   async setCsvFile(path: string) {
-    await TemplateMgmtCreateLetterPage.setFileField(this.csvSelector, path);
+    await TemplateMgmtUploadLetterPage.setFileField(this.csvSelector, path);
   }
 
   private static async setFileField(field: Locator, path: string) {

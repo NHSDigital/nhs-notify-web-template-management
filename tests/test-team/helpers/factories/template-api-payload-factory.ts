@@ -69,7 +69,7 @@ export const TemplateAPIPayloadFactory = {
   /**
    * Returns a request body payload to be used with an API request to create a new letter template
    */
-  getCreateLetterTemplatePayload<
+  getUploadLetterTemplatePayload<
     T extends TemplateInput<CreateTemplatePayload>,
   >(
     template: T,

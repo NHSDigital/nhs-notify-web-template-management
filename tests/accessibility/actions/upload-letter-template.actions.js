@@ -8,13 +8,13 @@ const pageActions = [
   'wait for element #upload-letter-template-submit-button to be visible',
 ];
 
-const createLetterTemplatePage = (url) => ({
+const uploadLetterTemplatePage = (url) => ({
   name: 'upload-letter-template',
   url,
   actions: pageActions,
 });
 
-const createLetterTemplateErrorPage = (url) => ({
+const uploadLetterTemplateErrorPage = (url) => ({
   name: 'upload-letter-template-error',
   url,
   actions: [
@@ -30,6 +30,6 @@ const createLetterTemplateErrorPage = (url) => ({
 
 module.exports = {
   pageActions,
-  createLetterTemplatePage,
-  createLetterTemplateErrorPage,
+  uploadLetterTemplatePage,
+  uploadLetterTemplateErrorPage,
 };

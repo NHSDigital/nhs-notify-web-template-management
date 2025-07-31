@@ -17,7 +17,7 @@ import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
-  CreateLetterTemplate,
+  UploadLetterTemplate,
   FormErrorState,
   isRightToLeft,
   PageComponentProps,
@@ -27,13 +27,13 @@ import { useTextInput } from '@hooks/use-text-input.hook';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import FileUpload from '@atoms/FileUpload/FileUpload';
-import { $CreateLetterTemplateForm } from './form-schema';
+import { $UploadLetterTemplateForm } from './form-schema';
 import { validate } from '@utils/client-validate-form';
 import { Language } from 'nhs-notify-backend-client';
 import Link from 'next/link';
 
 export const LetterTemplateForm: FC<
-  PageComponentProps<CreateLetterTemplate>
+  PageComponentProps<UploadLetterTemplate>
 > = ({ initialState }) => {
   const {
     backLinkText,
@@ -88,7 +88,7 @@ export const LetterTemplateForm: FC<
   const templateCsvError =
     validationError?.fieldErrors.letterTemplateCsv?.join(', ');
 
-  const validateForm = validate($CreateLetterTemplateForm, setValidationError);
+  const validateForm = validate($UploadLetterTemplateForm, setValidationError);
 
   const formGroupClasses = [
     'nhsuk-u-margin-bottom-6',

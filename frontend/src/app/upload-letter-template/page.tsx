@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 import { getSessionServer } from '@utils/amplify-utils';
 import { redirect, RedirectType } from 'next/navigation';
@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const CreateLetterTemplatePage = async () => {
-  const initialState: CreateLetterTemplate = {
+const UploadLetterTemplatePage = async () => {
+  const initialState: UploadLetterTemplate = {
     templateType: 'LETTER',
     name: '',
     letterType: 'x0',
@@ -46,4 +46,4 @@ const CreateLetterTemplatePage = async () => {
   return <LetterTemplateForm initialState={initialState} />;
 };
 
-export default CreateLetterTemplatePage;
+export default UploadLetterTemplatePage;

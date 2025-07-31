@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
@@ -28,7 +28,7 @@ function create(
   expectedPostCreationStatus: 'NOT_YET_SUBMITTED' | 'PENDING_PROOF_REQUEST'
 ) {
   return test.step('upload PDF and test data, files are validated', async () => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 

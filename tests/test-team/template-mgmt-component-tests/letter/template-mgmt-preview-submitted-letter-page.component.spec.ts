@@ -20,7 +20,7 @@ import {
 } from '../../helpers/auth/cognito-auth-helper';
 
 function createTemplates(user: TestUser) {
-  const validBase = TemplateFactory.createLetterTemplate(
+  const validBase = TemplateFactory.uploadLetterTemplate(
     'valid-letter-template-preview-submitted',
     user,
     'valid-email-template-preview-submitted',
@@ -44,7 +44,7 @@ function createTemplates(user: TestUser) {
   return {
     valid,
     invalid: {
-      ...TemplateFactory.createLetterTemplate(
+      ...TemplateFactory.uploadLetterTemplate(
         'invalid-letter-template-preview-submitted',
         user,
         'invalid-letter-template-preview-submitted',
