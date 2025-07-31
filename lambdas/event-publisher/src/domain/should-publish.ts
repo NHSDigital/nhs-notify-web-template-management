@@ -1,12 +1,6 @@
-import {
-  TemplateStatus,
-  TemplateDto,
-  LetterProperties,
-} from 'nhs-notify-backend-client';
+import type { DynamoDBTemplate } from './input-schemas';
 
-type LetterTemplateDto = TemplateDto & LetterProperties;
-
-const publishableLetterStatuses = new Set<TemplateStatus>([
+const publishableLetterStatuses = new Set<DynamoDBTemplate['templateStatus']>([
   'DELETED',
   'PENDING_PROOF_REQUEST',
   'PROOF_AVAILABLE',
@@ -14,13 +8,13 @@ const publishableLetterStatuses = new Set<TemplateStatus>([
   'WAITING_FOR_PROOF',
 ]);
 
-function shouldPublishLetter(data: LetterTemplateDto): boolean {
+function shouldPublishLetter(data: DynamoDBTemplate): boolean {
   return (
     publishableLetterStatuses.has(data.templateStatus) && !!data.proofingEnabled
   );
 }
 
-export function shouldPublish(data: TemplateDto) {
+export function shouldPublish(data: DynamoDBTemplate) {
   if (data.templateType === 'LETTER') {
     return shouldPublishLetter(data);
   }
