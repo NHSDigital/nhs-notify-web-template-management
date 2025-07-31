@@ -32,10 +32,12 @@ describe('TemplateAPIClient', () => {
     );
 
     expect(result.error).toEqual({
-      code: 400,
-      message: 'Bad request',
-      details: {
-        message: 'Contains invalid characters',
+      errorMeta: {
+        code: 400,
+        description: 'Bad request',
+        details: {
+          message: 'Contains invalid characters',
+        },
       },
     });
 
@@ -99,10 +101,12 @@ describe('TemplateAPIClient', () => {
     );
 
     expect(result.error).toEqual({
-      code: 400,
-      message: 'Bad request',
-      details: {
-        message: 'Invalid request',
+      errorMeta: {
+        code: 400,
+        description: 'Bad request',
+        details: {
+          message: 'Invalid request',
+        },
       },
     });
 
@@ -194,10 +198,12 @@ describe('TemplateAPIClient', () => {
     );
 
     expect(result.error).toEqual({
-      code: 400,
-      message: 'Bad request',
-      details: {
-        message: 'Contains invalid characters',
+      errorMeta: {
+        code: 400,
+        description: 'Bad request',
+        details: {
+          message: 'Contains invalid characters',
+        },
       },
     });
 
@@ -251,10 +257,12 @@ describe('TemplateAPIClient', () => {
     const result = await client.getTemplate('real-id', testToken);
 
     expect(result.error).toEqual({
-      code: 404,
-      message: 'Not found',
-      details: {
-        message: 'Template not found',
+      errorMeta: {
+        code: 404,
+        description: 'Not found',
+        details: {
+          message: 'Template not found',
+        },
       },
     });
 
@@ -297,8 +305,10 @@ describe('TemplateAPIClient', () => {
     const result = await client.listTemplates(testToken);
 
     expect(result.error).toEqual({
-      code: 500,
-      message: 'Internal server error',
+      errorMeta: {
+        code: 500,
+        description: 'Internal server error',
+      },
     });
 
     expect(result.data).toBeUndefined();
@@ -344,10 +354,12 @@ describe('TemplateAPIClient', () => {
       const result = await client.submitTemplate('real-id', testToken);
 
       expect(result.error).toEqual({
-        code: 400,
-        message: 'Bad request',
-        details: {
-          message: 'Contains invalid characters',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Contains invalid characters',
+          },
         },
       });
 
@@ -395,10 +407,12 @@ describe('TemplateAPIClient', () => {
       const result = await client.deleteTemplate('real-id', testToken);
 
       expect(result.error).toEqual({
-        code: 400,
-        message: 'Bad request',
-        details: {
-          message: 'Cannot delete a submitted template',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Cannot delete a submitted template',
+          },
         },
       });
 
@@ -435,10 +449,12 @@ describe('TemplateAPIClient', () => {
       const result = await client.requestProof('real-id', testToken);
 
       expect(result.error).toEqual({
-        code: 400,
-        message: 'Bad request',
-        details: {
-          message: 'Template cannot be proofed',
+        errorMeta: {
+          code: 400,
+          description: 'Bad request',
+          details: {
+            message: 'Template cannot be proofed',
+          },
         },
       });
 

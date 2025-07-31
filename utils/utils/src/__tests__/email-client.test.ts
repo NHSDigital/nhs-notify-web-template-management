@@ -3,6 +3,7 @@ import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { EmailClient } from '../email-client';
 import { TemplateDto } from 'nhs-notify-backend-client';
+import { LetterTemplate } from '../types';
 
 describe('EmailClient', () => {
   const recipientEmails = {
@@ -17,8 +18,12 @@ describe('EmailClient', () => {
     it('does not send email when no sender email address provided', async () => {
       const client = new EmailClient(sesClient, '', recipientEmails, logger);
 
+      const templateId = 'template-id';
+      const expandedTemplateId = 'client_campaign_template-id_en_x0';
+
       await client.sendProofRequestedEmailToSupplier(
-        'template-id',
+        templateId,
+        expandedTemplateId,
         'template-name',
         'supplier1'
       );
@@ -27,7 +32,8 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending proof requested email to suppliers because no email address is provided',
-        templateId: 'template-id',
+        expandedTemplateId,
+        templateId,
         templateName: 'template-name',
         supplier: 'supplier1',
       });
@@ -41,8 +47,12 @@ describe('EmailClient', () => {
         logger
       );
 
+      const templateId = 'template-id';
+      const expandedTemplateId = 'client_campaign_template-id_en_x0';
+
       await client.sendProofRequestedEmailToSupplier(
-        'template-id',
+        templateId,
+        expandedTemplateId,
         'template-name',
         'supplier1'
       );
@@ -56,14 +66,14 @@ describe('EmailClient', () => {
       }
 
       const emailContent = sesInput.input.RawMessage?.Data?.toString();
-      expect(emailContent).toContain('template-id');
+      expect(emailContent).toContain(expandedTemplateId);
       expect(emailContent).toContain('template-name');
       expect(emailContent).toContain('supplier1');
     });
   });
 
   describe('template-submitted email', () => {
-    const mockTemplate = mockDeep<TemplateDto>({
+    const mockTemplate = mockDeep<LetterTemplate>({
       id: 'template-id',
       templateType: 'LETTER',
       files: {
@@ -74,7 +84,19 @@ describe('EmailClient', () => {
       },
       updatedAt: '2022-01-01T00:00:00Z',
       name: 'template-name',
+      clientId: 'the-client',
+      campaignId: 'camp-id',
+      language: 'de',
+      letterType: 'q4',
     });
+
+    const expandedTemplateId = [
+      mockTemplate.clientId,
+      mockTemplate.campaignId,
+      mockTemplate.id,
+      mockTemplate.language,
+      mockTemplate.letterType,
+    ].join('_');
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -111,7 +133,7 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending template submitted email to suppliers because templateType is not LETTER',
-        templateId: template.id,
+        templateId: mockTemplate.id,
       });
     });
 
@@ -131,12 +153,14 @@ describe('EmailClient', () => {
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
+        expandedTemplateId,
         templateId: mockTemplate.id,
         supplier: 'supplier2',
       });
       expect(logger.info).toHaveBeenCalledWith({
         description:
           'Not sending email to supplier because no recipients are configured',
+        expandedTemplateId,
         templateId: mockTemplate.id,
         supplier: 'supplier1',
       });
@@ -187,7 +211,7 @@ describe('EmailClient', () => {
 
       const supplier1EmailContent =
         sesCall1Input.input.RawMessage?.Data?.toString();
-      expect(supplier1EmailContent).toContain('template-id');
+      expect(supplier1EmailContent).toContain(expandedTemplateId);
       expect(supplier1EmailContent).toContain('template-name');
       expect(supplier1EmailContent).toContain('supplier1');
       expect(supplier1EmailContent).not.toContain('supplier2');
@@ -202,7 +226,7 @@ describe('EmailClient', () => {
 
       const supplier2EmailContent =
         sesCall2Input.input.RawMessage?.Data?.toString();
-      expect(supplier2EmailContent).toContain('template-id');
+      expect(supplier2EmailContent).toContain(expandedTemplateId);
       expect(supplier2EmailContent).toContain('template-name');
       expect(supplier2EmailContent).not.toContain('supplier1');
       expect(supplier2EmailContent).toContain('supplier2');

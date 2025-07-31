@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { ErrorMessage, HintText, Label } from 'nhsuk-react-components';
 import React, { HTMLProps } from 'react';
+import styles from './FileUpload.module.scss';
 
 interface FileUploadProps extends HTMLProps<HTMLDivElement> {
   error?: string;
@@ -26,10 +27,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
       {hint && <HintText>{hint}</HintText>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <input
-        aria-describedby={id}
         id={id}
         name={id}
-        className='file-upload'
+        className={classNames(styles['file-upload'], 'nhsuk-input')}
         type='file'
         accept={accept}
       />

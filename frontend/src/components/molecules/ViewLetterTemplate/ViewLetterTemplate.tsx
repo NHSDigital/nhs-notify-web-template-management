@@ -12,8 +12,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 
 export function ViewLetterTemplate({
   initialState,
-  user,
-}: Readonly<PageComponentProps<LetterTemplate> & { user?: string }>) {
+}: Readonly<PageComponentProps<LetterTemplate> & { owner?: string }>) {
   const { createNewTemplate, backLinkText } =
     content.components.viewSubmittedTemplate;
 
@@ -25,7 +24,7 @@ export function ViewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <PreviewTemplateDetailsLetter template={initialState} user={user} />
+            <PreviewTemplateDetailsLetter template={initialState} />
             <p>{createNewTemplate}</p>
             <p>
               <Link

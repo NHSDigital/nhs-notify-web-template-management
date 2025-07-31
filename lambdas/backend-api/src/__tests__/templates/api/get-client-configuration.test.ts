@@ -42,8 +42,10 @@ describe('Template API - get client configuration', () => {
 
     mocks.templateClient.getClientConfiguration.mockResolvedValueOnce({
       error: {
-        code: 404,
-        message: 'Could not retrieve client configuration',
+        errorMeta: {
+          code: 404,
+          description: 'Could not retrieve client configuration',
+        },
       },
     });
 

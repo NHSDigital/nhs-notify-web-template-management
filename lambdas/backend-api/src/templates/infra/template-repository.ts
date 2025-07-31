@@ -18,11 +18,12 @@ import type {
   FileType,
   TemplateKey,
   User,
+  UserWithOptionalClient,
 } from 'nhs-notify-web-template-management-utils';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import {
+  BatchGetCommand,
   DynamoDBDocumentClient,
-  GetCommand,
   PutCommand,
   QueryCommand,
   QueryCommandInput,
@@ -54,11 +55,12 @@ const smsAttributes: Record<keyof SmsProperties, null> = {
 };
 
 const letterAttributes: Record<keyof LetterProperties, null> = {
-  templateType: null,
-  letterType: null,
-  language: null,
   files: null,
+  language: null,
+  letterType: null,
+  owner: null,
   personalisationParameters: null,
+  templateType: null,
 };
 
 export class TemplateRepository {
@@ -70,21 +72,44 @@ export class TemplateRepository {
 
   async get(
     templateId: string,
-    userId: string
+    user: UserWithOptionalClient
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     try {
-      const response = await this.client.send(
-        new GetCommand({
-          TableName: this.templatesTableName,
-          Key: { id: templateId, owner: userId },
-        })
-      );
+      const cmd = new BatchGetCommand({
+        RequestItems: {
+          [this.templatesTableName]: {
+            Keys: [
+              { id: templateId, owner: user.userId },
+              ...(user.clientId
+                ? [{ id: templateId, owner: `CLIENT#${user.clientId}` }]
+                : []),
+            ],
+          },
+        },
+      });
 
-      if (!response?.Item) {
+      const response = await this.client.send(cmd);
+
+      const failures =
+        response.UnprocessedKeys?.[this.templatesTableName]?.Keys;
+
+      if (failures?.length) {
+        throw new Error('Partial failure of batch get templates');
+      }
+
+      const items = response.Responses?.[this.templatesTableName] ?? [];
+
+      if (items.length === 0) {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
       }
 
-      const item = response.Item as DatabaseTemplate;
+      if (items.length > 1) {
+        throw new Error(
+          'Unexpectedly found both a client owned and a user owned template'
+        );
+      }
+
+      const item = items[0] as DatabaseTemplate;
 
       if (item.templateStatus === 'DELETED') {
         return failure(ErrorCase.NOT_FOUND, 'Template not found');
@@ -283,36 +308,47 @@ export class TemplateRepository {
     }
   }
 
-  async list(userId: string): Promise<ApplicationResult<DatabaseTemplate[]>> {
+  private async listQuery(ownerKey: string) {
+    const input: QueryCommandInput = {
+      TableName: this.templatesTableName,
+      KeyConditionExpression: '#owner = :owner',
+      ExpressionAttributeNames: {
+        '#owner': 'owner',
+        '#status': 'templateStatus',
+      },
+      ExpressionAttributeValues: {
+        ':owner': ownerKey,
+        ':deletedStatus': 'DELETED',
+      },
+      FilterExpression: '#status <> :deletedStatus',
+    };
+
+    const items: DatabaseTemplate[] = [];
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      const { Items = [], LastEvaluatedKey } = await this.client.send(
+        new QueryCommand(input)
+      );
+
+      input.ExclusiveStartKey = LastEvaluatedKey;
+
+      items.push(...(Items as DatabaseTemplate[]));
+    } while (input.ExclusiveStartKey);
+
+    return items;
+  }
+
+  async list(
+    user: UserWithOptionalClient
+  ): Promise<ApplicationResult<DatabaseTemplate[]>> {
     try {
-      const input: QueryCommandInput = {
-        TableName: this.templatesTableName,
-        KeyConditionExpression: '#owner = :owner',
-        ExpressionAttributeNames: {
-          '#owner': 'owner',
-          '#status': 'templateStatus',
-        },
-        ExpressionAttributeValues: {
-          ':owner': userId,
-          ':deletedStatus': 'DELETED',
-        },
-        FilterExpression: '#status <> :deletedStatus',
-      };
+      const queryResults = await Promise.all([
+        ...(user.clientId ? [this.listQuery(`CLIENT#${user.clientId}`)] : []),
+        this.listQuery(user.userId),
+      ]);
 
-      const items: DatabaseTemplate[] = [];
-
-      do {
-        // eslint-disable-next-line no-await-in-loop
-        const { Items = [], LastEvaluatedKey } = await this.client.send(
-          new QueryCommand(input)
-        );
-
-        input.ExclusiveStartKey = LastEvaluatedKey;
-
-        items.push(...(Items as DatabaseTemplate[]));
-      } while (input.ExclusiveStartKey);
-
-      return success(items);
+      return success(queryResults.flat());
     } catch (error) {
       return failure(ErrorCase.INTERNAL, 'Failed to list templates', error);
     }
@@ -385,11 +421,12 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when setting letter validation status:',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when setting letter validation status:',
+            error
+          );
       } else {
         throw error;
       }
@@ -475,11 +512,12 @@ export class TemplateRepository {
       }
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when adding proof details to template',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when adding proof details to template',
+            error
+          );
 
         // the second update has a stronger condition than the first, so if this one fails no need to try the second
         return;
@@ -492,9 +530,11 @@ export class TemplateRepository {
       await this.updateStatusToProofAvailable(templateKey);
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error('Conditional check setting template status', error, {
-          templateKey,
-        });
+        logger
+          .child({
+            templateKey,
+          })
+          .error('Conditional check setting template status', error);
       } else {
         throw error;
       }
@@ -574,11 +614,12 @@ export class TemplateRepository {
       );
     } catch (error) {
       if (error instanceof ConditionalCheckFailedException) {
-        logger.error(
-          'Conditional check failed when setting file virus scan status:',
-          error,
-          { templateKey }
-        );
+        logger
+          .child({ templateKey })
+          .error(
+            'Conditional check failed when setting file virus scan status:',
+            error
+          );
       } else {
         throw error;
       }

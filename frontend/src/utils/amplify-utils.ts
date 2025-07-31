@@ -19,7 +19,6 @@ export async function getSessionServer(
 ): Promise<{
   accessToken: string | undefined;
   clientId: string | undefined;
-  userSub: string | undefined;
 }> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
@@ -34,7 +33,6 @@ export async function getSessionServer(
   return {
     accessToken,
     clientId,
-    userSub: session?.userSub,
   };
 }
 

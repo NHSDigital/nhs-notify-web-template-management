@@ -17,7 +17,7 @@ export class EmailClient {
   ) {}
 
   private getProofRequestedEmailContent(
-    templateId: string,
+    expandedTemplateId: string,
     templateName: string,
     supplier: string
   ) {
@@ -29,7 +29,7 @@ export class EmailClient {
     const subject = `${supplier} - Letter template sent by an NHS Notify user`;
     const emailContent = htmlTemplate({
       supplier,
-      templateId,
+      templateId: expandedTemplateId,
       templateName,
     });
 
@@ -40,7 +40,8 @@ export class EmailClient {
   }
 
   private getTemplateSubmittedEmailContent(
-    { updatedAt, id, name }: LetterTemplate,
+    expandedTemplateId: string,
+    template: LetterTemplate,
     supplier: string,
     proofFilenames: string[]
   ) {
@@ -53,9 +54,9 @@ export class EmailClient {
     const emailContent = htmlTemplate({
       proofFilenames,
       supplier,
-      timestamp: updatedAt,
-      templateId: id,
-      templateName: name,
+      timestamp: template.updatedAt,
+      templateId: expandedTemplateId,
+      templateName: template.name,
     });
 
     return {
@@ -66,6 +67,7 @@ export class EmailClient {
 
   private async sendEmailToSupplier(
     templateId: string,
+    expandedTemplateId: string,
     supplier: string,
     subject: string,
     emailContent: string
@@ -76,6 +78,7 @@ export class EmailClient {
       this.logger.info({
         description:
           'Not sending email to supplier because no recipients are configured',
+        expandedTemplateId,
         templateId,
         supplier,
       });
@@ -108,6 +111,7 @@ export class EmailClient {
 
   async sendProofRequestedEmailToSupplier(
     templateId: string,
+    expandedTemplateId: string,
     templateName: string,
     supplier: string
   ) {
@@ -116,6 +120,7 @@ export class EmailClient {
       this.logger.info({
         description:
           'Not sending proof requested email to suppliers because no email address is provided',
+        expandedTemplateId,
         templateId,
         templateName,
         supplier,
@@ -125,12 +130,18 @@ export class EmailClient {
     }
 
     const { subject, emailContent } = this.getProofRequestedEmailContent(
-      templateId,
+      expandedTemplateId,
       templateName,
       supplier
     );
 
-    await this.sendEmailToSupplier(templateId, supplier, subject, emailContent);
+    await this.sendEmailToSupplier(
+      templateId,
+      expandedTemplateId,
+      supplier,
+      subject,
+      emailContent
+    );
   }
 
   private async sendTemplateSubmittedEmailToSupplier(
@@ -138,7 +149,10 @@ export class EmailClient {
     supplier: string,
     proofFilenames: string[]
   ) {
+    const expandedTemplateId = this.getExpandedTemplateId(template);
+
     const { subject, emailContent } = this.getTemplateSubmittedEmailContent(
+      expandedTemplateId,
       template,
       supplier,
       proofFilenames
@@ -146,6 +160,7 @@ export class EmailClient {
 
     await this.sendEmailToSupplier(
       template.id,
+      expandedTemplateId,
       supplier,
       subject,
       emailContent
@@ -191,5 +206,15 @@ export class EmailClient {
         proofFilenames
       );
     }
+  }
+
+  private getExpandedTemplateId({
+    clientId,
+    campaignId,
+    id,
+    language,
+    letterType,
+  }: LetterTemplate) {
+    return [clientId, campaignId, id, language, letterType].join('_');
   }
 }

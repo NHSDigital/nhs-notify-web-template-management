@@ -148,8 +148,6 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Client configuration is invalid',
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
@@ -158,6 +156,10 @@ describe('ClientConfigRepository', () => {
                 }),
               ]),
             }),
+            errorMeta: {
+              code: 500,
+              description: 'Client configuration is invalid',
+            },
           },
         });
 
@@ -194,8 +196,6 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Client configuration is invalid',
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
@@ -203,6 +203,10 @@ describe('ClientConfigRepository', () => {
                 }),
               ]),
             }),
+            errorMeta: {
+              code: 500,
+              description: 'Client configuration is invalid',
+            },
           },
         });
 
@@ -236,8 +240,6 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Client configuration is invalid',
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
@@ -246,6 +248,10 @@ describe('ClientConfigRepository', () => {
                 }),
               ]),
             }),
+            errorMeta: {
+              code: 500,
+              description: 'Client configuration is invalid',
+            },
           },
         });
       });
@@ -271,8 +277,6 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Client configuration is invalid',
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
@@ -280,6 +284,10 @@ describe('ClientConfigRepository', () => {
                 }),
               ]),
             }),
+            errorMeta: {
+              code: 500,
+              description: 'Client configuration is invalid',
+            },
           },
         });
       });
@@ -301,8 +309,6 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Client configuration is invalid',
             actualError: expect.objectContaining({
               issues: expect.arrayContaining([
                 expect.objectContaining({
@@ -310,6 +316,10 @@ describe('ClientConfigRepository', () => {
                 }),
               ]),
             }),
+            errorMeta: {
+              code: 500,
+              description: 'Client configuration is invalid',
+            },
           },
         });
       });
@@ -333,9 +343,11 @@ describe('ClientConfigRepository', () => {
 
         expect(result).toMatchObject({
           error: {
-            code: 500,
-            message: 'Failed to fetch client configuration',
             actualError: ssmError,
+            errorMeta: {
+              code: 500,
+              description: 'Failed to fetch client configuration',
+            },
           },
         });
       });
