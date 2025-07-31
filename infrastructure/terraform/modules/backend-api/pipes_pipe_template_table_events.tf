@@ -19,43 +19,6 @@ resource "aws_pipes_pipe" "template_table_events" {
         arn = module.sqs_template_table_events_pipe_dlq.sqs_queue_arn
       }
     }
-
-    filter_criteria {
-      filter {
-        pattern = jsonencode({
-          "$or" = [
-            {
-              # Allow all non-LETTER templates
-              dynamodb = {
-                NewImage = {
-                  templateType = {
-                    S = [{ "anything-but" = "LETTER" }]
-                  }
-                }
-              }
-              eventName = ["INSERT", "MODIFY"]
-            },
-            {
-              # Allow LETTER templates only when proofingEnabled and valid status
-              dynamodb = {
-                NewImage = {
-                  templateType = {
-                    S = ["LETTER"]
-                  }
-                  templateStatus = {
-                    S = ["PROOF_AVAILABLE", "SUBMITTED", "DELETED"]
-                  }
-                  proofingEnabled = {
-                    BOOL = [true]
-                  }
-                }
-              }
-              eventName = ["INSERT", "MODIFY"]
-            }
-          ]
-        })
-      }
-    }
   }
 
   target_parameters {

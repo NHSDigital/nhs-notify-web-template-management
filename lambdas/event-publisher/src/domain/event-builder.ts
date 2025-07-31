@@ -6,6 +6,8 @@ import {
   EventMetadata,
   EventMetadataVersionInformation,
 } from './base-metadata-schemas';
+import { shouldPublish } from './should-publish';
+import { $TemplateDtoSchema } from 'nhs-notify-backend-client';
 
 export class EventBuilder {
   constructor(
@@ -72,6 +74,22 @@ export class EventBuilder {
     }
 
     const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
+
+    // This isn't strictly correct. the DTO schema is slightly different from the DB schema.
+    // I guess this should be a Zod schema of the database schema
+    // Also doing this may cause this lambda to stop being backwards compatible? I.E. we add a new field
+    // then older templates being updated without the field will cause errors.
+    // Or I just rely on the any typing...
+    const databaseTemplate = $TemplateDtoSchema.parse(dynamoRecord);
+
+    if (!shouldPublish(databaseTemplate)) {
+      this.logger.debug({
+        description: 'Not publishing event',
+        publishableEventRecord,
+      });
+
+      return undefined;
+    }
 
     return $Event.parse({
       ...this.buildTemplateSavedEventMetadata(
