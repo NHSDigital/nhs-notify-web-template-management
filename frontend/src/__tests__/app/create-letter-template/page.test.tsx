@@ -1,10 +1,15 @@
 /**
  * @jest-environment node
  */
-import CreateLetterTemplatePage from '@app/create-letter-template/page';
+import CreateLetterTemplatePage, {
+  generateMetadata,
+} from '@app/create-letter-template/page';
+import content from '@content/content';
 import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
 import { redirect, RedirectType } from 'next/navigation';
+
+const { pageTitle } = content.components.templateFormLetter;
 
 jest.mock('next/navigation');
 jest.mock('@utils/amplify-utils');
@@ -32,6 +37,7 @@ describe('CreateLetterTemplatePage', () => {
 
     const page = await CreateLetterTemplatePage();
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
     expect(page).toMatchSnapshot();
   });
 

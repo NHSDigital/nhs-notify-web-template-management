@@ -1,8 +1,18 @@
+import { Metadata } from 'next';
 import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 import { getSessionServer } from '@utils/amplify-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { fetchClient } from '@utils/server-features';
+import content from '@content/content';
+
+const { pageTitle } = content.components.templateFormLetter;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
 
 const CreateLetterTemplatePage = async () => {
   const initialState: CreateLetterTemplate = {
