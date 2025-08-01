@@ -42,6 +42,7 @@ describe('RequestProofPage', () => {
       name: 'template-name',
       letterType: 'x0',
       language: 'en',
+      proofingEnabled: true,
       files: {
         pdfTemplate: {
           virusScanStatus: 'PASSED',
@@ -119,6 +120,43 @@ describe('RequestProofPage', () => {
       params: Promise.resolve({
         templateId: 'template-id',
       }),
+    });
+
+    expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');
+  });
+
+  test('should forbid user from requesting a proof when proofingEnabled is false', async () => {
+    const state = {
+      id: 'template-id',
+      templateType: 'LETTER',
+      templateStatus: 'NOT_YET_SUBMITTED',
+      name: 'template-name',
+      letterType: 'x0',
+      language: 'ar',
+      proofingEnabled: false,
+      files: {
+        pdfTemplate: {
+          virusScanStatus: 'PASSED',
+          currentVersion: 'a',
+          fileName: 'a.pdf',
+        },
+      },
+    } satisfies Partial<TemplateDto>;
+
+    getTemplateMock.mockResolvedValue({
+      ...state,
+      createdAt: 'today',
+      updatedAt: 'today',
+    });
+
+    await RequestProofPage({
+      params: Promise.resolve({
+        templateId: 'template-id',
+      }),
+    });
+
+    expect(await generateMetadata()).toEqual({
+      title: pageTitle,
     });
 
     expect(redirectMock).toHaveBeenCalledWith('/invalid-template', 'replace');

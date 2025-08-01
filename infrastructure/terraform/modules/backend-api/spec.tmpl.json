@@ -216,6 +216,12 @@
                   "type": "string"
                 },
                 "type": "array"
+              },
+              "proofingEnabled": {
+                "type": "boolean"
+              },
+              "supplier": {
+                "type": "string"
               }
             },
             "required": [

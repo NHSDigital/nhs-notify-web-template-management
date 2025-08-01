@@ -367,4 +367,40 @@ describe('TemplateUpdateBuilder', () => {
       });
     });
   });
+
+  describe('expectProofingEnabled', () => {
+    test('adds proofingEnabled [true] condition', () => {
+      const builder = new TemplateUpdateBuilder(
+        mockTableName,
+        mockOwner,
+        mockId
+      );
+
+      const res = builder
+        .setStatus('NOT_YET_SUBMITTED')
+        .expectProofingEnabled()
+        .build();
+
+      expect(res).toEqual({
+        TableName: mockTableName,
+        Key: {
+          owner: mockOwner,
+          id: mockId,
+        },
+        ExpressionAttributeValues: {
+          ':templateStatus': 'NOT_YET_SUBMITTED',
+          ':updatedAt': mockDate.toISOString(),
+          ':condition_1_proofingEnabled': true,
+        },
+        ExpressionAttributeNames: {
+          '#templateStatus': 'templateStatus',
+          '#updatedAt': 'updatedAt',
+          '#proofingEnabled': 'proofingEnabled',
+        },
+        ConditionExpression: '#proofingEnabled = :condition_1_proofingEnabled',
+        UpdateExpression:
+          'SET #templateStatus = :templateStatus, #updatedAt = :updatedAt',
+      });
+    });
+  });
 });

@@ -60,4 +60,5 @@ export type Template = TypeSpecificProperties & {
   templateType: string;
   updatedAt: string;
   version: number;
+  proofingEnabled?: boolean;
 };

@@ -69,6 +69,11 @@ export class TemplateUpdateBuilder extends EntityUpdateBuilder<DatabaseTemplate>
     return this;
   }
 
+  expectProofingEnabled() {
+    this.updateBuilder.andCondition('proofingEnabled', '=', true);
+    return this;
+  }
+
   build() {
     return this.updateBuilder
       .setValue('updatedAt', new Date().toISOString())
