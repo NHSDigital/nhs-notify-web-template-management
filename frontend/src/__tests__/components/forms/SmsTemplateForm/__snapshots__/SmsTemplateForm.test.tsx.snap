@@ -221,45 +221,50 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -269,42 +274,89 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -315,11 +367,11 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -329,25 +381,29 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+              Write the URL in full, starting with https://
             </p>
             <p>
               For example:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-description"
+              id="links-urls-markdown-description"
             >
-              An example of markdown:
+              An example of URL markdown
             </span>
-            <code
-              aria-describedby="link-url-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              https://www.nhs.uk/example
-            </code>
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -607,45 +663,50 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -655,42 +716,89 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -701,11 +809,11 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -715,25 +823,29 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+              Write the URL in full, starting with https://
             </p>
             <p>
               For example:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-description"
+              id="links-urls-markdown-description"
             >
-              An example of markdown:
+              An example of URL markdown
             </span>
-            <code
-              aria-describedby="link-url-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              https://www.nhs.uk/example
-            </code>
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -971,45 +1083,50 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -1019,42 +1136,89 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -1065,11 +1229,11 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1079,25 +1243,29 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+              Write the URL in full, starting with https://
             </p>
             <p>
               For example:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-description"
+              id="links-urls-markdown-description"
             >
-              An example of markdown:
+              An example of URL markdown
             </span>
-            <code
-              aria-describedby="link-url-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              https://www.nhs.uk/example
-            </code>
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -1371,45 +1539,50 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -1419,42 +1592,89 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -1465,11 +1685,11 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1479,25 +1699,29 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+              Write the URL in full, starting with https://
             </p>
             <p>
               For example:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-description"
+              id="links-urls-markdown-description"
             >
-              An example of markdown:
+              An example of URL markdown
             </span>
-            <code
-              aria-describedby="link-url-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              https://www.nhs.uk/example
-            </code>
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -1713,45 +1937,50 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -1761,42 +1990,89 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -1807,11 +2083,11 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1821,25 +2097,29 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
+              Write the URL in full, starting with https://
             </p>
             <p>
               For example:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-description"
+              id="links-urls-markdown-description"
             >
-              An example of markdown:
+              An example of URL markdown
             </span>
-            <code
-              aria-describedby="link-url-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              https://www.nhs.uk/example
-            </code>
+              <code
+                aria-describedby="links-urls-markdown-description"
+              >
+                https://www.nhs.uk/example
+              </code>
+            </pre>
           </div>
         </details>
         <h2

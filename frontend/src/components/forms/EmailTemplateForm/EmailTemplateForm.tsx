@@ -157,7 +157,7 @@ export const EmailTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='EMAIL' />
+            <MessageFormatting templateType='EMAIL' />
             <ChannelGuidance template='EMAIL' />
           </aside>
         </div>

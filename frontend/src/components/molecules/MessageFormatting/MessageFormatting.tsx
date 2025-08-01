@@ -1,41 +1,16 @@
 import content from '@content/content';
-import {
-  BoldText,
-  BulletList,
-  Headings,
-  HorizontalRule,
-  LineBreaksAndParagraphs,
-  LinksAndUrlsMarkdown,
-  LinksAndUrlsNoMarkdown,
-  NumberedList,
-} from './formats';
-import { JSX } from 'react';
 import { TemplateType } from 'nhs-notify-backend-client';
+import { Details } from 'nhsuk-react-components';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
+import { toKebabCase } from '@utils/kebab-case';
 
 const messageFormattingContent = content.components.messageFormatting;
 
-const messageFormattingMap: Record<TemplateType, JSX.Element[]> = {
-  NHS_APP: [
-    LineBreaksAndParagraphs(),
-    Headings(),
-    BulletList(),
-    NumberedList(),
-    BoldText(),
-    LinksAndUrlsMarkdown(),
-  ],
-  EMAIL: [
-    LineBreaksAndParagraphs(),
-    Headings(),
-    BulletList(),
-    NumberedList(),
-    HorizontalRule(),
-    LinksAndUrlsMarkdown(),
-  ],
-  SMS: [LinksAndUrlsNoMarkdown()],
-  LETTER: [],
-};
-
-export function MessageFormatting({ template }: { template: TemplateType }) {
+export function MessageFormatting({
+  templateType,
+}: {
+  templateType: TemplateType;
+}) {
   return (
     <>
       <h2
@@ -44,7 +19,23 @@ export function MessageFormatting({ template }: { template: TemplateType }) {
       >
         {messageFormattingContent.header}
       </h2>
-      {...messageFormattingMap[template]}
+
+      {messageFormattingContent.details
+        .filter(
+          (section) =>
+            !section.showFor || section.showFor.includes(templateType)
+        )
+        .map((section) => {
+          const id = toKebabCase(section.title);
+          return (
+            <Details data-testid={`${id}-details`} key={id}>
+              <Details.Summary data-testid={`${id}-summary`}>{section.title}</Details.Summary>
+              <Details.Text data-testid={`${id}-text`}>
+                <ContentRenderer content={section.content} />
+              </Details.Text>
+            </Details>
+          );
+        })}
     </>
   );
 }

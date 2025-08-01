@@ -16,7 +16,7 @@ export class TemplateMgmtMessageFormatting {
 
   constructor(private readonly _page: Page) {
     this.lineBreaksAndParagraphs = this._page.locator(
-      '[data-testid="lines-breaks-and-paragraphs-details"]'
+      '[data-testid="line-breaks-and-paragraphs-details"]'
     );
 
     this.headings = this._page.locator('[data-testid="headings-details"]');
@@ -26,7 +26,7 @@ export class TemplateMgmtMessageFormatting {
     );
 
     this.numberedList = this._page.locator(
-      '[data-testid="numbered-list-details"]'
+      '[data-testid="numbered-lists-details"]'
     );
 
     this.horizontalLines = this._page.locator(
@@ -34,7 +34,7 @@ export class TemplateMgmtMessageFormatting {
     );
 
     this.linksAndUrls = this._page.locator(
-      '[data-testid="link-and-url-details"]'
+      '[data-testid="links-and-urls-details"]'
     );
   }
 

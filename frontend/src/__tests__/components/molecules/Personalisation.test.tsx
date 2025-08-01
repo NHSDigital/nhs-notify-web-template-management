@@ -7,11 +7,21 @@ describe('Personalisation component', () => {
 
     expect(screen.getByTestId('personalisation-header')).toBeInTheDocument();
 
-    const details = screen.getByTestId('personalisation-details');
-    expect(details).toBeInTheDocument();
-    expect(details).not.toHaveAttribute('open');
+    const pdsDetails = screen.getByTestId('pds-personalisation-fields-details');
+    expect(pdsDetails).not.toHaveAttribute('open');
 
-    expect(screen.getByTestId('personalisation-summary')).toBeInTheDocument();
-    expect(screen.getByTestId('personalisation-text')).toBeInTheDocument();
+    expect(screen.getByTestId('pds-personalisation-fields-summary')).toBeInTheDocument();
+    expect(screen.getByTestId('pds-personalisation-fields-text')).toBeInTheDocument();
+
+    const customDetails = screen.getByTestId('custom-personalisation-fields-details');
+    expect(customDetails).not.toHaveAttribute('open');
+
+    expect(screen.getByTestId('custom-personalisation-fields-summary')).toBeInTheDocument();
+    expect(screen.getByTestId('custom-personalisation-fields-text')).toBeInTheDocument();
+  });
+
+  it('matches snapshot', () => {
+    const { container } = render(<Personalisation />);
+    expect(container).toMatchSnapshot();
   });
 });

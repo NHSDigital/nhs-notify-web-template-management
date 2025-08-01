@@ -1,5 +1,10 @@
+import {
+  CodeBlock,
+  ContentBlock,
+  MarkdownTextBlock,
+} from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
-import { TemplateStatus } from 'nhs-notify-backend-client';
+import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
 const generatePageTitle = (title: string): string => {
   return `${title} - NHS Notify`;
@@ -55,106 +60,332 @@ const footer = {
   },
 };
 
-const personalisation = {
+const personalisation: {
+  header: string;
+  leadParagraph: ContentBlock[];
+  details: ExpandableDetailsContent[];
+} = {
   header: 'Personalisation',
-  hiddenCodeBlockDescription: 'An example of personalised message content:',
-  details: {
-    title: 'Personalisation fields',
-    text1:
-      'Use double brackets to add a personalisation field to your content. For example:',
-    codeBlockText: 'Hello ((firstName)), your NHS number is ((nhsNumber))',
-    text2: 'NHS Notify gets data from PDS to populate personalisation fields.',
-    text3: 'You can use:',
-    list: [
-      { id: 'pds-item-1', item: '((fullName))' },
-      { id: 'pds-item-2', item: '((firstName))' },
-      { id: 'pds-item-3', item: '((middleNames))' },
-      { id: 'pds-item-4', item: '((lastName))' },
-      { id: 'pds-item-5', item: '((nhsNumber))' },
-      { id: 'pds-item-6', item: '((namePrefix))' },
-      { id: 'pds-item-7', item: '((nameSuffix))' },
-      { id: 'pds-item-8', item: '((address_line_1))' },
-      { id: 'pds-item-9', item: '((address_line_2))' },
-      { id: 'pds-item-10', item: '((address_line_3))' },
-      { id: 'pds-item-11', item: '((address_line_4))' },
-      { id: 'pds-item-12', item: '((address_line_5))' },
-      { id: 'pds-item-13', item: '((address_line_6))' },
-      { id: 'pds-item-14', item: '((address_line_7))' },
-    ],
-  },
+  leadParagraph: [
+    {
+      type: 'text',
+      text: 'Use double brackets to add a personalisation field to your content.',
+    },
+    {
+      type: 'text',
+      text: 'Do not include spaces in your personalisation fields. For example:',
+    },
+    {
+      type: 'code',
+      code: 'Hello ((firstName)), your NHS number is ((nhsNumber))',
+      aria: {
+        text: 'An example of personalised message content:',
+        id: 'personalisation-markdown-description'
+      },
+    },
+  ],
+  details: [
+    {
+      title: 'PDS personalisation fields',
+      content: [
+        {
+          type: 'text',
+          text: 'NHS Notify gets data from PDS to populate certain personalisation fields.',
+        },
+        {
+          type: 'text',
+          text: 'You can use the following PDS personalisation fields:',
+        },
+        {
+          type: 'list',
+          items: [
+            '((fullName))',
+            '((firstName))',
+            '((lastName))',
+            '((nhsNumber))',
+            '((date))',
+          ],
+        },
+        {
+          type: 'text',
+          text: 'Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.',
+        },
+      ],
+    },
+    {
+      title: 'Custom personalisation fields',
+      content: [
+        {
+          type: 'text',
+          text: 'You can add [custom personalisation fields](https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields) that use your own personalisation data.',
+        },
+        {
+          type: 'text',
+          text: 'Include custom personalisation fields in your content. Then provide your custom personalisation data using [NHS Notify API](https://notify.nhs.uk/using-nhs-notify/api) or [NHS Notify MESH](https://notify.nhs.uk/using-nhs-notify/mesh).',
+        },
+        {
+          type: 'text',
+          text: 'For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:',
+        },
+        {
+          type: 'code',
+          code: '((GP_surgery))',
+          aria: {
+            text: 'An example of personalised message content:',
+            id: 'custom-personalisation-markdown-description'
+          },
+        },
+        {
+          type: 'text',
+          text: 'Remember not to include spaces in your personalisation fields.',
+        },
+      ],
+    },
+  ],
 };
 
-const messageFormatting = {
+type ExpandableDetailsContent = {
+  title: string;
+  content: ContentBlock[];
+  showFor?: TemplateType[];
+};
+
+const messageFormatting: {
+  header: string;
+  details: ExpandableDetailsContent[];
+} = {
   header: 'Message formatting',
-  hiddenCodeBlockDescription: 'An example of markdown:',
-  lineBreaksAndParagraphs: {
-    title: 'Line breaks and paragraphs',
-    text1:
-      'To add a line break, use 2 spaces at the end of your text, for example:',
-    codeBlockText: [
-      { id: 'line-1', item: 'line 1' },
-      { id: 'line-2', item: 'line 2' },
-      { id: 'line-3', item: 'line 3' },
-    ],
-    text2:
-      'To add a paragraph, use a blank line between each paragraph, for example:',
-  },
-  headings: {
-    title: 'Headings',
-    text1:
-      'Use one hash symbol followed by a space for a heading, for example:',
-    text2: 'To add a subheading, use 2 hash symbols:',
-    codeBlock: {
-      text1: '# This is a heading',
-      text2: '## This is a subheading',
+  details: [
+    {
+      title: 'Line breaks and paragraphs',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'To add a line break, use 2 spaces at the end of your text.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add line breaks:',
+        },
+        {
+          type: 'code',
+          code: 'line 1  \nline 2  \nline 3  ',
+          aria: {
+            text: 'An example of line break markdown',
+            id: 'linebreaks-markdown-description',
+          },
+        },
+        {
+          type: 'text',
+          text: 'To add a paragraph, use a blank line between each paragraph.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add paragraphs:',
+        },
+        {
+          type: 'code',
+          code: 'line 1\n\nline 2\n\nline 3',
+          aria: {
+            text: 'An example of paragraph markdown',
+            id: 'paragraphs-markdown-description',
+          },
+        },
+      ],
     },
-  },
-  boldText: {
-    title: 'Bold text',
-    text: 'Use two asterisk symbols on either side of the words you want to be bold, for example:',
-    codeBlockText: '**this is bold text**',
-  },
-  linksAndUrls: {
-    title: 'Links and URLs',
-    text1:
-      'If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://',
-    text2: 'For example:',
-    text3:
-      'To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.',
-    text4: 'For example:',
-    codeBlockText: {
-      text1: 'https://www.nhs.uk/example',
-      text2: '[Read more](https://www.nhs.uk/)',
+    {
+      title: 'Headings',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'Use one hash symbol followed by a space for a heading.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add a heading:',
+        },
+        {
+          type: 'code',
+          code: '# This is a heading',
+          aria: {
+            text: 'An example of heading markdown',
+            id: 'headings-markdown-description',
+          },
+        },
+        {
+          type: 'text',
+          text: 'To add a subheading, use 2 hash symbols:',
+        },
+        {
+          type: 'code',
+          code: '## This is a subheading',
+          aria: {
+            text: 'An example of subheading markdown',
+            id: 'subheadings-markdown-description',
+          },
+        },
+      ],
     },
-  },
-  bulletLists: {
-    title: 'Bullet points',
-    text: 'Put each item on a separate line with an asterisk and a space in front of each one, for example:',
-    codeBlockText: [
-      { id: 'bullet-1', item: '* bullet 1' },
-      { id: 'bullet-2', item: '* bullet 2' },
-      { id: 'bullet-3', item: '* bullet 3' },
-    ],
-  },
-  numberedLists: {
-    title: 'Numbered lists',
-    text: 'Put each item on a separate line with the number, full stop and a space in front of each one, for example:',
-    codeBlockText: [
-      { id: 'first-item', item: '1. first item' },
-      { id: 'second-item', item: '2. second item' },
-      { id: 'third-item', item: '3. third item' },
-    ],
-  },
-  horizontalLine: {
-    title: 'Horizontal lines',
-    text: 'To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph. For example:',
-    codeBlockText: [
-      { id: 'hr-1', item: 'First paragraph' },
-      { id: 'hr-2', item: '---' },
-      { id: 'hr-3', item: 'Second paragraph' },
-    ],
-  },
-  qrCodes: {},
+    {
+      title: 'Bullet points',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'Put each item on a separate line with an asterisk and a space in front of each one.',
+        },
+        {
+          type: 'text',
+          text: 'Leave an empty line before the first bullet point and after the last bullet point.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add bullet points:',
+        },
+        {
+          type: 'code',
+          code: '* bullet 1\n* bullet 2\n* bullet 3',
+          aria: {
+            text: 'An example of bullet point markdown',
+            id: 'bullet-points-markdown-description',
+          },
+        },
+      ],
+    },
+    {
+      title: 'Numbered lists',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'Put each item on a separate line with the number, full stop and a space in front of each one.',
+        },
+        {
+          type: 'text',
+          text: 'Leave an empty line before the first item and after the last item.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add a numbered list:',
+        },
+        {
+          type: 'code',
+          code: '1. first item\n2. second item\n3. third item',
+          aria: {
+            text: 'An example of numbered list markdown',
+            id: 'numbered-list-markdown-description',
+          },
+        },
+      ],
+    },
+    {
+      title: 'Bold text',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'Use two asterisk symbols on either side of the words you want to be bold.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add bold text:',
+        },
+        {
+          type: 'code',
+          code: '**this is bold text**',
+          aria: {
+            text: 'An example of bold text markdown',
+            id: 'bold-text-markdown-description',
+          },
+        },
+      ],
+    },
+
+    {
+      title: 'Horizontal lines',
+      showFor: ['EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add a horizontal line:',
+        },
+        {
+          type: 'code',
+          code: 'First paragraph\n\n---\nSecond paragraph',
+          aria: {
+            text: 'An example of horizontal line markdown',
+            id: 'horizontal-line-markdown-description',
+          },
+        },
+      ],
+    },
+    {
+      title: 'Links and URLs',
+      showFor: ['NHS_APP', 'EMAIL'],
+      content: [
+        {
+          type: 'text',
+          text: 'To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add a link:',
+        },
+        {
+          type: 'code',
+          code: '[Read more](https://www.nhs.uk/)',
+          aria: {
+            text: 'An example of link markdown',
+            id: 'text-links-markdown-description',
+          },
+        },
+        {
+          type: 'text',
+          text: 'If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add a URL:',
+        },
+        {
+          type: 'code',
+          code: '[https://www.nhs.uk/](https://www.nhs.uk/)',
+          aria: {
+            text: 'An example of URL markdown',
+            id: 'full-urls-markdown-description',
+          },
+        },
+      ],
+    },
+    {
+      title: 'Links and URLs',
+      showFor: ['SMS'],
+      content: [
+        {
+          type: 'text',
+          text: 'Write the URL in full, starting with https://',
+        },
+        {
+          type: 'text',
+          text: 'For example:',
+        },
+        {
+          type: 'code',
+          code: 'https://www.nhs.uk/example',
+          aria: {
+            text: 'An example of URL markdown',
+            id: 'links-urls-markdown-description',
+          },
+        },
+      ],
+    },
+  ],
 };
 
 const mainLayout = {

@@ -137,7 +137,7 @@ export const NhsAppTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='NHS_APP' />
+            <MessageFormatting templateType='NHS_APP' />
             <ChannelGuidance template='NHS_APP' />
           </aside>
         </div>

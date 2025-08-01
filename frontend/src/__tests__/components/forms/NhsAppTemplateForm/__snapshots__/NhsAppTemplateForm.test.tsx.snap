@@ -174,45 +174,50 @@ exports[`Client-side validation triggers 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -222,42 +227,89 @@ exports[`Client-side validation triggers 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -268,11 +320,11 @@ exports[`Client-side validation triggers 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -282,61 +334,56 @@ exports[`Client-side validation triggers 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -358,44 +405,53 @@ exports[`Client-side validation triggers 1`] = `
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -405,45 +461,43 @@ exports[`Client-side validation triggers 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -453,36 +507,34 @@ exports[`Client-side validation triggers 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -504,28 +556,35 @@ exports[`Client-side validation triggers 1`] = `
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -535,44 +594,50 @@ exports[`Client-side validation triggers 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -797,45 +862,50 @@ exports[`renders page 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -845,42 +915,89 @@ exports[`renders page 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -891,11 +1008,11 @@ exports[`renders page 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -905,61 +1022,56 @@ exports[`renders page 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -981,44 +1093,53 @@ exports[`renders page 1`] = `
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1028,45 +1149,43 @@ exports[`renders page 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1076,36 +1195,34 @@ exports[`renders page 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -1127,28 +1244,35 @@ exports[`renders page 1`] = `
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1158,44 +1282,50 @@ exports[`renders page 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -1462,45 +1592,50 @@ exports[`renders page one error 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -1510,42 +1645,89 @@ exports[`renders page one error 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -1556,11 +1738,11 @@ exports[`renders page one error 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1570,61 +1752,56 @@ exports[`renders page one error 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -1646,44 +1823,53 @@ exports[`renders page one error 1`] = `
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1693,45 +1879,43 @@ exports[`renders page one error 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1741,36 +1925,34 @@ exports[`renders page one error 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -1792,28 +1974,35 @@ exports[`renders page one error 1`] = `
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -1823,44 +2012,50 @@ exports[`renders page one error 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -2141,45 +2336,50 @@ exports[`renders page with multiple errors 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -2189,42 +2389,89 @@ exports[`renders page with multiple errors 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -2235,11 +2482,11 @@ exports[`renders page with multiple errors 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2249,61 +2496,56 @@ exports[`renders page with multiple errors 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -2325,44 +2567,53 @@ exports[`renders page with multiple errors 1`] = `
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2372,45 +2623,43 @@ exports[`renders page with multiple errors 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2420,36 +2669,34 @@ exports[`renders page with multiple errors 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -2471,28 +2718,35 @@ exports[`renders page with multiple errors 1`] = `
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2502,44 +2756,50 @@ exports[`renders page with multiple errors 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -2764,45 +3024,50 @@ exports[`renders page with preloaded field values 1`] = `
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -2812,42 +3077,89 @@ exports[`renders page with preloaded field values 1`] = `
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -2858,11 +3170,11 @@ exports[`renders page with preloaded field values 1`] = `
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2872,61 +3184,56 @@ exports[`renders page with preloaded field values 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -2948,44 +3255,53 @@ exports[`renders page with preloaded field values 1`] = `
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -2995,45 +3311,43 @@ exports[`renders page with preloaded field values 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3043,36 +3357,34 @@ exports[`renders page with preloaded field values 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -3094,28 +3406,35 @@ exports[`renders page with preloaded field values 1`] = `
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3125,44 +3444,50 @@ exports[`renders page with preloaded field values 1`] = `
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2
@@ -3365,45 +3690,50 @@ exports[`renders page without back link for initial state with id - edit mode 1`
         >
           Personalisation
         </h2>
+        <p>
+          Use double brackets to add a personalisation field to your content.
+        </p>
+        <p>
+          Do not include spaces in your personalisation fields. For example:
+        </p>
+        <span
+          class="nhsuk-u-visually-hidden"
+          id="personalisation-markdown-description"
+        >
+          An example of personalised message content:
+        </span>
+        <pre
+          class="nhsuk-code-block"
+        >
+          <code
+            aria-describedby="personalisation-markdown-description"
+          >
+            Hello ((firstName)), your NHS number is ((nhsNumber))
+          </code>
+        </pre>
         <details
           class="nhsuk-details"
-          data-testid="personalisation-details"
+          data-testid="pds-personalisation-fields-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="personalisation-summary"
+            data-testid="pds-personalisation-fields-summary"
           >
             <span
               class="nhsuk-details__summary-text"
             >
-              Personalisation fields
+              PDS personalisation fields
             </span>
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="personalisation-text"
+            data-testid="pds-personalisation-fields-text"
           >
             <p>
-              Use double brackets to add a personalisation field to your content. For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="personalisation-description"
-            >
-              An example of personalised message content:
-            </span>
-            <code
-              aria-describedby="personalisation-description"
-            >
-              Hello ((firstName)), your NHS number is ((nhsNumber))
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              NHS Notify gets data from PDS to populate personalisation fields.
+              NHS Notify gets data from PDS to populate certain personalisation fields.
             </p>
             <p>
-              You can use:
+              You can use the following PDS personalisation fields:
             </p>
             <ul>
               <li>
@@ -3413,42 +3743,89 @@ exports[`renders page without back link for initial state with id - edit mode 1`
                 ((firstName))
               </li>
               <li>
-                ((middleNames))
-              </li>
-              <li>
                 ((lastName))
               </li>
               <li>
                 ((nhsNumber))
               </li>
               <li>
-                ((namePrefix))
-              </li>
-              <li>
-                ((nameSuffix))
-              </li>
-              <li>
-                ((address_line_1))
-              </li>
-              <li>
-                ((address_line_2))
-              </li>
-              <li>
-                ((address_line_3))
-              </li>
-              <li>
-                ((address_line_4))
-              </li>
-              <li>
-                ((address_line_5))
-              </li>
-              <li>
-                ((address_line_6))
-              </li>
-              <li>
-                ((address_line_7))
+                ((date))
               </li>
             </ul>
+            <p>
+              Make sure your personalisation fields exactly match the PDS personalisation fields. This includes using the correct order of upper and lower case letters.
+            </p>
+          </div>
+        </details>
+        <details
+          class="nhsuk-details"
+          data-testid="custom-personalisation-fields-details"
+        >
+          <summary
+            class="nhsuk-details__summary"
+            data-testid="custom-personalisation-fields-summary"
+          >
+            <span
+              class="nhsuk-details__summary-text"
+            >
+              Custom personalisation fields
+            </span>
+          </summary>
+          <div
+            class="nhsuk-details__text"
+            data-testid="custom-personalisation-fields-text"
+          >
+            <p>
+              You can add 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                custom personalisation fields
+              </a>
+               that use your own personalisation data.
+            </p>
+            <p>
+              Include custom personalisation fields in your content. Then provide your custom personalisation data using 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/api"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify API
+              </a>
+               or 
+              <a
+                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                NHS Notify MESH
+              </a>
+              .
+            </p>
+            <p>
+              For example, if you wanted to include GP surgery as custom personalisation data, your custom personalisation field could be:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="custom-personalisation-markdown-description"
+            >
+              An example of personalised message content:
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="custom-personalisation-markdown-description"
+              >
+                ((GP_surgery))
+              </code>
+            </pre>
+            <p>
+              Remember not to include spaces in your personalisation fields.
+            </p>
           </div>
         </details>
         <h2
@@ -3459,11 +3836,11 @@ exports[`renders page without back link for initial state with id - edit mode 1`
         </h2>
         <details
           class="nhsuk-details"
-          data-testid="lines-breaks-and-paragraphs-details"
+          data-testid="line-breaks-and-paragraphs-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="lines-breaks-and-paragraphs-summary"
+            data-testid="line-breaks-and-paragraphs-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3473,61 +3850,56 @@ exports[`renders page without back link for initial state with id - edit mode 1`
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="lines-breaks-and-paragraphs-text"
+            data-testid="line-breaks-and-paragraphs-text"
           >
             <p>
-              To add a line break, use 2 spaces at the end of your text, for example:
+              To add a line break, use 2 spaces at the end of your text.
+            </p>
+            <p>
+              Copy this example to add line breaks:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="linebreak-description"
+              id="linebreaks-markdown-description"
             >
-              An example of markdown:
+              An example of line break markdown
             </span>
-            <code
-              aria-describedby="linebreak-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="linebreaks-markdown-description"
               >
-                line 1  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 2  
-              </span>
-              <span
-                class="inlineText"
-              >
-                line 3  
-              </span>
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
-              To add a paragraph, use a blank line between each paragraph, for example:
+                line 1  
+line 2  
+line 3  
+              </code>
+            </pre>
+            <p>
+              To add a paragraph, use a blank line between each paragraph.
+            </p>
+            <p>
+              Copy this example to add paragraphs:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="paragraph-break-description"
+              id="paragraphs-markdown-description"
             >
-              An example of markdown:
+              An example of paragraph markdown
             </span>
-            <code
-              aria-describedby="paragraph-break-description"
-              class="codeLine"
+            <pre
+              class="nhsuk-code-block"
             >
-              <p>
+              <code
+                aria-describedby="paragraphs-markdown-description"
+              >
                 line 1
-              </p>
-              <p>
-                line 2
-              </p>
-              <p>
-                line 3
-              </p>
-            </code>
+
+line 2
+
+line 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -3549,44 +3921,53 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             data-testid="headings-text"
           >
             <p>
-              Use one hash symbol followed by a space for a heading, for example:
+              Use one hash symbol followed by a space for a heading.
+            </p>
+            <p>
+              Copy this example to add a heading:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="heading-description"
+              id="headings-markdown-description"
             >
-              An example of markdown:
+              An example of heading markdown
             </span>
-            <code
-              aria-describedby="heading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              # This is a heading
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
+              <code
+                aria-describedby="headings-markdown-description"
+              >
+                # This is a heading
+              </code>
+            </pre>
+            <p>
               To add a subheading, use 2 hash symbols:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="subheading-description"
+              id="subheadings-markdown-description"
             >
-              An example of markdown:
+              An example of subheading markdown
             </span>
-            <code
-              aria-describedby="subheading-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              ## This is a subheading
-            </code>
+              <code
+                aria-describedby="subheadings-markdown-description"
+              >
+                ## This is a subheading
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="bullet-lists-details"
+          data-testid="bullet-points-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="bullet-lists-summary"
+            data-testid="bullet-points-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3596,45 +3977,43 @@ exports[`renders page without back link for initial state with id - edit mode 1`
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="bullet-lists-text"
+            data-testid="bullet-points-text"
           >
             <p>
-              Put each item on a separate line with an asterisk and a space in front of each one, for example:
+              Put each item on a separate line with an asterisk and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first bullet point and after the last bullet point.
+            </p>
+            <p>
+              Copy this example to add bullet points:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bullet-list-description"
+              id="bullet-points-markdown-description"
             >
-              An example of markdown:
+              An example of bullet point markdown
             </span>
-            <code
-              aria-describedby="bullet-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="bullet-points-markdown-description"
               >
                 * bullet 1
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 2
-              </span>
-              <span
-                class="inlineText"
-              >
-                * bullet 3
-              </span>
-            </code>
+* bullet 2
+* bullet 3
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="numbered-list-details"
+          data-testid="numbered-lists-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="numbered-list-summary"
+            data-testid="numbered-lists-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3644,36 +4023,34 @@ exports[`renders page without back link for initial state with id - edit mode 1`
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="numbered-list-text"
+            data-testid="numbered-lists-text"
           >
             <p>
-              Put each item on a separate line with the number, full stop and a space in front of each one, for example:
+              Put each item on a separate line with the number, full stop and a space in front of each one.
+            </p>
+            <p>
+              Leave an empty line before the first item and after the last item.
+            </p>
+            <p>
+              Copy this example to add a numbered list:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="numbered-list-description"
+              id="numbered-list-markdown-description"
             >
-              An example of markdown:
+              An example of numbered list markdown
             </span>
-            <code
-              aria-describedby="numbered-list-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              <span
-                class="inlineText"
+              <code
+                aria-describedby="numbered-list-markdown-description"
               >
                 1. first item
-              </span>
-              <span
-                class="inlineText"
-              >
-                2. second item
-              </span>
-              <span
-                class="inlineText"
-              >
-                3. third item
-              </span>
-            </code>
+2. second item
+3. third item
+              </code>
+            </pre>
           </div>
         </details>
         <details
@@ -3695,28 +4072,35 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             data-testid="bold-text-text"
           >
             <p>
-              Use two asterisk symbols on either side of the words you want to be bold, for example:
+              Use two asterisk symbols on either side of the words you want to be bold.
+            </p>
+            <p>
+              Copy this example to add bold text:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="bold-text-description"
+              id="bold-text-markdown-description"
             >
-              An example of markdown:
+              An example of bold text markdown
             </span>
-            <code
-              aria-describedby="bold-text-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              **this is bold text**
-            </code>
+              <code
+                aria-describedby="bold-text-markdown-description"
+              >
+                **this is bold text**
+              </code>
+            </pre>
           </div>
         </details>
         <details
           class="nhsuk-details"
-          data-testid="link-and-url-details"
+          data-testid="links-and-urls-details"
         >
           <summary
             class="nhsuk-details__summary"
-            data-testid="link-and-url-summary"
+            data-testid="links-and-urls-summary"
           >
             <span
               class="nhsuk-details__summary-text"
@@ -3726,44 +4110,50 @@ exports[`renders page without back link for initial state with id - edit mode 1`
           </summary>
           <div
             class="nhsuk-details__text"
-            data-testid="link-and-url-text"
+            data-testid="links-and-urls-text"
           >
             <p>
-              If the recipient is not expecting to receive a message from you, write the URL in full, starting with https://
-            </p>
-            <p>
-              For example:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="link-url-description"
-            >
-              An example of markdown:
-            </span>
-            <code
-              aria-describedby="link-url-description"
-            >
-              https://www.nhs.uk/example
-            </code>
-            <p
-              class="nhsuk-u-margin-top-4"
-            >
               To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
             </p>
             <p>
-              For example:
+              Copy this example to add a link:
             </p>
             <span
               class="nhsuk-u-visually-hidden"
-              id="link-url-markdown-description"
+              id="text-links-markdown-description"
             >
-              An example of markdown:
+              An example of link markdown
             </span>
-            <code
-              aria-describedby="link-url-markdown-description"
+            <pre
+              class="nhsuk-code-block"
             >
-              [Read more](https://www.nhs.uk/)
-            </code>
+              <code
+                aria-describedby="text-links-markdown-description"
+              >
+                [Read more](https://www.nhs.uk/)
+              </code>
+            </pre>
+            <p>
+              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+            </p>
+            <p>
+              Copy this example to add a URL:
+            </p>
+            <span
+              class="nhsuk-u-visually-hidden"
+              id="full-urls-markdown-description"
+            >
+              An example of URL markdown
+            </span>
+            <pre
+              class="nhsuk-code-block"
+            >
+              <code
+                aria-describedby="full-urls-markdown-description"
+              >
+                [https://www.nhs.uk/](https://www.nhs.uk/)
+              </code>
+            </pre>
           </div>
         </details>
         <h2

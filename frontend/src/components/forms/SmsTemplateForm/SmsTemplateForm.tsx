@@ -152,7 +152,7 @@ export const SmsTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='SMS' />
+            <MessageFormatting templateType='SMS' />
             <ChannelGuidance template='SMS' />
           </aside>
         </div>
