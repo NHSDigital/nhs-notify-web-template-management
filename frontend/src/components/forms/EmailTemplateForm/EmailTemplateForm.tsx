@@ -83,21 +83,23 @@ export const EmailTemplateForm: FC<
         </Link>
       )}
       <NHSNotifyMain>
+        <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
+          <ZodErrorSummary
+            errorHeading={errorHeading}
+            state={{ validationError }}
+          />
+          <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
+            {editMode ? 'Edit ' : 'Create '}
+            {pageHeadingSuffix}
+          </h1>
+        </div>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-email-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {editMode ? 'Edit ' : 'Create '}
-                {pageHeadingSuffix}
-              </h1>
               <div className={templateNameError && 'nhsuk-form-group--error'}>
                 <Label htmlFor='emailTemplateName' size='s'>
                   {templateNameLabelText}

@@ -8,48 +8,52 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
     role="main"
   >
     <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#smsTemplateName"
+            >
+              Enter a template name
+            </a>
+          </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            >
+              Enter a template message
+            </a>
+          </li>
+        </ul>
+      </div>
+      <h1
+        data-testid="page-heading"
+      >
+        Edit text message template
+      </h1>
+    </div>
+    <div
       class="nhsuk-grid-row"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <a
-                href="#smsTemplateName"
-              >
-                Enter a template name
-              </a>
-            </li>
-            <li>
-              <a
-                href="#smsTemplateMessage"
-              >
-                Enter a template message
-              </a>
-            </li>
-          </ul>
-        </div>
-        <h1
-          data-testid="page-heading"
-        >
-          Edit text message template
-        </h1>
         <form
           action="/action"
         >
@@ -462,46 +466,50 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
     role="main"
   >
     <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#smsTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            />
+          </li>
+        </ul>
+      </div>
+      <h1
+        data-testid="page-heading"
+      >
+        Edit text message template
+      </h1>
+    </div>
+    <div
       class="nhsuk-grid-row"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <a
-                href="#smsTemplateName"
-              >
-                Template name error
-              </a>
-            </li>
-            <li>
-              <a
-                href="#smsTemplateMessage"
-              />
-            </li>
-          </ul>
-        </div>
-        <h1
-          data-testid="page-heading"
-        >
-          Edit text message template
-        </h1>
         <form
           action="/action"
         >
@@ -926,16 +934,20 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
     role="main"
   >
     <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="page-heading"
+      >
+        Create text message template
+      </h1>
+    </div>
+    <div
       class="nhsuk-grid-row"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
-        <h1
-          data-testid="page-heading"
-        >
-          Create text message template
-        </h1>
         <form
           action="/action"
         >
@@ -1324,48 +1336,52 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
     role="main"
   >
     <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <div
+        aria-labelledby="error-summary-title"
+        class="nhsuk-error-summary"
+        role="alert"
+        tabindex="-1"
+      >
+        <h2
+          class="nhsuk-error-summary__title"
+          data-testid="error-summary"
+          id="error-summary-title"
+        >
+          There is a problem
+        </h2>
+        <ul
+          class="nhsuk-list nhsuk-error-summary__list"
+        >
+          <li>
+            <a
+              href="#smsTemplateName"
+            >
+              Template name error
+            </a>
+          </li>
+          <li>
+            <a
+              href="#smsTemplateMessage"
+            >
+              Template message error
+            </a>
+          </li>
+        </ul>
+      </div>
+      <h1
+        data-testid="page-heading"
+      >
+        Edit text message template
+      </h1>
+    </div>
+    <div
       class="nhsuk-grid-row"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
-        <div
-          aria-labelledby="error-summary-title"
-          class="nhsuk-error-summary"
-          role="alert"
-          tabindex="-1"
-        >
-          <h2
-            class="nhsuk-error-summary__title"
-            data-testid="error-summary"
-            id="error-summary-title"
-          >
-            There is a problem
-          </h2>
-          <ul
-            class="nhsuk-list nhsuk-error-summary__list"
-          >
-            <li>
-              <a
-                href="#smsTemplateName"
-              >
-                Template name error
-              </a>
-            </li>
-            <li>
-              <a
-                href="#smsTemplateMessage"
-              >
-                Template message error
-              </a>
-            </li>
-          </ul>
-        </div>
-        <h1
-          data-testid="page-heading"
-        >
-          Edit text message template
-        </h1>
         <form
           action="/action"
         >
@@ -1780,16 +1796,20 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
     role="main"
   >
     <div
+      class="nhsuk-grid-row nhsuk-grid-column-two-thirds"
+    >
+      <h1
+        data-testid="page-heading"
+      >
+        Edit text message template
+      </h1>
+    </div>
+    <div
       class="nhsuk-grid-row"
     >
       <div
         class="nhsuk-grid-column-two-thirds"
       >
-        <h1
-          data-testid="page-heading"
-        >
-          Edit text message template
-        </h1>
         <form
           action="/action"
         >
