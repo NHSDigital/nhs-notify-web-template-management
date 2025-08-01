@@ -3,15 +3,26 @@ import { render, screen } from '@testing-library/react';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 describe('MarkdownContent', () => {
-  it('renders nothing if segments is empty array', () => {
-    const { container } = render(<MarkdownContent segments={[]} />);
+  it('renders nothing if content is empty array', () => {
+    const { container } = render(<MarkdownContent content={[]} />);
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders content if content is a string', () => {
+    render(
+      <MarkdownContent content='This is content with a [link](www.link.com).' />
+    );
+    expect(
+      screen.getByText('This is content with a', { exact: false })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link')).toHaveAttribute('href', 'www.link.com');
+    expect(screen.getByRole('link')).toHaveTextContent('link');
   });
 
   it('renders multiple segments in correct order', () => {
     const segments = ['First paragraph', 'Second [link](https://example.com)'];
 
-    render(<MarkdownContent segments={segments} />);
+    render(<MarkdownContent content={segments} />);
 
     expect(screen.getByText('First paragraph')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveAttribute(
@@ -24,7 +35,7 @@ describe('MarkdownContent', () => {
   it('adds correct attributes to links', () => {
     const segments = ['Click [here](https://example.com)'];
 
-    render(<MarkdownContent segments={segments} />);
+    render(<MarkdownContent content={segments} />);
 
     const link = screen.getByRole('link', { name: 'here' });
     expect(link).toHaveAttribute('target', '_blank');
@@ -37,7 +48,7 @@ describe('MarkdownContent', () => {
       'Here is a [link](https://example.com)',
     ];
 
-    const container = render(<MarkdownContent segments={segments} />);
+    const container = render(<MarkdownContent content={segments} />);
     expect(container.asFragment()).toMatchSnapshot();
   });
 
@@ -48,7 +59,7 @@ describe('MarkdownContent', () => {
       '<iframe src="https://malicious-site.com"></iframe>',
     ];
 
-    const { container } = render(<MarkdownContent segments={segments} />);
+    const { container } = render(<MarkdownContent content={segments} />);
 
     expect(container.querySelector('script')).toBeNull();
     expect(container.querySelector('img')).toBeNull();

@@ -78,16 +78,18 @@ export const SmsTemplateForm: FC<
         </Link>
       )}
       <NHSNotifyMain>
+        <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
+          <ZodErrorSummary
+            errorHeading={errorHeading}
+            state={{ validationError }}
+          />
+          <h1 data-testid='page-heading'>
+            {editMode ? 'Edit ' : 'Create '}
+            {pageHeadingSuffix}
+          </h1>
+        </div>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
-            <h1 data-testid='page-heading'>
-              {editMode ? 'Edit ' : 'Create '}
-              {pageHeadingSuffix}
-            </h1>
             <NHSNotifyFormWrapper
               action={action}
               formId='create-sms-template'
@@ -152,7 +154,7 @@ export const SmsTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='SMS' />
+            <MessageFormatting templateType='SMS' />
             <ChannelGuidance template='SMS' />
           </aside>
         </div>

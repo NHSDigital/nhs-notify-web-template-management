@@ -158,10 +158,10 @@ test.describe('Create NHS App Template Page', () => {
 
   const detailsSections = [
     '[data-testid="personalisation-details"]',
-    '[data-testid="lines-breaks-and-paragraphs-details"]',
+    '[data-testid="line-breaks-and-paragraphs-details"]',
     '[data-testid="headings-details"]',
     '[data-testid="bold-text-details"]',
-    '[data-testid="link-and-url-details"]',
+    '[data-testid="links-and-urls-details"]',
     '[data-testid="how-to-name-your-template"]',
   ];
 
@@ -182,7 +182,7 @@ test.describe('Create NHS App Template Page', () => {
       await expect(page.locator(`${section} > div`)).toBeHidden();
     });
   }
-
+  // TODO: Add personalisation links to test
   const moreInfoLinks = [
     {
       name: 'NHS App messages (opens in a new tab)',

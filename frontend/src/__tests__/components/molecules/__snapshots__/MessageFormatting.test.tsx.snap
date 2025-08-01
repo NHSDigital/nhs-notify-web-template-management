@@ -1,0 +1,774 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageFormatting component matches snapshot for EMAIL 1`] = `
+<div>
+  <h2
+    class="nhsuk-heading-m nhsuk-u-margin-top-4"
+    data-testid="message-formatting-header"
+  >
+    Message formatting
+  </h2>
+  <details
+    class="nhsuk-details"
+    data-testid="line-breaks-and-paragraphs-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="line-breaks-and-paragraphs-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Line breaks and paragraphs
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="line-breaks-and-paragraphs-text"
+    >
+      <p>
+        To add a line break, use 2 spaces at the end of your text.
+      </p>
+      <p>
+        Copy this example to add line breaks:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="linebreaks-markdown-description"
+      >
+        An example of line break markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="linebreaks-markdown-description"
+        >
+          line 1  
+line 2  
+line 3  
+        </code>
+      </pre>
+      <p>
+        To add a paragraph, use a blank line between each paragraph.
+      </p>
+      <p>
+        Copy this example to add paragraphs:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="paragraphs-markdown-description"
+      >
+        An example of paragraph markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="paragraphs-markdown-description"
+        >
+          line 1
+
+line 2
+
+line 3
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="headings-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="headings-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Headings
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="headings-text"
+    >
+      <p>
+        Use one hash symbol followed by a space for a heading.
+      </p>
+      <p>
+        Copy this example to add a heading:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="headings-markdown-description"
+      >
+        An example of heading markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="headings-markdown-description"
+        >
+          # This is a heading
+        </code>
+      </pre>
+      <p>
+        To add a subheading, use 2 hash symbols:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="subheadings-markdown-description"
+      >
+        An example of subheading markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="subheadings-markdown-description"
+        >
+          ## This is a subheading
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="bullet-points-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="bullet-points-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Bullet points
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="bullet-points-text"
+    >
+      <p>
+        Put each item on a separate line with an asterisk and a space in front of each one.
+      </p>
+      <p>
+        Leave an empty line before the first bullet point and after the last bullet point.
+      </p>
+      <p>
+        Copy this example to add bullet points:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="bullet-points-markdown-description"
+      >
+        An example of bullet point markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="bullet-points-markdown-description"
+        >
+          * bullet 1
+* bullet 2
+* bullet 3
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="numbered-lists-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="numbered-lists-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Numbered lists
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="numbered-lists-text"
+    >
+      <p>
+        Put each item on a separate line with the number, full stop and a space in front of each one.
+      </p>
+      <p>
+        Leave an empty line before the first item and after the last item.
+      </p>
+      <p>
+        Copy this example to add a numbered list:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="numbered-list-markdown-description"
+      >
+        An example of numbered list markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="numbered-list-markdown-description"
+        >
+          1. first item
+2. second item
+3. third item
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="bold-text-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="bold-text-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Bold text
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="bold-text-text"
+    >
+      <p>
+        Use two asterisk symbols on either side of the words you want to be bold.
+      </p>
+      <p>
+        Copy this example to add bold text:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="bold-text-markdown-description"
+      >
+        An example of bold text markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="bold-text-markdown-description"
+        >
+          **this is bold text**
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="horizontal-lines-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="horizontal-lines-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Horizontal lines
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="horizontal-lines-text"
+    >
+      <p>
+        To add a horizontal line between 2 paragraphs, use 3 dashes. Leave one empty line space after the first paragraph.
+      </p>
+      <p>
+        Copy this example to add a horizontal line:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="horizontal-line-markdown-description"
+      >
+        An example of horizontal line markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="horizontal-line-markdown-description"
+        >
+          First paragraph
+
+---
+Second paragraph
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="links-and-urls-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="links-and-urls-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Links and URLs
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="links-and-urls-text"
+    >
+      <p>
+        To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+      </p>
+      <p>
+        Copy this example to add a link:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="text-links-markdown-description"
+      >
+        An example of link markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="text-links-markdown-description"
+        >
+          [Read more](https://www.nhs.uk/)
+        </code>
+      </pre>
+      <p>
+        If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+      </p>
+      <p>
+        Copy this example to add a URL:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="full-urls-markdown-description"
+      >
+        An example of URL markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="full-urls-markdown-description"
+        >
+          [https://www.nhs.uk/](https://www.nhs.uk/)
+        </code>
+      </pre>
+    </div>
+  </details>
+</div>
+`;
+
+exports[`MessageFormatting component matches snapshot for LETTER 1`] = `
+<div>
+  <h2
+    class="nhsuk-heading-m nhsuk-u-margin-top-4"
+    data-testid="message-formatting-header"
+  >
+    Message formatting
+  </h2>
+</div>
+`;
+
+exports[`MessageFormatting component matches snapshot for NHS_APP 1`] = `
+<div>
+  <h2
+    class="nhsuk-heading-m nhsuk-u-margin-top-4"
+    data-testid="message-formatting-header"
+  >
+    Message formatting
+  </h2>
+  <details
+    class="nhsuk-details"
+    data-testid="line-breaks-and-paragraphs-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="line-breaks-and-paragraphs-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Line breaks and paragraphs
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="line-breaks-and-paragraphs-text"
+    >
+      <p>
+        To add a line break, use 2 spaces at the end of your text.
+      </p>
+      <p>
+        Copy this example to add line breaks:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="linebreaks-markdown-description"
+      >
+        An example of line break markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="linebreaks-markdown-description"
+        >
+          line 1  
+line 2  
+line 3  
+        </code>
+      </pre>
+      <p>
+        To add a paragraph, use a blank line between each paragraph.
+      </p>
+      <p>
+        Copy this example to add paragraphs:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="paragraphs-markdown-description"
+      >
+        An example of paragraph markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="paragraphs-markdown-description"
+        >
+          line 1
+
+line 2
+
+line 3
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="headings-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="headings-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Headings
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="headings-text"
+    >
+      <p>
+        Use one hash symbol followed by a space for a heading.
+      </p>
+      <p>
+        Copy this example to add a heading:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="headings-markdown-description"
+      >
+        An example of heading markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="headings-markdown-description"
+        >
+          # This is a heading
+        </code>
+      </pre>
+      <p>
+        To add a subheading, use 2 hash symbols:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="subheadings-markdown-description"
+      >
+        An example of subheading markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="subheadings-markdown-description"
+        >
+          ## This is a subheading
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="bullet-points-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="bullet-points-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Bullet points
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="bullet-points-text"
+    >
+      <p>
+        Put each item on a separate line with an asterisk and a space in front of each one.
+      </p>
+      <p>
+        Leave an empty line before the first bullet point and after the last bullet point.
+      </p>
+      <p>
+        Copy this example to add bullet points:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="bullet-points-markdown-description"
+      >
+        An example of bullet point markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="bullet-points-markdown-description"
+        >
+          * bullet 1
+* bullet 2
+* bullet 3
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="numbered-lists-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="numbered-lists-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Numbered lists
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="numbered-lists-text"
+    >
+      <p>
+        Put each item on a separate line with the number, full stop and a space in front of each one.
+      </p>
+      <p>
+        Leave an empty line before the first item and after the last item.
+      </p>
+      <p>
+        Copy this example to add a numbered list:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="numbered-list-markdown-description"
+      >
+        An example of numbered list markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="numbered-list-markdown-description"
+        >
+          1. first item
+2. second item
+3. third item
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="bold-text-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="bold-text-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Bold text
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="bold-text-text"
+    >
+      <p>
+        Use two asterisk symbols on either side of the words you want to be bold.
+      </p>
+      <p>
+        Copy this example to add bold text:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="bold-text-markdown-description"
+      >
+        An example of bold text markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="bold-text-markdown-description"
+        >
+          **this is bold text**
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
+    data-testid="links-and-urls-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="links-and-urls-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Links and URLs
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="links-and-urls-text"
+    >
+      <p>
+        To convert text into a link, use square brackets around the link text and round brackets around the full URL. Make sure there are no spaces between the brackets or the link will not work.
+      </p>
+      <p>
+        Copy this example to add a link:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="text-links-markdown-description"
+      >
+        An example of link markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="text-links-markdown-description"
+        >
+          [Read more](https://www.nhs.uk/)
+        </code>
+      </pre>
+      <p>
+        If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+      </p>
+      <p>
+        Copy this example to add a URL:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="full-urls-markdown-description"
+      >
+        An example of URL markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="full-urls-markdown-description"
+        >
+          [https://www.nhs.uk/](https://www.nhs.uk/)
+        </code>
+      </pre>
+    </div>
+  </details>
+</div>
+`;
+
+exports[`MessageFormatting component matches snapshot for SMS 1`] = `
+<div>
+  <h2
+    class="nhsuk-heading-m nhsuk-u-margin-top-4"
+    data-testid="message-formatting-header"
+  >
+    Message formatting
+  </h2>
+  <details
+    class="nhsuk-details"
+    data-testid="links-and-urls-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="links-and-urls-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Links and URLs
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="links-and-urls-text"
+    >
+      <p>
+        Write the URL in full, starting with https://
+      </p>
+      <p>
+        For example:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="links-urls-markdown-description"
+      >
+        An example of URL markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="links-urls-markdown-description"
+        >
+          https://www.nhs.uk/example
+        </code>
+      </pre>
+    </div>
+  </details>
+</div>
+`;
