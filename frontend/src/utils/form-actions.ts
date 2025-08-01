@@ -32,7 +32,7 @@ export async function createTemplate(
   return data;
 }
 
-export async function createLetterTemplate(
+export async function uploadLetterTemplate(
   template: CreateUpdateTemplate,
   pdf: File,
   csv: File
@@ -43,7 +43,7 @@ export async function createLetterTemplate(
     throw new Error('Failed to get access token');
   }
 
-  const { data, error } = await templateApiClient.createLetterTemplate(
+  const { data, error } = await templateApiClient.uploadLetterTemplate(
     template,
     accessToken,
     pdf,

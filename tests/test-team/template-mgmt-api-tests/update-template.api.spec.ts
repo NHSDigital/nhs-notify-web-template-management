@@ -183,7 +183,7 @@ test.describe('POST /v1/template/:templateId', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },

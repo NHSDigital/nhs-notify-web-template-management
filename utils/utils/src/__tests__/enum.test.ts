@@ -19,6 +19,7 @@ import {
   templateDisplayDeleteAction,
   isRightToLeft,
   languageMapping,
+  templateCreationPages,
 } from '../enum';
 import { TEMPLATE_STATUS_LIST } from 'nhs-notify-backend-client';
 
@@ -154,6 +155,17 @@ describe('templateTypeToUrlTextMappings', () => {
 
   test('EMAIL', () => {
     expect(templateTypeToUrlTextMappings('EMAIL')).toEqual('email');
+  });
+});
+
+describe('templateCreationPages', () => {
+  test.each([
+    ['NHS_APP' as const, '/create-nhs-app-template'],
+    ['SMS' as const, '/create-text-message-template'],
+    ['EMAIL' as const, '/create-email-template'],
+    ['LETTER' as const, '/upload-letter-template'],
+  ])('$templateType', (templateType: TemplateType, slug) => {
+    expect(templateCreationPages(templateType)).toEqual(slug);
   });
 });
 

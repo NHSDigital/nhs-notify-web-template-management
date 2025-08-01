@@ -1,6 +1,6 @@
 import { createHandler } from './api/process-proof';
-import { createLetterFileRepositoryAndTemplateRepositoryContainer } from './container';
+import { uploadLetterFileRepositoryAndTemplateRepositoryContainer } from './container';
 
 export const handler = createHandler(
-  createLetterFileRepositoryAndTemplateRepositoryContainer()
+  uploadLetterFileRepositoryAndTemplateRepositoryContainer()
 );

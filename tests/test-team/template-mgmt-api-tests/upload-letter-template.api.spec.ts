@@ -30,7 +30,7 @@ test.describe('POST /v1/letter-template', () => {
 
   test('returns 201 if input is valid', async ({ request }) => {
     const { templateData, multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -123,7 +123,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { templateData, multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -200,7 +200,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { templateData, multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -335,7 +335,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
           templateStatus: 'SUBMITTED',
@@ -383,7 +383,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
           name: undefined,
@@ -432,7 +432,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -484,7 +484,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -527,7 +527,7 @@ test.describe('POST /v1/letter-template', () => {
 
   test('returns 400 if PDF part has no filename', async ({ request }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },
@@ -571,7 +571,7 @@ test.describe('POST /v1/letter-template', () => {
     request,
   }) => {
     const { multipart, contentType } =
-      TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+      TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
         {
           templateType: 'LETTER',
         },

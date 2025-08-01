@@ -6,7 +6,7 @@ const {
   copyTemplatePage,
   createEmailTemplateErrorPage,
   createEmailTemplatePage,
-  createLetterTemplatePage,
+  uploadLetterTemplatePage,
   createNHSAppTemplateErrorPage,
   createNHSAppTemplatePage,
   createTextMessageTemplateErrorPage,
@@ -99,7 +99,7 @@ const email = [
 ];
 
 const letters = [
-  createLetterTemplatePage(chooseTemplateUrl),
+  uploadLetterTemplatePage(chooseTemplateUrl),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_UPLOAD')),
   previewLetterTemplatePageWithError(previewLetterTemplateUrl('VIRUS_SCAN_FAILED')),
   previewLetterTemplatePage(previewLetterTemplateUrl('PENDING_VALIDATION')),
@@ -123,7 +123,7 @@ const errors = [
     name: 'invalid-template',
   },
   {
-    url: `${baseUrl}/create-letter-template/client-id-and-campaign-id-required`,
+    url: `${baseUrl}/upload-letter-template/client-id-and-campaign-id-required`,
     actions: [...signInPageActions, 'wait for h1 to be visible'],
     name: 'client-campaign-id-required',
   },

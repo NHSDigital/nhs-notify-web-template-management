@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation';
 import { TEMPLATE_TYPE_LIST } from 'nhs-notify-backend-client';
 import {
   FormState,
-  templateTypeToUrlTextMappings,
+  templateCreationPages,
 } from 'nhs-notify-web-template-management-utils';
 import { z } from 'zod';
 import content from '@content/content';
@@ -28,7 +28,7 @@ export async function chooseTemplateAction(
   }
 
   redirect(
-    `/create-${templateTypeToUrlTextMappings(parsedForm.data.templateType)}-template`,
+    templateCreationPages(parsedForm.data.templateType),
     RedirectType.push
   );
 }

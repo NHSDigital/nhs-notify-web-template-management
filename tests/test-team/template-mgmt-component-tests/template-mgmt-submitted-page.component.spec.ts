@@ -49,7 +49,7 @@ function createTemplates(user: TestUser) {
       name: 'test-template-nhs-app',
       message: 'test example content',
     }),
-    letter: TemplateFactory.createLetterTemplate(
+    letter: TemplateFactory.uploadLetterTemplate(
       'valid-submitted-letter-template',
       user,
       'test-template-letter',

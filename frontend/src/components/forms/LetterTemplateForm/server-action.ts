@@ -1,19 +1,19 @@
 'use server';
 
-import { createLetterTemplate } from '@utils/form-actions';
+import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import {
-  CreateLetterTemplate,
+  UploadLetterTemplate,
   LetterTemplate,
   TemplateFormState,
 } from 'nhs-notify-web-template-management-utils';
-import { $CreateLetterTemplateForm } from './form-schema';
+import { $UploadLetterTemplateForm } from './form-schema';
 
 export async function processFormActions(
-  formState: TemplateFormState<CreateLetterTemplate | LetterTemplate>,
+  formState: TemplateFormState<UploadLetterTemplate | LetterTemplate>,
   formData: FormData
-): Promise<TemplateFormState<CreateLetterTemplate>> {
-  const parsedForm = $CreateLetterTemplateForm.safeParse(
+): Promise<TemplateFormState<UploadLetterTemplate>> {
+  const parsedForm = $UploadLetterTemplateForm.safeParse(
     Object.fromEntries(formData.entries())
   );
 
@@ -34,7 +34,7 @@ export async function processFormActions(
     letterTemplateCsv,
   } = parsedForm.data;
 
-  const updatedTemplate: CreateLetterTemplate = {
+  const updatedTemplate: UploadLetterTemplate = {
     ...formState,
     name: letterTemplateName,
     letterType: letterTemplateLetterType,
@@ -45,7 +45,7 @@ export async function processFormActions(
     throw new Error('Update is not available for letter templates');
   }
 
-  const savedTemplate = await createLetterTemplate(
+  const savedTemplate = await uploadLetterTemplate(
     updatedTemplate,
     letterTemplatePdf,
     letterTemplateCsv

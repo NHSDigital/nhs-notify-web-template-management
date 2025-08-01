@@ -10,7 +10,7 @@ import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
   return {
-    valid: TemplateFactory.createLetterTemplate(
+    valid: TemplateFactory.uploadLetterTemplate(
       'AC85D9AB-9B56-4C34-8CD7-8B713310A37A',
       user,
       'request-proof'

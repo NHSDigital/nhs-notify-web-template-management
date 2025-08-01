@@ -102,7 +102,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   test.describe('LETTER templates', () => {
     test('returns 200 and the updated template data', async ({ request }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
@@ -217,7 +217,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
@@ -312,7 +312,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
@@ -396,7 +396,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       request,
     }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },

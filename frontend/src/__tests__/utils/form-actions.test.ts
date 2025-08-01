@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import {
-  CreateLetterTemplate,
+  UploadLetterTemplate,
   CreateUpdateNHSAppTemplate,
   NHSAppTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -11,7 +11,7 @@ import {
   saveTemplate,
   getTemplate,
   getTemplates,
-  createLetterTemplate,
+  uploadLetterTemplate,
   setTemplateToDeleted,
   setTemplateToSubmitted,
   requestTemplateProof,
@@ -110,7 +110,7 @@ describe('form-actions', () => {
     );
   });
 
-  test('createLetterTemplate', async () => {
+  test('uploadLetterTemplate', async () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
@@ -134,11 +134,11 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDto;
 
-    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const uploadLetterTemplateInput: UploadLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -152,14 +152,14 @@ describe('form-actions', () => {
       type: 'text/csv',
     });
 
-    const response = await createLetterTemplate(
-      createLetterTemplateInput,
+    const response = await uploadLetterTemplate(
+      uploadLetterTemplateInput,
       pdf,
       csv
     );
 
-    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+    expect(mockedTemplateClient.uploadLetterTemplate).toHaveBeenCalledWith(
+      uploadLetterTemplateInput,
       'token',
       pdf,
       csv
@@ -168,7 +168,7 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('createLetterTemplate accepts empty csv', async () => {
+  test('uploadLetterTemplate accepts empty csv', async () => {
     const responseData = {
       templateType: 'LETTER',
       id: 'new-template-id',
@@ -187,11 +187,11 @@ describe('form-actions', () => {
       updatedAt: '2025-01-13T10:19:25.579Z',
     } satisfies TemplateDto;
 
-    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+    mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
       data: responseData,
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const uploadLetterTemplateInput: UploadLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -205,14 +205,14 @@ describe('form-actions', () => {
       type: 'text/csv',
     });
 
-    const response = await createLetterTemplate(
-      createLetterTemplateInput,
+    const response = await uploadLetterTemplate(
+      uploadLetterTemplateInput,
       pdf,
       csv
     );
 
-    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+    expect(mockedTemplateClient.uploadLetterTemplate).toHaveBeenCalledWith(
+      uploadLetterTemplateInput,
       'token',
       pdf,
       undefined
@@ -221,8 +221,8 @@ describe('form-actions', () => {
     expect(response).toEqual(responseData);
   });
 
-  test('createLetterTemplate - should throw error when saving unexpectedly fails', async () => {
-    mockedTemplateClient.createLetterTemplate.mockResolvedValueOnce({
+  test('uploadLetterTemplate - should throw error when saving unexpectedly fails', async () => {
+    mockedTemplateClient.uploadLetterTemplate.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 400,
@@ -231,7 +231,7 @@ describe('form-actions', () => {
       },
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const uploadLetterTemplateInput: UploadLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -246,25 +246,25 @@ describe('form-actions', () => {
     });
 
     await expect(
-      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+      uploadLetterTemplate(uploadLetterTemplateInput, pdf, csv)
     ).rejects.toThrow('Failed to create new letter template');
 
-    expect(mockedTemplateClient.createLetterTemplate).toHaveBeenCalledWith(
-      createLetterTemplateInput,
+    expect(mockedTemplateClient.uploadLetterTemplate).toHaveBeenCalledWith(
+      uploadLetterTemplateInput,
       'token',
       pdf,
       csv
     );
   });
 
-  test('createLetterTemplate - should throw error when no token', async () => {
+  test('uploadLetterTemplate - should throw error when no token', async () => {
     authIdTokenServerMock.mockReset();
     authIdTokenServerMock.mockResolvedValueOnce({
       accessToken: undefined,
       clientId: undefined,
     });
 
-    const createLetterTemplateInput: CreateLetterTemplate = {
+    const uploadLetterTemplateInput: UploadLetterTemplate = {
       templateType: 'LETTER',
       name: 'name',
       letterType: 'x0',
@@ -279,7 +279,7 @@ describe('form-actions', () => {
     });
 
     await expect(
-      createLetterTemplate(createLetterTemplateInput, pdf, csv)
+      uploadLetterTemplate(uploadLetterTemplateInput, pdf, csv)
     ).rejects.toThrow('Failed to get access token');
   });
 

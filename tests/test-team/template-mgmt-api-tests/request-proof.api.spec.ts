@@ -65,7 +65,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const userProofingEnabledtemplateId = randomUUID();
 
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.createLetterTemplate(
+      TemplateFactory.uploadLetterTemplate(
         userProofingEnabledtemplateId,
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -97,7 +97,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.createLetterTemplate(
+      ...TemplateFactory.uploadLetterTemplate(
         templateId,
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -158,7 +158,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.createLetterTemplate(
+      ...TemplateFactory.uploadLetterTemplate(
         templateId,
         userProofingEnabled,
         'userProofingEnabledtemplate',
@@ -235,7 +235,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     const currentVersion = randomUUID();
 
     const template = {
-      ...TemplateFactory.createLetterTemplate(
+      ...TemplateFactory.uploadLetterTemplate(
         templateId,
         userWithoutClient,
         'userWithoutClientTemplate',

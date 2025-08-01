@@ -42,7 +42,7 @@ export type CreateUpdateSMSTemplate = Extract<
   { templateType: 'SMS' }
 >;
 
-export type CreateLetterTemplate = Extract<
+export type UploadLetterTemplate = Extract<
   CreateUpdateTemplate,
   { templateType: 'LETTER' }
 >;

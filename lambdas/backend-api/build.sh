@@ -15,7 +15,7 @@ npx esbuild \
     --outdir=dist \
     --external:pdfjs-dist \
     src/templates/copy-scanned-object-to-internal.ts \
-    src/templates/create-letter.ts \
+    src/templates/upload-letter.ts \
     src/templates/create.ts \
     src/templates/delete-failed-scanned-object.ts \
     src/templates/delete.ts \

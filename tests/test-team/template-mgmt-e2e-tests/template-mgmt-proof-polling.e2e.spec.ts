@@ -31,7 +31,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.createLetterTemplate(
+      TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
         templateId,
@@ -148,7 +148,7 @@ test.describe('Letter Proof Polling', () => {
 
     // add entries to database
     await templateStorageHelper.seedTemplateData([
-      TemplateFactory.createLetterTemplate(
+      TemplateFactory.uploadLetterTemplate(
         templateId,
         user,
         templateId,

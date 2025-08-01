@@ -1,11 +1,21 @@
-import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { Metadata } from 'next';
+import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { LetterTemplateForm } from '@forms/LetterTemplateForm/LetterTemplateForm';
 import { getSessionServer } from '@utils/amplify-utils';
 import { redirect, RedirectType } from 'next/navigation';
 import { fetchClient } from '@utils/server-features';
+import content from '@content/content';
 
-const CreateLetterTemplatePage = async () => {
-  const initialState: CreateLetterTemplate = {
+const { pageTitle } = content.components.templateFormLetter;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: pageTitle,
+  };
+}
+
+const UploadLetterTemplatePage = async () => {
+  const initialState: UploadLetterTemplate = {
     templateType: 'LETTER',
     name: '',
     letterType: 'x0',
@@ -17,7 +27,7 @@ const CreateLetterTemplatePage = async () => {
 
   if (!accessToken || !clientId) {
     return redirect(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   }
@@ -28,7 +38,7 @@ const CreateLetterTemplatePage = async () => {
 
   if (!campaignId) {
     return redirect(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   }
@@ -36,4 +46,4 @@ const CreateLetterTemplatePage = async () => {
   return <LetterTemplateForm initialState={initialState} />;
 };
 
-export default CreateLetterTemplatePage;
+export default UploadLetterTemplatePage;

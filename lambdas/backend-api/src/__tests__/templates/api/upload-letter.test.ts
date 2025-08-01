@@ -1,4 +1,4 @@
-import { createHandler } from '@backend-api/templates/api/create-letter';
+import { createHandler } from '@backend-api/templates/api/upload-letter';
 import { mock } from 'jest-mock-extended';
 import { CreateUpdateTemplate, TemplateDto } from 'nhs-notify-backend-client';
 import {
@@ -24,7 +24,7 @@ const userId = '8B892046';
 const clientId = 'A6C062FBAEBC';
 const now = '2025-03-05T17:42:47.978Z';
 
-describe('create-letter', () => {
+describe('upload-letter', () => {
   beforeEach(jest.resetAllMocks);
 
   const initialTemplate: CreateUpdateTemplate = {
@@ -99,7 +99,7 @@ describe('create-letter', () => {
       },
     };
 
-    mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
+    mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
       data: created,
     });
 
@@ -112,7 +112,7 @@ describe('create-letter', () => {
       template: created,
     });
 
-    expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
+    expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
@@ -168,7 +168,7 @@ describe('create-letter', () => {
       },
     };
 
-    mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
+    mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
       data: created,
     });
 
@@ -181,7 +181,7 @@ describe('create-letter', () => {
       template: created,
     });
 
-    expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
+    expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),
@@ -236,7 +236,7 @@ describe('create-letter', () => {
       },
     };
 
-    mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
+    mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
       data: created,
     });
 
@@ -249,7 +249,7 @@ describe('create-letter', () => {
       template: created,
     });
 
-    expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
+    expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { userId, clientId: undefined },
       new File([pdf], pdfFilename, { type: pdfType }),
@@ -274,7 +274,7 @@ describe('create-letter', () => {
       }),
     });
 
-    expect(mocks.templateClient.createLetterTemplate).not.toHaveBeenCalled();
+    expect(mocks.templateClient.uploadLetterTemplate).not.toHaveBeenCalled();
   });
 
   test('returns 400 - Invalid request when no body or Content-Type header', async () => {
@@ -413,7 +413,7 @@ describe('create-letter', () => {
       requestContext: { authorizer: { user: userId, clientId } },
     });
 
-    mocks.templateClient.createLetterTemplate.mockResolvedValueOnce({
+    mocks.templateClient.uploadLetterTemplate.mockResolvedValueOnce({
       error: {
         errorMeta: {
           code: 500,
@@ -432,7 +432,7 @@ describe('create-letter', () => {
       }),
     });
 
-    expect(mocks.templateClient.createLetterTemplate).toHaveBeenCalledWith(
+    expect(mocks.templateClient.uploadLetterTemplate).toHaveBeenCalledWith(
       initialTemplate,
       { userId, clientId },
       new File([pdf], pdfFilename, { type: pdfType }),

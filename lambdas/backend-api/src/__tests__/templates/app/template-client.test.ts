@@ -338,7 +338,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('createLetterTemplate', () => {
+  describe('uploadLetterTemplate', () => {
     test('should return created template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -421,7 +421,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         pdf,
@@ -520,7 +520,7 @@ describe('templateClient', () => {
         data: finalTemplate,
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         { userId: user.userId, clientId: undefined },
         pdf
@@ -547,7 +547,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -578,7 +578,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -622,7 +622,7 @@ describe('templateClient', () => {
           letterType: 'x0',
         };
 
-        const result = await templateClient.createLetterTemplate(
+        const result = await templateClient.uploadLetterTemplate(
           data,
           user,
           pdf
@@ -672,7 +672,7 @@ describe('templateClient', () => {
           type: 'application/pdf',
         });
 
-        const result = await templateClient.createLetterTemplate(
+        const result = await templateClient.uploadLetterTemplate(
           data,
           user,
           pdf,
@@ -706,7 +706,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         new File(['pdf'], 'template.pdf', {
@@ -768,7 +768,7 @@ describe('templateClient', () => {
         templateRepoFailure
       );
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(templateRepoFailure);
 
@@ -806,7 +806,7 @@ describe('templateClient', () => {
         data: {} as unknown as DatabaseTemplate,
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: {
@@ -894,7 +894,7 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce(uploadErr);
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(uploadErr);
 
@@ -983,7 +983,7 @@ describe('templateClient', () => {
 
       mocks.templateRepository.updateStatus.mockResolvedValueOnce(updateErr);
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(updateErr);
 
@@ -1089,7 +1089,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         pdf,

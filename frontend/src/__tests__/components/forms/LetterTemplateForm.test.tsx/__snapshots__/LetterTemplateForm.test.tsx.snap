@@ -75,7 +75,7 @@ exports[`Client-side validation triggers 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -464,7 +464,7 @@ exports[`Client-side validation triggers 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload
@@ -519,7 +519,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -889,7 +889,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload
@@ -989,7 +989,7 @@ exports[`renders page one error 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -1371,7 +1371,7 @@ exports[`renders page one error 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload
@@ -1489,7 +1489,7 @@ exports[`renders page with multiple errors 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -1889,7 +1889,7 @@ exports[`renders page with multiple errors 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload
@@ -1944,7 +1944,7 @@ exports[`renders page with preloaded field values 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -2340,7 +2340,7 @@ exports[`renders page with preloaded field values 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload
@@ -2395,7 +2395,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             name="form-id"
             readonly=""
             type="hidden"
-            value="create-letter-template"
+            value="upload-letter-template"
           />
           <input
             name="csrf_token"
@@ -2791,7 +2791,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             aria-disabled="false"
             class="nhsuk-button"
             data-testid="submit-button"
-            id="create-letter-template-submit-button"
+            id="upload-letter-template-submit-button"
             type="submit"
           >
             Save and upload

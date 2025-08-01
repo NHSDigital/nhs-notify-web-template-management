@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import {
   BaseTemplate,
-  CreateLetterProperties,
+  UploadLetterProperties,
   CreateUpdateTemplate,
   EmailProperties,
   VersionedFileDetails,
@@ -28,7 +28,7 @@ import {
 } from './union-lists';
 
 export type ValidatedCreateUpdateTemplate = CreateUpdateTemplate &
-  (EmailProperties | NhsAppProperties | SmsProperties | CreateLetterProperties);
+  (EmailProperties | NhsAppProperties | SmsProperties | UploadLetterProperties);
 
 export type ValidatedTemplateDto = TemplateDto &
   (EmailProperties | NhsAppProperties | SmsProperties | LetterProperties);
@@ -87,7 +87,7 @@ export const $SmsProperties = schemaFor<SmsProperties>()(
   })
 );
 
-export const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
+export const $UploadLetterProperties = schemaFor<UploadLetterProperties>()(
   z.object({
     templateType: z.literal('LETTER'),
     letterType: z.enum(LETTER_TYPE_LIST),
@@ -96,9 +96,8 @@ export const $CreateLetterProperties = schemaFor<CreateLetterProperties>()(
 );
 
 export const $LetterProperties = schemaFor<LetterProperties>()(
-  $CreateLetterProperties.extend({
+  $UploadLetterProperties.extend({
     files: $LetterFiles,
-    /* eslint-disable sonarjs/todo-tag */
     // TODO: CCM-10432 - remove, not needed after client migration
     owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
@@ -131,7 +130,7 @@ export const $CreateUpdateTemplate = schemaFor<
     $BaseTemplateSchema.merge($NhsAppProperties),
     $BaseTemplateSchema.merge($EmailProperties),
     $BaseTemplateSchema.merge($SmsProperties),
-    $BaseTemplateSchema.merge($CreateLetterProperties),
+    $BaseTemplateSchema.merge($UploadLetterProperties),
   ])
 );
 

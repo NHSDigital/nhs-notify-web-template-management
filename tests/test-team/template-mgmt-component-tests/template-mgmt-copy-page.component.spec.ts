@@ -38,7 +38,7 @@ function createTemplates(user: TestUser) {
       name: 'app-template-copy-page-name',
       message: 'app-template-copy-page-message',
     },
-    letter: TemplateFactory.createLetterTemplate(
+    letter: TemplateFactory.uploadLetterTemplate(
       'letter-template-copy-page',
       user,
       'letter-template-copy-page-name'
