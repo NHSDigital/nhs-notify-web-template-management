@@ -8,6 +8,11 @@ describe('MarkdownContent', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it('renders nothing if content is empty string', () => {
+    const { container } = render(<MarkdownContent content='' />);
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('renders content if content is a string', () => {
     render(
       <MarkdownContent content='This is content with a [link](www.link.com).' />
@@ -17,6 +22,14 @@ describe('MarkdownContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveAttribute('href', 'www.link.com');
     expect(screen.getByRole('link')).toHaveTextContent('link');
+  });
+
+  it('passes ID through if content is a string', () => {
+    render(<MarkdownContent content='This is content' id='content-id' />);
+    expect(screen.getByText('This is content')).toHaveAttribute(
+      'id',
+      'content-id'
+    );
   });
 
   it('renders multiple segments in correct order', () => {
@@ -30,6 +43,21 @@ describe('MarkdownContent', () => {
       'https://example.com'
     );
     expect(screen.getByRole('link')).toHaveTextContent('link');
+  });
+
+  it('passes indexed IDs to each item if content is an array', () => {
+    render(
+      <MarkdownContent
+        content={['First paragraph', 'Second paragraph']}
+        id='content-id'
+      />
+    );
+
+    const first = screen.getByText('First paragraph');
+    expect(first).toHaveAttribute('id', 'content-id-0');
+
+    const second = screen.getByText('Second paragraph');
+    expect(second).toHaveAttribute('id', 'content-id-1');
   });
 
   it('adds correct attributes to links', () => {

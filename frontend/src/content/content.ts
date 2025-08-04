@@ -80,7 +80,7 @@ const personalisation: {
       code: 'Hello ((firstName)), your NHS number is ((nhsNumber))',
       aria: {
         text: 'An example of personalised message content:',
-        id: 'personalisation-markdown-description'
+        id: 'personalisation-markdown-description',
       },
     },
   ],
@@ -132,7 +132,7 @@ const personalisation: {
           code: '((GP_surgery))',
           aria: {
             text: 'An example of personalised message content:',
-            id: 'custom-personalisation-markdown-description'
+            id: 'custom-personalisation-markdown-description',
           },
         },
         {
@@ -229,6 +229,28 @@ const messageFormatting: {
       ],
     },
     {
+      title: 'Bold text',
+      showFor: ['NHS_APP'],
+      content: [
+        {
+          type: 'text',
+          text: 'Use two asterisk symbols on either side of the words you want to be bold.',
+        },
+        {
+          type: 'text',
+          text: 'Copy this example to add bold text:',
+        },
+        {
+          type: 'code',
+          code: '**this is bold text**',
+          aria: {
+            text: 'An example of bold text markdown',
+            id: 'bold-text-markdown-description',
+          },
+        },
+      ],
+    },
+    {
       title: 'Bullet points',
       showFor: ['NHS_APP', 'EMAIL'],
       content: [
@@ -276,28 +298,6 @@ const messageFormatting: {
           aria: {
             text: 'An example of numbered list markdown',
             id: 'numbered-list-markdown-description',
-          },
-        },
-      ],
-    },
-    {
-      title: 'Bold text',
-      showFor: ['NHS_APP', 'EMAIL'],
-      content: [
-        {
-          type: 'text',
-          text: 'Use two asterisk symbols on either side of the words you want to be bold.',
-        },
-        {
-          type: 'text',
-          text: 'Copy this example to add bold text:',
-        },
-        {
-          type: 'code',
-          code: '**this is bold text**',
-          aria: {
-            text: 'An example of bold text markdown',
-            id: 'bold-text-markdown-description',
           },
         },
       ],
@@ -762,7 +762,7 @@ const templateFormNhsApp = {
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
-  characterCountText: ' of 5000 characters',
+  characterCountText: '{{characters}} of 5000 characters',
   buttonText: 'Save and preview',
   backLinkText: 'Back to choose a template type',
   form: {
@@ -874,6 +874,19 @@ const templateFormEmail = {
   },
 };
 
+const smsTemplateFooter: ContentBlock[] = [
+  {
+    type: 'text',
+    testId: 'character-message-count',
+    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`
+  },
+  {
+    type: 'text',
+    testId: 'sms-pricing-info',
+    text: '[Learn more about character counts and text messaging pricing (opens in a new tab)](/pricing/text-messages)',
+  }
+]
+
 const templateFormSms = {
   pageTitle: generatePageTitle('Create text message template'),
   editPageTitle: generatePageTitle('Edit text message template'),
@@ -882,6 +895,7 @@ const templateFormSms = {
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
+  templateMessageFooterText: smsTemplateFooter,
   smsCountText1: 'This template will be sent as ',
   smsCountText2: ` text messages. If you're using personalisation fields, it could send as more.`,
   smsPricingLink: '/pricing/text-messages',

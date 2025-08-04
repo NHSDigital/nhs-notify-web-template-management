@@ -38,7 +38,9 @@ exports[`Client-side validation triggers 1`] = `
             type="hidden"
             value="no_token"
           />
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
@@ -107,7 +109,9 @@ exports[`Client-side validation triggers 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
@@ -129,25 +133,29 @@ exports[`Client-side validation triggers 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="emailTemplateMessage"
-              id="emailTemplateMessage--label"
+            <div
+              class="nhsuk-form-group"
             >
-              Message
-            </label>
-            <textarea
-              autocomplete="off"
-              class="nhsuk-textarea"
-              data-testid="emailTemplateMessage-input"
-              id="emailTemplateMessage"
-              name="emailTemplateMessage"
-              rows="10"
-            >
-              template-message
-            </textarea>
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="emailTemplateMessage"
+                id="emailTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                data-testid="emailTemplateMessage-input"
+                id="emailTemplateMessage"
+                name="emailTemplateMessage"
+                rows="12"
+              >
+                template-message
+              </textarea>
+            </div>
           </div>
           <button
             aria-disabled="false"
@@ -528,47 +536,6 @@ line 3
                 1. first item
 2. second item
 3. third item
-              </code>
-            </pre>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-          data-testid="bold-text-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-            data-testid="bold-text-summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
-            >
-              Bold text
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-            data-testid="bold-text-text"
-          >
-            <p>
-              Use two asterisk symbols on either side of the words you want to be bold.
-            </p>
-            <p>
-              Copy this example to add bold text:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="bold-text-markdown-description"
-            >
-              An example of bold text markdown
-            </span>
-            <pre
-              class="nhsuk-code-block"
-            >
-              <code
-                aria-describedby="bold-text-markdown-description"
-              >
-                **this is bold text**
               </code>
             </pre>
           </div>
@@ -824,7 +791,7 @@ exports[`renders page one error 1`] = `
             value="no_token"
           />
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8 nhsuk-form-group--error"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -906,7 +873,9 @@ exports[`renders page one error 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
@@ -928,23 +897,27 @@ exports[`renders page one error 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="emailTemplateMessage"
-              id="emailTemplateMessage--label"
+            <div
+              class="nhsuk-form-group"
             >
-              Message
-            </label>
-            <textarea
-              autocomplete="off"
-              class="nhsuk-textarea"
-              data-testid="emailTemplateMessage-input"
-              id="emailTemplateMessage"
-              name="emailTemplateMessage"
-              rows="10"
-            />
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="emailTemplateMessage"
+                id="emailTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                data-testid="emailTemplateMessage-input"
+                id="emailTemplateMessage"
+                name="emailTemplateMessage"
+                rows="12"
+              />
+            </div>
           </div>
           <button
             aria-disabled="false"
@@ -1325,47 +1298,6 @@ line 3
                 1. first item
 2. second item
 3. third item
-              </code>
-            </pre>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-          data-testid="bold-text-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-            data-testid="bold-text-summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
-            >
-              Bold text
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-            data-testid="bold-text-text"
-          >
-            <p>
-              Use two asterisk symbols on either side of the words you want to be bold.
-            </p>
-            <p>
-              Copy this example to add bold text:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="bold-text-markdown-description"
-            >
-              An example of bold text markdown
-            </span>
-            <pre
-              class="nhsuk-code-block"
-            >
-              <code
-                aria-describedby="bold-text-markdown-description"
-              >
-                **this is bold text**
               </code>
             </pre>
           </div>
@@ -1625,7 +1557,7 @@ exports[`renders page with multiple errors 1`] = `
             value="no_token"
           />
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8 nhsuk-form-group--error"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -1708,7 +1640,7 @@ exports[`renders page with multiple errors 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group--error"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8 nhsuk-form-group--error"
           >
             <label
               class="nhsuk-label nhsuk-label--s"
@@ -1743,35 +1675,39 @@ exports[`renders page with multiple errors 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group nhsuk-form-group--error"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="emailTemplateMessage"
-              id="emailTemplateMessage--label"
+            <div
+              class="nhsuk-form-group nhsuk-form-group--error"
             >
-              Message
-            </label>
-            <span
-              class="nhsuk-error-message"
-              id="emailTemplateMessage--error-message"
-            >
-              <span
-                class="nhsuk-u-visually-hidden"
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="emailTemplateMessage"
+                id="emailTemplateMessage--label"
               >
-                Error: 
+                Message
+              </label>
+              <span
+                class="nhsuk-error-message"
+                id="emailTemplateMessage--error-message"
+              >
+                <span
+                  class="nhsuk-u-visually-hidden"
+                >
+                  Error: 
+                </span>
+                Template message error
               </span>
-              Template message error
-            </span>
-            <textarea
-              aria-describedby="emailTemplateMessage--error-message"
-              autocomplete="off"
-              class="nhsuk-textarea nhsuk-textarea--error"
-              data-testid="emailTemplateMessage-input"
-              id="emailTemplateMessage"
-              name="emailTemplateMessage"
-              rows="10"
-            />
+              <textarea
+                aria-describedby="emailTemplateMessage--error-message"
+                autocomplete="off"
+                class="nhsuk-textarea nhsuk-textarea--error"
+                data-testid="emailTemplateMessage-input"
+                id="emailTemplateMessage"
+                name="emailTemplateMessage"
+                rows="12"
+              />
+            </div>
           </div>
           <button
             aria-disabled="false"
@@ -2152,47 +2088,6 @@ line 3
                 1. first item
 2. second item
 3. third item
-              </code>
-            </pre>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-          data-testid="bold-text-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-            data-testid="bold-text-summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
-            >
-              Bold text
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-            data-testid="bold-text-text"
-          >
-            <p>
-              Use two asterisk symbols on either side of the words you want to be bold.
-            </p>
-            <p>
-              Copy this example to add bold text:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="bold-text-markdown-description"
-            >
-              An example of bold text markdown
-            </span>
-            <pre
-              class="nhsuk-code-block"
-            >
-              <code
-                aria-describedby="bold-text-markdown-description"
-              >
-                **this is bold text**
               </code>
             </pre>
           </div>
@@ -2412,7 +2307,9 @@ exports[`renders page with preloaded field values 1`] = `
             type="hidden"
             value="no_token"
           />
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
@@ -2481,7 +2378,9 @@ exports[`renders page with preloaded field values 1`] = `
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
@@ -2503,25 +2402,29 @@ exports[`renders page with preloaded field values 1`] = `
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="emailTemplateMessage"
-              id="emailTemplateMessage--label"
+            <div
+              class="nhsuk-form-group"
             >
-              Message
-            </label>
-            <textarea
-              autocomplete="off"
-              class="nhsuk-textarea"
-              data-testid="emailTemplateMessage-input"
-              id="emailTemplateMessage"
-              name="emailTemplateMessage"
-              rows="10"
-            >
-              template-message
-            </textarea>
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="emailTemplateMessage"
+                id="emailTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                data-testid="emailTemplateMessage-input"
+                id="emailTemplateMessage"
+                name="emailTemplateMessage"
+                rows="12"
+              >
+                template-message
+              </textarea>
+            </div>
           </div>
           <button
             aria-disabled="false"
@@ -2902,47 +2805,6 @@ line 3
                 1. first item
 2. second item
 3. third item
-              </code>
-            </pre>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-          data-testid="bold-text-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-            data-testid="bold-text-summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
-            >
-              Bold text
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-            data-testid="bold-text-text"
-          >
-            <p>
-              Use two asterisk symbols on either side of the words you want to be bold.
-            </p>
-            <p>
-              Copy this example to add bold text:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="bold-text-markdown-description"
-            >
-              An example of bold text markdown
-            </span>
-            <pre
-              class="nhsuk-code-block"
-            >
-              <code
-                aria-describedby="bold-text-markdown-description"
-              >
-                **this is bold text**
               </code>
             </pre>
           </div>
@@ -3139,7 +3001,9 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             type="hidden"
             value="no_token"
           />
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateName"
@@ -3208,7 +3072,9 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               />
             </div>
           </div>
-          <div>
+          <div
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
+          >
             <label
               class="nhsuk-label nhsuk-label--s"
               for="emailTemplateSubjectLine"
@@ -3230,25 +3096,29 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             </div>
           </div>
           <div
-            class="nhsuk-form-group"
+            class="nhsuk-form-group nhsuk-u-margin-bottom-8"
           >
-            <label
-              class="nhsuk-label nhsuk-label--s"
-              for="emailTemplateMessage"
-              id="emailTemplateMessage--label"
+            <div
+              class="nhsuk-form-group"
             >
-              Message
-            </label>
-            <textarea
-              autocomplete="off"
-              class="nhsuk-textarea"
-              data-testid="emailTemplateMessage-input"
-              id="emailTemplateMessage"
-              name="emailTemplateMessage"
-              rows="10"
-            >
-              template-message
-            </textarea>
+              <label
+                class="nhsuk-label nhsuk-label--s"
+                for="emailTemplateMessage"
+                id="emailTemplateMessage--label"
+              >
+                Message
+              </label>
+              <textarea
+                autocomplete="off"
+                class="nhsuk-textarea"
+                data-testid="emailTemplateMessage-input"
+                id="emailTemplateMessage"
+                name="emailTemplateMessage"
+                rows="12"
+              >
+                template-message
+              </textarea>
+            </div>
           </div>
           <button
             aria-disabled="false"
@@ -3629,47 +3499,6 @@ line 3
                 1. first item
 2. second item
 3. third item
-              </code>
-            </pre>
-          </div>
-        </details>
-        <details
-          class="nhsuk-details"
-          data-testid="bold-text-details"
-        >
-          <summary
-            class="nhsuk-details__summary"
-            data-testid="bold-text-summary"
-          >
-            <span
-              class="nhsuk-details__summary-text"
-            >
-              Bold text
-            </span>
-          </summary>
-          <div
-            class="nhsuk-details__text"
-            data-testid="bold-text-text"
-          >
-            <p>
-              Use two asterisk symbols on either side of the words you want to be bold.
-            </p>
-            <p>
-              Copy this example to add bold text:
-            </p>
-            <span
-              class="nhsuk-u-visually-hidden"
-              id="bold-text-markdown-description"
-            >
-              An example of bold text markdown
-            </span>
-            <pre
-              class="nhsuk-code-block"
-            >
-              <code
-                aria-describedby="bold-text-markdown-description"
-              >
-                **this is bold text**
               </code>
             </pre>
           </div>

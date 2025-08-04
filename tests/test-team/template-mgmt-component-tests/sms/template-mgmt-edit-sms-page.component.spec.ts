@@ -118,13 +118,13 @@ test.describe('Edit SMS message template Page', () => {
 
       await editSmsTemplatePage.messageTextArea.fill('a'.repeat(100));
 
-      await expect(editSmsTemplatePage.characterCountText).toHaveText(
+      await expect(editSmsTemplatePage.characterCountText).toContainText(
         '100 characters'
       );
 
       await editSmsTemplatePage.messageTextArea.fill('a'.repeat(1000));
 
-      await expect(editSmsTemplatePage.characterCountText).toHaveText(
+      await expect(editSmsTemplatePage.characterCountText).toContainText(
         '918 characters'
       );
     });

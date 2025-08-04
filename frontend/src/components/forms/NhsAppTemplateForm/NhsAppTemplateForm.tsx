@@ -31,6 +31,8 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import classNames from 'classnames';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
@@ -96,7 +98,13 @@ export const NhsAppTemplateForm: FC<
               formId='create-nhs-app-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
+                  templateNameError && 'nhsuk-form-group--error'
+                )}
+              >
                 <Label htmlFor='nhsAppTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
@@ -111,24 +119,27 @@ export const NhsAppTemplateForm: FC<
                   autoComplete='off'
                 />
               </div>
-              <Textarea
-                label={templateMessageLabelText}
-                labelProps={{ size: 's' }}
-                id='nhsAppTemplateMessage'
-                maxLength={5000}
-                rows={10}
-                onChange={nhsAppMessageHandler}
-                defaultValue={nhsAppTemplateMessage}
-                error={templateMessageError}
-                errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
-                autoComplete='off'
-              />
-              <JsEnabled>
-                <p id='character-count'>
-                  {nhsAppTemplateMessage.length}
-                  {characterCountText}
-                </p>
-              </JsEnabled>
+              <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
+                <Textarea
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  id='nhsAppTemplateMessage'
+                  maxLength={5000}
+                  rows={12}
+                  onChange={nhsAppMessageHandler}
+                  defaultValue={nhsAppTemplateMessage}
+                  error={templateMessageError}
+                  errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
+                  autoComplete='off'
+                />
+                <JsEnabled>
+                  <MarkdownContent
+                    id='character-count'
+                    content={characterCountText}
+                    variables={{ characters: nhsAppTemplateMessage.length }}
+                  />
+                </JsEnabled>
+              </div>
               <NHSNotifyButton
                 id='create-nhs-app-template-submit-button'
                 data-testid='submit-button'

@@ -229,47 +229,6 @@ line 3
   </details>
   <details
     class="nhsuk-details"
-    data-testid="bold-text-details"
-  >
-    <summary
-      class="nhsuk-details__summary"
-      data-testid="bold-text-summary"
-    >
-      <span
-        class="nhsuk-details__summary-text"
-      >
-        Bold text
-      </span>
-    </summary>
-    <div
-      class="nhsuk-details__text"
-      data-testid="bold-text-text"
-    >
-      <p>
-        Use two asterisk symbols on either side of the words you want to be bold.
-      </p>
-      <p>
-        Copy this example to add bold text:
-      </p>
-      <span
-        class="nhsuk-u-visually-hidden"
-        id="bold-text-markdown-description"
-      >
-        An example of bold text markdown
-      </span>
-      <pre
-        class="nhsuk-code-block"
-      >
-        <code
-          aria-describedby="bold-text-markdown-description"
-        >
-          **this is bold text**
-        </code>
-      </pre>
-    </div>
-  </details>
-  <details
-    class="nhsuk-details"
     data-testid="horizontal-lines-details"
   >
     <summary
@@ -525,6 +484,47 @@ line 3
   </details>
   <details
     class="nhsuk-details"
+    data-testid="bold-text-details"
+  >
+    <summary
+      class="nhsuk-details__summary"
+      data-testid="bold-text-summary"
+    >
+      <span
+        class="nhsuk-details__summary-text"
+      >
+        Bold text
+      </span>
+    </summary>
+    <div
+      class="nhsuk-details__text"
+      data-testid="bold-text-text"
+    >
+      <p>
+        Use two asterisk symbols on either side of the words you want to be bold.
+      </p>
+      <p>
+        Copy this example to add bold text:
+      </p>
+      <span
+        class="nhsuk-u-visually-hidden"
+        id="bold-text-markdown-description"
+      >
+        An example of bold text markdown
+      </span>
+      <pre
+        class="nhsuk-code-block"
+      >
+        <code
+          aria-describedby="bold-text-markdown-description"
+        >
+          **this is bold text**
+        </code>
+      </pre>
+    </div>
+  </details>
+  <details
+    class="nhsuk-details"
     data-testid="bullet-points-details"
   >
     <summary
@@ -611,47 +611,6 @@ line 3
           1. first item
 2. second item
 3. third item
-        </code>
-      </pre>
-    </div>
-  </details>
-  <details
-    class="nhsuk-details"
-    data-testid="bold-text-details"
-  >
-    <summary
-      class="nhsuk-details__summary"
-      data-testid="bold-text-summary"
-    >
-      <span
-        class="nhsuk-details__summary-text"
-      >
-        Bold text
-      </span>
-    </summary>
-    <div
-      class="nhsuk-details__text"
-      data-testid="bold-text-text"
-    >
-      <p>
-        Use two asterisk symbols on either side of the words you want to be bold.
-      </p>
-      <p>
-        Copy this example to add bold text:
-      </p>
-      <span
-        class="nhsuk-u-visually-hidden"
-        id="bold-text-markdown-description"
-      >
-        An example of bold text markdown
-      </span>
-      <pre
-        class="nhsuk-code-block"
-      >
-        <code
-          aria-describedby="bold-text-markdown-description"
-        >
-          **this is bold text**
         </code>
       </pre>
     </div>

@@ -30,6 +30,7 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import classNames from 'classnames';
 
 export const EmailTemplateForm: FC<
   PageComponentProps<CreateUpdateEmailTemplate | EmailTemplate>
@@ -100,7 +101,13 @@ export const EmailTemplateForm: FC<
               formId='create-email-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
+                  templateNameError && 'nhsuk-form-group--error'
+                )}
+              >
                 <Label htmlFor='emailTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
@@ -117,9 +124,11 @@ export const EmailTemplateForm: FC<
                 />
               </div>
               <div
-                className={
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
                   templateSubjectLineError && 'nhsuk-form-group--error'
-                }
+                )}
               >
                 <Label htmlFor='emailTemplateSubjectLine' size='s'>
                   {templateSubjectLineLabelText}
@@ -136,18 +145,20 @@ export const EmailTemplateForm: FC<
                   autoComplete='off'
                 />
               </div>
-              <Textarea
-                label={templateMessageLabelText}
-                labelProps={{ size: 's' }}
-                id='emailTemplateMessage'
-                rows={10}
-                onChange={emailTemplateMessageHandler}
-                value={emailTemplateMessage}
-                error={templateMessageError}
-                errorProps={{ id: 'emailTemplateMessage--error-message' }}
-                data-testid='emailTemplateMessage-input'
-                autoComplete='off'
-              />
+              <div className='nhsuk-form-group nhsuk-u-margin-bottom-8'>
+                <Textarea
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  id='emailTemplateMessage'
+                  rows={12}
+                  onChange={emailTemplateMessageHandler}
+                  value={emailTemplateMessage}
+                  error={templateMessageError}
+                  errorProps={{ id: 'emailTemplateMessage--error-message' }}
+                  data-testid='emailTemplateMessage-input'
+                  autoComplete='off'
+                />
+              </div>
               <NHSNotifyButton
                 type='submit'
                 data-testid='submit-button'

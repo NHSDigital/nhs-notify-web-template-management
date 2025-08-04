@@ -67,14 +67,18 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.messageTextArea.fill('a'.repeat(100));
 
-      await expect(createSmsTemplatePage.characterCountText).toHaveText(
+      await expect(createSmsTemplatePage.characterCountText).toContainText(
         '100 characters'
       );
 
       await createSmsTemplatePage.messageTextArea.fill('a'.repeat(1000));
 
-      await expect(createSmsTemplatePage.characterCountText).toHaveText(
+      await expect(createSmsTemplatePage.characterCountText).toContainText(
         '918 characters'
+      );
+
+      await expect(createSmsTemplatePage.characterCountText).toHaveText(
+        /This template will be sent as \d+ text messages/
       );
     });
 
