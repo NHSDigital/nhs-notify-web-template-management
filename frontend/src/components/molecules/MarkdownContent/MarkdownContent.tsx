@@ -23,7 +23,11 @@ export function MarkdownContent({
         <Markdown
           key={index}
           {...(id ? { id: items.length > 1 ? `${id}-${index}` : id } : {})}
-          {...(testId ? {'data-testid': items.length > 1 ? `${testId}-${index}` : testId, } : {})}
+          {...(testId
+            ? {
+                'data-testid': items.length > 1 ? `${testId}-${index}` : testId,
+              }
+            : {})}
           options={{
             forceBlock: true,
             wrapper: React.Fragment,

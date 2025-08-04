@@ -1,8 +1,4 @@
-import {
-  CodeBlock,
-  ContentBlock,
-  MarkdownTextBlock,
-} from '@molecules/ContentRenderer/ContentRenderer';
+import { ContentBlock } from '@molecules/ContentRenderer/ContentRenderer';
 import { getBasePath } from '@utils/get-base-path';
 import { TemplateStatus, TemplateType } from 'nhs-notify-backend-client';
 
@@ -878,14 +874,14 @@ const smsTemplateFooter: ContentBlock[] = [
   {
     type: 'text',
     testId: 'character-message-count',
-    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`
+    text: `{{characters}} {{characters|character|characters}}  \nThis template will be sent as {{count}} {{count|text message|text messages}}.  \nIf you're using personalisation fields, it could send as more.`,
   },
   {
     type: 'text',
     testId: 'sms-pricing-info',
     text: '[Learn more about character counts and text messaging pricing (opens in a new tab)](/pricing/text-messages)',
-  }
-]
+  },
+];
 
 const templateFormSms = {
   pageTitle: generatePageTitle('Create text message template'),

@@ -12,22 +12,21 @@ export function Personalisation() {
         {personalisationContent.header}
       </h2>
 
-      <ContentRenderer content={personalisationContent.leadParagraph}/>
+      <ContentRenderer content={personalisationContent.leadParagraph} />
 
       {personalisationContent.details.map((section) => {
         const id = toKebabCase(section.title);
         return (
-        <Details key={id} data-testid={`${id}-details`}>
-          <Details.Summary data-testid={`${id}-summary`}>
-            {section.title}
-          </Details.Summary>
-          <Details.Text data-testid={`${id}-text`}>
-            <ContentRenderer
-              content={section.content}
-            />
-          </Details.Text>
-        </Details>
-      )})}
+          <Details key={id} data-testid={`${id}-details`}>
+            <Details.Summary data-testid={`${id}-summary`}>
+              {section.title}
+            </Details.Summary>
+            <Details.Text data-testid={`${id}-text`}>
+              <ContentRenderer content={section.content} />
+            </Details.Text>
+          </Details>
+        );
+      })}
     </>
   );
 }

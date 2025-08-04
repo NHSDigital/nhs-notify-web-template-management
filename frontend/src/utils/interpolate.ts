@@ -27,17 +27,17 @@ export function interpolate(
   template: string,
   variables: Record<string, string | number> = {}
 ): string {
-  return template.replace(/{{(.*?)}}/g, (_, token) => {
+  return template.replaceAll(/{{\s*([\w|]+?)\s*}}/g, (_, token) => {
     const parts = token.trim().split('|');
 
     if (parts.length === 3) {
       const [variable, singular, plural] = parts;
       const value = Number(variables[variable]);
-      if (isNaN(value)) return plural;
+      if (Number.isNaN(value)) return plural;
       return value === 1 ? singular : plural;
     }
 
     const value = variables[parts[0]];
-    return value != null ? String(value) : '';
+    return value == null ? '' : String(value);
   });
 }

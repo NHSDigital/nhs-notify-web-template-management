@@ -31,7 +31,6 @@ import { calculateHowManySmsMessages } from './view-actions';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
 import classNames from 'classnames';
-import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 export const SmsTemplateForm: FC<
@@ -64,8 +63,6 @@ export const SmsTemplateForm: FC<
     buttonText,
     errorHeading,
     pageHeadingSuffix,
-    smsPricingLink,
-    smsPricingText,
     templateMessageLabelText,
     templateMessageFooterText,
     templateNameHintText,

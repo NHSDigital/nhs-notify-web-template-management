@@ -10,14 +10,24 @@ describe('Personalisation component', () => {
     const pdsDetails = screen.getByTestId('pds-personalisation-fields-details');
     expect(pdsDetails).not.toHaveAttribute('open');
 
-    expect(screen.getByTestId('pds-personalisation-fields-summary')).toBeInTheDocument();
-    expect(screen.getByTestId('pds-personalisation-fields-text')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('pds-personalisation-fields-summary')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('pds-personalisation-fields-text')
+    ).toBeInTheDocument();
 
-    const customDetails = screen.getByTestId('custom-personalisation-fields-details');
+    const customDetails = screen.getByTestId(
+      'custom-personalisation-fields-details'
+    );
     expect(customDetails).not.toHaveAttribute('open');
 
-    expect(screen.getByTestId('custom-personalisation-fields-summary')).toBeInTheDocument();
-    expect(screen.getByTestId('custom-personalisation-fields-text')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('custom-personalisation-fields-summary')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('custom-personalisation-fields-text')
+    ).toBeInTheDocument();
   });
 
   it('matches snapshot', () => {

@@ -7,7 +7,7 @@ import {
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
-import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
 import { toKebabCase } from '@utils/kebab-case';
 

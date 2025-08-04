@@ -18,10 +18,7 @@ const CodeExample: React.FC<CodeExampleProps> = ({
         {ariaText}
       </span>
       <pre className='nhsuk-code-block'>
-        <code
-          aria-describedby={ariaId}
-          className={codeClassName}
-        >
+        <code aria-describedby={ariaId} className={codeClassName}>
           {children}
         </code>
       </pre>

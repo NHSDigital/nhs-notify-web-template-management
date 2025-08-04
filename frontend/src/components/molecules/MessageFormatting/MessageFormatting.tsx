@@ -29,7 +29,9 @@ export function MessageFormatting({
           const id = toKebabCase(section.title);
           return (
             <Details data-testid={`${id}-details`} key={id}>
-              <Details.Summary data-testid={`${id}-summary`}>{section.title}</Details.Summary>
+              <Details.Summary data-testid={`${id}-summary`}>
+                {section.title}
+              </Details.Summary>
               <Details.Text data-testid={`${id}-text`}>
                 <ContentRenderer content={section.content} />
               </Details.Text>

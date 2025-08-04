@@ -1,7 +1,7 @@
 import CodeExample from '@atoms/CodeExample/CodeExample';
 import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
-type StandardBlock = { id?: string; testId?: string; };
+type StandardBlock = { id?: string; testId?: string };
 export type MarkdownTextBlock = StandardBlock & { type: 'text'; text: string };
 export type CodeBlock = StandardBlock & {
   type: 'code';
@@ -24,7 +24,7 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
         const key = block.id ?? index;
 
         switch (block.type) {
-          case 'text':
+          case 'text': {
             return (
               <MarkdownContent
                 id={block.id}
@@ -34,7 +34,8 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 variables={variables}
               />
             );
-          case 'code':
+          }
+          case 'code': {
             return (
               <CodeExample
                 id={block.id}
@@ -46,7 +47,8 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 {block.code}
               </CodeExample>
             );
-          case 'list':
+          }
+          case 'list': {
             return (
               <ul id={block.id} data-testid={block.testId} key={key}>
                 {block.items.map((item, itemId) => (
@@ -54,8 +56,10 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 ))}
               </ul>
             );
-          default:
+          }
+          default: {
             return null;
+          }
         }
       })}
     </>
