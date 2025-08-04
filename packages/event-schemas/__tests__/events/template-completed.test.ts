@@ -2,11 +2,14 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { $TemplateCompletedEvent } from '../../src/events/template-completed';
+import { $TemplateCompletedEventV1 } from '../../src/events/template-completed';
 
-const examplesDir = path.resolve(__dirname, '../../examples/TemplateCompleted');
+const examplesDir = path.resolve(
+  __dirname,
+  '../../examples/TemplateCompleted/v1'
+);
 
-describe('TemplateCompletedEvent schema', () => {
+describe('TemplateCompletedEventV1 Zod schema', () => {
   it.each(fs.readdirSync(examplesDir))(
     'parses sample event %s without errors',
     (filename) => {
@@ -14,7 +17,7 @@ describe('TemplateCompletedEvent schema', () => {
         fs.readFileSync(path.join(examplesDir, filename), 'utf8')
       );
 
-      const result = $TemplateCompletedEvent.safeParse(event);
+      const result = $TemplateCompletedEventV1.safeParse(event);
 
       if (!result.success) {
         console.log(result.error);

@@ -2,21 +2,21 @@ import { z } from 'zod';
 import { $Template, $TemplateStatus } from '../template';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 
-export const $TemplateDraftedEventData = z.intersection(
+export const $TemplateDraftedEventV1Data = z.intersection(
   $Template,
   z.object({
     templateStatus: $TemplateStatus.exclude(['SUBMITTED', 'DELETED']),
   })
 );
 
-export const $TemplateDraftedEvent = $NHSNotifyEventEnvelope.extend({
+export const $TemplateDraftedEventV1 = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateDrafted.v1'),
   dataschema: z.literal(
     'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
   ),
   dataschemaversion: z.string().startsWith('1.'),
   plane: z.literal('control'),
-  data: $TemplateDraftedEventData,
+  data: $TemplateDraftedEventV1Data,
 });
 
-export type TemplateDraftedEvent = z.infer<typeof $TemplateDraftedEvent>;
+export type TemplateDraftedEventV1 = z.infer<typeof $TemplateDraftedEventV1>;

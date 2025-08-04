@@ -2,11 +2,14 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { $TemplateDraftedEvent } from '../../src/events/template-drafted';
+import { $TemplateDraftedEventV1 } from '../../src/events/template-drafted';
 
-const examplesDir = path.resolve(__dirname, '../../examples/TemplateDrafted');
+const examplesDir = path.resolve(
+  __dirname,
+  '../../examples/TemplateDrafted/v1'
+);
 
-describe('TemplateDraftedEvent schema', () => {
+describe('TemplateDraftedEventV1 Zod schema', () => {
   it.each(fs.readdirSync(examplesDir))(
     'parses sample event %s without errors',
     (filename) => {
@@ -14,7 +17,7 @@ describe('TemplateDraftedEvent schema', () => {
         fs.readFileSync(path.join(examplesDir, filename), 'utf8')
       );
 
-      const result = $TemplateDraftedEvent.safeParse(event);
+      const result = $TemplateDraftedEventV1.safeParse(event);
 
       if (!result.success) {
         console.log(result.error);

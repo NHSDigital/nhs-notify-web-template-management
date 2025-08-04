@@ -5,7 +5,7 @@ const config: Config = {
   ...baseJestConfig,
   testEnvironment: 'node',
   moduleNameMapper: {
-    '@nhsdigital/nhs-notify-event-schemas-template-management':
+    '@nhsdigital/nhs-notify-event-schemas-template-management$':
       '<rootDir>/../../packages/event-schemas/src',
   },
 };
