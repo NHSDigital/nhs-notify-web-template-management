@@ -200,9 +200,10 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       await expect(async () => {
         const emailContents = await emailHelper.getEmailForTemplateId(
-          process.env.TEST_TEMPLATE_SUBMITTED_EMAIL_PREFIX,
+          process.env.TEST_EMAIL_BUCKET_PREFIX,
           templateId,
-          start
+          start,
+          'template-submitted-sender'
         );
 
         expect(emailContents).toContain(templateId);
