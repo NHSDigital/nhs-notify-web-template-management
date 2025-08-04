@@ -1,5 +1,5 @@
 locals {
-  event_bus_arn = "arn:aws:events:eu-west-2:${var.observability_account_id}:event-bus/nhs-notify-main-acct-alerts-bus"
+  event_bus_arn = "arn:aws:events:eu-west-2:${var.observability_account_id}:event-bus/nhs-main-acct-alerts-bus"
 
   # VPC Subnet Maths (Equally devise a number of subnets across the availble AZs from a provided supernet)
   required_bits_public  = ceil(log(length(data.aws_availability_zones.available.names), 2))
