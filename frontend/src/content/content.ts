@@ -117,11 +117,11 @@ const personalisation: {
       content: [
         {
           type: 'text',
-          text: 'You can add [custom personalisation fields](https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields) that use your own personalisation data.',
+          text: 'You can add [custom personalisation fields](/using-nhs-notify/personalisation#custom-personalisation-fields) that use your own personalisation data.',
         },
         {
           type: 'text',
-          text: 'Include custom personalisation fields in your content. Then provide your custom personalisation data using [NHS Notify API](https://notify.nhs.uk/using-nhs-notify/api) or [NHS Notify MESH](https://notify.nhs.uk/using-nhs-notify/mesh).',
+          text: 'Include custom personalisation fields in your content. Then provide your custom personalisation data using [NHS Notify API](/using-nhs-notify/api) or [NHS Notify MESH](https://notify.nhs.uk/using-nhs-notify/mesh).',
         },
         {
           type: 'text',
@@ -347,7 +347,7 @@ const messageFormatting: {
         },
         {
           type: 'text',
-          text: 'If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.',
+          text: 'If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.',
         },
         {
           type: 'text',
