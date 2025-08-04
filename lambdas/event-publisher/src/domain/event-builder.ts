@@ -20,13 +20,13 @@ export class EventBuilder {
         type: 'uk.nhs.notify.template-management.TemplateDeleted.v1',
         dataschema:
           'https://notify.nhs.uk/events/schemas/template-deleted/v1.json',
-        dataschemaversion: '1.0.1',
+        dataschemaversion: '1.1.0',
       },
       SUBMITTED: {
         type: 'uk.nhs.notify.template-management.TemplateCompleted.v1',
         dataschema:
           'https://notify.nhs.uk/events/schemas/template-completed/v1.json',
-        dataschemaversion: '1.0.1',
+        dataschemaversion: '1.1.0',
       },
     };
 
@@ -35,7 +35,7 @@ export class EventBuilder {
         type: 'uk.nhs.notify.template-management.TemplateDrafted.v1',
         dataschema:
           'https://notify.nhs.uk/events/schemas/template-drafted/v1.json',
-        dataschemaversion: '1.0.1',
+        dataschemaversion: '1.1.0',
       }
     );
   }

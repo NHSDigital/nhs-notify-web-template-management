@@ -13,7 +13,7 @@ const $TemplateDeletedEventMetadata = $EventMetadata.extend({
   dataschema: z.enum([
     'https://notify.nhs.uk/events/schemas/template-deleted/v1.json',
   ]),
-  dataschemaversion: z.literal('1.0.1'),
+  dataschemaversion: z.literal('1.1.0'),
 });
 
 export const $TemplateDeletedEvent = $TemplateDeletedEventMetadata.extend({

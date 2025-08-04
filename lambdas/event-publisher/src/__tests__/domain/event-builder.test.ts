@@ -107,7 +107,7 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
   type,
   specversion: '1.0',
   dataschema,
-  dataschemaversion: '1.0.1',
+  dataschemaversion: '1.1.0',
   plane: 'control',
   subject: 'id',
   data: {
