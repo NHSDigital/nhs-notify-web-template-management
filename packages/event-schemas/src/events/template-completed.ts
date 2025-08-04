@@ -11,11 +11,11 @@ export const $TemplateCompletedEventData = z.intersection(
 
 export const $TemplateCompletedEvent = $NHSNotifyEventEnvelope.extend({
   type: z.literal('uk.nhs.notify.template-management.TemplateCompleted.v1'),
-  dataschema: z.enum([
-    'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json',
-  ]),
-  dataschemaversion: z.literal('1.0.0'),
-  plane: z.literal('data'),
+  dataschema: z.literal(
+    'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
+  ),
+  dataschemaversion: z.string().startsWith('1.'),
+  plane: z.literal('control'),
   data: $TemplateCompletedEventData,
 });
 

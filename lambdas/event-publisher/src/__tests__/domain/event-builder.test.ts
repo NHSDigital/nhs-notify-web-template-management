@@ -144,7 +144,7 @@ test('builds template completed event', () => {
     expectedEvent(
       'SUBMITTED',
       'uk.nhs.notify.template-management.TemplateCompleted.v1',
-      'https://notify.nhs.uk/events/schemas/template-completed/v1.json'
+      'https://notify.nhs.uk/events/schemas/TemplateCompleted/v1.json'
     )
   );
 });
@@ -158,7 +158,7 @@ test('builds template drafted event', () => {
     expectedEvent(
       'PROOF_AVAILABLE',
       'uk.nhs.notify.template-management.TemplateDrafted.v1',
-      'https://notify.nhs.uk/events/schemas/template-drafted/v1.json'
+      'https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json'
     )
   );
 });
@@ -170,7 +170,7 @@ test('builds template deleted event', () => {
     expectedEvent(
       'DELETED',
       'uk.nhs.notify.template-management.TemplateDeleted.v1',
-      'https://notify.nhs.uk/events/schemas/template-deleted/v1.json'
+      'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
     )
   );
 });

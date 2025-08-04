@@ -5,7 +5,7 @@ import { z } from 'zod';
 // https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/json-format.md
 // https://nhsd-confluence.digital.nhs.uk/x/pjIxOQ
 const $CloudEvent = z.object({
-  id: z.uuid(),
+  id: z.string(),
   time: z.iso.datetime(),
   type: z.string(),
   source: z.string(),

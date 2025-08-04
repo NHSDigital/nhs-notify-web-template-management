@@ -18,7 +18,7 @@
   "dataschema": "https://notify.nhs.uk/events/schemas/TemplateDrafted/v1.json",
   "dataschemaversion": "1.0.0",
   "id": "20f471d0-367d-4914-bee3-2fa5322d67f1",
-  "plane": "data",
+  "plane": "control",
   "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/prod",
   "specversion": "1.0",
   "subject": "91be480d-c667-4741-957a-057b64753762",

@@ -45,7 +45,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc && tsx scripts/generate-json-schemas.ts",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist schemas",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build",
