@@ -56,7 +56,7 @@ jobs:
       terraformAction: "apply"
 
   check-event-schemas-version-change:
-    name: Chaeck for event schemas package version change
+    name: Check for event schemas package version change
     needs: check-merge-or-workflow-dispatch
     if: needs.check-merge-or-workflow-dispatch.outputs.deploy == 'true'
     runs-on: ubuntu-latest
