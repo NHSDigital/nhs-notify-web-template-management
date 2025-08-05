@@ -196,6 +196,7 @@ exports[`PreviewTemplateDetailsLetter if status is PROOF_AVAILABLE, but no proof
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -297,6 +298,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -332,6 +334,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -381,6 +384,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -412,6 +416,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when proofs are present, 
                   class="container"
                 >
                   <svg
+                    aria-hidden="true"
                     class="icon"
                     fill="none"
                     height="26"
@@ -499,6 +504,11 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
           >
             Checking files
           </strong>
+          <small
+            class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
+          >
+            Refresh the page to update the status
+          </small>
         </dd>
       </div>
       <div
@@ -516,6 +526,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot when test data CSV is abs
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -600,6 +611,11 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
           >
             Checking files
           </strong>
+          <small
+            class="preview__statusnote nhsuk-body-s nhsuk-u-margin-top-2 nhsuk-u-secondary-text-color"
+          >
+            Refresh the page to update the status
+          </small>
         </dd>
       </div>
       <div
@@ -617,6 +633,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
@@ -652,6 +669,7 @@ exports[`PreviewTemplateDetailsLetter matches snapshot without proofs 1`] = `
             class="container"
           >
             <svg
+              aria-hidden="true"
               class="icon"
               fill="none"
               height="26"
