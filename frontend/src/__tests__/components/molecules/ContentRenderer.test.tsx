@@ -12,23 +12,26 @@ describe('ContentRenderer', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-it('throws an error for an unsupported block type', () => {
-  const invalidContent = [
-    { type: 'test', value: 'invalid' },
-  ] as unknown as ContentBlock[];
+  it('throws an error for an unsupported block type', () => {
+    const invalidContent = [
+      { type: 'test', value: 'invalid' },
+    ] as unknown as ContentBlock[];
 
-  const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
 
-  expect(() => render(<ContentRenderer content={invalidContent} />))
-    .toThrow(new Error('Unsupported content block type: test'));
+    expect(() => render(<ContentRenderer content={invalidContent} />)).toThrow(
+      new Error('Unsupported content block type')
+    );
 
-  expect(consoleErrorSpy).toHaveBeenCalledWith(
-    'Unsupported content block:',
-    expect.objectContaining({ type: 'test' })
-  );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Unsupported content block:',
+      expect.objectContaining({ type: 'test' })
+    );
 
-  consoleErrorSpy.mockRestore();
-});
+    consoleErrorSpy.mockRestore();
+  });
 
   it('renders text blocks using MarkdownContent', () => {
     const content: ContentBlock[] = [
