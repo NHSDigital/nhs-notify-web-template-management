@@ -12,7 +12,8 @@
  *   count: 2,
  * });
  * // => 'Hello John, you have 2 messages.'
- *  * interpolate('Hello {{name}}, you have {{count}} {{count|message|messages}}.', {
+ *
+ * interpolate('Hello {{name}}, you have {{count}} {{count|message|messages}}.', {
  *   name: 'John',
  *   count: 1,
  * });
@@ -23,26 +24,26 @@
  * @param variables - An object of variables
  * @returns The interpolated string
  */
-// the following regex is bounded, avoids nested repetition, and is safe for controlled templates
+
 // eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
-const interpolationPattern = /{{\s*(\w+)(?:\|([^|]+)\|([^|]+))?\s*}}/g;
+const interpolationPattern = /{{\s*([^}|]+)(?:\|([^}|]+)\|([^}]+))?\s*}}/g;
 
 export function interpolate(
   template: string,
   variables: Record<string, string | number> = {}
 ): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all
-  return template.replace(interpolationPattern, (_, token) => {
-    const parts = token.split('|').map((part: string) => part.trim());
+  return template.replace(interpolationPattern, (_match, variable, singular, plural) => {
+    const key = variable.trim();
+    const value = variables[key];
 
-    if (parts.length === 3) {
-      const [variable, singular, plural] = parts;
-      const value = Number(variables[variable]);
-      if (Number.isNaN(value)) return plural;
-      return value === 1 ? singular : plural;
+    if (singular !== undefined && plural !== undefined) {
+      const count = Number(value);
+
+      if (Number.isNaN(count)) return plural;
+      return count === 1 ? singular : plural;
     }
 
-    const value = variables[parts[0]];
     return value == null ? '' : String(value);
   });
 }
