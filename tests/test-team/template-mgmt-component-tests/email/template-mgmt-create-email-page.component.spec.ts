@@ -150,7 +150,9 @@ test.describe('Create Email message template Page', () => {
 
         const newTabPromise = page.waitForEvent('popup');
 
-        const summary = page.getByTestId('custom-personalisation-fields-summary');
+        const summary = page.getByTestId(
+          'custom-personalisation-fields-summary'
+        );
 
         await summary.click();
         await expect(
