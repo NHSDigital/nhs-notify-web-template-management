@@ -318,7 +318,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -329,7 +329,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -769,7 +769,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -780,7 +780,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1200,7 +1200,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1211,7 +1211,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1665,7 +1665,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1676,7 +1676,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2074,7 +2074,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2085,7 +2085,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >

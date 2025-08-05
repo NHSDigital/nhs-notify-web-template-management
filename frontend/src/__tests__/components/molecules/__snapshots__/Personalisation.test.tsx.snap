@@ -96,7 +96,7 @@ exports[`Personalisation component matches snapshot 1`] = `
       <p>
         You can add 
         <a
-          href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+          href="/using-nhs-notify/personalisation#custom-personalisation-fields"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -107,7 +107,7 @@ exports[`Personalisation component matches snapshot 1`] = `
       <p>
         Include custom personalisation fields in your content. Then provide your custom personalisation data using 
         <a
-          href="https://notify.nhs.uk/using-nhs-notify/api"
+          href="/using-nhs-notify/api"
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -265,7 +265,7 @@ exports[`Client-side validation triggers 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -276,7 +276,7 @@ exports[`Client-side validation triggers 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -624,7 +624,7 @@ Second paragraph
               </code>
             </pre>
             <p>
-              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
             </p>
             <p>
               Copy this example to add a URL:
@@ -1027,7 +1027,7 @@ exports[`renders page one error 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1038,7 +1038,7 @@ exports[`renders page one error 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1386,7 +1386,7 @@ Second paragraph
               </code>
             </pre>
             <p>
-              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
             </p>
             <p>
               Copy this example to add a URL:
@@ -1817,7 +1817,7 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1828,7 +1828,7 @@ exports[`renders page with multiple errors 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2176,7 +2176,7 @@ Second paragraph
               </code>
             </pre>
             <p>
-              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
             </p>
             <p>
               Copy this example to add a URL:
@@ -2534,7 +2534,7 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2545,7 +2545,7 @@ exports[`renders page with preloaded field values 1`] = `
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2893,7 +2893,7 @@ Second paragraph
               </code>
             </pre>
             <p>
-              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
             </p>
             <p>
               Copy this example to add a URL:
@@ -3228,7 +3228,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               You can add 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/personalisation#custom-personalisation-fields"
+                href="/using-nhs-notify/personalisation#custom-personalisation-fields"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3239,7 +3239,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
             <p>
               Include custom personalisation fields in your content. Then provide your custom personalisation data using 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/api"
+                href="/using-nhs-notify/api"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3587,7 +3587,7 @@ Second paragraph
               </code>
             </pre>
             <p>
-              If you want to include a URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
+              If you want to include the URL in full, use square brackets around the full URL to make it the link text and use round brackets around the full URL.
             </p>
             <p>
               Copy this example to add a URL:
