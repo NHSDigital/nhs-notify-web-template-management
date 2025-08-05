@@ -18,7 +18,7 @@
   "dataschemaversion": "1.0.0",
   "id": "12f1f09c-a555-4d9b-8405-0b33490bc929",
   "plane": "control",
-  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/prod",
+  "source": "//notify.nhs.uk/app/nhs-notify-template-management-prod/main",
   "specversion": "1.0",
   "subject": "871b0f4e-0b32-474e-a49a-23fc554bc5a6",
   "time": "2025-07-29T08:45:00.000Z",

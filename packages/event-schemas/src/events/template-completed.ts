@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { $Template, $TemplateStatus } from '../template';
+import { $TemplateEventV1Data, $TemplateStatus } from '../template';
 import { $NHSNotifyEventEnvelope } from '../event-envelope';
 
 export const $TemplateCompletedEventV1Data = z.intersection(
-  $Template,
+  $TemplateEventV1Data,
   z.object({
     templateStatus: $TemplateStatus.extract(['SUBMITTED']),
   })

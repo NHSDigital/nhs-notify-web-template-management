@@ -49,7 +49,7 @@ const letterTypes = ['q4', 'x0', 'x1'];
 
 export const $TemplateStatus = z.enum(templateStatuses);
 
-const $TemplateBase = z.object({
+const $TemplateEventV1BaseData = z.object({
   owner: z.string(),
   id: z.string(),
   clientId: z.string().optional(),
@@ -61,18 +61,18 @@ const $TemplateBase = z.object({
   updatedBy: z.string().optional(),
 });
 
-const $EmailTemplate = $TemplateBase.extend({
+const $EmailTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   subject: z.string(),
   templateType: z.literal('EMAIL'),
 });
 
-const $NhsAppTemplate = $TemplateBase.extend({
+const $NhsAppTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   templateType: z.literal('NHS_APP'),
 });
 
-const $LetterTemplate = $TemplateBase.extend({
+const $LetterTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   files: z.object({
     proofs: z
       .record(
@@ -88,16 +88,14 @@ const $LetterTemplate = $TemplateBase.extend({
   letterType: z.enum(letterTypes),
 });
 
-const $SmsTemplate = $TemplateBase.extend({
+const $SmsTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   message: z.string(),
   templateType: z.literal('SMS'),
 });
 
-export const $Template = z.discriminatedUnion('templateType', [
-  $EmailTemplate,
-  $NhsAppTemplate,
-  $LetterTemplate,
-  $SmsTemplate,
+export const $TemplateEventV1Data = z.discriminatedUnion('templateType', [
+  $EmailTemplateEventV1Data,
+  $NhsAppTemplateEventV1Data,
+  $LetterTemplateEventV1Data,
+  $SmsTemplateEventV1Data,
 ]);
-
-export type Template = z.infer<typeof $Template>;
