@@ -89,11 +89,15 @@ test.describe('Create SMS message template Page', () => {
 
       await createSmsTemplatePage.loadPage();
 
-      await createSmsTemplatePage.personalisationFields.click();
+      await createSmsTemplatePage.customPersonalisationFields.click();
+      await expect(
+        createSmsTemplatePage.customPersonalisationFields
+      ).toHaveAttribute('open');
 
-      await expect(createSmsTemplatePage.personalisationFields).toHaveAttribute(
-        'open'
-      );
+      await createSmsTemplatePage.pdsPersonalisationFields.click();
+      await expect(
+        createSmsTemplatePage.pdsPersonalisationFields
+      ).toHaveAttribute('open');
     });
 
     test('when user clicks "Message formatting" tool tips, then tool tips are displayed', async ({
@@ -149,6 +153,49 @@ test.describe('Create SMS message template Page', () => {
         await createTemplatePage.loadPage();
 
         const newTabPromise = page.waitForEvent('popup');
+
+        await page.getByRole('link', { name }).click();
+
+        const newTab = await newTabPromise;
+
+        await expect(newTab).toHaveURL(`${baseURL}/${url}`);
+      });
+    }
+
+    const personalisationInfoLinks = [
+      {
+        name: 'custom personalisation fields',
+        url: 'using-nhs-notify/personalisation#custom-personalisation-fields',
+      },
+      {
+        name: 'NHS Notify API',
+        url: 'using-nhs-notify/api',
+      },
+      {
+        name: 'NHS Notify MESH',
+        url: 'using-nhs-notify/mesh',
+      },
+    ];
+
+    for (const { name, url } of personalisationInfoLinks) {
+      test(`custom personalisation info link: ${name}, navigates to correct page in new tab`, async ({
+        page,
+        baseURL,
+      }) => {
+        const createSmsTemplatePage = new TemplateMgmtCreateSmsPage(page);
+
+        await createSmsTemplatePage.loadPage();
+
+        const newTabPromise = page.waitForEvent('popup');
+
+        const summary = page.getByTestId(
+          'custom-personalisation-fields-summary'
+        );
+
+        await summary.click();
+        await expect(
+          page.getByTestId('custom-personalisation-fields-text')
+        ).toBeVisible();
 
         await page.getByRole('link', { name }).click();
 

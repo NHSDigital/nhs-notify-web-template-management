@@ -212,10 +212,13 @@ test.describe('Edit NHS App Template Page', () => {
   });
 
   const detailsSections = [
-    '[data-testid="personalisation-details"]',
+    '[data-testid="pds-personalisation-details"]',
+    '[data-testid="custom-personalisation-details"]',
     '[data-testid="line-breaks-and-paragraphs-details"]',
     '[data-testid="headings-details"]',
     '[data-testid="bold-text-details"]',
+    '[data-testid="bullet-points-details"]',
+    '[data-testid="numbered-lists-details"]',
     '[data-testid="links-and-urls-details"]',
     '[data-testid="how-to-name-your-template"]',
   ];
@@ -241,7 +244,7 @@ test.describe('Edit NHS App Template Page', () => {
       await expect(page.locator(`${section} > div`)).toBeHidden();
     });
   }
-  // TODO: Add personalisation links
+
   const moreInfoLinks = [
     {
       name: 'NHS App messages (opens in a new tab)',
@@ -267,6 +270,46 @@ test.describe('Edit NHS App Template Page', () => {
       const newTabPromise = page.waitForEvent('popup');
       await page.getByRole('link', { name }).click();
       const newTab = await newTabPromise;
+      await expect(newTab).toHaveURL(`${baseURL}/${url}`);
+    });
+  }
+
+  const personalisationInfoLinks = [
+    {
+      name: 'custom personalisation fields',
+      url: 'using-nhs-notify/personalisation#custom-personalisation-fields',
+    },
+    {
+      name: 'NHS Notify API',
+      url: 'using-nhs-notify/api',
+    },
+    {
+      name: 'NHS Notify MESH',
+      url: 'using-nhs-notify/mesh',
+    },
+  ];
+
+  for (const { name, url } of personalisationInfoLinks) {
+    test(`custom personalisation info link: ${name}, navigates to correct page in new tab`, async ({
+      page,
+      baseURL,
+    }) => {
+      const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
+      await editTemplatePage.loadPage(templates.valid.id);
+
+      const newTabPromise = page.waitForEvent('popup');
+
+      const summary = page.getByTestId('custom-personalisation-fields-summary');
+
+      await summary.click();
+      await expect(
+        page.getByTestId('custom-personalisation-fields-text')
+      ).toBeVisible();
+
+      await page.getByRole('link', { name }).click();
+
+      const newTab = await newTabPromise;
+
       await expect(newTab).toHaveURL(`${baseURL}/${url}`);
     });
   }

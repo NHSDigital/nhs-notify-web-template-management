@@ -13,7 +13,9 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
 
   public readonly errorSummary: Locator;
 
-  public readonly personalisationFields: Locator;
+  public readonly customPersonalisationFields: Locator;
+
+  public readonly pdsPersonalisationFields: Locator;
 
   public readonly namingYourTemplate: Locator;
 
@@ -27,8 +29,11 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
     this.subjectLineInput = page.locator('[id="emailTemplateSubjectLine"]');
     this.messageTextArea = page.locator('[id="emailTemplateMessage"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
-    this.personalisationFields = page.locator(
-      '[data-testid="personalisation-details"]'
+    this.customPersonalisationFields = page.locator(
+      '[data-testid="custom-personalisation-details"]'
+    );
+    this.pdsPersonalisationFields = page.locator(
+      '[data-testid="pds-personalisation-details"]'
     );
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
