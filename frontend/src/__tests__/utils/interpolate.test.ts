@@ -27,4 +27,13 @@ describe('interpolate', () => {
       'items'
     );
   });
+
+  it('replaces multiple variables and plurals in same string', () => {
+    expect(
+      interpolate(
+        '{{characters}} {{characters|character|characters}} as {{count}} {{count|text message|text messages}}',
+        { characters: 2, count: 1 }
+      )
+    ).toBe('2 characters as 1 text message');
+  });
 });

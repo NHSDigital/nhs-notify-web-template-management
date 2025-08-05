@@ -23,12 +23,17 @@
  * @param variables - An object of variables
  * @returns The interpolated string
  */
+// the following regex is bounded, avoids nested repetition, and is safe for controlled templates
+// eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
+const interpolationPattern = /{{\s*(\w+)(?:\|([^|]+)\|([^|]+))?\s*}}/g;
+
 export function interpolate(
   template: string,
   variables: Record<string, string | number> = {}
 ): string {
-  return template.replaceAll(/{{\s*([\w|]+?)\s*}}/g, (_, token) => {
-    const parts = token.trim().split('|');
+  // eslint-disable-next-line unicorn/prefer-string-replace-all
+  return template.replace(interpolationPattern, (_, token) => {
+    const parts = token.split('|').map((part: string) => part.trim());
 
     if (parts.length === 3) {
       const [variable, singular, plural] = parts;
