@@ -8,6 +8,7 @@ describe('toKebabCase', () => {
   it('returns empty string for only symbols', () => {
     expect(toKebabCase('!!!')).toBe('');
   });
+
   it('converts spaces to hyphens', () => {
     expect(toKebabCase('this is a test')).toBe('this-is-a-test');
   });
