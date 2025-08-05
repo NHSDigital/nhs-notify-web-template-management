@@ -10,7 +10,5 @@ setup('api test setup', async () => {
 
   BackendConfigHelper.toEnv(backendConfig);
 
-  console.log(backendConfig);
-
   await createAuthHelper().setup();
 });
