@@ -18,6 +18,8 @@ setup('e2e test setup', async ({ page }) => {
 
   BackendConfigHelper.toEnv(backendConfig);
 
+  console.log(backendConfig);
+
   const auth = createAuthHelper();
 
   await auth.setup();
