@@ -58,7 +58,10 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
             );
           }
           default: {
-            return null;
+            console.error('Unsupported content block:', block);
+            throw new Error(
+              `Unsupported content block type: ${(block as any).type}`
+            );
           }
         }
       })}
