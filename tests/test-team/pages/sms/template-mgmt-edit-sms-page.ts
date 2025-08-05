@@ -39,8 +39,8 @@ export class TemplateMgmtEditSmsPage extends TemplateMgmtBasePageDynamic {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.pricingLink = page.getByTestId('sms-pricing-info').locator('a');
-    this.characterCountText = page.getByTestId('character-message-count');
+    this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
+    this.characterCountText = page.getByTestId('character-message-count-0');
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
     this.saveAndPreviewButton = page.locator(

@@ -41,8 +41,8 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePageNonDynamic {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.pricingLink = page.getByTestId('sms-pricing-info').locator('a');
-    this.characterCountText = page.getByTestId('character-message-count');
+    this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
+    this.characterCountText = page.getByTestId('character-message-count-0');
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to choose a template type'));

@@ -28,7 +28,7 @@ describe('MarkdownContent', () => {
     render(<MarkdownContent content='This is content' id='content-id' />);
     expect(screen.getByText('This is content')).toHaveAttribute(
       'id',
-      'content-id'
+      'content-id-0'
     );
   });
 

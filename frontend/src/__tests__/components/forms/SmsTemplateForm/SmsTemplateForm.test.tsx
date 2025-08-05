@@ -116,7 +116,7 @@ describe('CreateSmsTemplate component', () => {
 
     await user.type(templateMessageBox, longMessage);
 
-    const characterCount = screen.getByTestId('character-message-count');
+    const characterCount = screen.getByTestId('character-message-count-0');
 
     if (!characterCount) {
       throw new Error('Character count not found');

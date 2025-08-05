@@ -158,7 +158,7 @@ exports[`Client-side validation triggers 1`] = `
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -856,7 +856,7 @@ exports[`renders page 1`] = `
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -1594,7 +1594,7 @@ exports[`renders page one error 1`] = `
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 0 of 5000 characters
               </p>
@@ -2346,7 +2346,7 @@ exports[`renders page with multiple errors 1`] = `
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 0 of 5000 characters
               </p>
@@ -3044,7 +3044,7 @@ exports[`renders page with preloaded field values 1`] = `
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 16 of 5000 characters
               </p>
@@ -3720,7 +3720,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               class=""
             >
               <p
-                id="character-count"
+                id="character-count-0"
               >
                 16 of 5000 characters
               </p>

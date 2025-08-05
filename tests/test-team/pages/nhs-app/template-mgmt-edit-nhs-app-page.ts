@@ -32,7 +32,7 @@ export class TemplateMgmtEditNhsAppPage extends TemplateMgmtBasePageDynamic {
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.characterCountText = page.locator('[id="character-count"]');
+    this.characterCountText = page.locator('[id="character-count-0"]');
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
 
     this.saveAndPreviewButton = page.locator(

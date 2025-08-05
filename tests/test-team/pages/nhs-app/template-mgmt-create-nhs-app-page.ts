@@ -34,7 +34,7 @@ export class TemplateMgmtCreateNhsAppPage extends TemplateMgmtBasePageNonDynamic
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'
     );
-    this.characterCountText = page.locator('[id="character-count"]');
+    this.characterCountText = page.locator('[id="character-count-0"]');
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Back to choose a template type'));

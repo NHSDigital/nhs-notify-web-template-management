@@ -189,7 +189,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count"
+                data-testid="character-message-count-0"
               >
                 0 characters
                 <br />
@@ -198,7 +198,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
                 If you're using personalisation fields, it could send as more.
               </p>
               <p
-                data-testid="sms-pricing-info"
+                data-testid="sms-pricing-info-0"
               >
                 <a
                   href="/pricing/text-messages"
@@ -640,7 +640,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count"
+                data-testid="character-message-count-0"
               >
                 16 characters
                 <br />
@@ -649,7 +649,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
                 If you're using personalisation fields, it could send as more.
               </p>
               <p
-                data-testid="sms-pricing-info"
+                data-testid="sms-pricing-info-0"
               >
                 <a
                   href="/pricing/text-messages"
@@ -1071,7 +1071,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               class=""
             >
               <p
-                data-testid="character-message-count"
+                data-testid="character-message-count-0"
               >
                 16 characters
                 <br />
@@ -1080,7 +1080,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
                 If you're using personalisation fields, it could send as more.
               </p>
               <p
-                data-testid="sms-pricing-info"
+                data-testid="sms-pricing-info-0"
               >
                 <a
                   href="/pricing/text-messages"
@@ -1536,7 +1536,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               class=""
             >
               <p
-                data-testid="character-message-count"
+                data-testid="character-message-count-0"
               >
                 16 characters
                 <br />
@@ -1545,7 +1545,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
                 If you're using personalisation fields, it could send as more.
               </p>
               <p
-                data-testid="sms-pricing-info"
+                data-testid="sms-pricing-info-0"
               >
                 <a
                   href="/pricing/text-messages"
@@ -1945,7 +1945,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               class=""
             >
               <p
-                data-testid="character-message-count"
+                data-testid="character-message-count-0"
               >
                 16 characters
                 <br />
@@ -1954,7 +1954,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
                 If you're using personalisation fields, it could send as more.
               </p>
               <p
-                data-testid="sms-pricing-info"
+                data-testid="sms-pricing-info-0"
               >
                 <a
                   href="/pricing/text-messages"
