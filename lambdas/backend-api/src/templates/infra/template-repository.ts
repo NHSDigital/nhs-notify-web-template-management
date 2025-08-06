@@ -62,7 +62,6 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   personalisationParameters: null,
   templateType: null,
   proofingEnabled: null,
-  supplier: null,
 };
 
 export class TemplateRepository {

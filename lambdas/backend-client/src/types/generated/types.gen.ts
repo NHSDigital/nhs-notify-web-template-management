@@ -81,7 +81,6 @@ export type LetterProperties = CreateLetterProperties & {
   owner?: string;
   personalisationParameters?: Array<string>;
   proofingEnabled?: boolean;
-  supplier?: string;
 };
 
 export type LetterType = 'q4' | 'x0' | 'x1';

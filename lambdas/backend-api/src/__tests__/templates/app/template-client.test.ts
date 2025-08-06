@@ -440,7 +440,7 @@ describe('templateClient', () => {
       });
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: true, supplier: 'SUPPLIER' },
+        { ...dataWithFiles, proofingEnabled: true },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -588,7 +588,7 @@ describe('templateClient', () => {
         });
 
         expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-          { ...dataWithFiles, proofingEnabled: expected, supplier: 'SUPPLIER' },
+          { ...dataWithFiles, proofingEnabled: expected },
           user.userId,
           user.clientId,
           'PENDING_UPLOAD',
@@ -915,7 +915,7 @@ describe('templateClient', () => {
       expect(result).toEqual(templateRepoFailure);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -1041,7 +1041,7 @@ describe('templateClient', () => {
       expect(result).toEqual(uploadErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -1130,7 +1130,7 @@ describe('templateClient', () => {
       expect(result).toEqual(updateErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        { ...dataWithFiles, proofingEnabled: false, supplier: 'SUPPLIER' },
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
