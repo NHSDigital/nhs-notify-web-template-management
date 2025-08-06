@@ -4,8 +4,9 @@ import React from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import content from '@content/content';
 import styles from './AuthLink.module.scss';
+import classNames from 'classnames';
 
-export const AuthLink = () => {
+export const AuthLink = ({ className }: { className?: string }) => {
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   let id = 'sign-in-link';
@@ -17,15 +18,13 @@ export const AuthLink = () => {
   }
 
   return (
-    <div className={styles['auth-link']} data-testid='auth-link'>
-      <a
-        id={id}
-        className={styles['auth-link__link']}
-        data-testid='auth-link__link'
-        href={linkContent.href}
-      >
-        {linkContent.text}
-      </a>
-    </div>
+    <a
+      id={id}
+      className={classNames(styles['auth-link'], className)}
+      data-testid='auth-link'
+      href={linkContent.href}
+    >
+      {linkContent.text}
+    </a>
   );
 };

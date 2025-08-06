@@ -33,11 +33,11 @@ export abstract class TemplateMgmtBasePage {
     );
 
     this.signInLink = page
-      .locator('[data-testid="auth-link__link"]')
+      .locator('[data-testid="auth-link"]')
       .and(page.getByText('Sign in'));
 
     this.signOutLink = page
-      .locator('[data-testid="auth-link__link"]')
+      .locator('[data-testid="auth-link"]')
       .and(page.getByText('Sign out'));
 
     this.goBackLink = page
