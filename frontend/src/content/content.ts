@@ -29,6 +29,16 @@ const header = {
       logoTitle: 'NHS logo',
     },
   },
+  nav: [
+    {
+      text: 'Templates',
+      href: '/message-templates'
+    },
+    {
+      text: 'Message plans',
+      href: '/message-plans'
+    }
+  ]
 };
 
 const footer = {
