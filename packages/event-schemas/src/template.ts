@@ -86,6 +86,7 @@ const $LetterTemplateEventV1Data = $TemplateEventV1BaseData.extend({
   templateType: z.literal('LETTER'),
   language: z.enum(languages),
   letterType: z.enum(letterTypes),
+  personalisationParameters: z.array(z.string()),
 });
 
 const $SmsTemplateEventV1Data = $TemplateEventV1BaseData.extend({

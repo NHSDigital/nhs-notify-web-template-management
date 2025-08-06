@@ -215,6 +215,12 @@
                 "owner": {
                   "type": "string"
                 },
+                "personalisationParameters": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
                 "templateStatus": {
                   "enum": [
                     "DELETED",
@@ -251,7 +257,8 @@
                 "files",
                 "templateType",
                 "language",
-                "letterType"
+                "letterType",
+                "personalisationParameters"
               ],
               "type": "object"
             },

@@ -9,6 +9,9 @@
     "letterType": "x0",
     "name": "Example Letter Template",
     "owner": "9c7b373b-4b8a-4b14-812b-f2759f6648fe",
+    "personalisationParameters": [
+      "test"
+    ],
     "templateStatus": "PENDING_UPLOAD",
     "templateType": "LETTER",
     "updatedAt": "2025-07-29T10:11:13.881Z",

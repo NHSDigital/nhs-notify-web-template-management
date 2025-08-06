@@ -86,6 +86,13 @@ const publishableEventRecord = (status: string): PublishableEventRecord => ({
           },
         },
       },
+      personalisationParameters: {
+        L: [
+          {
+            S: 'test',
+          },
+        ],
+      },
     },
   },
   eventID: 'event-id',
@@ -111,6 +118,7 @@ const expectedEvent = (status: string, type: string, dataschema: string) => ({
     createdBy: 'created-by',
     updatedAt: 'updated-at',
     updatedBy: 'updated-by',
+    personalisationParameters: ['test'],
     templateType: 'LETTER',
     templateStatus: status,
     name: 'name',
