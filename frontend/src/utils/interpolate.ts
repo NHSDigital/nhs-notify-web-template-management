@@ -26,24 +26,27 @@
  */
 
 // eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex
-const interpolationPattern = /{{\s*([^}|]+)(?:\|([^}|]+)\|([^}]+))?\s*}}/g;
+const interpolationPattern = /{{\s*([^|}]+)(?:\|([^|}]+)\|([^}]+))?\s*}}/g;
 
 export function interpolate(
   template: string,
   variables: Record<string, string | number> = {}
 ): string {
   // eslint-disable-next-line unicorn/prefer-string-replace-all
-  return template.replace(interpolationPattern, (_match, variable, singular, plural) => {
-    const key = variable.trim();
-    const value = variables[key];
+  return template.replace(
+    interpolationPattern,
+    (_match, variable, singular, plural) => {
+      const key = variable.trim();
+      const value = variables[key];
 
-    if (singular !== undefined && plural !== undefined) {
-      const count = Number(value);
+      if (singular !== undefined && plural !== undefined) {
+        const count = Number(value);
 
-      if (Number.isNaN(count)) return plural;
-      return count === 1 ? singular : plural;
+        if (Number.isNaN(count)) return plural;
+        return count === 1 ? singular : plural;
+      }
+
+      return value == null ? '' : String(value);
     }
-
-    return value == null ? '' : String(value);
-  });
+  );
 }
