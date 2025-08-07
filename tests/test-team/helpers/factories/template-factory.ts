@@ -75,6 +75,7 @@ export const TemplateFactory = {
       owner: user.userId,
       templateStatus,
       templateType: 'LETTER',
+      proofingEnabled: true,
     });
   },
 

@@ -61,6 +61,7 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   owner: null,
   personalisationParameters: null,
   templateType: null,
+  proofingEnabled: null,
 };
 
 export class TemplateRepository {
@@ -360,7 +361,7 @@ export class TemplateRepository {
     valid: boolean,
     personalisationParameters: string[],
     testDataCsvHeaders: string[],
-    clientProofingEnabled: boolean
+    proofingEnabled: boolean
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
@@ -371,7 +372,7 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const canRequestProofing = clientProofingEnabled && this.enableProofing;
+    const canRequestProofing = proofingEnabled && this.enableProofing;
 
     const resolvedPostValidationSuccessStatus = canRequestProofing
       ? 'PENDING_PROOF_REQUEST'
@@ -641,6 +642,7 @@ export class TemplateRepository {
       .expectedTemplateType('LETTER')
       .expectedClientId(user.clientId)
       .expectTemplateExists()
+      .expectProofingEnabled()
       .build();
 
     try {

@@ -216,6 +216,9 @@
                   "type": "string"
                 },
                 "type": "array"
+              },
+              "proofingEnabled": {
+                "type": "boolean"
               }
             },
             "required": [

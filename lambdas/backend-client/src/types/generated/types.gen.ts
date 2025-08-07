@@ -80,6 +80,7 @@ export type LetterProperties = UploadLetterProperties & {
   files: LetterFiles;
   owner?: string;
   personalisationParameters?: Array<string>;
+  proofingEnabled?: boolean;
 };
 
 export type LetterType = 'q4' | 'x0' | 'x1';
