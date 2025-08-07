@@ -231,17 +231,23 @@ test.describe('Edit NHS App Template Page', () => {
     }) => {
       const editTemplatePage = new TemplateMgmtEditNhsAppPage(page);
       await editTemplatePage.loadPage(templates.valid.id);
+
       await expect(page).toHaveURL(
         `${baseURL}/templates/edit-nhs-app-template/${templates.valid.id}`
       );
 
-      await page.locator(`${section} > summary`).click();
-      await expect(page.locator(section)).toHaveAttribute('open');
-      await expect(page.locator(`${section} > div`)).toBeVisible();
+      await page.getByTestId(`${section}-summary`).click();
+      await expect(page.getByTestId(`${section}-details`)).toHaveAttribute(
+        'open',
+        ''
+      );
+      await expect(page.getByTestId(`${section}-text`)).toBeVisible();
 
-      await page.locator(`${section} > summary`).click();
-      await expect(page.locator(section)).not.toHaveAttribute('open');
-      await expect(page.locator(`${section} > div`)).toBeHidden();
+      await page.getByTestId(`${section}-summary`).click();
+      await expect(page.getByTestId(`${section}-details`)).not.toHaveAttribute(
+        'open'
+      );
+      await expect(page.getByTestId(`${section}-text`)).toBeHidden();
     });
   }
 
