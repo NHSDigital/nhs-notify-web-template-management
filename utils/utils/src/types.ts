@@ -106,8 +106,10 @@ export type DatabaseTemplate = {
   letterType?: LetterType;
   message?: string;
   name: string;
+  proofingEnabled?: boolean;
   sftpSendLockTime?: number;
   subject?: string;
+  supplier?: string;
   templateStatus: TemplateStatus;
   templateType: TemplateType;
   updatedAt: string;

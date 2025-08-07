@@ -1,11 +1,12 @@
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
-import { PublishableEventRecord } from './input-schemas';
+import { $DynamoDBTemplate, PublishableEventRecord } from './input-schemas';
 import { Event, $Event } from './output-schemas';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import {
   EventMetadata,
   EventMetadataVersionInformation,
 } from './base-metadata-schemas';
+import { shouldPublish } from './should-publish';
 
 export class EventBuilder {
   constructor(
@@ -73,11 +74,22 @@ export class EventBuilder {
 
     const dynamoRecord = unmarshall(publishableEventRecord.dynamodb.NewImage);
 
+    const databaseTemplate = $DynamoDBTemplate.parse(dynamoRecord);
+
+    if (!shouldPublish(databaseTemplate)) {
+      this.logger.debug({
+        description: 'Not publishing event',
+        publishableEventRecord,
+      });
+
+      return undefined;
+    }
+
     return $Event.parse({
       ...this.buildTemplateSavedEventMetadata(
         publishableEventRecord.eventID,
-        dynamoRecord.templateStatus,
-        dynamoRecord.id
+        databaseTemplate.templateStatus,
+        databaseTemplate.id
       ),
       data: dynamoRecord,
     });

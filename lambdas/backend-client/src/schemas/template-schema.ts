@@ -101,6 +101,7 @@ export const $LetterProperties = schemaFor<LetterProperties>()(
     // TODO: CCM-10432 - remove, not needed after client migration
     owner: z.string().optional(),
     personalisationParameters: z.array(z.string()).optional(),
+    proofingEnabled: z.boolean().optional(),
   })
 );
 

@@ -29,6 +29,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./email-client": "./src/email-client.ts",
+    "./enum": "./src/enum.ts",
     "./lambda-cognito-authorizer": "./src/lambda-cognito-authorizer.ts",
     "./logger": "./src/logger.ts"
   },
