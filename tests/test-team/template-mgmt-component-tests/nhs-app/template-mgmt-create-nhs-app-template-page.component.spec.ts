@@ -157,15 +157,15 @@ test.describe('Create NHS App Template Page', () => {
   });
 
   const detailsSections = [
-    '[data-testid="pds-personalisation-fields-details"]',
-    '[data-testid="custom-personalisation-fields-details"]',
-    '[data-testid="line-breaks-and-paragraphs-details"]',
-    '[data-testid="headings-details"]',
-    '[data-testid="bold-text-details"]',
-    '[data-testid="bullet-points-details"]',
-    '[data-testid="numbered-lists-details"]',
-    '[data-testid="links-and-urls-details"]',
-    '[data-testid="how-to-name-your-template"]',
+    'pds-personalisation-fields-details',
+    'custom-personalisation-fields-details',
+    'line-breaks-and-paragraphs-details',
+    'headings-details',
+    'bold-text-details',
+    'bullet-points-details',
+    'numbered-lists-details',
+    'links-and-urls-details',
+    'how-to-name-your-template',
   ];
 
   for (const section of detailsSections) {
