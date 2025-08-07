@@ -7,6 +7,7 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import Handlebars from 'handlebars';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { randomUUID } from 'node:crypto';
 
 export class EmailClient {
   constructor(
@@ -89,13 +90,20 @@ export class EmailClient {
     return Promise.all(
       recipientEmailsForSupplier.map(async (recipientEmail) => {
         const msg = createMimeMessage();
+
         msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
 
         msg.setRecipient(recipientEmail);
         msg.setSubject(subject);
+
         msg.addMessage({
           contentType: 'text/html',
           data: emailContent,
+        });
+
+        msg.addMessage({
+          contentType: 'text/plain',
+          data: 'plaintext fallback',
         });
 
         const command = new SendRawEmailCommand({
