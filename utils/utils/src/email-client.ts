@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-non-literal-fs-filename */
-import { createMimeMessage, MailboxAddrObject } from 'mimetext';
+import { createMimeMessage } from 'mimetext';
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses';
 import { TemplateDto } from 'nhs-notify-backend-client';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -86,27 +86,28 @@ export class EmailClient {
       return;
     }
 
-    const msg = createMimeMessage();
-    msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
+    return Promise.all(
+      recipientEmailsForSupplier.map(async (recipientEmail) => {
+        const msg = createMimeMessage();
+        msg.setSender({ name: 'NHS Notify', addr: this.senderEmail });
 
-    const recipients: MailboxAddrObject[] = recipientEmailsForSupplier.map(
-      (emailAddress) => ({ addr: emailAddress, type: 'Bcc' })
+        msg.setRecipient(recipientEmail);
+        msg.setSubject(subject);
+        msg.addMessage({
+          contentType: 'text/html',
+          data: emailContent,
+        });
+
+        const command = new SendRawEmailCommand({
+          RawMessage: {
+            Data: Buffer.from(msg.asRaw()),
+          },
+        });
+
+        const res = await this.sesClient.send(command);
+        this.logger.info(res);
+      })
     );
-    msg.setTo(recipients, { type: 'Bcc' });
-    msg.setSubject(subject);
-    msg.addMessage({
-      contentType: 'text/html',
-      data: emailContent,
-    });
-
-    const command = new SendRawEmailCommand({
-      RawMessage: {
-        Data: Buffer.from(msg.asRaw()),
-      },
-    });
-
-    const res = await this.sesClient.send(command);
-    this.logger.info(res);
   }
 
   async sendProofRequestedEmailToSupplier(
