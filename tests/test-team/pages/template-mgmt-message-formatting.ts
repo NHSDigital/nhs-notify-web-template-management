@@ -22,7 +22,7 @@ export class TemplateMgmtMessageFormatting {
     this.headings = this._page.locator('[data-testid="headings-details"]');
 
     this.bulletPoints = this._page.locator(
-      '[data-testid="bullet-lists-details"]'
+      '[data-testid="bullet-points-details"]'
     );
 
     this.numberedList = this._page.locator(
