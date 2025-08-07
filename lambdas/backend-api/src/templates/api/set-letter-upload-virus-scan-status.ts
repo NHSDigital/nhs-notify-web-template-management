@@ -23,16 +23,21 @@ export const createHandler =
       'file-type': fileType,
       'version-id': versionId,
       'template-id': templateId,
-      owner,
+      owner: ownerS3Segment,
     } = LetterUploadRepository.parseKey(objectKey);
 
-    const templateKey = { owner, id: templateId };
     const virusScanResult =
       scanResultStatus === 'NO_THREATS_FOUND' ? 'PASSED' : 'FAILED';
 
+    const ownerFromDatabase = await templateRepository.getOwner(templateId);
+
+    if (!ownerFromDatabase.endsWith(ownerS3Segment)) {
+      throw new Error('Database owner and s3 owner mismatch');
+    }
+
     logger.info('Setting virus scan status', {
       fileType,
-      owner,
+      owner: ownerFromDatabase,
       scanResultStatus,
       templateId,
       versionId,
@@ -40,7 +45,7 @@ export const createHandler =
     });
 
     await templateRepository.setLetterFileVirusScanStatusForUpload(
-      templateKey,
+      { owner: ownerFromDatabase, id: templateId },
       fileType,
       versionId,
       virusScanResult

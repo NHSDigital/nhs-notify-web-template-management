@@ -183,6 +183,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
+        false,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -234,6 +235,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
+        false,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -291,6 +293,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
         user,
+        false,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
