@@ -10,7 +10,7 @@ import {
   CreateUpdateTemplate,
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
-  CreateLetterProperties,
+  UploadLetterProperties,
   ProofFileDetails,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -827,7 +827,7 @@ export class TemplateRepository {
       );
     }
     if (template.templateType === 'LETTER') {
-      values = this.attributeValuesFromMapAndTemplate<CreateLetterProperties>(
+      values = this.attributeValuesFromMapAndTemplate<UploadLetterProperties>(
         letterAttributes,
         template
       );

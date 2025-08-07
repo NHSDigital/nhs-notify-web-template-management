@@ -45,7 +45,7 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (
+  uploadLetterTemplate: (
     id: string,
     user: TestUser,
     name: string,

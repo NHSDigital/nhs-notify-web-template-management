@@ -74,7 +74,8 @@
       }
     ],
     "no-empty-function": "off",
-    "unicorn/prefer-module": "off"
+    "unicorn/prefer-module": "off",
+    "sonarjs/todo-tag": "off"
   },
   "overrides": [
     {

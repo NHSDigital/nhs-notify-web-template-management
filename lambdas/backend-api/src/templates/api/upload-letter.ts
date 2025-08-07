@@ -31,7 +31,7 @@ export function createHandler({
     const { template, pdf, csv } = letterParts;
 
     const { data: created, error: createTemplateError } =
-      await templateClient.createLetterTemplate(
+      await templateClient.uploadLetterTemplate(
         template as CreateUpdateTemplate,
         { userId, clientId },
         pdf,

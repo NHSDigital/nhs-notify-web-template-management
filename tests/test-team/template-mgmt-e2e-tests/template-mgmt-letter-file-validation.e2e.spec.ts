@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateStorageHelper } from '../helpers/db/template-storage-helper';
 import {
   createAuthHelper,
@@ -24,7 +24,7 @@ test.describe('letter file validation', () => {
   test('Uploaded pdf template files and test data csv files are virus scanned - if scan passes, files are copied to the internal bucket and validated', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -115,7 +115,7 @@ test.describe('letter file validation', () => {
   test('PDF only - Uploaded pdf file is virus scanned - if scan passes, file is copied to the internal bucket and validated', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -182,7 +182,7 @@ test.describe('letter file validation', () => {
   test('Uploaded pdf template files and test data csv files are virus scanned - if threat detected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -260,7 +260,7 @@ test.describe('letter file validation', () => {
   test('Uploaded pdf template files and test data csv files are virus scanned - if password protected, files are deleted from quarantine and not copied, file and template status updated in database', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -335,7 +335,7 @@ test.describe('letter file validation', () => {
   test('validation fails if pdf parameters and test data parameters do not match', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -385,7 +385,7 @@ test.describe('letter file validation', () => {
   });
 
   test('validation fails if unexpected csv is uploaded', async ({ page }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -438,7 +438,7 @@ test.describe('letter file validation', () => {
   });
 
   test('validation fails if expected csv is not uploaded', async ({ page }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -483,7 +483,7 @@ test.describe('letter file validation', () => {
   });
 
   test('validation fails if pdf has incomplete address', async ({ page }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -528,7 +528,7 @@ test.describe('letter file validation', () => {
   });
 
   test('validation fails if pdf has empty parameters', async ({ page }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -580,7 +580,7 @@ test.describe('letter file validation', () => {
   test('validation fails if pdf has non-sensible parameters', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 

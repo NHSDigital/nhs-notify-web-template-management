@@ -57,7 +57,7 @@
         ],
         "type": "object"
       },
-      "CreateLetterProperties": {
+      "UploadLetterProperties": {
         "properties": {
           "files": {
             "$ref": "#/components/schemas/LetterFiles"
@@ -99,7 +99,7 @@
                 "$ref": "#/components/schemas/NhsAppProperties"
               },
               {
-                "$ref": "#/components/schemas/CreateLetterProperties"
+                "$ref": "#/components/schemas/UploadLetterProperties"
               }
             ]
           }
@@ -201,7 +201,7 @@
       "LetterProperties": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CreateLetterProperties"
+            "$ref": "#/components/schemas/UploadLetterProperties"
           },
           {
             "properties": {
@@ -468,7 +468,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "CreateLetterTemplate": {
+                "UploadLetterTemplate": {
                   "properties": {
                     "letterPdf": {
                       "format": "binary",
@@ -536,7 +536,7 @@
           },
           "timeoutInMillis": 29000,
           "type": "AWS_PROXY",
-          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${CREATE_LETTER_LAMBDA_ARN}/invocations"
+          "uri": "arn:aws:apigateway:${AWS_REGION}:lambda:path/2015-03-31/functions/${UPLOAD_LETTER_LAMBDA_ARN}/invocations"
         }
       }
     },

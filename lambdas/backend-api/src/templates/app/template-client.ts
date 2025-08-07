@@ -14,7 +14,7 @@ import {
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
-  $CreateLetterTemplate,
+  $UploadLetterTemplate,
   DatabaseTemplate,
   UserWithOptionalClient,
   User,
@@ -104,7 +104,7 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async createLetterTemplate(
+  async uploadLetterTemplate(
     template: CreateUpdateTemplate,
     user: UserWithOptionalClient,
     pdf: File,
@@ -116,7 +116,7 @@ export class TemplateClient {
     });
 
     const templateValidationResult = await validate(
-      $CreateLetterTemplate,
+      $UploadLetterTemplate,
       template
     );
 

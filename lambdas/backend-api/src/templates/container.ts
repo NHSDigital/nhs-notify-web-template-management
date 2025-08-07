@@ -77,7 +77,7 @@ export function createContainer() {
   };
 }
 
-export const createLetterFileRepositoryContainer = () => {
+export const uploadLetterFileRepositoryContainer = () => {
   const { quarantineBucket, internalBucket, downloadBucket } = loadConfig();
 
   const letterFileRepository = new LetterFileRepository(
@@ -107,8 +107,8 @@ export const createTemplateRepositoryContainer = () => {
   };
 };
 
-export const createLetterFileRepositoryAndTemplateRepositoryContainer = () => ({
+export const uploadLetterFileRepositoryAndTemplateRepositoryContainer = () => ({
   ...createTemplateRepositoryContainer(),
-  ...createLetterFileRepositoryContainer(),
+  ...uploadLetterFileRepositoryContainer(),
   logger,
 });

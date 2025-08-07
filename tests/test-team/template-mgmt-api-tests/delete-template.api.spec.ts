@@ -95,7 +95,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
   test.describe('LETTER templates', () => {
     test('returns 204', async ({ request }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
@@ -159,7 +159,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       request,
     }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
@@ -254,7 +254,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       request,
     }) => {
       const { multipart, contentType } =
-        TemplateAPIPayloadFactory.getCreateLetterTemplatePayload(
+        TemplateAPIPayloadFactory.getUploadLetterTemplatePayload(
           {
             templateType: 'LETTER',
           },
