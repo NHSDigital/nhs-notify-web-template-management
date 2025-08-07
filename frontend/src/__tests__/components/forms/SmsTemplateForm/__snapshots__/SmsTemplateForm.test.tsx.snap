@@ -337,7 +337,7 @@ exports[`CreateSmsTemplate component Client-side validation triggers 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -788,7 +788,7 @@ exports[`CreateSmsTemplate component renders page one error 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1219,7 +1219,7 @@ exports[`CreateSmsTemplate component renders page with back link if initial stat
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1684,7 +1684,7 @@ exports[`CreateSmsTemplate component renders page with multiple errors 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2093,7 +2093,7 @@ exports[`CreateSmsTemplate component renders page with no back link if initial s
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >

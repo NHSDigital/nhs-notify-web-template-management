@@ -115,7 +115,7 @@ exports[`Personalisation component matches snapshot 1`] = `
         </a>
          or 
         <a
-          href="https://notify.nhs.uk/using-nhs-notify/mesh"
+          href="/using-nhs-notify/mesh"
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -117,7 +117,7 @@ const personalisation: {
         },
         {
           type: 'text',
-          text: 'Include custom personalisation fields in your content. Then provide your custom personalisation data using [NHS Notify API](/using-nhs-notify/api) or [NHS Notify MESH](https://notify.nhs.uk/using-nhs-notify/mesh).',
+          text: 'Include custom personalisation fields in your content. Then provide your custom personalisation data using [NHS Notify API](/using-nhs-notify/api) or [NHS Notify MESH](/using-nhs-notify/mesh).',
         },
         {
           type: 'text',

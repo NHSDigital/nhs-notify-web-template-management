@@ -284,7 +284,7 @@ exports[`Client-side validation triggers 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1046,7 +1046,7 @@ exports[`renders page one error 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -1836,7 +1836,7 @@ exports[`renders page with multiple errors 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -2553,7 +2553,7 @@ exports[`renders page with preloaded field values 1`] = `
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -3247,7 +3247,7 @@ exports[`renders page without back link for initial state with id - edit mode 1`
               </a>
                or 
               <a
-                href="https://notify.nhs.uk/using-nhs-notify/mesh"
+                href="/using-nhs-notify/mesh"
                 rel="noopener noreferrer"
                 target="_blank"
               >
