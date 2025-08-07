@@ -1,30 +1,30 @@
 import { getMockFormData } from '@testhelpers';
-import { createLetterTemplate } from '@utils/form-actions';
+import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect } from 'next/navigation';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
-import { CreateLetterTemplate } from 'nhs-notify-web-template-management-utils';
+import { UploadLetterTemplate } from 'nhs-notify-web-template-management-utils';
 
 jest.mock('@utils/amplify-utils');
 jest.mock('@utils/form-actions');
 jest.mock('next/navigation');
 
-const createLetterTemplateMock = jest.mocked(createLetterTemplate);
+const uploadLetterTemplateMock = jest.mocked(uploadLetterTemplate);
 const redirectMock = jest.mocked(redirect);
 
-const initialState: CreateLetterTemplate = {
+const initialState: UploadLetterTemplate = {
   templateType: 'LETTER',
   name: 'name',
   letterType: 'x0',
   language: 'en',
 };
 
-describe('CreateLetterTemplate server actions', () => {
+describe('UploadLetterTemplate server actions', () => {
   beforeEach(jest.resetAllMocks);
 
-  it('create-letter-template - should return response when no template name, letter type, language or pdf file', async () => {
+  it('upload-letter-template - should return response when no template name, letter type, language or pdf file', async () => {
     const response = await processFormActions(
       initialState,
-      getMockFormData({ 'form-id': 'create-letter-template' })
+      getMockFormData({ 'form-id': 'upload-letter-template' })
     );
 
     expect(response).toEqual({
@@ -43,7 +43,7 @@ describe('CreateLetterTemplate server actions', () => {
   });
 
   test('should create the template and redirect', async () => {
-    createLetterTemplateMock.mockResolvedValue({
+    uploadLetterTemplateMock.mockResolvedValue({
       ...initialState,
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',
@@ -84,7 +84,7 @@ describe('CreateLetterTemplate server actions', () => {
       })
     );
 
-    expect(createLetterTemplateMock).toHaveBeenCalledWith(
+    expect(uploadLetterTemplateMock).toHaveBeenCalledWith(
       {
         ...initialState,
         name: 'template-name',
@@ -102,7 +102,7 @@ describe('CreateLetterTemplate server actions', () => {
   });
 
   test('should throw error on editing existing template', async () => {
-    createLetterTemplateMock.mockResolvedValue({
+    uploadLetterTemplateMock.mockResolvedValue({
       ...initialState,
       id: 'new-template-id',
       templateStatus: 'NOT_YET_SUBMITTED',

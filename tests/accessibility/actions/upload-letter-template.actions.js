@@ -5,21 +5,21 @@ const pageActions = [
   'wait for element #templateType-LETTER to be visible',
   'click element #templateType-LETTER',
   'click element #choose-a-template-type-submit-button',
-  'wait for element #create-letter-template-submit-button to be visible',
+  'wait for element #upload-letter-template-submit-button to be visible',
 ];
 
-const createLetterTemplatePage = (url) => ({
-  name: 'create-letter-template',
+const uploadLetterTemplatePage = (url) => ({
+  name: 'upload-letter-template',
   url,
   actions: pageActions,
 });
 
-const createLetterTemplateErrorPage = (url) => ({
-  name: 'create-letter-template-error',
+const uploadLetterTemplateErrorPage = (url) => ({
+  name: 'upload-letter-template-error',
   url,
   actions: [
     ...pageActions,
-    'click element #create-letter-template-submit-button',
+    'click element #upload-letter-template-submit-button',
     'wait for element .nhsuk-error-summary__title to be visible',
   ],
   ignore: [
@@ -30,6 +30,6 @@ const createLetterTemplateErrorPage = (url) => ({
 
 module.exports = {
   pageActions,
-  createLetterTemplatePage,
-  createLetterTemplateErrorPage,
+  uploadLetterTemplatePage,
+  uploadLetterTemplateErrorPage,
 };
