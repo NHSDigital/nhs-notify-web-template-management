@@ -443,7 +443,8 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'pickles',
         },
-        { userId: 'real-owner', clientId: 'client' }
+        { userId: 'real-owner', clientId: 'client' },
+        false
       );
 
       expect(response).toEqual({
@@ -476,7 +477,8 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          { userId: 'real-owner', clientId: 'client' }
+          { userId: 'real-owner', clientId: 'client' },
+          false
         );
 
         expect(response).toEqual({
@@ -502,6 +504,7 @@ describe('templateRepository', () => {
       const response = await templateRepository.create(
         { ...emailProperties, ...createTemplateProperties },
         { userId: 'real-owner', clientId: 'client' },
+        false,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );

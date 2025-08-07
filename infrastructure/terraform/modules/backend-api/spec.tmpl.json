@@ -310,6 +310,9 @@
         "properties": {
           "proofing": {
             "type": "boolean"
+          },
+          "clientOwnership": {
+            "type": "boolean"
           }
         },
         "required": [],

@@ -79,6 +79,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
+      clientConfigurationResult.data?.features.clientOwnership || false,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -190,6 +191,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
       user,
+      clientConfigurationResult.data?.features.clientOwnership || false,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
