@@ -155,47 +155,6 @@ describe('templateClient', () => {
       });
     });
 
-    test('client configuration is not fetched if user has no clientId', async () => {
-      const { templateClient, mocks } = setup();
-
-      const data: CreateUpdateTemplate = {
-        templateType: 'EMAIL',
-        name: 'name',
-        message: 'message',
-        subject: 'subject',
-      };
-
-      const expectedTemplateDto: TemplateDto = {
-        ...data,
-        campaignId: 'campaignId',
-        createdAt: new Date().toISOString(),
-        id: templateId,
-        templateStatus: 'NOT_YET_SUBMITTED',
-        updatedAt: new Date().toISOString(),
-      };
-
-      const template: DatabaseTemplate = {
-        ...expectedTemplateDto,
-        owner: user.userId,
-        version: 1,
-      };
-
-      mocks.templateRepository.create.mockResolvedValueOnce({
-        data: template,
-      });
-
-      const result = await templateClient.createTemplate(data, {
-        userId: user.userId,
-        clientId: undefined,
-      });
-
-      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        data: expectedTemplateDto,
-      });
-    });
-
     test('should return a failure result, when saving to the database unexpectedly fails', async () => {
       const { templateClient, mocks } = setup();
 
@@ -223,8 +182,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -275,8 +233,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -333,8 +290,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -596,84 +552,6 @@ describe('templateClient', () => {
         );
       }
     );
-
-    test('if user has no clientId, client configuration is not fetched', async () => {
-      const { templateClient, mocks } = setup();
-
-      const pdfFilename = 'template.pdf';
-
-      const data: CreateUpdateTemplate = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
-      };
-
-      const pdf = new File(['pdf'], pdfFilename, {
-        type: 'application/pdf',
-      });
-
-      const filesWithVersions: LetterFiles = {
-        pdfTemplate: {
-          fileName: pdfFilename,
-          currentVersion: versionId,
-          virusScanStatus: 'PENDING',
-        },
-        proofs: {},
-      };
-
-      const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
-        templateType: 'LETTER',
-        name: 'name',
-        language: 'en',
-        letterType: 'x0',
-        files: filesWithVersions,
-      };
-
-      const creationTime = '2025-03-12T08:41:08.805Z';
-
-      const initialCreatedTemplate: DatabaseTemplate = {
-        ...dataWithFiles,
-        id: templateId,
-        createdAt: creationTime,
-        updatedAt: creationTime,
-        templateStatus: 'PENDING_UPLOAD',
-        owner: user.userId,
-        version: 1,
-      };
-
-      const updateTime = '2025-03-12T08:41:33.666Z';
-
-      const finalTemplate: DatabaseTemplate = {
-        ...initialCreatedTemplate,
-        templateStatus: 'PENDING_VALIDATION',
-        updatedAt: updateTime,
-      };
-
-      const { version: _, ...expectedDto } = finalTemplate;
-
-      mocks.templateRepository.create.mockResolvedValueOnce({
-        data: initialCreatedTemplate,
-      });
-
-      mocks.letterUploadRepository.upload.mockResolvedValueOnce({ data: null });
-
-      mocks.templateRepository.updateStatus.mockResolvedValueOnce({
-        data: finalTemplate,
-      });
-
-      const result = await templateClient.uploadLetterTemplate(
-        data,
-        { userId: user.userId, clientId: undefined },
-        pdf
-      );
-
-      expect(result).toEqual({
-        data: expectedDto,
-      });
-
-      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
-    });
 
     test('should return a failure result, when template data is invalid', async () => {
       const { templateClient, mocks } = setup();
@@ -1331,7 +1209,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1381,7 +1259,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1426,7 +1304,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 

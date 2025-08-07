@@ -10,7 +10,7 @@ import {
   CreateUpdateTemplate,
   ValidatedCreateUpdateTemplate,
   VirusScanStatus,
-  UploadLetterProperties,
+  CreateLetterProperties,
   ProofFileDetails,
 } from 'nhs-notify-backend-client';
 import { logger } from 'nhs-notify-web-template-management-utils/logger';
@@ -61,7 +61,6 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   owner: null,
   personalisationParameters: null,
   templateType: null,
-  proofingEnabled: null,
 };
 
 export class TemplateRepository {
@@ -82,7 +81,12 @@ export class TemplateRepository {
             Keys: [
               { id: templateId, owner: user.userId },
               ...(user.clientId
-                ? [{ id: templateId, owner: `CLIENT#${user.clientId}` }]
+                ? [
+                    {
+                      id: templateId,
+                      owner: this.clientOwnerKey(user.clientId),
+                    },
+                  ]
                 : []),
             ],
           },
@@ -132,7 +136,7 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: user.userId,
+      owner: this.clientOwnerKey(user.clientId),
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
@@ -183,38 +187,33 @@ export class TemplateRepository {
       '#templateStatus = :expectedStatus AND #templateType = :templateType',
     ];
 
-    try {
-      const result = await this._update(
+    return await this.doubleUpdate([
+      this.updateCommand(
         templateId,
         user.userId,
+        undefined,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
         { $and: conditions }
-      );
-
-      return result;
-    } catch (error) {
-      if (
-        error instanceof ConditionalCheckFailedException &&
-        error.Item &&
-        error.Item.templateType.S !== template.templateType
-      ) {
-        return failure(
-          ErrorCase.CANNOT_CHANGE_TEMPLATE_TYPE,
-          'Can not change template templateType',
-          error,
-          {
-            templateType: `Expected ${error.Item.templateType.S} but got ${template.templateType}`,
-          }
-        );
-      }
-
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
+      ),
+      ...(user.clientId
+        ? [
+            this.updateCommand(
+              templateId,
+              user.userId,
+              user.clientId,
+              updateExpression,
+              expressionAttributeNames,
+              expressionAttributeValues,
+              { $and: conditions }
+            ),
+          ]
+        : []),
+    ]);
   }
 
-  async delete(templateId: string, userId: string) {
+  async delete(templateId: string, user: UserWithOptionalClient) {
     const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
 
     const expressionAttributeNames: Record<string, string> = {
@@ -226,23 +225,33 @@ export class TemplateRepository {
       ':ttl': calculateTTL(),
     };
 
-    try {
-      const result = await this._update(
+    return await this.doubleUpdate([
+      this.updateCommand(
         templateId,
-        userId,
+        user.userId,
+        undefined,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
         {}
-      );
-
-      return result;
-    } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
+      ),
+      ...(user.clientId
+        ? [
+            this.updateCommand(
+              templateId,
+              user.userId,
+              user.clientId,
+              updateExpression,
+              expressionAttributeNames,
+              expressionAttributeValues,
+              {}
+            ),
+          ]
+        : []),
+    ]);
   }
 
-  async submit(templateId: string, userId: string) {
+  async submit(templateId: string, user: UserWithOptionalClient) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -258,33 +267,35 @@ export class TemplateRepository {
       '#templateStatus = :expectedStatus OR #templateStatus = :expectedLetterStatus',
     ];
 
-    try {
-      const result = await this._update(
+    return await this.doubleUpdate([
+      this.updateCommand(
         templateId,
-        userId,
+        user.userId,
+        undefined,
         updateExpression,
         {},
         expressionAttributeValues,
         { $and: conditions }
-      );
-
-      return result;
-    } catch (error) {
-      if (error instanceof ConditionalCheckFailedException && error.Item) {
-        return failure(
-          ErrorCase.CANNOT_SUBMIT,
-          'Template cannot be submitted',
-          error
-        );
-      }
-
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
+      ),
+      ...(user.clientId
+        ? [
+            this.updateCommand(
+              templateId,
+              user.userId,
+              user.clientId,
+              updateExpression,
+              {},
+              expressionAttributeValues,
+              { $and: conditions }
+            ),
+          ]
+        : []),
+    ]);
   }
 
   async updateStatus(
     templateId: string,
-    userId: string,
+    user: UserWithOptionalClient,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
@@ -293,19 +304,30 @@ export class TemplateRepository {
       ':newStatus': status,
     };
 
-    try {
-      const result = await this._update(
+    return await this.doubleUpdate([
+      this.updateCommand(
         templateId,
-        userId,
+        user.userId,
+        undefined,
         updateExpression,
         {},
         expressionAttributeValues,
         {}
-      );
-      return result;
-    } catch (error) {
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
+      ),
+      ...(user.clientId
+        ? [
+            this.updateCommand(
+              templateId,
+              user.userId,
+              user.clientId,
+              updateExpression,
+              {},
+              expressionAttributeValues,
+              {}
+            ),
+          ]
+        : []),
+    ]);
   }
 
   private async listQuery(ownerKey: string) {
@@ -360,7 +382,7 @@ export class TemplateRepository {
     valid: boolean,
     personalisationParameters: string[],
     testDataCsvHeaders: string[],
-    proofingEnabled: boolean
+    clientProofingEnabled: boolean
   ) {
     const ExpressionAttributeNames: UpdateCommandInput['ExpressionAttributeNames'] =
       {
@@ -371,7 +393,7 @@ export class TemplateRepository {
         '#version': 'currentVersion',
       };
 
-    const canRequestProofing = proofingEnabled && this.enableProofing;
+    const canRequestProofing = clientProofingEnabled && this.enableProofing;
 
     const resolvedPostValidationSuccessStatus = canRequestProofing
       ? 'PENDING_PROOF_REQUEST'
@@ -408,29 +430,36 @@ export class TemplateRepository {
       );
     }
 
-    try {
-      await this.client.send(
-        new UpdateCommand({
-          TableName: this.templatesTableName,
-          Key: templateKey,
-          UpdateExpression: `SET ${updates.join(' , ')}`,
-          ExpressionAttributeNames,
-          ExpressionAttributeValues,
-          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
-        })
-      );
-    } catch (error) {
-      if (error instanceof ConditionalCheckFailedException) {
-        logger
-          .child({ templateKey })
-          .error(
-            'Conditional check failed when setting letter validation status:',
-            error
-          );
-      } else {
-        throw error;
-      }
-    }
+    return await this.doubleUpdate([
+      this.updateCommand(
+        templateKey.id,
+        templateKey.owner,
+        undefined,
+        updates,
+        ExpressionAttributeNames,
+        ExpressionAttributeValues,
+        {
+          $and: [
+            '#files.#file.#version = :version',
+            'not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+          ],
+        }
+      ),
+      this.updateCommand(
+        templateKey.id,
+        `CLIENT#${templateKey.owner}`,
+        undefined,
+        updates,
+        ExpressionAttributeNames,
+        ExpressionAttributeValues,
+        {
+          $and: [
+            '#files.#file.#version = :version',
+            'not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+          ],
+        }
+      ),
+    ]);
   }
 
   private async appendFileToProofs(
@@ -487,13 +516,13 @@ export class TemplateRepository {
   }
 
   async setLetterFileVirusScanStatusForProof(
-    userId: string,
+    clientId: string,
     templateId: string,
     fileName: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
     supplier: string
   ) {
-    const templateKey = { owner: userId, id: templateId };
+    const templateKey = { owner: clientId, id: templateId };
 
     try {
       const updatedItem = await this.appendFileToProofs(
@@ -601,90 +630,90 @@ export class TemplateRepository {
       updates.push('#templateStatus = :templateStatusFailed');
     }
 
-    try {
-      await this.client.send(
-        new UpdateCommand({
-          TableName: this.templatesTableName,
-          Key: templateKey,
-          UpdateExpression: `SET ${updates.join(' , ')}`,
-          ExpressionAttributeNames,
-          ExpressionAttributeValues,
-          ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
-        })
-      );
-    } catch (error) {
-      if (error instanceof ConditionalCheckFailedException) {
-        logger
-          .child({ templateKey })
-          .error(
-            'Conditional check failed when setting file virus scan status:',
-            error
-          );
-      } else {
-        throw error;
-      }
-    }
+    return await this.doubleUpdate([
+      {
+        TableName: this.templatesTableName,
+        Key: templateKey,
+        UpdateExpression: `SET ${updates.join(' , ')}`,
+        ExpressionAttributeNames,
+        ExpressionAttributeValues,
+        ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+      },
+      {
+        TableName: this.templatesTableName,
+        Key: { ...templateKey, owner: `CLIENT#${templateKey.owner}` },
+        UpdateExpression: `SET ${updates.join(' , ')}`,
+        ExpressionAttributeNames,
+        ExpressionAttributeValues,
+        ConditionExpression: `#files.#file.#version = :version and not #templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)`,
+      },
+    ]);
   }
 
   async proofRequestUpdate(templateId: string, user: User) {
-    const update = new TemplateUpdateBuilder(
-      this.templatesTableName,
-      user.userId,
-      templateId,
-      {
-        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
-        ReturnValues: 'ALL_NEW',
-      }
-    )
-      .setStatus('WAITING_FOR_PROOF')
-      .expectedStatus('PENDING_PROOF_REQUEST')
-      .expectedTemplateType('LETTER')
-      .expectedClientId(user.clientId)
-      .expectTemplateExists()
-      .expectProofingEnabled()
-      .build();
-
-    try {
-      const response = await this.client.send(new UpdateCommand(update));
-      return success(response.Attributes as DatabaseTemplate);
-    } catch (error) {
-      if (error instanceof ConditionalCheckFailedException) {
-        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
+    const updates = [
+      new TemplateUpdateBuilder(
+        this.templatesTableName,
+        user.userId,
+        templateId,
+        {
+          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+          ReturnValues: 'ALL_NEW',
         }
+      )
+        .setStatus('WAITING_FOR_PROOF')
+        .expectedStatus('PENDING_PROOF_REQUEST')
+        .expectedTemplateType('LETTER')
+        .expectedClientId(user.clientId)
+        .expectTemplateExists()
+        .build(),
+      ...(user.clientId
+        ? [
+            new TemplateUpdateBuilder(
+              this.templatesTableName,
+              `CLIENT#${user.clientId}`,
+              templateId,
+              {
+                ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+                ReturnValues: 'ALL_NEW',
+              }
+            )
+              .setStatus('WAITING_FOR_PROOF')
+              .expectedStatus('PENDING_PROOF_REQUEST')
+              .expectedTemplateType('LETTER')
+              .expectedClientId(user.clientId)
+              .expectTemplateExists()
+              .build(),
+          ]
+        : []),
+    ];
 
-        return failure(
-          ErrorCase.VALIDATION_FAILED,
-          'Template cannot be proofed',
-          error
-        );
-      }
-
-      return failure(ErrorCase.INTERNAL, 'Failed to update template', error);
-    }
+    return await this.doubleUpdate(updates);
   }
 
-  private async _update(
+  private updateCommand(
     templateId: string,
     userId: string,
+    clientId: string | undefined,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
     conditionExpression: { $and?: string[] }
-  ) {
+  ): UpdateCommandInput {
     const updatedAt = new Date().toISOString();
 
     const andConditions = [
       'attribute_exists(id)',
+      'attribute_exists(owner)',
       'NOT #templateStatus IN (:deleted, :submitted)',
       ...(conditionExpression.$and || []),
     ].join(' AND ');
 
-    const input: UpdateCommandInput = {
+    return {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner: userId,
+        owner: clientId ?? userId,
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -704,27 +733,74 @@ export class TemplateRepository {
       ReturnValues: 'ALL_NEW',
       ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
     };
+  }
 
-    try {
-      const response = await this.client.send(new UpdateCommand(input));
+  private async doubleUpdate(updates: UpdateCommandInput[]) {
+    const responses = await Promise.allSettled(
+      updates.map((u) => this.client.send(new UpdateCommand(u)))
+    );
 
-      return success(response.Attributes as DatabaseTemplate);
-    } catch (error) {
-      if (error instanceof ConditionalCheckFailedException) {
-        if (!error.Item || error.Item.templateStatus.S === 'DELETED') {
-          return failure(ErrorCase.NOT_FOUND, `Template not found`, error);
-        }
+    const successes = responses.filter((r) => r.status === 'fulfilled');
 
-        if (error.Item.templateStatus.S === 'SUBMITTED') {
-          return failure(
-            ErrorCase.TEMPLATE_ALREADY_SUBMITTED,
-            `Template with status ${error.Item.templateStatus.S} cannot be updated`,
-            error
-          );
-        }
-      }
-      throw error;
+    const nonConditionalUpdateErrors = responses.filter(
+      (r) =>
+        r.status === 'rejected' &&
+        !(r.reason instanceof ConditionalCheckFailedException)
+    );
+
+    if (nonConditionalUpdateErrors.length > 0) {
+      return failure(
+        ErrorCase.INTERNAL,
+        'Unexpected error(s) during template update',
+        new AggregateError(
+          nonConditionalUpdateErrors,
+          'Unexpected error(s) during template update'
+        )
+      );
     }
+
+    const conditionalUpdateToExistingTemplateFailures = responses.filter(
+      (r) =>
+        r.status === 'rejected' &&
+        r.reason instanceof ConditionalCheckFailedException &&
+        r.reason.Item &&
+        r.reason.Item.templateStatus.S !== 'DELETED'
+    );
+
+    if (conditionalUpdateToExistingTemplateFailures.length > 0) {
+      return failure(
+        ErrorCase.VALIDATION_FAILED,
+        'Unexpected error(s) during template update',
+        new AggregateError(
+          conditionalUpdateToExistingTemplateFailures,
+          'Unexpected error(s) during template update'
+        )
+      );
+    }
+
+    const notFoundTemplates = responses.filter(
+      (r) =>
+        r.status === 'rejected' &&
+        r.reason instanceof ConditionalCheckFailedException &&
+        (!r.reason.Item || r.reason.Item.templateStatus.S === 'DELETED')
+    );
+
+    if (success.length === 0 && notFoundTemplates.length > 0) {
+      return failure(
+        ErrorCase.NOT_FOUND,
+        'Template not found',
+        new AggregateError(notFoundTemplates, 'Template not found')
+      );
+    }
+
+    if (successes.length !== 1) {
+      return failure(
+        ErrorCase.INTERNAL,
+        `Unexpected number of updates succeeded: ${successes.length}`
+      );
+    }
+
+    return success(successes[0].value.Attributes as DatabaseTemplate);
   }
 
   private attributeExpressionsFromMap<T>(
@@ -791,6 +867,10 @@ export class TemplateRepository {
     return names;
   }
 
+  private clientOwnerKey(clientId: string) {
+    return `CLIENT#${clientId}`;
+  }
+
   private attributeValuesFromMapAndTemplate<T>(
     channelSpecificAttributes: Record<keyof T, null>,
     template: T
@@ -826,7 +906,7 @@ export class TemplateRepository {
       );
     }
     if (template.templateType === 'LETTER') {
-      values = this.attributeValuesFromMapAndTemplate<UploadLetterProperties>(
+      values = this.attributeValuesFromMapAndTemplate<CreateLetterProperties>(
         letterAttributes,
         template
       );

@@ -15,7 +15,7 @@ const setup = () => {
 describe('Template API - Create', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when, no user in requestContext', async () => {
+  test('should return 400 - Invalid request when, no userId or clientId in requestContext', async () => {
     const { handler, mocks } = setup();
 
     const event = mock<APIGatewayProxyEvent>({
@@ -150,46 +150,6 @@ describe('Template API - Create', () => {
     expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
       userId: 'sub',
       clientId: 'notify-client-id',
-    });
-  });
-
-  test('should return template when no clientId in auth context', async () => {
-    const { handler, mocks } = setup();
-
-    const create: CreateUpdateTemplate = {
-      name: 'updated-name',
-      message: 'message',
-      templateType: 'SMS',
-    };
-    const response: TemplateDto = {
-      ...create,
-      id: 'id',
-      templateStatus: 'NOT_YET_SUBMITTED',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    mocks.templateClient.createTemplate.mockResolvedValueOnce({
-      data: response,
-    });
-
-    const event = {
-      requestContext: {
-        authorizer: { user: 'sub' },
-      },
-      body: JSON.stringify(create),
-    } as unknown as APIGatewayProxyEvent;
-
-    const result = await handler(event, mock<Context>(), jest.fn());
-
-    expect(result).toEqual({
-      statusCode: 201,
-      body: JSON.stringify({ statusCode: 201, template: response }),
-    });
-
-    expect(mocks.templateClient.createTemplate).toHaveBeenCalledWith(create, {
-      userId: 'sub',
-      clientId: undefined,
     });
   });
 });
