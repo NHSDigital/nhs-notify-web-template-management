@@ -80,6 +80,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       validationResult.data,
       user,
+      clientConfigurationResult.data?.features.clientOwnership || false,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -191,6 +192,7 @@ export class TemplateClient {
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
       user,
+      clientConfigurationResult.data?.features.clientOwnership || false,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -390,9 +392,9 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log

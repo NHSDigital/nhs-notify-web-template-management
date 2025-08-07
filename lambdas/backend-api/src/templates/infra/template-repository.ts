@@ -131,6 +131,7 @@ export class TemplateRepository {
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
     user: User,
+    enableClientOwnership: boolean,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
   ): Promise<ApplicationResult<DatabaseTemplate>> {
@@ -138,7 +139,7 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: user.userId,
+      owner: enableClientOwnership ? user.clientId : user.userId,
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
@@ -501,13 +502,13 @@ export class TemplateRepository {
   }
 
   async setLetterFileVirusScanStatusForProof(
-    userId: string,
+    owner: string,
     templateId: string,
     fileName: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
     supplier: string
   ) {
-    const templateKey = { owner: userId, id: templateId };
+    const templateKey = { owner, id: templateId };
 
     try {
       const updatedItem = await this.appendFileToProofs(
@@ -641,24 +642,31 @@ export class TemplateRepository {
   }
 
   async proofRequestUpdate(templateId: string, user: User) {
-    const update = new TemplateUpdateBuilder(
-      this.templatesTableName,
-      user.userId,
-      templateId,
-      {
-        ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
-        ReturnValues: 'ALL_NEW',
-      }
-    )
-      .setStatus('WAITING_FOR_PROOF')
-      .expectedStatus('PENDING_PROOF_REQUEST')
-      .expectedTemplateType('LETTER')
-      .expectedClientId(user.clientId)
-      .expectTemplateExists()
-      .expectProofingEnabled()
-      .build();
-
     try {
+      const userOwner = await this.getUserOwner(user, templateId);
+
+      const ownerKey =
+        userOwner.type === 'clientOwner'
+          ? userOwner.clientId
+          : userOwner.userId;
+
+      const update = new TemplateUpdateBuilder(
+        this.templatesTableName,
+        ownerKey,
+        templateId,
+        {
+          ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
+          ReturnValues: 'ALL_NEW',
+        }
+      )
+        .setStatus('WAITING_FOR_PROOF')
+        .expectedStatus('PENDING_PROOF_REQUEST')
+        .expectedTemplateType('LETTER')
+        .expectedClientId(user.clientId)
+        .expectTemplateExists()
+        .expectProofingEnabled()
+        .build();
+
       const response = await this.client.send(new UpdateCommand(update));
       return success(response.Attributes as DatabaseTemplate);
     } catch (error) {
@@ -741,7 +749,7 @@ export class TemplateRepository {
     }
   }
 
-  private async getUserOwner(
+  async getUserOwner(
     user: UserWithOptionalClient,
     templateId: string
   ): Promise<UserOwner> {

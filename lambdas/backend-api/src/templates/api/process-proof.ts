@@ -27,8 +27,10 @@ export const createHandler =
 
     const owner = await templateRepository.getOwner(templateId);
 
+    const ownerS3Segment = owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
+
     const internalKey = LetterProofRepository.getInternalKey(
-      owner,
+      ownerS3Segment,
       templateId,
       fileName
     );
@@ -37,7 +39,7 @@ export const createHandler =
 
     if (virusScanResult === 'PASSED') {
       const downloadKey = LetterProofRepository.getDownloadKey(
-        owner,
+        ownerS3Segment,
         templateId,
         fileName
       );
