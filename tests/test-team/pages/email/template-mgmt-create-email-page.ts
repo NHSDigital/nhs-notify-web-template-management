@@ -32,10 +32,10 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic 
     this.messageTextArea = page.locator('[id="emailTemplateMessage"]');
     this.errorSummary = page.locator('[class="nhsuk-error-summary"]');
     this.customPersonalisationFields = page.locator(
-      '[data-testid="custom-personalisation-details"]'
+      '[data-testid="custom-personalisation-fields-details"]'
     );
     this.pdsPersonalisationFields = page.locator(
-      '[data-testid="pds-personalisation-details"]'
+      '[data-testid="pds-personalisation-fields-details"]'
     );
     this.namingYourTemplate = page.locator(
       '[data-testid="how-to-name-your-template"]'

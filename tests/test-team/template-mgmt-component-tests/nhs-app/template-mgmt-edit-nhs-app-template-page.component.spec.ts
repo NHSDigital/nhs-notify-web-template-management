@@ -212,8 +212,8 @@ test.describe('Edit NHS App Template Page', () => {
   });
 
   const detailsSections = [
-    '[data-testid="pds-personalisation-details"]',
-    '[data-testid="custom-personalisation-details"]',
+    '[data-testid="pds-personalisation-fields-details"]',
+    '[data-testid="custom-personalisation-fields-details"]',
     '[data-testid="line-breaks-and-paragraphs-details"]',
     '[data-testid="headings-details"]',
     '[data-testid="bold-text-details"]',
