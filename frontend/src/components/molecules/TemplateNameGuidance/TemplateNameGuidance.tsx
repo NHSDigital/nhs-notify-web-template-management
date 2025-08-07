@@ -15,7 +15,9 @@ export function TemplateNameGuidance({ template }: TemplateNameGuidanceType) {
 
   return (
     <Details data-testid='how-to-name-your-template-details'>
-      <Details.Summary data-testid='how-to-name-your-template-summary'>{templateNameDetailsSummary}</Details.Summary>
+      <Details.Summary data-testid='how-to-name-your-template-summary'>
+        {templateNameDetailsSummary}
+      </Details.Summary>
       <Details.Text data-testid='how-to-name-your-template-text'>
         <p>{templateNameDetailsOpeningParagraph}</p>
         <p>{templateNameDetailsListHeader}</p>
