@@ -14,9 +14,9 @@ export function TemplateNameGuidance({ template }: TemplateNameGuidanceType) {
   const templateNameDetailsExampleText = templateNameDetailsExample[template];
 
   return (
-    <Details data-testid='how-to-name-your-template'>
-      <Details.Summary>{templateNameDetailsSummary}</Details.Summary>
-      <Details.Text>
+    <Details data-testid='how-to-name-your-template-details'>
+      <Details.Summary data-testid='how-to-name-your-template-summary'>{templateNameDetailsSummary}</Details.Summary>
+      <Details.Text data-testid='how-to-name-your-template-text'>
         <p>{templateNameDetailsOpeningParagraph}</p>
         <p>{templateNameDetailsListHeader}</p>
         <ul>

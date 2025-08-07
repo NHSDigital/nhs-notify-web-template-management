@@ -119,7 +119,7 @@ test.describe('Create Letter Template Page', () => {
     ).toHaveText(['Select a letter template PDF']);
   });
 
-  const detailsSections = ['[data-testid="how-to-name-your-template"]'];
+  const detailsSections = ['[data-testid="how-to-name-your-template-details"]'];
 
   for (const section of detailsSections) {
     // eslint-disable-next-line no-loop-func

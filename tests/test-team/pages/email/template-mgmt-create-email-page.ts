@@ -38,7 +38,7 @@ export class TemplateMgmtCreateEmailPage extends TemplateMgmtBasePageNonDynamic 
       '[data-testid="pds-personalisation-fields-details"]'
     );
     this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template"]'
+      '[data-testid="how-to-name-your-template-details"]'
     );
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')

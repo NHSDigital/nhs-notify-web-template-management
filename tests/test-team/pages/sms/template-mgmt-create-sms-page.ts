@@ -39,7 +39,7 @@ export class TemplateMgmtCreateSmsPage extends TemplateMgmtBasePageNonDynamic {
       '[data-testid="pds-personalisation-fields-details"]'
     );
     this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template"]'
+      '[data-testid="how-to-name-your-template-details"]'
     );
     this.pricingLink = page.getByTestId('sms-pricing-info-0').locator('a');
     this.characterCountText = page.getByTestId('character-message-count-0');

@@ -105,10 +105,11 @@ exports[`Client-side validation triggers 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -118,6 +119,7 @@ exports[`Client-side validation triggers 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -549,10 +551,11 @@ exports[`hides right-to-left language warning when language changes 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -562,6 +565,7 @@ exports[`hides right-to-left language warning when language changes 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -1019,10 +1023,11 @@ exports[`renders page one error 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -1032,6 +1037,7 @@ exports[`renders page one error 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -1519,10 +1525,11 @@ exports[`renders page with multiple errors 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -1532,6 +1539,7 @@ exports[`renders page with multiple errors 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -1974,10 +1982,11 @@ exports[`renders page with preloaded field values 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -1987,6 +1996,7 @@ exports[`renders page with preloaded field values 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.
@@ -2425,10 +2435,11 @@ exports[`shows right-to-left language warning when language changes 1`] = `
             </div>
             <details
               class="nhsuk-details"
-              data-testid="how-to-name-your-template"
+              data-testid="how-to-name-your-template-details"
             >
               <summary
                 class="nhsuk-details__summary"
+                data-testid="how-to-name-your-template-summary"
               >
                 <span
                   class="nhsuk-details__summary-text"
@@ -2438,6 +2449,7 @@ exports[`shows right-to-left language warning when language changes 1`] = `
               </summary>
               <div
                 class="nhsuk-details__text"
+                data-testid="how-to-name-your-template-text"
               >
                 <p>
                   You should name your templates in a way that works best for your service or organisation.

@@ -36,7 +36,7 @@ export class TemplateMgmtEditEmailPage extends TemplateMgmtBasePageDynamic {
       '[data-testid="pds-personalisation-fields-details"]'
     );
     this.namingYourTemplate = page.locator(
-      '[data-testid="how-to-name-your-template"]'
+      '[data-testid="how-to-name-your-template-details"]'
     );
 
     this.messageFormatting = new TemplateMgmtMessageFormatting(page);
