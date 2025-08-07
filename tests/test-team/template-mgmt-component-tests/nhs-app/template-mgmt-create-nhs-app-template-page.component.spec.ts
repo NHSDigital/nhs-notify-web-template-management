@@ -157,14 +157,14 @@ test.describe('Create NHS App Template Page', () => {
   });
 
   const detailsSections = [
-    'pds-personalisation-fields-details',
-    'custom-personalisation-fields-details',
-    'line-breaks-and-paragraphs-details',
-    'headings-details',
-    'bold-text-details',
-    'bullet-points-details',
-    'numbered-lists-details',
-    'links-and-urls-details',
+    'pds-personalisation-fields',
+    'custom-personalisation-fields',
+    'line-breaks-and-paragraphs',
+    'headings',
+    'bold-text',
+    'bullet-points',
+    'numbered-lists',
+    'links-and-urls',
     'how-to-name-your-template',
   ];
 
