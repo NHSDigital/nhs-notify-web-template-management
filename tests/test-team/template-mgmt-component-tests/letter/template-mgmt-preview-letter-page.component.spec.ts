@@ -90,7 +90,7 @@ async function createTemplates() {
       'PASSED'
     ),
     proofingDisabled: {
-      ...TemplateFactory.createLetterTemplate(
+      ...TemplateFactory.uploadLetterTemplate(
         '9AACCD57-C6A3-4273-854C-3839A081B4D8',
         user,
         'ProofingDisabled',

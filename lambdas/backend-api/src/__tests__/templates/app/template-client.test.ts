@@ -576,7 +576,7 @@ describe('templateClient', () => {
           },
         });
 
-        const result = await templateClient.createLetterTemplate(
+        const result = await templateClient.uploadLetterTemplate(
           data,
           user,
           pdf,
