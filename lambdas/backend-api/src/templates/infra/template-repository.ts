@@ -34,6 +34,10 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
+type UserOwner =
+  | ({ type: 'clientOwner' } & User)
+  | ({ type: 'directOwner' } & UserWithOptionalClient);
+
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
@@ -63,6 +67,8 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   templateType: null,
   proofingEnabled: null,
 };
+
+const clientOwnerPrefix = 'CLIENT#';
 
 export class TemplateRepository {
   constructor(
@@ -184,9 +190,11 @@ export class TemplateRepository {
     ];
 
     try {
+      const userOwner = await this.getUserOwner(user, templateId);
+
       const result = await this._update(
         templateId,
-        user.userId,
+        userOwner,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -214,7 +222,7 @@ export class TemplateRepository {
     }
   }
 
-  async delete(templateId: string, userId: string) {
+  async delete(templateId: string, user: UserWithOptionalClient) {
     const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
 
     const expressionAttributeNames: Record<string, string> = {
@@ -227,9 +235,11 @@ export class TemplateRepository {
     };
 
     try {
+      const userOwner = await this.getUserOwner(user, templateId);
+
       const result = await this._update(
         templateId,
-        userId,
+        userOwner,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -242,7 +252,7 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, userId: string) {
+  async submit(templateId: string, user: UserWithOptionalClient) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -259,9 +269,11 @@ export class TemplateRepository {
     ];
 
     try {
+      const userOwner = await this.getUserOwner(user, templateId);
+
       const result = await this._update(
         templateId,
-        userId,
+        userOwner,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -284,7 +296,7 @@ export class TemplateRepository {
 
   async updateStatus(
     templateId: string,
-    userId: string,
+    user: UserWithOptionalClient,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
@@ -294,9 +306,11 @@ export class TemplateRepository {
     };
 
     try {
+      const userOwner = await this.getUserOwner(user, templateId);
+
       const result = await this._update(
         templateId,
-        userId,
+        userOwner,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -666,7 +680,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    userId: string,
+    user: UserOwner,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
@@ -684,7 +698,7 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner: userId,
+        owner: user.type === 'clientOwner' ? user.clientId : user.userId,
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -696,7 +710,7 @@ export class TemplateRepository {
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
         ':updatedAt': updatedAt,
-        ':updatedBy': userId,
+        ':updatedBy': user.userId,
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
       },
@@ -725,6 +739,41 @@ export class TemplateRepository {
       }
       throw error;
     }
+  }
+
+  private async getUserOwner(
+    user: UserWithOptionalClient,
+    templateId: string
+  ): Promise<UserOwner> {
+    const owner = await this.getOwner(templateId);
+    const clientOwned = this.isClientOwner(owner, user.clientId);
+
+    return clientOwned && user.clientId
+      ? {
+          type: 'clientOwner' as const,
+          userId: user.userId,
+          clientId: user.clientId,
+        }
+      : {
+          type: 'directOwner' as const,
+          userId: user.userId,
+          clientId: user.clientId,
+        };
+  }
+
+  private isClientOwner(owner: string, expectedClient: string | undefined) {
+    if (owner.startsWith(clientOwnerPrefix)) {
+      const clientId = owner.slice(clientOwnerPrefix.length);
+
+      if (clientId === expectedClient) {
+        return true;
+      } else {
+        throw new Error(
+          'Client template owner does not match authenticated client'
+        );
+      }
+    }
+    return false;
   }
 
   private attributeExpressionsFromMap<T>(

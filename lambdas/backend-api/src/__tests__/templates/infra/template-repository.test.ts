@@ -562,7 +562,13 @@ describe('templateRepository', () => {
           Item,
         });
 
-        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+        mocks.ddbDocClient
+          .on(QueryCommand)
+          .resolves({
+            Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+          })
+          .on(UpdateCommand)
+          .rejects(error);
 
         const response = await templateRepository.update(
           'abc-def-ghi-jkl-123',
@@ -594,7 +600,13 @@ describe('templateRepository', () => {
 
       const error = new Error('mocked');
 
-      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
+        .on(UpdateCommand)
+        .rejects(error);
 
       const response = await templateRepository.update(
         'abc-def-ghi-jkl-123',
@@ -636,6 +648,10 @@ describe('templateRepository', () => {
         };
 
         mocks.ddbDocClient
+          .on(QueryCommand)
+          .resolves({
+            Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+          })
           .on(UpdateCommand, {
             TableName: templatesTableName,
             Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
@@ -744,12 +760,18 @@ describe('templateRepository', () => {
         Item,
       });
 
-      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
+        .on(UpdateCommand)
+        .rejects(error);
 
-      const response = await templateRepository.submit(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.submit('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
@@ -767,12 +789,18 @@ describe('templateRepository', () => {
 
       const error = new Error('mocked');
 
-      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
+        .on(UpdateCommand)
+        .rejects(error);
 
-      const response = await templateRepository.submit(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.submit('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
@@ -803,16 +831,20 @@ describe('templateRepository', () => {
       };
 
       mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
         .on(UpdateCommand, {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
         })
         .resolves({ Attributes: databaseTemplate });
 
-      const response = await templateRepository.submit(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.submit('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         data: databaseTemplate,
@@ -858,11 +890,20 @@ describe('templateRepository', () => {
           Item,
         });
 
-        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+        mocks.ddbDocClient
+          .on(QueryCommand)
+          .resolves({
+            Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+          })
+          .on(UpdateCommand)
+          .rejects(error);
 
         const response = await templateRepository.delete(
           'abc-def-ghi-jkl-123',
-          'real-owner'
+          {
+            userId: 'real-owner',
+            clientId: undefined,
+          }
         );
 
         expect(response).toEqual({
@@ -882,12 +923,18 @@ describe('templateRepository', () => {
 
       const error = new Error('mocked');
 
-      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
+        .on(UpdateCommand)
+        .rejects(error);
 
-      const response = await templateRepository.delete(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.delete('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         error: {
@@ -918,6 +965,10 @@ describe('templateRepository', () => {
       };
 
       mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
         .on(UpdateCommand, {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
@@ -928,10 +979,10 @@ describe('templateRepository', () => {
           },
         });
 
-      const response = await templateRepository.delete(
-        'abc-def-ghi-jkl-123',
-        'real-owner'
-      );
+      const response = await templateRepository.delete('abc-def-ghi-jkl-123', {
+        userId: 'real-owner',
+        clientId: undefined,
+      });
 
       expect(response).toEqual({
         data: databaseTemplate,
@@ -977,11 +1028,20 @@ describe('templateRepository', () => {
           Item,
         });
 
-        mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+        mocks.ddbDocClient
+          .on(QueryCommand)
+          .resolves({
+            Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+          })
+          .on(UpdateCommand)
+          .rejects(error);
 
         const response = await templateRepository.updateStatus(
           'abc-def-ghi-jkl-123',
-          'real-owner',
+          {
+            userId: 'real-owner',
+            clientId: undefined,
+          },
           'PENDING_VALIDATION'
         );
 
@@ -1002,11 +1062,20 @@ describe('templateRepository', () => {
 
       const error = new Error('mocked');
 
-      mocks.ddbDocClient.on(UpdateCommand).rejects(error);
+      mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
+        .on(UpdateCommand)
+        .rejects(error);
 
       const response = await templateRepository.updateStatus(
         'abc-def-ghi-jkl-123',
-        'real-owner',
+        {
+          userId: 'real-owner',
+          clientId: undefined,
+        },
         'PENDING_VALIDATION'
       );
 
@@ -1039,6 +1108,10 @@ describe('templateRepository', () => {
       };
 
       mocks.ddbDocClient
+        .on(QueryCommand)
+        .resolves({
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: 'real-owner' }],
+        })
         .on(UpdateCommand, {
           TableName: templatesTableName,
           Key: { id: 'abc-def-ghi-jkl-123', owner: 'real-owner' },
@@ -1051,7 +1124,10 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.updateStatus(
         'abc-def-ghi-jkl-123',
-        'real-owner',
+        {
+          userId: 'real-owner',
+          clientId: undefined,
+        },
         'PENDING_VALIDATION'
       );
 

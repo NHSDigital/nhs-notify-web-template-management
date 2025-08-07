@@ -413,7 +413,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         'PENDING_VALIDATION'
       );
     });
@@ -1025,7 +1025,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.updateStatus).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
         'PENDING_VALIDATION'
       );
     });
@@ -1528,7 +1528,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1568,7 +1568,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -1602,7 +1602,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.submit).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -2011,7 +2011,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
@@ -2045,7 +2045,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.delete).toHaveBeenCalledWith(
         templateId,
-        user.userId
+        user
       );
 
       expect(result).toEqual({
