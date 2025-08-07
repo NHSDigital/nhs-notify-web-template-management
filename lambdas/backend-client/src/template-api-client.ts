@@ -43,7 +43,7 @@ export class TemplateApiClient {
     };
   }
 
-  async createLetterTemplate(
+  async uploadLetterTemplate(
     template: CreateUpdateTemplate,
     token: string,
     pdf: File,

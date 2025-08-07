@@ -12,11 +12,11 @@ import {
   type TestUser,
   testUsers,
 } from '../../helpers/auth/cognito-auth-helper';
-import { TemplateMgmtCreateLetterPage } from '../../pages/letter/template-mgmt-create-letter-page';
-import { TemplateMgmtCreateLetterMissingCampaignClientIdPage } from '../../pages/letter/template-mgmt-create-letter-missing-campaign-client-id-page';
+import { TemplateMgmtUploadLetterPage } from '../../pages/letter/template-mgmt-upload-letter-page';
+import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
 import { loginAsUser } from '../../helpers/auth/login-as-user';
 
-test.describe('Create Letter Template Page', () => {
+test.describe('Upload letter Template Page', () => {
   const templateStorageHelper = new TemplateStorageHelper();
 
   let user: TestUser;
@@ -39,7 +39,7 @@ test.describe('Create Letter Template Page', () => {
 
   test('common page tests', async ({ page, baseURL }) => {
     const props = {
-      page: new TemplateMgmtCreateLetterPage(page),
+      page: new TemplateMgmtUploadLetterPage(page),
       baseURL,
     };
 
@@ -53,10 +53,10 @@ test.describe('Create Letter Template Page', () => {
     });
   });
 
-  test('Validate error messages on the create Letter template page with no template name or pdf', async ({
+  test('Validate error messages on the upload letter template page with no template name or pdf', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
 
@@ -74,7 +74,7 @@ test.describe('Create Letter Template Page', () => {
   test('when user submits form with valid data, then the next page is displayed', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
     await page
@@ -102,10 +102,10 @@ test.describe('Create Letter Template Page', () => {
     });
   });
 
-  test('Validate error messages on the create letter template page with no PDF', async ({
+  test('Validate error messages on the upload letter template page with no PDF', async ({
     page,
   }) => {
-    const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+    const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
     await expect(createTemplatePage.pageHeader).toHaveText(
@@ -126,7 +126,7 @@ test.describe('Create Letter Template Page', () => {
     test(`when user clicks ${section} tool tip, then tool tip is displayed ${section}`, async ({
       page,
     }) => {
-      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
       await createTemplatePage.loadPage();
 
       await page.getByTestId(`${section}-summary`).click();
@@ -160,7 +160,7 @@ test.describe('Create Letter Template Page', () => {
       page,
       baseURL,
     }) => {
-      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
       await createTemplatePage.loadPage();
 
@@ -183,14 +183,14 @@ test.describe('Create Letter Template Page', () => {
     }) => {
       await loginAsUser(userWithoutCampaignId, page);
 
-      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
       const missingClientOrCampaignIdErrorPage =
-        new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+        new TemplateMgmtUploadLetterMissingCampaignClientIdPage(page);
 
       await createTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegment}`
       );
 
       await assertMissingClientOrCampaignIdErrorPage(
@@ -204,14 +204,14 @@ test.describe('Create Letter Template Page', () => {
     }) => {
       await loginAsUser(userWithoutClientId, page);
 
-      const createTemplatePage = new TemplateMgmtCreateLetterPage(page);
+      const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
       const missingClientOrCampaignIdErrorPage =
-        new TemplateMgmtCreateLetterMissingCampaignClientIdPage(page);
+        new TemplateMgmtUploadLetterMissingCampaignClientIdPage(page);
 
       createTemplatePage.loadPage();
 
       await expect(page).toHaveURL(
-        `${baseURL}/templates/${TemplateMgmtCreateLetterMissingCampaignClientIdPage.pageUrlSegment}`
+        `${baseURL}/templates/${TemplateMgmtUploadLetterMissingCampaignClientIdPage.pageUrlSegment}`
       );
 
       await assertMissingClientOrCampaignIdErrorPage(
@@ -221,7 +221,7 @@ test.describe('Create Letter Template Page', () => {
   });
 
   const assertMissingClientOrCampaignIdErrorPage = async (
-    page: TemplateMgmtCreateLetterMissingCampaignClientIdPage
+    page: TemplateMgmtUploadLetterMissingCampaignClientIdPage
   ) => {
     await expect(page.heading).toHaveText(
       'You cannot create letter templates yet'

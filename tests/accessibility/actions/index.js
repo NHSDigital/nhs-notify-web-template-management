@@ -2,7 +2,7 @@ module.exports = {
   ...require('./choose-a-template-type.actions'),
   ...require('./copy-template.actions'),
   ...require('./create-email-template.actions'),
-  ...require('./create-letter-template.actions'),
+  ...require('./upload-letter-template.actions'),
   ...require('./create-nhs-app-template.actions'),
   ...require('./create-text-message-template.actions'),
   ...require('./email-template-submitted.actions'),

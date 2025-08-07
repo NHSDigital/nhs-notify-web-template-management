@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateLetterTemplatePage should render CreateLetterTemplatePage 1`] = `
+exports[`UploadLetterTemplatePage should render UploadLetterTemplatePage 1`] = `
 <LetterTemplateForm
   initialState={
     {

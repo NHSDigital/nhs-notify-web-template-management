@@ -6,7 +6,7 @@ import { TemplateMgmtBasePageDynamic } from '../pages/template-mgmt-base-page-dy
 import { TemplateMgmtChoosePage } from '../pages/template-mgmt-choose-page';
 import { TemplateMgmtCopyPage } from '../pages/template-mgmt-copy-page';
 import { TemplateMgmtCreateEmailPage } from '../pages/email/template-mgmt-create-email-page';
-import { TemplateMgmtCreateLetterPage } from '../pages/letter/template-mgmt-create-letter-page';
+import { TemplateMgmtUploadLetterPage } from '../pages/letter/template-mgmt-upload-letter-page';
 import { TemplateMgmtCreateNhsAppPage } from '../pages/nhs-app/template-mgmt-create-nhs-app-page';
 import { TemplateMgmtCreateSmsPage } from '../pages/sms/template-mgmt-create-sms-page';
 import { TemplateMgmtDeletePage } from '../pages/template-mgmt-delete-page';
@@ -32,7 +32,7 @@ import { TemplateMgmtTemplateSubmittedEmailPage } from '../pages/email/template-
 import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/template-mgmt-template-submitted-letter-page';
 import { TemplateMgmtTemplateSubmittedNhsAppPage } from '../pages/nhs-app/template-mgmt-template-submitted-nhs-app-page';
 import { TemplateMgmtTemplateSubmittedSmsPage } from '../pages/sms/template-mgmt-template-submitted-sms-page';
-import { TemplateMgmtCreateLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-create-letter-missing-campaign-client-id-page';
+import { TemplateMgmtUploadLetterMissingCampaignClientIdPage } from '../pages/letter/template-mgmt-upload-letter-missing-campaign-client-id-page';
 
 // Reset storage state for this file to avoid being authenticated
 test.use({ storageState: { cookies: [], origins: [] } });
@@ -42,8 +42,8 @@ const protectedPages = [
   TemplateMgmtChoosePage,
   TemplateMgmtCopyPage,
   TemplateMgmtCreateEmailPage,
-  TemplateMgmtCreateLetterPage,
-  TemplateMgmtCreateLetterMissingCampaignClientIdPage,
+  TemplateMgmtUploadLetterPage,
+  TemplateMgmtUploadLetterMissingCampaignClientIdPage,
   TemplateMgmtCreateNhsAppPage,
   TemplateMgmtCreateSmsPage,
   TemplateMgmtDeletePage,

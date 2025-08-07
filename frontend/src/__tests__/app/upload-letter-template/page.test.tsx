@@ -1,10 +1,15 @@
 /**
  * @jest-environment node
  */
-import CreateLetterTemplatePage from '@app/create-letter-template/page';
+import UploadLetterTemplatePage, {
+  generateMetadata,
+} from '@app/upload-letter-template/page';
+import content from '@content/content';
 import { getSessionServer } from '@utils/amplify-utils';
 import { fetchClient } from '@utils/server-features';
 import { redirect, RedirectType } from 'next/navigation';
+
+const { pageTitle } = content.components.templateFormLetter;
 
 jest.mock('next/navigation');
 jest.mock('@utils/amplify-utils');
@@ -13,12 +18,12 @@ jest.mock('@utils/server-features');
 const mockGetSessionServer = jest.mocked(getSessionServer);
 const mockFetchClient = jest.mocked(fetchClient);
 
-describe('CreateLetterTemplatePage', () => {
+describe('UploadLetterTemplatePage', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  it('should render CreateLetterTemplatePage', async () => {
+  it('should render UploadLetterTemplatePage', async () => {
     mockGetSessionServer.mockResolvedValueOnce({
       accessToken: 'mocktoken',
       clientId: 'client1',
@@ -30,8 +35,9 @@ describe('CreateLetterTemplatePage', () => {
       },
     });
 
-    const page = await CreateLetterTemplatePage();
+    const page = await UploadLetterTemplatePage();
 
+    expect(await generateMetadata()).toEqual({ title: pageTitle });
     expect(page).toMatchSnapshot();
   });
 
@@ -47,7 +53,7 @@ describe('CreateLetterTemplatePage', () => {
       },
     });
 
-    await CreateLetterTemplatePage();
+    await UploadLetterTemplatePage();
 
     expect(mockGetSessionServer).toHaveBeenCalled();
     expect(mockFetchClient).toHaveBeenCalled();
@@ -67,10 +73,10 @@ describe('CreateLetterTemplatePage', () => {
       },
     });
 
-    await CreateLetterTemplatePage();
+    await UploadLetterTemplatePage();
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   });
@@ -89,10 +95,10 @@ describe('CreateLetterTemplatePage', () => {
       },
     });
 
-    await CreateLetterTemplatePage();
+    await UploadLetterTemplatePage();
 
     expect(mockRedirect).toHaveBeenCalledWith(
-      '/create-letter-template/client-id-and-campaign-id-required',
+      '/upload-letter-template/client-id-and-campaign-id-required',
       RedirectType.replace
     );
   });

@@ -777,6 +777,7 @@ const templateFormNhsApp = {
 const templateFormLetter = {
   backLinkText: 'Back to choose a template type',
   errorHeading: 'There is a problem',
+  pageTitle: generatePageTitle('Upload a letter template'),
   pageHeading: 'Upload a letter template',
   templateNameLabelText: 'Template name',
   templateNameHintText: 'This will not be visible to recipients.',

@@ -78,7 +78,7 @@ describe('TemplateAPIClient', () => {
     expect(result.error).toBeUndefined();
   });
 
-  test('createLetterTemplate - should return error', async () => {
+  test('uploadLetterTemplate - should return error', async () => {
     axiosMock.onPost('/v1/letter-template').reply(400, {
       statusCode: 400,
       technicalMessage: 'Bad request',
@@ -89,7 +89,7 @@ describe('TemplateAPIClient', () => {
 
     const client = new TemplateApiClient();
 
-    const result = await client.createLetterTemplate(
+    const result = await client.uploadLetterTemplate(
       {
         name: 'test',
         templateType: 'LETTER',
@@ -115,7 +115,7 @@ describe('TemplateAPIClient', () => {
     expect(axiosMock.history.post.length).toBe(1);
   });
 
-  test('createLetterTemplate - should return template', async () => {
+  test('uploadLetterTemplate - should return template', async () => {
     axiosMock.onPost('/v1/letter-template').reply(201, {
       statusCode: 201,
       template: {
@@ -141,7 +141,7 @@ describe('TemplateAPIClient', () => {
 
     const client = new TemplateApiClient();
 
-    const result = await client.createLetterTemplate(
+    const result = await client.uploadLetterTemplate(
       {
         name: 'test',
         templateType: 'LETTER',

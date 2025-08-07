@@ -1,4 +1,4 @@
-module "create_letter_template_lambda" {
+module "upload_letter_template_lambda" {
   source = "git::https://github.com/NHSDigital/nhs-notify-shared-modules.git//infrastructure/modules/lambda?ref=v2.0.4"
 
   project        = var.project
@@ -9,11 +9,11 @@ module "create_letter_template_lambda" {
 
   kms_key_arn = var.kms_key_arn
 
-  function_name = "create-letter"
+  function_name = "upload-letter"
 
-  function_module_name  = "create-letter"
+  function_module_name  = "upload-letter"
   handler_function_name = "handler"
-  description           = "Create letter template API endpoint"
+  description           = "Upload letter template API endpoint"
 
   memory  = 512
   timeout = 20
@@ -21,20 +21,20 @@ module "create_letter_template_lambda" {
 
   log_retention_in_days = var.log_retention_in_days
   iam_policy_document = {
-    body = data.aws_iam_policy_document.create_letter_template_lambda_policy.json
+    body = data.aws_iam_policy_document.upload_letter_template_lambda_policy.json
   }
 
   lambda_env_vars         = local.backend_lambda_environment_variables
   function_s3_bucket      = var.function_s3_bucket
   function_code_base_path = local.lambdas_dir
-  function_code_dir       = "backend-api/dist/create-letter"
+  function_code_dir       = "backend-api/dist/upload-letter"
 
   send_to_firehose          = var.send_to_firehose
   log_destination_arn       = var.log_destination_arn
   log_subscription_role_arn = var.log_subscription_role_arn
 }
 
-data "aws_iam_policy_document" "create_letter_template_lambda_policy" {
+data "aws_iam_policy_document" "upload_letter_template_lambda_policy" {
   statement {
     sid    = "AllowDynamoAccess"
     effect = "Allow"
