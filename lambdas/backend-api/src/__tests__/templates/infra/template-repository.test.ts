@@ -444,8 +444,7 @@ describe('templateRepository', () => {
           message: 'message',
           subject: 'pickles',
         },
-        'real-owner',
-        'client'
+        { userId: 'real-owner', clientId: 'client' }
       );
 
       expect(response).toEqual({
@@ -478,8 +477,7 @@ describe('templateRepository', () => {
 
         const response = await templateRepository.create(
           { ...channelProperties, ...createTemplateProperties },
-          'real-owner',
-          'client'
+          { userId: 'real-owner', clientId: 'client' }
         );
 
         expect(response).toEqual({
@@ -504,8 +502,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.create(
         { ...emailProperties, ...createTemplateProperties },
-        'real-owner',
-        'client',
+        { userId: 'real-owner', clientId: 'client' },
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -575,7 +572,7 @@ describe('templateRepository', () => {
             subject: 'subject',
             templateType: 'EMAIL',
           },
-          'real-owner',
+          { userId: 'real-owner', clientId: undefined },
           'NOT_YET_SUBMITTED'
         );
 
@@ -607,7 +604,7 @@ describe('templateRepository', () => {
           subject: 'subject',
           templateType: 'EMAIL',
         },
-        'real-owner',
+        { userId: 'real-owner', clientId: undefined },
         'NOT_YET_SUBMITTED'
       );
 
@@ -654,7 +651,7 @@ describe('templateRepository', () => {
         const response = await templateRepository.update(
           'abc-def-ghi-jkl-123',
           updatedTemplate,
-          'real-owner',
+          { userId: 'real-owner', clientId: undefined },
           'NOT_YET_SUBMITTED'
         );
 
