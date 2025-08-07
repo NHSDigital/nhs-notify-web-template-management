@@ -182,8 +182,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -234,8 +233,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         undefined
       );
@@ -292,8 +290,7 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         data,
-        user.userId,
-        user.clientId,
+        user,
         'NOT_YET_SUBMITTED',
         'campaignId'
       );
@@ -1212,7 +1209,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1262,7 +1259,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
@@ -1307,7 +1304,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.update).toHaveBeenCalledWith(
         templateId,
         data,
-        user.userId,
+        user,
         'NOT_YET_SUBMITTED'
       );
 
