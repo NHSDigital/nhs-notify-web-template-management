@@ -53,6 +53,7 @@
     ],
     "security/detect-object-injection": "off",
     "sonarjs/no-duplicate-string": "off",
+    "sonarjs/todo-tag": "off",
     "no-param-reassign": "off",
     "no-useless-constructor": "off",
     "sonarjs/no-small-switch": "off",
@@ -73,7 +74,8 @@
       }
     ],
     "no-empty-function": "off",
-    "unicorn/prefer-module": "off"
+    "unicorn/prefer-module": "off",
+    "sonarjs/todo-tag": "off"
   },
   "overrides": [
     {

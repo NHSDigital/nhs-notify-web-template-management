@@ -1,4 +1,4 @@
 import { createHandler } from './api/copy-scanned-object-to-internal';
-import { createLetterFileRepositoryContainer } from './container';
+import { uploadLetterFileRepositoryContainer } from './container';
 
-export const handler = createHandler(createLetterFileRepositoryContainer());
+export const handler = createHandler(uploadLetterFileRepositoryContainer());

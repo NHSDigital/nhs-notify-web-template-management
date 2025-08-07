@@ -2,11 +2,21 @@ import { mockDeep } from 'jest-mock-extended';
 import { EventBuilder } from '../../domain/event-builder';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { PublishableEventRecord } from '../../domain/input-schemas';
+import { shouldPublish } from '../../domain/should-publish';
+
+jest.mock('../../domain/should-publish');
 
 beforeAll(() => {
   jest.useFakeTimers();
   jest.setSystemTime(new Date('2022-01-01 09:00'));
 });
+
+beforeEach(() => {
+  jest.resetAllMocks();
+  shouldPublishMock.mockReturnValueOnce(true);
+});
+
+const shouldPublishMock = jest.mocked(shouldPublish);
 
 const mockLogger = mockDeep<Logger>();
 
@@ -51,6 +61,9 @@ const publishableEventRecord = (status: string): PublishableEventRecord => ({
       },
       letterType: {
         S: 'x0',
+      },
+      proofingEnabled: {
+        BOOL: true,
       },
       files: {
         M: {
@@ -181,6 +194,17 @@ test('builds template deleted event', () => {
       'https://notify.nhs.uk/events/schemas/TemplateDeleted/v1.json'
     )
   );
+});
+
+test('should return undefined when not a publishable event', () => {
+  shouldPublishMock.mockReset();
+  shouldPublishMock.mockReturnValueOnce(false);
+
+  const event = eventBuilder.buildEvent(
+    publishableEventRecord('PROOF_AVAILABLE')
+  );
+
+  expect(event).toEqual(undefined);
 });
 
 test('does not build template event on hard delete', () => {

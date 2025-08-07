@@ -265,6 +265,13 @@ const previewLetterTemplate = {
   validationErrorAction:
     'Check that the personalisation fields in your template file match the fields in your example personalisation file',
   preSubmissionText: previewLetterPreSubmissionText,
+  rtlWarning: {
+    heading: 'Important',
+    text1: `The proof of this letter template will not be available online because of the language you've chosen.`,
+    text2:
+      'After you submit your template, our service team will send you a proof by email instead.',
+    text3: 'This email will tell you what to do next.',
+  },
 };
 
 const previewNHSAppTemplate = {
@@ -550,6 +557,7 @@ const templateFormNhsApp = {
 const templateFormLetter = {
   backLinkText: 'Back to choose a template type',
   errorHeading: 'There is a problem',
+  pageTitle: generatePageTitle('Upload a letter template'),
   pageHeading: 'Upload a letter template',
   templateNameLabelText: 'Template name',
   templateNameHintText: 'This will not be visible to recipients.',

@@ -13,7 +13,7 @@ import { TemplateMgmtRequestProofPage } from '../../pages/template-mgmt-request-
 async function createTemplates() {
   const user = await createAuthHelper().getTestUser(testUsers.User1.userId);
 
-  const withProofsBase = TemplateFactory.createLetterTemplate(
+  const withProofsBase = TemplateFactory.uploadLetterTemplate(
     'C8814A1D-1F3A-4AE4-9FE3-BDDA76EADF0C',
     user,
     'proofs-template-letter',
@@ -50,45 +50,54 @@ async function createTemplates() {
       templateStatus: 'NOT_YET_SUBMITTED',
       owner: user.userId,
     } as Template,
-    notYetSubmitted: TemplateFactory.createLetterTemplate(
+    notYetSubmitted: TemplateFactory.uploadLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',
       user,
       'notYetSubmitted',
       'NOT_YET_SUBMITTED'
     ),
-    pendingProofRequest: TemplateFactory.createLetterTemplate(
+    pendingProofRequest: TemplateFactory.uploadLetterTemplate(
       '10AE654B-72B5-4A67-913C-2E103C7FF47B',
       user,
       'pendingProofRequest',
       'PENDING_PROOF_REQUEST'
     ),
-    pendingUpload: TemplateFactory.createLetterTemplate(
+    pendingUpload: TemplateFactory.uploadLetterTemplate(
       '5C442DA9-B555-4CEA-AFE9-143851FD210B',
       user,
       'pendingUpload',
       'PENDING_UPLOAD'
     ),
-    pending: TemplateFactory.createLetterTemplate(
+    pending: TemplateFactory.uploadLetterTemplate(
       'pending-letter-preview-template',
       user,
       'test-pending-template-letter',
       'PENDING_UPLOAD',
       'PENDING'
     ),
-    virus: TemplateFactory.createLetterTemplate(
+    virus: TemplateFactory.uploadLetterTemplate(
       'virus-letter-preview-template',
       user,
       'test-virus-template-letter',
       'VIRUS_SCAN_FAILED',
       'FAILED'
     ),
-    invalid: TemplateFactory.createLetterTemplate(
+    invalid: TemplateFactory.uploadLetterTemplate(
       'invalid-letter-preview-template',
       user,
       'test-invalid-template-letter',
       'VALIDATION_FAILED',
       'PASSED'
     ),
+    proofingDisabled: {
+      ...TemplateFactory.uploadLetterTemplate(
+        '9AACCD57-C6A3-4273-854C-3839A081B4D8',
+        user,
+        'ProofingDisabled',
+        'NOT_YET_SUBMITTED'
+      ),
+      proofingEnabled: false,
+    },
     withProofs,
   };
 }
@@ -121,6 +130,27 @@ test.describe('Preview Letter template Page', () => {
 
     await expect(previewLetterTemplatePage.pageHeader).toContainText(
       templates.notYetSubmitted.name
+    );
+
+    await previewLetterTemplatePage.clickContinueButton();
+
+    await expect(page).toHaveURL(TemplateMgmtSubmitLetterPage.urlRegexp);
+  });
+
+  test('when proofingEnabled is false, user can click to go submit page', async ({
+    page,
+    baseURL,
+  }) => {
+    const previewLetterTemplatePage = new TemplateMgmtPreviewLetterPage(page);
+
+    await previewLetterTemplatePage.loadPage(templates.proofingDisabled.id);
+
+    await expect(page).toHaveURL(
+      `${baseURL}/templates/${TemplateMgmtPreviewLetterPage.pageUrlSegment}/${templates.proofingDisabled.id}`
+    );
+
+    await expect(previewLetterTemplatePage.pageHeader).toContainText(
+      templates.proofingDisabled.name
     );
 
     await previewLetterTemplatePage.clickContinueButton();

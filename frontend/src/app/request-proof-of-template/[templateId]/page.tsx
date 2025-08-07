@@ -32,7 +32,7 @@ const RequestProofPage = async (props: PageProps) => {
 
   const validatedTemplate = validateLetterTemplate(template);
 
-  if (!validatedTemplate) {
+  if (!validatedTemplate || !validatedTemplate.proofingEnabled) {
     return redirect('/invalid-template', RedirectType.replace);
   }
 

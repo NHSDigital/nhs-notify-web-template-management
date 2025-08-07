@@ -14,12 +14,13 @@ import {
 import { TemplateRepository } from '@backend-api/templates/infra';
 import { LETTER_MULTIPART } from 'nhs-notify-backend-client/src/schemas/constants';
 import {
-  $CreateLetterTemplate,
+  $UploadLetterTemplate,
   DatabaseTemplate,
   UserWithOptionalClient,
   User,
   $LetterTemplate,
 } from 'nhs-notify-web-template-management-utils';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
@@ -103,7 +104,7 @@ export class TemplateClient {
     return success(templateDTO);
   }
 
-  async createLetterTemplate(
+  async uploadLetterTemplate(
     template: CreateUpdateTemplate,
     user: UserWithOptionalClient,
     pdf: File,
@@ -115,7 +116,7 @@ export class TemplateClient {
     });
 
     const templateValidationResult = await validate(
-      $CreateLetterTemplate,
+      $UploadLetterTemplate,
       template
     );
 
@@ -144,6 +145,21 @@ export class TemplateClient {
       );
     }
 
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
+
+    if (clientConfigurationResult.error) {
+      log
+        .child(clientConfigurationResult.error.errorMeta)
+        .error(
+          'Failed to fetch client configuration',
+          clientConfigurationResult.error.actualError
+        );
+
+      return clientConfigurationResult;
+    }
+
     const versionId = randomUUID();
 
     const files: LetterFiles = {
@@ -162,28 +178,19 @@ export class TemplateClient {
       proofs: {},
     };
 
-    const withFiles = {
+    const proofingEnabled =
+      (!isRightToLeft(templateValidationResult.data.language) &&
+        clientConfigurationResult.data?.features.proofing) ||
+      false;
+
+    const letterTemplateFields = {
       ...templateValidationResult.data,
+      proofingEnabled,
       files,
     };
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
-
-    if (clientConfigurationResult.error) {
-      log
-        .child(clientConfigurationResult.error.errorMeta)
-        .error(
-          'Failed to fetch client configuration',
-          clientConfigurationResult.error.actualError
-        );
-
-      return clientConfigurationResult;
-    }
-
     const createResult = await this.templateRepository.create(
-      withFiles,
+      letterTemplateFields,
       user.userId,
       user.clientId,
       'PENDING_UPLOAD',
