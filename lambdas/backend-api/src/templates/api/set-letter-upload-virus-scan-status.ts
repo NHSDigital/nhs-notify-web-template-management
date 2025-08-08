@@ -23,7 +23,7 @@ export const createHandler =
       'file-type': fileType,
       'version-id': versionId,
       'template-id': templateId,
-      owner: ownerS3Segment,
+      'user-or-client-id': userOrClientId,
     } = LetterUploadRepository.parseKey(objectKey);
 
     const virusScanResult =
@@ -31,7 +31,7 @@ export const createHandler =
 
     const ownerFromDatabase = await templateRepository.getOwner(templateId);
 
-    if (!ownerFromDatabase.endsWith(ownerS3Segment)) {
+    if (!ownerFromDatabase.endsWith(userOrClientId)) {
       throw new Error('Database owner and s3 owner mismatch');
     }
 

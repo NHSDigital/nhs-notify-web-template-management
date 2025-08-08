@@ -5,6 +5,7 @@ import { ClientConfiguration, ClientFeatures } from '../types/generated';
 const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
     proofing: z.boolean(),
+    clientOwnership: z.boolean().optional(),
   })
 );
 
