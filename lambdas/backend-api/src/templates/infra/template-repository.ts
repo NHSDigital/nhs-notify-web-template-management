@@ -755,7 +755,7 @@ export class TemplateRepository {
     }
   }
 
-  async getUserTemplateOwner(
+  private async getUserTemplateOwner(
     user: UserWithOptionalClient,
     templateId: string
   ): Promise<string | undefined> {
