@@ -56,7 +56,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // exercise: make the GET request to retrieve the template
@@ -118,7 +118,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // exercise: make the GET request to retrieve the template as user2
@@ -161,7 +161,7 @@ test.describe('GET /v1/template/:templateId', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     const deleteResponse = await request.delete(

@@ -132,7 +132,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -178,7 +178,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -368,7 +368,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -414,7 +414,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -576,7 +576,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -623,7 +623,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
