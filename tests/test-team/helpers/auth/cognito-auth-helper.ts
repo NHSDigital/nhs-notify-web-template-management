@@ -47,7 +47,7 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
    */
   User2: {
     userId: 'User2',
-    clientKey: 'Client2',
+    clientKey: 'Client5',
   },
   /**
    * User3 idle user that stays stayed in
@@ -78,6 +78,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
   User6: {
     userId: 'User6',
     clientKey: 'Client4',
+  },
+  /**
+   * User8 has a client which has the client ownership feature disabled
+   */
+  User8: {
+    userId: 'User8',
+    clientKey: 'Client5',
   },
 };
 
