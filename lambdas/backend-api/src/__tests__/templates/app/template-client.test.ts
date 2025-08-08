@@ -400,8 +400,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: true },
-        user.userId,
-        user.clientId,
+        user,
+        false,
         'PENDING_UPLOAD',
         'campaignId'
       );
@@ -549,8 +549,8 @@ describe('templateClient', () => {
 
         expect(mocks.templateRepository.create).toHaveBeenCalledWith(
           { ...dataWithFiles, proofingEnabled: expected },
-          user.userId,
-          user.clientId,
+          user,
+          false,
           'PENDING_UPLOAD',
           'campaignId'
         );
@@ -798,8 +798,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
+        false,
         'PENDING_UPLOAD',
         undefined
       );
@@ -924,8 +924,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
+        false,
         'PENDING_UPLOAD',
         undefined
       );
@@ -1014,8 +1014,8 @@ describe('templateClient', () => {
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
         { ...dataWithFiles, proofingEnabled: false },
-        user.userId,
-        user.clientId,
+        user,
+        false,
         'PENDING_UPLOAD',
         undefined
       );
