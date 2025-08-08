@@ -34,9 +34,9 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-type UserOwner =
+type TypedUser =
   | ({ type: 'clientOwner' } & User)
-  | ({ type: 'directOwner' } & UserWithOptionalClient);
+  | ({ type: 'userOwner' } & UserWithOptionalClient);
 
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
@@ -139,7 +139,9 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner: enableClientOwnership ? user.clientId : user.userId,
+      owner: enableClientOwnership
+        ? this.clientOwnerKey(user.clientId)
+        : user.userId,
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
@@ -191,11 +193,11 @@ export class TemplateRepository {
     ];
 
     try {
-      const userOwner = await this.getUserOwner(user, templateId);
+      const typedUser = await this.getTypedUser(user, templateId);
 
       const result = await this._update(
         templateId,
-        userOwner,
+        typedUser,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -236,11 +238,11 @@ export class TemplateRepository {
     };
 
     try {
-      const userOwner = await this.getUserOwner(user, templateId);
+      const typedUser = await this.getTypedUser(user, templateId);
 
       const result = await this._update(
         templateId,
-        userOwner,
+        typedUser,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -270,11 +272,11 @@ export class TemplateRepository {
     ];
 
     try {
-      const userOwner = await this.getUserOwner(user, templateId);
+      const typedUser = await this.getTypedUser(user, templateId);
 
       const result = await this._update(
         templateId,
-        userOwner,
+        typedUser,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -307,11 +309,11 @@ export class TemplateRepository {
     };
 
     try {
-      const userOwner = await this.getUserOwner(user, templateId);
+      const typedUser = await this.getTypedUser(user, templateId);
 
       const result = await this._update(
         templateId,
-        userOwner,
+        typedUser,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -643,12 +645,12 @@ export class TemplateRepository {
 
   async proofRequestUpdate(templateId: string, user: User) {
     try {
-      const userOwner = await this.getUserOwner(user, templateId);
+      const typedUser = await this.getTypedUser(user, templateId);
 
       const ownerKey =
-        userOwner.type === 'clientOwner'
-          ? userOwner.clientId
-          : userOwner.userId;
+        typedUser.type === 'clientOwner'
+          ? this.clientOwnerKey(typedUser.clientId)
+          : typedUser.userId;
 
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
@@ -688,7 +690,7 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    user: UserOwner,
+    user: TypedUser,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
@@ -706,7 +708,10 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner: user.type === 'clientOwner' ? user.clientId : user.userId,
+        owner:
+          user.type === 'clientOwner'
+            ? this.clientOwnerKey(user.clientId)
+            : user.userId,
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -749,10 +754,10 @@ export class TemplateRepository {
     }
   }
 
-  async getUserOwner(
+  async getTypedUser(
     user: UserWithOptionalClient,
     templateId: string
-  ): Promise<UserOwner> {
+  ): Promise<TypedUser> {
     const owner = await this.getOwner(templateId);
     const clientOwned = this.isClientOwner(owner, user.clientId);
 
@@ -763,7 +768,7 @@ export class TemplateRepository {
           clientId: user.clientId,
         }
       : {
-          type: 'directOwner' as const,
+          type: 'userOwner' as const,
           userId: user.userId,
           clientId: user.clientId,
         };
@@ -782,6 +787,10 @@ export class TemplateRepository {
       }
     }
     return false;
+  }
+
+  private clientOwnerKey(clientId: string) {
+    return `CLIENT#${clientId}`;
   }
 
   private attributeExpressionsFromMap<T>(

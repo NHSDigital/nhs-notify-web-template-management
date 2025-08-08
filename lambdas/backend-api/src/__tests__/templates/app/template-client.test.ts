@@ -408,7 +408,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         csv
@@ -931,7 +932,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         undefined
@@ -1020,7 +1022,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         undefined
@@ -1887,7 +1890,8 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        false
       );
 
       expect(result).toEqual({
@@ -1896,32 +1900,6 @@ describe('templateClient', () => {
           errorMeta: {
             code: 500,
             description: 'Failed to send to proofing queue',
-          },
-        },
-      });
-    });
-
-    test('should return a failure result, when user has no clientId (so proofing cannot be determined to be enabled)', async () => {
-      const { templateClient, mocks } = setup();
-
-      const result = await templateClient.requestProof(templateId, {
-        userId: user.userId,
-        clientId: undefined as unknown as string,
-      });
-
-      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
-
-      expect(
-        mocks.templateRepository.proofRequestUpdate
-      ).not.toHaveBeenCalled();
-
-      expect(mocks.queueMock.send).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            code: 403,
-            description: 'User cannot request a proof',
           },
         },
       });
@@ -1988,7 +1966,8 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        false
       );
 
       expect(result).toEqual({

@@ -56,7 +56,7 @@ export class ValidateLetterTemplateFilesLambda {
 
     const {
       'template-id': templateId,
-      owner,
+      'user-or-client-id': userOrClientId,
       'version-id': versionId,
     } = metadata;
 
@@ -68,8 +68,8 @@ export class ValidateLetterTemplateFilesLambda {
           is complete, we will know unambiguously that it's a clientId and this
           doubly attempted fetch won't be required
         */
-        userId: owner,
-        clientId: owner,
+        userId: userOrClientId,
+        clientId: userOrClientId,
       });
 
     if (getTemplateError) {
@@ -128,7 +128,8 @@ export class ValidateLetterTemplateFilesLambda {
 
     const downloads = [
       this.letterUploadRepository.download(
-        { id: templateId, owner },
+        templateId,
+        userOrClientId,
         'pdf-template',
         versionId
       ),
@@ -137,7 +138,8 @@ export class ValidateLetterTemplateFilesLambda {
     if (csvData) {
       downloads.push(
         this.letterUploadRepository.download(
-          { id: templateId, owner },
+          templateId,
+          userOrClientId,
           'test-data',
           versionId
         )
@@ -152,7 +154,7 @@ export class ValidateLetterTemplateFilesLambda {
       throw new Error('Not all files are available to download');
     }
 
-    const pdf = new TemplatePdf({ id: templateId, owner }, pdfBuff);
+    const pdf = new TemplatePdf(templateId, userOrClientId, pdfBuff);
 
     const proofingEnabled = template.proofingEnabled || false;
 
