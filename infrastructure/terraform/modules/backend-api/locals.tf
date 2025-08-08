@@ -15,7 +15,6 @@ locals {
     AUTHORIZER_LAMBDA_ARN    = module.authorizer_lambda.function_arn
     AWS_REGION               = var.region
     CREATE_LAMBDA_ARN        = module.create_template_lambda.function_arn
-    CREATE_LETTER_LAMBDA_ARN = module.create_letter_template_lambda.function_arn
     DELETE_LAMBDA_ARN        = module.delete_template_lambda.function_arn
     GET_CLIENT_LAMBDA_ARN    = module.get_client_lambda.function_arn
     GET_LAMBDA_ARN           = module.get_template_lambda.function_arn
@@ -23,6 +22,7 @@ locals {
     REQUEST_PROOF_LAMBDA_ARN = module.request_proof_lambda.function_arn
     SUBMIT_LAMBDA_ARN        = module.submit_template_lambda.function_arn
     UPDATE_LAMBDA_ARN        = module.update_template_lambda.function_arn
+    UPLOAD_LETTER_LAMBDA_ARN = module.upload_letter_template_lambda.function_arn
   })
 
   backend_lambda_environment_variables = {

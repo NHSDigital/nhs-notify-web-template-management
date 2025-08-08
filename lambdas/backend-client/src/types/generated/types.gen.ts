@@ -15,7 +15,7 @@ export type BaseTemplate = {
   name: string;
 };
 
-export type CreateLetterProperties = {
+export type UploadLetterProperties = {
   files?: LetterFiles;
   language: Language;
   letterType: LetterType;
@@ -23,7 +23,7 @@ export type CreateLetterProperties = {
 };
 
 export type CreateUpdateTemplate = BaseTemplate &
-  (SmsProperties | EmailProperties | NhsAppProperties | CreateLetterProperties);
+  (SmsProperties | EmailProperties | NhsAppProperties | UploadLetterProperties);
 
 export type EmailProperties = {
   message: string;
@@ -76,10 +76,11 @@ export type LetterFiles = {
   testDataCsv?: VersionedFileDetails;
 };
 
-export type LetterProperties = CreateLetterProperties & {
+export type LetterProperties = UploadLetterProperties & {
   files: LetterFiles;
   owner?: string;
   personalisationParameters?: Array<string>;
+  proofingEnabled?: boolean;
 };
 
 export type LetterType = 'q4' | 'x0' | 'x1';

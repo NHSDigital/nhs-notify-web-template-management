@@ -4,10 +4,11 @@ exports[`TemplateNameGuidance component renders component correctly as TemplateN
 <DocumentFragment>
   <details
     class="nhsuk-details"
-    data-testid="how-to-name-your-template"
+    data-testid="how-to-name-your-template-details"
   >
     <summary
       class="nhsuk-details__summary"
+      data-testid="how-to-name-your-template-summary"
     >
       <span
         class="nhsuk-details__summary-text"
@@ -17,6 +18,7 @@ exports[`TemplateNameGuidance component renders component correctly as TemplateN
     </summary>
     <div
       class="nhsuk-details__text"
+      data-testid="how-to-name-your-template-text"
     >
       <p>
         You should name your templates in a way that works best for your service or organisation.

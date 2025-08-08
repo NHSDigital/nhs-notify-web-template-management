@@ -45,7 +45,7 @@ export const TemplateFactory = {
     });
   },
 
-  createLetterTemplate: (
+  uploadLetterTemplate: (
     id: string,
     user: TestUser,
     name: string,
@@ -75,6 +75,7 @@ export const TemplateFactory = {
       owner: user.userId,
       templateStatus,
       templateType: 'LETTER',
+      proofingEnabled: true,
     });
   },
 

@@ -141,17 +141,17 @@ async function createTemplates() {
         templateStatus: 'NOT_YET_SUBMITTED',
         owner: user.userId,
       } as Template,
-      submit: TemplateFactory.createLetterTemplate(
+      submit: TemplateFactory.uploadLetterTemplate(
         'submit-letter-submit-template',
         user,
         'test-template-name'
       ),
-      submitAndReturn: TemplateFactory.createLetterTemplate(
+      submitAndReturn: TemplateFactory.uploadLetterTemplate(
         'submit-and-return-letter-template',
         user,
         'test-template-name'
       ),
-      valid: TemplateFactory.createLetterTemplate(
+      valid: TemplateFactory.uploadLetterTemplate(
         'valid-letter-submit-template',
         user,
         'test-template-name'

@@ -27,6 +27,7 @@ const generateLetterTemplateData = (
     language: 'en',
     createdAt: now,
     updatedAt: now,
+    proofingEnabled: true,
     files: {
       pdfTemplate: {
         fileName: 'template.pdf',

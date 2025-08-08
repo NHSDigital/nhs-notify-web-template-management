@@ -30,6 +30,8 @@ import { $CreateSmsTemplateSchema, processFormActions } from './server-action';
 import { calculateHowManySmsMessages } from './view-actions';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import classNames from 'classnames';
+import { ContentRenderer } from '@molecules/ContentRenderer/ContentRenderer';
 
 export const SmsTemplateForm: FC<
   PageComponentProps<SMSTemplate | CreateUpdateSMSTemplate>
@@ -61,11 +63,8 @@ export const SmsTemplateForm: FC<
     buttonText,
     errorHeading,
     pageHeadingSuffix,
-    smsCountText1,
-    smsCountText2,
-    smsPricingLink,
-    smsPricingText,
     templateMessageLabelText,
+    templateMessageFooterText,
     templateNameHintText,
     templateNameLabelText,
   } = content.components.templateFormSms;
@@ -78,22 +77,30 @@ export const SmsTemplateForm: FC<
         </Link>
       )}
       <NHSNotifyMain>
+        <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
+          <ZodErrorSummary
+            errorHeading={errorHeading}
+            state={{ validationError }}
+          />
+          <h1 data-testid='page-heading'>
+            {editMode ? 'Edit ' : 'Create '}
+            {pageHeadingSuffix}
+          </h1>
+        </div>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
-            <h1 data-testid='page-heading'>
-              {editMode ? 'Edit ' : 'Create '}
-              {pageHeadingSuffix}
-            </h1>
             <NHSNotifyFormWrapper
               action={action}
               formId='create-sms-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
+                  templateNameError && 'nhsuk-form-group--error'
+                )}
+              >
                 <Label htmlFor='smsTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
@@ -108,40 +115,31 @@ export const SmsTemplateForm: FC<
                   autoComplete='off'
                 />
               </div>
-              <Textarea
-                id='smsTemplateMessage'
-                label={templateMessageLabelText}
-                labelProps={{ size: 's' }}
-                defaultValue={smsTemplateMessage}
-                onChange={smsTemplateMessageHandler}
-                maxLength={MAX_SMS_CHARACTER_LENGTH}
-                rows={10}
-                error={templateMessageError}
-                errorProps={{ id: 'smsTemplateMessage--error-message' }}
-                autoComplete='off'
-              />
-              <JsEnabled>
-                <p className='nhsuk-u-margin-bottom-0' id='character-count'>
-                  {smsTemplateMessage.length} characters
-                </p>
-                <p>
-                  {smsCountText1}
-                  {calculateHowManySmsMessages(
-                    Number(smsTemplateMessage.length)
-                  )}
-                  {smsCountText2}
-                </p>
-              </JsEnabled>
-              <p>
-                <a
-                  href={smsPricingLink}
-                  data-testid='sms-pricing-link'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  {smsPricingText}
-                </a>
-              </p>
+              <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
+                <Textarea
+                  id='smsTemplateMessage'
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  defaultValue={smsTemplateMessage}
+                  onChange={smsTemplateMessageHandler}
+                  maxLength={MAX_SMS_CHARACTER_LENGTH}
+                  rows={12}
+                  error={templateMessageError}
+                  errorProps={{ id: 'smsTemplateMessage--error-message' }}
+                  autoComplete='off'
+                />
+                <JsEnabled>
+                  <ContentRenderer
+                    content={templateMessageFooterText}
+                    variables={{
+                      characters: smsTemplateMessage.length,
+                      count: calculateHowManySmsMessages(
+                        Number(smsTemplateMessage.length)
+                      ),
+                    }}
+                  />
+                </JsEnabled>
+              </div>
               <NHSNotifyButton
                 id='create-sms-template-submit-button'
                 data-testid='submit-button'
@@ -152,7 +150,7 @@ export const SmsTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='SMS' />
+            <MessageFormatting templateType='SMS' />
             <ChannelGuidance template='SMS' />
           </aside>
         </div>

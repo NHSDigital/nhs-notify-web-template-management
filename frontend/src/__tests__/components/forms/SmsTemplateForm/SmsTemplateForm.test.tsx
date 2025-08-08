@@ -109,17 +109,17 @@ describe('CreateSmsTemplate component', () => {
     const templateMessageBox = document.querySelector('#smsTemplateMessage');
 
     if (!templateMessageBox) {
-      throw new Error('Template name box not found');
+      throw new Error('Template message box not found');
     }
 
     const longMessage = 'x'.repeat(300);
 
     await user.type(templateMessageBox, longMessage);
 
-    const characterCount = document.querySelector('#character-count');
+    const characterCount = screen.getByTestId('character-message-count-0');
 
     if (!characterCount) {
-      throw new Error('Template name box not found');
+      throw new Error('Character count not found');
     }
 
     expect(characterCount.textContent).toContain(

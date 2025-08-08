@@ -14,8 +14,10 @@ import { ProofingQueue } from '@backend-api/templates/infra/proofing-queue';
 import { createMockLogger } from 'nhs-notify-web-template-management-test-helper-utils/mock-logger';
 import { isoDateRegExp } from 'nhs-notify-web-template-management-test-helper-utils';
 import { ClientConfigRepository } from '@backend-api/templates/infra/client-config-repository';
+import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 
 jest.mock('node:crypto');
+jest.mock('nhs-notify-web-template-management-utils/enum');
 
 const user = { userId: '58890285E473', clientId: '00F2EF8D16FD' };
 const templateId = 'E1F5088E5B77';
@@ -43,6 +45,10 @@ const setup = () => {
     logger
   );
 
+  const isRightToLeftMock = jest.mocked(isRightToLeft);
+
+  isRightToLeftMock.mockReturnValueOnce(false);
+
   return {
     templateClient,
     mocks: {
@@ -51,6 +57,7 @@ const setup = () => {
       queueMock,
       logger,
       clientConfigRepository,
+      isRightToLeftMock,
     },
     logMessages,
   };
@@ -338,7 +345,7 @@ describe('templateClient', () => {
     });
   });
 
-  describe('createLetterTemplate', () => {
+  describe('uploadLetterTemplate', () => {
     test('should return created template', async () => {
       const { templateClient, mocks } = setup();
 
@@ -421,7 +428,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         pdf,
@@ -433,7 +440,7 @@ describe('templateClient', () => {
       });
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        dataWithFiles,
+        { ...dataWithFiles, proofingEnabled: true },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -455,6 +462,141 @@ describe('templateClient', () => {
       );
     });
 
+    const proofingEnabledFieldCases = [
+      {
+        clientEnabledProofing: true,
+        isRTLLanguage: true,
+        expected: false,
+      },
+      {
+        clientEnabledProofing: true,
+        isRTLLanguage: false,
+        expected: true,
+      },
+      {
+        clientEnabledProofing: false,
+        isRTLLanguage: true,
+        expected: false,
+      },
+      {
+        clientEnabledProofing: undefined,
+        isRTLLanguage: true,
+        expected: false,
+      },
+    ];
+
+    test.each(proofingEnabledFieldCases)(
+      'should return created template with proofingEnabled $expected when client proofing is $clientEnabledProofing and language Right to Left is $isRTLLanguage',
+      async ({ clientEnabledProofing, isRTLLanguage, expected }) => {
+        const { templateClient, mocks } = setup();
+
+        mocks.isRightToLeftMock.mockReset();
+
+        mocks.isRightToLeftMock.mockReturnValueOnce(isRTLLanguage);
+
+        const pdfFilename = 'template.pdf';
+        const csvFilename = 'test-data.csv';
+
+        const data: CreateUpdateTemplate = {
+          templateType: 'LETTER',
+          name: 'name',
+          language: 'en',
+          letterType: 'x0',
+        };
+
+        const pdf = new File(['pdf'], pdfFilename, {
+          type: 'application/pdf',
+        });
+
+        const csv = new File(['csv'], csvFilename, { type: 'text/csv' });
+
+        const filesWithVersions: LetterFiles = {
+          pdfTemplate: {
+            fileName: pdfFilename,
+            currentVersion: versionId,
+            virusScanStatus: 'PENDING',
+          },
+          testDataCsv: {
+            fileName: csvFilename,
+            currentVersion: versionId,
+            virusScanStatus: 'PENDING',
+          },
+          proofs: {},
+        };
+
+        const dataWithFiles: CreateUpdateTemplate & { files: LetterFiles } = {
+          templateType: 'LETTER',
+          name: 'name',
+          language: 'en',
+          letterType: 'x0',
+          files: filesWithVersions,
+        };
+
+        const creationTime = '2025-03-12T08:41:08.805Z';
+
+        const initialCreatedTemplate: DatabaseTemplate = {
+          ...dataWithFiles,
+          id: templateId,
+          createdAt: creationTime,
+          updatedAt: creationTime,
+          templateStatus: 'PENDING_UPLOAD',
+          proofingEnabled: expected,
+          owner: user.userId,
+          version: 1,
+        };
+
+        const updateTime = '2025-03-12T08:41:33.666Z';
+
+        const finalTemplate: DatabaseTemplate = {
+          ...initialCreatedTemplate,
+          templateStatus: 'PENDING_VALIDATION',
+          updatedAt: updateTime,
+        };
+
+        const { version: _, ...expectedDto } = finalTemplate;
+
+        mocks.templateRepository.create.mockResolvedValueOnce({
+          data: initialCreatedTemplate,
+        });
+
+        mocks.letterUploadRepository.upload.mockResolvedValueOnce({
+          data: null,
+        });
+
+        mocks.templateRepository.updateStatus.mockResolvedValueOnce({
+          data: finalTemplate,
+        });
+
+        mocks.clientConfigRepository.get.mockResolvedValueOnce({
+          data: {
+            campaignId: 'campaignId',
+            features: {
+              proofing: clientEnabledProofing,
+            },
+          },
+        });
+
+        const result = await templateClient.uploadLetterTemplate(
+          data,
+          user,
+          pdf,
+          csv
+        );
+
+        expect(result).toEqual({
+          data: expectedDto,
+        });
+
+        expect(mocks.templateRepository.create).toHaveBeenCalledWith(
+          { ...dataWithFiles, proofingEnabled: expected },
+          user.userId,
+          user.clientId,
+          'PENDING_UPLOAD',
+          'campaignId'
+        );
+      }
+    );
+
     test('if user has no clientId, client configuration is not fetched', async () => {
       const { templateClient, mocks } = setup();
 
@@ -471,7 +613,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const filesWithVerions: LetterFiles = {
+      const filesWithVersions: LetterFiles = {
         pdfTemplate: {
           fileName: pdfFilename,
           currentVersion: versionId,
@@ -485,7 +627,7 @@ describe('templateClient', () => {
         name: 'name',
         language: 'en',
         letterType: 'x0',
-        files: filesWithVerions,
+        files: filesWithVersions,
       };
 
       const creationTime = '2025-03-12T08:41:08.805Z';
@@ -520,7 +662,7 @@ describe('templateClient', () => {
         data: finalTemplate,
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         { userId: user.userId, clientId: undefined },
         pdf
@@ -547,7 +689,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -578,7 +720,7 @@ describe('templateClient', () => {
         type: 'application/pdf',
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: expect.objectContaining({
@@ -622,7 +764,7 @@ describe('templateClient', () => {
           letterType: 'x0',
         };
 
-        const result = await templateClient.createLetterTemplate(
+        const result = await templateClient.uploadLetterTemplate(
           data,
           user,
           pdf
@@ -672,7 +814,7 @@ describe('templateClient', () => {
           type: 'application/pdf',
         });
 
-        const result = await templateClient.createLetterTemplate(
+        const result = await templateClient.uploadLetterTemplate(
           data,
           user,
           pdf,
@@ -706,7 +848,7 @@ describe('templateClient', () => {
         error: { errorMeta: { description: 'err', code: 500 } },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         new File(['pdf'], 'template.pdf', {
@@ -721,7 +863,7 @@ describe('templateClient', () => {
       expect(mocks.templateRepository.create).not.toHaveBeenCalled();
     });
 
-    test('should return a failure result when intial template creation fails', async () => {
+    test('should return a failure result when initial template creation fails', async () => {
       const { templateClient, mocks } = setup();
 
       const data: CreateUpdateTemplate = {
@@ -768,12 +910,12 @@ describe('templateClient', () => {
         templateRepoFailure
       );
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(templateRepoFailure);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        dataWithFiles,
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -806,7 +948,7 @@ describe('templateClient', () => {
         data: {} as unknown as DatabaseTemplate,
       });
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual({
         error: {
@@ -894,12 +1036,12 @@ describe('templateClient', () => {
 
       mocks.letterUploadRepository.upload.mockResolvedValueOnce(uploadErr);
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(uploadErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        dataWithFiles,
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -983,12 +1125,12 @@ describe('templateClient', () => {
 
       mocks.templateRepository.updateStatus.mockResolvedValueOnce(updateErr);
 
-      const result = await templateClient.createLetterTemplate(data, user, pdf);
+      const result = await templateClient.uploadLetterTemplate(data, user, pdf);
 
       expect(result).toEqual(updateErr);
 
       expect(mocks.templateRepository.create).toHaveBeenCalledWith(
-        dataWithFiles,
+        { ...dataWithFiles, proofingEnabled: false },
         user.userId,
         user.clientId,
         'PENDING_UPLOAD',
@@ -1089,7 +1231,7 @@ describe('templateClient', () => {
         },
       });
 
-      const result = await templateClient.createLetterTemplate(
+      const result = await templateClient.uploadLetterTemplate(
         data,
         user,
         pdf,

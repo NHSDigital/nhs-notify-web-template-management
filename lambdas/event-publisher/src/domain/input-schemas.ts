@@ -1,5 +1,11 @@
 import { z } from 'zod';
-import { AttributeValue } from '@aws-sdk/client-dynamodb';
+import type { AttributeValue } from '@aws-sdk/client-dynamodb';
+import {
+  schemaFor,
+  TEMPLATE_STATUS_LIST,
+  TEMPLATE_TYPE_LIST,
+} from 'nhs-notify-backend-client';
+import type { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 
 const $AttributeValue: z.ZodType<AttributeValue> = z.lazy(() =>
   z.union([
@@ -24,6 +30,18 @@ export const $DynamoDBStreamRecord = z.object({
   }),
   tableName: z.string(),
 });
+
+// We need a subset of the database fields so we can apply filtering rules
+export const $DynamoDBTemplate = schemaFor<Partial<DatabaseTemplate>>()(
+  z.object({
+    id: z.string(),
+    templateType: z.enum(TEMPLATE_TYPE_LIST),
+    templateStatus: z.enum(TEMPLATE_STATUS_LIST),
+    proofingEnabled: z.boolean().optional(),
+  })
+);
+
+export type DynamoDBTemplate = z.infer<typeof $DynamoDBTemplate>;
 
 // the lambda doesn't necessarily have to only accept inputs from a dynamodb stream via an
 // eventbridge pipe, but that's all it is doing at the moment
