@@ -30,7 +30,7 @@ function createTemplates(user: TestUser) {
     noEmailTemplateType: TemplateFactory.create({
       id: 'no-email-template-type-template',
       templateType: 'NHS_APP',
-      owner: user.userId,
+      owner: user.owner,
       clientId: user.clientId,
       name: 'no-email-template-type-template-name',
     }),

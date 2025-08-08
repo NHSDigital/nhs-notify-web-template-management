@@ -80,7 +80,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     const updateResponse = await request.patch(
@@ -149,13 +149,13 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: templateId,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId,
-          templateOwner: user1.userId,
+          templateOwner: user1.owner,
           hasTestData: true,
         })
       );
@@ -260,7 +260,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -268,7 +268,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId: createResult.template.id,
-          templateOwner: user1.userId,
+          templateOwner: user1.owner,
           hasTestData: true,
         })
       );
@@ -355,7 +355,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -363,7 +363,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const failedVirusScanUpdate = await orchestrator.send(
         new SimulateFailedVirusScan({
           templateId: createResult.template.id,
-          templateOwner: user1.userId,
+          templateOwner: user1.owner,
           filePath: 'files.pdfTemplate.virusScanStatus',
         })
       );
@@ -439,7 +439,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -493,7 +493,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const start = new Date();
@@ -551,7 +551,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const submitResponse = await request.patch(
@@ -603,7 +603,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const deleteResponse = await request.delete(
@@ -655,7 +655,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const start = new Date();
@@ -713,7 +713,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const submitResponse = await request.patch(
@@ -765,7 +765,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const deleteResponse = await request.delete(
@@ -817,7 +817,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const start = new Date();
@@ -876,7 +876,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const submitResponse = await request.patch(
@@ -928,7 +928,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       const created = await createResponse.json();
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       const deleteResponse = await request.delete(

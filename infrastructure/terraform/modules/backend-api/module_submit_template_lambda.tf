@@ -49,6 +49,19 @@ data "aws_iam_policy_document" "submit_template_lambda_policy" {
   }
 
   statement {
+    sid    = "AllowDynamoGSIAccess"
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query",
+    ]
+
+    resources = [
+      "${aws_dynamodb_table.templates.arn}/index/QueryById",
+    ]
+  }
+
+  statement {
     sid    = "AllowKMSAccess"
     effect = "Allow"
 

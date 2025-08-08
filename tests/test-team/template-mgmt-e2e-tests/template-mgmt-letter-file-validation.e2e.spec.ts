@@ -52,7 +52,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -139,7 +139,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -210,7 +210,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -218,7 +218,7 @@ test.describe('letter file validation', () => {
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
         id: templateId,
-        owner: user.userId,
+        owner: user.owner,
       });
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
@@ -288,7 +288,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -363,7 +363,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -413,7 +413,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -421,7 +421,7 @@ test.describe('letter file validation', () => {
     await expect(async () => {
       const template = await templateStorageHelper.getTemplate({
         id: templateId,
-        owner: user.userId,
+        owner: user.owner,
       });
 
       expect(template.files?.pdfTemplate?.virusScanStatus).toBe('PASSED');
@@ -462,7 +462,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -507,7 +507,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -556,7 +556,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);
@@ -608,7 +608,7 @@ test.describe('letter file validation', () => {
 
     const key = {
       id: templateId,
-      owner: user.userId,
+      owner: user.owner,
     };
 
     templateStorageHelper.addAdHocTemplateKey(key);

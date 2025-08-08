@@ -28,7 +28,7 @@ export class TestUserClient {
       new PutParameterCommand({
         Name: `${this.clientSsmPathPrefix}/${clientId}`,
         Value: JSON.stringify({
-          features: { proofing: true },
+          features: { proofing: true, clientOwnership: true },
           campaignId: 'accessibility-test-campaign',
         } satisfies ClientConfiguration),
         Overwrite: true,

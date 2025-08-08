@@ -215,7 +215,7 @@ test.describe('Create Email message template Page', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: previewPageParts![1],
-        owner: user.userId,
+        owner: user.owner,
       });
     });
   });

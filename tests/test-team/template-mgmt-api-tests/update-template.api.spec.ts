@@ -76,7 +76,7 @@ test.describe('POST /v1/template/:templateId', () => {
     const created = await createResponse.json();
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     const updateResponse = await request.post(

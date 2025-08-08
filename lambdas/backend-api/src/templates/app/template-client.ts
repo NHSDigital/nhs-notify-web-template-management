@@ -48,7 +48,7 @@ export class TemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient
+    user: User
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ template, user });
 
@@ -62,9 +62,9 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -79,8 +79,8 @@ export class TemplateClient {
 
     const createResult = await this.templateRepository.create(
       validationResult.data,
-      user.userId,
-      user.clientId,
+      user,
+      clientConfigurationResult.data?.features.clientOwnership || false,
       'NOT_YET_SUBMITTED',
       clientConfigurationResult.data?.campaignId
     );
@@ -106,7 +106,7 @@ export class TemplateClient {
 
   async uploadLetterTemplate(
     template: CreateUpdateTemplate,
-    user: UserWithOptionalClient,
+    user: User,
     pdf: File,
     csv?: File
   ): Promise<Result<TemplateDto>> {
@@ -145,9 +145,9 @@ export class TemplateClient {
       );
     }
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -189,10 +189,13 @@ export class TemplateClient {
       files,
     };
 
+    const clientOwnershipEnabled =
+      clientConfigurationResult.data?.features.clientOwnership || false;
+
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
-      user.userId,
-      user.clientId,
+      user,
+      clientOwnershipEnabled,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -216,7 +219,8 @@ export class TemplateClient {
 
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
-      user.userId,
+      user,
+      clientOwnershipEnabled,
       versionId,
       pdf,
       csv
@@ -266,7 +270,7 @@ export class TemplateClient {
     const updateResult = await this.templateRepository.update(
       templateId,
       validationResult.data,
-      user.userId,
+      user,
       expectedStatus
     );
 
@@ -293,10 +297,7 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const submitResult = await this.templateRepository.submit(
-      templateId,
-      user.userId
-    );
+    const submitResult = await this.templateRepository.submit(templateId, user);
 
     if (submitResult.error) {
       log
@@ -324,10 +325,7 @@ export class TemplateClient {
   ): Promise<Result<void>> {
     const log = this.logger.child({ templateId, user });
 
-    const deleteResult = await this.templateRepository.delete(
-      templateId,
-      user.userId
-    );
+    const deleteResult = await this.templateRepository.delete(templateId, user);
 
     if (deleteResult.error) {
       log
@@ -398,9 +396,9 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
@@ -457,8 +455,11 @@ export class TemplateClient {
       language,
       letterType,
       name,
+      owner,
       personalisationParameters,
     } = proofLetterValidationResult.data;
+
+    const clientOwned = owner?.startsWith('CLIENT#') || false;
 
     const pdfVersionId = files.pdfTemplate.currentVersion;
     const testDataVersionId = files.testDataCsv?.currentVersion;
@@ -473,7 +474,8 @@ export class TemplateClient {
       language,
       pdfVersionId,
       testDataVersionId,
-      this.defaultLetterSupplier
+      this.defaultLetterSupplier,
+      clientOwned
     );
 
     if (sendQueueResult.error) {
@@ -494,7 +496,7 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const updateStatusResult = await this.templateRepository.updateStatus(
       templateId,
-      user.userId,
+      user,
       status
     );
 

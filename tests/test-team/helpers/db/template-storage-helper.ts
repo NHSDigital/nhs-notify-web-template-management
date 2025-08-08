@@ -104,10 +104,16 @@ export class TemplateStorageHelper {
       )
     );
 
-    const files = keys.flatMap((key) => [
-      `pdf-template/${key.owner}/${key.id}.pdf`,
-      `test-data/${key.owner}/${key.id}.csv`,
-    ]);
+    const files = keys.flatMap((key) => {
+      const userOrClientId = key.owner.startsWith('CLIENT#')
+        ? key.owner.slice(7)
+        : key.owner;
+
+      return [
+        `pdf-template/${userOrClientId}/${key.id}.pdf`,
+        `test-data/${userOrClientId}/${key.id}.csv`,
+      ];
+    });
 
     const s3Chunks = TemplateStorageHelper.chunk(files, 1000);
 
@@ -302,6 +308,10 @@ export class TemplateStorageHelper {
     version: string,
     ext: string
   ) {
-    return `${prefix}/${key.owner}/${key.id}/${version}.${ext}`;
+    return `${prefix}/${this.stripClientOwnerPrefix(key.owner)}/${key.id}/${version}.${ext}`;
+  }
+
+  private stripClientOwnerPrefix(owner: string) {
+    return owner.startsWith('CLIENT#') ? owner.slice(7) : owner;
   }
 }

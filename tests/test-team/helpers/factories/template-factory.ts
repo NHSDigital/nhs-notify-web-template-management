@@ -15,7 +15,7 @@ export const TemplateFactory = {
       id,
       message: 'test-message',
       name,
-      owner: user.userId,
+      owner: user.owner,
       subject: 'test-subject',
       templateType: 'EMAIL',
     });
@@ -28,7 +28,7 @@ export const TemplateFactory = {
       id,
       message: 'test-message',
       name: 'test',
-      owner: user.userId,
+      owner: user.owner,
       templateType: 'SMS',
     });
   },
@@ -40,7 +40,7 @@ export const TemplateFactory = {
       id,
       message: 'test-message',
       name: 'test-name',
-      owner: user.userId,
+      owner: user.owner,
       templateType: 'NHS_APP',
     });
   },
@@ -72,7 +72,7 @@ export const TemplateFactory = {
       language: 'en',
       letterType: 'x0',
       name,
-      owner: user.userId,
+      owner: user.owner,
       templateStatus,
       templateType: 'LETTER',
       proofingEnabled: true,

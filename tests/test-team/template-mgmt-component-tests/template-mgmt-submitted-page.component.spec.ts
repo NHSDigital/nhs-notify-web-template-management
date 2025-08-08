@@ -22,7 +22,7 @@ import { TemplateMgmtTemplateSubmittedLetterPage } from '../pages/letter/templat
 function createTemplates(user: TestUser) {
   return {
     email: TemplateFactory.create({
-      owner: user.userId,
+      owner: user.owner,
       clientId: user.clientId,
       templateType: 'EMAIL',
       templateStatus: 'SUBMITTED',
@@ -32,7 +32,7 @@ function createTemplates(user: TestUser) {
       message: 'test example content',
     }),
     'text-message': TemplateFactory.create({
-      owner: user.userId,
+      owner: user.owner,
       clientId: user.clientId,
       templateType: 'SMS',
       templateStatus: 'SUBMITTED',
@@ -41,7 +41,7 @@ function createTemplates(user: TestUser) {
       message: 'test example content',
     }),
     'nhs-app': TemplateFactory.create({
-      owner: user.userId,
+      owner: user.owner,
       clientId: user.clientId,
       templateType: 'NHS_APP',
       templateStatus: 'SUBMITTED',

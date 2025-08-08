@@ -98,7 +98,7 @@ test.describe('Upload letter Template Page', () => {
     expect(previewPageParts?.length).toEqual(2);
     templateStorageHelper.addAdHocTemplateKey({
       id: previewPageParts![1],
-      owner: user.userId,
+      owner: user.owner,
     });
   });
 

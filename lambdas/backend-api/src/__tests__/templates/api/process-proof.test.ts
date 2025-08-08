@@ -41,7 +41,7 @@ test.each([
   'calls dependencies as expected for a %s virus scan',
   async (scanResultStatus, virusScanStatus, s3Expectation) => {
     const templateRepository = mockDeep<TemplateRepository>({
-      getOwner: jest.fn().mockReturnValue('template-owner'),
+      getOwner: jest.fn().mockReturnValue('CLIENT#template-owner'),
     });
     const letterFileRepository = mockDeep<LetterFileRepository>();
 
@@ -68,7 +68,7 @@ test.each([
     expect(
       templateRepository.setLetterFileVirusScanStatusForProof
     ).toHaveBeenCalledWith(
-      'template-owner',
+      'CLIENT#template-owner',
       'template-id',
       'proof.pdf',
       virusScanStatus,
@@ -76,3 +76,46 @@ test.each([
     );
   }
 );
+
+test('sets virus scan status for a user-owned template', async () => {
+  const templateRepository = mockDeep<TemplateRepository>({
+    getOwner: jest.fn().mockReturnValue('user-template-owner'),
+  });
+  const letterFileRepository = mockDeep<LetterFileRepository>();
+
+  const handler = createHandler({
+    templateRepository,
+    letterFileRepository,
+    logger: mockDeep<Logger>(),
+  });
+
+  await handler({
+    detail: {
+      s3ObjectDetails: {
+        objectKey: 'proofs/supplier/template-id/proof.pdf',
+        versionId: 'version-id',
+      },
+      scanResultDetails: { scanResultStatus: 'NO_THREATS_FOUND' },
+    },
+  });
+
+  expect(templateRepository.getOwner).toHaveBeenCalledWith('template-id');
+
+  expect(
+    letterFileRepository.copyFromQuarantineToInternal
+  ).toHaveBeenCalledWith(
+    'proofs/supplier/template-id/proof.pdf',
+    'version-id',
+    'proofs/user-template-owner/template-id/proof.pdf'
+  );
+
+  expect(
+    templateRepository.setLetterFileVirusScanStatusForProof
+  ).toHaveBeenCalledWith(
+    'user-template-owner',
+    'template-id',
+    'proof.pdf',
+    'PASSED',
+    'supplier'
+  );
+});

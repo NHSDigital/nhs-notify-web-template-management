@@ -1,4 +1,3 @@
-import type { TemplateKey } from 'nhs-notify-web-template-management-utils';
 import type {
   TextItem,
   TextMarkedContent,
@@ -43,17 +42,17 @@ export class TemplatePdf {
 
   private parameters: string[] = [];
 
+  templateId: string;
+
+  userOrClientId: string;
+
   constructor(
-    private key: TemplateKey,
+    id: string,
+    userOrClientId: string,
     private source: Uint8Array
-  ) {}
-
-  get templateId(): string {
-    return this.key.id;
-  }
-
-  get owner(): string {
-    return this.key.owner;
+  ) {
+    this.templateId = id;
+    this.userOrClientId = userOrClientId;
   }
 
   async parse() {

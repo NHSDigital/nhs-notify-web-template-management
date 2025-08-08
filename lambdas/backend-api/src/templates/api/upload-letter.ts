@@ -12,7 +12,7 @@ export function createHandler({
   return async function (event) {
     const { user: userId, clientId } = event.requestContext.authorizer ?? {};
 
-    if (!userId) {
+    if (!userId || !clientId) {
       return apiFailure(400, 'Invalid request');
     }
 

@@ -4,6 +4,8 @@ import { LetterProofRepository } from '../infra/letter-proof-repository';
 import { LetterFileRepository } from '../infra/letter-file-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
+const clientOwnerPrefix = 'CLIENT#';
+
 export const createHandler =
   ({
     templateRepository,
@@ -27,8 +29,12 @@ export const createHandler =
 
     const owner = await templateRepository.getOwner(templateId);
 
+    const ownerS3Segment = owner.startsWith(clientOwnerPrefix)
+      ? owner.slice(clientOwnerPrefix.length)
+      : owner;
+
     const internalKey = LetterProofRepository.getInternalKey(
-      owner,
+      ownerS3Segment,
       templateId,
       fileName
     );
@@ -37,7 +43,7 @@ export const createHandler =
 
     if (virusScanResult === 'PASSED') {
       const downloadKey = LetterProofRepository.getDownloadKey(
-        owner,
+        ownerS3Segment,
         templateId,
         fileName
       );
