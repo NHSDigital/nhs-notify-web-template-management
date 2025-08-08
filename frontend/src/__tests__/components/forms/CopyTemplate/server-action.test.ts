@@ -38,7 +38,7 @@ test('submit form - validation error', async () => {
   );
 
   expect(response).toEqual({
-    validationError: {
+    errorState: {
       formErrors: [],
       fieldErrors: {
         templateType: ['Select a template type'],

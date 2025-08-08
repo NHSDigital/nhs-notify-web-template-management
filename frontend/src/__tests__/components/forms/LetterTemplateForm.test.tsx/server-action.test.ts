@@ -29,7 +29,7 @@ describe('UploadLetterTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           letterTemplateName: ['Enter a template name'],

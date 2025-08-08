@@ -3,10 +3,10 @@
 import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
 import {
-  FormErrorState,
+  ErrorState,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -26,25 +26,19 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
 
   const [state, action] = useActionState(copyTemplateAction, { template });
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($CopyTemplate, setValidationError);
+  const formValidate = validate($CopyTemplate, setErrorState);
 
   const options = copyTypes.map((templateType) => ({
     id: templateType,
     text: templateTypeDisplayMappings(templateType),
   }));
 
-  const {
-    errorHeading,
-    buttonText,
-    hint,
-    pageHeading,
-    radiosLabel,
-    backLinkText,
-  } = content.components.copyTemplate;
+  const { buttonText, hint, pageHeading, radiosLabel, backLinkText } =
+    content.components.copyTemplate;
 
   const fullPageHeading = `${pageHeading} '${template.name}'`;
 
@@ -59,15 +53,12 @@ export const CopyTemplate = ({ template }: CopyTemplate) => {
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
             <h1 className='nhsuk-heading-xl'>{fullPageHeading}</h1>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
+            <NhsNotifyErrorSummary state={{ errorState }} />
             <NHSNotifyRadioButtonForm
               formId='choose-a-template-type'
               radiosId='templateType'
               action={action}
-              state={{ validationError }}
+              state={{ errorState }}
               pageHeading={radiosLabel}
               options={options}
               buttonText={buttonText}

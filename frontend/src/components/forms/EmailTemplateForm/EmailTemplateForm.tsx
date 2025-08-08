@@ -12,7 +12,7 @@ import {
   $EmailTemplateFormSchema,
   processFormActions,
 } from '@forms/EmailTemplateForm/server-action';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
@@ -20,7 +20,7 @@ import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormattin
 import {
   CreateUpdateEmailTemplate,
   EmailTemplate,
-  FormErrorState,
+  ErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import content from '@content/content';
@@ -37,7 +37,6 @@ export const EmailTemplateForm: FC<
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
-    errorHeading,
     buttonText,
     templateNameLabelText,
     templateSubjectLineLabelText,
@@ -48,11 +47,11 @@ export const EmailTemplateForm: FC<
 
   const [state, action] = useActionState(processFormActions, initialState);
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($EmailTemplateFormSchema, setValidationError);
+  const formValidate = validate($EmailTemplateFormSchema, setErrorState);
 
   const [emailTemplateName, emailTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -64,13 +63,13 @@ export const EmailTemplateForm: FC<
     useTextInput<HTMLTextAreaElement>(state.message);
 
   const templateNameError =
-    validationError?.fieldErrors.emailTemplateName?.join(', ');
+    errorState?.fieldErrors?.emailTemplateName?.join(', ');
 
   const templateSubjectLineError =
-    validationError?.fieldErrors.emailTemplateSubjectLine?.join(', ');
+    errorState?.fieldErrors?.emailTemplateSubjectLine?.join(', ');
 
   const templateMessageError =
-    validationError?.fieldErrors.emailTemplateMessage?.join(', ');
+    errorState?.fieldErrors?.emailTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
@@ -85,10 +84,7 @@ export const EmailTemplateForm: FC<
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
-          <ZodErrorSummary
-            errorHeading={errorHeading}
-            state={{ validationError }}
-          />
+          <NhsNotifyErrorSummary state={{ errorState }} />
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {editMode ? 'Edit ' : 'Create '}
             {pageHeadingSuffix}

@@ -6,17 +6,12 @@ import content from '@content/content';
 import type { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { getBasePath } from '@utils/get-base-path';
-import {
-  BackLink,
-  Details,
-  ErrorMessage,
-  ErrorSummary,
-  WarningCallout,
-} from 'nhsuk-react-components';
+import { BackLink, Details, WarningCallout } from 'nhsuk-react-components';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { TemplateStatus } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 
 type ButtonDetails = { text: string; href: string };
 
@@ -25,7 +20,6 @@ export function PreviewLetterTemplate({
 }: Readonly<{ template: LetterTemplate }>) {
   const {
     backLinkText,
-    errorHeading,
     footer,
     preSubmissionText,
     requestProofText,
@@ -54,18 +48,27 @@ export function PreviewLetterTemplate({
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
-  const errors = [];
+  const errors: string[][] = [];
   if (template.templateStatus === 'VIRUS_SCAN_FAILED') {
-    errors.push(virusScanError, virusScanErrorAction);
+    errors.push([virusScanError, virusScanErrorAction]);
   }
 
   if (template.templateStatus === 'VALIDATION_FAILED') {
-    errors.push(validationError, validationErrorAction);
+    errors.push([validationError, validationErrorAction]);
   }
 
   const continueButton = buttonMap[template.templateStatus];
 
   const footerText = footer[template.templateStatus] ?? [];
+
+  const state = {
+    errorState:
+      errors.length > 0
+        ? {
+            multilineErrors: errors,
+          }
+        : undefined,
+  };
 
   return (
     <>
@@ -75,18 +78,7 @@ export function PreviewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            {errors.length > 0 && (
-              <ErrorSummary>
-                <ErrorSummary.Title data-testid='error-summary'>
-                  {errorHeading}
-                </ErrorSummary.Title>
-                {errors.map((error, i) => (
-                  <ErrorMessage key={`error-summary-${i}`}>
-                    {error}
-                  </ErrorMessage>
-                ))}
-              </ErrorSummary>
-            )}
+            <NhsNotifyErrorSummary state={state} />
             <PreviewTemplateDetailsLetter template={template} />
 
             {template.templateStatus === 'PROOF_AVAILABLE' ? (

@@ -3,10 +3,10 @@
 import { useActionState, useState } from 'react';
 import { BackLink } from 'nhsuk-react-components';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import content from '@content/content';
 import {
-  FormErrorState,
+  ErrorState,
   templateTypeDisplayMappings,
 } from 'nhs-notify-web-template-management-utils';
 import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
@@ -21,11 +21,11 @@ export const ChooseTemplate = ({
   templateTypes: TemplateType[];
 }) => {
   const [state, action] = useActionState(chooseTemplateAction, {});
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($ChooseTemplate, setValidationError);
+  const formValidate = validate($ChooseTemplate, setErrorState);
 
   const options = templateTypes.map((templateType) => ({
     id: templateType,
@@ -34,7 +34,6 @@ export const ChooseTemplate = ({
 
   const {
     pageHeading,
-    errorHeading,
     buttonText,
     hint,
     learnMoreLink,
@@ -48,15 +47,12 @@ export const ChooseTemplate = ({
         <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
       </Link>
       <NHSNotifyMain>
-        <ZodErrorSummary
-          errorHeading={errorHeading}
-          state={{ validationError }}
-        />
+        <NhsNotifyErrorSummary state={{ errorState }} />
         <NHSNotifyRadioButtonForm
           formId='choose-a-template-type'
           radiosId='templateType'
           action={action}
-          state={{ validationError }}
+          state={{ errorState }}
           pageHeading={pageHeading}
           options={options}
           buttonText={buttonText}

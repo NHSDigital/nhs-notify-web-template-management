@@ -1101,26 +1101,25 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           >
             There is a problem
           </h2>
-          <span
-            class="nhsuk-error-message"
+          <ul
+            class="nhsuk-list nhsuk-error-summary__list"
           >
             <span
-              class="nhsuk-u-visually-hidden"
+              class="nhsuk-error-message"
             >
-              Error: 
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              <p>
+                The personalisation fields in your files are missing or do not match.
+              </p>
+              <p>
+                Check that the personalisation fields in your template file match the fields in your example personalisation file
+              </p>
             </span>
-            The personalisation fields in your files are missing or do not match.
-          </span>
-          <span
-            class="nhsuk-error-message"
-          >
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              Error: 
-            </span>
-            Check that the personalisation fields in your template file match the fields in your example personalisation file
-          </span>
+          </ul>
         </div>
         <h1
           class="preview__heading"
@@ -1313,26 +1312,25 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           >
             There is a problem
           </h2>
-          <span
-            class="nhsuk-error-message"
+          <ul
+            class="nhsuk-list nhsuk-error-summary__list"
           >
             <span
-              class="nhsuk-u-visually-hidden"
+              class="nhsuk-error-message"
             >
-              Error: 
+              <span
+                class="nhsuk-u-visually-hidden"
+              >
+                Error: 
+              </span>
+              <p>
+                The file(s) you uploaded may contain a virus.
+              </p>
+              <p>
+                Create a new letter template to upload your file(s) again or upload different file(s).
+              </p>
             </span>
-            The file(s) you uploaded may contain a virus.
-          </span>
-          <span
-            class="nhsuk-error-message"
-          >
-            <span
-              class="nhsuk-u-visually-hidden"
-            >
-              Error: 
-            </span>
-            Create a new letter template to upload your file(s) again or upload different file(s).
-          </span>
+          </ul>
         </div>
         <h1
           class="preview__heading"
