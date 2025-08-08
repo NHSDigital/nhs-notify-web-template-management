@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "process_proof" {
       aws_dynamodb_table.templates.arn,
     ]
   }
-  
+
   statement {
     sid    = "AllowDynamoGSIAccess"
     effect = "Allow"
