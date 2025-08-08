@@ -12,7 +12,7 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}` | 'NONE';
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5}` | 'NONE';
 
 type TestClients = Record<
   Exclude<ClientKey, 'NONE'>,
@@ -52,6 +52,16 @@ export const testClients = {
     features: {
       proofing: false,
       clientOwnership: true,
+    },
+  },
+  /**
+   * Client 4 has client ownership of templates disabled
+   */
+  Client5: {
+    campaignId: undefined,
+    features: {
+      proofing: false,
+      clientOwnership: false,
     },
   },
 } satisfies TestClients as TestClients & { NONE: undefined };
