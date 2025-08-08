@@ -629,6 +629,35 @@ describe('templateRepository', () => {
       }
     );
 
+    test('returns 404 response when GSI query cannot find owned template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [{ id: templateId, owner: 'someone-else' }],
+      });
+
+      const response = await templateRepository.update(
+        'template-id',
+        {
+          name: 'name',
+          message: 'message',
+          subject: 'subject',
+          templateType: 'EMAIL',
+        },
+        user,
+        'NOT_YET_SUBMITTED'
+      );
+
+      expect(response).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
+
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -862,6 +891,25 @@ describe('templateRepository', () => {
       });
     });
 
+    test('returns 404 response when GSI query cannot find owned template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [{ id: templateId, owner: 'someone-else' }],
+      });
+
+      const response = await templateRepository.submit('template-id', user);
+
+      expect(response).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
+
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -1022,6 +1070,25 @@ describe('templateRepository', () => {
         });
       }
     );
+
+    test('returns 404 response when GSI query cannot find owned template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [{ id: templateId, owner: 'someone-else' }],
+      });
+
+      const response = await templateRepository.delete('template-id', user);
+
+      expect(response).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
 
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
@@ -1198,6 +1265,29 @@ describe('templateRepository', () => {
         });
       }
     );
+
+    test('returns 404 response when GSI query cannot find user template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [{ id: templateId, owner: 'someone-else' }],
+      });
+
+      const response = await templateRepository.updateStatus(
+        templateId,
+        user,
+        'PENDING_VALIDATION'
+      );
+
+      expect(response).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
 
     test('should return error when, an unexpected error occurs', async () => {
       const { templateRepository, mocks } = setup();
@@ -2021,6 +2111,28 @@ describe('templateRepository', () => {
       });
     });
 
+    test('returns 404 response when GSI query cannot find owned template', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [{ id: templateId, owner: 'someone-else' }],
+      });
+
+      const response = await templateRepository.proofRequestUpdate(
+        'template-id',
+        user
+      );
+
+      expect(response).toEqual({
+        error: {
+          errorMeta: {
+            code: 404,
+            description: 'Template not found',
+          },
+        },
+      });
+    });
+
     it('returns 404 error response when conditional check fails due to template not existing', async () => {
       const { templateRepository, mocks } = setup();
 
@@ -2115,22 +2227,6 @@ describe('templateRepository', () => {
           },
         },
       });
-    });
-  });
-
-  describe('getTypedUser', () => {
-    test('throws if owner returned from GSI query is a client other than the authenticated client', async () => {
-      const { templateRepository, mocks } = setup();
-
-      mocks.ddbDocClient.on(QueryCommand).resolves({
-        Items: [{ id: 'template', owner: 'CLIENT#someone-else' }],
-      });
-
-      await expect(
-        templateRepository.getTypedUser(user, 'template')
-      ).rejects.toThrow(
-        'Client template owner does not match authenticated client'
-      );
     });
   });
 });
