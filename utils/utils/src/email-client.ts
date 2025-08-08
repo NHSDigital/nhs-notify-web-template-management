@@ -7,7 +7,6 @@ import { LetterTemplate } from 'nhs-notify-web-template-management-utils';
 import Handlebars from 'handlebars';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { randomUUID } from 'node:crypto';
 
 export class EmailClient {
   constructor(
@@ -99,11 +98,6 @@ export class EmailClient {
         msg.addMessage({
           contentType: 'text/html',
           data: emailContent,
-        });
-
-        msg.addMessage({
-          contentType: 'text/plain',
-          data: 'plaintext fallback',
         });
 
         const command = new SendRawEmailCommand({
