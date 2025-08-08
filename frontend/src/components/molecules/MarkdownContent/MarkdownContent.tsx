@@ -1,34 +1,47 @@
+import { interpolate } from '@utils/interpolate';
 import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
-type MarkdownContentProps = { segments: string[] };
+type MarkdownContentProps = {
+  content: string | string[];
+  variables?: Record<string, string | number>;
+  id?: string;
+  testId?: string;
+};
 
-export function MarkdownContent({ segments }: MarkdownContentProps) {
+export function MarkdownContent({
+  content,
+  variables,
+  id,
+  testId,
+}: MarkdownContentProps) {
+  const items = Array.isArray(content) ? content : [content];
+
   return (
     <>
-      {segments.map((content, index) => {
-        return (
-          <Markdown
-            key={index}
-            options={{
-              forceBlock: true,
-              wrapper: React.Fragment,
-              disableParsingRawHTML: true,
-              overrides: {
-                a: {
-                  component: 'a',
-                  props: {
-                    rel: 'noopener noreferrer',
-                    target: '_blank',
-                  },
+      {items.map((item, index) => (
+        <Markdown
+          key={index}
+          id={id ? `${id}-${index}` : undefined}
+          data-testid={testId ? `${testId}-${index}` : undefined}
+          options={{
+            forceBlock: true,
+            wrapper: React.Fragment,
+            disableParsingRawHTML: true,
+            overrides: {
+              a: {
+                component: 'a',
+                props: {
+                  rel: 'noopener noreferrer',
+                  target: '_blank',
                 },
               },
-            }}
-          >
-            {content}
-          </Markdown>
-        );
-      })}
+            },
+          }}
+        >
+          {interpolate(item, variables)}
+        </Markdown>
+      ))}
     </>
   );
 }
