@@ -48,10 +48,8 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   //       },
   //     }
   //   );
-
   //   const result = await response.json();
   //   const debug = JSON.stringify(result, null, 2);
-
   //   expect(response.status(), debug).toBe(404);
   //   expect(result).toEqual({
   //     statusCode: 404,
