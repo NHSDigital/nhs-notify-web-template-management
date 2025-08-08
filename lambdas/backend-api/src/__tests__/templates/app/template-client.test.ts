@@ -408,7 +408,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         csv
@@ -931,7 +932,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         undefined
@@ -1020,7 +1022,8 @@ describe('templateClient', () => {
 
       expect(mocks.letterUploadRepository.upload).toHaveBeenCalledWith(
         templateId,
-        user.userId,
+        user,
+        false,
         versionId,
         pdf,
         undefined
@@ -1887,7 +1890,8 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        false
       );
 
       expect(result).toEqual({
@@ -1962,7 +1966,8 @@ describe('templateClient', () => {
         'en',
         pdfVersionId,
         undefined,
-        defaultLetterSupplier
+        defaultLetterSupplier,
+        false
       );
 
       expect(result).toEqual({

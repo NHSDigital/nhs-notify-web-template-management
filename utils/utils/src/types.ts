@@ -137,6 +137,7 @@ export type FileType = 'pdf-template' | 'test-data' | 'proofs';
 
 export type ProofingRequest = {
   campaignId: string;
+  clientOwned: boolean;
   language: Language;
   letterType: LetterType;
   pdfVersionId: string;

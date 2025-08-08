@@ -188,10 +188,13 @@ export class TemplateClient {
       files,
     };
 
+    const clientOwnershipEnabled =
+      clientConfigurationResult.data?.features.clientOwnership || false;
+
     const createResult = await this.templateRepository.create(
       letterTemplateFields,
       user,
-      clientConfigurationResult.data?.features.clientOwnership || false,
+      clientOwnershipEnabled,
       'PENDING_UPLOAD',
       clientConfigurationResult.data?.campaignId
     );
@@ -215,7 +218,8 @@ export class TemplateClient {
 
     const uploadResult = await this.letterUploadRepository.upload(
       templateDTO.id,
-      user.userId,
+      user,
+      clientOwnershipEnabled,
       versionId,
       pdf,
       csv
@@ -445,8 +449,11 @@ export class TemplateClient {
       language,
       letterType,
       name,
+      owner,
       personalisationParameters,
     } = proofLetterValidationResult.data;
+
+    const clientOwned = owner?.startsWith('CLIENT#') || false;
 
     const pdfVersionId = files.pdfTemplate.currentVersion;
     const testDataVersionId = files.testDataCsv?.currentVersion;
@@ -461,7 +468,8 @@ export class TemplateClient {
       language,
       pdfVersionId,
       testDataVersionId,
-      this.defaultLetterSupplier
+      this.defaultLetterSupplier,
+      clientOwned
     );
 
     if (sendQueueResult.error) {

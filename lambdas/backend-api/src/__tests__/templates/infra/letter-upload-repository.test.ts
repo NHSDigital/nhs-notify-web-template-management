@@ -27,7 +27,8 @@ const setup = () => {
 
 describe('LetterUploadRepository', () => {
   const templateId = 'B9B7756DDDA9';
-  const owner = '3A1F94D78582';
+  const userId = '3A1F94D78582';
+  const clientId = '796894D41AAC';
   const versionId = 'A6C177531604';
 
   const pdfBytes = new Blob(['pdf_data']);
@@ -48,7 +49,8 @@ describe('LetterUploadRepository', () => {
 
       await letterUploadRepository.upload(
         templateId,
-        owner,
+        { userId, clientId },
+        true,
         versionId,
         pdf,
         csv
@@ -58,10 +60,10 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          owner,
+          'user-or-client-id': clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -70,10 +72,49 @@ describe('LetterUploadRepository', () => {
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `test-data/${owner}/${templateId}/${versionId}.csv`,
+        Key: `test-data/${clientId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
-          owner,
+          'user-or-client-id': clientId,
+          'file-type': 'test-data',
+          'template-id': templateId,
+          'version-id': versionId,
+        },
+      });
+    });
+
+    test('uploads both PDF template and test data CSV when template is user-owned', async () => {
+      const { letterUploadRepository, mocks } = setup();
+
+      await letterUploadRepository.upload(
+        templateId,
+        { userId, clientId },
+        false,
+        versionId,
+        pdf,
+        csv
+      );
+
+      expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 2);
+
+      expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+        Bucket: quarantineBucketName,
+        Key: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
+        Body: new Uint8Array(await pdfBytes.arrayBuffer()),
+        Metadata: {
+          'user-or-client-id': userId,
+          'file-type': 'pdf-template',
+          'template-id': templateId,
+          'version-id': versionId,
+        },
+      });
+
+      expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
+        Bucket: quarantineBucketName,
+        Key: `test-data/${userId}/${templateId}/${versionId}.csv`,
+        Body: new Uint8Array(await csvBytes.arrayBuffer()),
+        Metadata: {
+          'user-or-client-id': userId,
           'file-type': 'test-data',
           'template-id': templateId,
           'version-id': versionId,
@@ -83,16 +124,22 @@ describe('LetterUploadRepository', () => {
 
     test('uploads only the PDF template when test data CSV is not present', async () => {
       const { letterUploadRepository, mocks } = setup();
-      await letterUploadRepository.upload(templateId, owner, versionId, pdf);
+      await letterUploadRepository.upload(
+        templateId,
+        { userId, clientId },
+        true,
+        versionId,
+        pdf
+      );
 
       expect(mocks.s3Client).toHaveReceivedCommandTimes(PutObjectCommand, 1);
 
       expect(mocks.s3Client).toHaveReceivedCommandWith(PutObjectCommand, {
         Bucket: quarantineBucketName,
-        Key: `pdf-template/${owner}/${templateId}/${versionId}.pdf`,
+        Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          owner,
+          'user-or-client-id': clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -109,7 +156,8 @@ describe('LetterUploadRepository', () => {
 
       const result = await letterUploadRepository.upload(
         templateId,
-        owner,
+        { userId, clientId },
+        true,
         versionId,
         pdf,
         csv
@@ -142,10 +190,8 @@ describe('LetterUploadRepository', () => {
       });
 
       const res = await letterUploadRepository.download(
-        {
-          id: 'template-id',
-          owner: 'template-owner',
-        },
+        'template-id',
+        'template-owner',
         'pdf-template',
         'file-version-id'
       );
@@ -164,10 +210,8 @@ describe('LetterUploadRepository', () => {
         .rejects(new NotFound({ $metadata: {}, message: 'NotFound' }));
 
       const res = await letterUploadRepository.download(
-        {
-          id: 'template-id',
-          owner: 'template-owner',
-        },
+        'template-id',
+        'template-owner',
         'pdf-template',
         'file-version-id'
       );
@@ -181,10 +225,8 @@ describe('LetterUploadRepository', () => {
 
       await expect(
         letterUploadRepository.download(
-          {
-            id: 'template-id',
-            owner: 'template-owner',
-          },
+          'template-id',
+          'template-owner',
           'pdf-template',
           'file-version-id'
         )
@@ -200,7 +242,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'pdf-template',
-        owner: 'owner-id',
+        'user-or-client-id': 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });
@@ -213,7 +255,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'test-data',
-        owner: 'owner-id',
+        'user-or-client-id': 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });
