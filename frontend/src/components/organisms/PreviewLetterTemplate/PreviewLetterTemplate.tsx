@@ -48,27 +48,18 @@ export function PreviewLetterTemplate({
     },
   } satisfies Partial<Record<TemplateStatus, ButtonDetails>>;
 
-  const errors: string[][] = [];
+  const errors: string[] = [];
   if (template.templateStatus === 'VIRUS_SCAN_FAILED') {
-    errors.push([virusScanError, virusScanErrorAction]);
+    errors.push(virusScanError, virusScanErrorAction);
   }
 
   if (template.templateStatus === 'VALIDATION_FAILED') {
-    errors.push([validationError, validationErrorAction]);
+    errors.push(validationError, validationErrorAction);
   }
 
   const continueButton = buttonMap[template.templateStatus];
 
   const footerText = footer[template.templateStatus] ?? [];
-
-  const state = {
-    errorState:
-      errors.length > 0
-        ? {
-            multilineErrors: errors,
-          }
-        : undefined,
-  };
 
   return (
     <>
@@ -78,7 +69,13 @@ export function PreviewLetterTemplate({
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-full'>
-            <NhsNotifyErrorSummary state={state} />
+            {errors.length > 0 && (
+              <NhsNotifyErrorSummary
+                errorState={{
+                  formErrors: errors,
+                }}
+              />
+            )}
             <PreviewTemplateDetailsLetter template={template} />
 
             {template.templateStatus === 'PROOF_AVAILABLE' ? (

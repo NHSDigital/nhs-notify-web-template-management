@@ -103,7 +103,7 @@ export const LetterTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <NhsNotifyErrorSummary state={{ errorState }} />
+            <NhsNotifyErrorSummary errorState={errorState} />
             <NHSNotifyFormWrapper
               action={action}
               formId='upload-letter-template'

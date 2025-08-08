@@ -77,7 +77,7 @@ export const SmsTemplateForm: FC<
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
-          <NhsNotifyErrorSummary state={{ errorState }} />
+          <NhsNotifyErrorSummary errorState={errorState} />
           <h1 data-testid='page-heading'>
             {editMode ? 'Edit ' : 'Create '}
             {pageHeadingSuffix}

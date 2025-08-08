@@ -22,7 +22,6 @@ export type FormId =
 export type ErrorState = {
   formErrors?: string[];
   fieldErrors?: Record<string, string[]>;
-  multilineErrors?: string[][];
 };
 
 export type FormState = {

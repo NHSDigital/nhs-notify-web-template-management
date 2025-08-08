@@ -32,56 +32,20 @@ exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
           Select error
         </a>
       </li>
-      <span
-        class="nhsuk-error-message"
-      >
+      <li>
         <span
-          class="nhsuk-u-visually-hidden"
+          class="nhsuk-error-message"
         >
-          Error: 
+          Form error
         </span>
-        Form error
-      </span>
-      <span
-        class="nhsuk-error-message"
-      >
+      </li>
+      <li>
         <span
-          class="nhsuk-u-visually-hidden"
+          class="nhsuk-error-message"
         >
-          Error: 
+          Form error 2
         </span>
-        Form error 2
-      </span>
-      <span
-        class="nhsuk-error-message"
-      >
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          Error: 
-        </span>
-        <p>
-          Error 1 line 1
-        </p>
-        <p>
-          Error 1 line 2
-        </p>
-      </span>
-      <span
-        class="nhsuk-error-message"
-      >
-        <span
-          class="nhsuk-u-visually-hidden"
-        >
-          Error: 
-        </span>
-        <p>
-          Error 2 line 1
-        </p>
-        <p>
-          Error 2 line 2
-        </p>
-      </span>
+      </li>
     </ul>
   </div>
 </DocumentFragment>

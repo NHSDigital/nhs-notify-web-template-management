@@ -47,7 +47,7 @@ export const ChooseTemplate = ({
         <BackLink data-testid='back-to-templates-link'>{backLinkText}</BackLink>
       </Link>
       <NHSNotifyMain>
-        <NhsNotifyErrorSummary state={{ errorState }} />
+        <NhsNotifyErrorSummary errorState={errorState} />
         <NHSNotifyRadioButtonForm
           formId='choose-a-template-type'
           radiosId='templateType'

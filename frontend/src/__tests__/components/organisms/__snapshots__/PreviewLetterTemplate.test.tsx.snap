@@ -1104,21 +1104,20 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           <ul
             class="nhsuk-list nhsuk-error-summary__list"
           >
-            <span
-              class="nhsuk-error-message"
-            >
+            <li>
               <span
-                class="nhsuk-u-visually-hidden"
+                class="nhsuk-error-message"
               >
-                Error: 
-              </span>
-              <p>
                 The personalisation fields in your files are missing or do not match.
-              </p>
-              <p>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
                 Check that the personalisation fields in your template file match the fields in your example personalisation file
-              </p>
-            </span>
+              </span>
+            </li>
           </ul>
         </div>
         <h1
@@ -1315,21 +1314,20 @@ exports[`PreviewLetterTemplate component matches snapshot when template status i
           <ul
             class="nhsuk-list nhsuk-error-summary__list"
           >
-            <span
-              class="nhsuk-error-message"
-            >
+            <li>
               <span
-                class="nhsuk-u-visually-hidden"
+                class="nhsuk-error-message"
               >
-                Error: 
-              </span>
-              <p>
                 The file(s) you uploaded may contain a virus.
-              </p>
-              <p>
+              </span>
+            </li>
+            <li>
+              <span
+                class="nhsuk-error-message"
+              >
                 Create a new letter template to upload your file(s) again or upload different file(s).
-              </p>
-            </span>
+              </span>
+            </li>
           </ul>
         </div>
         <h1

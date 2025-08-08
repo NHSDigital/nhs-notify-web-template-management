@@ -1,14 +1,20 @@
-import { ErrorSummary, ErrorMessage } from 'nhsuk-react-components';
+import { ErrorSummary } from 'nhsuk-react-components';
 import { ErrorState } from 'nhs-notify-web-template-management-utils';
-import { useEffect, useRef } from 'react';
+import { FC, HTMLProps, useEffect, useRef } from 'react';
 import content from '@content/content';
 
+const UnlinkedErrorSummaryItem: FC<HTMLProps<HTMLSpanElement>> = (props) => (
+  <li>
+    <span className='nhsuk-error-message' {...props} />
+  </li>
+);
+
 export type NhsNotifyErrorSummaryProps = {
-  state: { errorState?: ErrorState };
+  errorState?: ErrorState;
 };
 
 export const NhsNotifyErrorSummary = ({
-  state: { errorState },
+  errorState,
 }: NhsNotifyErrorSummaryProps) => {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +29,7 @@ export const NhsNotifyErrorSummary = ({
     return;
   }
 
-  const { fieldErrors, formErrors, multilineErrors } = errorState;
+  const { fieldErrors, formErrors } = errorState;
 
   return (
     <ErrorSummary ref={errorSummaryRef}>
@@ -42,17 +48,9 @@ export const NhsNotifyErrorSummary = ({
           ))}
         {formErrors &&
           formErrors.map((error, id) => (
-            <ErrorMessage key={`form-error-summary-${id}`}>
+            <UnlinkedErrorSummaryItem key={`form-error-summary-${id}`}>
               {error}
-            </ErrorMessage>
-          ))}
-        {multilineErrors &&
-          multilineErrors.map((errorLines, id) => (
-            <ErrorMessage key={`error-summary-${id}`}>
-              {errorLines.map((line, lineId) => (
-                <p key={`error-line-${lineId}`}>{line}</p>
-              ))}
-            </ErrorMessage>
+            </UnlinkedErrorSummaryItem>
           ))}
       </ErrorSummary.List>
     </ErrorSummary>

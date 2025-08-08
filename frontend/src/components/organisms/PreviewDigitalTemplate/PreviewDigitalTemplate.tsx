@@ -15,7 +15,7 @@ export function PreviewDigitalTemplate({
           {props.sectionHeading}
         </div>
       )}
-      <NhsNotifyErrorSummary state={form.state} />
+      <NhsNotifyErrorSummary errorState={form.state.errorState} />
       {props.previewDetailsComponent}
       <NHSNotifyRadioButtonForm
         {...form}
