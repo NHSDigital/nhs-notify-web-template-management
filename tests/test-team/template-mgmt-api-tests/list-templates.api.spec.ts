@@ -56,7 +56,7 @@ test.describe('GET /v1/templates', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // create another template for user 1
@@ -78,7 +78,7 @@ test.describe('GET /v1/templates', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // exercise - request user 1 templates
@@ -143,7 +143,7 @@ test.describe('GET /v1/templates', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created1.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // create another template for user 1
@@ -165,7 +165,7 @@ test.describe('GET /v1/templates', () => {
 
     templateStorageHelper.addAdHocTemplateKey({
       id: created2.template.id,
-      owner: user1.userId,
+      owner: user1.owner,
     });
 
     // delete template 1

@@ -48,7 +48,7 @@ async function createTemplates() {
       updatedAt: new Date().toISOString(),
       templateType: 'LETTER',
       templateStatus: 'NOT_YET_SUBMITTED',
-      owner: user.userId,
+      owner: user.owner,
     } as Template,
     notYetSubmitted: TemplateFactory.uploadLetterTemplate(
       '9AACCD57-C6A3-4273-854C-3839A081B4D9',
