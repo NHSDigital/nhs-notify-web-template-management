@@ -65,10 +65,14 @@ test.describe('Create Email message template Page', () => {
 
       await createEmailTemplatePage.loadPage();
 
-      await createEmailTemplatePage.personalisationFields.click();
-
+      await createEmailTemplatePage.customPersonalisationFields.click();
       await expect(
-        createEmailTemplatePage.personalisationFields
+        createEmailTemplatePage.customPersonalisationFields
+      ).toHaveAttribute('open');
+
+      await createEmailTemplatePage.pdsPersonalisationFields.click();
+      await expect(
+        createEmailTemplatePage.pdsPersonalisationFields
       ).toHaveAttribute('open');
     });
 
@@ -111,6 +115,49 @@ test.describe('Create Email message template Page', () => {
         await createTemplatePage.loadPage();
 
         const newTabPromise = page.waitForEvent('popup');
+
+        await page.getByRole('link', { name }).click();
+
+        const newTab = await newTabPromise;
+
+        await expect(newTab).toHaveURL(`${baseURL}/${url}`);
+      });
+    }
+
+    const personalisationInfoLinks = [
+      {
+        name: 'custom personalisation fields',
+        url: 'using-nhs-notify/personalisation#custom-personalisation-fields',
+      },
+      {
+        name: 'NHS Notify API',
+        url: 'using-nhs-notify/api',
+      },
+      {
+        name: 'NHS Notify MESH',
+        url: 'using-nhs-notify/mesh',
+      },
+    ];
+
+    for (const { name, url } of personalisationInfoLinks) {
+      test(`custom personalisation info link: ${name}, navigates to correct page in new tab`, async ({
+        page,
+        baseURL,
+      }) => {
+        const createEmailTemplatePage = new TemplateMgmtCreateEmailPage(page);
+
+        await createEmailTemplatePage.loadPage();
+
+        const newTabPromise = page.waitForEvent('popup');
+
+        const summary = page.getByTestId(
+          'custom-personalisation-fields-summary'
+        );
+
+        await summary.click();
+        await expect(
+          page.getByTestId('custom-personalisation-fields-text')
+        ).toBeVisible();
 
         await page.getByRole('link', { name }).click();
 

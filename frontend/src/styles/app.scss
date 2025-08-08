@@ -11,6 +11,15 @@ code {
   background-color: nhsuk.$nhsuk-border-color;
 }
 
+pre {
+  margin-bottom: 1.5rem;
+  white-space: pre-wrap;
+}
+
+.nhsuk-details__text > code:last-child {
+  margin-bottom: 0;
+}
+
 .notify-confirmation-panel {
   color: #ffffff;
   background-color: #007f3b;

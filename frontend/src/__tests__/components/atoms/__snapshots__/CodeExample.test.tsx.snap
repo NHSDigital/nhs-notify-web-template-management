@@ -8,11 +8,15 @@ exports[`CodeExample component renders component correctly 1`] = `
   >
     This is an example of markdown:
   </span>
-  <code
-    aria-describedby="test-id"
+  <pre
+    class="nhsuk-code-block"
   >
-    # A test example
-  </code>
+    <code
+      aria-describedby="test-id"
+    >
+      # A test example
+    </code>
+  </pre>
 </DocumentFragment>
 `;
 
@@ -24,11 +28,15 @@ exports[`CodeExample component renders component correctly when optional class i
   >
     This is an example of markdown:
   </span>
-  <code
-    aria-describedby="test-id"
-    class="test-class"
+  <pre
+    class="nhsuk-code-block"
   >
-    # A test example
-  </code>
+    <code
+      aria-describedby="test-id"
+      class="test-class"
+    >
+      # A test example
+    </code>
+  </pre>
 </DocumentFragment>
 `;
