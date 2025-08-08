@@ -198,7 +198,7 @@ describe('EmailClient', () => {
 
       await client.sendTemplateSubmittedEmailToSuppliers(mockTemplate);
 
-      expect(sesClient.send).toHaveBeenCalledTimes(2);
+      expect(sesClient.send).toHaveBeenCalledTimes(3);
       expect(sesClient.send).toHaveBeenCalledWith(
         expect.any(SendRawEmailCommand)
       );
@@ -211,27 +211,49 @@ describe('EmailClient', () => {
 
       const supplier1EmailContent =
         sesCall1Input.input.RawMessage?.Data?.toString();
+
       expect(supplier1EmailContent).toContain(expandedTemplateId);
+      expect(supplier1EmailContent).toContain(recipientEmails.supplier1[0]);
       expect(supplier1EmailContent).toContain('template-name');
       expect(supplier1EmailContent).toContain('supplier1');
       expect(supplier1EmailContent).not.toContain('supplier2');
       expect(supplier1EmailContent).toContain('proof1.pdf');
       expect(supplier1EmailContent).not.toContain('proof2.pdf');
 
-      // check email to supplier2
+      // check emails to supplier2
       const sesCall2Input = sesClient.send.mock.calls[1][0];
       if (!(sesCall2Input instanceof SendRawEmailCommand)) {
         throw new TypeError('Unexpected command given to SES client');
       }
 
-      const supplier2EmailContent =
+      const supplier2Recipient1EmailContent =
         sesCall2Input.input.RawMessage?.Data?.toString();
-      expect(supplier2EmailContent).toContain(expandedTemplateId);
-      expect(supplier2EmailContent).toContain('template-name');
-      expect(supplier2EmailContent).not.toContain('supplier1');
-      expect(supplier2EmailContent).toContain('supplier2');
-      expect(supplier2EmailContent).not.toContain('proof1.pdf');
-      expect(supplier2EmailContent).toContain('proof2.pdf');
+      expect(supplier2Recipient1EmailContent).toContain(expandedTemplateId);
+      expect(supplier2Recipient1EmailContent).toContain(
+        recipientEmails.supplier2[0]
+      );
+      expect(supplier2Recipient1EmailContent).toContain('template-name');
+      expect(supplier2Recipient1EmailContent).not.toContain('supplier1');
+      expect(supplier2Recipient1EmailContent).toContain('supplier2');
+      expect(supplier2Recipient1EmailContent).not.toContain('proof1.pdf');
+      expect(supplier2Recipient1EmailContent).toContain('proof2.pdf');
+
+      const sesCall3Input = sesClient.send.mock.calls[2][0];
+      if (!(sesCall3Input instanceof SendRawEmailCommand)) {
+        throw new TypeError('Unexpected command given to SES client');
+      }
+
+      const supplier2Recipient2EmailContent =
+        sesCall3Input.input.RawMessage?.Data?.toString();
+      expect(supplier2Recipient2EmailContent).toContain(expandedTemplateId);
+      expect(supplier2Recipient2EmailContent).toContain(
+        recipientEmails.supplier2[1]
+      );
+      expect(supplier2Recipient2EmailContent).toContain('template-name');
+      expect(supplier2Recipient2EmailContent).not.toContain('supplier1');
+      expect(supplier2Recipient2EmailContent).toContain('supplier2');
+      expect(supplier2Recipient2EmailContent).not.toContain('proof1.pdf');
+      expect(supplier2Recipient2EmailContent).toContain('proof2.pdf');
     });
   });
 });
