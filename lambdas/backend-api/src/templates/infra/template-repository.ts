@@ -34,10 +34,6 @@ import { ApplicationResult, failure, success, calculateTTL } from '../../utils';
 import { DatabaseTemplate } from 'nhs-notify-web-template-management-utils';
 import { TemplateUpdateBuilder } from 'nhs-notify-entity-update-command-builder';
 
-type TypedUser =
-  | ({ type: 'clientOwner' } & User)
-  | ({ type: 'userOwner' } & UserWithOptionalClient);
-
 type WithAttachments<T> = T extends { templateType: 'LETTER' }
   ? T & { files: LetterFiles }
   : T;
@@ -67,8 +63,6 @@ const letterAttributes: Record<keyof LetterProperties, null> = {
   templateType: null,
   proofingEnabled: null,
 };
-
-const clientOwnerPrefix = 'CLIENT#';
 
 export class TemplateRepository {
   constructor(
@@ -193,11 +187,14 @@ export class TemplateRepository {
     ];
 
     try {
-      const typedUser = await this.getTypedUser(user, templateId);
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
       const result = await this._update(
         templateId,
-        typedUser,
+        owner,
+        user.userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -238,11 +235,14 @@ export class TemplateRepository {
     };
 
     try {
-      const typedUser = await this.getTypedUser(user, templateId);
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
       const result = await this._update(
         templateId,
-        typedUser,
+        owner,
+        user.userId,
         updateExpression,
         expressionAttributeNames,
         expressionAttributeValues,
@@ -272,11 +272,14 @@ export class TemplateRepository {
     ];
 
     try {
-      const typedUser = await this.getTypedUser(user, templateId);
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
       const result = await this._update(
         templateId,
-        typedUser,
+        owner,
+        user.userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -309,11 +312,14 @@ export class TemplateRepository {
     };
 
     try {
-      const typedUser = await this.getTypedUser(user, templateId);
+      const owner = await this.getUserTemplateOwner(user, templateId);
+
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
       const result = await this._update(
         templateId,
-        typedUser,
+        owner,
+        user.userId,
         updateExpression,
         {},
         expressionAttributeValues,
@@ -645,16 +651,13 @@ export class TemplateRepository {
 
   async proofRequestUpdate(templateId: string, user: User) {
     try {
-      const typedUser = await this.getTypedUser(user, templateId);
+      const owner = await this.getUserTemplateOwner(user, templateId);
 
-      const ownerKey =
-        typedUser.type === 'clientOwner'
-          ? this.clientOwnerKey(typedUser.clientId)
-          : typedUser.userId;
+      if (!owner) return failure(ErrorCase.NOT_FOUND, `Template not found`);
 
       const update = new TemplateUpdateBuilder(
         this.templatesTableName,
-        ownerKey,
+        owner,
         templateId,
         {
           ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
@@ -690,7 +693,8 @@ export class TemplateRepository {
 
   private async _update(
     templateId: string,
-    user: TypedUser,
+    owner: string,
+    userId: string,
     updateExpression: string[],
     expressionAttributeNames: Record<string, string>,
     expressionAttributeValues: Record<string, string | number>,
@@ -708,10 +712,7 @@ export class TemplateRepository {
       TableName: this.templatesTableName,
       Key: {
         id: templateId,
-        owner:
-          user.type === 'clientOwner'
-            ? this.clientOwnerKey(user.clientId)
-            : user.userId,
+        owner,
       },
       UpdateExpression: `SET ${updateExpression.join(', ')}, #updatedAt = :updatedAt, #updatedBy = :updatedBy`,
       ExpressionAttributeNames: {
@@ -723,7 +724,7 @@ export class TemplateRepository {
       ExpressionAttributeValues: {
         ...expressionAttributeValues,
         ':updatedAt': updatedAt,
-        ':updatedBy': user.userId,
+        ':updatedBy': userId,
         ':deleted': 'DELETED' satisfies TemplateStatus,
         ':submitted': 'SUBMITTED' satisfies TemplateStatus,
       },
@@ -754,39 +755,26 @@ export class TemplateRepository {
     }
   }
 
-  async getTypedUser(
+  async getUserTemplateOwner(
     user: UserWithOptionalClient,
     templateId: string
-  ): Promise<TypedUser> {
-    const owner = await this.getOwner(templateId);
-    const clientOwned = this.isClientOwner(owner, user.clientId);
+  ): Promise<string | undefined> {
+    const dbResponse = await this.client.send(
+      new QueryCommand({
+        TableName: this.templatesTableName,
+        IndexName: 'QueryById',
+        KeyConditionExpression: 'id = :id',
+        ExpressionAttributeValues: {
+          ':id': templateId,
+        },
+      })
+    );
 
-    return clientOwned && user.clientId
-      ? {
-          type: 'clientOwner' as const,
-          userId: user.userId,
-          clientId: user.clientId,
-        }
-      : {
-          type: 'userOwner' as const,
-          userId: user.userId,
-          clientId: user.clientId,
-        };
-  }
-
-  private isClientOwner(owner: string, expectedClient: string | undefined) {
-    if (owner.startsWith(clientOwnerPrefix)) {
-      const clientId = owner.slice(clientOwnerPrefix.length);
-
-      if (clientId === expectedClient) {
-        return true;
-      } else {
-        throw new Error(
-          'Client template owner does not match authenticated client'
-        );
-      }
-    }
-    return false;
+    return dbResponse.Items?.find(
+      (item) =>
+        item.owner === user.userId ||
+        (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
+    )?.owner;
   }
 
   private clientOwnerKey(clientId: string) {

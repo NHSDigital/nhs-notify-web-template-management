@@ -16,11 +16,9 @@ test.describe('POST /v1/template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user6: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user6 = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -134,7 +132,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -180,7 +178,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -370,7 +368,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -416,7 +414,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -578,7 +576,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created).toEqual({
@@ -625,7 +623,7 @@ test.describe('POST /v1/template', () => {
 
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
-        owner: user1.userId,
+        owner: user1.owner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');

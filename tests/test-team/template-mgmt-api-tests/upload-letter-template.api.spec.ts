@@ -17,11 +17,9 @@ test.describe('POST /v1/letter-template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let user6: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    user6 = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -101,7 +99,7 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.userId,
+        owner: user1.owner,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
@@ -183,7 +181,7 @@ test.describe('POST /v1/letter-template', () => {
         language: 'en',
         letterType: 'x0',
         name: templateData.name,
-        owner: user1.userId,
+        owner: user1.owner,
         proofingEnabled: true,
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
