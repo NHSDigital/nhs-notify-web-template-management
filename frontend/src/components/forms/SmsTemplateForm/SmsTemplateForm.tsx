@@ -14,12 +14,12 @@ import {
 } from 'nhsuk-react-components';
 import {
   CreateUpdateSMSTemplate,
-  FormErrorState,
+  ErrorState,
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
 import { FC, useActionState, useState } from 'react';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import content from '@content/content';
 import { MAX_SMS_CHARACTER_LENGTH } from '@utils/constants';
@@ -38,11 +38,11 @@ export const SmsTemplateForm: FC<
 > = ({ initialState }) => {
   const [state, action] = useActionState(processFormActions, initialState);
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($CreateSmsTemplateSchema, setValidationError);
+  const formValidate = validate($CreateSmsTemplateSchema, setErrorState);
 
   const [smsTemplateName, smsTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -51,17 +51,16 @@ export const SmsTemplateForm: FC<
     useTextInput<HTMLTextAreaElement>(state.message);
 
   const templateNameError =
-    validationError?.fieldErrors.smsTemplateName?.join(', ');
+    errorState?.fieldErrors?.smsTemplateName?.join(', ');
 
   const templateMessageError =
-    validationError?.fieldErrors.smsTemplateMessage?.join(', ');
+    errorState?.fieldErrors?.smsTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
   const {
     backLinkText,
     buttonText,
-    errorHeading,
     pageHeadingSuffix,
     templateMessageLabelText,
     templateMessageFooterText,
@@ -78,10 +77,7 @@ export const SmsTemplateForm: FC<
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
-          <ZodErrorSummary
-            errorHeading={errorHeading}
-            state={{ validationError }}
-          />
+          <NhsNotifyErrorSummary errorState={errorState} />
           <h1 data-testid='page-heading'>
             {editMode ? 'Edit ' : 'Create '}
             {pageHeadingSuffix}

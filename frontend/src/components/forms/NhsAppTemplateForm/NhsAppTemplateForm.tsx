@@ -12,14 +12,14 @@ import {
   $CreateNhsAppTemplateSchema,
   processFormActions,
 } from '@forms/NhsAppTemplateForm/server-action';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
   CreateUpdateNHSAppTemplate,
-  FormErrorState,
+  ErrorState,
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -39,7 +39,6 @@ export const NhsAppTemplateForm: FC<
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
-    errorHeading,
     buttonText,
     characterCountText,
     templateNameLabelText,
@@ -50,14 +49,11 @@ export const NhsAppTemplateForm: FC<
 
   const [state, action] = useActionState(processFormActions, initialState);
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
-
-  const formValidate = validate(
-    $CreateNhsAppTemplateSchema,
-    setValidationError
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
   );
+
+  const formValidate = validate($CreateNhsAppTemplateSchema, setErrorState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
@@ -66,10 +62,10 @@ export const NhsAppTemplateForm: FC<
     useTextInput<HTMLInputElement>(state.name);
 
   const templateNameError =
-    validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
+    errorState?.fieldErrors?.nhsAppTemplateName?.join(', ');
 
   const templateMessageError =
-    validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
+    errorState?.fieldErrors?.nhsAppTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
@@ -82,10 +78,7 @@ export const NhsAppTemplateForm: FC<
       )}
       <NHSNotifyMain>
         <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
-          <ZodErrorSummary
-            errorHeading={errorHeading}
-            state={{ validationError }}
-          />
+          <NhsNotifyErrorSummary errorState={errorState} />
           <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
             {editMode ? 'Edit ' : 'Create '}
             {pageHeadingSuffix}

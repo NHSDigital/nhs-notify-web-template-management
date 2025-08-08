@@ -17,7 +17,9 @@ exports[`PreviewDigitalTemplate component matches error snapshot 1`] = `
       class="nhsuk-error-summary__title"
       data-testid="error-summary"
       id="error-summary-title"
-    />
+    >
+      There is a problem
+    </h2>
     <ul
       class="nhsuk-list nhsuk-error-summary__list"
     >

@@ -8,7 +8,7 @@ test('Renders NHSNotifyRadioButtonForm correctly without errors', () => {
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {},
           formErrors: [],
         },
@@ -33,7 +33,7 @@ test('Renders NHSNotifyRadioButtonForm correctly with errors', () => {
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {
             'radios-id': ['Field error'],
           },
@@ -59,7 +59,7 @@ test('Renders NHSNotifyRadioButtonForm - handles validation errors for other fie
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {
             'radios-id-2': ['Field error'],
           },
@@ -104,7 +104,7 @@ test('Renders NHSNotifyRadioButtonForm with learn more link', () => {
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {},
           formErrors: [],
         },
@@ -131,7 +131,7 @@ test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreLink 
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {},
           formErrors: [],
         },
@@ -157,7 +157,7 @@ test('Renders NHSNotifyRadioButtonForm without learn more link if learnMoreText 
       radiosId='radios-id'
       action='/action'
       state={{
-        validationError: {
+        errorState: {
           fieldErrors: {},
           formErrors: [],
         },

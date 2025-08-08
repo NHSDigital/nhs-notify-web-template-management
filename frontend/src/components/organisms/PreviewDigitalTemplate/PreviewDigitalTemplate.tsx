@@ -1,6 +1,6 @@
 'use client';
 
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyRadioButtonForm } from '@molecules/NHSNotifyRadioButtonForm/NHSNotifyRadioButtonForm';
 import { PreviewTemplateProps } from './preview-digitial-template.types';
 
@@ -15,7 +15,7 @@ export function PreviewDigitalTemplate({
           {props.sectionHeading}
         </div>
       )}
-      <ZodErrorSummary errorHeading={form.errorHeading} state={form.state} />
+      <NhsNotifyErrorSummary errorState={form.state.errorState} />
       {props.previewDetailsComponent}
       <NHSNotifyRadioButtonForm
         {...form}

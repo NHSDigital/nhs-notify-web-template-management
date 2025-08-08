@@ -21,7 +21,7 @@ export const $FormSchema = z.object({
 export async function previewEmailTemplateAction(
   formState: TemplateFormState<EmailTemplate>,
   formData: FormData
-) {
+): Promise<TemplateFormState<EmailTemplate>> {
   const formFields = Object.fromEntries(formData.entries());
 
   const { success, error, data } = $FormSchema.safeParse(formFields);
@@ -29,7 +29,7 @@ export async function previewEmailTemplateAction(
   if (!success) {
     return {
       ...formState,
-      validationError: error.flatten(),
+      errorState: z.flattenError(error),
     };
   }
 

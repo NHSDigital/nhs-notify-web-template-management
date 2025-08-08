@@ -27,7 +27,7 @@ test('renders page with preloaded field values', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         subject: 'template-subject-line',
         message: 'template-message',
@@ -41,7 +41,7 @@ test('renders page without back link for initial state with id - edit mode', () 
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         subject: 'template-subject-line',
         message: 'template-message',
@@ -56,7 +56,7 @@ test('renders page one error', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             emailTemplateName: ['Template name error'],
@@ -75,7 +75,7 @@ test('renders page with multiple errors', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             emailTemplateName: ['Template name error'],
@@ -96,7 +96,7 @@ test('Client-side validation triggers', () => {
   const container = render(
     <EmailTemplateForm
       initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         subject: 'template-subject-line',
         message: 'template-message',

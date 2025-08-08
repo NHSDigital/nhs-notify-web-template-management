@@ -40,7 +40,7 @@ describe('CreateNHSAppTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           nhsAppTemplateName: ['Enter a template name'],
@@ -62,7 +62,7 @@ describe('CreateNHSAppTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           nhsAppTemplateMessage: ['Template message too long'],

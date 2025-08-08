@@ -21,7 +21,6 @@ describe('PreviewDigitalTemplate component', () => {
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
-          errorHeading: '',
           action: '',
           state: {},
           pageHeading: 'Example heading',
@@ -40,7 +39,7 @@ describe('PreviewDigitalTemplate component', () => {
 
   it('matches error snapshot', () => {
     const state: FormState = {
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           exampleError: ['Example error'],
@@ -57,7 +56,6 @@ describe('PreviewDigitalTemplate component', () => {
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
-          errorHeading: '',
           action: '',
           state,
           pageHeading: 'Example heading',
@@ -85,7 +83,6 @@ describe('PreviewDigitalTemplate component', () => {
         form={{
           formId: 'preview-form',
           radiosId: 'preview-example',
-          errorHeading: '',
           action: '',
           state: {},
           pageHeading: 'Example heading',

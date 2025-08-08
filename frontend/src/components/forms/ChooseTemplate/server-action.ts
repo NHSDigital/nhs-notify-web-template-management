@@ -23,7 +23,7 @@ export async function chooseTemplateAction(
 
   if (!parsedForm.success) {
     return {
-      validationError: parsedForm.error.flatten(),
+      errorState: z.flattenError(parsedForm.error),
     };
   }
 

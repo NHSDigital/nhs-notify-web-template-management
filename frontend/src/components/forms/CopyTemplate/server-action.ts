@@ -37,7 +37,7 @@ export const copyTemplateAction: CopyTemplateAction = async (
   if (!parsedForm.success) {
     return {
       ...formState,
-      validationError: parsedForm.error.flatten(),
+      errorState: z.flattenError(parsedForm.error),
     };
   }
 

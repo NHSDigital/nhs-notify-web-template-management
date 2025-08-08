@@ -38,7 +38,7 @@ describe('Review sms form renders', () => {
     const container = render(
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-sms',
           templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
@@ -59,7 +59,7 @@ describe('Review sms form renders', () => {
     const container = render(
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-sms',
           templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
@@ -75,7 +75,7 @@ describe('Review sms form renders', () => {
     const container = render(
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: {
+          errorState: {
             formErrors: [],
             fieldErrors: {
               previewSMSTemplateAction: ['Select an option'],
@@ -96,7 +96,7 @@ describe('Review sms form renders', () => {
     render(
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-sms',
           templateStatus: 'NOT_YET_SUBMITTED',
           message: 'message',
@@ -126,7 +126,7 @@ describe('Review sms form renders', () => {
     render(
       <PreviewSMSTemplate
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-sms',
           templateStatus: 'NOT_YET_SUBMITTED',
           message,

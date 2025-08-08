@@ -30,7 +30,7 @@ test('renders page', async () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         message: 'template-message',
       })}
@@ -55,7 +55,7 @@ test('renders page with preloaded field values', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         message: 'template-message',
       })}
@@ -68,7 +68,7 @@ test('renders page without back link for initial state with id - edit mode', () 
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         message: 'template-message',
         id: 'template-id',
@@ -82,7 +82,7 @@ test('renders page one error', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             nhsAppTemplateName: ['Template name error'],
@@ -100,7 +100,7 @@ test('renders page with multiple errors', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             nhsAppTemplateName: ['Template name error'],
@@ -119,7 +119,7 @@ test('Client-side validation triggers', () => {
   const container = render(
     <NhsAppTemplateForm
       initialState={mockDeep<TemplateFormState<NHSAppTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         message: 'template-message',
       })}

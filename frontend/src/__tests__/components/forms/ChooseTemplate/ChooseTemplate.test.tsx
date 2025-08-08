@@ -66,7 +66,7 @@ describe('Choose template page', () => {
   it('renders error component', () => {
     const mockUseActionState = jest.fn().mockReturnValue([
       {
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             page: ['Component error message'],

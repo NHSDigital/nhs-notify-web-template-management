@@ -38,7 +38,7 @@ describe('Preview email form renders', () => {
     const container = render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-email',
           templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
@@ -60,7 +60,7 @@ describe('Preview email form renders', () => {
     const container = render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-email',
           templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
@@ -77,7 +77,7 @@ describe('Preview email form renders', () => {
     const container = render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: {
+          errorState: {
             formErrors: [],
             fieldErrors: {
               previewEmailTemplateAction: ['Select an option'],
@@ -99,7 +99,7 @@ describe('Preview email form renders', () => {
     render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-email',
           templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
@@ -130,7 +130,7 @@ describe('Preview email form renders', () => {
     render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-email',
           templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',
@@ -154,7 +154,7 @@ describe('Preview email form renders', () => {
     const container = render(
       <PreviewEmailTemplate
         initialState={mockDeep<TemplateFormState<EmailTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'test-template-email',
           templateStatus: 'NOT_YET_SUBMITTED',
           subject: 'template-subject-line',

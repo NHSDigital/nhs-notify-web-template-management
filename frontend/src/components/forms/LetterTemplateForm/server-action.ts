@@ -1,5 +1,6 @@
 'use server';
 
+import { z } from 'zod';
 import { uploadLetterTemplate } from '@utils/form-actions';
 import { redirect, RedirectType } from 'next/navigation';
 import {
@@ -20,11 +21,11 @@ export async function processFormActions(
   if (!parsedForm.success) {
     return {
       ...formState,
-      validationError: parsedForm.error.flatten(),
+      errorState: z.flattenError(parsedForm.error),
     };
   }
 
-  delete formState.validationError;
+  delete formState.errorState;
 
   const {
     letterTemplateName,

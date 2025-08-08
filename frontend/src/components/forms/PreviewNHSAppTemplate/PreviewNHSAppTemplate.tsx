@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PreviewTemplateDetailsNhsApp from '@molecules/PreviewTemplateDetails/PreviewTemplateDetailsNhsApp';
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import {
-  FormErrorState,
+  ErrorState,
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -27,11 +27,11 @@ export function PreviewNHSAppTemplate({
     initialState
   );
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate(schema, setValidationError);
+  const formValidate = validate(schema, setErrorState);
 
   const { message } = state;
   const html = renderNHSAppMarkdown(message);
@@ -56,7 +56,7 @@ export function PreviewNHSAppTemplate({
               form={{
                 ...form,
                 state: {
-                  validationError,
+                  errorState,
                 },
                 action,
                 formId: 'preview-nhs-app-template',

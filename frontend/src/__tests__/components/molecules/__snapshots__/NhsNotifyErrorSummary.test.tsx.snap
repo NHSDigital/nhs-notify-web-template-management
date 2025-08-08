@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Renders ZodErrorSummary correctly with errors 1`] = `
+exports[`Renders NhsNotifyErrorSummary correctly with errors 1`] = `
 <DocumentFragment>
   <div
     aria-labelledby="error-summary-title"
@@ -13,7 +13,7 @@ exports[`Renders ZodErrorSummary correctly with errors 1`] = `
       data-testid="error-summary"
       id="error-summary-title"
     >
-      Error heading
+      There is a problem
     </h2>
     <ul
       class="nhsuk-list nhsuk-error-summary__list"
@@ -22,22 +22,33 @@ exports[`Renders ZodErrorSummary correctly with errors 1`] = `
         <a
           href="#radios-id"
         >
-          Field error
+          Radio error 1, Radio error 2
         </a>
       </li>
-      <span
-        class="nhsuk-error-message"
-      >
-        <span
-          class="nhsuk-u-visually-hidden"
+      <li>
+        <a
+          href="#select-id"
         >
-          Error: 
+          Select error
+        </a>
+      </li>
+      <li>
+        <span
+          class="nhsuk-error-message"
+        >
+          Form error
         </span>
-        Form error
-      </span>
+      </li>
+      <li>
+        <span
+          class="nhsuk-error-message"
+        >
+          Form error 2
+        </span>
+      </li>
     </ul>
   </div>
 </DocumentFragment>
 `;
 
-exports[`Renders ZodErrorSummary correctly without errors 1`] = `<DocumentFragment />`;
+exports[`Renders NhsNotifyErrorSummary correctly without errors 1`] = `<DocumentFragment />`;

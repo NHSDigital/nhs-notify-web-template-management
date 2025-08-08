@@ -5,7 +5,7 @@ import PreviewTemplateDetailsSms from '@molecules/PreviewTemplateDetails/Preview
 import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
-  FormErrorState,
+  ErrorState,
   PageComponentProps,
   SMSTemplate,
 } from 'nhs-notify-web-template-management-utils';
@@ -30,11 +30,11 @@ export function PreviewSMSTemplate({
     initialState
   );
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($FormSchema, setValidationError);
+  const formValidate = validate($FormSchema, setErrorState);
 
   const templateMessage = initialState.message;
   const html = renderSMSMarkdown(templateMessage);
@@ -56,7 +56,7 @@ export function PreviewSMSTemplate({
               form={{
                 ...form,
                 state: {
-                  validationError,
+                  errorState,
                 },
                 action,
                 formId: 'preview-sms-template',

@@ -34,7 +34,7 @@ export function previewNhsAppTemplateAction(
   if (!validationResponse.success) {
     return {
       ...formState,
-      validationError: validationResponse.error.flatten(),
+      errorState: z.flattenError(validationResponse.error),
     };
   }
 
