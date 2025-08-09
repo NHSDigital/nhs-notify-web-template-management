@@ -34,7 +34,7 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "constructs": "^10.4.2",
-    "eslint-config-next": "^15.2.3",
+    "eslint-config-next": "^15.4.6",
     "jest-mock-extended": "^3.0.7",
     "js-cookie": "^3.0.5",
     "mochawesome": "^7.1.3",
