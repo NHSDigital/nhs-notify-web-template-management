@@ -1,0 +1,10 @@
+{
+  "detail": {
+    "id": "a6f7d152-fd5d-4aef-a12b-9d071fe33b6c",
+    "owner": "de77c674-c063-40b1-ae91-32c3cba13b23"
+  },
+  "detail-type": "TemplateDeleted",
+  "source": "uk.nhs.notify.templates",
+  "time": "2025-06-28T12:34:56Z",
+  "version": "1.0"
+}
