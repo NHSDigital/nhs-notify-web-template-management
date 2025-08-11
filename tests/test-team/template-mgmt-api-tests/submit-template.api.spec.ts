@@ -25,10 +25,12 @@ test.describe('POST /v1/template/:templateId/submit', () => {
   const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
+  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -958,6 +960,56 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       expect(updateResponseBody).toEqual({
         statusCode: 404,
         technicalMessage: 'Template not found',
+      });
+    });
+  });
+
+  test.describe('user-owned templates', () => {
+    test('user-owner can submit', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: userDirectOwner.owner,
+      });
+
+      const updateResponse = await request.patch(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}/submit`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+        }
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updated = await updateResponse.json();
+
+      expect(updated).toEqual({
+        statusCode: 200,
+        template: {
+          campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
+          createdAt: expect.stringMatching(isoDateRegExp),
+          id: expect.stringMatching(uuidRegExp),
+          message: created.template.message,
+          name: created.template.name,
+          templateStatus: 'SUBMITTED',
+          templateType: created.template.templateType,
+          updatedAt: expect.stringMatching(isoDateRegExp),
+        },
       });
     });
   });

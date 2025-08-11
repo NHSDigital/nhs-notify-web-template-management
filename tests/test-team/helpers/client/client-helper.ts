@@ -58,9 +58,9 @@ export const testClients = {
    * Client 4 has client ownership of templates disabled
    */
   Client5: {
-    campaignId: undefined,
+    campaignId: 'Campaign5',
     features: {
-      proofing: false,
+      proofing: true,
       clientOwnership: false,
     },
   },
