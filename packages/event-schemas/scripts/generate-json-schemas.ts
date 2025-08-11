@@ -16,7 +16,7 @@ function writeSchema(name: string, schema: ZodType, majorVersion: string) {
 
   const jsonSchema = toJSONSchema(schema, { io: 'input' });
   const outPath = path.resolve(outDir, `v${majorVersion}.json`);
-  fs.writeFileSync(outPath, JSON.stringify(jsonSchema, null, 2));
+  fs.writeFileSync(outPath, `${JSON.stringify(jsonSchema, null, 2)}\n`);
 }
 
 writeSchema('TemplateCompleted', $TemplateCompletedEventV1, '1');

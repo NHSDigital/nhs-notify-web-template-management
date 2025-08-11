@@ -17,6 +17,10 @@ repos:
       - id: mixed-line-ending
       - id: pretty-format-json
         args: ['--autofix']
+        exclude: |
+          (?x)^(
+            packages/event-schemas/schemas/[^/]+/[^/]+\.json
+          )$
     # -   id: ...
   - repo: local
     hooks:
