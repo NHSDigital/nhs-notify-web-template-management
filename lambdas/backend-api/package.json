@@ -6,7 +6,7 @@
     "@aws-sdk/client-ses": "3.775.0",
     "@aws-sdk/client-sqs": "3.775.0",
     "@aws-sdk/client-ssm": "3.775.0",
-    "@aws-sdk/lib-dynamodb": "3.775.0",
+    "@aws-sdk/lib-dynamodb": "3.864.0",
     "@aws-sdk/util-dynamodb": "3.775.0",
     "csv-parse": "^5.6.0",
     "html-entities": "^2.5.3",
