@@ -6,7 +6,7 @@ import { PreviewDigitalTemplate } from '@organisms/PreviewDigitalTemplate';
 import content from '@content/content';
 import {
   EmailTemplate,
-  FormErrorState,
+  ErrorState,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
 import { useActionState, useState } from 'react';
@@ -30,11 +30,11 @@ export function PreviewEmailTemplate({
     initialState
   );
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
-  const formValidate = validate($FormSchema, setValidationError);
+  const formValidate = validate($FormSchema, setErrorState);
 
   const templateSubjectLine = initialState.subject;
   const templateMessage = initialState.message;
@@ -57,7 +57,7 @@ export function PreviewEmailTemplate({
               form={{
                 ...form,
                 state: {
-                  validationError,
+                  errorState,
                 },
                 action,
                 formId: 'preview-email-template',

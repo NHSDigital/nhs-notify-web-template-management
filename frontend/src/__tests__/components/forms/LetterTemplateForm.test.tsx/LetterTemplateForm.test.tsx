@@ -27,7 +27,7 @@ test('renders page with preloaded field values', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: 'ar',
@@ -44,7 +44,7 @@ test('shows right-to-left language warning when language changes', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: initialLanguage,
@@ -69,7 +69,7 @@ test('hides right-to-left language warning when language changes', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: 'template-name',
         letterType: 'x1',
         language: initialLanguage,
@@ -91,7 +91,7 @@ test('renders page one error', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             letterTemplateName: ['Template name error'],
@@ -110,7 +110,7 @@ test('renders page with multiple errors', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: {
+        errorState: {
           formErrors: [],
           fieldErrors: {
             letterTemplateName: ['Template name error'],
@@ -133,7 +133,7 @@ test('Client-side validation triggers', () => {
   const container = render(
     <LetterTemplateForm
       initialState={mockDeep<TemplateFormState<LetterTemplate>>({
-        validationError: undefined,
+        errorState: undefined,
         name: undefined,
         letterType: undefined,
         language: undefined,

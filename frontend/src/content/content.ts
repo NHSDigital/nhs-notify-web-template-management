@@ -66,6 +66,10 @@ const footer = {
   },
 };
 
+const errorSummary = {
+  heading: 'There is a problem',
+};
+
 const personalisation: {
   header: string;
   leadParagraph: ContentBlock[];
@@ -445,7 +449,6 @@ const previewEmailTemplate = {
   pageTitle: generatePageTitle('Preview email template'),
   sectionHeading: 'Template saved',
   form: {
-    errorHeading: 'There is a problem',
     pageHeading: 'What would you like to do next?',
     options: [
       { id: 'email-edit', text: 'Edit template' },
@@ -492,7 +495,6 @@ const previewLetterTemplate = {
   backLinkText: backToAllTemplates,
   submitText: 'Submit template',
   requestProofText: 'Request a proof',
-  errorHeading: 'There is a problem',
   footer: previewLetterFooter,
   virusScanError: 'The file(s) you uploaded may contain a virus.',
   virusScanErrorAction:
@@ -515,7 +517,6 @@ const previewNHSAppTemplate = {
   pageTitle: generatePageTitle('Preview NHS App message template'),
   sectionHeading: 'Template saved',
   form: {
-    errorHeading: 'There is a problem',
     pageHeading: 'What would you like to do next?',
     options: [
       { id: 'nhsapp-edit', text: 'Edit template' },
@@ -548,7 +549,6 @@ const previewSMSTemplate = {
     ],
   },
   form: {
-    errorHeading: 'There is a problem',
     pageHeading: 'What would you like to do next?',
     options: [
       { id: 'sms-edit', text: 'Edit template' },
@@ -664,7 +664,6 @@ const submitLetterTemplate = {
 const copyTemplate = {
   pageHeading: 'Copy',
   radiosLabel: 'Choose a template type',
-  errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
   backLinkText: backToAllTemplates,
@@ -676,7 +675,6 @@ const copyTemplate = {
 const chooseTemplate = {
   pageTitle: generatePageTitle('Choose a template type'),
   pageHeading: 'Choose a template type to create',
-  errorHeading: 'There is a problem',
   buttonText: 'Continue',
   hint: 'Select one option',
   learnMoreLink: '/features',
@@ -771,7 +769,6 @@ const templateFormNhsApp = {
   pageTitle: generatePageTitle('Create NHS App message template'),
   editPageTitle: generatePageTitle('Edit NHS App message template'),
   pageHeadingSuffix: 'NHS App message template',
-  errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
@@ -793,7 +790,6 @@ const templateFormNhsApp = {
 
 const templateFormLetter = {
   backLinkText: 'Back to choose a template type',
-  errorHeading: 'There is a problem',
   pageTitle: generatePageTitle('Upload a letter template'),
   pageHeading: 'Upload a letter template',
   templateNameLabelText: 'Template name',
@@ -861,7 +857,6 @@ const templateFormEmail = {
   pageTitle: generatePageTitle('Create email template'),
   editPageTitle: generatePageTitle('Edit email template'),
   pageHeadingSuffix: 'email template',
-  errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateSubjectLineLabelText: 'Subject line',
   templateMessageLabelText: 'Message',
@@ -905,7 +900,6 @@ const templateFormSms = {
   pageTitle: generatePageTitle('Create text message template'),
   editPageTitle: generatePageTitle('Edit text message template'),
   pageHeadingSuffix: 'text message template',
-  errorHeading: 'There is a problem',
   templateNameLabelText: 'Template name',
   templateMessageLabelText: 'Message',
   templateNameHintText: 'This will not be visible to recipients.',
@@ -1011,6 +1005,7 @@ const content = {
     deleteTemplate,
     footer,
     header,
+    errorSummary,
     logoutWarning,
     messageFormatting,
     nameYourTemplate,

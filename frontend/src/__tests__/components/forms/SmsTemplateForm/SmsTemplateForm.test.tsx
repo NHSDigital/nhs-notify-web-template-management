@@ -30,7 +30,7 @@ describe('CreateSmsTemplate component', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<CreateUpdateSMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: 'template-name',
           message: 'template-message',
         })}
@@ -43,7 +43,7 @@ describe('CreateSmsTemplate component', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           id: 'template-id',
           name: 'template-name',
           message: 'template-message',
@@ -57,7 +57,7 @@ describe('CreateSmsTemplate component', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: {
+          errorState: {
             formErrors: [],
             fieldErrors: {
               smsTemplateName: ['Template name error'],
@@ -76,7 +76,7 @@ describe('CreateSmsTemplate component', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: {
+          errorState: {
             formErrors: [],
             fieldErrors: {
               smsTemplateName: ['Template name error'],
@@ -98,7 +98,7 @@ describe('CreateSmsTemplate component', () => {
     render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: '',
           message: '',
           id: 'template-id',
@@ -131,7 +131,7 @@ describe('CreateSmsTemplate component', () => {
     const container = render(
       <SmsTemplateForm
         initialState={mockDeep<TemplateFormState<SMSTemplate>>({
-          validationError: undefined,
+          errorState: undefined,
           name: '',
           message: '',
           id: 'template-id',

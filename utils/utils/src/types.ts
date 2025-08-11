@@ -19,13 +19,13 @@ export type FormId =
   | 'create-nhs-app-template-back'
   | 'create-email-template-back';
 
-export type FormErrorState = {
-  formErrors: string[];
-  fieldErrors: Record<string, string[]>;
+export type ErrorState = {
+  formErrors?: string[];
+  fieldErrors?: Record<string, string[]>;
 };
 
 export type FormState = {
-  validationError?: FormErrorState;
+  errorState?: ErrorState;
 };
 
 export type CreateUpdateNHSAppTemplate = Extract<
