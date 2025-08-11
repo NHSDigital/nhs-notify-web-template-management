@@ -13,11 +13,13 @@ test.describe('GET /v1/templates', () => {
   let user1: TestUser;
   let user2: TestUser;
   let userDirectOwner: TestUser;
+  let userSharedClient: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
     userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User9.userId);
   });
 
   test.afterEach(async () => {
@@ -201,6 +203,50 @@ test.describe('GET /v1/templates', () => {
     expect(responseBody).toEqual({
       statusCode: 200,
       templates: [created2.template],
+    });
+  });
+
+  test('user belonging to the same client as the creator can list creators templates', async ({
+    request,
+  }) => {
+    const response1 = await request.post(
+      `${process.env.API_BASE_URL}/v1/template`,
+      {
+        headers: {
+          Authorization: await user1.getAccessToken(),
+        },
+        data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+          templateType: 'NHS_APP',
+        }),
+      }
+    );
+
+    expect(response1.status()).toBe(201);
+
+    const created1 = await response1.json();
+
+    templateStorageHelper.addAdHocTemplateKey({
+      id: created1.template.id,
+      owner: user1.owner,
+    });
+
+    const userSharedClientListResponse = await request.get(
+      `${process.env.API_BASE_URL}/v1/templates`,
+      {
+        headers: {
+          Authorization: await userSharedClient.getAccessToken(),
+        },
+      }
+    );
+
+    expect(userSharedClientListResponse.status()).toBe(200);
+
+    const userSharedClientResponseBody =
+      await userSharedClientListResponse.json();
+
+    expect(userSharedClientResponseBody).toEqual({
+      statusCode: 200,
+      templates: expect.arrayContaining([created1.template]),
     });
   });
 

@@ -106,6 +106,7 @@ test.describe('POST /v1/letter-template', () => {
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        clientId: user1.clientId,
       },
     });
 
@@ -188,6 +189,7 @@ test.describe('POST /v1/letter-template', () => {
         templateStatus: 'PENDING_VALIDATION',
         templateType: templateData.templateType,
         updatedAt: expect.stringMatching(isoDateRegExp),
+        clientId: user1.clientId,
       },
     });
 
@@ -620,6 +622,7 @@ test.describe('POST /v1/letter-template', () => {
           templateStatus: 'PENDING_VALIDATION',
           templateType: templateData.templateType,
           updatedAt: expect.stringMatching(isoDateRegExp),
+          clientId: userDirectOwner.clientId,
         },
       });
     });
