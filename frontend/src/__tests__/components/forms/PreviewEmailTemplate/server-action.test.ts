@@ -32,7 +32,7 @@ describe('previewEmailTemplateAction server action', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           previewEmailTemplateAction: ['Select an option'],

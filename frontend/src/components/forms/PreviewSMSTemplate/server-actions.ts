@@ -21,7 +21,7 @@ export const $FormSchema = z.object({
 export async function previewSmsTemplateAction(
   formState: TemplateFormState<SMSTemplate>,
   formData: FormData
-) {
+): Promise<TemplateFormState<SMSTemplate>> {
   const formFields = Object.fromEntries(formData.entries());
 
   const { success, error, data } = $FormSchema.safeParse(formFields);
@@ -29,7 +29,7 @@ export async function previewSmsTemplateAction(
   if (!success) {
     return {
       ...formState,
-      validationError: error.flatten(),
+      errorState: z.flattenError(error),
     };
   }
 

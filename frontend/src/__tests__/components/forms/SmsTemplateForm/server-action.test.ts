@@ -34,7 +34,7 @@ describe('CreateSmsTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           smsTemplateName: ['Enter a template name'],
@@ -56,7 +56,7 @@ describe('CreateSmsTemplate server actions', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           smsTemplateMessage: ['Template message too long'],
