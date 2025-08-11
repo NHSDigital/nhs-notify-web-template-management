@@ -107,12 +107,13 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(mockLogger.logMessages).toEqual([]);
   });
 
-  test('returns success on valid token without notify-client-id', async () => {
+  test('returns success on valid token when expected resource is specified', async () => {
     const jwt = sign(
       {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -120,11 +121,46 @@ describe('LambdaCognitoAuthorizer', () => {
       }
     );
 
-    const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
+    const res = await authorizer.authorize(
+      userPoolId,
+      userPoolClientId,
+      jwt,
+      'nhs-notify-client-id'
+    );
 
     expect(res).toEqual({
       success: true,
       subject: 'sub',
+      clientId: 'nhs-notify-client-id',
+    });
+    expect(mockLogger.logMessages).toEqual([]);
+  });
+
+  test('returns success on valid token when expected resource owner is the user (not client)', async () => {
+    const jwt = sign(
+      {
+        token_use: 'access',
+        client_id: 'user-pool-client-id',
+        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
+      },
+      'key',
+      {
+        keyid: 'key-id',
+      }
+    );
+
+    const res = await authorizer.authorize(
+      userPoolId,
+      userPoolClientId,
+      jwt,
+      'sub'
+    );
+
+    expect(res).toEqual({
+      success: true,
+      subject: 'sub',
+      clientId: 'nhs-notify-client-id',
     });
     expect(mockLogger.logMessages).toEqual([]);
   });
@@ -152,7 +188,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key'
     );
@@ -174,7 +210,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id-2',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -200,7 +236,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-2',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -226,7 +262,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'id',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -245,6 +281,36 @@ describe('LambdaCognitoAuthorizer', () => {
     );
   });
 
+  test('returns failure when no NHS Notify client ID is present in the access token', async () => {
+    const jwt = sign(
+      {
+        token_use: 'access',
+        client_id: 'user-pool-client-id',
+        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
+      },
+      'key',
+      {
+        keyid: 'key-id',
+      }
+    );
+
+    const res = await authorizer.authorize(userPoolId, userPoolClientId, jwt);
+
+    expect(res).toEqual({ success: false });
+    expect(mockLogger.logMessages).toContainEqual(
+      expect.objectContaining({
+        level: 'error',
+        message: expect.stringContaining('Failed to authorize'),
+        issues: expect.arrayContaining([
+          expect.objectContaining({
+            path: ['nhs-notify:client-id'],
+            message: 'Invalid input: expected string, received undefined',
+          }),
+        ]),
+      })
+    );
+  });
+
   test('returns failure on Cognito not validating the token', async () => {
     const cognitoErrorUserPool = 'user-pool-id-cognito-error';
 
@@ -253,7 +319,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-error',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -285,7 +351,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: `https://cognito-idp.eu-west-2.amazonaws.com/${iss}`,
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -312,7 +378,7 @@ describe('LambdaCognitoAuthorizer', () => {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id-cognito-no-sub',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -335,13 +401,13 @@ describe('LambdaCognitoAuthorizer', () => {
     );
   });
 
-  test('returns failure when sub on Cognito UserAttributes does not match expected subject', async () => {
+  test('returns failure when sub on Cognito UserAttributes does not match expected subject or clientId', async () => {
     const jwt = sign(
       {
         token_use: 'access',
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
@@ -360,7 +426,7 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(mockLogger.logMessages).toContainEqual(
       expect.objectContaining({
         level: 'warn',
-        message: 'Subject path does not match expected subject',
+        message: 'Neither subject nor clientId matches expected resource owner',
       })
     );
   });
@@ -372,7 +438,7 @@ describe('LambdaCognitoAuthorizer', () => {
         client_id: 'user-pool-client-id',
         iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
         exp: 1_640_995_200,
-        clientId: 'nhs-notify-client-id',
+        'nhs-notify:client-id': 'nhs-notify-client-id',
       },
       'key',
       {
