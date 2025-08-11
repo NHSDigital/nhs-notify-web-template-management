@@ -13,10 +13,12 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let userProofingEnabled: TestUser;
   let anotherUser: TestUser;
+  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
     anotherUser = await authHelper.getTestUser(testUsers.User2.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -221,6 +223,60 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     expect(result).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be proofed',
+    });
+  });
+
+  test.describe('user-owned templates', () => {
+    test('user-owner can request proof', async ({ request }) => {
+      const templateId = randomUUID();
+      const currentVersion = randomUUID();
+
+      const template = {
+        ...TemplateFactory.uploadLetterTemplate(
+          templateId,
+          userDirectOwner,
+          'userDirectOwnerTemplate',
+          'PENDING_PROOF_REQUEST'
+        ),
+        files: {
+          pdfTemplate: {
+            virusScanStatus: 'PASSED',
+            currentVersion,
+            fileName: 'template.pdf',
+          },
+          testDataCsv: {
+            virusScanStatus: 'PASSED',
+            currentVersion,
+            fileName: 'data.csv',
+          },
+        },
+        personalisationParameters: ['nhsNumber'],
+      };
+
+      await templateStorageHelper.seedTemplateData([template]);
+
+      const requestProofResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+        }
+      );
+
+      const result = await requestProofResponse.json();
+      const debug = JSON.stringify(result, null, 2);
+
+      expect(requestProofResponse.status(), debug).toBe(200);
+
+      expect(result).toEqual({
+        statusCode: 200,
+        template: expect.objectContaining({
+          name: template.name,
+          templateStatus: 'WAITING_FOR_PROOF',
+          templateType: template.templateType,
+        }),
+      });
     });
   });
 });

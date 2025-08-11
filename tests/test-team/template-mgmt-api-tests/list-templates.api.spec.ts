@@ -12,10 +12,12 @@ test.describe('GET /v1/templates', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
   let user2: TestUser;
+  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterEach(async () => {
@@ -199,6 +201,75 @@ test.describe('GET /v1/templates', () => {
     expect(responseBody).toEqual({
       statusCode: 200,
       templates: [created2.template],
+    });
+  });
+
+  test.describe('user-owned templates', () => {
+    test('can list user-owned templates', async ({ request }) => {
+      const response1 = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'NHS_APP',
+          }),
+        }
+      );
+
+      expect(response1.status()).toBe(201);
+
+      const created1 = await response1.json();
+
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created1.template.id,
+        owner: userDirectOwner.owner,
+      });
+
+      const response2 = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'SMS',
+          }),
+        }
+      );
+
+      expect(response2.status()).toBe(201);
+
+      const created2 = await response2.json();
+
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created2.template.id,
+        owner: userDirectOwner.owner,
+      });
+
+      const user1ListResponse = await request.get(
+        `${process.env.API_BASE_URL}/v1/templates`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+        }
+      );
+
+      expect(user1ListResponse.status()).toBe(200);
+
+      const user1ResponseBody = await user1ListResponse.json();
+
+      expect(user1ResponseBody).toEqual({
+        statusCode: 200,
+        templates: expect.arrayContaining([
+          created1.template,
+          created2.template,
+        ]),
+      });
+
+      expect(user1ResponseBody.templates.length).toBe(2);
     });
   });
 });
