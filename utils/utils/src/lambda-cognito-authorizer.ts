@@ -25,7 +25,7 @@ export class LambdaCognitoAuthorizer {
     userPoolId: string,
     userPoolClientId: string,
     jwt: string,
-    expectedSubjectOrClientId?: string
+    expectedResourceOwner?: string
   ): Promise<
     { success: true; subject: string; clientId?: string } | { success: false }
   > {
@@ -91,9 +91,9 @@ export class LambdaCognitoAuthorizer {
       }
 
       if (
-        expectedSubjectOrClientId !== undefined &&
-        expectedSubjectOrClientId !== sub &&
-        expectedSubjectOrClientId !== notifyClientId
+        expectedResourceOwner !== undefined &&
+        expectedResourceOwner !== sub &&
+        expectedResourceOwner !== notifyClientId
       ) {
         this.logger.warn(
           'Neither subject nor clientId matches expected resource owner'
