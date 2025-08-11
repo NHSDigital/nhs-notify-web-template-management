@@ -107,7 +107,7 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(mockLogger.logMessages).toEqual([]);
   });
 
-  test('returns success on valid token when expected resource is specified', async () => {
+  test('returns success on valid token when expected resource owner is specified', async () => {
     const jwt = sign(
       {
         token_use: 'access',
