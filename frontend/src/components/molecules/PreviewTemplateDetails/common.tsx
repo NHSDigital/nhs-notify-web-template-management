@@ -7,8 +7,9 @@ import {
 import styles from './PreviewTemplateDetails.module.scss';
 import { JSX } from 'react';
 import content from '@content/content';
-import { TemplateDto, TemplateStatus } from 'nhs-notify-backend-client';
+import { TemplateDto } from 'nhs-notify-backend-client';
 import classNames from 'classnames';
+import { toKebabCase } from '@utils/kebab-case';
 
 type ContentPreviewField = {
   heading: 'Id' | 'Heading' | 'Body text' | 'Subject' | 'Message';
@@ -18,9 +19,6 @@ type ContentPreviewField = {
 
 const { rowHeadings, previewTemplateStatusFootnote } =
   content.components.previewTemplateDetails;
-
-const templateStatusToKebabCase = (status: TemplateStatus) =>
-  status.toLowerCase().replaceAll('_', '-');
 
 export function DetailSection({ children }: { children: React.ReactNode }) {
   return (
@@ -79,7 +77,7 @@ export function StandardDetailRows({
         <SummaryList.Key>{rowHeadings.templateStatus}</SummaryList.Key>
         <SummaryList.Value>
           <Tag
-            data-test-id={`status-tag-${templateStatusToKebabCase(template.templateStatus)}`}
+            data-test-id={`status-tag-${toKebabCase(template.templateStatus)}`}
             color={templateStatusToColourMappings(template.templateStatus)}
           >
             {templateStatusToDisplayMappings(template.templateStatus)}

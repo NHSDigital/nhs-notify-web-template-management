@@ -35,11 +35,11 @@ export async function processFormActions(
   if (!parsedForm.success) {
     return {
       ...formState,
-      validationError: parsedForm.error.flatten(),
+      errorState: z.flattenError(parsedForm.error),
     };
   }
 
-  delete formState.validationError;
+  delete formState.errorState;
 
   const { nhsAppTemplateName, nhsAppTemplateMessage } = parsedForm.data;
 

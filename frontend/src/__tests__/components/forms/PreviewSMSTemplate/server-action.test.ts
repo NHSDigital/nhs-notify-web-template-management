@@ -31,7 +31,7 @@ describe('previewSmsTemplateAction server action', () => {
 
     expect(response).toEqual({
       ...initialState,
-      validationError: {
+      errorState: {
         formErrors: [],
         fieldErrors: {
           previewSMSTemplateAction: ['Select an option'],

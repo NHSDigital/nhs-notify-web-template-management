@@ -12,14 +12,14 @@ import {
   $CreateNhsAppTemplateSchema,
   processFormActions,
 } from '@forms/NhsAppTemplateForm/server-action';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import { Personalisation } from '@molecules/Personalisation/Personalisation';
 import { MessageFormatting } from '@molecules/MessageFormatting/MessageFormatting';
 import {
   CreateUpdateNHSAppTemplate,
-  FormErrorState,
+  ErrorState,
   NHSAppTemplate,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -31,13 +31,14 @@ import { NHSNotifyMain } from '@atoms/NHSNotifyMain/NHSNotifyMain';
 import { NHSNotifyButton } from '@atoms/NHSNotifyButton/NHSNotifyButton';
 import { validate } from '@utils/client-validate-form';
 import Link from 'next/link';
+import classNames from 'classnames';
+import { MarkdownContent } from '@molecules/MarkdownContent/MarkdownContent';
 
 export const NhsAppTemplateForm: FC<
   PageComponentProps<NHSAppTemplate | CreateUpdateNHSAppTemplate>
 > = ({ initialState }) => {
   const {
     pageHeadingSuffix,
-    errorHeading,
     buttonText,
     characterCountText,
     templateNameLabelText,
@@ -48,14 +49,11 @@ export const NhsAppTemplateForm: FC<
 
   const [state, action] = useActionState(processFormActions, initialState);
 
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
-
-  const formValidate = validate(
-    $CreateNhsAppTemplateSchema,
-    setValidationError
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
   );
+
+  const formValidate = validate($CreateNhsAppTemplateSchema, setErrorState);
 
   const [nhsAppTemplateMessage, nhsAppMessageHandler] =
     useTextInput<HTMLTextAreaElement>(state.message);
@@ -64,10 +62,10 @@ export const NhsAppTemplateForm: FC<
     useTextInput<HTMLInputElement>(state.name);
 
   const templateNameError =
-    validationError?.fieldErrors.nhsAppTemplateName?.join(', ');
+    errorState?.fieldErrors?.nhsAppTemplateName?.join(', ');
 
   const templateMessageError =
-    validationError?.fieldErrors.nhsAppTemplateMessage?.join(', ');
+    errorState?.fieldErrors?.nhsAppTemplateMessage?.join(', ');
 
   const editMode = 'id' in initialState;
 
@@ -79,22 +77,27 @@ export const NhsAppTemplateForm: FC<
         </Link>
       )}
       <NHSNotifyMain>
+        <div className='nhsuk-grid-row nhsuk-grid-column-two-thirds'>
+          <NhsNotifyErrorSummary errorState={errorState} />
+          <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
+            {editMode ? 'Edit ' : 'Create '}
+            {pageHeadingSuffix}
+          </h1>
+        </div>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
             <NHSNotifyFormWrapper
               action={action}
               formId='create-nhs-app-template'
               formAttributes={{ onSubmit: formValidate }}
             >
-              <h1 className='nhsuk-heading-xl' data-testid='page-heading'>
-                {editMode ? 'Edit ' : 'Create '}
-                {pageHeadingSuffix}
-              </h1>
-              <div className={templateNameError && 'nhsuk-form-group--error'}>
+              <div
+                className={classNames(
+                  'nhsuk-form-group',
+                  'nhsuk-u-margin-bottom-8',
+                  templateNameError && 'nhsuk-form-group--error'
+                )}
+              >
                 <Label htmlFor='nhsAppTemplateName' size='s'>
                   {templateNameLabelText}
                 </Label>
@@ -109,24 +112,27 @@ export const NhsAppTemplateForm: FC<
                   autoComplete='off'
                 />
               </div>
-              <Textarea
-                label={templateMessageLabelText}
-                labelProps={{ size: 's' }}
-                id='nhsAppTemplateMessage'
-                maxLength={5000}
-                rows={10}
-                onChange={nhsAppMessageHandler}
-                defaultValue={nhsAppTemplateMessage}
-                error={templateMessageError}
-                errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
-                autoComplete='off'
-              />
-              <JsEnabled>
-                <p id='character-count'>
-                  {nhsAppTemplateMessage.length}
-                  {characterCountText}
-                </p>
-              </JsEnabled>
+              <div className='nhsuk-form-group nhsuk-u-margin-bottom-6'>
+                <Textarea
+                  label={templateMessageLabelText}
+                  labelProps={{ size: 's' }}
+                  id='nhsAppTemplateMessage'
+                  maxLength={5000}
+                  rows={12}
+                  onChange={nhsAppMessageHandler}
+                  defaultValue={nhsAppTemplateMessage}
+                  error={templateMessageError}
+                  errorProps={{ id: 'nhsAppTemplateMessage--error-message' }}
+                  autoComplete='off'
+                />
+                <JsEnabled>
+                  <MarkdownContent
+                    id='character-count'
+                    content={characterCountText}
+                    variables={{ characters: nhsAppTemplateMessage.length }}
+                  />
+                </JsEnabled>
+              </div>
               <NHSNotifyButton
                 id='create-nhs-app-template-submit-button'
                 data-testid='submit-button'
@@ -137,7 +143,7 @@ export const NhsAppTemplateForm: FC<
           </div>
           <aside className='nhsuk-grid-column-one-third'>
             <Personalisation />
-            <MessageFormatting template='NHS_APP' />
+            <MessageFormatting templateType='NHS_APP' />
             <ChannelGuidance template='NHS_APP' />
           </aside>
         </div>

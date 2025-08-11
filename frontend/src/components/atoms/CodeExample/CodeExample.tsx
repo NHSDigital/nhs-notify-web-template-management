@@ -17,9 +17,11 @@ const CodeExample: React.FC<CodeExampleProps> = ({
       <span id={ariaId} className='nhsuk-u-visually-hidden'>
         {ariaText}
       </span>
-      <code aria-describedby={ariaId} className={codeClassName}>
-        {children}
-      </code>
+      <pre className='nhsuk-code-block'>
+        <code aria-describedby={ariaId} className={codeClassName}>
+          {children}
+        </code>
+      </pre>
     </>
   );
 };

@@ -11,14 +11,14 @@ import {
   WarningCallout,
 } from 'nhsuk-react-components';
 import { processFormActions } from '@forms/LetterTemplateForm/server-action';
-import { ZodErrorSummary } from '@molecules/ZodErrorSummary/ZodErrorSummary';
+import { NhsNotifyErrorSummary } from '@molecules/NhsNotifyErrorSummary/NhsNotifyErrorSummary';
 import { NHSNotifyFormWrapper } from '@molecules/NHSNotifyFormWrapper/NHSNotifyFormWrapper';
 import { TemplateNameGuidance } from '@molecules/TemplateNameGuidance';
 import {
   alphabeticalLanguageList,
   alphabeticalLetterTypeList,
   UploadLetterTemplate,
-  FormErrorState,
+  ErrorState,
   isRightToLeft,
   PageComponentProps,
 } from 'nhs-notify-web-template-management-utils';
@@ -37,7 +37,6 @@ export const LetterTemplateForm: FC<
 > = ({ initialState }) => {
   const {
     backLinkText,
-    errorHeading,
     pageHeading,
     templateNameLabelText,
     templateNameHintText,
@@ -58,9 +57,9 @@ export const LetterTemplateForm: FC<
   } = content.components.templateFormLetter;
 
   const [state, action] = useActionState(processFormActions, initialState);
-  const [validationError, setValidationError] = useState<
-    FormErrorState | undefined
-  >(state.validationError);
+  const [errorState, setErrorState] = useState<ErrorState | undefined>(
+    state.errorState
+  );
 
   const [letterTemplateName, letterTemplateNameHandler] =
     useTextInput<HTMLInputElement>(state.name);
@@ -74,21 +73,21 @@ export const LetterTemplateForm: FC<
   >(state.language);
 
   const templateNameError =
-    validationError?.fieldErrors.letterTemplateName?.join(', ');
+    errorState?.fieldErrors?.letterTemplateName?.join(', ');
 
   const templateLetterTypeError =
-    validationError?.fieldErrors.letterTemplateLetterType?.join(', ');
+    errorState?.fieldErrors?.letterTemplateLetterType?.join(', ');
 
   const templateLanguageError =
-    validationError?.fieldErrors.letterTemplateLanguage?.join(', ');
+    errorState?.fieldErrors?.letterTemplateLanguage?.join(', ');
 
   const templatePdfError =
-    validationError?.fieldErrors.letterTemplatePdf?.join(', ');
+    errorState?.fieldErrors?.letterTemplatePdf?.join(', ');
 
   const templateCsvError =
-    validationError?.fieldErrors.letterTemplateCsv?.join(', ');
+    errorState?.fieldErrors?.letterTemplateCsv?.join(', ');
 
-  const validateForm = validate($UploadLetterTemplateForm, setValidationError);
+  const validateForm = validate($UploadLetterTemplateForm, setErrorState);
 
   const formGroupClasses = [
     'nhsuk-u-margin-bottom-6',
@@ -104,10 +103,7 @@ export const LetterTemplateForm: FC<
       <NHSNotifyMain>
         <div className='nhsuk-grid-row'>
           <div className='nhsuk-grid-column-two-thirds'>
-            <ZodErrorSummary
-              errorHeading={errorHeading}
-              state={{ validationError }}
-            />
+            <NhsNotifyErrorSummary errorState={errorState} />
             <NHSNotifyFormWrapper
               action={action}
               formId='upload-letter-template'
