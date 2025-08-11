@@ -9,7 +9,6 @@ const $CloudEvent = z.object({
   time: z.iso.datetime(),
   type: z.string(),
   source: z.string(),
-  another: z.string(),
   specversion: z.literal('1.0'),
   datacontenttype: z.literal('application/json'),
   subject: z.string(),
