@@ -401,7 +401,7 @@ describe('LambdaCognitoAuthorizer', () => {
     );
   });
 
-  test('returns failure when sub on Cognito UserAttributes does not match expected subject or clientId', async () => {
+  test('returns failure when expected resourc owner matches neither notify client id nor sub, from Cognito', async () => {
     const jwt = sign(
       {
         token_use: 'access',
