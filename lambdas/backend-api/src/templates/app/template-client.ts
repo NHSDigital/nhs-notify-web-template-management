@@ -47,7 +47,7 @@ export class TemplateClient {
 
   async createTemplate(
     template: CreateUpdateTemplate,
-    user: User
+    user: UserWithOptionalClient
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ template, user });
 
@@ -61,9 +61,9 @@ export class TemplateClient {
       return validationResult;
     }
 
-    const clientConfigurationResult = await this.clientConfigRepository.get(
-      user.clientId
-    );
+    const clientConfigurationResult = user.clientId
+      ? await this.clientConfigRepository.get(user.clientId)
+      : { data: null };
 
     if (clientConfigurationResult.error) {
       log
