@@ -17,7 +17,7 @@ describe('previewNhsAppTemplateAction', () => {
     templateStatus: 'NOT_YET_SUBMITTED',
     name: 'Example name',
     message: 'Example message',
-    validationError: undefined,
+    errorState: undefined,
     createdAt: '2025-01-13T10:19:25.579Z',
     updatedAt: '2025-01-13T10:19:25.579Z',
   };
@@ -31,7 +31,7 @@ describe('previewNhsAppTemplateAction', () => {
 
     expect(newState).toEqual({
       ...currentState,
-      validationError: {
+      errorState: {
         fieldErrors: {
           previewNHSAppTemplateAction: ['Select an option'],
         },
