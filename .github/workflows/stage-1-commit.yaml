@@ -262,7 +262,7 @@ jobs:
         run: |
           published_version=$(npm view @nhsdigital/nhs-notify-event-schemas-template-management --json 2>/dev/null | jq -r '.["dist-tags"].latest')
           local_version=$(cat packages/event-schemas/package.json | jq -r '.version')
-          if [[ $local_version = $published_version ]]; then
-            echo "Error: Event Schema package has changed, but version has not been incremented"
+          if [[ $published_version != "null" && $local_version = $published_version ]]; then
+            echo "Error: Event Schema package has changed, but version has not been incremented. Latest published version is $published_version, local version is $local_version."
             exit 1
           fi
