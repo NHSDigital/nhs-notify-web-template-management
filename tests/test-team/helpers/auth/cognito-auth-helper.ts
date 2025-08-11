@@ -86,6 +86,13 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     userId: 'User8',
     clientKey: 'Client5',
   },
+  /**
+   * User9 shares a client with the primary user (User1)
+   */
+  User9: {
+    userId: 'User9',
+    clientKey: 'Client1',
+  },
 };
 
 export type TestUser = TestUserStaticDetails &

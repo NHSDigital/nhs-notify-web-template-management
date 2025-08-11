@@ -141,6 +141,7 @@ test.describe('POST /v1/template', () => {
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -377,6 +378,7 @@ test.describe('POST /v1/template', () => {
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -585,6 +587,7 @@ test.describe('POST /v1/template', () => {
         statusCode: 201,
         template: {
           campaignId: testClients[user1.clientKey]?.campaignId,
+          clientId: user1.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,
@@ -844,6 +847,7 @@ test.describe('POST /v1/template', () => {
         statusCode: 201,
         template: {
           campaignId: testClients[userDirectOwner.clientKey]?.campaignId,
+          clientId: userDirectOwner.clientId,
           createdAt: expect.stringMatching(isoDateRegExp),
           id: expect.stringMatching(uuidRegExp),
           message: template.message,

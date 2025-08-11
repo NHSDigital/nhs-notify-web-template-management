@@ -138,6 +138,7 @@ export const $CreateUpdateTemplate = schemaFor<
 const $TemplateDtoFields = z
   .object({
     campaignId: z.string().optional(),
+    clientId: z.string().optional(),
     createdAt: z.string(),
     id: z.string().trim().min(1),
     templateStatus: z.enum(TEMPLATE_STATUS_LIST),
