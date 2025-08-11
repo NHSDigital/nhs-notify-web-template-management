@@ -105,9 +105,7 @@ export class TemplateStorageHelper {
     );
 
     const files = keys.flatMap((key) => {
-      const userOrClientId = key.owner.startsWith('CLIENT#')
-        ? key.owner.slice(7)
-        : key.owner;
+      const userOrClientId = this.stripClientOwnerPrefix(key.owner);
 
       return [
         `pdf-template/${userOrClientId}/${key.id}.pdf`,
