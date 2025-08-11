@@ -203,6 +203,8 @@ jobs:
   detect-event-schema-package-changes:
     name: "Check for changes to event schema package compared to main branch"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       changed: ${{ steps.check.outputs.changed }}
 
@@ -229,6 +231,8 @@ jobs:
     needs: detect-event-schema-package-changes
     if: needs.detect-event-schema-package-changes.outputs.changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
