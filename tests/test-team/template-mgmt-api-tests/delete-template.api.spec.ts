@@ -18,10 +18,12 @@ test.describe('DELETE /v1/template/:templateId', () => {
   const orchestrator = new UseCaseOrchestrator();
   let user1: TestUser;
   let user2: TestUser;
+  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {
@@ -744,6 +746,40 @@ test.describe('DELETE /v1/template/:templateId', () => {
         statusCode: 404,
         technicalMessage: 'Template not found',
       });
+    });
+  });
+
+  test.describe('user-owned templates', () => {
+    test('can delete a user-owned template', async ({ request }) => {
+      const createResponse = await request.post(
+        `${process.env.API_BASE_URL}/v1/template`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+          data: TemplateAPIPayloadFactory.getCreateTemplatePayload({
+            templateType: 'EMAIL',
+          }),
+        }
+      );
+
+      expect(createResponse.status()).toBe(201);
+      const created = await createResponse.json();
+      templateStorageHelper.addAdHocTemplateKey({
+        id: created.template.id,
+        owner: userDirectOwner.owner,
+      });
+
+      const deleteResponse = await request.delete(
+        `${process.env.API_BASE_URL}/v1/template/${created.template.id}`,
+        {
+          headers: {
+            Authorization: await userDirectOwner.getAccessToken(),
+          },
+        }
+      );
+
+      expect(deleteResponse.status()).toBe(204);
     });
   });
 });
