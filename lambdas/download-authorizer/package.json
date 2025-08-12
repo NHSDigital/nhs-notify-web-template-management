@@ -1,13 +1,8 @@
 {
-  "name": "nhs-notify-download-authorizer",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
-    "lint:fix": "eslint . --fix",
-    "lint": "eslint .",
-    "test:unit": "jest",
-    "typecheck": "tsc --noEmit"
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.864.0",
+    "cookie": "^1.0.2",
+    "nhs-notify-web-template-management-utils": "^0.0.1"
   },
   "devDependencies": {
     "@swc/core": "^1.11.13",
@@ -15,14 +10,19 @@
     "@tsconfig/node20": "^20.1.5",
     "@types/aws-lambda": "^8.10.148",
     "@types/jest": "^29.5.14",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.8",
     "jest": "^29.7.0",
     "jest-mock-extended": "^3.0.7",
     "typescript": "^5.8.2"
   },
-  "dependencies": {
-    "@aws-sdk/client-cognito-identity-provider": "3.775.0",
-    "cookie": "^1.0.2",
-    "nhs-notify-web-template-management-utils": "^0.0.1"
-  }
+  "name": "nhs-notify-download-authorizer",
+  "private": true,
+  "scripts": {
+    "lambda-build": "rm -rf dist && npx esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:unit": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.0.1"
 }
