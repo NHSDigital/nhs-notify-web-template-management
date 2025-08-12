@@ -5,24 +5,26 @@ import React from 'react';
 type MarkdownContentProps = {
   content: string | string[];
   variables?: Record<string, string | number>;
-  id?: string;
   testId?: string;
 };
 
 export function MarkdownContent({
   content,
   variables,
-  id,
   testId,
 }: MarkdownContentProps) {
   const items = Array.isArray(content) ? content : [content];
+  const rendered = items
+    .map((item) => interpolate(item, variables))
+    .filter((s) => s.trim().length > 0);
+
+  if (rendered.length === 0) return null;
 
   return (
     <>
-      {items.map((item, index) => (
+      {rendered.map((item, index) => (
         <Markdown
           key={index}
-          id={id ? `${id}-${index}` : undefined}
           data-testid={testId ? `${testId}-${index}` : undefined}
           options={{
             forceBlock: true,
@@ -31,10 +33,7 @@ export function MarkdownContent({
             overrides: {
               a: {
                 component: 'a',
-                props: {
-                  rel: 'noopener noreferrer',
-                  target: '_blank',
-                },
+                props: { rel: 'noopener noreferrer', target: '_blank' },
               },
             },
           }}
