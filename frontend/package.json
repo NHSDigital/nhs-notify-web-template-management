@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.6.8",
+    "@aws-amplify/auth": "^6.15.0",
     "@aws-amplify/ui-react": "^6.11.2",
     "aws-amplify": "^6.15.5",
-    "@aws-amplify/auth": "^6.15.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

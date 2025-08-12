@@ -30,6 +30,7 @@ No requirements.
 | <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name) | n/a |
 | <a name="output_iam_role_arn"></a> [iam\_role\_arn](#output\_iam\_role\_arn) | n/a |
 | <a name="output_rule_set_name"></a> [rule\_set\_name](#output\_rule\_set\_name) | n/a |
+
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->

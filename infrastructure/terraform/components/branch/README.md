@@ -29,6 +29,7 @@
 ## Outputs
 
 No outputs.
+
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
