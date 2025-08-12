@@ -24,7 +24,7 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
         const key = block.testId ?? index;
 
         switch (block.type) {
-          case 'text':
+          case 'text': {
             return (
               <MarkdownContent
                 testId={block.testId}
@@ -33,7 +33,8 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 variables={variables}
               />
             );
-          case 'code':
+          }
+          case 'code': {
             return (
               <CodeExample
                 data-testid={block.testId}
@@ -44,7 +45,8 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 {block.code}
               </CodeExample>
             );
-          case 'list':
+          }
+          case 'list': {
             return (
               <ul data-testid={block.testId} key={key}>
                 {block.items.map((item, itemId) => (
@@ -52,10 +54,12 @@ export function ContentRenderer({ content, variables }: ContentRendererProps) {
                 ))}
               </ul>
             );
-          default:
+          }
+          default: {
             console.error('Unsupported content block:', block);
 
             throw new Error('Unsupported content block type');
+          }
         }
       })}
     </>
