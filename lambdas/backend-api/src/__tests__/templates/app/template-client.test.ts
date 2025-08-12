@@ -127,40 +127,6 @@ describe('templateClient', () => {
       });
     });
 
-    test('client configuration is not fetched if user has no clientId', async () => {
-      const { templateClient, mocks } = setup();
-      const data: CreateUpdateTemplate = {
-        templateType: 'EMAIL',
-        name: 'name',
-        message: 'message',
-        subject: 'subject',
-      };
-      const expectedTemplateDto: TemplateDto = {
-        ...data,
-        campaignId: 'campaignId',
-        createdAt: new Date().toISOString(),
-        id: templateId,
-        templateStatus: 'NOT_YET_SUBMITTED',
-        updatedAt: new Date().toISOString(),
-      };
-      const template: DatabaseTemplate = {
-        ...expectedTemplateDto,
-        owner: user.userId,
-        version: 1,
-      };
-      mocks.templateRepository.create.mockResolvedValueOnce({
-        data: template,
-      });
-      const result = await templateClient.createTemplate(data, {
-        userId: user.userId,
-        clientId: undefined,
-      });
-      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
-      expect(result).toEqual({
-        data: expectedTemplateDto,
-      });
-    });
-
     test('should return a failure result when client configuration unexpectedly cant be fetched', async () => {
       const { templateClient, mocks } = setup();
 

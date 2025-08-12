@@ -18,7 +18,7 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   test.beforeAll(async () => {
     userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
     anotherUser = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {
