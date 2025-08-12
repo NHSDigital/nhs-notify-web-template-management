@@ -6,6 +6,7 @@ set -euo pipefail
 export NEXT_PUBLIC_ENABLE_PROOFING=true
 export INCLUDE_AUTH_PAGES=true
 
+npm install -g pa11y-ci@4.0.0
 npm run accessibility-test-setup -w tests/accessibility
 npm run build
 mkdir -p ./frontend/public/testing
