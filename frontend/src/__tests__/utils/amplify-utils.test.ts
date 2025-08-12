@@ -13,7 +13,11 @@ jest.mock('aws-amplify/auth/server');
 
 jest.mock('@aws-amplify/adapter-nextjs', () => ({
   createServerRunner: () => ({
-    runWithAmplifyServerContext: async ({ operation }: any) => operation({}),
+    runWithAmplifyServerContext: async ({
+      operation,
+    }: {
+      operation: (ctx: { token: string }) => unknown | Promise<unknown>;
+    }) => operation({ token: 'mock-token' }),
   }),
 }));
 

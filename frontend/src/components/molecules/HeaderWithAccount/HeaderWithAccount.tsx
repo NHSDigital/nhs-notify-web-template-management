@@ -20,7 +20,7 @@ interface NhsNotifyHeaderWithAccountProps {
 const headerContent = content.components.header;
 
 const NhsNotifyHeaderWithAccount = ({
-  features
+  features,
 }: NhsNotifyHeaderWithAccountProps) => {
   // TODO: CCM-11148 Use real routing feature flag
   const routingEnabled = features?.routing;
@@ -39,10 +39,12 @@ const NhsNotifyHeaderWithAccount = ({
       try {
         const session = await fetchAuthSession();
         const idToken = session.tokens?.idToken?.toString();
-        if (!idToken) {
+        if (idToken) {
+          setState(getIdTokenClaims(idToken));
+        } else {
           setState({});
           return;
-        } else setState(getIdTokenClaims(idToken));
+        }
       } catch {
         setState({});
       }

@@ -33,9 +33,7 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
               width='100'
               data-testid='page-header-logo'
             >
-              <title>
-                {content.components.header.logoLink.logoTitle}
-              </title>
+              <title>{content.components.header.logoLink.logoTitle}</title>
               <path
                 className='nhsuk-logo__background'
                 fill='#005eb8'

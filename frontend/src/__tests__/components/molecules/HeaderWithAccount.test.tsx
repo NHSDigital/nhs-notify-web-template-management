@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { mockDeep } from 'jest-mock-extended';
 import NhsNotifyHeaderWithAccount from '@molecules/HeaderWithAccount/HeaderWithAccount';
 import { type UseAuthenticator, useAuthenticator } from '@aws-amplify/ui-react';
@@ -13,12 +8,12 @@ jest.mock('@aws-amplify/ui-react');
 
 const mockFetchAuthSession = jest.fn();
 jest.mock('aws-amplify/auth', () => ({
-  fetchAuthSession: (...args: any[]) => mockFetchAuthSession(...args),
+  fetchAuthSession: () => mockFetchAuthSession(),
 }));
 
 const mockGetIdTokenClaims = jest.fn();
 jest.mock('@utils/token-utils', () => ({
-  getIdTokenClaims: (...args: any[]) => mockGetIdTokenClaims(...args),
+  getIdTokenClaims: (token: string) => mockGetIdTokenClaims(token),
 }));
 
 const setAuthStatus = (
