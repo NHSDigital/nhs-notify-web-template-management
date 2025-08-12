@@ -189,25 +189,32 @@ describe('upload-letter', () => {
     );
   });
 
-  test('returns 400 - Invalid request when no user in requestContext', async () => {
-    const { handler, mocks } = setup();
+  test.each([
+    ['undefined', undefined],
+    ['missing clientId', { userId: 'user-id', clientId: undefined }],
+    ['missing user', { clientId: 'client-id', user: undefined }],
+  ])(
+    'should return 400 - Invalid request when requestContext is %s',
+    async (_, ctx) => {
+      const { handler, mocks } = setup();
 
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: undefined },
-    });
+      const event = mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: ctx },
+      });
 
-    const result = await handler(event, mock<Context>(), jest.fn());
+      const result = await handler(event, mock<Context>(), jest.fn());
 
-    expect(result).toEqual({
-      statusCode: 400,
-      body: JSON.stringify({
+      expect(result).toEqual({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
-      }),
-    });
+        body: JSON.stringify({
+          statusCode: 400,
+          technicalMessage: 'Invalid request',
+        }),
+      });
 
-    expect(mocks.templateClient.uploadLetterTemplate).not.toHaveBeenCalled();
-  });
+      expect(mocks.templateClient.uploadLetterTemplate).not.toHaveBeenCalled();
+    }
+  );
 
   test('returns 400 - Invalid request when no body or Content-Type header', async () => {
     const { handler, mocks } = setup();

@@ -14,26 +14,33 @@ const setup = () => {
 describe('Template API - Delete', () => {
   beforeEach(jest.resetAllMocks);
 
-  test('should return 400 - Invalid request when no user in requestContext', async () => {
-    const { handler, mocks } = setup();
+  test.each([
+    ['undefined', undefined],
+    ['missing user', { clientId: 'client-id', user: undefined }],
+    ['missing client', { clientId: undefined, user: 'user-id' }],
+  ])(
+    'should return 400 - Invalid request when requestContext is %s',
+    async (_, ctx) => {
+      const { handler, mocks } = setup();
 
-    const event = mock<APIGatewayProxyEvent>({
-      requestContext: { authorizer: undefined },
-      pathParameters: { templateId: '1-2-3' },
-    });
+      const event = mock<APIGatewayProxyEvent>({
+        requestContext: { authorizer: ctx },
+        pathParameters: { templateId: 'id' },
+      });
 
-    const result = await handler(event, mock<Context>(), jest.fn());
+      const result = await handler(event, mock<Context>(), jest.fn());
 
-    expect(result).toEqual({
-      statusCode: 400,
-      body: JSON.stringify({
+      expect(result).toEqual({
         statusCode: 400,
-        technicalMessage: 'Invalid request',
-      }),
-    });
+        body: JSON.stringify({
+          statusCode: 400,
+          technicalMessage: 'Invalid request',
+        }),
+      });
 
-    expect(mocks.templateClient.deleteTemplate).not.toHaveBeenCalled();
-  });
+      expect(mocks.templateClient.deleteTemplate).not.toHaveBeenCalled();
+    }
+  );
 
   test('should return 400 - Invalid request when, no templateId', async () => {
     const { handler, mocks } = setup();
