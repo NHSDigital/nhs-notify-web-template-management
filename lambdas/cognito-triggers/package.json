@@ -7,7 +7,7 @@
   "name": "cognito-triggers",
   "private": true,
   "scripts": {
-    "lambda-build": "rm -rf dist && esbuild --bundle --minify --sourcemap --target=es2020 --platform=node --loader:.node=file --entry-names=[name] --outdir=dist src/pre-token-generation.ts",
+    "lambda-build": "./build.sh",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "test:unit": "jest",

@@ -189,7 +189,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -206,7 +206,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -241,7 +241,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({
@@ -306,7 +306,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.get('abc-def-ghi-jkl-123', {
         userId: emailTemplate.owner,
-        clientId: emailTemplate.clientId,
+        clientId: emailTemplate.clientId!,
       });
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(BatchGetCommand, {
@@ -335,7 +335,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.list({
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({ data: [] });
@@ -350,7 +350,7 @@ describe('templateRepository', () => {
 
       const response = await templateRepository.list({
         userId: 'userid',
-        clientId: undefined,
+        clientId: 'clientid',
       });
 
       expect(response).toEqual({

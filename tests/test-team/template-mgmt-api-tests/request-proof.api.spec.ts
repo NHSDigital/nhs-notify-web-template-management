@@ -13,12 +13,10 @@ test.describe('POST /v1/template/:templateId/proof', () => {
   const templateStorageHelper = new TemplateStorageHelper();
   let userProofingEnabled: TestUser;
   let anotherUser: TestUser;
-  let userWithoutClient: TestUser;
 
   test.beforeAll(async () => {
     userProofingEnabled = await authHelper.getTestUser(testUsers.User1.userId);
     anotherUser = await authHelper.getTestUser(testUsers.User2.userId);
-    userWithoutClient = await authHelper.getTestUser(testUsers.User6.userId);
   });
 
   test.afterAll(async () => {
@@ -225,52 +223,6 @@ test.describe('POST /v1/template/:templateId/proof', () => {
     expect(result).toEqual({
       statusCode: 400,
       technicalMessage: 'Template cannot be proofed',
-    });
-  });
-
-  test('returns 400 - user without a client cannot request a proof', async ({
-    request,
-  }) => {
-    const templateId = randomUUID();
-    const currentVersion = randomUUID();
-
-    const template = {
-      ...TemplateFactory.uploadLetterTemplate(
-        templateId,
-        userWithoutClient,
-        'userWithoutClientTemplate',
-        // template should not reach this status if proofing is not
-        // enabled for the client
-        'PENDING_PROOF_REQUEST'
-      ),
-      files: {
-        pdfTemplate: {
-          virusScanStatus: 'PASSED',
-          currentVersion,
-          fileName: 'template.pdf',
-        },
-      },
-    };
-    await templateStorageHelper.seedTemplateData([template]);
-
-    const proofResponse = await request.post(
-      `${process.env.API_BASE_URL}/v1/template/${templateId}/proof`,
-      {
-        headers: {
-          Authorization: await userWithoutClient.getAccessToken(),
-        },
-      }
-    );
-
-    const result = await proofResponse.json();
-
-    const debug = JSON.stringify(result, null, 2);
-
-    expect(proofResponse.status(), debug).toBe(400);
-
-    expect(result).toEqual({
-      statusCode: 400,
-      technicalMessage: 'Invalid request',
     });
   });
 });
