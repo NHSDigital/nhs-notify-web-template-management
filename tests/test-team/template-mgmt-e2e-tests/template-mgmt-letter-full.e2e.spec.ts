@@ -300,7 +300,7 @@ test.describe('letter complete e2e journey', () => {
       testUsers.User3.userId
     );
     userDirectOwner = await createAuthHelper().getTestUser(
-      testUsers.User8.userId
+      testUsers.User7.userId
     );
   });
 

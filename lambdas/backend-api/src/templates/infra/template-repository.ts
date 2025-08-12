@@ -129,10 +129,9 @@ export class TemplateRepository {
     const entity: DatabaseTemplate = {
       ...template,
       id: randomUUID(),
-      owner:
-        user.clientId && enableClientOwnership
-          ? this.clientOwnerKey(user.clientId)
-          : user.userId,
+      owner: enableClientOwnership
+        ? this.clientOwnerKey(user.clientId)
+        : user.userId,
       clientId: user.clientId,
       version: 1,
       templateStatus: initialStatus,
@@ -750,7 +749,7 @@ export class TemplateRepository {
   }
 
   private async getUserTemplateOwner(
-    user: UserWithOptionalClient,
+    user: User,
     templateId: string
   ): Promise<string | undefined> {
     const dbResponse = await this.client.send(

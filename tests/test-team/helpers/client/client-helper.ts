@@ -12,7 +12,7 @@ type ClientConfiguration = {
   campaignId?: string;
 };
 
-export type ClientKey = `Client${1 | 2 | 3 | 4}`;
+export type ClientKey = `Client${1 | 2 | 3 | 4 | 5}`;
 
 type TestClients = Record<ClientKey, ClientConfiguration | undefined>;
 

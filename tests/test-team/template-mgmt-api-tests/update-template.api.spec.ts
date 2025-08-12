@@ -24,8 +24,8 @@ test.describe('POST /v1/template/:templateId', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     user2 = await authHelper.getTestUser(testUsers.User2.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
-    userSharedClient = await authHelper.getTestUser(testUsers.User9.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
+    userSharedClient = await authHelper.getTestUser(testUsers.User8.userId);
   });
 
   test.afterAll(async () => {

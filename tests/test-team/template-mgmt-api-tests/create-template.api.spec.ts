@@ -22,7 +22,7 @@ test.describe('POST /v1/template', () => {
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
     userNoClient = await authHelper.getTestUser(testUsers.User6.userId);
-    userDirectOwner = await authHelper.getTestUser(testUsers.User8.userId);
+    userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
   test.afterAll(async () => {

@@ -81,17 +81,17 @@ export const testUsers: Record<string, TestUserStaticDetails> = {
     clientKey: 'Client4',
   },
   /**
-   * User8 has a client which has the client ownership feature disabled
+   * User7 has a client which has the client ownership feature disabled
    */
-  User8: {
-    userId: 'User8',
+  User7: {
+    userId: 'User7',
     clientKey: 'Client5',
   },
   /**
-   * User9 shares a client with the primary user (User1)
+   * User8 shares a client with the primary user (User1)
    */
-  User9: {
-    userId: 'User9',
+  User8: {
+    userId: 'User8',
     clientKey: 'Client1',
   },
 };
