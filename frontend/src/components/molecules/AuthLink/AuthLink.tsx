@@ -10,11 +10,11 @@ export const AuthLink = ({ className }: { className?: string }) => {
   const { authStatus } = useAuthenticator((ctx) => [ctx.authStatus]);
 
   let id = 'sign-in-link';
-  let linkContent = content.components.header.links.signIn;
+  let linkContent = content.components.header.accountInfo.links.signIn;
 
   if (authStatus === 'authenticated') {
     id = 'sign-out-link';
-    linkContent = content.components.header.links.signOut;
+    linkContent = content.components.header.accountInfo.links.signOut;
   }
 
   return (

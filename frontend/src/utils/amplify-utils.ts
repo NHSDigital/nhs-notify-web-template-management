@@ -17,8 +17,11 @@ export const { runWithAmplifyServerContext } = createServerRunner({
 export async function getSessionServer(
   options: FetchAuthSessionOptions = {}
 ): Promise<{
-  accessToken: string | undefined;
-  clientId: string | undefined;
+  accessToken?: string;
+  idToken?: string;
+  clientId?: string;
+  clientName?: string;
+  displayName?: string;
 }> {
   const session = await runWithAmplifyServerContext({
     nextServerContext: { cookies },
@@ -28,11 +31,17 @@ export async function getSessionServer(
   });
 
   const accessToken = session?.tokens?.accessToken?.toString();
-  const clientId = accessToken && (await getClientId(accessToken));
+  const clientId = accessToken && getClientId(accessToken);
+
+  const idToken = session?.tokens?.idToken?.toString();
+  const idClaims = idToken ? getIdTokenClaims(idToken) : undefined;
 
   return {
     accessToken,
+    idToken,
     clientId,
+    clientName: idClaims?.clientName,
+    displayName: idClaims?.displayName,
   };
 }
 
@@ -40,8 +49,8 @@ export const getSessionId = async () => {
   return getAccessTokenParam('origin_jti');
 };
 
-export const getClientId = async (accessToken: string) => {
-  return getJwtPayload('nhs-notify:client-id', accessToken);
+export const getClientId = (accessToken: string) => {
+  return getClaim(decodeJwt(accessToken), 'nhs-notify:client-id');
 };
 
 const getAccessTokenParam = async (key: string) => {
@@ -50,17 +59,46 @@ const getAccessTokenParam = async (key: string) => {
 
   if (!accessToken) return;
 
-  return getJwtPayload(key, accessToken);
+  return getClaim(decodeJwt(accessToken), key);
 };
 
-const getJwtPayload = (key: string, accessToken: string) => {
-  const jwt = jwtDecode<JWT['payload']>(accessToken);
+const decodeJwt = (token: string): JWT['payload'] =>
+  jwtDecode<JWT['payload']>(token);
 
-  const value = jwt[key];
+const getClaim = (claims: JWT['payload'], key: string): string | undefined => {
+  const value = claims[key];
+  return value != null ? String(value) : undefined;
+};
 
-  if (!value) {
-    return;
+const getIdTokenClaims = (
+  idToken: string
+): {
+  clientName?: string;
+  displayName?: string;
+} => {
+  const claims = decodeJwt(idToken);
+
+  const clientName = getClaim(claims, 'nhs-notify:client-name');
+
+  let displayName;
+
+  const preferredUsername =
+    getClaim(claims, 'preferred_username') || getClaim(claims, 'display_name');
+
+  if (preferredUsername) displayName = preferredUsername;
+  else {
+    const givenName = getClaim(claims, 'given_name');
+    const familyName = getClaim(claims, 'family_name');
+
+    if (givenName && familyName) displayName = `${givenName} ${familyName}`;
+    else {
+      const email = getClaim(claims, 'email');
+      if (email) displayName = email;
+    }
   }
 
-  return value.toString();
+  return {
+    clientName,
+    displayName,
+  };
 };

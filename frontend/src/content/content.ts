@@ -14,32 +14,39 @@ const selectAnOption = 'Select an option';
 
 const header = {
   serviceName: 'Notify',
-  links: {
-    signIn: {
-      text: 'Sign in',
-      href: `/auth?redirect=${encodeURIComponent(
-        `${getBasePath()}/create-and-submit-templates`
-      )}`,
-    },
-    signOut: {
-      text: 'Sign out',
-      href: '/auth/signout',
-    },
-    logoLink: {
-      ariaLabel: 'NHS Notify templates',
-      logoTitle: 'NHS logo',
+  logoLink: {
+    ariaLabel: 'NHS Notify templates',
+    logoTitle: 'NHS logo',
+    href: '/message-templates',
+  },
+  accountInfo: {
+    ariaLabel: 'Account',
+    links: {
+      signIn: {
+        text: 'Sign in',
+        href: `/auth?redirect=${encodeURIComponent(
+          `${getBasePath()}/create-and-submit-templates`
+        )}`,
+      },
+      signOut: {
+        text: 'Sign out',
+        href: '/auth/signout',
+      },
     },
   },
-  nav: [
-    {
-      text: 'Templates',
-      href: '/message-templates'
-    },
-    {
-      text: 'Message plans',
-      href: '/message-plans'
-    }
-  ]
+  navigationMenu: {
+    ariaLabel: 'Menu',
+    links: [
+      {
+        text: 'Templates',
+        href: '/message-templates',
+      },
+      {
+        text: 'Message plans',
+        href: '/message-plans',
+      },
+    ],
+  },
 };
 
 const footer = {
