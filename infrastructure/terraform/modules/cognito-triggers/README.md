@@ -29,7 +29,6 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_pre_token_generation_lambda_function_arn"></a> [pre\_token\_generation\_lambda\_function\_arn](#output\_pre\_token\_generation\_lambda\_function\_arn) | n/a |
-
 <!-- vale on -->
 <!-- markdownlint-enable -->
 <!-- END_TF_DOCS -->
