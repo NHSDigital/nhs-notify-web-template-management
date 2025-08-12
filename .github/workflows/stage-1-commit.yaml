@@ -214,10 +214,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect package changes
+      - name: Detect package changes and current version
         id: check
         run: |
           git fetch origin main
+
           if git diff --quiet origin/main...HEAD -- packages/event-schemas; then
             echo "No changes in event schemas package"
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -225,6 +226,15 @@ jobs:
             echo "Changes detected in event schemas"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+          if content=$(git show main:packages/event-schemas/package.json 2>/dev/null); then
+            version=$(jq -r .version <<< $content);
+          else
+            version=null;
+          fi
+
+          echo "Detected package version $version in main branch"
+          echo "main_version=$version" >> $GITHUB_OUTPUT
 
   check-schemas-generated:
     name: Check event schemas have been regenerated
@@ -253,28 +263,21 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.18.2'
-          registry-url: 'https://npm.pkg.github.com'
 
       - name: Check schema versions
         run: |
           source scripts/is_valid_increment.sh
 
-          published_version=$(npm view @nhsdigital/nhs-notify-event-schemas-template-management --json 2>/dev/null | jq -r '.["dist-tags"].latest // "null"')
-          echo "Published version: $published_version"
+          main_version="${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
+          echo "Main version: ${{ needs.detect-event-schema-package-changes.outputs.main_version }}"
 
           local_version=$(jq -r '.version' packages/event-schemas/package.json)
           echo "Local version: $local_version"
 
-          if ! is_valid_increment "$published_version" "$local_version" ; then
-            echo "Error: Event Schema package has changed, but new version $local_version is not a valid increment from latest published version $published_version."
+          if ! is_valid_increment "$main_version" "$local_version" ; then
+            echo "Error: Event Schema package has changed, but new version ($local_version) is not a valid increment from latest version on main branch ($main_version)."
             exit 1
           fi
