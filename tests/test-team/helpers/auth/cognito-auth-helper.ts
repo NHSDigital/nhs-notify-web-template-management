@@ -22,7 +22,7 @@ type TestUserStaticDetails = {
 
 type TestUserDynamicDetails = {
   email: string;
-  clientId: string | undefined;
+  clientId: string;
   password: string;
 };
 

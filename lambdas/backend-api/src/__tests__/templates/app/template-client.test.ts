@@ -1901,32 +1901,6 @@ describe('templateClient', () => {
       });
     });
 
-    test('should return a failure result, when user has no clientId (so proofing cannot be determined to be enabled)', async () => {
-      const { templateClient, mocks } = setup();
-
-      const result = await templateClient.requestProof(templateId, {
-        userId: user.userId,
-        clientId: undefined as unknown as string,
-      });
-
-      expect(mocks.clientConfigRepository.get).not.toHaveBeenCalled();
-
-      expect(
-        mocks.templateRepository.proofRequestUpdate
-      ).not.toHaveBeenCalled();
-
-      expect(mocks.queueMock.send).not.toHaveBeenCalled();
-
-      expect(result).toEqual({
-        error: {
-          errorMeta: {
-            code: 403,
-            description: 'User cannot request a proof',
-          },
-        },
-      });
-    });
-
     test('requestProof should return updated template', async () => {
       const { templateClient, mocks } = setup();
 
