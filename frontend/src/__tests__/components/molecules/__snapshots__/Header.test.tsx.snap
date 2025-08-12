@@ -52,19 +52,14 @@ exports[`Header component should render correctly 1`] = `
         class="nhsuk-header__content"
         id="content-header"
       >
-        <div
+        <a
           class="auth-link"
           data-testid="auth-link"
+          href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
+          id="sign-in-link"
         >
-          <a
-            class="auth-link__link"
-            data-testid="auth-link__link"
-            href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
-            id="sign-in-link"
-          >
-            Sign in
-          </a>
-        </div>
+          Sign in
+        </a>
       </div>
     </div>
   </header>
