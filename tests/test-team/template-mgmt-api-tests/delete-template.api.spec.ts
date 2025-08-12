@@ -78,6 +78,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.delete(
@@ -143,6 +144,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.userId,
+        clientOwned: user1.clientOwner,
       });
 
       expect(response.status(), debug).toBe(201);
@@ -207,6 +209,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(response.status(), debug).toBe(201);
@@ -215,6 +218,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
         new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.owner,
+          clientOwned: user1.clientOwner,
           hasTestData: true,
         })
       );
@@ -302,6 +306,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -356,6 +361,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -390,6 +396,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -442,6 +449,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -494,6 +502,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -528,6 +537,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -580,6 +590,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -632,6 +643,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -666,6 +678,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -718,6 +731,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -772,6 +786,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -806,6 +821,7 @@ test.describe('DELETE /v1/template/:templateId', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       const deleteResponse = await request.delete(

@@ -66,6 +66,7 @@ test.describe('SFTP proof request send', () => {
     const key = {
       id: templateId,
       owner: user.owner,
+      clientOwned: user.clientOwner,
     };
 
     const pdfVersionId = template.files?.pdfTemplate?.currentVersion;

@@ -31,7 +31,7 @@ describe('TemplateLockRepository', () => {
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
 
-      const res = await templateRepository.acquireLock(owner, templateId);
+      const res = await templateRepository.acquireLock(owner, templateId, true);
 
       expect(res).toBe(true);
 
@@ -49,7 +49,7 @@ describe('TemplateLockRepository', () => {
           'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
         Key: {
           id: templateId,
-          owner,
+          owner: `CLIENT#${owner}`,
         },
         TableName: templatesTableName,
         UpdateExpression:
@@ -67,7 +67,7 @@ describe('TemplateLockRepository', () => {
         })
       );
 
-      const res = await templateRepository.acquireLock(owner, templateId);
+      const res = await templateRepository.acquireLock(owner, templateId, true);
 
       expect(res).toBe(false);
     });
@@ -78,7 +78,7 @@ describe('TemplateLockRepository', () => {
       mocks.client.on(UpdateCommand).rejectsOnce(new Error('unknown'));
 
       await expect(
-        templateRepository.acquireLock(owner, templateId)
+        templateRepository.acquireLock(owner, templateId, true)
       ).rejects.toThrow('unknown');
     });
   });
@@ -89,7 +89,7 @@ describe('TemplateLockRepository', () => {
 
       mocks.client.on(UpdateCommand).resolvesOnce({});
 
-      await templateRepository.finaliseLock(owner, templateId);
+      await templateRepository.finaliseLock(owner, templateId, true);
 
       expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
         ExpressionAttributeNames: {
@@ -102,7 +102,7 @@ describe('TemplateLockRepository', () => {
         },
         Key: {
           id: templateId,
-          owner,
+          owner: `CLIENT#${owner}`,
         },
         TableName: templatesTableName,
         UpdateExpression:

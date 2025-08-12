@@ -85,6 +85,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
     templateStorageHelper.addAdHocTemplateKey({
       id: created.template.id,
       owner: user1.owner,
+      clientOwned: user1.clientOwner,
     });
 
     const updateResponse = await request.patch(
@@ -154,12 +155,14 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: templateId,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       await orchestrator.send(
         new SimulatePassedValidation({
           templateId,
           templateOwner: user1.owner,
+          clientOwned: user1.clientOwner,
           hasTestData: true,
         })
       );
@@ -265,6 +268,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -273,6 +277,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         new SimulatePassedValidation({
           templateId: createResult.template.id,
           templateOwner: user1.owner,
+          clientOwned: user1.clientOwner,
           hasTestData: true,
         })
       );
@@ -360,6 +365,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -368,6 +374,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
         new SimulateFailedVirusScan({
           templateId: createResult.template.id,
           templateOwner: user1.owner,
+          clientOwned: user1.clientOwner,
           filePath: 'files.pdfTemplate.virusScanStatus',
         })
       );
@@ -444,6 +451,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: createResult.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(createResponse.status(), debug).toBe(201);
@@ -498,6 +506,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const start = new Date();
@@ -557,6 +566,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -609,6 +619,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -661,6 +672,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const start = new Date();
@@ -720,6 +732,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -772,6 +785,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -824,6 +838,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const start = new Date();
@@ -884,6 +899,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const submitResponse = await request.patch(
@@ -936,6 +952,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const deleteResponse = await request.delete(
@@ -990,6 +1007,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       const updateResponse = await request.patch(
@@ -1044,6 +1062,7 @@ test.describe('POST /v1/template/:templateId/submit', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       const updateResponse = await request.patch(

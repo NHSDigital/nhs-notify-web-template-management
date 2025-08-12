@@ -11,7 +11,7 @@ import { LetterFileRepository } from './letter-file-repository';
 
 export type LetterUploadMetadata = {
   'file-type': FileType;
-  'user-or-client-id': string;
+  owner: string;
   'template-id': string;
   'version-id': string;
 };
@@ -24,7 +24,7 @@ const $FileType: z.ZodType<FileType> = z.enum([
 
 const $LetterUploadMetadata: z.ZodType<LetterUploadMetadata> = z.object({
   'file-type': $FileType,
-  'user-or-client-id': z.string(),
+  owner: z.string(),
   'template-id': z.string(),
   'version-id': z.string(),
 });
@@ -38,14 +38,9 @@ export class LetterUploadRepository extends LetterFileRepository {
     pdf: File,
     csv?: File
   ): Promise<ApplicationResult<null>> {
-    const userOrClientId = clientOwnershipEnabled ? user.clientId : user.userId;
+    const owner = clientOwnershipEnabled ? user.clientId : user.userId;
 
-    const pdfKey = this.key(
-      'pdf-template',
-      userOrClientId,
-      templateId,
-      versionId
-    );
+    const pdfKey = this.key('pdf-template', owner, templateId, versionId);
 
     const commands: PutObjectCommand[] = [
       new PutObjectCommand({
@@ -54,7 +49,7 @@ export class LetterUploadRepository extends LetterFileRepository {
         Body: await pdf.bytes(),
         ChecksumAlgorithm: 'SHA256',
         Metadata: LetterUploadRepository.metadata(
-          userOrClientId,
+          owner,
           templateId,
           versionId,
           'pdf-template'
@@ -63,12 +58,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     ];
 
     if (csv) {
-      const csvKey = this.key(
-        'test-data',
-        userOrClientId,
-        templateId,
-        versionId
-      );
+      const csvKey = this.key('test-data', owner, templateId, versionId);
 
       commands.push(
         new PutObjectCommand({
@@ -77,7 +67,7 @@ export class LetterUploadRepository extends LetterFileRepository {
           Body: await csv.bytes(),
           ChecksumAlgorithm: 'SHA256',
           Metadata: LetterUploadRepository.metadata(
-            userOrClientId,
+            owner,
             templateId,
             versionId,
             'test-data'
@@ -100,7 +90,7 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   async download(
     templateId: string,
-    userOrClientId: string,
+    owner: string,
     fileType: FileType,
     versionId: string
   ): Promise<Uint8Array | void> {
@@ -108,7 +98,7 @@ export class LetterUploadRepository extends LetterFileRepository {
       const { Body } = await this.client.send(
         new GetObjectCommand({
           Bucket: this.internalBucketName,
-          Key: this.key(fileType, userOrClientId, templateId, versionId),
+          Key: this.key(fileType, owner, templateId, versionId),
         })
       );
 
@@ -124,7 +114,7 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   static parseKey(key: string): LetterUploadMetadata {
     const keyParts = key.split('/');
-    const [type, userOrClientId, templateId, filename = ''] = keyParts;
+    const [type, owner, templateId, filename = ''] = keyParts;
     const filenameParts = filename.split('.');
     const [versionId, extension] = filenameParts;
 
@@ -133,7 +123,7 @@ export class LetterUploadRepository extends LetterFileRepository {
     }
 
     const parsed = LetterUploadRepository.metadata(
-      userOrClientId,
+      owner,
       templateId,
       versionId,
       type
@@ -151,21 +141,21 @@ export class LetterUploadRepository extends LetterFileRepository {
 
   private key(
     type: FileType,
-    userOrClientId: string,
+    owner: string,
     templateId: string,
     versionId: string
   ) {
-    return `${type}/${userOrClientId}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
+    return `${type}/${owner}/${templateId}/${versionId}.${type === 'pdf-template' ? 'pdf' : 'csv'}`;
   }
 
   private static metadata(
-    userOrClientId: string,
+    owner: string,
     templateId: string,
     versionId: string,
     type: string
   ): LetterUploadMetadata {
     return $LetterUploadMetadata.parse({
-      'user-or-client-id': userOrClientId,
+      owner,
       'file-type': type,
       'template-id': templateId,
       'version-id': versionId,

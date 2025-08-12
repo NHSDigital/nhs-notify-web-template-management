@@ -121,7 +121,7 @@ export class TemplateRepository {
 
   async create(
     template: WithAttachments<ValidatedCreateUpdateTemplate>,
-    user: UserWithOptionalClient,
+    user: User,
     enableClientOwnership: boolean,
     initialStatus: TemplateStatus = 'NOT_YET_SUBMITTED',
     campaignId?: string
@@ -158,7 +158,7 @@ export class TemplateRepository {
   async update(
     templateId: string,
     template: ValidatedCreateUpdateTemplate,
-    user: UserWithOptionalClient,
+    user: User,
     expectedStatus: TemplateStatus
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = [
@@ -220,7 +220,7 @@ export class TemplateRepository {
     }
   }
 
-  async delete(templateId: string, user: UserWithOptionalClient) {
+  async delete(templateId: string, user: User) {
     const updateExpression = ['#templateStatus = :newStatus', '#ttl = :ttl'];
 
     const expressionAttributeNames: Record<string, string> = {
@@ -253,7 +253,7 @@ export class TemplateRepository {
     }
   }
 
-  async submit(templateId: string, user: UserWithOptionalClient) {
+  async submit(templateId: string, user: User) {
     const updateExpression = ['#templateStatus = :newStatus'];
 
     const expressionAttributeValues: Record<string, string> = {
@@ -300,7 +300,7 @@ export class TemplateRepository {
 
   async updateStatus(
     templateId: string,
-    user: UserWithOptionalClient,
+    user: User,
     status: Exclude<TemplateStatus, 'SUBMITTED' | 'DELETED'>
   ): Promise<ApplicationResult<DatabaseTemplate>> {
     const updateExpression = ['#templateStatus = :newStatus'];
@@ -431,7 +431,7 @@ export class TemplateRepository {
       await this.client.send(
         new UpdateCommand({
           TableName: this.templatesTableName,
-          Key: templateKey,
+          Key: this.toDatabaseKey(templateKey),
           UpdateExpression: `SET ${updates.join(' , ')}`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
@@ -461,7 +461,7 @@ export class TemplateRepository {
     const dynamoResponse = await this.client.send(
       new UpdateCommand({
         TableName: this.templatesTableName,
-        Key: templateKey,
+        Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
           'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
         ExpressionAttributeNames: {
@@ -490,7 +490,7 @@ export class TemplateRepository {
     await this.client.send(
       new UpdateCommand({
         TableName: this.templatesTableName,
-        Key: templateKey,
+        Key: this.toDatabaseKey(templateKey),
         UpdateExpression:
           'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
         ExpressionAttributeValues: {
@@ -506,14 +506,11 @@ export class TemplateRepository {
   }
 
   async setLetterFileVirusScanStatusForProof(
-    owner: string,
-    templateId: string,
+    templateKey: TemplateKey,
     fileName: string,
     virusScanStatus: Extract<VirusScanStatus, 'PASSED' | 'FAILED'>,
     supplier: string
   ) {
-    const templateKey = { owner, id: templateId };
-
     try {
       const updatedItem = await this.appendFileToProofs(
         templateKey,
@@ -560,7 +557,7 @@ export class TemplateRepository {
     }
   }
 
-  async getOwner(id: string): Promise<string> {
+  async getOwner(id: string): Promise<{ owner: string; clientOwned: boolean }> {
     const dbResponse = await this.client.send(
       new QueryCommand({
         TableName: this.templatesTableName,
@@ -576,7 +573,11 @@ export class TemplateRepository {
       throw new Error(`Could not identify item by id ${id}`);
     }
 
-    return dbResponse.Items[0].owner;
+    const ownerWithPossiblePrefix = dbResponse.Items[0].owner;
+
+    const { stripped, owner } = this.stripClientPrefix(ownerWithPossiblePrefix);
+
+    return { owner, clientOwned: stripped };
   }
 
   async setLetterFileVirusScanStatusForUpload(
@@ -624,7 +625,7 @@ export class TemplateRepository {
       await this.client.send(
         new UpdateCommand({
           TableName: this.templatesTableName,
-          Key: templateKey,
+          Key: this.toDatabaseKey(templateKey),
           UpdateExpression: `SET ${updates.join(' , ')}`,
           ExpressionAttributeNames,
           ExpressionAttributeValues,
@@ -771,6 +772,24 @@ export class TemplateRepository {
         item.owner === user.userId ||
         (user.clientId && item.owner === this.clientOwnerKey(user.clientId))
     )?.owner;
+  }
+
+  private toDatabaseKey(templateKey: TemplateKey) {
+    return {
+      id: templateKey.id,
+      owner: templateKey.clientOwned
+        ? this.clientOwnerKey(templateKey.owner)
+        : templateKey.owner,
+    };
+  }
+
+  private stripClientPrefix(owner: string) {
+    const clientOwned = owner.startsWith('CLIENT#');
+
+    return {
+      stripped: clientOwned,
+      owner: clientOwned ? owner.slice(7) : owner,
+    };
   }
 
   private clientOwnerKey(clientId: string) {

@@ -26,6 +26,7 @@ type TestUserDynamicDetails = {
   clientId: string;
   password: string;
   owner: string;
+  clientOwner: boolean;
 };
 
 export type TestUserContext = TestUserStaticDetails &
@@ -191,9 +192,13 @@ export class CognitoAuthHelper {
         });
         this.password = password;
       },
+      get clientOwner() {
+        return Boolean(testClients[this.clientKey]?.features.clientOwnership);
+      },
       get owner() {
-        return testClients[this.clientKey]?.features.clientOwnership
-          ? `CLIENT#${this.clientId}`
+        return testClients[this.clientKey]?.features.clientOwnership &&
+          this.clientId
+          ? this.clientId
           : this.userId;
       },
     };
