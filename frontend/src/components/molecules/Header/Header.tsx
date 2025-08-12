@@ -4,8 +4,20 @@ import content from '@content/content';
 import { AuthLink } from '@molecules/AuthLink/AuthLink';
 import styles from './Header.module.scss';
 import { HeaderType } from './header.types';
+import { cognitoUserPoolsTokenProvider } from '@aws-amplify/auth/cognito';
+import { useEffect, useState } from 'react';
 
 export function NHSNotifyHeader({ dataTestId }: HeaderType) {
+  const [userName, setUsername] = useState('');
+  useEffect(() => {
+    cognitoUserPoolsTokenProvider.getTokens()
+      .then(tokens => {
+        if (tokens) {
+          setUsername(`${tokens.idToken?.payload.email}`);
+        }
+      })
+  }, [userName]);
+
   return (
     <header
       className='nhsuk-header'
@@ -49,6 +61,7 @@ export function NHSNotifyHeader({ dataTestId }: HeaderType) {
             </svg>
             <span className='nhsuk-header__service-name'>
               {content.components.header.serviceName}
+              {userName ? ` - ${userName}`: ''}
             </span>
           </Link>
         </div>
