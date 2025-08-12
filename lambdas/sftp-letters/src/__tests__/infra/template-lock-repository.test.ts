@@ -57,6 +57,41 @@ describe('TemplateLockRepository', () => {
       });
     });
 
+    test('returns true when database update succeeds with user owned template', async () => {
+      const { mocks, templateRepository } = setup();
+
+      mocks.client.on(UpdateCommand).resolvesOnce({});
+
+      const res = await templateRepository.acquireLock(
+        owner,
+        templateId,
+        false
+      );
+
+      expect(res).toBe(true);
+
+      expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
+        ExpressionAttributeNames: {
+          '#updatedAt': 'updatedAt',
+          '#sftpSendLockTime': 'sftpSendLockTime',
+        },
+        ExpressionAttributeValues: {
+          ':condition_2_sftpSendLockTime': mockDate.getTime() + sendLockTtlMs,
+          ':updatedAt': expect.stringMatching(isoDateRegExp),
+          ':sftpSendLockTime': mockDate.getTime(),
+        },
+        ConditionExpression:
+          'attribute_not_exists (#sftpSendLockTime) OR #sftpSendLockTime > :condition_2_sftpSendLockTime',
+        Key: {
+          id: templateId,
+          owner,
+        },
+        TableName: templatesTableName,
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+      });
+    });
+
     test('returns false when database update fails due to a ConditionalCheckFailedException', async () => {
       const { mocks, templateRepository } = setup();
 
@@ -103,6 +138,32 @@ describe('TemplateLockRepository', () => {
         Key: {
           id: templateId,
           owner: `CLIENT#${owner}`,
+        },
+        TableName: templatesTableName,
+        UpdateExpression:
+          'SET #sftpSendLockTime = :sftpSendLockTime, #updatedAt = :updatedAt',
+      });
+    });
+
+    test('unconditionally sets lockTime to one month in the future with user-owned template', async () => {
+      const { mocks, templateRepository } = setup();
+
+      mocks.client.on(UpdateCommand).resolvesOnce({});
+
+      await templateRepository.finaliseLock(owner, templateId, false);
+
+      expect(mocks.client).toHaveReceivedCommandWith(UpdateCommand, {
+        ExpressionAttributeNames: {
+          '#updatedAt': 'updatedAt',
+          '#sftpSendLockTime': 'sftpSendLockTime',
+        },
+        ExpressionAttributeValues: {
+          ':updatedAt': expect.any(String),
+          ':sftpSendLockTime': mockDate.getTime() + 2_592_000_000,
+        },
+        Key: {
+          id: templateId,
+          owner,
         },
         TableName: templatesTableName,
         UpdateExpression:

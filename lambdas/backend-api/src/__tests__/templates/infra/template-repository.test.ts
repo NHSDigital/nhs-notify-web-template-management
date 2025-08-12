@@ -1464,6 +1464,57 @@ describe('templateRepository', () => {
       });
     });
 
+    it('adds the virus scan status of the proof to the database record and updates the template status if scan status is passed, template is user-owned', async () => {
+      const { templateRepository, mocks } = setup();
+      mocks.ddbDocClient.on(UpdateCommand).resolves({
+        Attributes: {
+          templateStatus: 'WAITING_FOR_PROOF',
+        },
+      });
+
+      await templateRepository.setLetterFileVirusScanStatusForProof(
+        { owner: userId, id: 'template-id', clientOwned: false },
+        'pdf-template.pdf',
+        'PASSED',
+        'MBA'
+      );
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: userId },
+        UpdateExpression:
+          'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
+        ConditionExpression:
+          'attribute_not_exists(files.proofs.#fileName) and not templateStatus in (:templateStatusDeleted, :templateStatusSubmitted)',
+        ExpressionAttributeNames: {
+          '#fileName': 'pdf-template.pdf',
+        },
+        ExpressionAttributeValues: {
+          ':templateStatusDeleted': 'DELETED',
+          ':templateStatusSubmitted': 'SUBMITTED',
+          ':updatedAt': new Date().toISOString(),
+          ':virusScanResult': {
+            fileName: 'pdf-template.pdf',
+            virusScanStatus: 'PASSED',
+            supplier: 'MBA',
+          },
+        },
+      });
+
+      expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
+        TableName: 'templates',
+        Key: { id: 'template-id', owner: userId },
+        UpdateExpression:
+          'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
+        ExpressionAttributeValues: {
+          ':templateStatusWaitingForProof': 'WAITING_FOR_PROOF',
+          ':templateStatusProofAvailable': 'PROOF_AVAILABLE',
+          ':updatedAt': new Date().toISOString(),
+        },
+        ConditionExpression: 'templateStatus = :templateStatusWaitingForProof',
+      });
+    });
+
     it('adds the virus scan status of the proof to the database record and does not update the template status if scan status is failed', async () => {
       const { templateRepository, mocks } = setup();
       mocks.ddbDocClient.on(UpdateCommand).resolves({
@@ -1590,6 +1641,22 @@ describe('templateRepository', () => {
 
   describe('getOwner', () => {
     it('gets owner', async () => {
+      const { templateRepository, mocks } = setup();
+
+      mocks.ddbDocClient.on(QueryCommand).resolves({
+        Items: [
+          {
+            owner: 'CLIENT#template-owner',
+          },
+        ],
+      });
+
+      const owner = await templateRepository.getOwner('template-id');
+
+      expect(owner).toEqual({ owner: 'template-owner', clientOwned: true });
+    });
+
+    it('gets owner when template is user-owned', async () => {
       const { templateRepository, mocks } = setup();
 
       mocks.ddbDocClient.on(QueryCommand).resolves({
