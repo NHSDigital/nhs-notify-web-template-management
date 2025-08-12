@@ -234,8 +234,9 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      `CLIENT#${clientId}`,
-      templateId
+      clientId,
+      templateId,
+      true
     );
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
@@ -290,8 +291,9 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      `CLIENT#${clientId}`,
-      templateId
+      clientId,
+      templateId,
+      true
     );
 
     expect(sftpClient.end).toHaveBeenCalledTimes(1);
@@ -450,7 +452,8 @@ describe('App', () => {
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
       userId,
-      templateId
+      templateId,
+      false
     );
 
     expect(sftpClient.exists).toHaveBeenCalledTimes(1);
@@ -506,7 +509,8 @@ describe('App', () => {
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
       userId,
-      templateId
+      templateId,
+      false
     );
 
     expect(sftpClient.end).toHaveBeenCalledTimes(1);
@@ -616,8 +620,9 @@ describe('App', () => {
 
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      `CLIENT#${clientId}`,
-      templateId
+      clientId,
+      templateId,
+      true
     );
 
     expect(sftpClient.connect).toHaveBeenCalled();
@@ -721,8 +726,9 @@ describe('App', () => {
 
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
     expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      `CLIENT#${clientId}`,
-      templateId
+      clientId,
+      templateId,
+      true
     );
 
     expect(sftpClient.mkdir).not.toHaveBeenCalled();

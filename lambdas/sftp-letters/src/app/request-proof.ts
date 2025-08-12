@@ -72,7 +72,7 @@ export class App {
       batchId
     );
 
-    const userOrClientId = clientOwned ? user.clientId : user.userId;
+    const owner = clientOwned ? user.clientId : user.userId;
 
     try {
       templateLogger.info('Opening SFTP connection');
@@ -80,7 +80,7 @@ export class App {
 
       templateLogger.info('Fetching user Data');
       const files = await this.getFileData(
-        userOrClientId,
+        owner,
         templateId,
         expandedTemplateId,
         pdfVersionId,
@@ -89,12 +89,11 @@ export class App {
         batchId
       );
 
-      const owner = clientOwned ? `CLIENT#${user.clientId}` : user.userId;
-
       templateLogger.info('Acquiring sender lock');
       const locked = await this.templateRepository.acquireLock(
         owner,
-        templateId
+        templateId,
+        clientOwned
       );
 
       if (!locked) {
@@ -108,7 +107,11 @@ export class App {
         templateLogger.warn(
           'Manifest already exists, assuming duplicate event'
         );
-        await this.templateRepository.finaliseLock(owner, templateId);
+        await this.templateRepository.finaliseLock(
+          owner,
+          templateId,
+          clientOwned
+        );
         return 'already-sent';
       }
 
@@ -126,7 +129,11 @@ export class App {
       await sftp.put(files.manifest, dest.manifest);
 
       templateLogger.info('Finalising lock');
-      await this.templateRepository.finaliseLock(owner, templateId);
+      await this.templateRepository.finaliseLock(
+        owner,
+        templateId,
+        clientOwned
+      );
 
       templateLogger.info('Sent proofing request');
 
@@ -175,7 +182,7 @@ export class App {
   }
 
   private async getFileData(
-    userOrClientId: string,
+    owner: string,
     templateId: string,
     expandedTemplateId: string,
     pdfVersion: string,
@@ -184,7 +191,7 @@ export class App {
     batchId: string
   ) {
     const userData = await this.userDataRepository.get(
-      userOrClientId,
+      owner,
       templateId,
       pdfVersion,
       testDataVersion

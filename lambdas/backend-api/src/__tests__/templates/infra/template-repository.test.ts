@@ -40,7 +40,7 @@ const setup = () => {
 
 const userId = 'user-id';
 const clientId = 'client-id';
-const clientOwner = `CLIENT#${clientId}`;
+const ownerWithClientPrefix = `CLIENT#${clientId}`;
 const user = { userId, clientId };
 
 const emailProperties: EmailProperties = {
@@ -144,7 +144,7 @@ describe('templateRepository', () => {
           templates: {
             Keys: [
               { id: 'id', owner: userId },
-              { id: 'id', owner: clientOwner },
+              { id: 'id', owner: ownerWithClientPrefix },
             ],
           },
         },
@@ -394,7 +394,7 @@ describe('templateRepository', () => {
         },
         ExpressionAttributeValues: {
           ':deletedStatus': 'DELETED',
-          ':owner': clientOwner,
+          ':owner': ownerWithClientPrefix,
         },
         FilterExpression: '#status <> :deletedStatus',
         KeyConditionExpression: '#owner = :owner',
@@ -598,7 +598,9 @@ describe('templateRepository', () => {
         mocks.ddbDocClient
           .on(QueryCommand)
           .resolves({
-            Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+            Items: [
+              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+            ],
           })
           .on(UpdateCommand)
           .rejects(error);
@@ -665,7 +667,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejects(error);
@@ -712,11 +714,13 @@ describe('templateRepository', () => {
         mocks.ddbDocClient
           .on(QueryCommand)
           .resolves({
-            Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+            Items: [
+              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+            ],
           })
           .on(UpdateCommand, {
             TableName: templatesTableName,
-            Key: { id: 'abc-def-ghi-jkl-123', owner: clientOwner },
+            Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
           })
           .resolves({
             Attributes: {
@@ -869,7 +873,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejects(error);
@@ -917,7 +921,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejects(error);
@@ -944,7 +948,7 @@ describe('templateRepository', () => {
 
       const databaseTemplate: DatabaseTemplate = {
         id,
-        owner: clientOwner,
+        owner: ownerWithClientPrefix,
         version: 1,
         name: 'updated-name',
         message: 'updated-message',
@@ -957,11 +961,11 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id, owner: clientOwner }],
+          Items: [{ id, owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand, {
           TableName: templatesTableName,
-          Key: { id, owner: clientOwner },
+          Key: { id, owner: ownerWithClientPrefix },
         })
         .resolves({ Attributes: databaseTemplate });
 
@@ -1048,7 +1052,9 @@ describe('templateRepository', () => {
         mocks.ddbDocClient
           .on(QueryCommand)
           .resolves({
-            Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+            Items: [
+              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+            ],
           })
           .on(UpdateCommand)
           .rejects(error);
@@ -1097,7 +1103,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejects(error);
@@ -1124,7 +1130,7 @@ describe('templateRepository', () => {
 
       const databaseTemplate: DatabaseTemplate = {
         id,
-        owner: clientOwner,
+        owner: ownerWithClientPrefix,
         version: 1,
         name: 'updated-name',
         message: 'updated-message',
@@ -1137,11 +1143,11 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand, {
           TableName: templatesTableName,
-          Key: { id: 'abc-def-ghi-jkl-123', owner: clientOwner },
+          Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
         })
         .resolves({
           Attributes: {
@@ -1242,7 +1248,9 @@ describe('templateRepository', () => {
         mocks.ddbDocClient
           .on(QueryCommand)
           .resolves({
-            Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+            Items: [
+              { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
+            ],
           })
           .on(UpdateCommand)
           .rejects(error);
@@ -1296,7 +1304,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejects(error);
@@ -1324,7 +1332,7 @@ describe('templateRepository', () => {
 
       const databaseTemplate: DatabaseTemplate = {
         id,
-        owner: clientOwner,
+        owner: ownerWithClientPrefix,
         version: 1,
         name: 'updated-name',
         message: 'updated-message',
@@ -1337,11 +1345,11 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolves({
-          Items: [{ id: 'abc-def-ghi-jkl-123', owner: clientOwner }],
+          Items: [{ id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand, {
           TableName: templatesTableName,
-          Key: { id: 'abc-def-ghi-jkl-123', owner: clientOwner },
+          Key: { id: 'abc-def-ghi-jkl-123', owner: ownerWithClientPrefix },
         })
         .resolves({
           Attributes: {
@@ -1413,8 +1421,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        clientOwner,
-        'template-id',
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'pdf-template.pdf',
         'PASSED',
         'MBA'
@@ -1422,7 +1429,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
         ConditionExpression:
@@ -1444,7 +1451,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET templateStatus = :templateStatusProofAvailable, updatedAt = :updatedAt',
         ExpressionAttributeValues: {
@@ -1465,8 +1472,7 @@ describe('templateRepository', () => {
       });
 
       await templateRepository.setLetterFileVirusScanStatusForProof(
-        clientOwner,
-        'template-id',
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'pdf-template.pdf',
         'FAILED',
         'MBA'
@@ -1474,7 +1480,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET files.proofs.#fileName = :virusScanResult, updatedAt = :updatedAt',
         ConditionExpression:
@@ -1508,8 +1514,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          clientOwner,
-          'template-id',
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1536,8 +1541,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          clientOwner,
-          'template-id',
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1553,8 +1557,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          clientOwner,
-          'template-id',
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1575,8 +1578,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForProof(
-          clientOwner,
-          'template-id',
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'pdf-template',
           'PASSED',
           'MBA'
@@ -1599,7 +1601,7 @@ describe('templateRepository', () => {
 
       const owner = await templateRepository.getOwner('template-id');
 
-      expect(owner).toEqual('template-owner');
+      expect(owner).toEqual({ owner: 'template-owner', clientOwned: false });
     });
 
     it('errors when owner cannot be found', async () => {
@@ -1620,7 +1622,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientOwner, id: 'template-id' },
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'pdf-template',
         'pdf-version-id',
         'PASSED'
@@ -1628,7 +1630,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
         ConditionExpression:
@@ -1655,7 +1657,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientOwner, id: 'template-id' },
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'test-data',
         'csv-version-id',
         'PASSED'
@@ -1663,7 +1665,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt',
         ConditionExpression:
@@ -1690,7 +1692,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientOwner, id: 'template-id' },
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'pdf-template',
         'pdf-version-id',
         'FAILED'
@@ -1698,7 +1700,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
         ConditionExpression:
@@ -1726,7 +1728,7 @@ describe('templateRepository', () => {
       const { templateRepository, mocks } = setup();
 
       await templateRepository.setLetterFileVirusScanStatusForUpload(
-        { owner: clientOwner, id: 'template-id' },
+        { owner: clientId, id: 'template-id', clientOwned: true },
         'test-data',
         'csv-version-id',
         'FAILED'
@@ -1734,7 +1736,7 @@ describe('templateRepository', () => {
 
       expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
         TableName: 'templates',
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         UpdateExpression:
           'SET #files.#file.#scanStatus = :scanStatus , #updatedAt = :updatedAt , #templateStatus = :templateStatusFailed',
         ConditionExpression:
@@ -1770,7 +1772,11 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
-          { owner: clientOwner, id: 'template-id' },
+          {
+            owner: ownerWithClientPrefix,
+            id: 'template-id',
+            clientOwned: true,
+          },
           'test-data',
           'csv-version-id',
           'FAILED'
@@ -1785,7 +1791,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterFileVirusScanStatusForUpload(
-          { owner: clientOwner, id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'test-data',
           'csv-version-id',
           'FAILED'
@@ -1800,7 +1806,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to PENDING_PROOF_REQUEST, personalisationParameters and csvHeader when template is valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientOwner, id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1810,7 +1816,7 @@ describe('templateRepository', () => {
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
           TableName: 'templates',
-          Key: { id: 'template-id', owner: clientOwner },
+          Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
             'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
           ConditionExpression:
@@ -1838,7 +1844,7 @@ describe('templateRepository', () => {
 
       it('should update the templateStatus to VALIDATION_FAILED when template is not valid', async () => {
         await templateRepository.setLetterValidationResult(
-          { owner: clientOwner, id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -1848,7 +1854,7 @@ describe('templateRepository', () => {
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
           TableName: 'templates',
-          Key: { id: 'template-id', owner: clientOwner },
+          Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
             'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt',
           ConditionExpression:
@@ -1876,7 +1882,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: 'template-owner', id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'file-version-id',
           true,
           ['personalisation', 'parameters'],
@@ -1886,7 +1892,7 @@ describe('templateRepository', () => {
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
           TableName: 'templates',
-          Key: { id: 'template-id', owner: 'template-owner' },
+          Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
             'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt , #personalisationParameters = :personalisationParameters , #testDataCsvHeaders = :testDataCsvHeaders',
           ConditionExpression:
@@ -1916,7 +1922,7 @@ describe('templateRepository', () => {
         const { templateRepository, mocks } = setup();
 
         await templateRepository.setLetterValidationResult(
-          { owner: clientOwner, id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -1926,7 +1932,7 @@ describe('templateRepository', () => {
 
         expect(mocks.ddbDocClient).toHaveReceivedCommandWith(UpdateCommand, {
           TableName: 'templates',
-          Key: { id: 'template-id', owner: clientOwner },
+          Key: { id: 'template-id', owner: ownerWithClientPrefix },
           UpdateExpression:
             'SET #templateStatus = :templateStatus , #updatedAt = :updatedAt',
           ConditionExpression:
@@ -1961,7 +1967,7 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterValidationResult(
-          { owner: clientOwner, id: 'template-id' },
+          { owner: clientId, id: 'template-id', clientOwned: true },
           'file-version-id',
           false,
           [],
@@ -1978,7 +1984,11 @@ describe('templateRepository', () => {
 
       await expect(
         templateRepository.setLetterValidationResult(
-          { owner: 'template-owner', id: clientOwner },
+          {
+            owner: 'template-owner',
+            id: ownerWithClientPrefix,
+            clientOwned: true,
+          },
           'file-version-id',
           false,
           [],
@@ -1996,7 +2006,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolvesOnce({
-          Items: [{ id: 'template-id', owner: clientOwner }],
+          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .resolvesOnce({
@@ -2032,7 +2042,7 @@ describe('templateRepository', () => {
           ':templateStatus': 'WAITING_FOR_PROOF',
           ':updatedAt': '2024-12-27T00:00:00.000Z',
         },
-        Key: { id: 'template-id', owner: clientOwner },
+        Key: { id: 'template-id', owner: ownerWithClientPrefix },
         ReturnValues: 'ALL_NEW',
         ReturnValuesOnConditionCheckFailure: 'ALL_OLD',
         TableName: 'templates',
@@ -2125,7 +2135,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolvesOnce({
-          Items: [{ id: 'template-id', owner: clientOwner }],
+          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejectsOnce(err);
@@ -2160,7 +2170,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolvesOnce({
-          Items: [{ id: 'template-id', owner: clientOwner }],
+          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejectsOnce(err);
@@ -2189,7 +2199,7 @@ describe('templateRepository', () => {
       mocks.ddbDocClient
         .on(QueryCommand)
         .resolvesOnce({
-          Items: [{ id: 'template-id', owner: clientOwner }],
+          Items: [{ id: 'template-id', owner: ownerWithClientPrefix }],
         })
         .on(UpdateCommand)
         .rejectsOnce(err);

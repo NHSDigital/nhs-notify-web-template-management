@@ -137,6 +137,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
@@ -184,6 +185,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -374,6 +376,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
@@ -421,6 +424,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -583,6 +587,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created).toEqual({
@@ -631,6 +636,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: user1.owner,
+        clientOwned: user1.clientOwner,
       });
 
       expect(created.template.templateStatus).toEqual('NOT_YET_SUBMITTED');
@@ -847,6 +853,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: userNoClient.userId,
+        clientOwned: userNoClient.clientOwner,
       });
 
       expect(created).toEqual({
@@ -891,6 +898,7 @@ test.describe('POST /v1/template', () => {
       templateStorageHelper.addAdHocTemplateKey({
         id: created.template.id,
         owner: userDirectOwner.owner,
+        clientOwned: userDirectOwner.clientOwner,
       });
 
       expect(created).toEqual({

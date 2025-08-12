@@ -63,7 +63,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -75,7 +75,7 @@ describe('LetterUploadRepository', () => {
         Key: `test-data/${clientId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'test-data',
           'template-id': templateId,
           'version-id': versionId,
@@ -102,7 +102,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${userId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': userId,
+          owner: userId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -114,7 +114,7 @@ describe('LetterUploadRepository', () => {
         Key: `test-data/${userId}/${templateId}/${versionId}.csv`,
         Body: new Uint8Array(await csvBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': userId,
+          owner: userId,
           'file-type': 'test-data',
           'template-id': templateId,
           'version-id': versionId,
@@ -139,7 +139,7 @@ describe('LetterUploadRepository', () => {
         Key: `pdf-template/${clientId}/${templateId}/${versionId}.pdf`,
         Body: new Uint8Array(await pdfBytes.arrayBuffer()),
         Metadata: {
-          'user-or-client-id': clientId,
+          owner: clientId,
           'file-type': 'pdf-template',
           'template-id': templateId,
           'version-id': versionId,
@@ -242,7 +242,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'pdf-template',
-        'user-or-client-id': 'owner-id',
+        owner: 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });
@@ -255,7 +255,7 @@ describe('LetterUploadRepository', () => {
         )
       ).toEqual({
         'file-type': 'test-data',
-        'user-or-client-id': 'owner-id',
+        owner: 'owner-id',
         'template-id': 'template-id',
         'version-id': 'version-id',
       });
