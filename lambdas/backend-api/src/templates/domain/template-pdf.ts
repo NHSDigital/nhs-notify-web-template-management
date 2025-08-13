@@ -60,7 +60,7 @@ export class TemplatePdf {
     if (!this.parsed) {
       const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
 
-      const loading = getDocument(this.source.buffer);
+      const loading = getDocument(this.source);
 
       const document = await loading.promise;
 

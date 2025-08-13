@@ -7,7 +7,7 @@ import { TemplatePdf } from '@backend-api/templates/domain/template-pdf';
 test('has the given key attributes', () => {
   const pdf = new TemplatePdf(
     { id: 'template-id', owner: 'template-owner' },
-    Buffer.from('')
+    Uint8Array.from('')
   );
 
   expect(pdf.templateId).toBe('template-id');
@@ -20,7 +20,7 @@ test('parse with no custom personalisation', async () => {
   );
   const pdf = new TemplatePdf(
     { id: 'template-id', owner: 'template-owner' },
-    file
+    new Uint8Array(file)
   );
   await pdf.parse();
 
@@ -67,7 +67,7 @@ test('parse with custom personalisation', async () => {
   );
   const pdf = new TemplatePdf(
     { id: 'template-id', owner: 'template-owner' },
-    file
+    new Uint8Array(file)
   );
   await pdf.parse();
 

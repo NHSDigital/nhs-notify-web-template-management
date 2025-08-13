@@ -1,3 +1,4 @@
+import type { File } from 'node:buffer';
 import { randomUUID } from 'node:crypto';
 import { failure, success, validate } from '@backend-api/utils/index';
 import {
@@ -22,10 +23,10 @@ import {
 } from 'nhs-notify-web-template-management-utils';
 import { isRightToLeft } from 'nhs-notify-web-template-management-utils/enum';
 import { Logger } from 'nhs-notify-web-template-management-utils/logger';
+import { z } from 'zod/v4';
 import { LetterUploadRepository } from '../infra/letter-upload-repository';
 import { ProofingQueue } from '../infra/proofing-queue';
 import { ClientConfigRepository } from '../infra/client-config-repository';
-import { z } from 'zod/v4';
 
 export class TemplateClient {
   private $LetterForProofing = z.intersection(

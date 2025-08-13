@@ -18,13 +18,10 @@ repos:
       - id: pretty-format-json
         exclude: |
           (?x)^(
-            package-lock.json
-          )$
-        args: ['--autofix']
-        exclude: |
-          (?x)^(
+            package-lock.json|
             packages/event-schemas/schemas/[^/]+/[^/]+\.json
           )$
+        args: ['--autofix']
     # -   id: ...
   - repo: local
     hooks:
