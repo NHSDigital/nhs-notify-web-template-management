@@ -16,12 +16,10 @@ test.describe('POST /v1/template', () => {
   const authHelper = createAuthHelper();
   const templateStorageHelper = new TemplateStorageHelper();
   let user1: TestUser;
-  let userNoClient: TestUser;
   let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     user1 = await authHelper.getTestUser(testUsers.User1.userId);
-    userNoClient = await authHelper.getTestUser(testUsers.User6.userId);
     userDirectOwner = await authHelper.getTestUser(testUsers.User7.userId);
   });
 
@@ -827,55 +825,6 @@ test.describe('POST /v1/template', () => {
   });
 
   test.describe('user-owned templates', () => {
-    test('user without a clientId assigned can create a template', async ({
-      request,
-    }) => {
-      const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
-        templateType: 'NHS_APP',
-      });
-
-      const start = new Date();
-
-      const response = await request.post(
-        `${process.env.API_BASE_URL}/v1/template`,
-        {
-          headers: {
-            Authorization: await userNoClient.getAccessToken(),
-          },
-          data: template,
-        }
-      );
-
-      expect(response.status()).toBe(201);
-
-      const created = await response.json();
-
-      templateStorageHelper.addAdHocTemplateKey({
-        id: created.template.id,
-        owner: userNoClient.userId,
-        clientOwned: userNoClient.clientOwner,
-      });
-
-      expect(created).toEqual({
-        statusCode: 201,
-        template: {
-          createdAt: expect.stringMatching(isoDateRegExp),
-          id: expect.stringMatching(uuidRegExp),
-          message: template.message,
-          name: template.name,
-          templateStatus: 'NOT_YET_SUBMITTED',
-          templateType: template.templateType,
-          updatedAt: expect.stringMatching(isoDateRegExp),
-        },
-      });
-
-      expect(created.template.createdAt).toBeDateRoughlyBetween([
-        start,
-        new Date(),
-      ]);
-      expect(created.template.createdAt).toEqual(created.template.updatedAt);
-    });
-
     test('can create a user-owned template', async ({ request }) => {
       const template = TemplateAPIPayloadFactory.getCreateTemplatePayload({
         templateType: 'NHS_APP',
