@@ -78,8 +78,8 @@ variable "enable_proofing" {
 
 variable "enable_event_stream" {
   type        = bool
-  description = "Enable DynamoDB streaming to SQS?"
-  default     = false
+  description = "Enable DynamoDB streaming to EventBridge"
+  default     = true
 }
 
 variable "kms_key_arn" {
