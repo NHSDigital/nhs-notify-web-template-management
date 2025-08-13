@@ -4,15 +4,14 @@ const footerContent = content.components.footer;
 
 export function NHSNotifyFooter() {
   return (
-    <footer role='contentinfo' data-testid='page-footer'>
-      <div className='nhsuk-footer-container'>
-        <div className='nhsuk-width-container'>
+    <footer role='contentinfo' data-testid='page-footer' className='nhsuk-footer'>
+      <div className='nhsuk-width-container'>
+        <div className='nhsuk-footer__meta'>
           <h2 className='nhsuk-u-visually-hidden' data-testid='support-links'>
             {footerContent.supportLinks}
           </h2>
-          <div className='nhsuk-footer'>
-            <ul className='nhsuk-footer__list' data-testid='footer-links'>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+          <ul className='nhsuk-footer__list' data-testid='footer-links'>
+            <li className='nhsuk-footer__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.acceptableUsePolicy.url}
@@ -22,8 +21,8 @@ export function NHSNotifyFooter() {
                 >
                   {footerContent.links.acceptableUsePolicy.text}
                 </a>
-              </li>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+            </li>
+            <li className='nhsuk-footer__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.accessibilityStatement.url}
@@ -33,8 +32,8 @@ export function NHSNotifyFooter() {
                 >
                   {footerContent.links.accessibilityStatement.text}
                 </a>
-              </li>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+            </li>
+            <li className='nhsuk-footer__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.cookies.url}
@@ -44,8 +43,8 @@ export function NHSNotifyFooter() {
                 >
                   {footerContent.links.cookies.text}
                 </a>
-              </li>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+            </li>
+            <li className='nhsuk-footer__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.privacy.url}
@@ -55,8 +54,8 @@ export function NHSNotifyFooter() {
                 >
                   {footerContent.links.privacy.text}
                 </a>
-              </li>
-              <li className='nhsuk-footer__list-item nhsuk-footer-default__list-item'>
+            </li>
+            <li className='nhsuk-footer__list-item'>
                 <a
                   className='nhsuk-footer__list-item-link'
                   href={footerContent.links.termsAndConditions.url}
@@ -66,15 +65,12 @@ export function NHSNotifyFooter() {
                 >
                   {footerContent.links.termsAndConditions.text}
                 </a>
-              </li>
-            </ul>
-            <p
-              className='nhsuk-footer__copyright'
-              data-testid='nhs-england-copyright-text'
-            >
-              &copy; {footerContent.nhsEngland}
-            </p>
-          </div>
+            </li>
+          </ul>
+
+          <p className='nhsuk-body-s' data-testid='nhs-england-copyright-text'>
+            &copy; {footerContent.nhsEngland}
+          </p>
         </div>
       </div>
     </footer>
