@@ -325,6 +325,9 @@
           },
           "features": {
             "$ref": "#/components/schemas/ClientFeatures"
+          },
+          "name": {
+            "type": "string"
           }
         },
         "required": [

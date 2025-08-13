@@ -112,6 +112,7 @@ export type ClientFeatures = {
 };
 
 export type ClientConfiguration = {
+  name?: string;
   campaignId?: string;
   features: ClientFeatures;
 };
