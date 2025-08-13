@@ -392,9 +392,9 @@ export class TemplateClient {
   ): Promise<Result<TemplateDto>> {
     const log = this.logger.child({ templateId, user });
 
-    const clientConfigurationResult = user.clientId
-      ? await this.clientConfigRepository.get(user.clientId)
-      : { data: null };
+    const clientConfigurationResult = await this.clientConfigRepository.get(
+      user.clientId
+    );
 
     if (clientConfigurationResult.error) {
       log
