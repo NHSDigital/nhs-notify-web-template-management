@@ -11,7 +11,6 @@ const $ClientFeatures = schemaFor<ClientFeatures>()(
 
 export const $ClientConfiguration = schemaFor<ClientConfiguration>()(
   z.object({
-    name: z.string().optional(),
     campaignId: z.string().optional(),
     features: $ClientFeatures,
   })
