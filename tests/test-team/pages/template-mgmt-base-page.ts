@@ -7,15 +7,23 @@ export abstract class TemplateMgmtBasePage {
 
   static readonly pageUrlSegment: string;
 
-  readonly notifyBannerLink: Locator;
+  readonly header: Locator;
+
+  readonly headerLogoLink: Locator;
+
+  readonly headerAccountDisplayName: Locator;
+
+  readonly headerAccountClientName: Locator;
 
   readonly signInLink: Locator;
 
   readonly signOutLink: Locator;
 
+  readonly headerNavigationLinks: Locator;
+
   readonly goBackLink: Locator;
 
-  readonly pageHeader: Locator;
+  readonly pageHeading: Locator;
 
   readonly errorSummary: Locator;
 
@@ -28,23 +36,22 @@ export abstract class TemplateMgmtBasePage {
   constructor(page: Page) {
     this.page = page;
 
-    this.notifyBannerLink = page.locator(
-      '[class="nhsuk-header__link nhsuk-header__link--service"]'
-    );
+    this.header = page.getByTestId('page-header');
+    this.headerLogoLink = page.getByTestId('header-logo-service-link');
 
-    this.signInLink = page
-      .locator('[data-testid="auth-link"]')
-      .and(page.getByText('Sign in'));
+    this.headerAccountDisplayName = page.getByTestId('account-display-name');
+    this.headerAccountClientName = page.getByTestId('account-client-name');
 
-    this.signOutLink = page
-      .locator('[data-testid="auth-link"]')
-      .and(page.getByText('Sign out'));
+    this.signInLink = page.getByTestId('sign-in-link');
+    this.signOutLink = page.getByTestId('sign-out-link');
+
+    this.headerNavigationLinks = page.getByTestId('navigation-links');
 
     this.goBackLink = page
       .locator('.nhsuk-back-link__link')
       .and(page.getByText('Go back'));
 
-    this.pageHeader = page.getByRole('heading', { level: 1 });
+    this.pageHeading = page.getByRole('heading', { level: 1 });
 
     this.errorSummary = page.getByRole('alert', { name: 'There is a problem' });
 
@@ -66,8 +73,8 @@ export abstract class TemplateMgmtBasePage {
     await this.page.goto(url);
   }
 
-  async clickNotifyBannerLink() {
-    await this.notifyBannerLink.click();
+  async clickHeaderLogoLink() {
+    await this.headerLogoLink.click();
   }
 
   async clickSignInLink() {

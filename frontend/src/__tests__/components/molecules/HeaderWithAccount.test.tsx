@@ -56,7 +56,7 @@ describe('NhsNotifyHeaderWithAccount', () => {
     it(`renders the authentication link as 'sign in'`, async () => {
       render(<NhsNotifyHeaderWithAccount />);
 
-      expect(await screen.findByTestId('auth-link')).toHaveTextContent(
+      expect(await screen.findByTestId('sign-in-link')).toHaveTextContent(
         'Sign in'
       );
     });
@@ -116,7 +116,7 @@ describe('NhsNotifyHeaderWithAccount', () => {
     it(`renders auth link as 'Sign out'`, async () => {
       render(<NhsNotifyHeaderWithAccount />);
 
-      expect(await screen.findByTestId('auth-link')).toHaveTextContent(
+      expect(await screen.findByTestId('sign-out-link')).toHaveTextContent(
         'Sign out'
       );
     });

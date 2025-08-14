@@ -7,6 +7,7 @@ import {
 type ClientConfiguration = {
   features: {
     proofing: boolean;
+    routing: boolean;
   };
   campaignId?: string;
 };
@@ -20,21 +21,23 @@ type TestClients = Record<
 
 export const testClients = {
   /**
-   * Client1 has proofing enabled
+   * Client1 has proofing and routing enabled
    */
   Client1: {
     campaignId: 'Campaign1',
     features: {
       proofing: true,
+      routing: true,
     },
   },
   /**
-   * Client2 has proofing disabled
+   * Client2 has proofing and routing disabled
    */
   Client2: {
     campaignId: 'Campaign2',
     features: {
       proofing: false,
+      routing: false,
     },
   },
   /**
@@ -48,6 +51,7 @@ export const testClients = {
     campaignId: undefined,
     features: {
       proofing: false,
+      routing: false,
     },
   },
 } satisfies TestClients as TestClients & { NONE: undefined };
@@ -58,7 +62,7 @@ export class ClientConfigurationHelper {
   constructor(
     private readonly clientSSMKeyPrefix: string,
     private readonly runId: string
-  ) {}
+  ) { }
 
   async setup() {
     return Promise.all(

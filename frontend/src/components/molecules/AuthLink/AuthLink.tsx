@@ -21,7 +21,7 @@ export const AuthLink = ({ className }: { className?: string }) => {
     <a
       id={id}
       className={classNames(styles['auth-link'], className)}
-      data-testid='auth-link'
+      data-testid={id}
       href={linkContent.href}
     >
       {linkContent.text}

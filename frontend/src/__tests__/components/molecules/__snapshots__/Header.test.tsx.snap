@@ -54,7 +54,7 @@ exports[`Header component should render correctly 1`] = `
       >
         <a
           class="auth-link"
-          data-testid="auth-link"
+          data-testid="sign-in-link"
           href="/auth?redirect=%2Ftemplates%2Fcreate-and-submit-templates"
           id="sign-in-link"
         >

@@ -4,7 +4,7 @@ import {
   assertFooterLinks,
   assertGoBackLink,
   assertSignOutLink,
-  assertNotifyBannerLink,
+  assertHeaderLogoLink,
   assertSkipToMainContent,
 } from '../template-mgmt-common.steps';
 import {
@@ -44,7 +44,7 @@ test.describe('Upload letter Template Page', () => {
     };
 
     await assertSkipToMainContent(props);
-    await assertNotifyBannerLink(props);
+    await assertHeaderLogoLink(props);
     await assertSignOutLink(props);
     await assertFooterLinks(props);
     await assertGoBackLink({
@@ -60,7 +60,7 @@ test.describe('Upload letter Template Page', () => {
 
     await createTemplatePage.loadPage();
 
-    await expect(createTemplatePage.pageHeader).toHaveText(
+    await expect(createTemplatePage.pageHeading).toHaveText(
       'Upload a letter template'
     );
     await createTemplatePage.clickSaveAndPreviewButton();
@@ -108,7 +108,7 @@ test.describe('Upload letter Template Page', () => {
     const createTemplatePage = new TemplateMgmtUploadLetterPage(page);
 
     await createTemplatePage.loadPage();
-    await expect(createTemplatePage.pageHeader).toHaveText(
+    await expect(createTemplatePage.pageHeading).toHaveText(
       'Upload a letter template'
     );
     await page.locator('[id="letterTemplateName"]').fill('template-name');
