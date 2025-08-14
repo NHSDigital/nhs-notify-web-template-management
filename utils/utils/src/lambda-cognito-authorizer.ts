@@ -92,12 +92,9 @@ export class LambdaCognitoAuthorizer {
 
       if (
         expectedResourceOwner !== undefined &&
-        expectedResourceOwner !== sub &&
         expectedResourceOwner !== notifyClientId
       ) {
-        this.logger.warn(
-          'Neither subject nor clientId matches expected resource owner'
-        );
+        this.logger.warn('clientId does not match expected resource owner');
         return { success: false };
       }
 

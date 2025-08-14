@@ -136,35 +136,6 @@ describe('LambdaCognitoAuthorizer', () => {
     expect(mockLogger.logMessages).toEqual([]);
   });
 
-  test('returns success on valid token when expected resource owner is the user (not client)', async () => {
-    const jwt = sign(
-      {
-        token_use: 'access',
-        client_id: 'user-pool-client-id',
-        iss: 'https://cognito-idp.eu-west-2.amazonaws.com/user-pool-id',
-        'nhs-notify:client-id': 'nhs-notify-client-id',
-      },
-      'key',
-      {
-        keyid: 'key-id',
-      }
-    );
-
-    const res = await authorizer.authorize(
-      userPoolId,
-      userPoolClientId,
-      jwt,
-      'sub'
-    );
-
-    expect(res).toEqual({
-      success: true,
-      subject: 'sub',
-      clientId: 'nhs-notify-client-id',
-    });
-    expect(mockLogger.logMessages).toEqual([]);
-  });
-
   test('returns failure on malformed token', async () => {
     const res = await authorizer.authorize(
       userPoolId,
@@ -401,7 +372,7 @@ describe('LambdaCognitoAuthorizer', () => {
     );
   });
 
-  test('returns failure when expected resourc owner matches neither notify client id nor sub, from Cognito', async () => {
+  test('returns failure when expected resource owner does not match notify client id from Cognito', async () => {
     const jwt = sign(
       {
         token_use: 'access',
