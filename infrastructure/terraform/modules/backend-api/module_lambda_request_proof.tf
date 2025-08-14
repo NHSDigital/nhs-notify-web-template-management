@@ -47,20 +47,7 @@ data "aws_iam_policy_document" "request_proof_lambda_policy" {
       aws_dynamodb_table.templates.arn,
     ]
   }
-
-  statement {
-    sid    = "AllowDynamoGSIAccess"
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:Query",
-    ]
-
-    resources = [
-      "${aws_dynamodb_table.templates.arn}/index/QueryById",
-    ]
-  }
-
+  
   statement {
     sid    = "AllowProofingSQS"
     effect = "Allow"

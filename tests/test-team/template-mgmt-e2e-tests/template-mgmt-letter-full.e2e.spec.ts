@@ -290,7 +290,6 @@ test.describe('letter complete e2e journey', () => {
 
   let userWithProofing: TestUser;
   let userWithoutProofing: TestUser;
-  let userDirectOwner: TestUser;
 
   test.beforeAll(async () => {
     userWithProofing = await createAuthHelper().getTestUser(
@@ -298,9 +297,6 @@ test.describe('letter complete e2e journey', () => {
     );
     userWithoutProofing = await createAuthHelper().getTestUser(
       testUsers.User3.userId
-    );
-    userDirectOwner = await createAuthHelper().getTestUser(
-      testUsers.User8.userId
     );
   });
 
@@ -360,42 +356,5 @@ test.describe('letter complete e2e journey', () => {
     await continueAfterCreation(page);
 
     await submit(page, templateStorageHelper, templateKey);
-  });
-
-  test('Full journey - user-owner', async ({ page }) => {
-    const testStart = new Date();
-
-    await loginAsUser(userDirectOwner, page);
-
-    const templateKey = await create(
-      page,
-      templateStorageHelper,
-      userDirectOwner,
-      'PENDING_PROOF_REQUEST'
-    );
-
-    await continueAfterCreation(page);
-
-    const expandedTemplateId = await requestProof(
-      page,
-      templateStorageHelper,
-      templateKey
-    );
-
-    await checkEmail(
-      expandedTemplateId,
-      testStart,
-      'Proof Requested',
-      'proof-requested-sender'
-    );
-
-    await submit(page, templateStorageHelper, templateKey);
-
-    await checkEmail(
-      expandedTemplateId,
-      testStart,
-      'Template Submitted',
-      'template-submitted-sender'
-    );
   });
 });

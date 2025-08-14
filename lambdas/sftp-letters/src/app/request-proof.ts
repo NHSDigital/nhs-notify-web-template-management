@@ -29,7 +29,6 @@ export class App {
   ): Promise<'sent' | 'already-sent' | 'failed'> {
     const {
       campaignId,
-      clientOwned,
       language,
       letterType,
       user,
@@ -56,7 +55,6 @@ export class App {
 
     const templateLogger = this.logger.child({
       batchId,
-      clientOwned,
       expandedTemplateId,
       messageId,
       pdfVersionId,
@@ -72,8 +70,6 @@ export class App {
       batchId
     );
 
-    const userOrClientId = clientOwned ? user.clientId : user.userId;
-
     try {
       templateLogger.info('Opening SFTP connection');
       await sftp.connect();
@@ -88,8 +84,6 @@ export class App {
         personalisationParameters,
         batchId
       );
-
-      const owner = clientOwned ? `CLIENT#${user.clientId}` : user.userId;
 
       templateLogger.info('Acquiring sender lock');
       const locked = await this.templateRepository.acquireLock(
@@ -175,7 +169,7 @@ export class App {
   }
 
   private async getFileData(
-    userOrClientId: string,
+    owner: string,
     templateId: string,
     expandedTemplateId: string,
     pdfVersion: string,
@@ -184,7 +178,7 @@ export class App {
     batchId: string
   ) {
     const userData = await this.userDataRepository.get(
-      userOrClientId,
+      owner,
       templateId,
       pdfVersion,
       testDataVersion

@@ -4,8 +4,6 @@ import { LetterProofRepository } from '../infra/letter-proof-repository';
 import { LetterFileRepository } from '../infra/letter-file-repository';
 import type { Logger } from 'nhs-notify-web-template-management-utils/logger';
 
-const clientOwnerPrefix = 'CLIENT#';
-
 export const createHandler =
   ({
     templateRepository,

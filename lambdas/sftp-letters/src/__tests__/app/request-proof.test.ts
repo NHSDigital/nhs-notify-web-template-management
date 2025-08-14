@@ -65,8 +65,7 @@ function setup() {
 
 function mockEvent(
   hasTestData: boolean,
-  personalisationParameters: string[],
-  clientOwned: boolean
+  personalisationParameters: string[]
 ): ProofingRequest {
   return {
     user: { userId, clientId },
@@ -79,7 +78,6 @@ function mockEvent(
     campaignId,
     ...(hasTestData && { testDataVersionId }),
     personalisationParameters,
-    clientOwned,
   };
 }
 
@@ -94,7 +92,7 @@ describe('App', () => {
       ...personalisationParameters,
     ];
 
-    const event = mockEvent(true, personalisationParameters, true);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -297,221 +295,6 @@ describe('App', () => {
     expect(sftpClient.end).toHaveBeenCalledTimes(1);
   });
 
-  test('calls dependencies to send a proofing request when template is user-owned', async () => {
-    const { app, mocks } = setup();
-
-    const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
-    const batchColumns = [
-      'clientRef',
-      'template',
-      ...personalisationParameters,
-    ];
-
-    const clientOwned = false;
-
-    const event = mockEvent(true, personalisationParameters, clientOwned);
-
-    const pdfContent = 'mock PDF content';
-    const pdf = Readable.from(pdfContent);
-
-    const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
-
-    const testData = [
-      { custom1: 'short1', custom2: 'short2' },
-      { custom1: 'medium1', custom2: 'medium2' },
-      { custom1: 'long1', custom2: 'long2' },
-    ];
-
-    const batchData = [
-      {
-        clientRef: 'random1_random2_1744184100',
-        template: expandedTemplateId,
-        pdsField: 'pdsVal1',
-        custom1: 'short1',
-        custom2: 'short2',
-      },
-      {
-        clientRef: 'random3_random4_1744184100',
-        template: expandedTemplateId,
-        pdsField: 'pdsVal2',
-        custom1: 'medium1',
-        custom2: 'medium2',
-      },
-      {
-        clientRef: 'random5_random6_1744184100',
-        template: expandedTemplateId,
-        pdsField: 'pdsVal3',
-        custom1: 'long1',
-        custom2: 'long2',
-      },
-    ];
-
-    const batchCsv: string = [
-      batchColumns.join(','),
-      batchData
-        .map((x) =>
-          [
-            `"${x.clientRef}"`,
-            `"${x.template}"`,
-            `"${x.pdsField}"`,
-            `"${x.custom1}"`,
-            `"${x.custom2}"`,
-          ].join(',')
-        )
-        .join('\n'),
-    ].join('\n');
-
-    const batchHash = 'hash-of-batch-csv';
-
-    const manifestData: Manifest = {
-      template: expandedTemplateId,
-      batch: `${batchId}.csv`,
-      records: '3',
-      md5sum: batchHash,
-    };
-
-    const manifestCsv = [
-      'template,batch,records,md5sum',
-      `"${expandedTemplateId}","${batchId}.csv","3","${batchHash}"`,
-    ].join('\n');
-
-    const testDataCsv = mockTestDataCsv(['custom1', 'custom2'], testData);
-
-    const sftpClient = mock<SftpClient>();
-
-    mocks.sftpSupplierClientRepository.getClient.mockResolvedValueOnce({
-      baseDownloadDir,
-      baseUploadDir,
-      sftpClient,
-    });
-
-    mocks.syntheticBatch.getId.mockReturnValueOnce(batchId);
-
-    mocks.userDataRepository.get.mockResolvedValueOnce({
-      testData: testDataCsv,
-      pdf,
-    });
-
-    mocks.syntheticBatch.buildBatch.mockReturnValueOnce(batchData);
-
-    mocks.syntheticBatch.getHeader.mockReturnValueOnce(batchColumns.join(','));
-
-    mocks.syntheticBatch.buildManifest.mockReturnValueOnce(manifestData);
-
-    mocks.templateRepository.acquireLock.mockResolvedValueOnce(true);
-
-    sftpClient.connect.mockResolvedValueOnce();
-
-    // manifest doesn't already exist
-    sftpClient.exists.mockResolvedValueOnce(false);
-
-    sftpClient.end.mockResolvedValueOnce();
-
-    const res = await app.send(JSON.stringify(event), messageId);
-
-    expect(res).toBe('sent');
-
-    expect(mocks.sftpSupplierClientRepository.getClient).toHaveBeenCalledTimes(
-      1
-    );
-    expect(mocks.sftpSupplierClientRepository.getClient).toHaveBeenCalledWith(
-      supplier
-    );
-
-    expect(mocks.userDataRepository.get).toHaveBeenCalledTimes(1);
-    expect(mocks.userDataRepository.get).toHaveBeenCalledWith(
-      clientId,
-      templateId,
-      pdfVersionId,
-      testDataVersionId
-    );
-
-    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.buildBatch).toHaveBeenCalledWith(
-      expandedTemplateId,
-      personalisationParameters,
-      testData
-    );
-
-    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.getHeader).toHaveBeenCalledWith(
-      personalisationParameters
-    );
-
-    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledTimes(1);
-    expect(mocks.syntheticBatch.buildManifest).toHaveBeenCalledWith(
-      expandedTemplateId,
-      batchId,
-      batchCsv
-    );
-
-    expect(sftpClient.connect).toHaveBeenCalledTimes(1);
-
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.acquireLock).toHaveBeenCalledWith(
-      clientId,
-      templateId
-    );
-
-    expect(sftpClient.exists).toHaveBeenCalledTimes(1);
-    expect(sftpClient.exists).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
-    );
-
-    expect(sftpClient.mkdir).toHaveBeenCalledTimes(2);
-    expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}`,
-      true
-    );
-    expect(sftpClient.mkdir).toHaveBeenCalledWith(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}`,
-      true
-    );
-
-    expect(sftpClient.put).toHaveBeenCalledTimes(3);
-
-    const [pdfPutCall, batchPutCall, manifestPutCall] =
-      sftpClient.put.mock.calls;
-
-    const [pdfArg, pdfDestinationArg] = pdfPutCall;
-
-    expect(await streamToString(pdfArg)).toEqual(pdfContent);
-    expect(pdfDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/templates/${expandedTemplateId}/${expandedTemplateId}.pdf`
-    );
-
-    const [batchArg, batchDestinationArg] = batchPutCall;
-
-    expect(await streamToString(batchArg)).toEqual(batchCsv);
-    expect(batchDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}.csv`
-    );
-
-    const [manifestArg, manifestDestinationArg] = manifestPutCall;
-
-    expect(await streamToString(manifestArg)).toEqual(manifestCsv);
-    expect(manifestDestinationArg).toBe(
-      `${baseUploadDir}/${sftpEnvironment}/batches/${expandedTemplateId}/${batchId}_MANIFEST.csv`
-    );
-
-    expect(
-      mocks.emailClient.sendProofRequestedEmailToSupplier
-    ).toHaveBeenCalledWith(
-      templateId,
-      expandedTemplateId,
-      templateName,
-      supplier
-    );
-
-    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledTimes(1);
-    expect(mocks.templateRepository.finaliseLock).toHaveBeenCalledWith(
-      clientId,
-      templateId
-    );
-
-    expect(sftpClient.end).toHaveBeenCalledTimes(1);
-  });
-
   test('throws if proof request event not valid JSON', async () => {
     const { app } = setup();
 
@@ -523,11 +306,9 @@ describe('App', () => {
   test('throws if proof request event is missing a property', async () => {
     const { app } = setup();
 
-    const { personalisationParameters: _, ...invalidEvent } = mockEvent(
-      true,
-      ['field'],
-      true
-    );
+    const { personalisationParameters: _, ...invalidEvent } = mockEvent(true, [
+      'field',
+    ]);
 
     await expect(
       app.send(JSON.stringify(invalidEvent), messageId)
@@ -544,7 +325,7 @@ describe('App', () => {
       ...personalisationParameters,
     ];
 
-    const event = mockEvent(true, personalisationParameters, true);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -638,7 +419,7 @@ describe('App', () => {
       ...personalisationParameters,
     ];
 
-    const event = mockEvent(true, personalisationParameters, true);
+    const event = mockEvent(true, personalisationParameters);
 
     const pdfContent = 'mock PDF content';
     const pdf = Readable.from(pdfContent);
@@ -735,7 +516,7 @@ describe('App', () => {
 
     const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
 
-    const event = mockEvent(true, personalisationParameters, true);
+    const event = mockEvent(true, personalisationParameters);
 
     const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
@@ -786,7 +567,7 @@ describe('App', () => {
 
     const personalisationParameters = ['pdsField', 'custom1', 'custom2'];
 
-    const event = mockEvent(true, personalisationParameters, true);
+    const event = mockEvent(true, personalisationParameters);
 
     const batchId = `${expandedTemplateId}-0000000000000_pdfversionid`;
 
