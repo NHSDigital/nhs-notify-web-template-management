@@ -168,7 +168,7 @@ export class App {
   }
 
   private async getFileData(
-    owner: string,
+    clientId: string,
     templateId: string,
     expandedTemplateId: string,
     pdfVersion: string,
@@ -177,7 +177,7 @@ export class App {
     batchId: string
   ) {
     const userData = await this.userDataRepository.get(
-      owner,
+      clientId,
       templateId,
       pdfVersion,
       testDataVersion
