@@ -5,11 +5,13 @@ import { ClientConfiguration, ClientFeatures } from '../types/generated';
 const $ClientFeatures = schemaFor<ClientFeatures>()(
   z.object({
     proofing: z.boolean(),
+    routing: z.boolean(),
   })
 );
 
 export const $ClientConfiguration = schemaFor<ClientConfiguration>()(
   z.object({
+    name: z.string().optional(),
     campaignId: z.string().optional(),
     features: $ClientFeatures,
   })

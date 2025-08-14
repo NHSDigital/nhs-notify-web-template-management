@@ -108,9 +108,11 @@ export type TemplateSuccess = {
 
 export type ClientFeatures = {
   proofing?: boolean;
+  routing?: boolean;
 };
 
 export type ClientConfiguration = {
+  name?: string;
   campaignId?: string;
   features: ClientFeatures;
 };

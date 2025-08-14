@@ -310,6 +310,9 @@
         "properties": {
           "proofing": {
             "type": "boolean"
+          },
+          "routing": {
+            "type": "boolean"
           }
         },
         "required": [],
@@ -322,6 +325,9 @@
           },
           "features": {
             "$ref": "#/components/schemas/ClientFeatures"
+          },
+          "name": {
+            "type": "string"
           }
         },
         "required": [
